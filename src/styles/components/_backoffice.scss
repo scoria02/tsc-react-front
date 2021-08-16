@@ -1,0 +1,62 @@
+.backoffice__main-content {
+	// background-color: brown;
+	display: flex;
+}
+
+.backoffice__list-content {
+	width: 40%;
+	height: 85vh;
+	// background-color: aquamarine;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 10px;
+}
+
+.backoffice__list-container {
+	margin: 0;
+	// background-color: green;
+	height: 100%;
+	width: 100%;
+}
+
+.backoffice__block1-content {
+	height: 85vh;
+	width: 30%;
+	// background-color: blue;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 10px;
+}
+
+.backoffice__block1-columna {
+	// background-color: green;
+	height: 26.5vh;
+}
+
+.backoffice__block1-one {
+	align-items: center;
+	// background-color: rgb(161, 221, 230);
+	height: 100%;
+	width: 100%;
+	padding: 15px;
+	display: flex;
+	flex-direction: inherit;
+	justify-content: center;
+}
+
+.torta {
+	width: 250px;
+}
+
+//Bloque dos Solicitud en proceso y terminadas
+.backoffice__block2-content {
+	height: 85vh;
+	width: 30%;
+	// background-color: gold;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 10px;
+}
