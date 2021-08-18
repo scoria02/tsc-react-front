@@ -50,13 +50,11 @@ const Login: React.FC = () => {
 
 	const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
 		e.preventDefault();
-		handleInputChange(e.target.value);
 		console.log(e.target.value);
 	};
 
 	const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
 		e.preventDefault();
-		handleInputChange(e.target.value);
 		console.log(e.target.value);
 	};
 
