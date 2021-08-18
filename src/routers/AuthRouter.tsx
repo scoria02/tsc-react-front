@@ -1,14 +1,15 @@
 import { Switch, Route, Redirect } from 'react-router-dom';
+import Login from '../components/auth/login';
 
-import { LoginScreen } from '../components/auth/LoginScreen';
+// import { LoginScreen } from '../components/auth/LoginScreen';
 import { RegisterScreen } from '../components/auth/RegisterScreen';
 
 export const AuthRouter = () => {
 	return (
 		<div className='auth__main'>
-			<div className='auth__box-container'>
+			<div className=''>
 				<Switch>
-					<Route exact path='/auth/login' component={LoginScreen} />
+					<Route exact path='/auth/login' component={Login} />
 					<Route exact path='/auth/register' component={RegisterScreen} />
 					<Redirect to='/auth/login' />
 				</Switch>

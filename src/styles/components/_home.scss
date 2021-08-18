@@ -1,9 +1,23 @@
-.home__main {
-	height: 100%;
-	background-color: $light-grey;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 18px;
-	padding: 0px;
-	margin: 0px;
-	margin-left: var($width-colapser);
+@import '~ed-grid/ed-grid';
+
+// .home__main {
+// 	height: 100%;
+// 	background-color: $light-grey;
+// 	font-family: Arial, Helvetica, sans-serif;
+// 	font-size: 18px;
+// 	padding: 0px;
+// 	margin: 0px;
+// 	margin-left: var($width-colapser);
+// }
+
+.fondo {
+	width: 100%;
+	background-color: blue;
+}
+
+.contenedor {
+	background-color: aquamarine;
+	min-height: 85vh;
+	// min-width: 75vw;
+	// max-width: 85vw;
 }

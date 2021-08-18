@@ -1,47 +1,34 @@
-import { types } from '../types/types';
-
+import { Action } from '../actions/ui';
+import { ActionType } from '../types/types';
 const initialState = {
 	loading: false,
 	modalOpen: false,
 	msgError: null,
 };
 
-export const uiReducer = (state: typeof initialState, action: types) => {
+export const uiReducer = (state = initialState, action: Action) => {
 	switch (action.type) {
-		case '[ui] Set Error':
-			return {
-				...state,
-				msgError: action.payload,
-			};
-
-		case '[ui] Remove Error':
-			return {
-				...state,
-				msgError: null,
-			};
-
-		case '[ui] Start loading':
-			return {
-				...state,
-				loading: true,
-			};
-
-		case '[ui] Finish loading':
-			return {
-				...state,
-				loading: false,
-			};
-
-		case '[ui] Open modal':
+		case ActionType.uiOpenModal:
 			return {
 				...state,
 				modalOpen: true,
 			};
 
-		case '[ui] Close modal':
+		case ActionType.uiCloseModal:
 			return {
 				...state,
 				modalOpen: false,
+			};
+		case ActionType.uiStartLoading:
+			return {
+				...state,
+				loading: true,
+			};
+
+		case ActionType.uiFinishLoading:
+			return {
+				...state,
+				loading: false,
 			};
 
 		default:

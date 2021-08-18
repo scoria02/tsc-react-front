@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
 import { AuthRouter } from './AuthRouter';
-import { Home } from '../pages/Home';
+import Home from '../pages/Home';
 import { PublicRoute } from './PublicRoute';
 import { PrivateRoute } from './PrivateRoute';
 
