@@ -20,7 +20,7 @@ export const AppRouter = () => {
 	if (setChecking) {
 		return <h1>Wait...</h1>;
 	}
-	const isLoggedIn = false;
+	const isLoggedIn = true;
 
 	return (
 		<Router>
