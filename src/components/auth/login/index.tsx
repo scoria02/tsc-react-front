@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 // import { useHistory } from 'react-router-dom';
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -14,6 +14,7 @@ import TextField from '@material-ui/core/TextField';
 
 import './index.scss';
 import luffy from '../../../img/itachi2.png';
+import { startLogin } from '../../../store/actions/auth';
 // import { useForm } from '../../../hooks/useForm';
 
 const useStyles = makeStyles({
@@ -56,15 +57,15 @@ const Login: React.FC = () => {
 
 	// const history = useHistory();
 
-	// const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
 	// const [formValues, handleInputChange] = useForm({
 	// 	email: '',
 	// 	password: '',
 	// });
 
-	const [email, setEmail] = useState<string>('');
-	const [pass, setPass] = useState<string>('');
+	const [email, setEmail] = useState<string>('leomerida15@gmail.com');
+	const [password, setPass] = useState<string>('Test123.');
 
 	// const { email, password }: any = formValues;
 
@@ -82,7 +83,8 @@ const Login: React.FC = () => {
 
 	const handleLogin = (e: any): void => {
 		e.preventDefault();
-		console.log(email, pass);
+		dispatch(startLogin(email, password));
+		console.log(email, password);
 		// dispatch(startLoginEmailPassword(email, password));
 	};
 
@@ -110,7 +112,8 @@ const Login: React.FC = () => {
 									name='email'
 									label='Email'
 									variant='outlined'
-									// value={email}
+									type='email'
+									// value={'leomerida15@gmail.com'}
 									onChange={handleUsernameChange}
 								/>
 								<TextField
@@ -119,7 +122,7 @@ const Login: React.FC = () => {
 									label='Password'
 									variant='outlined'
 									type='password'
-									// value={pass}
+									// value={'Test123.'}
 									onChange={handlePasswordChange}
 								/>
 								<Button type='submit' variant='outlined' color='primary'>

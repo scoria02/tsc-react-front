@@ -18,7 +18,18 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import { Aceptacion } from '../components/milpagos/Aceptacion';
-import SendIcon from '@material-ui/icons/Send';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import Badge from '@material-ui/core/Badge';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import Avatar from '@material-ui/core/Avatar';
+import SettingsIcon from '@material-ui/icons/Settings';
+
+import luffy from '../img/itachi2.png';
+import { useDispatch } from 'react-redux';
+import { FinishLoading } from '../store/actions/ui';
 
 const drawerWidth = 240;
 
@@ -26,6 +37,12 @@ const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		root: {
 			display: 'flex',
+			// '& > *': {
+			// 	margin: theme.spacing(1),
+			// },
+		},
+		grow: {
+			flexGrow: 1,
 		},
 		appBar: {
 			zIndex: theme.zIndex.drawer + 1,
@@ -44,6 +61,12 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		menuButton: {
 			marginRight: 36,
+		},
+		title: {
+			display: 'none',
+			[theme.breakpoints.up('sm')]: {
+				display: 'block',
+			},
 		},
 		hide: {
 			display: 'none',
@@ -83,10 +106,23 @@ const useStyles = makeStyles((theme: Theme) =>
 			flexGrow: 1,
 			padding: theme.spacing(3),
 		},
+		sectionDesktop: {
+			display: 'none',
+			[theme.breakpoints.up('md')]: {
+				display: 'flex',
+			},
+		},
+		sectionMobile: {
+			display: 'flex',
+			[theme.breakpoints.up('md')]: {
+				display: 'none',
+			},
+		},
 	})
 );
 
 export default function Home() {
+	const dispatch = useDispatch();
 	const classes = useStyles();
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(false);
@@ -100,11 +136,104 @@ export default function Home() {
 	const handleDrawerClose = () => {
 		setOpen(false);
 	};
+	const handleMenuLogout = () => {
+		dispatch(FinishLoading());
+	};
 
 	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
 		setSelectedIndex(index);
 		console.log(index);
 	};
+	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+
+	const isMenuOpen = Boolean(anchorEl);
+	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+	const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleMobileMenuClose = () => {
+		setMobileMoreAnchorEl(null);
+	};
+
+	const handleMenuClose = () => {
+		setAnchorEl(null);
+		handleMobileMenuClose();
+	};
+
+	const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+		setMobileMoreAnchorEl(event.currentTarget);
+	};
+
+	const menuId = 'primary-search-account-menu';
+	const renderMenu = (
+		<Menu
+			anchorEl={anchorEl}
+			anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+			id={menuId}
+			keepMounted
+			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+			open={isMenuOpen}
+			onClose={handleMenuClose}>
+			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
+			<MenuItem onClick={handleMenuLogout}>Salir</MenuItem>
+		</Menu>
+	);
+
+	const mobileMenuId = 'primary-search-account-menu-mobile';
+	const renderMobileMenu = (
+		<Menu
+			anchorEl={mobileMoreAnchorEl}
+			anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+			id={mobileMenuId}
+			keepMounted
+			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+			open={isMobileMenuOpen}
+			onClose={handleMobileMenuClose}>
+			<MenuItem>
+				<IconButton aria-label='show 4 new mails' color='inherit'>
+					<Badge badgeContent={4} color='secondary'>
+						<MailIcon />
+					</Badge>
+				</IconButton>
+				<p>Messages</p>
+			</MenuItem>
+			<MenuItem>
+				<IconButton aria-label='show 11 new notifications' color='inherit'>
+					<Badge badgeContent={11} color='secondary'>
+						<NotificationsIcon />
+					</Badge>
+				</IconButton>
+				<p>Notifications</p>
+			</MenuItem>
+			<MenuItem onClick={handleProfileMenuOpen}>
+				<IconButton
+					aria-label='account of current user'
+					aria-controls='primary-search-account-menu'
+					aria-haspopup='true'
+					color='inherit'>
+					{/* <AccountCircle /> */}
+
+					<Avatar alt='Remy Sharp' src={luffy} />
+				</IconButton>
+
+				<p>Profile</p>
+			</MenuItem>
+			<MenuItem onClick={handleProfileMenuOpen}>
+				<IconButton
+					aria-label='account of current user'
+					aria-controls='primary-search-account-menu'
+					aria-haspopup='true'
+					color='inherit'>
+					<AccountCircle />
+				</IconButton>
+				<p>Salir</p>
+			</MenuItem>
+		</Menu>
+	);
 
 	return (
 		<div className={classes.root}>
@@ -125,11 +254,48 @@ export default function Home() {
 						})}>
 						<MenuIcon />
 					</IconButton>
-					<Typography variant='h6' noWrap>
+					<Typography className={classes.title} variant='h6' noWrap>
 						1000Pagos C.A.
 					</Typography>
+
+					<div className={classes.grow} />
+					<div className={classes.sectionDesktop}>
+						<IconButton aria-label='show 4 new mails' color='inherit'>
+							<Badge badgeContent={4} color='secondary'>
+								<MailIcon />
+							</Badge>
+						</IconButton>
+						<IconButton aria-label='show 17 new notifications' color='inherit'>
+							<Badge badgeContent={17} color='secondary'>
+								<NotificationsIcon />
+							</Badge>
+						</IconButton>
+						<IconButton
+							edge='end'
+							aria-label='account of current user'
+							aria-controls={menuId}
+							aria-haspopup='true'
+							onClick={handleProfileMenuOpen}
+							color='inherit'>
+							{/* <AccountCircle /> */}
+
+							<Avatar alt='Remy Sharp' src={luffy} />
+						</IconButton>
+					</div>
+					<div className={classes.sectionMobile}>
+						<IconButton
+							aria-label='show more'
+							aria-controls={mobileMenuId}
+							aria-haspopup='true'
+							onClick={handleMobileMenuOpen}
+							color='inherit'>
+							<MoreIcon />
+						</IconButton>
+					</div>
 				</Toolbar>
 			</AppBar>
+			{renderMobileMenu}
+			{renderMenu}
 			<Drawer
 				variant='permanent'
 				className={clsx(classes.drawer, {
@@ -151,21 +317,21 @@ export default function Home() {
 				<List>
 					<ListItem button onClick={(event) => handleListItemClick(event, 0)}>
 						<ListItemIcon>
-							<SendIcon />
+							<InboxIcon />
 						</ListItemIcon>
 						<ListItemText primary='Home' />
 					</ListItem>
 					{open2 && (
 						<ListItem button onClick={(event) => handleListItemClick(event, 2)}>
 							<ListItemIcon>
-								<SendIcon />
+								<InboxIcon />
 							</ListItemIcon>
 							<ListItemText primary='Prueba' />
 						</ListItem>
 					)}
 					<ListItem button onClick={(event) => handleListItemClick(event, 3)}>
 						<ListItemIcon>
-							<SendIcon />
+							<InboxIcon />
 						</ListItemIcon>
 						<ListItemText primary='Aceptacion' />
 					</ListItem>
@@ -174,7 +340,7 @@ export default function Home() {
 				<List>
 					{['All mail', 'Trash', 'Spam'].map((text, index) => (
 						<ListItem button key={text}>
-							<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+							<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <SettingsIcon />}</ListItemIcon>
 							<ListItemText primary={text} />
 						</ListItem>
 					))}

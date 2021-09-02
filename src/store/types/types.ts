@@ -1,15 +1,16 @@
 export enum ActionType {
-	uiOpenModal = '[ui] Open modal',
-	uiCloseModal = '[ui] Close modal',
-
 	login = '[Auth] Login',
 	logout = '[Auth] Logout',
+
+	uiOpenModal = '[ui] Open modal',
+	uiCloseModal = '[ui] Close modal',
 
 	uiSetError = '[UI] Set Error',
 	uiRemoveError = '[UI] Remove Error',
 
 	uiStartLoading = '[UI] Start loading',
 	uiFinishLoading = '[UI] Finish loading',
+	uiChecking = '[UI] Checking',
 
 	notesAddNew = '[Notes] New note',
 	notesActive = '[Notes] Set active note',

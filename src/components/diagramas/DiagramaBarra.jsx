@@ -1,10 +1,8 @@
 import React from 'react';
 import { ChartConfig } from './ChartConfig';
 
+// import './back.scss';
+
 export const DiagramaBarra = () => {
-	return (
-		<div className='backoffice__block1-one'>
-			<ChartConfig />
-		</div>
-	);
+	return <ChartConfig />;
 };

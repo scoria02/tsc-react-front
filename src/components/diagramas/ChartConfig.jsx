@@ -1,12 +1,15 @@
 import React from 'react';
 import { Bar, Doughnut } from 'react-chartjs-2';
 
+import './diagramas.scss';
+
 const state = {
 	labels: ['Espera', 'Proceso', 'Aprovadas'],
 	datasets: [
 		{
 			label: 'Barra',
-			axis: 'y',
+			axis: 'x',
+
 			backgroundColor: [
 				'rgba(255, 99, 132, 0.2)',
 				'rgba(255, 159, 64, 0.2)',
@@ -26,46 +29,50 @@ const state = {
 				'rgb(201, 203, 207)',
 			],
 			borderWidth: 1,
-			data: [251, 655, 998],
+			data: [10, 5, 289],
 		},
 	],
 };
 
 export const ChartConfig = () => {
 	return (
-		<div>
-			<Bar
-				data={state}
-				options={{
-					// indexAxis: 'y',
-					title: {
-						display: true,
-						text: 'Average Rainfall per month',
-						fontSize: 20,
-					},
-					legend: {
-						display: true,
-						position: 'right',
-					},
-				}}
-			/>
-		</div>
+		<Bar
+			data={state}
+			className='canvas_prueba'
+			options={{
+				indexAxis: 'y',
+				title: {
+					display: true,
+					text: 'Average Solic',
+					fontSize: 2,
+				},
+				legend: {
+					display: true,
+					position: 'right',
+				},
+			}}
+			style={{
+				display: 'flex',
+				height: '100px',
+				width: '100px',
+			}}
+		/>
 	);
 };
 
 export const ChartTorta = () => {
 	return (
-		<div className='backoffice__block1-one torta'>
-			<Doughnut
-				data={state}
-				options={{
-					title: {
-						display: true,
-						text: 'Average Rainfall per month',
-						fontSize: 2,
-					},
-				}}
-			/>
-		</div>
+		<Doughnut
+			data={state}
+			className='canvas_prueba'
+			options={{
+				title: {
+					display: true,
+					text: 'Average Rainfall per month',
+					fontSize: 2,
+				},
+			}}
+			style={{ display: 'flex' }}
+		/>
 	);
 };

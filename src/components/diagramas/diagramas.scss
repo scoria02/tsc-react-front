@@ -1,0 +1,47 @@
+.canvas_prueba {
+	// background-color: yellow;
+	display: flex;
+	align-items: center;
+}
+
+.aceptacion_torta {
+	// background-color: yellow;
+	display: flex;
+	align-items: center;
+}
+
+.aceptacion_bar {
+	// background-color: yellow;
+	display: flex;
+	align-items: center;
+}
+
+.solicitudes_contec {
+	display: flex;
+	padding-top: 20px;
+	h1,
+	h2 {
+		margin-bottom: 0;
+	}
+}
+
+.solicitudes {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	// background-color: green;
+}
+div.marcos {
+	border-bottom: 1px solid red;
+	border-top: 1px solid red;
+	// background-color: green;
+}
+
+.titulo {
+	color: red;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

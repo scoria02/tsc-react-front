@@ -1,19 +1,5 @@
 import { ActionType } from '../types/types';
-// export const setError = (err) => ({
-// 	type: types.uiSetError,
-// 	payload: err,
-// });
 
-// export const removeError = () => ({
-// 	type: types.uiRemoveError,
-// });
-
-// interface startLoading {
-// 	type: ActionType.UiStartLoading;
-// }
-// export const finishLoading = () => ({
-// 	type: ActionType.uiFinishLoading,
-// });
 interface startLoading {
 	type: ActionType.uiStartLoading;
 }
@@ -32,4 +18,6 @@ export type Action = uiCloseModal | uiOpenModal | startLoading | finishLoading;
 
 //Action
 export const OpenModal = () => ({ type: ActionType.uiOpenModal });
-// export const uiCloseModal = () => ({ type: ActionType.uiCloseModal });
+export const CloseModal = () => ({ type: ActionType.uiCloseModal });
+export const FinishLoading = () => ({ type: ActionType.uiFinishLoading });
+export const StartLoading = () => ({ type: ActionType.uiStartLoading });
