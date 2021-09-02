@@ -1,24 +1,15 @@
-import { Action } from '../actions/ui';
-// import { ActionType } from '../types/types';
-/*
-    {
-        uid: 'jagdfjahdsf127362718',
-        name: 'Fernando'
-    }
+import { ActionType } from '../types/types';
 
-*/
-export const authReducer = (state = {}, action: Action) => {
+const initialState = {
+	user: {}
+}
+
+export const authReducer = (state = initialState, action: any) => {
 	switch (action.type) {
-		// case ActionType.uiStartLoading:
-		// 	return {
-		// 		...state,
-		// 		// email: action.payload.email,
-		// 		// password: action.payload.displayName
-		// 	};
-
-		// case ActionType.uiFinishLoading:
-		// 	return {};
-
+		case ActionType.login:
+			console.log('hola from login')
+			return {
+			}
 		default:
 			return state;
 	}

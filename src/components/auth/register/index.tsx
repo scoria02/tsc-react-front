@@ -2,7 +2,17 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
+//icons
+import SendIcon from '@material-ui/icons/Send';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+
+//styles
+import { useStylesModalUser } from '../styles';
+
+import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import MobileStepper from '@material-ui/core/MobileStepper';
 import Card from '@material-ui/core/Card';
 // import CardActionArea from '@material-ui/core/CardActionArea';
 // import { useForm, SubmitHandler } from 'react-hook-form';
@@ -17,26 +27,8 @@ import luffy from '../../../img/itachi2.png';
 import { startLogin } from '../../../store/actions/auth';
 // import { useForm } from '../../../hooks/useForm';
 
-const useStyles = makeStyles({
-	root: {
-		// maxWidth: 345,
-	},
-	media: {
-		height: 400,
-		width: 400,
-	},
-	bullet: {
-		display: 'inline-block',
-		margin: '0 2px',
-		transform: 'scale(0.8)',
-	},
-	title: {
-		fontSize: 14,
-	},
-	pos: {
-		marginBottom: 12,
-	},
-});
+import { Step1 } from './steps/Step1';
+import { Step2 } from './steps/Step2';
 
 const useStylesButton = makeStyles((theme: Theme) =>
 	createStyles({
@@ -49,15 +41,15 @@ const useStylesButton = makeStyles((theme: Theme) =>
 	})
 );
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
 	const classesbutton = useStylesButton();
-	const classes = useStyles();
-
-	// const { register, handleSubmit, control } = useForm();
-
+	const classes = useStylesModalUser();
 	const history = useHistory();
-
 	const dispatch = useDispatch();
+	const isMediumScreen: boolean = useMediaQuery('(max-width:800px)');
+
+	const [readyStep, setReadyStep] = React.useState<boolean>(false);
+	const [activeStep, setActiveStep] = React.useState<number>(0);
 
 	// const [formValues, handleInputChange] = useForm({
 	// 	email: '',
@@ -88,6 +80,19 @@ const Login: React.FC = () => {
 		// dispatch(startLoginEmailPassword(email, password));
 	};
 
+	const handleNext = () => {
+		setActiveStep((prevActiveStep) => prevActiveStep + 1);
+	};
+
+	const handleBack = () => {
+		setActiveStep((prevActiveStep) => prevActiveStep - 1);
+	};
+
+	const getStep = [
+		<Step1 />,
+		<Step2 />,
+	];
+
 	return (
 		<Card className={classes.root}>
 			<CardContent>
@@ -95,43 +100,69 @@ const Login: React.FC = () => {
 					{' '}
 					<div className='ed-container'>
 						<div className='s-to-center'>
-							{' '}
 							<CardMedia className={classes.media} image={luffy} title='Rey de los Piratas' />
 						</div>
 					</div>
 					<CardContent>
 						<div className='s-py-4'>
 							<Typography gutterBottom variant='h5' component='h2' align='center'>
-								Ingresar
+								Registrarme
 							</Typography>
 						</div>
 						<div>
 							<form onSubmit={handleLogin} className={classesbutton.root} autoComplete='off'>
-								<TextField
-									id='email'
-									name='email'
-									label='Email'
-									variant='outlined'
-									type='email'
-									// value={'leomerida15@gmail.com'}
-									onChange={handleUsernameChange}
-								/>
-								<TextField
-									id='password'
-									name='password'
-									label='Password'
-									variant='outlined'
-									type='password'
-									// value={'Test123.'}
-									onChange={handlePasswordChange}
-								/>
+									{getStep[activeStep]}
+									<MobileStepper
+										variant='dots'
+										steps={2}
+										position='static'
+										activeStep={activeStep}
+										className={classes.step}
+										nextButton={
+											activeStep === 1 ? (
+												<Button
+													className={classes.buttonSend}
+													//onClick={handleSubmit}
+													disabled={!readyStep}
+													variant='contained'>
+													{isMediumScreen ? <SendIcon /> : <span>Registrarme</span>}
+												</Button>
+											) : (
+												<Button
+													className={classes.buttonStep}
+													onClick={handleNext}
+													disabled={!readyStep}
+													variant='contained'>
+													{isMediumScreen ? null : <span>Siguiente</span>}
+													<ArrowForwardIosIcon />
+												</Button>
+											)
+										}
+										backButton={
+											activeStep === 0 ? (
+												<Button className={classes.buttonBack} onClick={handleLogin}>
+													<ArrowBackIosIcon style={{ fontSize: '3vh' }} />
+													{isMediumScreen ? null : <span>Volver</span>}
+												</Button>
+											) : (
+												<Button
+													className={classes.buttonStep}
+													onClick={handleBack}
+													disabled={activeStep === 0}
+													variant='contained'>
+													<ArrowBackIosIcon />
+													{isMediumScreen ? null : <span>Anterior</span>}
+												</Button>
+											)
+										}
+									/>
 								<Button type='submit' variant='outlined' color='primary'>
-									Entrar
+									Registrarme
 								</Button>
 								<div className='ed-grid s-grid-2'>
-									<Button size='small' color='primary' variant='contained' onClick={() => history.push('/auth/register')}>
+									<Button size='small' color='primary' variant='contained' onClick={() => history.push('/auth/login')}>
 										<div className='ed-container'>
-											<div className='s-to-center'>Registrarte</div>
+											<div className='s-to-center'>Iniciar Session</div>
 										</div>
 									</Button> 
 								</div>
@@ -144,4 +175,4 @@ const Login: React.FC = () => {
 	);
 };
 
-export default Login;
+export default Register;
