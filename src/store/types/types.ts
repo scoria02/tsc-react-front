@@ -19,4 +19,7 @@ export enum ActionType {
 	notesFileUrl = '[Notes] Updated image url',
 	notesDelete = '[Notes] Delete note',
 	notesLogoutCleaning = '[Notes] Logout Cleaning',
+
+	showAlert = '[UI] Show Alert',
+	hiddenAlert = '[UI] Show Alert',
 }

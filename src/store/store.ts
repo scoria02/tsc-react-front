@@ -1,4 +1,5 @@
 import { uiReducer } from './reducers/uiReducer';
+import { alertReducer  as alert } from "./reducers/alert"
 import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 
@@ -12,6 +13,7 @@ const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOO
 
 const reducers = combineReducers({
 	ui: uiReducer,
+  alert: alert
 });
 
 export const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));

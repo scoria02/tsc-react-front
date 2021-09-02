@@ -14,7 +14,10 @@ interface uiCloseModal {
 	type: ActionType.uiCloseModal;
 }
 
-export type Action = uiCloseModal | uiOpenModal | startLoading | finishLoading;
+export type Action =  uiCloseModal | 
+											uiOpenModal | 
+											startLoading |
+											finishLoading;
 
 //Action
 export const OpenModal = () => ({ type: ActionType.uiOpenModal });
