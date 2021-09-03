@@ -15,6 +15,10 @@ export const useStylesModalUser = makeStyles((styles) => ({
 	root: {
 		// maxWidth: 345,
 	},
+	containerRight: {
+		margin: 0,
+		position: 'relative'
+	},
 	media: {
 		height: 400,
 		width: 400,
@@ -31,13 +35,25 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		marginBottom: 12,
 	},
 	inputN: {
-		width: '48%',
+		width: '49%',
 	},
 	input: {
 		marginTop: styles.spacing(1.5),
 		marginBottom: styles.spacing(1),
-		width: '80%',
+		width: '100%',
 		alignSelf: 'center',
+	},
+	inputNro: {
+		width: '70%',
+	},
+	inputPhone:{
+		width: '52%',
+	},
+	formControl: {
+		width: '28%',
+	},
+	formControlCompany: {
+		width: '46%',
 	},
 	button: {
 		margin: styles.spacing(1),
@@ -94,14 +110,6 @@ export const useStylesModalUser = makeStyles((styles) => ({
 	buttonBack: {
 		color: styles.palette.primary.main,
 	},
-	inputNro: {
-		width: '70%',
-		marginTop: styles.spacing(-0.3),
-	},
-	formControl: {
-		marginTop: styles.spacing(-0.3),
-		width: '26%',
-	},
 	text: {
 		color: styles.palette.error.main,
 		fontSize: '13px',
@@ -119,8 +127,8 @@ export const useStylesModalUser = makeStyles((styles) => ({
 	},
 	step: {
 		flexGrow: 1,
-		backgroundColor: '#fff',
-		width: '80%',
+		backgroundColor: '#ffffff',
+		width: '100%',
 		alignSelf: 'center',
 	},
 	typography: {

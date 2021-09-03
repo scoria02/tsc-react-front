@@ -1,4 +1,5 @@
 import { uiReducer } from './reducers/uiReducer';
+import { authReducer } from './reducers/authReducer';
 import { alertReducer  as alert } from "./reducers/alert"
 import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
@@ -13,9 +14,11 @@ const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOO
 
 const reducers = combineReducers({
 	ui: uiReducer,
-  alert: alert
+	auth: authReducer,
+  alert: alert,
 });
 
 export const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
 
 export type RootState = ReturnType<typeof reducers>;
+

@@ -6,8 +6,8 @@ export interface Interface_RegisterUser {
 	last_name: string;
 	id_ident_type: number;
 	ident_num: string;
-	phone1: string;
-	phone2: string;
+	phone: string;
+	company: string,
 }
 
 export interface Interface_RegisterUserError {
@@ -18,7 +18,11 @@ export interface Interface_RegisterUserError {
 	last_name: boolean;
 	id_ident_type: boolean;
 	ident_num: boolean;
-	phone1: boolean;
-	phone2: boolean;
-	checkPhones: boolean,
+	phone: boolean;
+}
+
+export interface Interface_ErrorPass {
+	rango: boolean;
+	mayus: boolean;
+	sig: boolean;
 }

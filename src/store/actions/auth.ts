@@ -5,14 +5,14 @@ import useAxios from '../../config';
 import { StartLoading } from './ui';
 import { ActionType } from '../types/types';
 
-import { showAlertAction, hiddenAlertAction } from './alert';
+//import { showAlertAction, hiddenAlertAction } from './alert';
 
 export const startLogin = (email: any, password: any) => {
 	return async (dispatch: any) => {
 			try {
 				const resp: AxiosResponse<{ message: string; info: any }> = await useAxios.post(`/auth/login`, {
 					email,
-				password,
+					password,
 				});
 				localStorage.setItem('token', resp.data.info.token);
 				Swal.fire('Success', resp.data.message, 'success');
@@ -24,16 +24,27 @@ export const startLogin = (email: any, password: any) => {
 				//dispatch(showAlertAction(error.response.data.message));
 			}
 	};
-
-	function request() {
-		return {
-			type: ActionType.login,
-		};
-	};
-
-	function requestSuccess(state: any) {
-	};
-
-	function requestError(state: any) {
-	};
 };
+
+export const validationEmail  = (email: string) => {
+	return async (dispatch: any) => {
+		try {
+			await useAxios.post('/auth/register/valid/1', { email });
+			dispatch(validationEmailSuccess())
+		}catch (error) {
+			console.log(error);
+			dispatch(validationEmailError())
+			Swal.fire('Error', error.response.data.message, 'error');
+		}
+		function validationEmailSuccess() {
+			return {
+				type: ActionType.registerEmail,
+			};
+		}
+		function validationEmailError() {
+			return {
+				type: ActionType.registerEmailError,
+			};
+		}
+	}
+}

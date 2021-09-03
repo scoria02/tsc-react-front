@@ -2,10 +2,11 @@ export enum ActionType {
 	//Auth
 	login = '[Auth] Login',
 	logout = '[Auth] Logout',
-	//Register
 	signup = '[Auth] Login',
-	validEmail = '[Auth] Email',
-	validDocIdent= '[Auth] DocIdent',
+	//Register
+	registerEmail= '[Auth] RegisterEmail',
+	registerEmailError= '[Auth] RegisterEmailError',
+	registerDocIdent= '[Auth] RegisterDocIdent',
 
 	//Modals
 	uiOpenModal = '[ui] Open modal',

@@ -1,4 +1,6 @@
 import React from "react"
+import { useDispatch, useSelector } from 'react-redux';
+
 //Material
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -10,13 +12,21 @@ import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Typography from '@material-ui/core/Typography';
 
-//styles
+//validation
+import { checkErrorInput } from '../validationForm';
+
+import { validationEmail } from '../../../../store/actions/auth';
+
+//Styles
 import { useStylesModalUser } from '../../styles';
 
-//import { isMobile } from 'react-device-detect';
+//Redux
+import { RootState }  from '../../../../store/store';
+
 import {
 	Interface_RegisterUser,
 	Interface_RegisterUserError,
+	Interface_ErrorPass
 } from '../../interfaceAuth';
 
 function Alert(props: AlertProps) {
@@ -26,72 +36,44 @@ function Alert(props: AlertProps) {
 interface Props {
 	userForm: Interface_RegisterUser; //json
 	userFormError: Interface_RegisterUserError; //json
+	errorPassword: Interface_ErrorPass;
 	handleChange: (event:React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 
-export const Step1: React.FC<Props> = ({ userForm, userFormError, handleChange}) => {
+export const Step1: React.FC<Props> = ({ userForm, userFormError, errorPassword, handleChange}) => {
+	const dispatch = useDispatch();
+
+	//selector
+	const auth : any = useSelector((state: RootState) => state.auth);
+
 	//State
+	const [open, setOpen] = React.useState(false); //Show errors Password
 	const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
 	const classes = useStylesModalUser();
 
-	const [errorPassword, setErrorPassword] = React.useState<any>({
-		rango: true,
-		mayus: true,
-		sig: true,
-	});
+	//Handles
+	const handleBlurEmail = (email: string) => {
+		if (userForm.email.trim() !== '') {
+			dispatch(validationEmail(email));
+		}
+	};
 
-	//alert material
-	const [state, setState] = React.useState<any>({
-    open: false,
-    vertical: 'top',
-    horizontal: 'right',
-  });
- const { vertical, horizontal } = state;
- const [open, setOpen] = React.useState(false);
-
-  const handleAlertFocus = (newState: any) => () => {
-		console.log('holaa')
-    setState({ 
-			...state,
-			open: true
-		});
-		setOpen(true);
-  };
-
-  const handleClose = () => {
-    setState({ ...state, open: false });
-  };
-
-
- /*
-  const handleAlertFocus= () => {
-    setOpen(true);
-  };
-
-  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
-
-	*/
 	return (
-		<>
+	<>
 			<TextField
 				required
 				className={classes.input}
 				name='email'
-				//onBlur={handleBlurEmail}
 				onChange={handleChange}
+				onBlur={() => handleBlurEmail(userForm.email)}
 				type='email'
 				label='correo@correo'
 				value={userForm.email}
 				variant='outlined'
 				autoComplete='email'
-				error={userFormError.email}
+				error={userFormError.email || checkErrorInput('email', auth.error)}
 			/>
 			<TextField
 				id='password'
@@ -122,9 +104,10 @@ export const Step1: React.FC<Props> = ({ userForm, userFormError, handleChange})
 				}}
 				/>
 			<Snackbar
-				open={open}
+				open={open && (errorPassword.rango || errorPassword.mayus || errorPassword.sig)}
 				anchorOrigin={{ 
-					vertical, horizontal 
+					vertical: 'top', 
+					horizontal: 'right',
 				}}
 			>
 				<SnackbarContent
