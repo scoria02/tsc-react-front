@@ -5,8 +5,11 @@ export enum ActionType {
 	signup = '[Auth] Login',
 	//Register
 	registerEmail= '[Auth] RegisterEmail',
-	registerEmailError= '[Auth] RegisterEmailError',
+	registerEmailError= '[Auth] RegisterEmail Error',
 	registerDocIdent= '[Auth] RegisterDocIdent',
+	registerDocIdentError= '[Auth] RegisterDocIdent Error',
+	registerUser= '[Auth] Register User',
+	registerUserError= '[Auth] Register User Error',
 
 	//Modals
 	uiOpenModal = '[ui] Open modal',

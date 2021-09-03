@@ -20,8 +20,6 @@ export const startLogin = (email: any, password: any) => {
 			} catch (error) {
 				console.log(error);
 				Swal.fire('Error', error.response.data.message, 'error');
-
-				//dispatch(showAlertAction(error.response.data.message));
 			}
 	};
 };
@@ -44,6 +42,55 @@ export const validationEmail  = (email: string) => {
 		function validationEmailError() {
 			return {
 				type: ActionType.registerEmailError,
+			};
+		}
+	}
+}
+
+export const validationIdentDoc = (identDoc: any) => {
+	console.log(identDoc)
+	return async (dispatch: any) => {
+		try {
+			await useAxios.post('/auth/register/valid/2', identDoc);
+			dispatch(validationIdentDocSuccess())
+		}catch (error) {
+			console.log(error);
+			dispatch(validationIdentDocError())
+			Swal.fire('Error', error.response.data.message, 'error');
+		}
+		function validationIdentDocSuccess() {
+			return {
+				type: ActionType.registerDocIdent,
+			};
+		}
+		function validationIdentDocError() {
+			return {
+				type: ActionType.registerDocIdentError,
+			};
+		}
+	}
+}
+
+export const registerUser = (user: any) => {
+	console.log(user)
+	return async (dispatch: any) => {
+		try {
+			const res = await useAxios.post('/auth/register', user);
+			dispatch(requestSuccess(res));
+		}catch (error) {
+			console.log(error);
+			dispatch(requestFailure())
+			Swal.fire('Error', error.response.data.message, 'error');
+		}
+		function requestSuccess(state: any) {
+			return {
+				type: ActionType.registerUser,
+				payload: state
+			};
+		}
+		function requestFailure() {
+			return {
+				type: ActionType.registerUserError,
 			};
 		}
 	}

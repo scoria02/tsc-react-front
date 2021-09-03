@@ -15,13 +15,12 @@ import Typography from '@material-ui/core/Typography';
 //validation
 import { checkErrorInput } from '../validationForm';
 
-import { validationEmail } from '../../../../store/actions/auth';
-
 //Styles
 import { useStylesModalUser } from '../../styles';
 
 //Redux
 import { RootState }  from '../../../../store/store';
+import { validationEmail } from '../../../../store/actions/auth';
 
 import {
 	Interface_RegisterUser,

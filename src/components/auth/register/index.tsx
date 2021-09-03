@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch,  useSelector } from 'react-redux';
 
 //icons
 import SendIcon from '@material-ui/icons/Send';
@@ -16,6 +16,7 @@ import * as valids from './validationForm';
 
 //Redux
 import { RootState }  from '../../../store/store';
+import { registerUser } from '../../../store/actions/auth';
 
 //Material UI
 import { useMediaQuery } from '@material-ui/core';
@@ -27,8 +28,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import luffy from '../../../img/itachi2.png';
-// import { useForm, SubmitHandler } from 'react-hook-form';
-//import { startLogin } from '../../../store/actions/auth';
 
 import {
 	Interface_RegisterUser,
@@ -41,9 +40,14 @@ import { Step2 } from './steps/Step2';
 
 const Register: React.FC = () => {
 	const history = useHistory();
-	//const dispatch = useDispatch();
+	const dispatch = useDispatch();
 	const classes = useStylesModalUser();
+
+	//Dispatch
 	const auth : any = useSelector((state: RootState) => state.auth);
+	const registrationUser = (user: Interface_RegisterUser) => {
+		dispatch(registerUser(user));
+	};
 
 	const isMediumScreen: boolean = useMediaQuery('(max-width:800px)');
 
@@ -61,6 +65,7 @@ const Register: React.FC = () => {
 		ident_num: '',
 		phone: '',
 		company: '',
+		id_depart: 1,
 	});
 
 	//State Errors
@@ -85,6 +90,7 @@ const Register: React.FC = () => {
 	const validateForm = (name: string, value: any) => {
 		let temp: Interface_RegisterUserError = { ...userFormError };
 		switch (name) {
+			//step1
 			case 'email':
 				temp.email = valids.validEmail(value);
 				break;
@@ -111,6 +117,7 @@ const Register: React.FC = () => {
 			case 'confirmPassword':
 				temp.confirmPassword = !valids.validSamePass(userForm.password, value);
 				break;
+			//step2
 			case 'name':
 			case 'last_name':
 				temp[name] = valids.validFullName(value);
@@ -118,7 +125,7 @@ const Register: React.FC = () => {
 			case 'identType':
 				break;
 			case 'ident_num':
-				//temp.ident_num = valids.validIdentNum(value, identType);
+				temp.ident_num = valids.validIdentNum(value, userForm.id_ident_type);
 				break;
 			case 'phone':
 				temp.phone = valids.validPhone(value);
@@ -150,16 +157,29 @@ const Register: React.FC = () => {
 		validateForm(event.target.name, event.target.value);
 	};
 
-	const handleLogin = (e: any): void => {
-		e.preventDefault();
-	};
-
 	const handleNext = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
 	};
 
 	const handleBack = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
+	};
+
+	const handleSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setUserForm({
+			...userForm,
+			[event.target.name]: event.target.name === 'company' ? event.target.value : parseInt(event.target.value, 10),
+		});
+		validateForm(event.target.name, event.target.value);
+	};
+
+	const handleSubmit = () => {
+		if (valids.allInputNotNUll(activeStep, userForm) || valids.checkErrorAllInput(activeStep, userFormError)) {
+			console.log('Debe llenear todos los campos')
+			return;
+		}
+		registrationUser(userForm);
+		//setShowCheckRegister(true);
 	};
 
 	//Steps
@@ -173,6 +193,7 @@ const Register: React.FC = () => {
 		<Step2 
 			userForm={userForm}
 			userFormError={userFormError}
+			handleSelect={handleSelect}
 			handleChange={handleChangeForm}
 		/>,
 	];
@@ -193,7 +214,7 @@ const Register: React.FC = () => {
 							</Typography>
 						</div>
 						<div className={classes.containerRight} >
-							<form onSubmit={handleLogin} autoComplete='off'>
+							<form autoComplete='off'>
 								<div className="ed-container">
 									{getStep[activeStep]}
 									<MobileStepper
@@ -207,7 +228,7 @@ const Register: React.FC = () => {
 											activeStep === 1 ? (
 												<Button
 													className={classes.buttonSend}
-													//onClick={handleSubmit}
+													onClick={handleSubmit}
 													disabled={!readyStep}
 													variant='contained'>
 													{isMediumScreen ? <SendIcon /> : <span>Registrarme</span>}
