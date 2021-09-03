@@ -16,27 +16,7 @@ import './index.scss';
 import luffy from '../../../img/itachi2.png';
 import { startLogin } from '../../../store/actions/auth';
 // import { useForm } from '../../../hooks/useForm';
-
-const useStyles = makeStyles({
-	root: {
-		// maxWidth: 345,
-	},
-	media: {
-		height: 400,
-		width: 400,
-	},
-	bullet: {
-		display: 'inline-block',
-		margin: '0 2px',
-		transform: 'scale(0.8)',
-	},
-	title: {
-		fontSize: 14,
-	},
-	pos: {
-		marginBottom: 12,
-	},
-});
+import { useStylesModalUser } from '../styles';
 
 const useStylesButton = makeStyles((theme: Theme) =>
 	createStyles({
@@ -51,7 +31,7 @@ const useStylesButton = makeStyles((theme: Theme) =>
 
 const Login: React.FC = () => {
 	const classesbutton = useStylesButton();
-	const classes = useStyles();
+	const classes = useStylesModalUser();
 
 	// const { register, handleSubmit, control } = useForm();
 

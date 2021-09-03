@@ -14,18 +14,20 @@ import { useMediaQuery } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import Card from '@material-ui/core/Card';
-// import CardActionArea from '@material-ui/core/CardActionArea';
-// import { useForm, SubmitHandler } from 'react-hook-form';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-
 import './index.scss';
 import luffy from '../../../img/itachi2.png';
-import { startLogin } from '../../../store/actions/auth';
-// import { useForm } from '../../../hooks/useForm';
+// import CardActionArea from '@material-ui/core/CardActionArea';
+// import { useForm, SubmitHandler } from 'react-hook-form';
+//import { startLogin } from '../../../store/actions/auth';
+
+import {
+	Interface_RegisterUser,
+	Interface_RegisterUserError,
+} from '../interfaceAuth';
 
 import { Step1 } from './steps/Step1';
 import { Step2 } from './steps/Step2';
@@ -42,42 +44,56 @@ const useStylesButton = makeStyles((theme: Theme) =>
 );
 
 const Register: React.FC = () => {
-	const classesbutton = useStylesButton();
-	const classes = useStylesModalUser();
 	const history = useHistory();
 	const dispatch = useDispatch();
+	const classes = useStylesModalUser();
+	const classesbutton = useStylesButton();
 	const isMediumScreen: boolean = useMediaQuery('(max-width:800px)');
-
+	//States
 	const [readyStep, setReadyStep] = React.useState<boolean>(false);
 	const [activeStep, setActiveStep] = React.useState<number>(0);
 
-	// const [formValues, handleInputChange] = useForm({
-	// 	email: '',
-	// 	password: '',
-	// });
+	const [userForm, setUserForm] = useState<Interface_RegisterUser>({
+		email: '',
+		password: '',
+		confirmPassword: '',
+		name: '',
+		last_name: '',
+		id_ident_type: 1,
+		ident_num: '',
+		phone1: '',
+		phone2: '',
+	});
 
-	const [email, setEmail] = useState<string>('leomerida15@gmail.com');
-	const [password, setPass] = useState<string>('Test123.');
+	const [userFormError, setUserFormError] = React.useState<Interface_RegisterUserError>({
+		email: false,
+		password: false,
+		confirmPassword: false,
+		name: false,
+		last_name: false,
+		id_ident_type: false,
+		ident_num: false,
+		phone1: false,
+		phone2: false,
+		checkPhones: false,
+	});
 
-	// const { email, password }: any = formValues;
-
-	const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-		e.preventDefault();
-		setEmail(e.target.value);
-		console.log(e.target.value);
+	//Handles
+	//handle
+	const handleChangeForm= (event: React.ChangeEvent<HTMLInputElement>) => {
+		setUserForm({
+			...userForm,
+			[event.target.name]: event.target.value,
+		});
+		//validateForm(event.target.name, event.target.value);
 	};
-
-	const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+	const handleUserForm: React.ChangeEventHandler<HTMLInputElement> = (e) => {
 		e.preventDefault();
-		setPass(e.target.value);
 		console.log(e.target.value);
 	};
 
 	const handleLogin = (e: any): void => {
 		e.preventDefault();
-		dispatch(startLogin(email, password));
-		console.log(email, password);
-		// dispatch(startLoginEmailPassword(email, password));
 	};
 
 	const handleNext = () => {
@@ -88,8 +104,13 @@ const Register: React.FC = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
 	};
 
+	//Steps
 	const getStep = [
-		<Step1 />,
+		<Step1 
+			userForm={userForm}
+			userFormError={userFormError}
+			handleChange={handleChangeForm}
+		/>,
 		<Step2 />,
 	];
 
@@ -131,7 +152,7 @@ const Register: React.FC = () => {
 												<Button
 													className={classes.buttonStep}
 													onClick={handleNext}
-													disabled={!readyStep}
+													//disabled={!readyStep}
 													variant='contained'>
 													{isMediumScreen ? null : <span>Siguiente</span>}
 													<ArrowForwardIosIcon />

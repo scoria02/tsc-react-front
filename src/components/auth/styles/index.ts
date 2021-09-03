@@ -54,7 +54,7 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		textTransform: 'none',
 		letterSpacing: '1px',
 		backgroundColor: styles.palette.primary.main,
-		color: styles.palette.secondary.main,
+		color: '#fff',
 		'&:hover': {
 			backgroundColor: styles.palette.primary.light,
 		},
@@ -107,8 +107,8 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		fontSize: '13px',
 	},
 	textM: {
-		color: styles.palette.error.main,
-		fontSize: '10px',
+		color: '#fff',
+		fontSize: '15px',
 	},
 	alertPassword: {
 		width: '100%',
@@ -123,4 +123,7 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		width: '80%',
 		alignSelf: 'center',
 	},
+	typography: {
+    padding: styles.spacing(2),
+  },
 }));
