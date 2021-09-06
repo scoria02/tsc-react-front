@@ -5,9 +5,6 @@ import useAxios from '../../config';
 import { StartLoading } from './ui';
 import { ActionType } from '../types/types';
 
-//Material
-import TextField from '@material-ui/core/TextField';
-
 //import { showAlertAction, hiddenAlertAction } from './alert';
 
 export const startLogin = (email: any, password: any) => {

@@ -17,7 +17,6 @@ import * as valids from './validationForm';
 //Redux
 import { RootState }  from '../../../store/store';
 import { registerUser } from '../../../store/actions/auth';
-import { startLogin } from '../../../store/actions/auth';
 
 //Material UI
 import { useMediaQuery } from '@material-ui/core';
@@ -45,7 +44,6 @@ const Register: React.FC = () => {
 	const classes = useStylesModalUser();
 
 	//Dispatch
-	const registered = useSelector((state: RootState) => !state.auth.registered);
 	const auth : any = useSelector((state: RootState) => state.auth);
 	const registrationUser = (user: Interface_RegisterUser) => {
 		dispatch(registerUser(user));
@@ -56,7 +54,6 @@ const Register: React.FC = () => {
 	//States
 	const [readyStep, setReadyStep] = useState<boolean>(false);
 	const [activeStep, setActiveStep] = useState<number>(0);
-	const [showCheckRegister, setShowCheckRegister] = useState<boolean>(false);
 
 	const [userForm, setUserForm] = useState<Interface_RegisterUser>({
 		email: '',
@@ -182,7 +179,6 @@ const Register: React.FC = () => {
 			return;
 		}
 		registrationUser(userForm);
-		setShowCheckRegister(true);
 	};
 
 	//Steps
