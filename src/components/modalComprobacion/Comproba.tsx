@@ -2,15 +2,7 @@ import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-// import ListItemText from '@material-ui/core/ListItemText';
-// import ListItem from '@material-ui/core/ListItem';
-// import List from '@material-ui/core/List';
-// import Divider from '@material-ui/core/Divider';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,20 +10,10 @@ import { CloseModal } from '../../store/actions/ui';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
+import PasoUno from '../pasosComprobacion/PasoUno';
 
 import './comprobar.scss';
-
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		appBar: {
-			position: 'relative',
-		},
-		title: {
-			marginLeft: theme.spacing(2),
-			flex: 1,
-		},
-	})
-);
+import PasoUnoUser from '../pasosComprobacion/PasoUnoUser';
 
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & { children?: React.ReactElement },
@@ -70,7 +52,41 @@ function getStepContent(step: number) {
 		case 0:
 			return (
 				<div className='comprobar_container'>
-					<h1>GOLLA</h1>
+					<div>
+						<h1 className='titulo'>Informacion de Comercio </h1>
+
+						<PasoUno />
+						{/* <input type='text' value='S-675832475289347' className='' name='numeroSolicitud' />
+						<input type='text' value='1' className='' name='numeroPost' />
+						<input type='text' value='Aldrin' className='' name='nombre' />
+						<input type='text' value='Mendoza' className='' name='apellido' />
+						<input type='text' value='V' className='' name='tipoID' />
+						<input type='text' value='209876534' className='' name='ID' />
+						<input type='text' value='Venta de Tamal' className='' name='actividadComercial' />
+						<input type='text' value='Venta de Tamal' className='' name='contribuyente' />
+						<input type='text' value='01027657868743678694' className='' name='numeroCuenta' />
+						<input type='text' value='NoTeDebo' className='' name='metodoPago' />
+						<input type='text' value='04164197645' className='' name='telefono' />
+						<input type='text' value='04164197645' className='' name='telefono2' />
+						<input type='text' value='Caracas' className='' name='ciudad' />
+						<input type='text' value='Miranda' className='' name='estado' />
+						<input type='text' value='Distrito' className='' name='municipio' />
+						<input type='text' value='Gyojin' className='' name='parroquia' />
+						<input type='text' value='Malandroso' className='' name='sector' />
+						<input type='text' value='Problema' className='' name='calle' />
+						<input type='text' value='Dolar' className='' name='local' />
+						<input type='text' value='1080' className='' name='codigoPostal' /> */}
+					</div>
+					<div>
+						<h1 className='titulo'>Informacion de Cliente</h1>
+						<PasoUnoUser />
+						{/* <br />
+						<input type='text' value='Aldrin' className='' name='nombre' />
+						<input type='text' value='Mendoza' className='' name='apellido' />
+						<input type='text' value='V' className='' name='tipoID' />
+						<input type='text' value='209876534' className='' name='ID' />
+						<input type='text' value='aetours.ca@gmail.com' className='' name='correo' /> */}
+					</div>
 				</div>
 			);
 		case 1:
@@ -97,20 +113,20 @@ export default function Comproba() {
 		return step === 1;
 	};
 
-	const handleSkip = () => {
-		if (!isStepOptional(activeStep)) {
-			// You probably want to guard against something like this
-			// it should never occur unless someone's actively trying to break something.
-			throw new Error("You can't skip a step that isn't optional.");
-		}
+	// const handleSkip = () => {
+	// 	if (!isStepOptional(activeStep)) {
+	// 		// You probably want to guard against something like this
+	// 		// it should never occur unless someone's actively trying to break something.
+	// 		throw new Error("You can't skip a step that isn't optional.");
+	// 	}
 
-		setActiveStep((prevActiveStep) => prevActiveStep + 1);
-		setSkipped((prevSkipped) => {
-			const newSkipped = new Set(prevSkipped.values());
-			newSkipped.add(activeStep);
-			return newSkipped;
-		});
-	};
+	// 	setActiveStep((prevActiveStep) => prevActiveStep + 1);
+	// 	setSkipped((prevSkipped) => {
+	// 		const newSkipped = new Set(prevSkipped.values());
+	// 		newSkipped.add(activeStep);
+	// 		return newSkipped;
+	// 	});
+	// };
 
 	const skippedSteps = () => {
 		return skipped.size;
@@ -147,7 +163,7 @@ export default function Comproba() {
 		setActiveStep(step);
 	};
 
-	const handleComplete = () => {
+	const handleComplete = async () => {
 		const newCompleted = new Set(completed);
 		newCompleted.add(activeStep);
 		setCompleted(newCompleted);
@@ -166,6 +182,7 @@ export default function Comproba() {
 		setActiveStep(0);
 		setCompleted(new Set<number>());
 		setSkipped(new Set<number>());
+		dispatch(CloseModal());
 	};
 
 	const isStepSkipped = (step: number) => {
@@ -177,7 +194,7 @@ export default function Comproba() {
 	}
 
 	//******************************************************* */
-	const classes = useStyles();
+	// const classes = useStyles();
 	// const [open, setOpen] = React.useState(false);
 
 	const dispatch = useDispatch();
@@ -195,19 +212,6 @@ export default function Comproba() {
 	return (
 		<div>
 			<Dialog fullScreen open={modalOpen} onClose={handleClose} TransitionComponent={Transition}>
-				<AppBar className={classes.appBar}>
-					<Toolbar>
-						<IconButton edge='start' color='inherit' onClick={handleClose} aria-label='close'>
-							<CloseIcon />
-						</IconButton>
-						<Typography variant='h6' className={classes.title}>
-							Sound
-						</Typography>
-						<Button autoFocus color='inherit' onClick={handleClose}>
-							save
-						</Button>
-					</Toolbar>
-				</AppBar>
 				<div className={classes2.root}>
 					<Stepper alternativeLabel nonLinear activeStep={activeStep}>
 						{steps.map((label, index) => {
@@ -230,27 +234,27 @@ export default function Comproba() {
 					</Stepper>
 					<div>
 						{allStepsCompleted() ? (
-							<div>
+							<div className='btn-divfloat'>
 								<Typography className={classes2.instructions}>
-									All steps completed - you&apos;re finished2
+									Todos los campos fueron Validados - Saludos BB
 								</Typography>
-								<Button onClick={handleReset}>Reset</Button>
+								<Button onClick={handleReset}>Salir</Button>
 							</div>
 						) : (
 							<div>
 								<Typography className={classes2.instructions}>{getStepContent(activeStep)}</Typography>
-								<div>
+								<div className='btn-divfloat'>
 									<Button disabled={activeStep === 0} onClick={handleBack} className={classes2.button}>
-										Back
+										Volver
 									</Button>
 									<Button variant='contained' color='primary' onClick={handleNext} className={classes2.button}>
-										Next
+										Siguiente
 									</Button>
-									{isStepOptional(activeStep) && !completed.has(activeStep) && (
-										<Button variant='contained' color='primary' onClick={handleSkip} className={classes2.button}>
-											Skip
-										</Button>
-									)}
+									{/* {isStepOptional(activeStep) && !completed.has(activeStep) && (
+										// <Button variant='contained' color='primary' onClick={handleSkip} className={classes2.button}>
+										// 	Saltar
+										// </Button>
+									)} */}
 									{activeStep !== steps.length &&
 										(completed.has(activeStep) ? (
 											<Typography variant='caption' className={classes2.completed}>
@@ -258,7 +262,8 @@ export default function Comproba() {
 											</Typography>
 										) : (
 											<Button variant='contained' color='primary' onClick={handleComplete}>
-												{completedSteps() === totalSteps() - 1 ? 'Finish' : 'Complete Step'}
+												{/* <Button variant='contained' color='primary'> */}
+												{completedSteps() === totalSteps() - 1 ? 'Finish' : 'Verificado'}
 											</Button>
 										))}
 								</div>

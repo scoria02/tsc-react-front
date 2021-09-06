@@ -1,3 +1,25 @@
 .comprobar_container {
-	background-color: blue;
+	// background-color: blue;
+	height: 84vh;
+	display: grid;
+	grid-column-gap: 0;
+	grid-template-columns: 1.5fr 1fr;
+}
+
+.MuiStepper-root {
+	display: flex;
+	width: 95vw;
+	padding: 4px !important;
+}
+
+.btn-divfloat {
+	position: fixed !important;
+	bottom: 3px;
+	left: 38%;
+}
+
+.titulo {
+	color: red;
+	display: flex;
+	align-items: center;
 }
