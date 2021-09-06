@@ -44,8 +44,8 @@ const Login: React.FC = () => {
 	// 	password: '',
 	// });
 
-	const [email, setEmail] = useState<string>('leomerida15@gmail.com');
-	const [password, setPass] = useState<string>('Test123.');
+	const [email, setEmail] = useState<string>('twelve@correo.com');
+	const [password, setPass] = useState<string>('123456jH*');
 
 	// const { email, password }: any = formValues;
 

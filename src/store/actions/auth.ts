@@ -5,6 +5,9 @@ import useAxios from '../../config';
 import { StartLoading } from './ui';
 import { ActionType } from '../types/types';
 
+//Material
+import TextField from '@material-ui/core/TextField';
+
 //import { showAlertAction, hiddenAlertAction } from './alert';
 
 export const startLogin = (email: any, password: any) => {
@@ -17,13 +20,34 @@ export const startLogin = (email: any, password: any) => {
 				localStorage.setItem('token', res.data.info.token);
 				Swal.fire('Success', res.data.message, 'success');
 				dispatch(StartLoading());
-				dispatch(LoginSuccess(res.data.info));
+				dispatch(requestSuccess(res.data.info));
 			} catch (error) {
 				console.log(error);
 				Swal.fire('Error', error.response.data.message, 'error');
 			}
 	};
-	function LoginSuccess(state: any) {
+	function requestSuccess(state: any) {
+		return {
+			type: ActionType.login,
+			payload: state
+		};
+	}
+};
+
+export const refreshLogin= () => {
+	return async (dispatch: any) => {
+			try {
+				const res: any = await useAxios.get(`/auth/log/worker`);
+				//localStorage.setItem('token', res.data.info.token);
+				dispatch(StartLoading());
+				console.log(res)
+				dispatch(requestSuccess(res.data.info));
+			} catch (error) {
+				console.log(error);
+				Swal.fire('Error', error.response.data.message, 'error');
+			}
+	};
+	function requestSuccess(state: any) {
 		return {
 			type: ActionType.login,
 			payload: state

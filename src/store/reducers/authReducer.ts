@@ -20,12 +20,10 @@ export const authReducer = (state = initialState, action: any) => {
 				...state,
 				user: action.payload.data
 			}
-		//Validation Email
-		case ActionType.registerEmail:
-      state.error = deleteError(state.error, 'email');
-			console.log(state.error)
+		case ActionType.refreshUser:
 			return {
 				...state,
+				user: action.payload.data
 			}
 		//Register User
 		case ActionType.registerUser:
@@ -38,6 +36,13 @@ export const authReducer = (state = initialState, action: any) => {
 			return {
 				...state,
 				registered: false
+			}
+		//Validation Email
+		case ActionType.registerEmail:
+      state.error = deleteError(state.error, 'email');
+			console.log(state.error)
+			return {
+				...state,
 			}
 		case ActionType.registerEmailError:
       state.error = updataError(state.error, {message: action.payload, name: 'email' });

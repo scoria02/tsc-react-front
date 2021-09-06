@@ -25,10 +25,11 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import PeopleIcon from '@material-ui/icons/People';
 import SettingsIcon from '@material-ui/icons/Settings';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import GestionUsuarios from '../components/GestionUsuarios';
 import { Aceptacion } from '../components/milpagos/Aceptacion';
+import { FormMaldito } from '../components/formMaldito';
 import luffy from '../img/itachi2.png';
 import { FinishLoading } from '../store/actions/ui';
 
@@ -143,7 +144,17 @@ export default function Home() {
 	const [open2] = React.useState(true);
 	const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-	const user: any = useSelector((state: RootState) => state.auth.user);
+	const userDB: any = useSelector((state: RootState) => state.auth.user);
+	const [user, setUser] = React.useState({
+		name: '',
+		last_name: '',
+	});
+
+	useEffect(() => {
+		if(userDB){
+			setUser(userDB);
+		}
+	}, [userDB])
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
@@ -354,6 +365,12 @@ export default function Home() {
 						</ListItemIcon>
 						<ListItemText primary='Aceptacion' />
 					</ListItem>
+					<ListItem button onClick={(event) => handleListItemClick(event, 5)}>
+						<ListItemIcon>
+							<InboxIcon />
+						</ListItemIcon>
+						<ListItemText primary='Formulario M***' />
+					</ListItem>
 				</List>
 				<Divider />
 				<List>
@@ -402,6 +419,7 @@ export default function Home() {
 				)}
 				{selectedIndex === 3 && <Aceptacion />}
 				{selectedIndex === 4 && <GestionUsuarios />}
+				{selectedIndex === 5 && <FormMaldito/>}
 			</main>
 		</div>
 	);

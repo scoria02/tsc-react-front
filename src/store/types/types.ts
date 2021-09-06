@@ -3,6 +3,7 @@ export enum ActionType {
 	login = '[Auth] Login',
 	logout = '[Auth] Logout',
 	signup = '[Auth] Login',
+	refreshUser = '[Auth] Refresh Login',
 	//Register
 	registerEmail= '[Auth] RegisterEmail',
 	registerEmailError= '[Auth] RegisterEmail Error',
