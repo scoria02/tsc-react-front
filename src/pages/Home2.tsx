@@ -31,6 +31,10 @@ import luffy from '../img/itachi2.png';
 import { useDispatch } from 'react-redux';
 import { FinishLoading } from '../store/actions/ui';
 
+//Redux
+import { useSelector } from 'react-redux';
+import { RootState }  from '../store/store';
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -118,8 +122,17 @@ const useStyles = makeStyles((theme: Theme) =>
 				display: 'none',
 			},
 		},
+		userName: {
+			display: 'none',
+			padding: '1rem',
+			paddingRight: '0',
+			[theme.breakpoints.up('sm')]: {
+				display: 'block',
+			},
+		},
 	})
 );
+
 
 export default function Home() {
 	const dispatch = useDispatch();
@@ -128,6 +141,8 @@ export default function Home() {
 	const [open, setOpen] = React.useState(false);
 	const [open2] = React.useState(true);
 	const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+	const user: any = useSelector((state: RootState) => state.auth.user);
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
@@ -270,6 +285,9 @@ export default function Home() {
 								<NotificationsIcon />
 							</Badge>
 						</IconButton>
+						<Typography className={classes.userName} variant='h6' noWrap>
+							{user.name} {user.last_name}
+						</Typography>
 						<IconButton
 							edge='end'
 							aria-label='account of current user'

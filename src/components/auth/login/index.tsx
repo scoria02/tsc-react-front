@@ -52,20 +52,19 @@ const Login: React.FC = () => {
 	const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
 		e.preventDefault();
 		setEmail(e.target.value);
-		console.log(e.target.value);
+		//console.log(e.target.value);
 	};
 
 	const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
 		e.preventDefault();
 		setPass(e.target.value);
-		console.log(e.target.value);
+		//console.log(e.target.value);
 	};
 
 	const handleLogin = (e: any): void => {
 		e.preventDefault();
 		dispatch(startLogin(email, password));
-		console.log(email, password);
-		// dispatch(startLoginEmailPassword(email, password));
+		//console.log(email, password);
 	};
 
 	return (

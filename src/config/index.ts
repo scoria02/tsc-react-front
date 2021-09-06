@@ -2,8 +2,12 @@ import axios from 'axios';
 
 // Set config defaults when creating the instance
 
+//const urlLocal = 'http://localhost';
+const URL = 'http://10.198.68.21';
+const Port = '5051';
+
 const useAxios = axios.create({
-	baseURL: 'http://192.168.253.29:5051',
+	baseURL: `${URL}:${Port}`,
 	headers: { common: { token: localStorage.getItem('token') } },
 });
 axios.defaults.headers['Content-Type'] = 'application/json';

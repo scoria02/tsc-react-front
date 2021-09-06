@@ -10,18 +10,51 @@ import { ActionType } from '../types/types';
 export const startLogin = (email: any, password: any) => {
 	return async (dispatch: any) => {
 			try {
-				const resp: AxiosResponse<{ message: string; info: any }> = await useAxios.post(`/auth/login`, {
+				const res: AxiosResponse<{ message: string; info: any }> = await useAxios.post(`/auth/login`, {
 					email,
 					password,
 				});
-				localStorage.setItem('token', resp.data.info.token);
-				Swal.fire('Success', resp.data.message, 'success');
+				localStorage.setItem('token', res.data.info.token);
+				Swal.fire('Success', res.data.message, 'success');
 				dispatch(StartLoading());
+				dispatch(LoginSuccess(res.data.info));
 			} catch (error) {
 				console.log(error);
 				Swal.fire('Error', error.response.data.message, 'error');
 			}
 	};
+	function LoginSuccess(state: any) {
+		return {
+			type: ActionType.login,
+			payload: state
+		};
+	}
+};
+
+export const registerUser = (user: any) => {
+	return async (dispatch: any) => {
+		try {
+			const res = await useAxios.post('/auth/register', user);
+			dispatch(requestSuccess(res));
+			const { email, password } = user; 
+			dispatch(startLogin(email, password));
+		}catch (error) {
+			console.log(error);
+			dispatch(requestFailure())
+			Swal.fire('Error', error.response.data.message, 'error');
+		}
+		function requestSuccess(state: any) {
+			return {
+				type: ActionType.registerUser,
+				payload: state
+			};
+		}
+		function requestFailure() {
+			return {
+				type: ActionType.registerUserError,
+			};
+		}
+	}
 };
 
 export const validationEmail  = (email: string) => {
@@ -66,31 +99,6 @@ export const validationIdentDoc = (identDoc: any) => {
 		function validationIdentDocError() {
 			return {
 				type: ActionType.registerDocIdentError,
-			};
-		}
-	}
-}
-
-export const registerUser = (user: any) => {
-	console.log(user)
-	return async (dispatch: any) => {
-		try {
-			const res = await useAxios.post('/auth/register', user);
-			dispatch(requestSuccess(res));
-		}catch (error) {
-			console.log(error);
-			dispatch(requestFailure())
-			Swal.fire('Error', error.response.data.message, 'error');
-		}
-		function requestSuccess(state: any) {
-			return {
-				type: ActionType.registerUser,
-				payload: state
-			};
-		}
-		function requestFailure() {
-			return {
-				type: ActionType.registerUserError,
 			};
 		}
 	}

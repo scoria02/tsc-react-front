@@ -16,9 +16,9 @@ const initialState : inState = {
 export const authReducer = (state = initialState, action: any) => {
 	switch (action.type) {
 		case ActionType.login:
-			console.log('hola from login')
 			return {
 				...state,
+				user: action.payload.data
 			}
 		//Validation Email
 		case ActionType.registerEmail:
@@ -26,6 +26,18 @@ export const authReducer = (state = initialState, action: any) => {
 			console.log(state.error)
 			return {
 				...state,
+			}
+		//Register User
+		case ActionType.registerUser:
+			return {
+				...state,
+				user: action.payload.data.data,
+				registered: true,
+			}
+		case ActionType.registerUserError:
+			return {
+				...state,
+				registered: false
 			}
 		case ActionType.registerEmailError:
       state.error = updataError(state.error, {message: action.payload, name: 'email' });
@@ -43,18 +55,6 @@ export const authReducer = (state = initialState, action: any) => {
       state.error = updataError(state.error, {message: action.payload, name: 'ident' });
 			return {
 				...state,
-			}
-		//Register User
-		case ActionType.registerUser:
-			return {
-				...state,
-				user: action.payload,
-				registered: true,
-			}
-		case ActionType.registerUserError:
-			return {
-				...state,
-				registered: false
 			}
 		default:
 			return state;
