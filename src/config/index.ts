@@ -1,4 +1,6 @@
-import axios from 'axios';
+import Axios, { AxiosRequestConfig } from 'axios';
+import { configure } from 'axios-hooks';
+import LRU from 'lru-cache';
 
 // Set config defaults when creating the instance
 
@@ -6,10 +8,10 @@ import axios from 'axios';
 const URL = 'http://10.198.68.21';
 const Port = '5051';
 
-const useAxios = axios.create({
+const configAxios: AxiosRequestConfig = {
 	baseURL: `${URL}:${Port}`,
 	headers: { common: { token: localStorage.getItem('token') } },
-	transformResponse: (data) => {
+	transformResponse: (data: any) => {
 		data = JSON.parse(data);
 		if (data.info.token) {
 			localStorage.removeItem('token');
@@ -18,7 +20,13 @@ const useAxios = axios.create({
 
 		return data;
 	},
-});
-axios.defaults.headers['Content-Type'] = 'application/json';
+};
+Axios.defaults.headers['Content-Type'] = 'application/json';
 
-export default useAxios;
+const axios = Axios.create(configAxios);
+
+const cache = new LRU({ max: 10 });
+
+configure({ axios, cache });
+
+export default axios;
