@@ -1,7 +1,18 @@
-import { Button, Grid, makeStyles, Paper, TextField } from '@material-ui/core';
+/* eslint-disable react-hooks/exhaustive-deps */
+import {
+	Button,
+	Checkbox,
+	FormControlLabel,
+	FormGroup,
+	Grid,
+	makeStyles,
+	Paper,
+	TextField,
+} from '@material-ui/core';
 import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarFilterButton } from '@material-ui/data-grid';
 import CloseIcon from '@material-ui/icons/Close';
 import React from 'react';
+import axios from '../../config';
 import luffy from '../../img/luffy.png';
 
 interface GestionUsuariosProps {}
@@ -132,6 +143,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	const [name, setName] = React.useState<string>('Armando');
 	const handleRow = (event: any) => {
 		setUserView(true);
+		getuserRol(event.row.id);
 		console.log(event.row);
 	};
 
@@ -157,6 +169,41 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 		//console.log(e.target.value);
 	};
 
+	const getuserRol = async (id: number) => {
+		const resp = await axios.get(`/worker/${id}`).then((data) => {
+			console.log('data', data.data.info[0]);
+		});
+	};
+
+	let [roles, setRol] = React.useState([
+		{
+			id: 1,
+			name: 'client',
+			value: false,
+		},
+	]);
+	let arr_rol_user: any[] = [];
+
+	React.useEffect(() => {
+		try {
+			axios.get('roles/all').then((data: any) => {
+				setRol(data.data.info);
+			});
+		} catch (error) {
+			console.log('error', error);
+		}
+	}, []);
+
+	const handleCheckbox = (id: number) => {
+		if (!arr_rol_user.includes(id)) arr_rol_user.push(id);
+		else arr_rol_user = arr_rol_user.filter((a: number) => a !== id);
+
+		roles = roles.map((rol: any): any => {
+			if (arr_rol_user.includes(rol.id)) rol.value = true;
+			else rol.value = false;
+			return rol;
+		});
+	};
 	return (
 		<>
 			<Grid container spacing={4} className={classes.layout}>
@@ -205,6 +252,29 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 											value={name}
 											onChange={handleInputChanges}
 										/>
+									</div>
+									<div className={classes.row}>
+										<FormGroup>
+											{roles.map((rol, i) => {
+												return (
+													<>
+														<FormControlLabel
+															key={i}
+															control={
+																<Checkbox
+																	key={i}
+																	checked={rol.value}
+																	onChange={() => handleCheckbox(rol.id)}
+																	name={rol.name}
+																	inputProps={{ 'aria-label': 'primary checkbox' }}
+																/>
+															}
+															label={rol.name}
+														/>
+													</>
+												);
+											})}
+										</FormGroup>
 									</div>
 								</form>
 							</div>

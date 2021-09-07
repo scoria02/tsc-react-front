@@ -12,13 +12,18 @@ const configAxios: AxiosRequestConfig = {
 	baseURL: `${URL}:${Port}`,
 	headers: { common: { token: localStorage.getItem('token') } },
 	transformResponse: (data: any) => {
-		data = JSON.parse(data);
-		if (data.info.token) {
-			localStorage.removeItem('token');
-			localStorage.setItem('token', data.info.token);
+		const data_json = JSON.parse(data);
+
+		console.log('data_json', data_json);
+
+		debugger;
+
+		if (data_json.token) {
+			if (localStorage.getItem('token') === null) localStorage.removeItem('token');
+			localStorage.setItem('token', data_json.token);
 		}
 
-		return data;
+		return data_json;
 	},
 };
 Axios.defaults.headers['Content-Type'] = 'application/json';
