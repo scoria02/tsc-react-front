@@ -51,7 +51,7 @@ export const Step2: React.FC<any> = ({cursedForm, setCursedForm, handleChange}) 
 				//color="secondary"
 				component="label"
 			>
-			<IconButton color="" aria-label="upload picture" component="span">
+			<IconButton aria-label="upload picture" component="span">
 				<PhotoCamera />
 			</IconButton>
 			<input
@@ -68,7 +68,7 @@ export const Step2: React.FC<any> = ({cursedForm, setCursedForm, handleChange}) 
 					//color="secondary"
 					component="label"
 				>
-				<IconButton color="" aria-label="upload picture" component="span">
+				<IconButton aria-label="upload picture" component="span">
 					<PhotoCamera />
 				</IconButton>
 				<input
