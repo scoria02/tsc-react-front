@@ -14,7 +14,7 @@ export const startLogin = (email: any, password: any) => {
 					email,
 					password,
 				});
-				localStorage.setItem('token', res.data.info.token);
+				localStorage.setItem('token', res.data.token);
 				Swal.fire('Success', res.data.message, 'success');
 				dispatch(StartLoading());
 				dispatch(requestSuccess(res.data.info));
