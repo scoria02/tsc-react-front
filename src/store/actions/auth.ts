@@ -13,7 +13,6 @@ export const startLogin = (email: any, password: any) => {
 				email,
 				password,
 			});
-
 			Swal.fire('Success', res.data.message, 'success');
 			dispatch(StartLoading());
 			dispatch(requestSuccess(res.data.info));

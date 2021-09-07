@@ -2,6 +2,13 @@
 	display: flex;
 }
 
+.titleFM {
+	fontSize: 2rem; 
+	padding: 0; 
+	margin: 0;
+	margin-bottom: 1rem;
+}
+
 .capitan-america {
 	background: url("https://imagenes.heraldo.es/files/image_990_v1/uploads/imagenes/2018/11/12/_20MARCHIVO30499280_b08f782d.jpg")  no-repeat left;
 	height: 100%;
@@ -24,4 +31,5 @@
 	justify-content: left;
 	align-items: center;
 	flex-direction: column;
+	margin-top: 1rem;
 }
