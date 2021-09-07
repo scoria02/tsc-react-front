@@ -5,6 +5,28 @@
 	grid-column-gap: 0;
 	grid-template-columns: 1.5fr 1fr;
 }
+.comprobar_container_2 {
+	// background-color: blue;
+	height: 84vh;
+	display: grid;
+	grid-column-gap: 0;
+	grid-template-columns: 1fr 1.5fr;
+}
+
+.img_container {
+	display: flex;
+	justify-content: center;
+	padding: 3px;
+}
+
+.img_tamano {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 200px;
+	width: 100%;
+}
 
 .MuiStepper-root {
 	display: flex;
