@@ -1,53 +1,52 @@
-import Swal from 'sweetalert2';
-
 import { AxiosResponse } from 'axios';
+import Swal from 'sweetalert2';
 import useAxios from '../../config';
-import { StartLoading } from './ui';
 import { ActionType } from '../types/types';
+import { StartLoading } from './ui';
 
 //import { showAlertAction, hiddenAlertAction } from './alert';
 
 export const startLogin = (email: any, password: any) => {
 	return async (dispatch: any) => {
-			try {
-				const res: AxiosResponse<{ message: string; info: any }> = await useAxios.post(`/auth/login`, {
-					email,
-					password,
-				});
-				localStorage.setItem('token', res.data.token);
-				Swal.fire('Success', res.data.message, 'success');
-				dispatch(StartLoading());
-				dispatch(requestSuccess(res.data.info));
-			} catch (error) {
-				console.log(error);
-				Swal.fire('Error', error.response.data.message, 'error');
-			}
+		try {
+			const res: AxiosResponse<{ message: string; info: any }> = await useAxios.post(`/auth/login`, {
+				email,
+				password,
+			});
+			localStorage.setItem('token', res.data.token);
+			Swal.fire('Success', res.data.message, 'success');
+			dispatch(StartLoading());
+			dispatch(requestSuccess(res.data.info));
+		} catch (error) {
+			console.log(error);
+			Swal.fire('Error', error.response.data.message, 'error');
+		}
 	};
 	function requestSuccess(state: any) {
 		return {
 			type: ActionType.login,
-			payload: state
+			payload: state,
 		};
 	}
 };
 
-export const refreshLogin= () => {
+export const refreshLogin = () => {
 	return async (dispatch: any) => {
-			try {
-				const res: any = await useAxios.get(`/worker`);
-				//localStorage.setItem('token', res.data.info.token);
-				dispatch(StartLoading());
-				console.log(res)
-				dispatch(requestSuccess(res.data.info));
-			} catch (error) {
-				console.log(error);
-				Swal.fire('Error', error.response.data.message, 'error');
-			}
+		try {
+			const res: any = await useAxios.get(`/worker`);
+			//localStorage.setItem('token', res.data.info.token);
+			dispatch(StartLoading());
+			// console.log(res);
+			dispatch(requestSuccess(res.data.info));
+		} catch (error: any) {
+			console.log(error);
+			Swal.fire('Error', error.response.data.message, 'error');
+		}
 	};
 	function requestSuccess(state: any) {
 		return {
 			type: ActionType.login,
-			payload: state
+			payload: state,
 		};
 	}
 };
@@ -57,17 +56,17 @@ export const registerUser = (user: any) => {
 		try {
 			const res = await useAxios.post('/auth/register', user);
 			dispatch(requestSuccess(res));
-			const { email, password } = user; 
+			const { email, password } = user;
 			dispatch(startLogin(email, password));
-		}catch (error) {
+		} catch (error: any) {
 			console.log(error);
-			dispatch(requestFailure())
+			dispatch(requestFailure());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
 		function requestSuccess(state: any) {
 			return {
 				type: ActionType.registerUser,
-				payload: state
+				payload: state,
 			};
 		}
 		function requestFailure() {
@@ -75,17 +74,17 @@ export const registerUser = (user: any) => {
 				type: ActionType.registerUserError,
 			};
 		}
-	}
+	};
 };
 
-export const validationEmail  = (email: string) => {
+export const validationEmail = (email: string) => {
 	return async (dispatch: any) => {
 		try {
 			await useAxios.post('/auth/register/valid/1', { email });
-			dispatch(validationEmailSuccess())
-		}catch (error) {
+			dispatch(validationEmailSuccess());
+		} catch (error: any) {
 			console.log(error);
-			dispatch(validationEmailError())
+			dispatch(validationEmailError());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
 		function validationEmailSuccess() {
@@ -98,18 +97,18 @@ export const validationEmail  = (email: string) => {
 				type: ActionType.registerEmailError,
 			};
 		}
-	}
-}
+	};
+};
 
 export const validationIdentDoc = (identDoc: any) => {
-	console.log(identDoc)
+	// console.log(identDoc);
 	return async (dispatch: any) => {
 		try {
 			await useAxios.post('/auth/register/valid/2', identDoc);
-			dispatch(validationIdentDocSuccess())
-		}catch (error) {
+			dispatch(validationIdentDocSuccess());
+		} catch (error: any) {
 			console.log(error);
-			dispatch(validationIdentDocError())
+			dispatch(validationIdentDocError());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
 		function validationIdentDocSuccess() {
@@ -122,5 +121,5 @@ export const validationIdentDoc = (identDoc: any) => {
 				type: ActionType.registerDocIdentError,
 			};
 		}
-	}
-}
+	};
+};
