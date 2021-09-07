@@ -8,8 +8,7 @@ export const useStyles = makeStyles((styles) => ({
     display: 'flex',
     width: '50%',
     textAlign: 'center',
-		marginTop: styles.spacing(1.5),
-		marginBottom: styles.spacing(1),
+		marginTop: styles.spacing(1),
 		alignSelf: 'center',
 	},
 	inputTipoId: {
@@ -21,24 +20,20 @@ export const useStyles = makeStyles((styles) => ({
 	}
 }));
 
-export const Step1: React.FC<any> = ({maldito}) => {
+export const Step1: React.FC<any> = ({cursedForm, setCursedForm, handleChange}) => {
 	const classes = useStyles();
-	const [checked, setChecked] = useState(true);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-  };
   return (
     <>
-      <TextField className={classes.input} variant="outlined" required id="standard-required" label="Correo" inputRef={maldito()}/>
-      <TextField className={classes.input} variant="outlined" required id="standard-required" label="Nombre" />
-      <TextField className={classes.input} variant="outlined" required id="standard-required" label="Apellido" />
+      <TextField className={classes.input} variant="outlined" required id="standard-required" label="Correo" name='email' onChange={handleChange} value={cursedForm.email} />
+      <TextField className={classes.input} variant="outlined" required id="standard-required" label="Nombre" name='name' onChange={handleChange} value={cursedForm.name}/>
+      <TextField className={classes.input} variant="outlined" required id="standard-required" label="Apellido" name='last_name' onChange={handleChange} value={cursedForm.last_name}/>
 			<div className={classes.input}>
-				<TextField className={classes.inputTipoId} variant="outlined" required id="standard-required" label="Tipo ID" />
-				<TextField className={classes.inputDoc} variant="outlined" required id="standard-required" label="ID" />
+				<TextField className={classes.inputTipoId} variant="outlined" required id="standard-required" label="Tipo ID" name='id_ident_type' onChange={handleChange} value={cursedForm.id_ident_type}/>
+				<TextField className={classes.inputDoc} variant="outlined" required id="standard-required" label="ID" name='ident_num' onChange={handleChange} value={cursedForm.ident_num}/>
 			</div>
-      <TextField className={classes.input} variant="outlined" required id="standard-required" label="Telefono" />
-      <TextField className={classes.input} variant="outlined" required id="standard-required" label="Telefono" />
+      <TextField className={classes.input} variant="outlined" required id="standard-required" label="Telefono" name='phone1' onChange={handleChange} value={cursedForm.phone1}/>
+      <TextField className={classes.input} variant="outlined" required id="standard-required" label="Telefono" name='phone2' onChange={handleChange} value={cursedForm.phone2}/>
     </>
   )
 }

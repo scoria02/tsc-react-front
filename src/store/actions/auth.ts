@@ -34,7 +34,7 @@ export const startLogin = (email: any, password: any) => {
 export const refreshLogin= () => {
 	return async (dispatch: any) => {
 			try {
-				const res: any = await useAxios.get(`/auth/log/worker`);
+				const res: any = await useAxios.get(`/worker`);
 				//localStorage.setItem('token', res.data.info.token);
 				dispatch(StartLoading());
 				console.log(res)
