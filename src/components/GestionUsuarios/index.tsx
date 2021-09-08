@@ -17,54 +17,6 @@ import luffy from '../../img/luffy.png';
 
 interface GestionUsuariosProps {}
 
-const useStyles = makeStyles((styles) => ({
-	layout: {
-		padding: '0 1rem',
-	},
-	card: {
-		display: 'flex',
-		alignItems: 'center',
-		padding: '1rem',
-		position: 'relative',
-	},
-	tableTitle: {
-		fontSize: 32,
-		fontWeight: 'bold',
-		padding: '0 8px',
-	},
-	text: {
-		fontSize: 28,
-		padding: '0 8px',
-	},
-	closeBtn: {
-		width: 40,
-		height: 40,
-		position: 'absolute',
-		top: 4,
-		right: 16,
-		padding: 0,
-		minWidth: 'unset',
-		borderRadius: 20,
-	},
-	img: {
-		width: 170,
-		height: 170,
-		'& img': {
-			width: '100%',
-			height: '100%',
-			borderRadius: '50%',
-			objectFit: 'cover',
-		},
-	},
-	form: {
-		padding: '0 1rem',
-	},
-	row: {
-		display: 'flex',
-		justifyContent: 'space-between',
-	},
-}));
-
 const columns: GridColDef[] = [
 	{
 		field: 'id',
@@ -127,6 +79,55 @@ const rows = [
 	{ id: 26, correo: 'Roxie', name: 'Harvey' },
 ];
 
+const useStyles = makeStyles((styles) => ({
+	layout: {
+		padding: '0 1rem',
+	},
+	card: {
+		display: 'flex',
+		alignItems: 'center',
+		padding: '1rem',
+		position: 'relative',
+	},
+	tableTitle: {
+		fontSize: 32,
+		fontWeight: 'bold',
+		padding: '0 8px',
+	},
+	text: {
+		fontSize: 28,
+		padding: '0 8px',
+	},
+	closeBtn: {
+		width: 40,
+		height: 40,
+		position: 'absolute',
+		top: 4,
+		right: 16,
+		padding: 0,
+		minWidth: 'unset',
+		borderRadius: 20,
+	},
+	img: {
+		width: 170,
+		height: 170,
+		'& img': {
+			width: '100%',
+			height: '100%',
+			borderRadius: '50%',
+			objectFit: 'cover',
+		},
+	},
+	form: {
+		padding: '0 1rem',
+	},
+	row: {
+		display: 'flex',
+		justifyContent: 'space-between',
+	},
+	checkbox: {},
+}));
+
 const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	const classes = useStyles();
 	const customToolbar: () => JSX.Element = () => {
@@ -139,8 +140,22 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	};
 
 	const [openUserView, setUserView] = React.useState<boolean>();
-	const [email, setEmail] = React.useState<string>('leomerida15@gmail.com');
-	const [name, setName] = React.useState<string>('Armando');
+	const [email, setEmail] = React.useState<string>('');
+	const [name, setName] = React.useState<string>('');
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	let [roles, setRol] = React.useState<any[]>([]);
+	let [arr_rol_user, setArrRolUser] = React.useState<any[]>([]);
+
+	React.useEffect(() => {
+		try {
+			axios.get('roles/all').then((data: any) => {
+				setRol(data.data.info);
+			});
+		} catch (error) {
+			console.log('error', error);
+		}
+	}, []);
+
 	const handleRow = (event: any) => {
 		setUserView(true);
 		getuserRol(event.row.id);
@@ -148,12 +163,10 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 
 	const handleCloseRow = (event: any) => {
 		setUserView(false);
-		// console.log(event.row);
 	};
 
 	const handleInputChanges: React.ChangeEventHandler<HTMLInputElement> = (e) => {
 		e.preventDefault();
-		console.log('id', e.target.id);
 		switch (e.target.id) {
 			case 'email':
 				setEmail(e.target.value);
@@ -170,46 +183,48 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	const getuserRol = async (id: number) => {
 		try {
 			const resp = await axios.get(`/worker/${id}`);
-			// 	.then((data) => {
-			// 	console.log('data', data);
-			// 	if (data.data.info) {
-			// 		const roles = data.data.info[0].roles;
-			// 		if (roles !== []) arr_rol_user = roles;
-			// 	}
-			// });
+			const resp2 = await axios.get(`/roles/${id}/worker`);
+
+			const data = resp.data.info;
+			const dataRol = resp2.data.info;
+			setArrRolUser(dataRol);
+			setEmail(data.email);
+			setName(data.name);
+
+			arr_rol_user = dataRol;
 		} catch (error) {
 			console.log('error getuserRol', error);
 		}
 	};
 
-	let [roles, setRol] = React.useState([
-		{
-			id: 1,
-			name: 'client',
-			value: false,
-		},
-	]);
-	let arr_rol_user: any[] = [];
+	const updateCB = (array: any[], item: any, value: boolean) => {
+		const index: number = array.findIndex((i: any) => i.name === item);
+		if (index !== -1) {
+			console.log('item', array[index]);
+			array[index].valid = value;
+			console.log('array', array);
+			return array;
+		} else return array.concat([item]);
+	};
 
-	React.useEffect(() => {
-		try {
-			axios.get('roles/all').then((data: any) => {
-				setRol(data.data.info);
+	const handleCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.checked) {
+			console.log('lo prendo');
+			setArrRolUser((prev) => {
+				console.log('prev', prev);
+				return updateCB(prev, event.target.name, event.target.checked);
 			});
-		} catch (error) {
-			console.log('error', error);
+			console.log('arr_rol_user', arr_rol_user);
+
+			// const newPermit = roles.filter((rol) => {
+			// 	return rol.name === event.target.name;
+			// });
+			// arr_rol_user.push(newPermit[0]);
+		} else {
+			console.log('lo apago');
+			// const indexItem = arr_rol_user.findIndex((element) => element.name === event.target.name);
+			// arr_rol_user.splice(indexItem, 1);
 		}
-	}, []);
-
-	const handleCheckbox = (id: number) => {
-		if (!arr_rol_user.includes(id)) arr_rol_user.push(id);
-		else arr_rol_user = arr_rol_user.filter((a: number) => a !== id);
-
-		roles = roles.map((rol: any): any => {
-			if (arr_rol_user.includes(rol.id)) rol.value = true;
-			else rol.value = false;
-			return rol;
-		});
 	};
 	return (
 		<>
@@ -263,25 +278,25 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 									</div>
 									<div className={classes.row}>
 										<FormGroup>
-											{roles.map((rol, i) => {
-												return (
-													<>
-														<FormControlLabel
-															key={i}
-															label={rol.name}
-															control={
-																<Checkbox
-																	key={i}
-																	checked={rol.value}
-																	onChange={() => handleCheckbox(rol.id)}
-																	name={rol.name}
-																	inputProps={{ 'aria-label': 'primary checkbox' }}
-																/>
-															}
-														/>
-													</>
-												);
-											})}
+											<Grid container>
+												{arr_rol_user.map((rol, i) => {
+													return (
+														<Grid item xs={3} key={i}>
+															<FormControlLabel
+																label={rol.name}
+																control={
+																	<Checkbox
+																		checked={rol.valid}
+																		onChange={handleCheckbox}
+																		name={rol.name}
+																		inputProps={{ 'aria-label': 'primary checkbox' }}
+																	/>
+																}
+															/>
+														</Grid>
+													);
+												})}
+											</Grid>
 										</FormGroup>
 									</div>
 								</form>
