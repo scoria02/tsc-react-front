@@ -13,16 +13,17 @@ export const startLogin = (email: any, password: any) => {
 				email,
 				password,
 			});
+			localStorage.setItem('token', res.data.token);
 			Swal.fire('Success', res.data.message, 'success');
 			dispatch(StartLoading());
-			dispatch(requestSuccess(res.data.info));
+			dispatch(requestSuccess(res.data.info.data));
 		} catch (error: any) {
 			console.log('error', error);
 			Swal.fire('Error', error.message, 'error');
 		}
 	};
 	function requestSuccess(state: any) {
-		console.log('state', state);
+		// console.log('state', state);
 
 		return {
 			type: ActionType.login,
@@ -34,13 +35,12 @@ export const startLogin = (email: any, password: any) => {
 export const refreshLogin = () => {
 	return async (dispatch: any) => {
 		try {
-			const res: any = console.clear();
+			const res = await useAxios.get('/worker');
 			console.log('res', res);
 
-			//localStorage.setItem('token', res.data.info.token);
-			// dispatch(StartLoading());
-			// console.log(res);
-			// dispatch(requestSuccess(res.data.info));
+			localStorage.setItem('token', res.data.token);
+			dispatch(StartLoading());
+			dispatch(requestSuccess(res.data.info));
 		} catch (error: any) {
 			console.log('error', error);
 
@@ -49,7 +49,7 @@ export const refreshLogin = () => {
 	};
 	function requestSuccess(state: any) {
 		return {
-			type: ActionType.login,
+			type: ActionType.refreshUser,
 			payload: state,
 		};
 	}

@@ -11,20 +11,18 @@ const Port = '5051';
 const configAxios: AxiosRequestConfig = {
 	baseURL: `${URL}:${Port}`,
 	headers: { common: { token: localStorage.getItem('token') } },
-	transformResponse: (data: any) => {
-		const data_json = JSON.parse(data);
+	// transformResponse: (data: any) => {
+	// 	const data_json = JSON.parse(data);
 
-		console.log('data_json', data_json);
+	// 	console.log('data_json', data_json);
 
-		debugger;
+	// 	if (data_json.token) {
+	// 		if (localStorage.getItem('token') === null) localStorage.removeItem('token');
+	// 		localStorage.setItem('token', data_json.token);
+	// 	}
 
-		if (data_json.token) {
-			if (localStorage.getItem('token') === null) localStorage.removeItem('token');
-			localStorage.setItem('token', data_json.token);
-		}
-
-		return data_json;
-	},
+	// 	return data_json;
+	// },
 };
 Axios.defaults.headers['Content-Type'] = 'application/json';
 
