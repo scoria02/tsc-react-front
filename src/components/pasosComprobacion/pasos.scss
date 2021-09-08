@@ -2,6 +2,20 @@
 	height: 6ch !important;
 }
 
+.btn_corto {
+	width: 10ch !important;
+}
+
+.btn_medio {
+	width: 40ch !important;
+}
+
 .btn_largo {
 	width: 52ch !important;
+}
+
+.img_container {
+	display: flex;
+	justify-content: center;
+	// padding: 3px;
 }

@@ -10,13 +10,17 @@
 	height: 84vh;
 	display: grid;
 	grid-column-gap: 0;
-	grid-template-columns: 1fr 1.5fr;
+	grid-template-columns: 1fr 1fr;
 }
 
 .img_container {
 	display: flex;
 	justify-content: center;
-	padding: 3px;
+	// padding: 3px;
+}
+
+.prueba {
+	text-decoration: none;
 }
 
 .img_tamano {

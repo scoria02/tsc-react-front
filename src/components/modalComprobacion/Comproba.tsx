@@ -11,11 +11,20 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import PasoUno from '../pasosComprobacion/PasoUno';
-
 import PasoUnoUser from '../pasosComprobacion/PasoUnoUser';
 import PasoDos from '../pasosComprobacion/PasoDos';
+import PasoDosDos from '../pasosComprobacion/PasoDosDos';
+import PasoTres from '../pasosComprobacion/PasoTres';
+import PasoTresDos from '../pasosComprobacion/PasoTresDos';
+import PasoCuatro from '../pasosComprobacion/PasoCuatro';
+import PasoCuaTroDos from '../pasosComprobacion/PasoCuatroDos';
+import PasoCinco from '../pasosComprobacion/PasoCinco';
+import PasoCincoDos from '../pasosComprobacion/PasoCincoDos';
+import PasoSiete from '../pasosComprobacion/PasoSiete';
+import PasoSieteDos from '../pasosComprobacion/PasoSieteDos';
+
 import './comprobar.scss';
-import luffy from '../../img/itachi2.png';
+import { stepComplete } from '../../store/actions/accept';
 
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & { children?: React.ReactElement },
@@ -46,7 +55,15 @@ const useStyles2 = makeStyles((theme: Theme) =>
 );
 
 function getSteps() {
-	return ['Informacion', 'Validacion (Cedula / Rif)', 'Create an ad'];
+	return [
+		'Informacion',
+		'Validacion (Cedula / Rif)',
+		'Validacion (Cuenta / Referencia )',
+		'Validacion (Acta Constitutiva / Doc. Propiedad)',
+		'Validacion (Referencia Personal / Servicios)',
+		'Validacion Contribuyen Especial',
+		'Foto de Local',
+	];
 }
 
 function getStepContent(step: number) {
@@ -68,22 +85,84 @@ function getStepContent(step: number) {
 			return (
 				<div className='comprobar_container_2'>
 					<div>
-						<h1 className='titulo'>Informacion </h1>
+						{/* <h1 className='titulo'>Informacion </h1> */}
 						<PasoDos />
 					</div>
 					<div>
-						<h1 className='titulo'>Recaudo</h1>
-						<div className='img_container'>
-							<img className='img_tamano' src={luffy} alt='Cedula' />
-						</div>
-						<div className='img_container'>
-							<img className='img_tamano' src={luffy} alt='Cedula' />
-						</div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoDosDos />
 					</div>
 				</div>
 			);
 		case 2:
-			return 'Step 3: This is the bit I really care about!';
+			return (
+				<div className='comprobar_container_2'>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoTres />
+					</div>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoTresDos />
+					</div>
+				</div>
+			);
+		case 3:
+			return (
+				<div className='comprobar_container_2'>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoCuatro />
+					</div>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoCuaTroDos />
+					</div>
+				</div>
+			);
+		case 4:
+			return (
+				<div className='comprobar_container_2'>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoCinco />
+					</div>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoCincoDos />
+					</div>
+				</div>
+			);
+		case 5:
+			return (
+				<div className='comprobar_container_2'>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+
+						<PasoCinco />
+						{/* Colocar condicion para que si no hay nada en contribuyente notifique */}
+					</div>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1>
+						<PasoCincoDos /> */}
+						{/* Uso Futuro */}
+					</div>
+				</div>
+			);
+		case 6:
+			return (
+				<div className='comprobar_container_2'>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoSiete />
+					</div>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoSieteDos />
+					</div>
+				</div>
+			);
+
 		default:
 			return 'Unknown step';
 	}
@@ -157,6 +236,8 @@ export default function Comproba() {
 	const handleComplete = async () => {
 		const newCompleted = new Set(completed);
 		newCompleted.add(activeStep);
+		dispatch(stepComplete(newCompleted));
+		console.log(newCompleted);
 		setCompleted(newCompleted);
 
 		/**

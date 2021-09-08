@@ -35,7 +35,9 @@ import { FinishLoading } from '../store/actions/ui';
 
 //Redux
 import { useSelector } from 'react-redux';
-import { RootState }  from '../store/store';
+import { RootState } from '../store/store';
+import { Link, Route, useHistory } from 'react-router-dom';
+import { urlAceptacion } from '../routers/url';
 
 const drawerWidth = 240;
 
@@ -135,7 +137,6 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-
 export default function Home() {
 	const dispatch = useDispatch();
 	const classes = useStyles();
@@ -143,6 +144,7 @@ export default function Home() {
 	const [open, setOpen] = React.useState(false);
 	const [open2] = React.useState(true);
 	const [selectedIndex, setSelectedIndex] = React.useState(0);
+	const history = useHistory();
 
 	const userDB: any = useSelector((state: RootState) => state.auth.user);
 	const [user, setUser] = React.useState({
@@ -151,10 +153,10 @@ export default function Home() {
 	});
 
 	useEffect(() => {
-		if(userDB){
+		if (userDB) {
 			setUser(userDB);
 		}
-	}, [userDB])
+	}, [userDB]);
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
@@ -168,6 +170,9 @@ export default function Home() {
 	};
 
 	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
+		if (index === 3) {
+			history.push(urlAceptacion);
+		}
 		setSelectedIndex(index);
 		console.log(index);
 	};
@@ -359,10 +364,13 @@ export default function Home() {
 							<ListItemText primary='Prueba' />
 						</ListItem>
 					)}
+
 					<ListItem button onClick={(event) => handleListItemClick(event, 3)}>
-						<ListItemIcon>
-							<InboxIcon />
-						</ListItemIcon>
+						<Link to={'Aceptacion'}>
+							<ListItemIcon>
+								<InboxIcon />
+							</ListItemIcon>
+						</Link>
 						<ListItemText primary='Aceptacion' />
 					</ListItem>
 					<ListItem button onClick={(event) => handleListItemClick(event, 5)}>
@@ -417,9 +425,18 @@ export default function Home() {
 						sapien faucibus et molestie ac.
 					</Typography>
 				)}
-				{selectedIndex === 3 && <Aceptacion />}
+				{/* {selectedIndex === 3 && <Aceptacion />} */}
+				{selectedIndex === 3 && (
+					<Route
+						path={urlAceptacion}
+						render={() => {
+							return <Aceptacion />;
+						}}
+					/>
+				)}
+
 				{selectedIndex === 4 && <GestionUsuarios />}
-				{selectedIndex === 5 && <FormMaldito/>}
+				{selectedIndex === 5 && <FormMaldito />}
 			</main>
 		</div>
 	);

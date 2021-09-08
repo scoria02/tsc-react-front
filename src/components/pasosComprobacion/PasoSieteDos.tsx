@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 // @ts-expect-error
@@ -8,8 +8,6 @@ import Switch from '@material-ui/core/Switch';
 
 import luffy from '../../img/itachi2.png';
 import './pasos.scss';
-import { useDispatch } from 'react-redux';
-import { Valid } from '../../store/actions/accept';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -23,16 +21,11 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-export default function PasoDos() {
-	const dispatch = useDispatch();
+export default function PasoSieteDos() {
 	const classes = useStyles();
 	const [state, setState] = React.useState({
-		cedula: false,
+		checkedA: false,
 	});
-
-	useEffect(() => {
-		dispatch(Valid(state));
-	}, [setState, dispatch, state]);
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setState({ ...state, [event.target.name]: event.target.checked });
@@ -43,10 +36,16 @@ export default function PasoDos() {
 	return (
 		<>
 			<form className={classes.root} noValidate autoComplete='off'>
-				<TextField className='btn_step btn_corto' id='outlined-basic ' label='Tipo ID' variant='outlined' />
-				<TextField className='btn_step' id='outlined-basic' label='Numero ID' variant='outlined' />
+				<TextField
+					className='btn_step btn_medio'
+					id='outlined-basic '
+					label='Dendro del Local'
+					variant='outlined'
+					value='Foto de Dendro del Local'
+					disabled
+				/>
 				<FormControlLabel
-					control={<Switch checked={state.cedula} onChange={handleChange} name='cedula' color='primary' />}
+					control={<Switch checked={state.checkedA} onChange={handleChange} name='checkedA' color='primary' />}
 					label='Correcto'
 				/>
 			</form>

@@ -8,11 +8,14 @@ import { ActionType } from '../types/types';
 export const startLogin = (email: any, password: any) => {
 	return async (dispatch: any) => {
 		try {
-			const res: AxiosResponse<{ message: string; info: any }> = await useAxios.post(`/auth/login`, {
-				email,
-				password,
-			});
-			localStorage.setItem('token', res.data.info.token);
+			const res: AxiosResponse<{ message: string; info: any; token: string }> = await useAxios.post(
+				`/auth/login`,
+				{
+					email,
+					password,
+				}
+			);
+			localStorage.setItem('token', res.data.token);
 			Swal.fire('Success', res.data.message, 'success');
 			dispatch(StartLoading());
 			dispatch(requestSuccess(res.data.info));
@@ -32,8 +35,8 @@ export const startLogin = (email: any, password: any) => {
 export const refreshLogin = () => {
 	return async (dispatch: any) => {
 		try {
-			const res: any = await useAxios.get(`/auth/log/worker`);
-			//localStorage.setItem('token', res.data.info.token);
+			const res: any = await useAxios.get(`/worker`);
+			localStorage.setItem('token', res.data.token);
 			dispatch(StartLoading());
 			console.log(res);
 			dispatch(requestSuccess(res.data.info));
