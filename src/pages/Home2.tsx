@@ -17,6 +17,7 @@ import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -375,9 +376,9 @@ export default function Home() {
 					</ListItem>
 					<ListItem button onClick={(event) => handleListItemClick(event, 5)}>
 						<ListItemIcon>
-							<InboxIcon />
+							<AssignmentIcon />
 						</ListItemIcon>
-						<ListItemText primary='Formulario M***' />
+						<ListItemText primary='Formulario de Act.' />
 					</ListItem>
 				</List>
 				<Divider />
