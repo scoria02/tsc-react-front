@@ -144,7 +144,6 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	const handleRow = (event: any) => {
 		setUserView(true);
 		getuserRol(event.row.id);
-		console.log(event.row);
 	};
 
 	const handleCloseRow = (event: any) => {
@@ -165,14 +164,22 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 			default:
 				break;
 		}
-		// setEmail(e.target.value);
 		//console.log(e.target.value);
 	};
 
 	const getuserRol = async (id: number) => {
-		const resp = await axios.get(`/worker/${id}`).then((data) => {
-			console.log('data', data.data.info[0]);
-		});
+		try {
+			const resp = await axios.get(`/worker/${id}`);
+			// 	.then((data) => {
+			// 	console.log('data', data);
+			// 	if (data.data.info) {
+			// 		const roles = data.data.info[0].roles;
+			// 		if (roles !== []) arr_rol_user = roles;
+			// 	}
+			// });
+		} catch (error) {
+			console.log('error getuserRol', error);
+		}
 	};
 
 	let [roles, setRol] = React.useState([
@@ -215,8 +222,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 							}}
 							rows={rows}
 							columns={columns}
-							// pageSize={}
-							rowsPerPageOptions={[25]}
+							rowsPerPageOptions={[25, 100]}
 							onCellClick={handleRow}
 						/>
 					</div>
@@ -242,8 +248,10 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 											value={email}
 											onChange={handleInputChanges}
 											style={{ marginRight: 8 }}
+											key={0}
 										/>
 										<TextField
+											key={1}
 											id='name'
 											name='name'
 											label='Nombre'
@@ -260,6 +268,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 													<>
 														<FormControlLabel
 															key={i}
+															label={rol.name}
 															control={
 																<Checkbox
 																	key={i}
@@ -269,7 +278,6 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 																	inputProps={{ 'aria-label': 'primary checkbox' }}
 																/>
 															}
-															label={rol.name}
 														/>
 													</>
 												);
