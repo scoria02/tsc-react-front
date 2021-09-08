@@ -1,22 +1,20 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 // import CardActionArea from '@material-ui/core/CardActionArea';
 // import { useForm, SubmitHandler } from 'react-hook-form';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-
-import './index.scss';
+import Typography from '@material-ui/core/Typography';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import luffy from '../../../img/itachi2.png';
 import { startLogin } from '../../../store/actions/auth';
 // import { useForm } from '../../../hooks/useForm';
 import { useStylesModalUser } from '../styles';
+import './index.scss';
 
 const useStylesButton = makeStyles((theme: Theme) =>
 	createStyles({
@@ -44,8 +42,8 @@ const Login: React.FC = () => {
 	// 	password: '',
 	// });
 
-	const [email, setEmail] = useState<string>('leomerida15@gmail.com');
-	const [password, setPass] = useState<string>('Test123.');
+	const [email, setEmail] = useState<string>('');
+	const [password, setPass] = useState<string>('');
 
 	// const { email, password }: any = formValues;
 
