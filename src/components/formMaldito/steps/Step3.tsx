@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 import { useStylesFM } from '../styles';
 
-export const Step3: React.FC<any> = ({cursedForm, setCursedForm, handleChange}) => {
+export const Step3: React.FC<any> = ({cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages}) => {
 	const classes = useStylesFM();
 
   return (
@@ -25,7 +25,6 @@ export const Step3: React.FC<any> = ({cursedForm, setCursedForm, handleChange}) 
 			</div>
 			<div className={classes.input}>
 			<TextField className={classes.inputM} variant="outlined" required id="standard-required" label="Local" name='local' onChange={handleChange} value={cursedForm.local} />
-			<TextField className={classes.inputN} variant="outlined" required id="standard-required" label="Codigo Postal" name='codigo_postal' onChange={handleChange} value={cursedForm.codigo_postal} />
 			</div>
 				<div className={classes.input}>
 				<div className={classes.input}>
@@ -39,13 +38,28 @@ export const Step3: React.FC<any> = ({cursedForm, setCursedForm, handleChange}) 
 						//color="secondary"
 						component="label"
 					>
-					<IconButton aria-label="upload picture" component="span">
-						<PhotoCamera />
-					</IconButton>
-					<input
-						type="file"
-						hidden
-					/>
+						{imagesForm.rc_front_local.name  !== '' ?
+								<>
+									<IconButton aria-label="upload picture" component="span">
+										<PhotoCamera />
+									</IconButton>
+									<p className="nameImg" >{imagesForm.rc_front_local.name.slice(0, 5)}...</p>
+								</>
+							: 
+								<>
+									<b>Subir</b>
+									<IconButton aria-label="upload picture" component="span">
+										<PhotoCamera />
+									</IconButton>
+								</>
+						}
+						<input
+							type="file"
+							hidden
+							name="rc_front_local"
+							accept="image/png, image/jpeg"
+							onChange={handleChangeImages}
+						/>
 					</Button>
 				</div>
 				<div className={classes.input}>
@@ -59,13 +73,28 @@ export const Step3: React.FC<any> = ({cursedForm, setCursedForm, handleChange}) 
 						//color="secondary"
 						component="label"
 					>
-					<IconButton aria-label="upload picture" component="span">
-						<PhotoCamera />
-					</IconButton>
-					<input
-						type="file"
-						hidden
-					/>
+						{imagesForm.rc_in_local.name  !== '' ?
+								<>
+									<IconButton aria-label="upload picture" component="span">
+										<PhotoCamera />
+									</IconButton>
+									<p className="nameImg" >{imagesForm.rc_in_local.name.slice(0, 5)}...</p>
+								</>
+							: 
+								<>
+									<b>Subir</b>
+									<IconButton aria-label="upload picture" component="span">
+										<PhotoCamera />
+									</IconButton>
+								</>
+						}
+						<input
+							type="file"
+							hidden
+							name="rc_in_local"
+							accept="image/png, image/jpeg"
+							onChange={handleChangeImages}
+						/>
 					</Button>
 				</div>
 			</div>

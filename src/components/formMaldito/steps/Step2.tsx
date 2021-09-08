@@ -8,10 +8,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import IconButton from '@material-ui/core/IconButton';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import { useStylesFM } from '../styles';
 
-export const Step2: React.FC<any> = ({cursedForm, setCursedForm, handleChange}) => {
+export const Step2: React.FC<any> = ({cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages}) => {
 	const classes = useStylesFM();
 
 	const handleSelect = (event: any) => {
@@ -51,29 +52,51 @@ export const Step2: React.FC<any> = ({cursedForm, setCursedForm, handleChange}) 
 				//color="secondary"
 				component="label"
 			>
-			<IconButton aria-label="upload picture" component="span">
-				<PhotoCamera />
-			</IconButton>
-			<input
-				type="file"
-				hidden
-			/>
+				{imagesForm.rc_rif.name !== '' ? (
+					<p className="nameImg" >{imagesForm.rc_rif.name.slice(0, 10)}...</p>
+				):(
+					<>
+						<b>Subir</b>
+						<IconButton aria-label="upload picture" component="span">
+							<PhotoCamera />
+						</IconButton>
+					</>
+					)
+				}
+				<input
+					type="file"
+					hidden
+					name="rc_rif"
+					accept="image/png, image/jpeg"
+					onChange={handleChangeImages}
+				/>
 			</Button>
 			</div>
 			<div className={classes.input}>
 				<TextField className={classes.inputA} variant="outlined" required id="standard-required" label="Numero de Cuenta" name='text_account_number' onChange={handleChange} value={cursedForm.text_account_number} />
 				<Button
-					className={classes.imgNroAccount}
+					className={classes.imgIdent}
 					variant="contained"
 					//color="secondary"
 					component="label"
 				>
-				<IconButton aria-label="upload picture" component="span">
-					<PhotoCamera />
-				</IconButton>
+				{imagesForm.rc_account_number.name !== '' ? (
+					<p className="nameImg" >{imagesForm.rc_account_number.name.slice(0, 10)}...</p>
+				):(
+					<>
+						<b>Subir</b>
+						<IconButton aria-label="upload picture" component="span">
+							<PhotoCamera />
+						</IconButton>
+					</>
+					)
+				}
 				<input
 					type="file"
 					hidden
+					name="rc_account_number"
+					accept="image/png, image/jpeg"
+					onChange={handleChangeImages}
 				/>
 				</Button>
 			</div>
@@ -89,37 +112,77 @@ export const Step2: React.FC<any> = ({cursedForm, setCursedForm, handleChange}) 
 					//color="secondary"
 					component="label"
 				>
-					Subir Foto
+					{imagesForm.rc_ref_bank.name  !== '' ?
+							<>
+								<IconButton aria-label="upload picture" component="span">
+									<PhotoCamera />
+								</IconButton>
+								<p className="nameImg" >{imagesForm.rc_ref_bank.name.slice(0, 10)}...</p>
+							</>
+						: 
+							<>
+								<b>Subir</b>
+								<IconButton aria-label="upload picture" component="span">
+									<PhotoCamera />
+								</IconButton>
+							</>
+					}
 					<input
 						type="file"
 						hidden
+						name="rc_ref_bank"
+						accept="image/png, image/jpeg"
+						onChange={handleChangeImages}
 					/>
 				</Button>
 			</div>
 			<div className={classes.input}>
-				<b style={{ fontSize: '1rem', paddingTop: '10px' }}>Contribuye Especial</b>
-				<Checkbox
-					name="contributor"
-					checked={cursedForm.contributor}
-					onChange={handleChecked}
-					color="primary"
-					inputProps={{ 'aria-label': 'secondary checkbox' }}
+				<FormControlLabel 
+					label=''
+					control={
+						<>
+							<b style={{ fontSize: '1rem', paddingTop: '10px', marginTop: 0 }}>Contribuye Especial</b>
+							<Checkbox
+								name="contributor"
+								checked={cursedForm.contributor}
+								onChange={handleChecked}
+								color="primary"
+								inputProps={{ 'aria-label': 'secondary checkbox' }}
+							/>
+						</>
+					}
 				/>
-				{cursedForm.contributor ? 
-					<Button
-						className={classes.imgContributor}
-						variant="contained"
-						//color="secondary"
-						component="label"
-					>
-						Subir Foto
-						<input
-							type="file"
-							hidden
-						/>
-					</Button>
-					: null
-				}
+				<Button
+					className={classes.imgContributor}
+					style={{ visibility: cursedForm.contributor ? 'visible' : 'hidden'}}
+					variant="contained"
+					//color="secondary"
+					component="label"
+				>
+					{imagesForm.rc_special_contributor.name !== '' ? (
+						<>
+							<IconButton aria-label="upload picture" component="span">
+								<PhotoCamera />
+							</IconButton>
+							<p className="nameImg" >{imagesForm.rc_special_contributor.name.slice(0, 10)}...</p>
+						</>
+					):(
+						<>
+							<b>Subir</b>
+							<IconButton aria-label="upload picture" component="span">
+								<PhotoCamera />
+							</IconButton>
+						</>
+						)
+					}
+					<input
+						type="file"
+						hidden
+						name="rc_special_contributor"
+						accept="image/png, image/jpeg"
+						onChange={handleChangeImages}
+					/>
+				</Button>
 			</div>
     </>
   )

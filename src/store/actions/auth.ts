@@ -15,14 +15,11 @@ export const startLogin = (email: any, password: any) => {
 			Swal.fire('Success', res.data.message, 'success');
 			dispatch(StartLoading());
 			dispatch(requestSuccess(res.data.info.data));
-		} catch (error: any) {
-			console.log('error', error);
-			Swal.fire('Error', error.message, 'error');
+		} catch (error ) {
+			Swal.fire('Error', error.response.data.message, 'error');
 		}
 	};
 	function requestSuccess(state: any) {
-		// console.log('state', state);
-
 		return {
 			type: ActionType.login,
 			payload: state,
@@ -99,7 +96,6 @@ export const validationEmail = (email: string) => {
 };
 
 export const validationIdentDoc = (identDoc: any) => {
-	// console.log(identDoc);
 	return async (dispatch: any) => {
 		try {
 			await useAxios.post('/auth/register/valid/2', identDoc);

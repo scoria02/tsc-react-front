@@ -63,9 +63,9 @@ const Register: React.FC = () => {
 		last_name: '',
 		id_ident_type: 1,
 		ident_num: '',
-		phone: '',
+		phone: '+58',
 		company: '',
-		id_depart: 1,
+		id_department: 1,
 	});
 
 	//State Errors

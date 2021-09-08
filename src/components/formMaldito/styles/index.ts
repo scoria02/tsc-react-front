@@ -1,10 +1,19 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const useStylesFM = makeStyles((styles) => ({
-  button: {
+  buttonNext: {
 		marginTop: styles.spacing(5),
 		position: 'absolute',
-		bottom: 0,
+		bottom: '2rem',
+		left: '60%',
+    marginRight: styles.spacing(1),
+    textTransform: 'none',
+  },
+  buttonBack: {
+		marginTop: styles.spacing(5),
+		position: 'absolute',
+		bottom: '2rem',
+		left: '40%',
     marginRight: styles.spacing(1),
     textTransform: 'none',
   },
@@ -63,6 +72,7 @@ export const useStylesFM = makeStyles((styles) => ({
 	},
 	imgIdent: {
 		marginLeft: styles.spacing(1),
+		marginTop: styles.spacing(0.2),
 		marginBottom: styles.spacing(0.2),
 		padding: 0,
     textTransform: 'none',
@@ -76,16 +86,17 @@ export const useStylesFM = makeStyles((styles) => ({
 		marginLeft: styles.spacing(1),
 	},
 	imgContributor: {
-		marginBottom: styles.spacing(0.2),
     textTransform: 'none',
-    width: '25%',
+    width: '35%',
+		marginTop: styles.spacing(1),
+		marginBottom: styles.spacing(1),
 		marginLeft: styles.spacing(1),
 	},
 	imgStep1: {
 		marginTop: styles.spacing(1),
-		marginBottom: styles.spacing(1),
+		marginBottom: styles.spacing(1.5),
     textTransform: 'none',
-    width: '30%',
+    width: '50%',
 		marginLeft: styles.spacing(0),
 	},
 	imgStep3: {

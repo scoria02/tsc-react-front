@@ -40,7 +40,6 @@ export const authReducer = (state = initialState, action: any) => {
 		//Validation Email
 		case ActionType.registerEmail:
 			state.error = deleteError(state.error, 'email');
-			console.log(state.error);
 			return {
 				...state,
 			};
@@ -52,7 +51,6 @@ export const authReducer = (state = initialState, action: any) => {
 		//Validation IdentDoc
 		case ActionType.registerDocIdent:
 			state.error = deleteError(state.error, 'ident');
-			console.log(state.error);
 			return {
 				...state,
 			};
