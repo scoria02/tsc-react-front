@@ -34,8 +34,6 @@ export const refreshLogin = () => {
 	return async (dispatch: any) => {
 		try {
 			const res = await useAxios.get('/worker');
-			console.log('res', res);
-
 			localStorage.setItem('token', res.data.token);
 			dispatch(StartLoading());
 			dispatch(requestSuccess(res.data.info));
