@@ -15,9 +15,9 @@ import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/sty
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -27,18 +27,16 @@ import PeopleIcon from '@material-ui/icons/People';
 import SettingsIcon from '@material-ui/icons/Settings';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Route, useHistory } from 'react-router-dom';
+import { FormMaldito } from '../components/formMaldito';
 import GestionUsuarios from '../components/GestionUsuarios';
 import { Aceptacion } from '../components/milpagos/Aceptacion';
-import { FormMaldito } from '../components/formMaldito';
 import luffy from '../img/itachi2.png';
-import { FinishLoading } from '../store/actions/ui';
-
-//Redux
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
-import { Link, Route, useHistory } from 'react-router-dom';
 import { urlAceptacion } from '../routers/url';
+import { FinishLoading } from '../store/actions/ui';
+//Redux
+import { RootState } from '../store/store';
 
 const drawerWidth = 240;
 
@@ -167,6 +165,7 @@ export default function Home() {
 		setOpen(false);
 	};
 	const handleMenuLogout = () => {
+		localStorage.removeItem('token');
 		dispatch(FinishLoading());
 	};
 
@@ -175,7 +174,6 @@ export default function Home() {
 			history.push(urlAceptacion);
 		}
 		setSelectedIndex(index);
-		console.log(index);
 	};
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
