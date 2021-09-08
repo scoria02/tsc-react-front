@@ -4,6 +4,10 @@ import useAxios from '../../config';
 import { ActionType } from '../types/types';
 import { StartLoading } from './ui';
 
+export const updateToken = (token: any) => {
+	localStorage.setItem('token', token.data.token);
+};
+
 export const startLogin = (email: any, password: any) => {
 	return async (dispatch: any) => {
 		try {
@@ -34,7 +38,7 @@ export const refreshLogin = () => {
 	return async (dispatch: any) => {
 		try {
 			const res = await useAxios.get('/worker');
-			localStorage.setItem('token', res.data.token);
+			updateToken(res);
 			dispatch(StartLoading());
 			dispatch(requestSuccess(res.data.info));
 		} catch (error: any) {
