@@ -16,13 +16,11 @@ const initialState: inState = {
 export const authReducer = (state = initialState, action: any) => {
 	switch (action.type) {
 		case ActionType.login:
-			console.log('login', action.payload);
 			return {
 				...state,
 				user: action.payload,
 			};
 		case ActionType.refreshUser:
-			console.log('refresh', action.payload);
 			return {
 				...state,
 				user: action.payload,
