@@ -44,8 +44,8 @@ const Login: React.FC = () => {
 	// 	password: '',
 	// });
 
-	const [email, setEmail] = useState<string>('twelve@correo.com');
-	const [password, setPass] = useState<string>('123456jH*');
+	const [email, setEmail] = useState<string>('leomerida15@gmail.com');
+	const [password, setPass] = useState<string>('Test123.');
 
 	// const { email, password }: any = formValues;
 
@@ -108,11 +108,15 @@ const Login: React.FC = () => {
 									Entrar
 								</Button>
 								<div className='ed-grid s-grid-2'>
-									<Button size='small' color='primary' variant='contained' onClick={() => history.push('/auth/register')}>
+									<Button
+										size='small'
+										color='primary'
+										variant='contained'
+										onClick={() => history.push('/auth/register')}>
 										<div className='ed-container'>
 											<div className='s-to-center'>Registrarte</div>
 										</div>
-									</Button> 
+									</Button>
 								</div>
 							</form>
 						</div>

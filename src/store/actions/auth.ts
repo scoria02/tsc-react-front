@@ -4,8 +4,6 @@ import useAxios from '../../config';
 import { ActionType } from '../types/types';
 import { StartLoading } from './ui';
 
-//import { showAlertAction, hiddenAlertAction } from './alert';
-
 export const startLogin = (email: any, password: any) => {
 	return async (dispatch: any) => {
 		try {
