@@ -21,8 +21,7 @@ export const AppRouter = () => {
 		dispatch(FinishLoading());
 		// setIsLoggedIn(false);
 		let token = localStorage.getItem('token');
-		if(token)
-			dispatch(refreshLogin());
+		if (token) dispatch(refreshLogin());
 		setChecking(false);
 	}, [dispatch]);
 

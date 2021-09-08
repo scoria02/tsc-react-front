@@ -28,11 +28,14 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, Route, useHistory } from 'react-router-dom';
 import { FormMaldito } from '../components/formMaldito';
 import GestionUsuarios from '../components/GestionUsuarios';
 import { Aceptacion } from '../components/milpagos/Aceptacion';
 import luffy from '../img/itachi2.png';
+import { urlAceptacion } from '../routers/url';
 import { FinishLoading } from '../store/actions/ui';
+//Redux
 import { RootState } from '../store/store';
 
 const drawerWidth = 240;
@@ -140,6 +143,7 @@ export default function Home() {
 	const [open, setOpen] = React.useState(false);
 	const [open2] = React.useState(true);
 	const [selectedIndex, setSelectedIndex] = React.useState(0);
+	const history = useHistory();
 
 	const userDB: any = useSelector((state: RootState) => state.auth.user);
 	const [user, setUser] = React.useState({
@@ -166,6 +170,9 @@ export default function Home() {
 	};
 
 	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
+		if (index === 3) {
+			history.push(urlAceptacion);
+		}
 		setSelectedIndex(index);
 	};
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -356,10 +363,13 @@ export default function Home() {
 							<ListItemText primary='Prueba' />
 						</ListItem>
 					)}
+
 					<ListItem button onClick={(event) => handleListItemClick(event, 3)}>
-						<ListItemIcon>
-							<InboxIcon />
-						</ListItemIcon>
+						<Link to={'Aceptacion'}>
+							<ListItemIcon>
+								<InboxIcon />
+							</ListItemIcon>
+						</Link>
 						<ListItemText primary='Aceptacion' />
 					</ListItem>
 					<ListItem button onClick={(event) => handleListItemClick(event, 5)}>
@@ -414,7 +424,16 @@ export default function Home() {
 						sapien faucibus et molestie ac.
 					</Typography>
 				)}
-				{selectedIndex === 3 && <Aceptacion />}
+				{/* {selectedIndex === 3 && <Aceptacion />} */}
+				{selectedIndex === 3 && (
+					<Route
+						path={urlAceptacion}
+						render={() => {
+							return <Aceptacion />;
+						}}
+					/>
+				)}
+
 				{selectedIndex === 4 && <GestionUsuarios />}
 				{selectedIndex === 5 && <FormMaldito />}
 			</main>

@@ -11,9 +11,20 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import PasoUno from '../pasosComprobacion/PasoUno';
+import PasoUnoUser from '../pasosComprobacion/PasoUnoUser';
+import PasoDos from '../pasosComprobacion/PasoDos';
+import PasoDosDos from '../pasosComprobacion/PasoDosDos';
+import PasoTres from '../pasosComprobacion/PasoTres';
+import PasoTresDos from '../pasosComprobacion/PasoTresDos';
+import PasoCuatro from '../pasosComprobacion/PasoCuatro';
+import PasoCuaTroDos from '../pasosComprobacion/PasoCuatroDos';
+import PasoCinco from '../pasosComprobacion/PasoCinco';
+import PasoCincoDos from '../pasosComprobacion/PasoCincoDos';
+import PasoSiete from '../pasosComprobacion/PasoSiete';
+import PasoSieteDos from '../pasosComprobacion/PasoSieteDos';
 
 import './comprobar.scss';
-import PasoUnoUser from '../pasosComprobacion/PasoUnoUser';
+import { stepComplete } from '../../store/actions/accept';
 
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & { children?: React.ReactElement },
@@ -44,7 +55,15 @@ const useStyles2 = makeStyles((theme: Theme) =>
 );
 
 function getSteps() {
-	return ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+	return [
+		'Informacion',
+		'Validacion (Cedula / Rif)',
+		'Validacion (Cuenta / Referencia )',
+		'Validacion (Acta Constitutiva / Doc. Propiedad)',
+		'Validacion (Referencia Personal / Servicios)',
+		'Validacion Contribuyen Especial',
+		'Foto de Local',
+	];
 }
 
 function getStepContent(step: number) {
@@ -54,45 +73,96 @@ function getStepContent(step: number) {
 				<div className='comprobar_container'>
 					<div>
 						<h1 className='titulo'>Informacion de Comercio </h1>
-
 						<PasoUno />
-						{/* <input type='text' value='S-675832475289347' className='' name='numeroSolicitud' />
-						<input type='text' value='1' className='' name='numeroPost' />
-						<input type='text' value='Aldrin' className='' name='nombre' />
-						<input type='text' value='Mendoza' className='' name='apellido' />
-						<input type='text' value='V' className='' name='tipoID' />
-						<input type='text' value='209876534' className='' name='ID' />
-						<input type='text' value='Venta de Tamal' className='' name='actividadComercial' />
-						<input type='text' value='Venta de Tamal' className='' name='contribuyente' />
-						<input type='text' value='01027657868743678694' className='' name='numeroCuenta' />
-						<input type='text' value='NoTeDebo' className='' name='metodoPago' />
-						<input type='text' value='04164197645' className='' name='telefono' />
-						<input type='text' value='04164197645' className='' name='telefono2' />
-						<input type='text' value='Caracas' className='' name='ciudad' />
-						<input type='text' value='Miranda' className='' name='estado' />
-						<input type='text' value='Distrito' className='' name='municipio' />
-						<input type='text' value='Gyojin' className='' name='parroquia' />
-						<input type='text' value='Malandroso' className='' name='sector' />
-						<input type='text' value='Problema' className='' name='calle' />
-						<input type='text' value='Dolar' className='' name='local' />
-						<input type='text' value='1080' className='' name='codigoPostal' /> */}
 					</div>
 					<div>
 						<h1 className='titulo'>Informacion de Cliente</h1>
 						<PasoUnoUser />
-						{/* <br />
-						<input type='text' value='Aldrin' className='' name='nombre' />
-						<input type='text' value='Mendoza' className='' name='apellido' />
-						<input type='text' value='V' className='' name='tipoID' />
-						<input type='text' value='209876534' className='' name='ID' />
-						<input type='text' value='aetours.ca@gmail.com' className='' name='correo' /> */}
 					</div>
 				</div>
 			);
 		case 1:
-			return 'Step 2: What is an ad group anyways?';
+			return (
+				<div className='comprobar_container_2'>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoDos />
+					</div>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoDosDos />
+					</div>
+				</div>
+			);
 		case 2:
-			return 'Step 3: This is the bit I really care about!';
+			return (
+				<div className='comprobar_container_2'>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoTres />
+					</div>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoTresDos />
+					</div>
+				</div>
+			);
+		case 3:
+			return (
+				<div className='comprobar_container_2'>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoCuatro />
+					</div>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoCuaTroDos />
+					</div>
+				</div>
+			);
+		case 4:
+			return (
+				<div className='comprobar_container_2'>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoCinco />
+					</div>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoCincoDos />
+					</div>
+				</div>
+			);
+		case 5:
+			return (
+				<div className='comprobar_container_2'>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+
+						<PasoCinco />
+						{/* Colocar condicion para que si no hay nada en contribuyente notifique */}
+					</div>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1>
+						<PasoCincoDos /> */}
+						{/* Uso Futuro */}
+					</div>
+				</div>
+			);
+		case 6:
+			return (
+				<div className='comprobar_container_2'>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoSiete />
+					</div>
+					<div>
+						{/* <h1 className='titulo'>Informacion </h1> */}
+						<PasoSieteDos />
+					</div>
+				</div>
+			);
+
 		default:
 			return 'Unknown step';
 	}
@@ -109,9 +179,9 @@ export default function Comproba() {
 		return getSteps().length;
 	};
 
-	const isStepOptional = (step: number) => {
-		return step === 1;
-	};
+	// const isStepOptional = (step: number) => {
+	// 	return step === 1;
+	// };
 
 	// const handleSkip = () => {
 	// 	if (!isStepOptional(activeStep)) {
@@ -166,6 +236,8 @@ export default function Comproba() {
 	const handleComplete = async () => {
 		const newCompleted = new Set(completed);
 		newCompleted.add(activeStep);
+		dispatch(stepComplete(newCompleted));
+		console.log(newCompleted);
 		setCompleted(newCompleted);
 
 		/**
@@ -217,9 +289,9 @@ export default function Comproba() {
 						{steps.map((label, index) => {
 							const stepProps: { completed?: boolean } = {};
 							const buttonProps: { optional?: React.ReactNode } = {};
-							if (isStepOptional(index)) {
-								buttonProps.optional = <Typography variant='caption'>Optional</Typography>;
-							}
+							// if (isStepOptional(index)) {
+							// 	buttonProps.optional = <Typography variant='caption'>Optional</Typography>;
+							// }
 							if (isStepSkipped(index)) {
 								stepProps.completed = false;
 							}
