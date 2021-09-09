@@ -2,9 +2,11 @@ import React from "react"
 import TextField from '@material-ui/core/TextField';
 import { useStylesFM } from '../styles';
 import Button from '@material-ui/core/Button';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import IconButton from '@material-ui/core/IconButton';
 
 //Pedido
-export const Step4: React.FC<any> = ({cursedForm, setCursedForm, handleChange}) => {
+export const Step4: React.FC<any> = ({cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages}) => {
 	const classes = useStylesFM();
 
   return (
@@ -22,10 +24,27 @@ export const Step4: React.FC<any> = ({cursedForm, setCursedForm, handleChange}) 
 					//color="secondary"
 					component="label"
 				>
-					Subir Foto
+					{imagesForm.rc_constitutive_act.name  !== '' ?
+							<>
+								<IconButton aria-label="upload picture" component="span">
+									<PhotoCamera />
+								</IconButton>
+								<p className="nameImg" >{imagesForm.rc_constitutive_act.name.slice(0, 10)}...</p>
+							</>
+						: 
+							<>
+								<b>Subir</b>
+								<IconButton aria-label="upload picture" component="span">
+									<PhotoCamera />
+								</IconButton>
+							</>
+					}
 					<input
 						type="file"
 						hidden
+						name="rc_constitutive_act"
+						accept="image/png, image/jpeg"
+						onChange={handleChangeImages}
 					/>
 				</Button>
 			</div>
@@ -40,10 +59,27 @@ export const Step4: React.FC<any> = ({cursedForm, setCursedForm, handleChange}) 
 					//color="secondary"
 					component="label"
 				>
-					Subir Foto
+					{imagesForm.rc_property_document.name  !== '' ?
+							<>
+								<IconButton aria-label="upload picture" component="span">
+									<PhotoCamera />
+								</IconButton>
+								<p className="nameImg" >{imagesForm.rc_property_document.name.slice(0, 10)}...</p>
+							</>
+						: 
+							<>
+								<b>Subir</b>
+								<IconButton aria-label="upload picture" component="span">
+									<PhotoCamera />
+								</IconButton>
+							</>
+					}
 					<input
 						type="file"
 						hidden
+						name="rc_property_document"
+						accept="image/png, image/jpeg"
+						onChange={handleChangeImages}
 					/>
 				</Button>
 			</div>
@@ -58,10 +94,27 @@ export const Step4: React.FC<any> = ({cursedForm, setCursedForm, handleChange}) 
 					//color="secondary"
 					component="label"
 				>
-					Subir Foto
+					{imagesForm.rc_service_document.name  !== '' ?
+							<>
+								<IconButton aria-label="upload picture" component="span">
+									<PhotoCamera />
+								</IconButton>
+								<p className="nameImg" >{imagesForm.rc_service_document.name.slice(0, 10)}...</p>
+							</>
+						: 
+							<>
+								<b>Subir</b>
+								<IconButton aria-label="upload picture" component="span">
+									<PhotoCamera />
+								</IconButton>
+							</>
+					}
 					<input
 						type="file"
 						hidden
+						name="rc_service_document"
+						accept="image/png, image/jpeg"
+						onChange={handleChangeImages}
 					/>
 				</Button>
 			</div>

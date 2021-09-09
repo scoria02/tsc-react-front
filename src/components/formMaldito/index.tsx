@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 //import { useDispatch } from 'react-redux';
 
 //Material
@@ -9,6 +9,9 @@ import Button from '@material-ui/core/Button';
 import { useStylesFM } from './styles';
 
 import './index.scss';
+
+
+import * as valids from './validForm';
 
 //steps
 import { Step1 } from './steps/Step1';
@@ -22,8 +25,10 @@ function getSteps() {
 
 export const FormMaldito = () => {
 	const classes = useStylesFM();
-  const [activeStep, setActiveStep] = useState(0);
+	const [activeStep, setActiveStep] = useState<number>(0);
+	const [readyStep, setReadyStep] = React.useState<boolean>(false);
   const [skipped, setSkipped] = useState(new Set<number>());
+
 	const [ cursedForm, setCursedForm ] = useState<any>({
 		//step1 Cliente
 		email: '',
@@ -31,18 +36,14 @@ export const FormMaldito = () => {
 		last_name: '',
 		id_ident_type: 1,
 		ident_num: '',
-		rc_ident_card: '',
 		phone1: '+58',
 		phone2: '+58',
-		rc_ref_perso: '',
 		//step2 Comercio
 		contributor: false,
 		name_commerce: '',
 		id_ident_type_commerce: 3,
 		ident_num_commerce: '',
-		rc_rif: '',
 		text_account_number: '',
-		rc_ref_bank: '',
 		id_activity: '',
 		//Step3 Location
 		estado: '',
@@ -52,16 +53,65 @@ export const FormMaldito = () => {
 		sector: '',
 		calle: '',
 		local: '',
-		codigo_postal: '',
 		//step4 Pedido
 		number_post: '',
 		id_payment_method: '',
-		rc_constitutive_act: '',
-		rc_property_document: '',
-		rc_service_document: '',
-		rc_front_local: '',
-		rc_in_local: '',
 	});
+
+	const [ cursedFormError, setCursedFormError ] = useState<any>({
+		//step1 Cliente
+		email: false,
+		name: false,
+		last_name: false,
+		ident_num: false,
+		phone1: false,
+		phone2: false,
+		//step2 Comercio
+		name_commerce: false,
+		ident_num_commerce: false,
+		text_account_number: false,
+		id_activity: false,
+		//Step3 Location
+		estado: false,
+		ciudad: false,
+		municipio: false,
+		parroquia: false,
+		sector: false,
+		calle: false,
+		local: false,
+		//step4 Pedido
+		number_post: false,
+		id_payment_method: false,
+	});
+
+	const [imagesForm, setImagesForm] = useState({
+		//Step1
+		rc_ident_card: { name: '' }, //11
+		rc_ref_perso: { name: '' }, //6
+		//Step2
+		rc_rif: { name: '' }, //10
+		rc_account_number: { name: '' }, //7
+		rc_ref_bank: { name: '' }, //5
+		rc_special_contributor: { name: '' }, //4
+		//Step3
+		rc_front_local: { name: '' }, //8
+		rc_in_local: { name: '' }, //9
+		//Step4
+		rc_constitutive_act: { name: '' }, //1
+		rc_property_document: { name: '' }, //2
+		rc_service_document: { name: '' }, //3
+	});
+
+	useEffect(() => {
+		if (!valids.allInputNotNUll(valids.sizeStep(activeStep), cursedForm) && 
+			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError)
+		) {
+			setReadyStep(true);
+		} else {
+			setReadyStep(false);
+		}
+	//eslint-disable react-hooks/exhaustive-deps
+	}, [cursedForm, imagesForm])
 
   const isStepSkipped = (step: number) => {
     return skipped.has(step);
@@ -76,12 +126,53 @@ export const FormMaldito = () => {
 		return false;
 	}
 
+	const validateForm = (name: string, value: any) => {
+		let temp: any = { ...cursedFormError};
+		switch (name) {
+			case 'email':
+				temp.email = valids.validEmail(value);
+				break;
+			case 'name':
+			case 'last_name':
+				temp[name] = valids.validFullName(value);
+				break;
+			case 'id_ident_type':
+				temp.ident_num = valids.validIdentNum(cursedForm.ident_num, value);
+				break;
+			case 'ident_num':
+				temp.ident_num = valids.validIdentNum(value, cursedForm.id_ident_type);
+				break;
+			case 'phone1':
+				if(value.slice(0,3) === '+58'){
+					temp.phone1 = valids.validPhone(value.slice(3));
+					if(cursedForm.phone2.length > 3){
+						temp.phone2 = valids.validPhone2(cursedForm.phone1.slice(3), value.slice(3));
+					}
+				}else{
+					temp.phone1 = true;
+				}
+				break;
+			case 'phone2':
+				if(value.slice(0,3) === '+58'){
+					temp.phone2 = valids.validPhone2(value.slice(3), cursedForm.phone1.slice(3));
+				}else
+					temp.phone2 = true;
+				break;
+			default:
+				break;
+		}
+		setCursedFormError({
+			...temp,
+		});
+	};
+
 	//handle
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setCursedForm({
 			...cursedForm,
 			[event.target.name]: event.target.value,
 		});
+		validateForm(event.target.name, event.target.value);
 	};
 
   const handleNext = () => {
@@ -106,28 +197,46 @@ export const FormMaldito = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+	const handleChangeImages = (event: any) => {
+		console.log(event.target.name)
+		setImagesForm({
+			...imagesForm,
+			[event.target.name]: event.target.files[0],
+		})
+	}
+
   const steps = getSteps();
 
 	const getStep = [
 		<Step1
 			cursedForm={cursedForm}
+			error={cursedFormError}
+			imagesForm={imagesForm}
 			setCursedForm={setCursedForm}
 			handleChange={handleChange}
+			handleChangeImages={handleChangeImages}
+			validateForm={validateForm}
 		/>,
 		<Step2
 			cursedForm={cursedForm}
+			imagesForm={imagesForm}
 			setCursedForm={setCursedForm}
 			handleChange={handleChange}
+			handleChangeImages={handleChangeImages}
 		/>,
 		<Step3
 			cursedForm={cursedForm}
+			imagesForm={imagesForm}
 			setCursedForm={setCursedForm}
 			handleChange={handleChange}
+			handleChangeImages={handleChangeImages}
 		/>,
 		<Step4
 			cursedForm={cursedForm}
+			imagesForm={imagesForm}
 			setCursedForm={setCursedForm}
 			handleChange={handleChange}
+			handleChangeImages={handleChangeImages}
 		/>,
 	];
 
@@ -151,19 +260,21 @@ export const FormMaldito = () => {
 							<div className='container-steps'>
 								{getStep[activeStep]}
 								<div style={{marginTop: '1rem' }}>
-									<Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+									<Button 
+										size='large'
+										disabled={activeStep === 0} 
+										variant="contained"
+										onClick={handleBack} 
+										className={classes.buttonBack}>
 										Volver
 									</Button>
 									<Button
+										disabled={!readyStep}
+										size='large'
 										variant="contained"
-										disabled={
-											activeStep === steps.length - 1 ? (inputNUll() ?  true : false) 
-											: 
-											false
-										}
 										color="primary"
 										onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext }
-										className={classes.button}
+										className={classes.buttonNext}
 									>
 										{activeStep === steps.length - 1 ? 'Enviar' : 'Siguiente'}
 									</Button>
