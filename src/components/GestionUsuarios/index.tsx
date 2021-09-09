@@ -13,8 +13,10 @@ import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarFilterButton } f
 import CloseIcon from '@material-ui/icons/Close';
 import classnames from 'classnames';
 import React from 'react';
+import Swal from 'sweetalert2';
 import axios from '../../config';
 import luffy from '../../img/luffy.png';
+import './scss/index.scss';
 
 interface GestionUsuariosProps {}
 
@@ -119,18 +121,29 @@ const useStyles = makeStyles((styles) => ({
 			objectFit: 'cover',
 		},
 	},
+	buttonSave: {
+		background: styles.palette.primary.main,
+		color: styles.palette.primary.contrastText,
+		position: 'absolute',
+		bottom: 8,
+		right: 16,
+		'&:hover': {
+			background: styles.palette.primary.light,
+		},
+	},
 	form: {
-		padding: '0 1rem',
+		padding: '1rem',
 	},
 	row: {
 		display: 'flex',
 		justifyContent: 'space-between',
+		marginTop: 16,
 	},
 	column: {
 		flexDirection: 'column',
 	},
 	cardTitles: {
-		fontSize: 14,
+		fontSize: 16,
 		fontWeight: 'bold',
 	},
 }));
@@ -217,6 +230,31 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 			return updateCB(prev, event.target.name, event.target.checked);
 		});
 	};
+
+	const handleSaveData = () => {
+		Swal.fire({
+			title: '¿Estas seguro de realizar estos cambios?',
+			showDenyButton: true,
+			confirmButtonText: 'Si',
+			denyButtonText: 'No',
+			customClass: {
+				actions: 'my-actions',
+				confirmButton: 'order-2',
+				denyButton: 'order-3',
+			},
+		}).then((result) => {
+			if (result.isConfirmed) {
+				try {
+					// Aca envio los datos al endpoint de dimas
+					Swal.fire('Cambios Guardados', '', 'success');
+				} catch (error) {
+					Swal.fire('Hubo un error guardando sus cambios', '', 'info');
+				}
+			} else if (result.isDenied) {
+				// Swal.fire('Changes are not saved', '', 'info');
+			}
+		});
+	};
 	return (
 		<>
 			<Grid container spacing={4} className={classes.layout}>
@@ -246,6 +284,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 								<form className={classes.form}>
 									<div className={classes.row}>
 										<TextField
+											disabled
 											id='email'
 											name='email'
 											label='Correo'
@@ -282,6 +321,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 																			checked={rol.valid}
 																			onChange={handleCheckbox}
 																			name={rol.name}
+																			color={'primary'}
 																			inputProps={{ 'aria-label': 'primary checkbox' }}
 																		/>
 																	}
@@ -291,6 +331,11 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 													})}
 											</Grid>
 										</FormGroup>
+									</div>
+									<div>
+										<Button className={classes.buttonSave} onClick={handleSaveData}>
+											Guardar
+										</Button>
 									</div>
 								</form>
 							</div>
