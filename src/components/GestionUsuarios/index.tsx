@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarFilterButton } from '@material-ui/data-grid';
 import CloseIcon from '@material-ui/icons/Close';
+import classnames from 'classnames';
 import React from 'react';
 import axios from '../../config';
 import luffy from '../../img/luffy.png';
@@ -125,7 +126,13 @@ const useStyles = makeStyles((styles) => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 	},
-	checkbox: {},
+	column: {
+		flexDirection: 'column',
+	},
+	cardTitles: {
+		fontSize: 14,
+		fontWeight: 'bold',
+	},
 }));
 
 const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
@@ -140,6 +147,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	};
 
 	const [openUserView, setUserView] = React.useState<boolean>();
+	const [checkbox, setCheckbox] = React.useState<boolean>(true);
 	const [email, setEmail] = React.useState<string>('');
 	const [name, setName] = React.useState<string>('');
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -157,8 +165,8 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	}, []);
 
 	const handleRow = (event: any) => {
-		setUserView(true);
 		getuserRol(event.row.id);
+		setUserView(true);
 	};
 
 	const handleCloseRow = (event: any) => {
@@ -177,20 +185,17 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 			default:
 				break;
 		}
-		//console.log(e.target.value);
 	};
 
 	const getuserRol = async (id: number) => {
 		try {
-			const resp = await axios.get(`/worker/${id}`);
 			const resp2 = await axios.get(`/roles/${id}/worker`);
-
+			const resp = await axios.get(`/worker/${id}`);
 			const data = resp.data.info;
 			const dataRol = resp2.data.info;
 			setArrRolUser(dataRol);
 			setEmail(data.email);
 			setName(data.name);
-
 			arr_rol_user = dataRol;
 		} catch (error) {
 			console.log('error getuserRol', error);
@@ -200,31 +205,17 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	const updateCB = (array: any[], item: any, value: boolean) => {
 		const index: number = array.findIndex((i: any) => i.name === item);
 		if (index !== -1) {
-			console.log('item', array[index]);
 			array[index].valid = value;
-			console.log('array', array);
+			setCheckbox(true);
 			return array;
-		} else return array.concat([item]);
+		} else return array;
 	};
 
 	const handleCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (event.target.checked) {
-			console.log('lo prendo');
-			setArrRolUser((prev) => {
-				console.log('prev', prev);
-				return updateCB(prev, event.target.name, event.target.checked);
-			});
-			console.log('arr_rol_user', arr_rol_user);
-
-			// const newPermit = roles.filter((rol) => {
-			// 	return rol.name === event.target.name;
-			// });
-			// arr_rol_user.push(newPermit[0]);
-		} else {
-			console.log('lo apago');
-			// const indexItem = arr_rol_user.findIndex((element) => element.name === event.target.name);
-			// arr_rol_user.splice(indexItem, 1);
-		}
+		setCheckbox(false);
+		setArrRolUser((prev) => {
+			return updateCB(prev, event.target.name, event.target.checked);
+		});
 	};
 	return (
 		<>
@@ -276,26 +267,28 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 											onChange={handleInputChanges}
 										/>
 									</div>
-									<div className={classes.row}>
+									<div className={classnames(classes.row, classes.column)}>
+										<div className={classes.cardTitles}>Permisos</div>
 										<FormGroup>
 											<Grid container>
-												{arr_rol_user.map((rol, i) => {
-													return (
-														<Grid item xs={3} key={i}>
-															<FormControlLabel
-																label={rol.name}
-																control={
-																	<Checkbox
-																		checked={rol.valid}
-																		onChange={handleCheckbox}
-																		name={rol.name}
-																		inputProps={{ 'aria-label': 'primary checkbox' }}
-																	/>
-																}
-															/>
-														</Grid>
-													);
-												})}
+												{checkbox &&
+													arr_rol_user.map((rol, i) => {
+														return (
+															<Grid item xs={3} key={i}>
+																<FormControlLabel
+																	label={rol.name}
+																	control={
+																		<Checkbox
+																			checked={rol.valid}
+																			onChange={handleCheckbox}
+																			name={rol.name}
+																			inputProps={{ 'aria-label': 'primary checkbox' }}
+																		/>
+																	}
+																/>
+															</Grid>
+														);
+													})}
 											</Grid>
 										</FormGroup>
 									</div>
