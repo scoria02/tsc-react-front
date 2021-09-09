@@ -17,12 +17,11 @@ export const Step1: React.FC<any> = ({cursedForm, error, imagesForm, setCursedFo
 	const classes = useStylesFM();
 
 	const handleSelect = (event: any) => {
-		console.log(event.target.value)
 		setCursedForm({
 			...cursedForm,
 			[event.target.name]: parseInt(event.target.value, 10),
 		});
-		validateForm(event.target.name, event.target.value);
+		validateForm(event.target.name, parseInt(event.target.value, 10));
 	};
 
   return (
@@ -67,8 +66,7 @@ export const Step1: React.FC<any> = ({cursedForm, error, imagesForm, setCursedFo
             value={cursedForm.id_ident_type} 
 						onChange={handleSelect} 
 						name='id_ident_type' 
-						label='Tipo' 
-						placeholder=''>
+						label='Tipo'>
 						<MenuItem value='1'>V</MenuItem>
 						<MenuItem value='2'>E</MenuItem>
 						<MenuItem value='3'>J</MenuItem>

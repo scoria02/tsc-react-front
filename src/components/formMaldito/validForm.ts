@@ -63,26 +63,47 @@ export const validPhone2 = (value: string, value2: string):boolean => {
 	return true;
 }
 
-export const lastItem = (active:number):number=> {
+export const sizeStep = (active: number, form: any): number => {
+	let extra = form.special_contributor ? 1 : 0;
 	switch (active) {
 		case 0:
-			return 3
+			return 9+extra;
+		case 1:
+			return 18+extra; //+1 si check contributor is on
+		case 2:
+			return 27+extra; //+1 si check contributor is on
 		default:
 			return 0;
 	}
 }
 
-export const allInputNotNUll = (last: number, form: any): boolean => {
+export const allInputNotNUll = (last: number, form: any, imagesForm: any): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(form)) {
+		indice++;
 		if (indice > last) {
 			return false;
 		}
-		indice++;
 		//No Check when item[0] === 'IdentType'
 		if (typeof item[1] === 'string') {
-			if (item[1].trim() === '') {
-				return true;
+			if(item[0] === 'phone1' || item[0] === 'phone2'){
+				if(phoneNotNull(item[1])){
+					return true;
+				}
+			}
+			if(item[0].slice(0, 7) === 'name_rc'){
+				if(!form.special_contributor && item[0] === 'name_rc_special_contributor'){
+					//No cambiar nada
+				}
+				else{
+					if(imagesForm[item[0].slice(5)].name === ''){
+						return true;
+					}
+				}
+			}else{
+				if (item[1].trim() === '') {
+					return true;
+				}
 			}
 		}
 	}
@@ -97,13 +118,11 @@ export const checkErrorAllInput = (last: number, errors: any): boolean => {
 		}
 		indice++;
 		if (item[1]) {
-			console.log(item[1])
 			return true;
 		}
 	}
 	return false;
 }
-
 
 
 export const phoneNotNull = (value: string): boolean => {
@@ -112,13 +131,3 @@ export const phoneNotNull = (value: string): boolean => {
 	}else
 		return true;
 };
-export const sizeStep = (active: number): number => {
-	switch (active) {
-		case 0:
-			return 7;
-		case 1:
-			return 11;
-		default:
-			return 0;
-	}
-}

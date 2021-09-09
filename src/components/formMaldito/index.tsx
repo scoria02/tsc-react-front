@@ -31,20 +31,26 @@ export const FormMaldito = () => {
 
 	const [ cursedForm, setCursedForm ] = useState<any>({
 		//step1 Cliente
-		email: '',
-		name: '',
-		last_name: '',
+		email: 'jesus',
+		name: 'hola',
+		last_name: 'hola',
 		id_ident_type: 1,
-		ident_num: '',
-		phone1: '+58',
-		phone2: '+58',
+		ident_num: '1234567',
+		phone1: '+584121234567',
+		phone2: '+584121234566',
+		name_rc_ident_card: '', //11
+		name_rc_ref_perso: '', //6
 		//step2 Comercio
-		contributor: false,
-		name_commerce: '',
+		name_commerce: 'Juan',
 		id_ident_type_commerce: 3,
-		ident_num_commerce: '',
-		text_account_number: '',
-		id_activity: '',
+		ident_num_commerce: '12345678',
+		text_account_number: '434343434',
+		id_activity: 'jugar',
+		name_rc_rif: '', //10
+		name_rc_account_number: '', //7
+		name_rc_ref_bank: '', //5
+		special_contributor: false,
+		name_rc_special_contributor: '', //4
 		//Step3 Location
 		estado: '',
 		ciudad: '',
@@ -53,10 +59,34 @@ export const FormMaldito = () => {
 		sector: '',
 		calle: '',
 		local: '',
+		name_rc_front_local: '', //8
+		name_rc_in_local: '', //9
 		//step4 Pedido
 		number_post: '',
 		id_payment_method: '',
+		name_rc_constitutive_act: '', //1
+		name_rc_property_document: '', //2
+		name_rc_service_document: '', //3
 	});
+
+	const [imagesForm, setImagesForm] = useState({
+		//Step1
+		rc_ident_card: { name: '' }, //11
+		rc_ref_perso: { name: '' }, //6
+		//Step2
+		rc_rif: { name: '' }, //10
+		rc_account_number: { name: '' }, //7
+		rc_ref_bank: { name: '' }, //5
+		rc_special_contributor: { name: '' }, //4
+		//Step3
+		rc_front_local: { name: '' }, //8
+		rc_in_local: { name: '' }, //9
+		//Step4
+		rc_constitutive_act: { name: '' }, //1
+		rc_property_document: { name: '' }, //2
+		rc_service_document: { name: '' }, //3
+	});
+
 
 	const [ cursedFormError, setCursedFormError ] = useState<any>({
 		//step1 Cliente
@@ -84,47 +114,20 @@ export const FormMaldito = () => {
 		id_payment_method: false,
 	});
 
-	const [imagesForm, setImagesForm] = useState({
-		//Step1
-		rc_ident_card: { name: '' }, //11
-		rc_ref_perso: { name: '' }, //6
-		//Step2
-		rc_rif: { name: '' }, //10
-		rc_account_number: { name: '' }, //7
-		rc_ref_bank: { name: '' }, //5
-		rc_special_contributor: { name: '' }, //4
-		//Step3
-		rc_front_local: { name: '' }, //8
-		rc_in_local: { name: '' }, //9
-		//Step4
-		rc_constitutive_act: { name: '' }, //1
-		rc_property_document: { name: '' }, //2
-		rc_service_document: { name: '' }, //3
-	});
-
 	useEffect(() => {
-		if (!valids.allInputNotNUll(valids.sizeStep(activeStep), cursedForm) && 
-			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError)
+		if (!valids.allInputNotNUll(valids.sizeStep(activeStep, cursedForm), cursedForm, imagesForm) && 
+				!valids.checkErrorAllInput(valids.sizeStep(activeStep, cursedForm), cursedFormError)
 		) {
 			setReadyStep(true);
 		} else {
 			setReadyStep(false);
 		}
 	//eslint-disable react-hooks/exhaustive-deps
-	}, [cursedForm, imagesForm])
+	}, [cursedForm, imagesForm, activeStep])
 
   const isStepSkipped = (step: number) => {
     return skipped.has(step);
   };
-
-	const inputNUll = () => {
-		for (const item of Object.entries(cursedForm)) {
-			if (item[1] === '') {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	const validateForm = (name: string, value: any) => {
 		let temp: any = { ...cursedFormError};
@@ -137,7 +140,9 @@ export const FormMaldito = () => {
 				temp[name] = valids.validFullName(value);
 				break;
 			case 'id_ident_type':
-				temp.ident_num = valids.validIdentNum(cursedForm.ident_num, value);
+				if(cursedForm.ident_num.trim() !== ''){
+					temp.ident_num = valids.validIdentNum(cursedForm.ident_num, value);
+				}
 				break;
 			case 'ident_num':
 				temp.ident_num = valids.validIdentNum(value, cursedForm.id_ident_type);
@@ -176,21 +181,22 @@ export const FormMaldito = () => {
 	};
 
   const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
-
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
   };
 
   const handleSubmit = () => {
-		if(inputNUll()){
-			return;
+		if (valids.allInputNotNUll(valids.sizeStep(activeStep, cursedForm), cursedForm, imagesForm)  ||
+				valids.checkErrorAllInput(valids.sizeStep(activeStep, cursedForm), cursedFormError)
+		) 
+			return
+		const formData = new FormData();
+		for (const item of Object.entries(imagesForm)) {
+			const file:any = item[1]
+			if(item[1].name !== ''){
+				formData.append('images', file)
+			}
 		}
-		console.log(cursedForm)
+		console.log(formData.getAll('images'))
   };
 
   const handleBack = () => {
@@ -198,11 +204,25 @@ export const FormMaldito = () => {
   };
 
 	const handleChangeImages = (event: any) => {
-		console.log(event.target.name)
+		let name = `name_${event.target.name}`;
+		//Save Name
+		if(event.target.files[0]){
+			let file = event.target.files[0];
+			let blob = file.slice(0, file.size, 'image/png'); 
+			let newFile = new File([blob], `${event.target.name}`, {type: 'image/png'});
+			//Save img
+			setImagesForm({
+				...imagesForm,
+				[event.target.name]: newFile,
+			});
+		}
+	}
+
+	const deleteImgContributor = (name: string) => {
 		setImagesForm({
 			...imagesForm,
-			[event.target.name]: event.target.files[0],
-		})
+			[`rc_${name}`]: { name: '' }
+		});
 	}
 
   const steps = getSteps();
@@ -223,6 +243,7 @@ export const FormMaldito = () => {
 			setCursedForm={setCursedForm}
 			handleChange={handleChange}
 			handleChangeImages={handleChangeImages}
+			deleteImgContributor={deleteImgContributor}
 		/>,
 		<Step3
 			cursedForm={cursedForm}

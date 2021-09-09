@@ -3,18 +3,14 @@ import { makeStyles } from '@material-ui/core/styles';
 export const useStylesFM = makeStyles((styles) => ({
   buttonNext: {
 		marginTop: styles.spacing(5),
-		position: 'absolute',
 		bottom: '2rem',
-		left: '60%',
     marginRight: styles.spacing(1),
     textTransform: 'none',
   },
   buttonBack: {
 		marginTop: styles.spacing(5),
-		position: 'absolute',
 		bottom: '2rem',
-		left: '40%',
-    marginRight: styles.spacing(1),
+    marginRight: styles.spacing(40),
     textTransform: 'none',
   },
 	input: {
@@ -94,7 +90,7 @@ export const useStylesFM = makeStyles((styles) => ({
 	},
 	imgStep1: {
 		marginTop: styles.spacing(1),
-		marginBottom: styles.spacing(1.5),
+		marginBottom: styles.spacing(3),
     textTransform: 'none',
     width: '50%',
 		marginLeft: styles.spacing(0),

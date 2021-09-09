@@ -12,21 +12,23 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import { useStylesFM } from '../styles';
 
-export const Step2: React.FC<any> = ({cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages}) => {
+export const Step2: React.FC<any> = ({cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages, deleteImgContributor}) => {
 	const classes = useStylesFM();
 
 	const handleSelect = (event: any) => {
-		console.log(event.target.value)
 		setCursedForm({
 			...cursedForm,
 			[event.target.name]: parseInt(event.target.value, 10),
 		});
 	};
 
-	const handleChecked = () => {
+	const handleChecked = (e: any) => {
+		if(!(!cursedForm.special_contributor)){
+			deleteImgContributor(e.target.name)
+		}
 		setCursedForm({
 			...cursedForm,
-			'contributor': !cursedForm.contributor
+			[e.target.name]: !cursedForm.special_contributor
 		})
 	}
 
@@ -143,8 +145,8 @@ export const Step2: React.FC<any> = ({cursedForm, imagesForm, setCursedForm, han
 						<>
 							<b style={{ fontSize: '1rem', paddingTop: '10px', marginTop: 0 }}>Contribuye Especial</b>
 							<Checkbox
-								name="contributor"
-								checked={cursedForm.contributor}
+								name="special_contributor"
+								checked={cursedForm.special_contributor}
 								onChange={handleChecked}
 								color="primary"
 								inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -154,7 +156,7 @@ export const Step2: React.FC<any> = ({cursedForm, imagesForm, setCursedForm, han
 				/>
 				<Button
 					className={classes.imgContributor}
-					style={{ visibility: cursedForm.contributor ? 'visible' : 'hidden'}}
+					style={{ visibility: cursedForm.special_contributor? 'visible' : 'hidden'}}
 					variant="contained"
 					//color="secondary"
 					component="label"

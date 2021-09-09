@@ -12,7 +12,14 @@ export const Step3: React.FC<any> = ({cursedForm, imagesForm, setCursedForm, han
   return (
     <>
 			<div className={classes.input}>
-			<TextField className={classes.inputM} variant="outlined" required id="standard-required" label="Estado" name='estado' onChange={handleChange} value={cursedForm.estado} />
+				<TextField 
+					className={classes.inputM} 
+					variant="outlined" 
+					required
+					label="Estado" 
+					name='estado' 
+					onChange={handleChange} 
+					value={cursedForm.estado} />
 			<TextField className={classes.inputN} variant="outlined" required id="standard-required" label="Ciudad" name='ciudad' onChange={handleChange} value={cursedForm.ciudad} />
 			</div>
 			<div className={classes.input}>
