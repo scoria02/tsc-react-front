@@ -97,7 +97,7 @@ export const useStylesFM = makeStyles((styles) => ({
 	},
 	imgStep3: {
 		marginTop: styles.spacing(1),
-		marginBottom: styles.spacing(0.2),
+		marginBottom: styles.spacing(1),
     textTransform: 'none',
     width: '40%',
 	},

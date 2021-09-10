@@ -5,14 +5,37 @@ import Button from '@material-ui/core/Button';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import IconButton from '@material-ui/core/IconButton';
 
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
 //Pedido
-export const Step4: React.FC<any> = ({cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages}) => {
+export const Step4: React.FC<any> = ({payment, cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages}) => {
 	const classes = useStylesFM();
+
+	const handleSelectPayment = (event: any, value: any, item: string) => {
+		if(value){
+			setCursedForm({
+				...cursedForm,
+				[item]: value
+			});
+		} else{
+			setCursedForm({
+				...cursedForm,
+				[item]: null
+			});
+		}
+	};
 
   return (
     <>
       <TextField className={classes.input} variant="outlined" required id="standard-required" label="Numero de Puntos" name='number_post' onChange={handleChange} value={cursedForm.number_post} />
-			<TextField className={classes.input} variant="outlined" required id="standard-required" label="Metodo de Pago" name='id_payment_method' onChange={handleChange} value={cursedForm.id_payment_method} />
+				<Autocomplete
+						className={classes.inputM}
+						onChange={(event,value) => handleSelectPayment(event,value, 'id_payment_method')}
+						value={cursedForm.id_payment_method|| null}
+						options={payment}
+						getOptionLabel={(option:any) => option.name ? option.name : ''}
+						renderInput={(params:any) => <TextField {...params}  name="estado" label="Forma de Pago" variant="outlined" />}
+					/>
 			<div className={classes.input}>
 				<b
 				className={classes.inputText}>

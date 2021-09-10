@@ -71,7 +71,9 @@ export const sizeStep = (active: number, form: any): number => {
 		case 1:
 			return 18+extra; //+1 si check contributor is on
 		case 2:
-			return 27+extra; //+1 si check contributor is on
+			return 28+extra; //+1 si check contributor is on
+		case 3:
+			return 33+extra; //+1 si check contributor is on
 		default:
 			return 0;
 	}
@@ -104,6 +106,10 @@ export const allInputNotNUll = (last: number, form: any, imagesForm: any): boole
 				if (item[1].trim() === '') {
 					return true;
 				}
+			}
+		}else if (item[0] === 'estado' || item[0] === 'ciudad' || item[0] === 'municipio' /*|| item[0] === 'parroquia'*/ || item[0] === 'id_payment_method'){
+			if(item[1] === null){
+				return true;
 			}
 		}
 	}

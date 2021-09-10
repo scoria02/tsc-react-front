@@ -19,6 +19,14 @@ import { Step2 } from './steps/Step2';
 import { Step3 } from './steps/Step3';
 import { Step4 } from './steps/Step4';
 
+import { 
+	getEstados, 
+	getCiudad,
+	getMunicipio,
+	getParroquia,
+	getPayMent,
+} from './getData'
+
 function getSteps() {
   return ['Informacion Personal del Cliente', 'Informacion del Comercio I', 'Ubicacion del Comercio', 'Pedido'];
 }
@@ -27,7 +35,16 @@ export const FormMaldito = () => {
 	const classes = useStylesFM();
 	const [activeStep, setActiveStep] = useState<number>(0);
 	const [readyStep, setReadyStep] = React.useState<boolean>(false);
-  const [skipped, setSkipped] = useState(new Set<number>());
+
+	//Location
+	const [location, setLocation] = useState<any>({
+		estado: [],
+		ciudad: [],
+		municipio: [],
+		parroquia: [],
+	});
+
+	const [payment, setPayment] = useState<any>([]);
 
 	const [ cursedForm, setCursedForm ] = useState<any>({
 		//step1 Cliente
@@ -52,9 +69,10 @@ export const FormMaldito = () => {
 		special_contributor: false,
 		name_rc_special_contributor: '', //4
 		//Step3 Location
-		estado: '',
-		ciudad: '',
-		municipio: '',
+		estado: null,
+		ciudad: null,
+		municipio: null,
+		//parroquia: null,
 		parroquia: '',
 		sector: '',
 		calle: '',
@@ -115,6 +133,73 @@ export const FormMaldito = () => {
 	});
 
 	useEffect(() => {
+		if(activeStep === 3){
+			getPayMent().then( (res) => {
+				res.forEach((item) => {
+					setPayment((prevState:any) => (
+						[...prevState, item]
+					))
+				})
+			})
+		}
+	}, [activeStep])
+
+	useEffect(() => {
+		if(location.estado.length === 0) {
+			getEstados().then( (res) => {
+				res.forEach((item ) => {
+						setLocation((prevState:any) => ({
+							...prevState,
+							estado: [...prevState.estado, item],
+					}))
+				})
+			})
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	useEffect(() => {
+		setCursedForm({ ...cursedForm, ciudad: null, municipio: null, parroquia: null });
+		if(cursedForm.estado){
+			setLocation((prevState:any) => ({ ...prevState, ciudad: [], municipio: [], parroquia: [] }));
+			getCiudad(cursedForm.estado.id).then( (res) => {
+					setLocation({
+							...location,
+							ciudad: res,
+				})
+			})
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [cursedForm.estado])
+
+
+	useEffect(() => {
+		setCursedForm({ ...cursedForm, municipio: null, parroquia: null });
+		if(cursedForm.ciudad){
+			getMunicipio(cursedForm.estado.id).then( (res) => {
+					setLocation({
+							...location,
+							municipio: res,
+				})
+			})
+		}	
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [cursedForm.ciudad])
+
+	useEffect(() => {
+		setCursedForm({ ...cursedForm, parroquia: null });
+		if(cursedForm.municipio){
+			getParroquia(cursedForm.estado.id).then( (res) => {
+					setLocation({
+							...location,
+							parroquia: res,
+				})
+			})
+		}	
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [cursedForm.municipio])
+
+	useEffect(() => {
 		if (!valids.allInputNotNUll(valids.sizeStep(activeStep, cursedForm), cursedForm, imagesForm) && 
 				!valids.checkErrorAllInput(valids.sizeStep(activeStep, cursedForm), cursedFormError)
 		) {
@@ -122,12 +207,8 @@ export const FormMaldito = () => {
 		} else {
 			setReadyStep(false);
 		}
-	//eslint-disable react-hooks/exhaustive-deps
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [cursedForm, imagesForm, activeStep])
-
-  const isStepSkipped = (step: number) => {
-    return skipped.has(step);
-  };
 
 	const validateForm = (name: string, value: any) => {
 		let temp: any = { ...cursedFormError};
@@ -204,7 +285,6 @@ export const FormMaldito = () => {
   };
 
 	const handleChangeImages = (event: any) => {
-		let name = `name_${event.target.name}`;
 		//Save Name
 		if(event.target.files[0]){
 			let file = event.target.files[0];
@@ -246,6 +326,7 @@ export const FormMaldito = () => {
 			deleteImgContributor={deleteImgContributor}
 		/>,
 		<Step3
+			location={location}
 			cursedForm={cursedForm}
 			imagesForm={imagesForm}
 			setCursedForm={setCursedForm}
@@ -253,6 +334,7 @@ export const FormMaldito = () => {
 			handleChangeImages={handleChangeImages}
 		/>,
 		<Step4
+			payment={payment}
 			cursedForm={cursedForm}
 			imagesForm={imagesForm}
 			setCursedForm={setCursedForm}
