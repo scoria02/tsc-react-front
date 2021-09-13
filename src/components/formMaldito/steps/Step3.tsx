@@ -9,18 +9,26 @@ import IconButton from '@material-ui/core/IconButton';
 
 import { useStylesFM } from '../styles';
 
-export const Step3: React.FC<any> = ({location, cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages}) => {
+export const Step3: React.FC<any> = ({namesImages, listLocation, location, setLocation, cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages}) => {
 	const classes = useStylesFM();
 
 	const handleSelectEstado = (event: any, value: any, item: string) => {
 		if(value){
 			setCursedForm({
 				...cursedForm,
-				[item]: value
+				[`id_${item}`]: value.id
+			});
+			setLocation({
+				...location,
+				[item]: value 
 			});
 		} else{
 			setCursedForm({
 				...cursedForm,
+				[`id_${item}`]: 0
+			});
+			setLocation({
+				...location,
 				[item]: null
 			});
 		}
@@ -32,40 +40,37 @@ export const Step3: React.FC<any> = ({location, cursedForm, imagesForm, setCurse
 				<Autocomplete
 						className={classes.inputM}
 						onChange={(event,value) => handleSelectEstado(event,value,'estado')}
-						value={cursedForm.estado || null}
-						options={location.estado}
+						value={location.estado || null}
+						options={listLocation.estado}
 						getOptionLabel={(option:any) => option.estado ? option.estado : ''}
 						renderInput={(params:any) => <TextField {...params}  name="estado" label="Estado" variant="outlined" />}
 					/>
 				<Autocomplete
 						className={classes.inputN}
 						onChange={(event,value) => handleSelectEstado(event,value,'ciudad')}
-						value={cursedForm.ciudad || null}
-						options={location.ciudad}
+						value={location.ciudad || null}
+						options={listLocation.ciudad}
 						getOptionLabel={(option:any) => option.ciudad ? option.ciudad : ''}
-						renderInput={(params:any) => <TextField {...params}  name="estado" label="Ciudad" variant="outlined" />}
+						renderInput={(params:any) => <TextField {...params}  name="ciudad" label="Ciudad" variant="outlined" />}
 					/>
 			</div>
 			<div className={classes.input}>
 				<Autocomplete
 						className={classes.inputM}
 						onChange={(event,value) => handleSelectEstado(event,value,'municipio')}
-						value={cursedForm.municipio || null}
-						options={location.municipio}
+						value={location.municipio || null}
+						options={listLocation.municipio}
 						getOptionLabel={(option:any) => option.municipio ?  option.municipio : ''}
-						renderInput={(params:any) => <TextField {...params}  name="estado" label="Municipio" variant="outlined" />}
+						renderInput={(params:any) => <TextField {...params}  name="municipio" label="Municipio" variant="outlined" />}
 					/>
-					{/*
 				<Autocomplete
-						className={classes.inputN}
-						onChange={(event,value) => handleSelectEstado(event,value,'parroquia')}
-						value={cursedForm.parroquia !== 0 ? cursedForm.parroquia : null}
-						options={location.parroquia}
-						getOptionLabel={(option:any) => option.parroquia ?  option.parroquia : ''}
-						renderInput={(params:any) => <TextField {...params}  name="estado" label="Parroquia" variant="outlined" />}
+						className={classes.inputM}
+						onChange={(event,value) => handleSelectEstado(event, value, 'parroquia')}
+						value={location.parroquia || null}
+						options={listLocation.parroquia}
+						getOptionLabel={(option:any) => option.parroquia ?  option.parroquia : ''} 
+						renderInput={(params:any) => <TextField {...params}  name="parroquia" label="Parroquia" variant="outlined" />}
 					/>
-						*/}
-				<TextField className={classes.inputN} variant="outlined" required id="standard-required" label="Parroquia" name='Parroquia' onChange={handleChange} value={cursedForm.parroquia} />
 			</div>
 			<div className={classes.input}>
 			<TextField className={classes.inputM} variant="outlined" required id="standard-required" label="Sector" name='sector' onChange={handleChange} value={cursedForm.sector} />
@@ -86,12 +91,12 @@ export const Step3: React.FC<any> = ({location, cursedForm, imagesForm, setCurse
 						//color="secondary"
 						component="label"
 					>
-						{imagesForm.rc_front_local.name  !== '' ?
+						{imagesForm.rc_front_local !== null ?
 								<>
 									<IconButton aria-label="upload picture" component="span">
 										<PhotoCamera />
 									</IconButton>
-									<p className="nameImg" >{imagesForm.rc_front_local.name.slice(0, 5)}...</p>
+									<p className="nameImg" >{namesImages.rc_front_local.slice(0, 5)}...</p>
 								</>
 							: 
 								<>
@@ -121,12 +126,12 @@ export const Step3: React.FC<any> = ({location, cursedForm, imagesForm, setCurse
 						//color="secondary"
 						component="label"
 					>
-						{imagesForm.rc_in_local.name  !== '' ?
+						{imagesForm.rc_in_local !== null?
 								<>
 									<IconButton aria-label="upload picture" component="span">
 										<PhotoCamera />
 									</IconButton>
-									<p className="nameImg" >{imagesForm.rc_in_local.name.slice(0, 5)}...</p>
+									<p className="nameImg" >{namesImages.rc_in_local.slice(0, 5)}...</p>
 								</>
 							: 
 								<>

@@ -63,58 +63,82 @@ export const validPhone2 = (value: string, value2: string):boolean => {
 	return true;
 }
 
-export const sizeStep = (active: number, form: any): number => {
-	let extra = form.special_contributor ? 1 : 0;
+export const sizeStep = (active: number): number => {
 	switch (active) {
 		case 0:
-			return 9+extra;
+			return 6;
 		case 1:
-			return 18+extra; //+1 si check contributor is on
+			return 12; //+1 si check contributor is on
 		case 2:
-			return 28+extra; //+1 si check contributor is on
+			return 19; //+1 si check contributor is on
 		case 3:
-			return 33+extra; //+1 si check contributor is on
+			return 21; //+1 si check contributor is on
 		default:
 			return 0;
 	}
 }
 
-export const allInputNotNUll = (last: number, form: any, imagesForm: any): boolean => {
+export const sizeImagesStep = (active: number): number => {
+	switch (active) {
+		case 0:
+			return 1;
+		case 1:
+			return 5; //+1 si check contributor is on
+		case 2:
+			return 7; //+1 si check contributor is on
+		case 3:
+			return 10; //+1 si check contributor is on
+		default:
+			return 0;
+	}
+}
+
+export const allInputNotNUll = (last: number, form: any): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(form)) {
-		indice++;
 		if (indice > last) {
 			return false;
 		}
+		indice++;
 		//No Check when item[0] === 'IdentType'
 		if (typeof item[1] === 'string') {
 			if(item[0] === 'phone1' || item[0] === 'phone2'){
 				if(phoneNotNull(item[1])){
 					return true;
 				}
-			}
-			if(item[0].slice(0, 7) === 'name_rc'){
-				if(!form.special_contributor && item[0] === 'name_rc_special_contributor'){
-					//No cambiar nada
-				}
-				else{
-					if(imagesForm[item[0].slice(5)].name === ''){
-						return true;
-					}
-				}
 			}else{
 				if (item[1].trim() === '') {
 					return true;
 				}
 			}
-		}else if (item[0] === 'estado' || item[0] === 'ciudad' || item[0] === 'municipio' /*|| item[0] === 'parroquia'*/ || item[0] === 'id_payment_method'){
+		}else if (typeof item[1] === 'number') {
+			if(item[1] === 0){
+				return true;
+			}
+		}	
+	}
+	return false;
+};
+
+export const allImgNotNUll = (last: number, images: any, special_contributor: boolean): boolean => {
+	let indice = 0;
+	for (const item of Object.entries(images)) {
+		if (indice > last) {
+			return false;
+		}
+		indice++;
+		if(item[0] === 'rc_special_contributor' && !special_contributor){
+			//Salto
+		}else{
 			if(item[1] === null){
 				return true;
 			}
 		}
-	}
+	}	
 	return false;
-};
+}
+
+
 
 export const checkErrorAllInput = (last: number, errors: any): boolean => {
 	let indice = 0;

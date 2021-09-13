@@ -8,20 +8,22 @@ import IconButton from '@material-ui/core/IconButton';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 //Pedido
-export const Step4: React.FC<any> = ({payment, cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages}) => {
+export const Step4: React.FC<any> = ({namesImages, listPayment, payment, setPayment, cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages}) => {
 	const classes = useStylesFM();
 
 	const handleSelectPayment = (event: any, value: any, item: string) => {
 		if(value){
 			setCursedForm({
 				...cursedForm,
-				[item]: value
+				[`id_${item}`]: value.id
 			});
+			setPayment(value);
 		} else{
 			setCursedForm({
 				...cursedForm,
-				[item]: null
+				[`id_${item}`]: 0
 			});
+			setPayment(null);
 		}
 	};
 
@@ -30,9 +32,9 @@ export const Step4: React.FC<any> = ({payment, cursedForm, imagesForm, setCursed
       <TextField className={classes.input} variant="outlined" required id="standard-required" label="Numero de Puntos" name='number_post' onChange={handleChange} value={cursedForm.number_post} />
 				<Autocomplete
 						className={classes.inputM}
-						onChange={(event,value) => handleSelectPayment(event,value, 'id_payment_method')}
-						value={cursedForm.id_payment_method|| null}
-						options={payment}
+						onChange={(event,value) => handleSelectPayment(event,value, 'payment_method')}
+						value={payment || null}
+						options={listPayment}
 						getOptionLabel={(option:any) => option.name ? option.name : ''}
 						renderInput={(params:any) => <TextField {...params}  name="estado" label="Forma de Pago" variant="outlined" />}
 					/>
@@ -47,12 +49,12 @@ export const Step4: React.FC<any> = ({payment, cursedForm, imagesForm, setCursed
 					//color="secondary"
 					component="label"
 				>
-					{imagesForm.rc_constitutive_act.name  !== '' ?
+					{imagesForm.rc_constitutive_act!== null?
 							<>
 								<IconButton aria-label="upload picture" component="span">
 									<PhotoCamera />
 								</IconButton>
-								<p className="nameImg" >{imagesForm.rc_constitutive_act.name.slice(0, 10)}...</p>
+								<p className="nameImg" >{namesImages.rc_constitutive_act.slice(0, 10)}...</p>
 							</>
 						: 
 							<>
@@ -82,12 +84,12 @@ export const Step4: React.FC<any> = ({payment, cursedForm, imagesForm, setCursed
 					//color="secondary"
 					component="label"
 				>
-					{imagesForm.rc_property_document.name  !== '' ?
+					{imagesForm.rc_property_document !== null ?
 							<>
 								<IconButton aria-label="upload picture" component="span">
 									<PhotoCamera />
 								</IconButton>
-								<p className="nameImg" >{imagesForm.rc_property_document.name.slice(0, 10)}...</p>
+								<p className="nameImg" >{namesImages.rc_property_document.slice(0, 10)}...</p>
 							</>
 						: 
 							<>
@@ -117,12 +119,12 @@ export const Step4: React.FC<any> = ({payment, cursedForm, imagesForm, setCursed
 					//color="secondary"
 					component="label"
 				>
-					{imagesForm.rc_service_document.name  !== '' ?
+					{imagesForm.rc_service_document !== null ?
 							<>
 								<IconButton aria-label="upload picture" component="span">
 									<PhotoCamera />
 								</IconButton>
-								<p className="nameImg" >{imagesForm.rc_service_document.name.slice(0, 10)}...</p>
+								<p className="nameImg" >{namesImages.rc_service_document.slice(0, 10)}...</p>
 							</>
 						: 
 							<>

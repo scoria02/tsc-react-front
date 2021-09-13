@@ -13,15 +13,15 @@ import IconButton from '@material-ui/core/IconButton';
 //sytles
 import { useStylesFM } from '../styles';
 
-export const Step1: React.FC<any> = ({cursedForm, error, imagesForm, setCursedForm, handleChange, handleChangeImages,  validateForm}) => {
+export const Step1: React.FC<any> = ({namesImages, listIdentType, cursedForm, error, imagesForm, setCursedForm, handleChange, handleChangeImages,  validateForm}) => {
 	const classes = useStylesFM();
 
 	const handleSelect = (event: any) => {
 		setCursedForm({
 			...cursedForm,
-			[event.target.name]: parseInt(event.target.value, 10),
+			[event.target.name]: event.target.value,
 		});
-		validateForm(event.target.name, parseInt(event.target.value, 10));
+		validateForm(event.target.name, event.target.value);
 	};
 
   return (
@@ -67,11 +67,10 @@ export const Step1: React.FC<any> = ({cursedForm, error, imagesForm, setCursedFo
 						onChange={handleSelect} 
 						name='id_ident_type' 
 						label='Tipo'>
-						<MenuItem value='1'>V</MenuItem>
-						<MenuItem value='2'>E</MenuItem>
-						<MenuItem value='3'>J</MenuItem>
-						<MenuItem value='4'>R</MenuItem>
-						<MenuItem value='5'>P</MenuItem>
+						{listIdentType.map( (item:any) =>  (
+							<MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+						))
+						}
 					</Select>
 				</FormControl>
 				<TextField 
@@ -90,8 +89,8 @@ export const Step1: React.FC<any> = ({cursedForm, error, imagesForm, setCursedFo
 					//color="secondary"
 					component="label"
 				>
-				{imagesForm.rc_ident_card.name !== '' ? (
-					<p className="nameImg" >{imagesForm.rc_ident_card.name.slice(0, 10)}...</p>
+				{imagesForm.rc_ident_card !== null ? (
+					<p className="nameImg" >{namesImages.rc_ident_card.slice(0, 7)} ...</p>
 				):(
 					<>
 						<b>Subir</b>
@@ -140,12 +139,12 @@ export const Step1: React.FC<any> = ({cursedForm, error, imagesForm, setCursedFo
 					variant="contained"
 					component="label"
 				>
-					{imagesForm.rc_ref_perso.name  !== '' ?
+					{imagesForm.rc_ref_perso !== null ?
 							<>
 								<IconButton aria-label="upload picture" component="span">
 									<PhotoCamera />
 								</IconButton>
-								<p className="nameImg" >{imagesForm.rc_ref_perso.name.slice(0, 10)}...</p>
+								<p className="nameImg" >{namesImages.rc_ref_perso.slice(0, 10)}...</p>
 							</>
 						: 
 							<>

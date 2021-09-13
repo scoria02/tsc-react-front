@@ -128,7 +128,10 @@ const Register: React.FC = () => {
 				temp.ident_num = valids.validIdentNum(value, userForm.id_ident_type);
 				break;
 			case 'phone':
-				temp.phone = valids.validPhone(value);
+				if(value.slice(0,3) === '+58')
+					temp.phone = valids.validPhone(value.slice(3));
+				else
+					temp.phone = true;
 				break;
 			default:
 				break;
