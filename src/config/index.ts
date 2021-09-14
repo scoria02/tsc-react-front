@@ -25,6 +25,7 @@ const configAxios: AxiosRequestConfig = {
 	// 	return data_json;
 	// },
 };
+
 Axios.defaults.headers['Content-Type'] = 'application/json';
 
 const axios = Axios.create(configAxios);

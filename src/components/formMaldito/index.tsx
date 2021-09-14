@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"
-import  { Redirect } from 'react-router-dom'
 import { useHistory } from 'react-router-dom';
 
 //Material
@@ -12,7 +11,6 @@ import Swal from 'sweetalert2';
 import { baseUrl } from '../../routers/url';
 
 import './index.scss';
-
 
 import * as valids from './validForm';
 
