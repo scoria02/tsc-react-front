@@ -12,7 +12,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import { useStylesFM } from '../styles';
 
-export const Step2: React.FC<any> = ({cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages, deleteImgContributor}) => {
+export const Step2: React.FC<any> = ({namesImages, cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages, deleteImgContributor}) => {
 	const classes = useStylesFM();
 
 	const handleSelect = (event: any) => {
@@ -54,8 +54,8 @@ export const Step2: React.FC<any> = ({cursedForm, imagesForm, setCursedForm, han
 				//color="secondary"
 				component="label"
 			>
-				{imagesForm.rc_rif.name !== '' ? (
-					<p className="nameImg" >{imagesForm.rc_rif.name.slice(0, 10)}...</p>
+				{imagesForm.rc_rif !== null ? (
+					<p className="nameImg" >{namesImages.rc_rif.slice(0, 10)}...</p>
 				):(
 					<>
 						<b>Subir</b>
@@ -82,8 +82,8 @@ export const Step2: React.FC<any> = ({cursedForm, imagesForm, setCursedForm, han
 					//color="secondary"
 					component="label"
 				>
-				{imagesForm.rc_account_number.name !== '' ? (
-					<p className="nameImg" >{imagesForm.rc_account_number.name.slice(0, 10)}...</p>
+				{imagesForm.rc_account_number !== null ? (
+					<p className="nameImg" >{namesImages.rc_account_number.slice(0, 10)}...</p>
 				):(
 					<>
 						<b>Subir</b>
@@ -114,12 +114,12 @@ export const Step2: React.FC<any> = ({cursedForm, imagesForm, setCursedForm, han
 					//color="secondary"
 					component="label"
 				>
-					{imagesForm.rc_ref_bank.name  !== '' ?
+					{imagesForm.rc_ref_bank !== null ?
 							<>
 								<IconButton aria-label="upload picture" component="span">
 									<PhotoCamera />
 								</IconButton>
-								<p className="nameImg" >{imagesForm.rc_ref_bank.name.slice(0, 10)}...</p>
+								<p className="nameImg" >{namesImages.rc_ref_bank.slice(0, 10)}...</p>
 							</>
 						: 
 							<>
@@ -161,12 +161,12 @@ export const Step2: React.FC<any> = ({cursedForm, imagesForm, setCursedForm, han
 					//color="secondary"
 					component="label"
 				>
-					{imagesForm.rc_special_contributor.name !== '' ? (
+					{imagesForm.rc_special_contributor !== null ? (
 						<>
 							<IconButton aria-label="upload picture" component="span">
 								<PhotoCamera />
 							</IconButton>
-							<p className="nameImg" >{imagesForm.rc_special_contributor.name.slice(0, 10)}...</p>
+							<p className="nameImg" >{namesImages.rc_special_contributor.slice(0, 10)}...</p>
 						</>
 					):(
 						<>

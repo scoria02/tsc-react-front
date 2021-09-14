@@ -40,8 +40,9 @@ export const getMunicipio = async (id: any) => {
 }
 
 export const getParroquia = async (id: any) => {
+	console.log(id)
 	try{
-		const resp: string [] = await useAxios.get(`/Location/${id}/ciudad`).then((res) => {
+		const resp: string [] = await useAxios.get(`/Location/${id}/parroquia`).then((res) => {
 			localStorage.setItem('token', res.data.token);
 			return res.data.info 
 		});
@@ -54,7 +55,20 @@ export const getParroquia = async (id: any) => {
 
 export const getPayMent = async () => {
 	try{
-		const resp: string [] = await useAxios.get('payment/all').then((res) => {
+		const resp: string [] = await useAxios.get('/payment/all').then((res) => {
+			localStorage.setItem('token', res.data.token);
+			return res.data.info 
+		});
+		return resp;
+	}catch(e){
+		console.log(e);
+		return [];
+	}
+}
+
+export const getIdentTypes = async () => {
+	try{
+		const resp: string [] = await useAxios.get('/ident_type').then((res) => {
 			localStorage.setItem('token', res.data.token);
 			return res.data.info 
 		});

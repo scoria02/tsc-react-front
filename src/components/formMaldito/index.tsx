@@ -25,6 +25,7 @@ import {
 	getMunicipio,
 	getParroquia,
 	getPayMent,
+	getIdentTypes,
 } from './getData'
 
 function getSteps() {
@@ -37,14 +38,24 @@ export const FormMaldito = () => {
 	const [readyStep, setReadyStep] = React.useState<boolean>(false);
 
 	//Location
-	const [location, setLocation] = useState<any>({
+	const [listLocation, setListLocation] = useState<any>({
 		estado: [],
 		ciudad: [],
 		municipio: [],
 		parroquia: [],
 	});
 
-	const [payment, setPayment] = useState<any>([]);
+	const [location, setLocation] = useState<any>({
+		estado: null,
+		ciudad: null,
+		municipio: null,
+		parroquia: null,
+	});
+
+	const [listPayment, setListPayment] = useState<any>([]);
+	const [payment, setPayment] = useState<any>(null);
+
+	const [listIdentType, setListIdentType] = useState<any>([]);
 
 	const [ cursedForm, setCursedForm ] = useState<any>({
 		//step1 Cliente
@@ -55,56 +66,61 @@ export const FormMaldito = () => {
 		ident_num: '1234567',
 		phone1: '+584121234567',
 		phone2: '+584121234566',
-		name_rc_ident_card: '', //11
-		name_rc_ref_perso: '', //6
 		//step2 Comercio
 		name_commerce: 'Juan',
 		id_ident_type_commerce: 3,
 		ident_num_commerce: '12345678',
 		text_account_number: '434343434',
 		id_activity: 'jugar',
-		name_rc_rif: '', //10
-		name_rc_account_number: '', //7
-		name_rc_ref_bank: '', //5
 		special_contributor: false,
-		name_rc_special_contributor: '', //4
-		//Step3 Location Comercio
-		estado: null,
-		ciudad: null,
-		municipio: null,
-		//parroquia: null,
-		parroquia: '',
+		//Step3 Location
+		id_estado: 0,
+		id_ciudad: 0,
+		id_municipio: 0,
+		id_parroquia: 0,
 		sector: '',
 		calle: '',
 		local: '',
-		name_rc_front_local: '', //8
-		name_rc_in_local: '', //9
 		//step4 Pedido
 		number_post: '',
-		id_payment_method: '',
-		name_rc_constitutive_act: '', //1
-		name_rc_property_document: '', //2
-		name_rc_service_document: '', //3
+		id_payment_method: 0,
+	});
+
+	const [namesImages, setNamesImages] = useState<any>({
+		//step1
+		rc_ident_card: '', //11
+		rc_ref_perso: '', //6
+		//step2
+		rc_rif: '', //10
+		rc_account_number: '', //7
+		rc_ref_bank: '', //5
+		rc_special_contributor: '', //4
+		//step3
+		rc_front_local: '', //8
+		rc_in_local: '', //9
+		//step4
+		rc_constitutive_act: '', //1
+		rc_property_document: '', //2
+		rc_service_document: '', //3
 	});
 
 	const [imagesForm, setImagesForm] = useState({
 		//Step1
-		rc_ident_card: { name: '' }, //11
-		rc_ref_perso: { name: '' }, //6
+		rc_ident_card: null, //11
+		rc_ref_perso: null, //6
 		//Step2
-		rc_rif: { name: '' }, //10
-		rc_account_number: { name: '' }, //7
-		rc_ref_bank: { name: '' }, //5
-		rc_special_contributor: { name: '' }, //4
+		rc_rif: null, //10
+		rc_account_number: null, //7
+		rc_ref_bank: null, //5
+		rc_special_contributor: null, //4
 		//Step3
-		rc_front_local: { name: '' }, //8
-		rc_in_local: { name: '' }, //9
+		rc_front_local: null, //8
+		rc_in_local: null, //9
 		//Step4
-		rc_constitutive_act: { name: '' }, //1
-		rc_property_document: { name: '' }, //2
-		rc_service_document: { name: '' }, //3
+		rc_constitutive_act: null, //1
+		rc_property_document: null, //2
+		rc_service_document: null, //3
 	});
-
 
 	const [ cursedFormError, setCursedFormError ] = useState<any>({
 		//step1 Cliente
@@ -133,75 +149,85 @@ export const FormMaldito = () => {
 	});
 
 	useEffect(() => {
-		if(activeStep === 3){
-			getPayMent().then( (res) => {
-				res.forEach((item) => {
-					setPayment((prevState:any) => (
-						[...prevState, item]
-					))
+		if(activeStep === 0){
+			if(listIdentType.length === 0) {
+				getIdentTypes().then( (res) => {
+					res.forEach((item) => {
+						setListIdentType((prevState:any) => (
+							[...prevState, item]
+						))
+					})
 				})
-			})
+			}	
+		}else if(activeStep === 2){
+			if(listLocation.estado.length === 0) {
+				getEstados().then( (res) => {
+					res.forEach((item ) => {
+							setListLocation((prevState:any) => ({
+								...prevState,
+								estado: [...prevState.estado, item],
+						}))
+					})
+				})
+			}
+		}else if (activeStep === 3){
+			if(listPayment.length === 0) {
+				getPayMent().then( (res) => {
+					res.forEach((item) => {
+						setListPayment((prevState:any) => (
+							[...prevState, item]
+						))
+					})
+				})
+			}
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activeStep])
 
 	useEffect(() => {
-		if(location.estado.length === 0) {
-			getEstados().then( (res) => {
-				res.forEach((item ) => {
-						setLocation((prevState:any) => ({
-							...prevState,
-							estado: [...prevState.estado, item],
-					}))
-				})
-			})
-		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
-
-	useEffect(() => {
-		setCursedForm({ ...cursedForm, ciudad: null, municipio: null, parroquia: null });
-		if(cursedForm.estado){
-			setLocation((prevState:any) => ({ ...prevState, ciudad: [], municipio: [], parroquia: [] }));
-			getCiudad(cursedForm.estado.id).then( (res) => {
-					setLocation({
-							...location,
+		setLocation({ ...location, ciudad: null, municipio: null, parroquia: null });
+		if(cursedForm.id_estado){
+			setListLocation((prevState:any) => ({ ...prevState, ciudad: [], municipio: [], parroquia: [] }));
+			getCiudad(cursedForm.id_estado).then( (res) => {
+					setListLocation({
+							...listLocation,
 							ciudad: res,
 				})
 			})
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [cursedForm.estado])
-
+	}, [location.estado])
 
 	useEffect(() => {
-		setCursedForm({ ...cursedForm, municipio: null, parroquia: null });
-		if(cursedForm.ciudad){
-			getMunicipio(cursedForm.estado.id).then( (res) => {
-					setLocation({
-							...location,
+		setLocation({ ...location, municipio: null, parroquia: null });
+		if(cursedForm.id_ciudad){
+			getMunicipio(cursedForm.id_estado).then( (res) => {
+					setListLocation({
+							...listLocation,
 							municipio: res,
 				})
 			})
 		}	
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [cursedForm.ciudad])
+	}, [location.ciudad])
 
 	useEffect(() => {
-		setCursedForm({ ...cursedForm, parroquia: null });
-		if(cursedForm.municipio){
-			getParroquia(cursedForm.estado.id).then( (res) => {
-					setLocation({
-							...location,
+		setLocation({ ...location, parroquia: null });
+		if(cursedForm.id_municipio){
+			getParroquia(cursedForm.id_municipio).then( (res) => {
+					setListLocation({
+							...listLocation,
 							parroquia: res,
 				})
 			})
 		}	
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [cursedForm.municipio])
+	}, [location.municipio])
 
 	useEffect(() => {
-		if (!valids.allInputNotNUll(valids.sizeStep(activeStep, cursedForm), cursedForm, imagesForm) && 
-				!valids.checkErrorAllInput(valids.sizeStep(activeStep, cursedForm), cursedFormError)
+		if (!valids.allInputNotNUll(valids.sizeStep(activeStep), cursedForm) && 
+				!valids.allImgNotNUll(valids.sizeImagesStep(activeStep), imagesForm, cursedForm.special_contributor) && 
+				!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError)
 		) {
 			setReadyStep(true);
 		} else {
@@ -265,21 +291,6 @@ export const FormMaldito = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  const handleSubmit = () => {
-		if (valids.allInputNotNUll(valids.sizeStep(activeStep, cursedForm), cursedForm, imagesForm)  ||
-				valids.checkErrorAllInput(valids.sizeStep(activeStep, cursedForm), cursedFormError)
-		) 
-			return
-		const formData = new FormData();
-		for (const item of Object.entries(imagesForm)) {
-			const file:any = item[1]
-			if(item[1].name !== ''){
-				formData.append('images', file)
-			}
-		}
-		console.log(formData.getAll('images'))
-  };
-
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
@@ -295,13 +306,33 @@ export const FormMaldito = () => {
 				...imagesForm,
 				[event.target.name]: newFile,
 			});
+			setNamesImages({
+				...namesImages,
+				[event.target.name]: event.target.files[0].name,
+			});
 		}
 	}
+
+  const handleSubmit = () => {
+		if (valids.allInputNotNUll(valids.sizeStep(activeStep), cursedForm)  ||
+				valids.allImgNotNUll(valids.sizeImagesStep(activeStep), imagesForm, cursedForm.special_contributor) || 
+				valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError)
+		) 
+			return
+		const formData = new FormData();
+		for (const item of Object.entries(imagesForm)) {
+			const file:any = item[1]
+			if(item[1] !== null){
+				formData.append('images', file)
+			}
+		}
+		console.log(formData.getAll('images'))
+  };
 
 	const deleteImgContributor = (name: string) => {
 		setImagesForm({
 			...imagesForm,
-			[`rc_${name}`]: { name: '' }
+			[`rc_${name}`]: null
 		});
 	}
 
@@ -309,6 +340,8 @@ export const FormMaldito = () => {
 
 	const getStep = [
 		<Step1
+			namesImages={namesImages}
+			listIdentType={listIdentType}
 			cursedForm={cursedForm}
 			error={cursedFormError}
 			imagesForm={imagesForm}
@@ -318,6 +351,7 @@ export const FormMaldito = () => {
 			validateForm={validateForm}
 		/>,
 		<Step2
+			namesImages={namesImages}
 			cursedForm={cursedForm}
 			imagesForm={imagesForm}
 			setCursedForm={setCursedForm}
@@ -326,7 +360,10 @@ export const FormMaldito = () => {
 			deleteImgContributor={deleteImgContributor}
 		/>,
 		<Step3
+			namesImages={namesImages}
+			listLocation={listLocation}
 			location={location}
+			setLocation={setLocation}
 			cursedForm={cursedForm}
 			imagesForm={imagesForm}
 			setCursedForm={setCursedForm}
@@ -334,7 +371,10 @@ export const FormMaldito = () => {
 			handleChangeImages={handleChangeImages}
 		/>,
 		<Step4
+			namesImages={namesImages}
+			listPayment={listPayment}
 			payment={payment}
+			setPayment={setPayment}
 			cursedForm={cursedForm}
 			imagesForm={imagesForm}
 			setCursedForm={setCursedForm}
