@@ -55,10 +55,10 @@ export const Step2: React.FC<any> = ({namesImages, cursedForm, imagesForm, setCu
 				component="label"
 			>
 				{imagesForm.rc_rif !== null ? (
-					<p className="nameImg" >{namesImages.rc_rif.slice(0, 10)}...</p>
+					<p className="nameImg" >{namesImages.rc_rif.slice(0, 7)}...</p>
 				):(
 					<>
-						<b>Subir</b>
+						<b className="textSubir">Subir</b>
 						<IconButton aria-label="upload picture" component="span">
 							<PhotoCamera />
 						</IconButton>
@@ -77,16 +77,16 @@ export const Step2: React.FC<any> = ({namesImages, cursedForm, imagesForm, setCu
 			<div className={classes.input}>
 				<TextField className={classes.inputA} variant="outlined" required id="standard-required" label="Numero de Cuenta" name='text_account_number' onChange={handleChange} value={cursedForm.text_account_number} />
 				<Button
-					className={classes.imgIdent}
+					className={classes.imgNroAccount}
 					variant="contained"
 					//color="secondary"
 					component="label"
 				>
 				{imagesForm.rc_account_number !== null ? (
-					<p className="nameImg" >{namesImages.rc_account_number.slice(0, 10)}...</p>
+					<p className="nameImg" >{namesImages.rc_account_number.slice(0, 7)}...</p>
 				):(
 					<>
-						<b>Subir</b>
+						<b className="textSubir">Subir</b>
 						<IconButton aria-label="upload picture" component="span">
 							<PhotoCamera />
 						</IconButton>
@@ -138,23 +138,25 @@ export const Step2: React.FC<any> = ({namesImages, cursedForm, imagesForm, setCu
 					/>
 				</Button>
 			</div>
-			<div className={classes.input}>
-				<FormControlLabel 
-					label=''
-					className={classes.inputText}
-					control={
-						<>
-							<b style={{ fontSize: '1rem', paddingTop: '10px', marginTop: 0 }}>Contribuye Especial</b>
-							<Checkbox
-								name="special_contributor"
-								checked={cursedForm.special_contributor}
-								onChange={handleChecked}
-								color="primary"
-								inputProps={{ 'aria-label': 'secondary checkbox' }}
-							/>
-						</>
-					}
-				/>
+			<div className={classes.input} style={{ marginTop: '-2px' }}>
+				<div className={classes.inputText}>
+					<FormControlLabel 
+						label=''
+						control={
+							<>
+								<b style={{
+									fontSize: '1rem'}}>Contribuye Especial</b>
+								<Checkbox
+									name="special_contributor"
+									checked={cursedForm.special_contributor}
+									onChange={handleChecked}
+									color="primary"
+									inputProps={{ 'aria-label': 'secondary checkbox' }}
+								/>
+							</>
+						}
+					/>
+				</div>
 				<Button
 					className={classes.imgContributor}
 					style={{ visibility: cursedForm.special_contributor? 'visible' : 'hidden'}}

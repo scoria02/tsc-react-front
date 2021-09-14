@@ -61,7 +61,7 @@ export const Step1: React.FC<any> = ({namesImages, listIdentType, cursedForm, er
 			</div>
 			<div className={classes.input}>
 				<FormControl variant='outlined' className={classes.inputTipoId}>
-					<InputLabel id='demo-simple-select-outlined-label'>Tipo</InputLabel>
+					<InputLabel id='demo-simple-select-outlined-label'>DI</InputLabel>
 					<Select 
             value={cursedForm.id_ident_type} 
 						onChange={handleSelect} 
@@ -93,7 +93,7 @@ export const Step1: React.FC<any> = ({namesImages, listIdentType, cursedForm, er
 					<p className="nameImg" >{namesImages.rc_ident_card.slice(0, 7)} ...</p>
 				):(
 					<>
-						<b>Subir</b>
+						<b className="textSubir">Subir</b>
 						<IconButton aria-label="upload picture" component="span">
 							<PhotoCamera />
 						</IconButton>

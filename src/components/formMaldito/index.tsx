@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"
-//import { useDispatch } from 'react-redux';
 
 //Material
 import Stepper from '@material-ui/core/Stepper';
@@ -7,6 +6,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import { useStylesFM } from './styles';
+import Swal from 'sweetalert2';
 
 import './index.scss';
 
@@ -63,7 +63,7 @@ export const FormMaldito = () => {
 		name: 'hola',
 		last_name: 'hola',
 		id_ident_type: '',
-		ident_num: '1234567',
+		ident_num: '12345678',
 		phone1: '+584121234567',
 		phone2: '+584121234566',
 		//step2 Comercio
@@ -332,7 +332,27 @@ export const FormMaldito = () => {
 			}
 		}
 		console.log(formData.getAll('images'))
+		handleLoading();
   };
+
+	const handleLoading = () => {
+		Swal.fire({
+			icon: 'info',
+			title: 'Enviando Solicitud...',
+			showConfirmButton: false,
+			didOpen: () => {
+				Swal.showLoading()
+			},
+		});
+		setTimeout(() => {
+			Swal.fire({
+				icon: 'success',
+				title: 'Solicitud Enviada',
+				showConfirmButton: false,
+				timer: 1500
+			});
+		}, 2000)
+	}
 
 	const deleteImgContributor = (name: string) => {
 		setImagesForm({
@@ -391,11 +411,11 @@ export const FormMaldito = () => {
 
 	return (
 		<div className='ed-container container-formMaldito'>
-			<form className="container-form ed-grid">
+			<form className="container-form">
 				<div className="capitan-america"></div>
 				<h1 className="titleFM">Formulario de Activacion</h1>
 						<Stepper activeStep={activeStep} style={{ background: 'none', width: '70vw' }}>
-							{steps.map((label, index) => {
+							{steps.map((label) => {
 								const stepProps: { completed?: boolean } = {};
 								const labelProps: { optional?: React.ReactNode } = {};
 								return (

@@ -86,7 +86,7 @@ export const Step4: React.FC<any> = ({namesImages, listPayment, error ,payment, 
 			<div className={classes.input}>
 				<b
 				className={classes.inputText}>
-				Documento de Propiedad
+					Documento de Propiedad
 				</b>
 				<Button
 					className={classes.imgStep1}

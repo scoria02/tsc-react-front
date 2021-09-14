@@ -2,20 +2,18 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const useStylesFM = makeStyles((styles) => ({
   buttonNext: {
-		marginTop: styles.spacing(3),
-		bottom: '2rem',
+		bottom: '0',
     marginRight: styles.spacing(1),
     textTransform: 'none',
   },
   buttonBack: {
-		marginTop: styles.spacing(3),
-		bottom: '2rem',
+		bottom: '0',
     marginRight: styles.spacing(40),
     textTransform: 'none',
   },
 	input: {
     display: 'flex',
-    width: '50%',
+    width: '100%',
     textAlign: 'center',
 		marginTop: styles.spacing(1),
 		alignSelf: 'center',
@@ -38,7 +36,6 @@ export const useStylesFM = makeStyles((styles) => ({
     display: 'flex',
     width: '100%',
     textAlign: 'center',
-		marginTop: styles.spacing(1),
 		alignSelf: 'center',
 	},
 	inputTipoId: {
@@ -53,7 +50,7 @@ export const useStylesFM = makeStyles((styles) => ({
     textAlign: 'center',
 		alignSelf: 'center',
 		fontSize: '1.2rem',
-    width: '50%',
+    width: '100%',
 		padding: '15px',
 		marginTop: styles.spacing(1),
 	},
@@ -72,22 +69,23 @@ export const useStylesFM = makeStyles((styles) => ({
     width: '25%',
 	},
 	imgNroAccount: {
-		marginTop: styles.spacing(1),
+		marginLeft: styles.spacing(1),
+		marginTop: styles.spacing(0.5),
 		marginBottom: styles.spacing(0.2),
+		padding: 0,
     textTransform: 'none',
     width: '25%',
-		marginLeft: styles.spacing(1),
 	},
 	imgContributor: {
     textTransform: 'none',
-    width: '35%',
+    width: '50%',
 		marginTop: styles.spacing(1),
 		marginBottom: styles.spacing(1),
 		marginLeft: styles.spacing(1),
 	},
 	imgStep1: {
-		marginTop: styles.spacing(1),
-		marginBottom: styles.spacing(3),
+		marginTop: styles.spacing(0.5),
+		marginBottom: styles.spacing(0.5),
     textTransform: 'none',
     width: '50%',
 		marginLeft: styles.spacing(0),
@@ -95,6 +93,7 @@ export const useStylesFM = makeStyles((styles) => ({
 	imgStep3: {
 		marginTop: styles.spacing(1),
 		marginBottom: styles.spacing(1),
+		marginLeft: styles.spacing(1),
     textTransform: 'none',
     width: '40%',
 	},
