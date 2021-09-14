@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react"
+import  { Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
 
 //Material
 import Stepper from '@material-ui/core/Stepper';
@@ -7,6 +9,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import { useStylesFM } from './styles';
 import Swal from 'sweetalert2';
+import { baseUrl } from '../../routers/url';
 
 import './index.scss';
 
@@ -32,8 +35,13 @@ function getSteps() {
   return ['Informacion Personal del Cliente', 'Informacion del Comercio I', 'Ubicacion del Comercio', 'Pedido'];
 }
 
-export const FormMaldito = () => {
+interface Props{
+	setSelectedIndex: any
+}
+
+export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	const classes = useStylesFM();
+	const history = useHistory();
 	const [activeStep, setActiveStep] = useState<number>(0);
 	const [readyStep, setReadyStep] = React.useState<boolean>(false);
 
@@ -293,7 +301,7 @@ export const FormMaldito = () => {
 	};
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1)
   };
 
   const handleBack = () => {
@@ -331,8 +339,9 @@ export const FormMaldito = () => {
 				formData.append('images', file)
 			}
 		}
-		console.log(formData.getAll('images'))
 		handleLoading();
+
+		//console.log(formData.getAll('images'))
   };
 
 	const handleLoading = () => {
@@ -351,6 +360,9 @@ export const FormMaldito = () => {
 				showConfirmButton: false,
 				timer: 1500
 			});
+			//Redirect home
+			setSelectedIndex(0);
+			history.push(baseUrl);
 		}, 2000)
 	}
 
