@@ -68,7 +68,7 @@ export const FormMaldito = () => {
 		name_rc_ref_bank: '', //5
 		special_contributor: false,
 		name_rc_special_contributor: '', //4
-		//Step3 Location
+		//Step3 Location Comercio
 		estado: null,
 		ciudad: null,
 		municipio: null,
