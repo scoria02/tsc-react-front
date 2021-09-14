@@ -2,13 +2,13 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const useStylesFM = makeStyles((styles) => ({
   buttonNext: {
-		marginTop: styles.spacing(5),
+		marginTop: styles.spacing(3),
 		bottom: '2rem',
     marginRight: styles.spacing(1),
     textTransform: 'none',
   },
   buttonBack: {
-		marginTop: styles.spacing(5),
+		marginTop: styles.spacing(3),
 		bottom: '2rem',
     marginRight: styles.spacing(40),
     textTransform: 'none',
@@ -25,7 +25,6 @@ export const useStylesFM = makeStyles((styles) => ({
     width: '50%',
     textAlign: 'center',
 		alignSelf: 'center',
-		marginTop: styles.spacing(1),
 		marginRight: styles.spacing(0.5),
 	},
 	inputN: {
@@ -33,7 +32,6 @@ export const useStylesFM = makeStyles((styles) => ({
     width: '50%',
     textAlign: 'center',
 		alignSelf: 'center',
-		marginTop: styles.spacing(1),
 		marginLeft: styles.spacing(0.5),
 	},
 	inputA: {
@@ -64,7 +62,6 @@ export const useStylesFM = makeStyles((styles) => ({
 		alignSelf: 'center',
 		fontSize: '1rem',
     width: '50%',
-		marginTop: styles.spacing(1),
 	},
 	imgIdent: {
 		marginLeft: styles.spacing(1),

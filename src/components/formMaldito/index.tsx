@@ -62,7 +62,7 @@ export const FormMaldito = () => {
 		email: 'jesus',
 		name: 'hola',
 		last_name: 'hola',
-		id_ident_type: 1,
+		id_ident_type: '',
 		ident_num: '1234567',
 		phone1: '+584121234567',
 		phone2: '+584121234566',
@@ -82,10 +82,11 @@ export const FormMaldito = () => {
 		calle: '',
 		local: '',
 		//step4 Pedido
-		number_post: '',
+		number_post: 1,
 		id_payment_method: 0,
 	});
 
+	//name images
 	const [namesImages, setNamesImages] = useState<any>({
 		//step1
 		rc_ident_card: '', //11
@@ -104,6 +105,7 @@ export const FormMaldito = () => {
 		rc_service_document: '', //3
 	});
 
+	//images
 	const [imagesForm, setImagesForm] = useState({
 		//Step1
 		rc_ident_card: null, //11
@@ -270,6 +272,9 @@ export const FormMaldito = () => {
 				}else
 					temp.phone2 = true;
 				break;
+				case 'number_post':
+					temp.number_post = valids.validNum_post(value);
+				break;
 			default:
 				break;
 		}
@@ -373,6 +378,7 @@ export const FormMaldito = () => {
 		<Step4
 			namesImages={namesImages}
 			listPayment={listPayment}
+			error={cursedFormError}
 			payment={payment}
 			setPayment={setPayment}
 			cursedForm={cursedForm}

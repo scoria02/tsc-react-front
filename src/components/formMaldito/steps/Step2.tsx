@@ -141,6 +141,7 @@ export const Step2: React.FC<any> = ({namesImages, cursedForm, imagesForm, setCu
 			<div className={classes.input}>
 				<FormControlLabel 
 					label=''
+					className={classes.inputText}
 					control={
 						<>
 							<b style={{ fontSize: '1rem', paddingTop: '10px', marginTop: 0 }}>Contribuye Especial</b>

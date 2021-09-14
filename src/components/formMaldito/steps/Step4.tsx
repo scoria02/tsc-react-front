@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 //Pedido
-export const Step4: React.FC<any> = ({namesImages, listPayment, payment, setPayment, cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages}) => {
+export const Step4: React.FC<any> = ({namesImages, listPayment, error ,payment, setPayment, cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages}) => {
 	const classes = useStylesFM();
 
 	const handleSelectPayment = (event: any, value: any, item: string) => {
@@ -29,9 +29,19 @@ export const Step4: React.FC<any> = ({namesImages, listPayment, payment, setPaym
 
   return (
     <>
-      <TextField className={classes.input} variant="outlined" required id="standard-required" label="Numero de Puntos" name='number_post' onChange={handleChange} value={cursedForm.number_post} />
+			<TextField
+				className={classes.input} 
+				variant="outlined" 
+				required 
+				id="standard-required" 
+				label="Numero de Puntos" 
+				type="number"
+				name='number_post'
+				onChange={handleChange} 
+				error={error.number_post}
+				value={cursedForm.number_post}/>
 				<Autocomplete
-						className={classes.inputM}
+						className={classes.input}
 						onChange={(event,value) => handleSelectPayment(event,value, 'payment_method')}
 						value={payment || null}
 						options={listPayment}
