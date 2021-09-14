@@ -260,7 +260,7 @@ export const FormMaldito = () => {
 				if(value.slice(0,3) === '+58'){
 					temp.phone1 = valids.validPhone(value.slice(3));
 					if(cursedForm.phone2.length > 3){
-						temp.phone2 = valids.validPhone2(cursedForm.phone1.slice(3), value.slice(3));
+						temp.phone2 = valids.validPhone2(cursedForm.phone2.slice(3), value.slice(3));
 					}
 				}else{
 					temp.phone1 = true;
