@@ -63,6 +63,14 @@ export const validPhone2 = (value: string, value2: string):boolean => {
 	return true;
 }
 
+export const validNum_post= (value: number):boolean => {
+	if(value < 1) // || value  > numero de puntos disponibles en la BD
+		return true;
+	else
+		return false
+}
+
+//Extras
 export const sizeStep = (active: number): number => {
 	switch (active) {
 		case 0:

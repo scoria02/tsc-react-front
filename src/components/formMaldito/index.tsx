@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-//import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 //Material
 import Stepper from '@material-ui/core/Stepper';
@@ -7,9 +7,10 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import { useStylesFM } from './styles';
+import Swal from 'sweetalert2';
+import { baseUrl } from '../../routers/url';
 
 import './index.scss';
-
 
 import * as valids from './validForm';
 
@@ -32,8 +33,13 @@ function getSteps() {
   return ['Informacion Personal del Cliente', 'Informacion del Comercio I', 'Ubicacion del Comercio', 'Pedido'];
 }
 
-export const FormMaldito = () => {
+interface Props{
+	setSelectedIndex: any
+}
+
+export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	const classes = useStylesFM();
+	const history = useHistory();
 	const [activeStep, setActiveStep] = useState<number>(0);
 	const [readyStep, setReadyStep] = React.useState<boolean>(false);
 
@@ -62,8 +68,8 @@ export const FormMaldito = () => {
 		email: 'jesus',
 		name: 'hola',
 		last_name: 'hola',
-		id_ident_type: 1,
-		ident_num: '1234567',
+		id_ident_type: '',
+		ident_num: '12345678',
 		phone1: '+584121234567',
 		phone2: '+584121234566',
 		//step2 Comercio
@@ -82,10 +88,11 @@ export const FormMaldito = () => {
 		calle: '',
 		local: '',
 		//step4 Pedido
-		number_post: '',
+		number_post: 1,
 		id_payment_method: 0,
 	});
 
+	//name images
 	const [namesImages, setNamesImages] = useState<any>({
 		//step1
 		rc_ident_card: '', //11
@@ -104,6 +111,7 @@ export const FormMaldito = () => {
 		rc_service_document: '', //3
 	});
 
+	//images
 	const [imagesForm, setImagesForm] = useState({
 		//Step1
 		rc_ident_card: null, //11
@@ -258,7 +266,7 @@ export const FormMaldito = () => {
 				if(value.slice(0,3) === '+58'){
 					temp.phone1 = valids.validPhone(value.slice(3));
 					if(cursedForm.phone2.length > 3){
-						temp.phone2 = valids.validPhone2(cursedForm.phone1.slice(3), value.slice(3));
+						temp.phone2 = valids.validPhone2(cursedForm.phone2.slice(3), value.slice(3));
 					}
 				}else{
 					temp.phone1 = true;
@@ -269,6 +277,9 @@ export const FormMaldito = () => {
 					temp.phone2 = valids.validPhone2(value.slice(3), cursedForm.phone1.slice(3));
 				}else
 					temp.phone2 = true;
+				break;
+				case 'number_post':
+					temp.number_post = valids.validNum_post(value);
 				break;
 			default:
 				break;
@@ -288,7 +299,7 @@ export const FormMaldito = () => {
 	};
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1)
   };
 
   const handleBack = () => {
@@ -326,8 +337,32 @@ export const FormMaldito = () => {
 				formData.append('images', file)
 			}
 		}
-		console.log(formData.getAll('images'))
+		handleLoading();
+
+		//console.log(formData.getAll('images'))
   };
+
+	const handleLoading = () => {
+		Swal.fire({
+			icon: 'info',
+			title: 'Enviando Solicitud...',
+			showConfirmButton: false,
+			didOpen: () => {
+				Swal.showLoading()
+			},
+		});
+		setTimeout(() => {
+			Swal.fire({
+				icon: 'success',
+				title: 'Solicitud Enviada',
+				showConfirmButton: false,
+				timer: 1500
+			});
+			//Redirect home
+			setSelectedIndex(0);
+			history.push(baseUrl);
+		}, 2000)
+	}
 
 	const deleteImgContributor = (name: string) => {
 		setImagesForm({
@@ -373,6 +408,7 @@ export const FormMaldito = () => {
 		<Step4
 			namesImages={namesImages}
 			listPayment={listPayment}
+			error={cursedFormError}
 			payment={payment}
 			setPayment={setPayment}
 			cursedForm={cursedForm}
@@ -385,11 +421,11 @@ export const FormMaldito = () => {
 
 	return (
 		<div className='ed-container container-formMaldito'>
-			<form className="container-form ed-grid">
+			<form className="container-form">
 				<div className="capitan-america"></div>
 				<h1 className="titleFM">Formulario de Activacion</h1>
 						<Stepper activeStep={activeStep} style={{ background: 'none', width: '70vw' }}>
-							{steps.map((label, index) => {
+							{steps.map((label) => {
 								const stepProps: { completed?: boolean } = {};
 								const labelProps: { optional?: React.ReactNode } = {};
 								return (

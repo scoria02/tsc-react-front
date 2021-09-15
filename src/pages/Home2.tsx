@@ -33,7 +33,7 @@ import { FormMaldito } from '../components/formMaldito';
 import GestionUsuarios from '../components/GestionUsuarios';
 import { Aceptacion } from '../components/milpagos/Aceptacion';
 import luffy from '../img/itachi2.png';
-import { urlAceptacion } from '../routers/url';
+import { urlAceptacion, urlFM } from '../routers/url';
 import { FinishLoading } from '../store/actions/ui';
 //Redux
 import { RootState } from '../store/store';
@@ -172,6 +172,9 @@ export default function Home() {
 	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
 		if (index === 3) {
 			history.push(urlAceptacion);
+		}
+		if (index === 5) {
+			history.push(urlFM);
 		}
 		setSelectedIndex(index);
 	};
@@ -433,9 +436,15 @@ export default function Home() {
 						}}
 					/>
 				)}
-
 				{selectedIndex === 4 && <GestionUsuarios />}
-				{selectedIndex === 5 && <FormMaldito />}
+				{selectedIndex === 5 && (
+					<Route
+						path={urlFM}
+						render={() => {
+							return <FormMaldito setSelectedIndex={setSelectedIndex}/>;
+						}}
+					/>
+				)}
 			</main>
 		</div>
 	);

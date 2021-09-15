@@ -9,7 +9,19 @@ import IconButton from '@material-ui/core/IconButton';
 
 import { useStylesFM } from '../styles';
 
-export const Step3: React.FC<any> = ({namesImages, listLocation, location, setLocation, cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages}) => {
+export const Step3: React.FC<any> = ({
+	namesImages,
+	listLocation,
+	location,
+	setLocation,
+	cursedForm,
+	imagesForm, 
+	setCursedForm,
+	handleChange,
+	handleChangeImages,
+	updateCiudad
+}) => {
+
 	const classes = useStylesFM();
 
 	const handleSelectEstado = (event: any, value: any, item: string) => {
@@ -39,7 +51,9 @@ export const Step3: React.FC<any> = ({namesImages, listLocation, location, setLo
 			<div className={classes.input}>
 				<Autocomplete
 						className={classes.inputM}
-						onChange={(event,value) => handleSelectEstado(event,value,'estado')}
+						onChange={(event,value) => {
+							handleSelectEstado(event,value,'estado') 
+						}}
 						value={location.estado || null}
 						options={listLocation.estado}
 						getOptionLabel={(option:any) => option.estado ? option.estado : ''}
