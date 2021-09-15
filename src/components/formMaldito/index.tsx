@@ -102,9 +102,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		rc_account_number: '', //7
 		rc_ref_bank: '', //5
 		rc_special_contributor: '', //4
-		//step3
-		rc_front_local: '', //8
-		rc_in_local: '', //9
 		//step4
 		rc_constitutive_act: '', //1
 		rc_property_document: '', //2
@@ -121,9 +118,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		rc_account_number: null, //7
 		rc_ref_bank: null, //5
 		rc_special_contributor: null, //4
-		//Step3
-		rc_front_local: null, //8
-		rc_in_local: null, //9
 		//Step4
 		rc_constitutive_act: null, //1
 		rc_property_document: null, //2
@@ -424,13 +418,15 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			<form className="container-form">
 				<div className="capitan-america"></div>
 				<h1 className="titleFM">Formulario de Activacion</h1>
-						<Stepper activeStep={activeStep} style={{ background: 'none', width: '70vw' }}>
+				<Stepper
+					alternativeLabel 
+					nonLinear 
+					activeStep={activeStep} style={{ background: 'none', width: '70vw' }}>
 							{steps.map((label) => {
 								const stepProps: { completed?: boolean } = {};
-								const labelProps: { optional?: React.ReactNode } = {};
 								return (
 									<Step key={label} {...stepProps}>
-										<StepLabel {...labelProps}>{label}</StepLabel>
+										<StepLabel>{label}</StepLabel>
 									</Step>
 								);
 							})}

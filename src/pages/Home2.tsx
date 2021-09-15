@@ -14,26 +14,28 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import HomeIcon from '@material-ui/icons/Home';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import WorkIcon from '@material-ui/icons/Work';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import PeopleIcon from '@material-ui/icons/People';
-import SettingsIcon from '@material-ui/icons/Settings';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Route, useHistory } from 'react-router-dom';
+//Components
+import Inicio from '../components/home';
 import { FormMaldito } from '../components/formMaldito';
 import GestionUsuarios from '../components/GestionUsuarios';
 import { Aceptacion } from '../components/milpagos/Aceptacion';
 import luffy from '../img/itachi2.png';
-import { urlAceptacion, urlFM } from '../routers/url';
+import { baseUrl ,urlAceptacion, urlFM } from '../routers/url';
 import { FinishLoading } from '../store/actions/ui';
 //Redux
 import { RootState } from '../store/store';
@@ -354,10 +356,11 @@ export default function Home() {
 				<List>
 					<ListItem button onClick={(event) => handleListItemClick(event, 0)}>
 						<ListItemIcon>
-							<InboxIcon />
+							<HomeIcon />
 						</ListItemIcon>
-						<ListItemText primary='Home' />
+						<ListItemText primary='Inicio' />
 					</ListItem>
+					{/*
 					{open2 && (
 						<ListItem button onClick={(event) => handleListItemClick(event, 2)}>
 							<ListItemIcon>
@@ -366,11 +369,12 @@ export default function Home() {
 							<ListItemText primary='Prueba' />
 						</ListItem>
 					)}
+					*/}
 
 					<ListItem button onClick={(event) => handleListItemClick(event, 3)}>
 						<Link to={'Aceptacion'}>
 							<ListItemIcon>
-								<InboxIcon />
+								<WorkIcon />
 							</ListItemIcon>
 						</Link>
 						<ListItemText primary='Aceptacion' />
@@ -383,6 +387,7 @@ export default function Home() {
 					</ListItem>
 				</List>
 				<Divider />
+					{/*
 				<List>
 					{['Trash', 'Spam'].map((text, index) => (
 						<ListItem button key={text}>
@@ -397,21 +402,17 @@ export default function Home() {
 						<ListItemText primary={'Gestion de Usuarios'} />
 					</ListItem>
 				</List>
+					*/}
 			</Drawer>
 			<main className={classes.content}>
 				<div className={classes.toolbar} />
 				{selectedIndex === 0 && (
-					<Typography paragraph>
-						Aldrin Mendo amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-						magna aliqua. Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi
-						tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis
-						tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing.
-						Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh
-						cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis imperdiet
-						massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum varius
-						duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien faucibus et
-						molestie ac.
-					</Typography>
+					<Route
+						path={baseUrl}
+						render={() => {
+							return <Inicio/>;
+						}}
+					/>
 				)}
 
 				{selectedIndex === 2 && (
@@ -427,7 +428,6 @@ export default function Home() {
 						sapien faucibus et molestie ac.
 					</Typography>
 				)}
-				{/* {selectedIndex === 3 && <Aceptacion />} */}
 				{selectedIndex === 3 && (
 					<Route
 						path={urlAceptacion}

@@ -76,11 +76,11 @@ export const sizeStep = (active: number): number => {
 		case 0:
 			return 6;
 		case 1:
-			return 12; //+1 si check contributor is on
+			return 12; 
 		case 2:
-			return 19; //+1 si check contributor is on
+			return 19; 
 		case 3:
-			return 21; //+1 si check contributor is on
+			return 21; 
 		default:
 			return 0;
 	}
@@ -91,11 +91,11 @@ export const sizeImagesStep = (active: number): number => {
 		case 0:
 			return 1;
 		case 1:
-			return 5; //+1 si check contributor is on
+			return 5; 
 		case 2:
-			return 7; //+1 si check contributor is on
+			return 5; 
 		case 3:
-			return 10; //+1 si check contributor is on
+			return 8; 
 		default:
 			return 0;
 	}
