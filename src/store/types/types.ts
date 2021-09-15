@@ -12,6 +12,13 @@ export enum ActionType {
 	registerUser = '[Auth] Register User',
 	registerUserError = '[Auth] Register User Error',
 
+	//FM Solicitud
+	sendClient= '[FM] send Client',
+	sendClientError= '[FM] send Client Error',
+	sendImages= '[FM] send Images',
+	sendImagesError= '[FM] send Images Error',
+	cleanFm = '[FM] clear FM',
+
 	//Modals
 	uiOpenModal = '[ui] Open modal',
 	uiCloseModal = '[ui] Close modal',

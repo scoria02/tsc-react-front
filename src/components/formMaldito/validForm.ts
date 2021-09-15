@@ -80,7 +80,9 @@ export const sizeStep = (active: number): number => {
 		case 2:
 			return 19; 
 		case 3:
-			return 21; 
+			return 29; 
+		case 4:
+			return 29; 
 		default:
 			return 0;
 	}
@@ -95,6 +97,8 @@ export const sizeImagesStep = (active: number): number => {
 		case 2:
 			return 5; 
 		case 3:
+			return 5; 
+		case 4:
 			return 8; 
 		default:
 			return 0;

@@ -47,7 +47,7 @@ export const Step2: React.FC<any> = ({namesImages, cursedForm, imagesForm, setCu
 						<MenuItem value='3'>J</MenuItem>
 					</Select>
 				</FormControl>
-				<TextField className={classes.inputDoc} variant="outlined" required id="standard-required" label={cursedForm.id_ident_type_commerce === 3 ? 'Rif' : 'C.I.'} name='ident_num_commerce' onChange={handleChange} value={cursedForm.ident_num_commerce} />
+				<TextField className={classes.inputDoc} variant="outlined" required id="standard-required" label={cursedForm.id_ident_type_commerce === 3 ? 'Numero de Rif' : 'C.I.'} name='ident_num_commerce' onChange={handleChange} value={cursedForm.ident_num_commerce} />
 			<Button
 				className={classes.imgIdent}
 				variant="contained"
@@ -74,8 +74,17 @@ export const Step2: React.FC<any> = ({namesImages, cursedForm, imagesForm, setCu
 				/>
 			</Button>
 			</div>
+			<TextField className={classes.input} variant="outlined" required id="standard-required" label="Actividad Comercial" name='id_activity' onChange={handleChange} value={cursedForm.id_activity} />
 			<div className={classes.input}>
-				<TextField className={classes.inputA} variant="outlined" required id="standard-required" label="Numero de Cuenta" name='text_account_number' onChange={handleChange} value={cursedForm.text_account_number} />
+				<TextField 
+					className={classes.inputA}
+					variant="outlined"
+					required
+					id="standard-required"
+					label="Numero de Cuenta" 
+					name='text_account_number'
+					onChange={handleChange}
+					value={cursedForm.text_account_number}/>
 				<Button
 					className={classes.imgNroAccount}
 					variant="contained"
@@ -102,7 +111,6 @@ export const Step2: React.FC<any> = ({namesImages, cursedForm, imagesForm, setCu
 				/>
 				</Button>
 			</div>
-			<TextField className={classes.input} variant="outlined" required id="standard-required" label="Actividad Comercial" name='id_activity' onChange={handleChange} value={cursedForm.id_activity} />
 			<div className={classes.input}>
 				<b
 				className={classes.inputText}>

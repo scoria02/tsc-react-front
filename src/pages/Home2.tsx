@@ -377,7 +377,7 @@ export default function Home() {
 								<WorkIcon />
 							</ListItemIcon>
 						</Link>
-						<ListItemText primary='Aceptacion' />
+						<ListItemText primary='Admision' />
 					</ListItem>
 					<ListItem button onClick={(event) => handleListItemClick(event, 5)}>
 						<ListItemIcon>

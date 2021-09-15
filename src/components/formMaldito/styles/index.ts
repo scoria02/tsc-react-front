@@ -32,6 +32,20 @@ export const useStylesFM = makeStyles((styles) => ({
 		alignSelf: 'center',
 		marginLeft: styles.spacing(0.5),
 	},
+	inputMP: {
+    display: 'flex',
+    width: '30%',
+    textAlign: 'center',
+		alignSelf: 'center',
+		marginRight: styles.spacing(0.5),
+	},
+	inputNP: {
+    display: 'flex',
+    width: '70%',
+    textAlign: 'center',
+		alignSelf: 'center',
+		marginLeft: styles.spacing(0.5),
+	},
 	inputA: {
     display: 'flex',
     width: '100%',
