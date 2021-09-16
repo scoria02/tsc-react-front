@@ -1,7 +1,7 @@
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
 import Badge from '@material-ui/core/Badge';
-import CssBaseline from '@material-ui/core/CssBaseline';
+// import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,31 +14,30 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import HomeIcon from '@material-ui/icons/Home';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import WorkIcon from '@material-ui/icons/Work';
+import HomeIcon from '@material-ui/icons/Home';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import WorkIcon from '@material-ui/icons/Work';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Route, useHistory } from 'react-router-dom';
-//Components
-import Inicio from '../components/home';
 import { FormMaldito } from '../components/formMaldito';
 import GestionUsuarios from '../components/GestionUsuarios';
 import { Aceptacion } from '../components/milpagos/Aceptacion';
 import luffy from '../img/itachi2.png';
-import { baseUrl ,urlAceptacion, urlFM } from '../routers/url';
+import { baseUrl, urlAceptacion, urlFM } from '../routers/url';
 import { FinishLoading } from '../store/actions/ui';
 //Redux
 import { RootState } from '../store/store';
+//Components
+import Inicio from './Home';
 
 const drawerWidth = 240;
 
@@ -141,17 +140,25 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Home() {
 	const dispatch = useDispatch();
 	const classes = useStyles();
-	const theme = useTheme();
-	const [open, setOpen] = React.useState(false);
-	const [open2] = React.useState(true);
-	const [selectedIndex, setSelectedIndex] = React.useState(0);
 	const history = useHistory();
+	const theme = useTheme();
+	const menuId = 'primary-search-account-menu';
+	const mobileMenuId = 'primary-search-account-menu-mobile';
 
-	const userDB: any = useSelector((state: RootState) => state.auth.user);
+	const [open2] = React.useState(true);
+	const [open, setOpen] = React.useState(false);
+	const [selectedIndex, setSelectedIndex] = React.useState(0);
+	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [user, setUser] = React.useState({
 		name: '',
 		last_name: '',
 	});
+
+	const isMenuOpen = Boolean(anchorEl);
+	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+	const userDB: any = useSelector((state: RootState) => state.auth.user);
 
 	useEffect(() => {
 		if (userDB) {
@@ -180,11 +187,6 @@ export default function Home() {
 		}
 		setSelectedIndex(index);
 	};
-	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
-
-	const isMenuOpen = Boolean(anchorEl);
-	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
 	const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -203,7 +205,6 @@ export default function Home() {
 		setMobileMoreAnchorEl(event.currentTarget);
 	};
 
-	const menuId = 'primary-search-account-menu';
 	const renderMenu = (
 		<Menu
 			anchorEl={anchorEl}
@@ -219,7 +220,6 @@ export default function Home() {
 		</Menu>
 	);
 
-	const mobileMenuId = 'primary-search-account-menu-mobile';
 	const renderMobileMenu = (
 		<Menu
 			anchorEl={mobileMoreAnchorEl}
@@ -273,7 +273,7 @@ export default function Home() {
 
 	return (
 		<div className={classes.root}>
-			<CssBaseline />
+			{/* <CssBaseline /> */}
 			<AppBar
 				position='fixed'
 				className={clsx(classes.appBar, {
@@ -387,7 +387,7 @@ export default function Home() {
 					</ListItem>
 				</List>
 				<Divider />
-					{/*
+				{/*
 				<List>
 					{['Trash', 'Spam'].map((text, index) => (
 						<ListItem button key={text}>
@@ -410,7 +410,7 @@ export default function Home() {
 					<Route
 						path={baseUrl}
 						render={() => {
-							return <Inicio/>;
+							return <Inicio />;
 						}}
 					/>
 				)}
@@ -441,7 +441,7 @@ export default function Home() {
 					<Route
 						path={urlFM}
 						render={() => {
-							return <FormMaldito setSelectedIndex={setSelectedIndex}/>;
+							return <FormMaldito setSelectedIndex={setSelectedIndex} />;
 						}}
 					/>
 				)}
