@@ -8,27 +8,22 @@ import LRU from 'lru-cache';
 //const URL = 'http://localhost';
 const URL = 'http://10.198.68.21';
 const Port = '5051';
+const PortFiles = '6060';
 
 const configAxios: AxiosRequestConfig = {
 	baseURL: `${URL}:${Port}`,
 	headers: { common: { token: localStorage.getItem('token') } },
-	// transformResponse: (data: any) => {
-	// 	const data_json = JSON.parse(data);
+};
 
-	// 	console.log('data_json', data_json);
-
-	// 	if (data_json.token) {
-	// 		if (localStorage.getItem('token') === null) localStorage.removeItem('token');
-	// 		localStorage.setItem('token', data_json.token);
-	// 	}
-
-	// 	return data_json;
-	// },
+const configAxiosFiles: AxiosRequestConfig = {
+	baseURL: `${URL}:${PortFiles}`,
+	headers: { common: { token: localStorage.getItem('token') } },
 };
 
 Axios.defaults.headers['Content-Type'] = 'application/json';
 
 const axios = Axios.create(configAxios);
+export const axiosFiles = Axios.create(configAxiosFiles);
 
 const cache = new LRU({ max: 10 });
 

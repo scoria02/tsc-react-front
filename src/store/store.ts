@@ -19,7 +19,7 @@ const reducers = combineReducers({
 	auth: authReducer,
 	alert: alert,
 	acceptance: acceptReducer,
-	fmReducer: fmReducer
+	fm: fmReducer
 });
 
 export const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));

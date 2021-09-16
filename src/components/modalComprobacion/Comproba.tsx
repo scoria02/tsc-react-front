@@ -20,8 +20,6 @@ import PasoCuatro from '../pasosComprobacion/PasoCuatro';
 import PasoCuaTroDos from '../pasosComprobacion/PasoCuatroDos';
 import PasoCinco from '../pasosComprobacion/PasoCinco';
 import PasoCincoDos from '../pasosComprobacion/PasoCincoDos';
-import PasoSiete from '../pasosComprobacion/PasoSiete';
-import PasoSieteDos from '../pasosComprobacion/PasoSieteDos';
 
 import './comprobar.scss';
 import { stepComplete } from '../../store/actions/accept';
@@ -62,7 +60,6 @@ function getSteps() {
 		'Validacion (Acta Constitutiva / Doc. Propiedad)',
 		'Validacion (Referencia Personal / Servicios)',
 		'Validacion Contribuyen Especial',
-		'Foto de Local',
 	];
 }
 
@@ -149,22 +146,8 @@ function getStepContent(step: number) {
 					</div>
 				</div>
 			);
-		case 6:
-			return (
-				<div className='comprobar_container_2'>
-					<div>
-						{/* <h1 className='titulo'>Informacion </h1> */}
-						<PasoSiete />
-					</div>
-					<div>
-						{/* <h1 className='titulo'>Informacion </h1> */}
-						<PasoSieteDos />
-					</div>
-				</div>
-			);
-
 		default:
-			return 'Unknown step';
+			return 'Invalid step';
 	}
 }
 
