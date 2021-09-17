@@ -166,7 +166,6 @@ export const checkErrorAllInput = (last: number, errors: any): boolean => {
 	return false;
 }
 
-
 export const phoneNotNull = (value: string): boolean => {
 	if(value.slice(0,3) === '+58' && value.slice(3).length > 0){
 		return false

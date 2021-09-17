@@ -9,10 +9,22 @@ import Button from '@material-ui/core/Button';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import IconButton from '@material-ui/core/IconButton';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import { useStylesFM } from '../styles';
 
-export const Step2: React.FC<any> = ({namesImages, cursedForm, imagesForm, setCursedForm, handleChange, handleChangeImages, deleteImgContributor}) => {
+export const Step2: React.FC<any> = ({
+	listActivity,
+	activity,
+	setActivity,
+	namesImages,
+	cursedForm,
+	imagesForm,
+	setCursedForm,
+	handleChange,
+	handleChangeImages,
+	deleteImgContributor
+}) => {
 	const classes = useStylesFM();
 
 	const handleSelect = (event: any) => {
@@ -20,6 +32,22 @@ export const Step2: React.FC<any> = ({namesImages, cursedForm, imagesForm, setCu
 			...cursedForm,
 			[event.target.name]: parseInt(event.target.value, 10),
 		});
+	};
+
+	const handleSelectActivity= (event: any, value: any, item: string) => {
+		if(value){
+			setCursedForm({
+				...cursedForm,
+				[`id_${item}`]: value.id
+			});
+			setActivity(value);
+		} else{
+			setCursedForm({
+				...cursedForm,
+				[`id_${item}`]: 0
+			});
+			setActivity(null);
+		}
 	};
 
 	const handleChecked = (e: any) => {
@@ -74,7 +102,16 @@ export const Step2: React.FC<any> = ({namesImages, cursedForm, imagesForm, setCu
 				/>
 			</Button>
 			</div>
-			<TextField className={classes.input} variant="outlined" required id="standard-required" label="Actividad Comercial" name='id_activity' onChange={handleChange} value={cursedForm.id_activity} />
+			<Autocomplete
+					className={classes.input}
+					onChange={(event,value) => {
+						handleSelectActivity(event,value,'activity') 
+					}}
+					options={listActivity}
+					value={activity || null}
+					getOptionLabel={(option:any) => option.name ? option.name : ''}
+					renderInput={(params:any) => <TextField {...params}  name="activity" label="Actividad Comercial" variant="outlined" />}
+				/>
 			<div className={classes.input}>
 				<TextField 
 					className={classes.inputA}

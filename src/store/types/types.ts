@@ -13,10 +13,14 @@ export enum ActionType {
 	registerUserError = '[Auth] Register User Error',
 
 	//FM Solicitud
-	sendClient= '[FM] send Client',
-	sendClientError= '[FM] send Client Error',
-	sendImages= '[FM] send Images',
-	sendImagesError= '[FM] send Images Error',
+	validClient = '[FM] validation Client',
+	validClientError = '[FM] validation Client Error',
+	sendClient = '[FM] send Client',
+	sendClientError = '[FM] send Client Error',
+	sendCommerce = '[FM] send Commerce',
+	sendCommerceError = '[FM] send Commerce Error',
+	sendImages = '[FM] send Images',
+	sendImagesError = '[FM] send Images Error',
 	cleanFm = '[FM] clear FM',
 
 	//Modals
