@@ -5,8 +5,8 @@ import LRU from 'lru-cache';
 // Set config defaults when creating the instance
 
 //const urlLocal = 'http://localhost';
-//const URL = 'http://localhost';
-const URL = 'http://10.198.68.21';
+const URL = 'http://localhost';
+//const URL = 'http://10.198.68.21';
 const Port = '5051';
 const PortFiles = '6060';
 

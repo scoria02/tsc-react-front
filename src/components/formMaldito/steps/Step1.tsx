@@ -13,7 +13,19 @@ import IconButton from '@material-ui/core/IconButton';
 //sytles
 import { useStylesFM } from '../styles';
 
-export const Step1: React.FC<any> = ({namesImages, listIdentType, cursedForm, error, imagesForm, setCursedForm, handleChange, handleChangeImages,  validateForm}) => {
+export const Step1: React.FC<any> = ({
+	namesImages,
+	listIdentType,
+	cursedForm,
+	error,
+	validEmailIdent,
+	imagesForm,
+	setCursedForm,
+	handleChange,
+	handleChangeImages,
+	handleBlurEmailIdent,
+	validateForm
+}) => {
 	const classes = useStylesFM();
 
 	const handleSelect = (event: any) => {
@@ -34,8 +46,9 @@ export const Step1: React.FC<any> = ({namesImages, listIdentType, cursedForm, er
 				label="Correo" 
 				name='email' 
 				onChange={handleChange} 
+				onBlur={handleBlurEmailIdent}
 				value={cursedForm.email} 
-				error={error.email}
+				error={error.email || validEmailIdent}
 			/>
 			<div className={classes.input}>
 				<TextField 
@@ -60,12 +73,14 @@ export const Step1: React.FC<any> = ({namesImages, listIdentType, cursedForm, er
 				/>
 			</div>
 			<div className={classes.input}>
-				<FormControl variant='outlined' className={classes.inputTipoId}>
-					<InputLabel id='demo-simple-select-outlined-label'>DI</InputLabel>
+				<FormControl variant='outlined' className={classes.inputTipoId} >
+					<InputLabel>DI</InputLabel>
 					<Select 
             value={cursedForm.id_ident_type} 
 						onChange={handleSelect} 
+						onBlur={handleBlurEmailIdent}
 						name='id_ident_type' 
+						error={validEmailIdent}
 						label='Tipo'>
 						{listIdentType.map( (item:any) =>  (
 							<MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
@@ -80,8 +95,9 @@ export const Step1: React.FC<any> = ({namesImages, listIdentType, cursedForm, er
 					label="C.I." 
 					name='ident_num'
 					onChange={handleChange} 
+					onBlur={handleBlurEmailIdent}
 					value={cursedForm.ident_num}
-					error={error.ident_num}
+					error={error.ident_num || validEmailIdent}
 				/>
 				<Button
 					className={classes.imgIdent}

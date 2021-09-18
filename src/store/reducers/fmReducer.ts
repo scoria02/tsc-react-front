@@ -5,7 +5,9 @@ interface inState {
 	id_commerce: number,
 	id_images: any,
 	loadedClient: boolean,
+	loadedCommerce: boolean,
 	loadedImages: boolean,
+	errorClient: boolean,
 }
 
 const initialState: inState = {
@@ -13,11 +15,24 @@ const initialState: inState = {
 	id_commerce: 0,
 	id_images: null,
 	loadedClient: false,
+	loadedCommerce: false,
 	loadedImages: false,
+	errorClient: false,
 };
 
 export const fmReducer = (state = initialState, action: any) => {
 	switch (action.type) {
+		//Client
+		case ActionType.validClient:
+			return {
+				...state,
+				errorClient: false,
+			};
+		case ActionType.validClientError:
+			return {
+				...state,
+				errorClient: true,
+			};
 		case ActionType.sendClient:
 			return {
 				...state,
@@ -30,6 +45,20 @@ export const fmReducer = (state = initialState, action: any) => {
 				id_client: 0,
 				loadedClient: false,
 			};
+		//Commerce
+		case ActionType.sendCommerce:
+			return {
+				...state,
+				id_commerce: action.payload,
+				loadedCommerce: true,
+			};
+		case ActionType.sendCommerceError:
+			return {
+				...state,
+				id_commerce: 0,
+				loadedCommerce: false,
+			};
+		//Images
 		case ActionType.sendImages:
 			return {
 				...state,
@@ -41,6 +70,7 @@ export const fmReducer = (state = initialState, action: any) => {
 				...state,
 				loadedImages: false,
 			};
+		//Clean
 		case ActionType.cleanFm:
 			return {
 				initialState

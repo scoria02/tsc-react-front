@@ -3,7 +3,7 @@ import useAxios from '../../config';
 export const getEstados = async () => {
 	try{
 		const resp: string [] = await useAxios.get('/Location/estado').then((res) => {
-			localStorage.setItem('token', res.data.token);
+			//localStorage.setItem('token', res.data.token);
 			return res.data.info 
 		});
 		return resp;
@@ -16,7 +16,7 @@ export const getEstados = async () => {
 export const getCiudad = async (id: any) => {
 	try{
 		const resp: string [] = await useAxios.get(`/Location/${id}/ciudad`).then((res) => {
-			localStorage.setItem('token', res.data.token);
+			//localStorage.setItem('token', res.data.token);
 			return res.data.info 
 		});
 		return resp;
@@ -29,7 +29,7 @@ export const getCiudad = async (id: any) => {
 export const getMunicipio = async (id: any) => {
 	try{
 		const resp: string [] = await useAxios.get(`/Location/${id}/municipio`).then((res) => {
-			localStorage.setItem('token', res.data.token);
+			//localStorage.setItem('token', res.data.token);
 			return res.data.info 
 		});
 		return resp;
@@ -40,10 +40,9 @@ export const getMunicipio = async (id: any) => {
 }
 
 export const getParroquia = async (id: any) => {
-	console.log(id)
 	try{
 		const resp: string [] = await useAxios.get(`/Location/${id}/parroquia`).then((res) => {
-			localStorage.setItem('token', res.data.token);
+			//localStorage.setItem('token', res.data.token);
 			return res.data.info 
 		});
 		return resp;
@@ -56,7 +55,7 @@ export const getParroquia = async (id: any) => {
 export const getPayMent = async () => {
 	try{
 		const resp: string [] = await useAxios.get('/payment/all').then((res) => {
-			localStorage.setItem('token', res.data.token);
+			//localStorage.setItem('token', res.data.token);
 			return res.data.info 
 		});
 		return resp;
@@ -69,7 +68,20 @@ export const getPayMent = async () => {
 export const getIdentTypes = async () => {
 	try{
 		const resp: string [] = await useAxios.get('/ident_type').then((res) => {
-			localStorage.setItem('token', res.data.token);
+			//localStorage.setItem('token', res.data.token);
+			return res.data.info 
+		});
+		return resp;
+	}catch(e){
+		console.log(e);
+		return [];
+	}
+}
+
+export const getActivity = async () => {
+	try{
+		const resp: string [] = await useAxios.get('/activity').then((res) => {
+			//localStorage.setItem('token', res.data.token);
 			return res.data.info 
 		});
 		return resp;

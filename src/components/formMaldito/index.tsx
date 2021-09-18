@@ -4,7 +4,13 @@ import { useHistory } from 'react-router-dom';
 
 //Redux
 import { RootState } from '../../store/store';
-import { sendClient, sendImages, cleanFM } from '../../store/actions/fm';
+import { 
+	validationClient,
+	sendClient,
+	sendCommerce,
+	sendImages, 
+	cleanFM,
+} from '../../store/actions/fm';
 
 //Material
 import Stepper from '@material-ui/core/Stepper';
@@ -33,6 +39,7 @@ import {
 	getParroquia,
 	getPayMent,
 	getIdentTypes,
+	getActivity,
 } from './getData'
 
 function getSteps() {
@@ -47,11 +54,12 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	const history = useHistory();
 	const classes = useStylesFM();
 	const dispatch = useDispatch();
+	const [validEmailIdent, setValidEmailIdent] = useState<boolean>(false);
 	const [activeStep, setActiveStep] = useState<number>(0);
 	const [readyStep, setReadyStep] = React.useState<boolean>(false);
-	const [sendForm, setSetForm] = React.useState<number>(0);
+	const [sendForm, setSendForm] = React.useState<number>(0);
 
-	const idsFM: any = useSelector((state: RootState) => state.fm);
+	const fm: any = useSelector((state: RootState) => state.fm);
 
 	//Location
 	const [listLocation, setListLocation] = useState<any>({
@@ -82,10 +90,16 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		parroquia: null,
 	});
 
+	//Client
+	const [listIdentType, setListIdentType] = useState<any>([]);
+
+	//Comercio
+	const [listActivity, setListActivity] = useState<any>([]);
+	const [activity, setActivity] = useState<any>(null);
+
+	//POS
 	const [listPayment, setListPayment] = useState<any>([]);
 	const [payment, setPayment] = useState<any>(null);
-
-	const [listIdentType, setListIdentType] = useState<any>([]);
 
 	const [listModelPos, setListModelPos] = useState<any>([
 		{ id: 1, name: 'Par-I'},
@@ -107,7 +121,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		id_ident_type_commerce: 3,
 		ident_num_commerce: '12345678',
 		text_account_number: '010212345678910',
-		id_activity: 'jugar',
+		id_activity: 0,
 		special_contributor: false,
 		//Step3 Location
 		id_estado: 0,
@@ -189,33 +203,70 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		id_payment_method: false,
 	});
 
-	//UseEffect for deleting after
+	const handleBlurEmailIdent = () => {
+		if (activeStep === 0 && cursedForm.email !== '' && cursedForm.id_ident_type != '' && cursedForm.ident_num != ''){
+			dispatch(validationClient({
+				email: cursedForm.email,
+				id_ident_type: cursedForm.id_ident_type, 
+				ident_num: cursedForm.ident_num,
+			})) 
+		}	
+	}
+
 	useEffect(() => {
-		if (activeStep === 1){
-			//dispatch(validClient()) 
-			console.log('validar Client')
-		}else if(activeStep === 3){
-			console.log('no send')
+		if(fm.errorClient){
+			setValidEmailIdent(true)
+		}else{
+			setValidEmailIdent(false)
 		}
-	}, [activeStep])
+	}, [fm])
 
 	//SendForm
 	useEffect(() => {
-		if(sendForm === 1 && idsFM.id_client !== 0){
-			//update  id_comerce
-			setSetForm(2);
+		if(sendForm === 1 && fm.id_client !== 0){
+			dispatch(sendCommerce(fm.id_client, 
+				//Commerce & POS
+				{
+					id_ident_type: cursedForm.id_ident_type_commerce,
+					ident_num: cursedForm.ident_num_commerce,
+					special_contributor: cursedForm.special_contributor,
+					name: cursedForm.name_commerce,
+					account_bank: cursedForm.text_account_number,
+					id_activity: cursedForm.id_activity,
+					location:{
+						id_estado: cursedForm.id_estado,
+						id_municipio: cursedForm.id_municipio,
+						id_parroquia: cursedForm.id_parroquia,
+						id_ciudad: cursedForm.id_ciudad,
+						sector: cursedForm.sector,
+						calle: cursedForm.calle,
+						local: cursedForm.local,
+					},
+					dir_post:{
+						id_estado: cursedForm.id_estado_pos,
+						id_municipio: cursedForm.id_municipio_pos,
+						id_parroquia: cursedForm.id_parroquia_pos,
+						id_ciudad: cursedForm.id_ciudad_pos,
+						sector: cursedForm.sector_pos,
+						calle: cursedForm.calle_pos,
+						local: cursedForm.local_pos,
+					},
+				}
+			));
+			setSendForm(2);
+			//Fin comerce
+		}else if (sendForm === 2 && fm.id_commerce !== 0) {
+			//update fm_imgaes 
+			setSendForm(3);
 			dispatch(cleanFM());
 			handleSendForm();
-		}else if (sendForm === 2 && idsFM.id_commerce !== 0) {
-			//update  ids_images
-			setSetForm(3);
 		}
 		/*
-		else if (sendForm === 3 &&  idsFM.id_commerce !== 0) {
-			setSetForm(4);
+		else if (sendForm === 3 &&  fm.id_commerce !== 0) {
+			setSendForm(4);
 			//update  getImages
-		}else if (sendForm === 4 && validarIdImages(idsFM.id_images)){
-			setSetForm(5);
+		}else if (sendForm === 4 && validarIdImages(fm.id_images)){
+			setSendForm(5);
 			//update FM
 		}
 		}else if (sendForm === 5 && todoOk()){
@@ -224,9 +275,10 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			handleSendForm();
 		}
 		*/
-	}, [sendForm, idsFM])
+	}, [sendForm, fm])
 
 	useEffect(() => {
+		//Get Type Doc Ident
 		if(activeStep === 0){
 			if(listIdentType.length === 0) {
 				getIdentTypes().then( (res) => {
@@ -237,6 +289,18 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 					})
 				})
 			}	
+		//Get List Activity
+		}else if (activeStep === 1){
+			if(listActivity.length === 0) {
+				getActivity().then( (res) => {
+					res.forEach((item) => {
+						setListActivity((prevState:any) => (
+							[...prevState, item]
+						))
+					})
+				})
+			}
+		//Get Estados 
 		}else if(activeStep === 2){
 			if(listLocation.estado.length === 0) {
 				getEstados().then( (res) => {
@@ -252,6 +316,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 					})
 				})
 			}
+		//Get Payment 
 		}else if (activeStep === 3){
 			if(listPayment.length === 0) {
 				getPayMent().then( (res) => {
@@ -309,12 +374,12 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 
 	//Pos Location
 	useEffect(() => {
-		setLocationPos({ ...locationCommerce, ciudad: null, municipio: null, parroquia: null });
+		setLocationPos({ ...locationPos, ciudad: null, municipio: null, parroquia: null });
 		if(cursedForm.id_estado){
 			setListLocation((prevState:any) => ({ ...prevState, ciudad: [], municipio: [], parroquia: [] }));
 			getCiudad(cursedForm.id_estado).then( (res) => {
 					setListLocationPos({
-							...listLocation,
+							...listLocationPos,
 							ciudad: res,
 				})
 			})
@@ -327,7 +392,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		if(cursedForm.id_ciudad){
 			getMunicipio(cursedForm.id_estado).then( (res) => {
 					setListLocationPos({
-							...listLocation,
+							...listLocationPos,
 							municipio: res,
 				})
 			})
@@ -340,7 +405,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		if(cursedForm.id_municipio){
 			getParroquia(cursedForm.id_municipio).then( (res) => {
 					setListLocationPos({
-							...listLocation,
+							...listLocationPos,
 							parroquia: res,
 				})
 			})
@@ -348,17 +413,27 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [locationPos.municipio])
 
+	const validEndPointFM = () => {
+		if(fm.errorClient){
+			return false;
+		}else {
+			return true;
+		}
+	}
+
 	useEffect(() => {
-		if (!valids.allInputNotNUll(valids.sizeStep(activeStep), cursedForm) && 
-				!valids.allImgNotNUll(valids.sizeImagesStep(activeStep), imagesForm, cursedForm.special_contributor) && 
-				!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError)
+		if (
+			!valids.allInputNotNUll(valids.sizeStep(activeStep), cursedForm) && 
+			//	!valids.allImgNotNUll(valids.sizeImagesStep(activeStep), imagesForm, cursedForm.special_contributor) && 
+			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) &&
+			validEndPointFM()
 		) {
 			setReadyStep(true);
 		} else {
 			setReadyStep(false);
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [cursedForm, imagesForm, activeStep])
+	}, [cursedForm, imagesForm, activeStep, fm])
 
 	const validateForm = (name: string, value: any) => {
 		let temp: any = { ...cursedFormError};
@@ -443,7 +518,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 
   const handleSubmit = () => {
 		if (valids.allInputNotNUll(valids.sizeStep(activeStep), cursedForm)  ||
-				valids.allImgNotNUll(valids.sizeImagesStep(activeStep), imagesForm, cursedForm.special_contributor) || 
+			//				valids.allImgNotNUll(valids.sizeImagesStep(activeStep), imagesForm, cursedForm.special_contributor) || 
 				valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError)
 		) 
 			return
@@ -454,13 +529,15 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				formData.append('images', file)
 			}
 		}
-		//Dispach
+		//Send FM
 		handleLoading();
-		setSetForm(1);
+		setSendForm(1);
 		dispatch(sendClient(cursedForm));
-		//dispatch(sendImages(emailClient,formData));
-		//console.log(formData.getAll('images'))
   };
+
+	const sendFM = () => {
+
+	}
 
 	const handleLoading = () => {
 		Swal.fire({
@@ -500,13 +577,18 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			listIdentType={listIdentType}
 			cursedForm={cursedForm}
 			error={cursedFormError}
+			validEmailIdent={validEmailIdent}
 			imagesForm={imagesForm}
 			setCursedForm={setCursedForm}
 			handleChange={handleChange}
 			handleChangeImages={handleChangeImages}
+			handleBlurEmailIdent={handleBlurEmailIdent}
 			validateForm={validateForm}
 		/>,
 		<Step2
+			listActivity={listActivity}
+			activity={activity}
+			setActivity={setActivity}
 			namesImages={namesImages}
 			cursedForm={cursedForm}
 			imagesForm={imagesForm}
@@ -524,10 +606,10 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			handleChange={handleChange}
 		/>,
 		<Step4
-			listLocation={listLocationPos}
+			listLocationPos={listLocationPos}
 			listModelPos={listModelPos}
-			location={locationPos}
-			setLocation={setLocationPos}
+			locationPos={locationPos}
+			setLocationPos={setLocationPos}
 			listPayment={listPayment}
 			error={cursedFormError}
 			payment={payment}
@@ -584,7 +666,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 										Volver
 									</Button>
 									<Button
-										//disabled={!readyStep}
+										disabled={!readyStep}
 										size='large'
 										variant="contained"
 										color="primary"
