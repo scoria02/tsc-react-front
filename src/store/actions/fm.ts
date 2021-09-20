@@ -8,18 +8,22 @@ export const updateToken = (token: any) => {
 };
 
 export const validationClient = (client :any) => {
+	console.log(client)
 	return async (dispatch: any) => {
 		try {
-			await useAxios.post(`/FM/client/valid`, client);
-			dispatch(requestSuccess());
+			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
+			dispatch(requestSuccess(res.data.info));
+			console.log(res.data)
 		} catch (error) {
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
+			console.log(error.response.data.message)
 		}
 	};
-	function requestSuccess() {
+	function requestSuccess(state: boolean) {
 		return {
 			type: ActionType.validClient,
+			payload: state
 		};
 	}
 	function requestError() {
@@ -30,13 +34,14 @@ export const validationClient = (client :any) => {
 };
 
 export const sendClient = (client :any) => {
+	console.log(client)
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client`, client);
 			//localStorage.setItem('token', res.data.token);
 			dispatch(requestSuccess(res.data.info.id));
 		} catch (error) {
-		//	console.log(error.reponse)
+			//console.log(error.reponse)
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
@@ -60,35 +65,39 @@ export const sendCommerce = ( id_client: number, commerce :any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce`, commerce);
 			//localStorage.setItem('token', res.data.token);
-			console.log('Servidor de dimas', res)
-			dispatch(requestSuccess(res.data.info.id));
+			console.log('Servidor de dimas', res.data.info)
+			dispatch(requestSuccess(res.data.info.id_commerce));
 		} catch (error) {
 			console.log(error.reponse)
 			dispatch(requestError());
-			//Swal.fire('Error', error.response.data.message, 'error');
+			Swal.fire('Error', error.response.data.message, 'error');
 		}
 	};
 	function requestSuccess(state: any) {
 		return {
-			type: ActionType.sendClient,
+			type: ActionType.sendCommerce,
 			payload: state
 		};
 	}
 	function requestError() {
 		return {
-			type: ActionType.sendClientError,
+			type: ActionType.sendCommerceError,
 		};
 	}
 };
 
-export const sendImages = (email: any, formData: any ) => {
+export const sendImages = (body: any ) => {
+	console.log('hola')
+	for(var pair of body.entries()) {
+		 console.log(pair[0]+ ', '+ pair[1]);
+	}
 	return async (dispatch: any) => {
 		try {
-			const res: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, { email },formData);
+			const res: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, body);
 			//localStorage.setItem('token', res.data.token);
 			Swal.fire('Success', res.data.message, 'success');
 			console.log(res.data)
-			dispatch(requestSuccess(res.data.info.data));
+			dispatch(requestSuccess(res.data));
 		} catch (error) {
 			console.log(error.reponse)
 			dispatch(requestError());
