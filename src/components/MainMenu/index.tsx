@@ -130,7 +130,6 @@ const MainMenu: React.FC = () => {
 	const history = useHistory();
 
 	const [open, setOpen] = React.useState(false);
-	const [selectedIndex, setSelectedIndex] = React.useState(0);
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [user, setUser] = React.useState({
@@ -170,7 +169,6 @@ const MainMenu: React.FC = () => {
 		if (index === 5) {
 			history.push(urlFM);
 		}
-		setSelectedIndex(index);
 	};
 
 	const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {

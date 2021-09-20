@@ -1,5 +1,7 @@
 import React  from "react"
 import TextField from '@material-ui/core/TextField';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 
 //Material
 import FormControl from '@material-ui/core/FormControl';
@@ -27,6 +29,7 @@ export const Step1: React.FC<any> = ({
 	validateForm
 }) => {
 	const classes = useStylesFM();
+	const fm: any = useSelector((state: RootState) => state.fm);
 
 	const handleSelect = (event: any) => {
 		setCursedForm({
@@ -50,28 +53,6 @@ export const Step1: React.FC<any> = ({
 				value={cursedForm.email} 
 				error={error.email || validEmailIdent}
 			/>
-			<div className={classes.input}>
-				<TextField 
-					className={classes.inputM} 
-					variant="outlined" 
-					required 
-					label="Nombre" 
-					name='name'
-					onChange={handleChange} 
-					value={cursedForm.name}
-					error={error.name}
-				/>
-				<TextField 
-					className={classes.inputN} 
-					variant="outlined" 
-					required 
-					label="Apellido" 
-					name='last_name' 
-					onChange={handleChange} 
-					value={cursedForm.last_name}
-					error={error.last_name}
-				/>
-			</div>
 			<div className={classes.input}>
 				<FormControl variant='outlined' className={classes.inputTipoId} >
 					<InputLabel>DI</InputLabel>
@@ -104,6 +85,7 @@ export const Step1: React.FC<any> = ({
 					variant="contained"
 					//color="secondary"
 					component="label"
+					disabled={fm.mashClient}
 				>
 				{imagesForm.rc_ident_card !== null ? (
 					<p className="nameImg" >{namesImages.rc_ident_card.slice(0, 7)} ...</p>
@@ -125,6 +107,30 @@ export const Step1: React.FC<any> = ({
 				/>
 				</Button>
 			</div>
+			<div className={classes.input}>
+				<TextField 
+					className={classes.inputM} 
+					variant="outlined" 
+					required 
+					label="Nombre" 
+					name='name'
+					onChange={handleChange} 
+					value={cursedForm.name}
+					error={error.name}
+					disabled={fm.mashClient}
+				/>
+				<TextField 
+					className={classes.inputN} 
+					variant="outlined" 
+					required 
+					label="Apellido" 
+					name='last_name' 
+					onChange={handleChange} 
+					value={cursedForm.last_name}
+					error={error.last_name}
+					disabled={fm.mashClient}
+				/>
+			</div>
 			<TextField 
 				className={classes.input} 
 				variant="outlined" 
@@ -134,6 +140,7 @@ export const Step1: React.FC<any> = ({
 				onChange={handleChange} 
 				value={cursedForm.phone1}
 				error={error.phone1}
+				disabled={fm.mashClient}
 			/>
 			<TextField 
 				className={classes.input}
@@ -144,6 +151,7 @@ export const Step1: React.FC<any> = ({
 				onChange={handleChange}
 				value={cursedForm.phone2}
 				error={error.phone2}
+				disabled={fm.mashClient}
 			/>
 			<div className={classes.input}>
 				<b
@@ -154,6 +162,7 @@ export const Step1: React.FC<any> = ({
 					className={classes.imgStep1}
 					variant="contained"
 					component="label"
+					disabled={fm.mashClient}
 				>
 					{imagesForm.rc_ref_perso !== null ?
 							<>

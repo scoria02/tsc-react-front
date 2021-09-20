@@ -2,6 +2,7 @@ import { ActionType } from '../types/types';
 
 interface inState {
 	id_client: number,
+	mashClient: boolean,
 	id_commerce: number,
 	id_images: any,
 	loadedClient: boolean,
@@ -12,6 +13,7 @@ interface inState {
 
 const initialState: inState = {
 	id_client: 0,
+	mashClient: false,
 	id_commerce: 0,
 	id_images: null,
 	loadedClient: false,
@@ -27,6 +29,8 @@ export const fmReducer = (state = initialState, action: any) => {
 			return {
 				...state,
 				errorClient: false,
+				mashClient: action.payload.mash,
+				id_client: action.payload.mash ? action.payload.id : 0,
 			};
 		case ActionType.validClientError:
 			return {
