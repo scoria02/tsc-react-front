@@ -7,7 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
 //import luffy from '../../img/itachi2.png';
-import luffy from '../../img/user.png';
+import luffy from '../../img/rif.png';
 import './pasos.scss';
 import { useDispatch } from 'react-redux';
 import { Valid } from '../../store/actions/accept';

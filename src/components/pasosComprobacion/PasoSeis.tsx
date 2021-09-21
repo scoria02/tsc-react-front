@@ -6,7 +6,8 @@ import ReactImageZoom from 'react-image-zoom';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
-import luffy from '../../img/itachi2.png';
+//import luffy from '../../img/itachi2.png';
+import luffy from '../../img/obama.jpg';
 import './pasos.scss';
 
 const useStyles = makeStyles((theme: Theme) =>

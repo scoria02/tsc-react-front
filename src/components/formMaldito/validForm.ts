@@ -126,7 +126,7 @@ export const allInputNotNUll = (last: number, form: any, mashClient: boolean): b
 					}
 				}
 			}
-		}else if (typeof item[1] === 'number') {
+		}else if (typeof item[1] === 'number' && item[0] !== 'special_contributor') {
 			if(item[1] === 0){
 				return true;
 			}

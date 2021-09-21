@@ -90,9 +90,15 @@ export const sendImages = (formData: any ) => {
 		try {
 			const res: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, formData);
 			//localStorage.setItem('token', res.data.token);
-			Swal.fire('Success', res.data.message, 'success');
-			dispatch(requestSuccess(res.data.info));
-			console.log(res.data.info)
+			let images:any = res.data.info;
+			/*
+			console.log('Dimas',images)
+			let copyImages:any = {};
+			for (const item of Object.entries(images)) {
+				copyImages[`${item[0].split('.')[0]}`] = item[1];
+			}
+			*/
+			dispatch(requestSuccess(images));
 		} catch (error) {
 			console.log(error.reponse)
 			dispatch(requestError());
@@ -108,6 +114,32 @@ export const sendImages = (formData: any ) => {
 	function requestError() {
 		return {
 			type: ActionType.sendImagesError,
+		};
+	}
+};
+
+export const sendFM = (formM: any) => {
+	console.log('action', formM)
+	return async (dispatch: any) => {
+		try {
+			const res: AxiosResponse<any> = await useAxios.post(`/FM`, formM);
+			//localStorage.setItem('token', res.data.token);
+			console.log('dimas',res.data.info)
+			dispatch(requestSuccess());
+		} catch (error) {
+			//console.log(error.reponse)
+			dispatch(requestError());
+			Swal.fire('Error', error.response.data.message, 'error');
+		}
+	};
+	function requestSuccess() {
+		return {
+			type: ActionType.sendFM,
+		};
+	}
+	function requestError() {
+		return {
+			type: ActionType.sendFMError,
 		};
 	}
 };

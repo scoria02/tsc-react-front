@@ -21,6 +21,8 @@ export enum ActionType {
 	sendCommerceError = '[FM] send Commerce Error',
 	sendImages = '[FM] send Images',
 	sendImagesError = '[FM] send Images Error',
+	sendFM= '[FM] send FM',
+	sendFMError = '[FM] send FM Error',
 	cleanFm = '[FM] clear FM',
 
 	//Modals

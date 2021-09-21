@@ -8,6 +8,7 @@ interface inState {
 	loadedClient: boolean,
 	loadedCommerce: boolean,
 	loadedImages: boolean,
+	loadedFM: boolean,
 	errorClient: boolean,
 }
 
@@ -19,6 +20,7 @@ const initialState: inState = {
 	loadedClient: false,
 	loadedCommerce: false,
 	loadedImages: false,
+	loadedFM: false,
 	errorClient: false,
 };
 
@@ -73,6 +75,17 @@ export const fmReducer = (state = initialState, action: any) => {
 			return {
 				...state,
 				loadedImages: false,
+			};
+		//FM
+		case ActionType.sendFM:
+			return {
+				...state,
+				loadedFM: true,
+			};
+		case ActionType.sendFMError:
+			return {
+				...state,
+				loadedFM: false,
 			};
 		//Clean
 		case ActionType.cleanFm:

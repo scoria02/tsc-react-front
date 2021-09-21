@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ import {
 	sendClient,
 	sendCommerce,
 	sendImages, 
+	sendFM, 
 	//	cleanFM,
 } from '../../store/actions/fm';
 
@@ -112,7 +113,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		email: 'tranred@correito.com',
 		name: 'Carlos',
 		last_name: 'Polo',
-		id_ident_type: '1',
+		id_ident_type: 1,
 		ident_num: '123456793',
 		phone1: '+584121234567',
 		phone2: '+584121234566',
@@ -120,9 +121,9 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		name_commerce: 'Tranred',
 		id_ident_type_commerce: 3,
 		ident_num_commerce: '12345678',
-		text_account_number: '0103123456789',
+		text_account_number: '102816516554',
 		id_activity: 0,
-		special_contributor: false,
+		special_contributor: 0,
 		//Step3 Location
 		id_estado: 1,
 		id_ciudad: 1,
@@ -229,7 +230,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				{
 					id_ident_type: cursedForm.id_ident_type_commerce,
 					ident_num: cursedForm.ident_num_commerce,
-					special_contributor: cursedForm.special_contributor,
+					special_contributor: 0,
 					name: cursedForm.name_commerce,
 					bank_account_num: cursedForm.text_account_number,
 					id_activity: cursedForm.id_activity,
@@ -242,25 +243,14 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 						calle: cursedForm.calle,
 						local: cursedForm.local,
 					},
-					//mode_post: cursedForm.mode_post,
-					//payment: cursedForm.id_payment_method,
-					/*
-					dir_post:{
-						id_estado: cursedForm.id_estado_pos,
-						id_municipio: cursedForm.id_municipio_pos,
-						id_parroquia: cursedForm.id_parroquia_pos,
-						id_ciudad: cursedForm.id_ciudad_pos,
-						sector: cursedForm.sector_pos,
-						calle: cursedForm.calle_pos,
-						local: cursedForm.local_pos,
-					},
-					 */
 				}
 			));
 			setSendForm(2);
 			//Fin comerce
 		}else if (sendForm === 2 && fm.id_commerce !== 0 && fm.id_client !== 0) {
 			console.log('Listo Comercio');
+			console.log('images')
+			const formData:any = new FormData();
 			for (const item of Object.entries(imagesForm)) {
 				if(item[1] !== null){
 					formData.append('images', item[1])
@@ -268,32 +258,48 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			}
 			formData.append('id_client', fm.id_client)
 			formData.append('id_commerce', fm.id_commerce)
-		/*
-		for (var value of formData.values()) {
-			console.log(value);
-		}
-	 */
-		dispatch(sendImages(formData));
+			/*
+			for (var value of formData.values()) {
+				console.log(value);
+			}
+		 */
+			dispatch(sendImages(formData));
 			//update fm_imgaes 
 			setSendForm(3);
-		}else if (sendForm === 3 && fm.id_images !== null) {
-			console.log('Listo Images');
+		}else if (sendForm === 3 && fm.id_images !== null && fm.id_commerce !== 0 && fm.id_client !== 0) {
+			console.log('Listo Images, Client/Comercio:', fm.id_client, fm.id_commerce);
+			dispatch(sendFM({
+				...fm.id_images,
+				number_post: cursedForm.number_post,
+				bank_account_num: cursedForm.text_account_number,
+				id_payment_method: cursedForm.id_payment_method,
+				id_client: fm.id_client,
+				id_commerce: fm.id_commerce,
+				dir_pos: {
+					id_estado: cursedForm.id_estado_pos,
+					id_municipio: cursedForm.id_municipio_pos,
+					id_parroquia: cursedForm.id_parroquia_pos,
+					id_ciudad: cursedForm.id_ciudad_pos,
+					sector: cursedForm.sector_pos,
+					calle: cursedForm.calle_pos,
+					local: cursedForm.local_pos,
+				}
+			}));
+			/*
+			//mode_post: cursedForm.mode_post,
+			{
+			}
+			*/
 			setSendForm(4);
-			//send FM
+		}
+		else if (sendForm === 4 && fm.loadedFM){
+			console.log('Ready All FM')
+			setSendForm(5);
 			handleSendForm();
 			//dispatch(cleanFM());
 		}
-		/*
-		else if (sendForm === 4 && fm.fMM !== null){
-			setSendForm(5);
-			handleSendForm();
-			dispatch(cleanFM());
-		}
-		*/
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [sendForm, fm])
-
-	const formData:any = new FormData();
 
 	useEffect(() => {
 		//Get Type Doc Ident
@@ -470,6 +476,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				break;
 			case 'ident_num':
 				temp.ident_num = valids.validIdentNum(value, cursedForm.id_ident_type);
+				//console.log(temp.ident_num)
 				break;
 			case 'phone1':
 				if(value.slice(0,3) === '+58'){
@@ -541,7 +548,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		) 
 			return
 		//Send FM
-		console.log('Send FormM')
+		console.log('On Submit')
 		handleLoading();
 		setSendForm(1);
 		if(!fm.mashClient){
@@ -680,7 +687,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 										size='large'
 										variant="contained"
 										color="primary"
-										onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext }
+										onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
 										className={classes.buttonNext}
 									>
 										{activeStep === steps.length - 1 ? 'Enviar' : 'Siguiente'}
