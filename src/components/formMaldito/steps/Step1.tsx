@@ -102,7 +102,7 @@ export const Step1: React.FC<any> = ({
 					type="file"
 					hidden
 					name="rc_ident_card"
-					accept="image/png, image/jpeg"
+					accept="image/png, image/jpeg, image/jpg"
 					onChange={handleChangeImages}
 				/>
 				</Button>
@@ -183,7 +183,7 @@ export const Step1: React.FC<any> = ({
 						type="file"
 						hidden
 						name="rc_ref_perso"
-						accept="image/png, image/jpeg"
+						accept="image/png, image/jpeg, image/jpg"
 						onChange={handleChangeImages}
 					/>
 				</Button>

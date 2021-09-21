@@ -28,7 +28,8 @@ import classNames from 'classnames';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import luffy from '../../img/itachi2.png';
+//import luffy from '../../img/itachi2.png';
+import luffy from '../../img/user.png';
 import { baseUrl, urlAceptacion, urlFM } from '../../routers/url';
 import { FinishLoading } from '../../store/actions/ui';
 //Redux

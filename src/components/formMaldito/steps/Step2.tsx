@@ -97,7 +97,7 @@ export const Step2: React.FC<any> = ({
 					type="file"
 					hidden
 					name="rc_rif"
-					accept="image/png, image/jpeg"
+					accept="image/png, image/jpeg, image/jpg"
 					onChange={handleChangeImages}
 				/>
 			</Button>
@@ -143,7 +143,7 @@ export const Step2: React.FC<any> = ({
 					type="file"
 					hidden
 					name="rc_account_number"
-					accept="image/png, image/jpeg"
+					accept="image/png, image/jpeg, image/jpg"
 					onChange={handleChangeImages}
 				/>
 				</Button>
@@ -178,7 +178,7 @@ export const Step2: React.FC<any> = ({
 						type="file"
 						hidden
 						name="rc_ref_bank"
-						accept="image/png, image/jpeg"
+						accept="image/png, image/jpeg, image/jpg"
 						onChange={handleChangeImages}
 					/>
 				</Button>
@@ -229,7 +229,7 @@ export const Step2: React.FC<any> = ({
 						type="file"
 						hidden
 						name="rc_special_contributor"
-						accept="image/png, image/jpeg"
+						accept="image/png, image/jpeg, image/jpg"
 						onChange={handleChangeImages}
 					/>
 				</Button>

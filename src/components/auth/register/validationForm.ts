@@ -89,6 +89,13 @@ export const checkErrorInputEndPoint = (errorEndPoint: any): boolean => {
 	return false;
 }
 
+export const phoneNotNull = (value: string): boolean => {
+	if(value.slice(0,3) === '+58' && value.slice(3).length > 0){
+		return false
+	}else
+		return true;
+};
+
 export const allInputNotNUll = (active: number, user: any): boolean => {
 	let indice = 0;
 	let last = active === 0 ? 2 : 8;
@@ -99,8 +106,14 @@ export const allInputNotNUll = (active: number, user: any): boolean => {
 		indice++;
 		//No Check when item[0] === 'IdentType'
 		if (typeof item[1] === 'string') {
-			if (item[1].trim() === '') {
-				return true;
+			if((item[0] === 'phone')){
+				if(phoneNotNull(item[1])){
+					return true;
+				}
+			}else{
+				if (item[1].trim() === '') {
+					return true;
+				}
 			}
 		}
 	}

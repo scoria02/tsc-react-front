@@ -40,7 +40,7 @@ export const Step4: React.FC<any> = ({namesImages, listPayment, error ,payment, 
 						type="file"
 						hidden
 						name="rc_constitutive_act"
-						accept="image/png, image/jpeg"
+						accept="image/png, image/jpeg, image/jpg"
 						onChange={handleChangeImages}
 					/>
 				</Button>
@@ -75,7 +75,7 @@ export const Step4: React.FC<any> = ({namesImages, listPayment, error ,payment, 
 						type="file"
 						hidden
 						name="rc_property_document"
-						accept="image/png, image/jpeg"
+						accept="image/png, image/jpeg, image/jpg"
 						onChange={handleChangeImages}
 					/>
 				</Button>
@@ -110,7 +110,7 @@ export const Step4: React.FC<any> = ({namesImages, listPayment, error ,payment, 
 						type="file"
 						hidden
 						name="rc_service_document"
-						accept="image/png, image/jpeg"
+						accept="image/png, image/jpeg, image/jpg"
 						onChange={handleChangeImages}
 					/>
 				</Button>

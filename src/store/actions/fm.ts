@@ -8,12 +8,12 @@ export const updateToken = (token: any) => {
 };
 
 export const validationClient = (client :any) => {
-	console.log(client)
+	//console.log(client)
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
 			dispatch(requestSuccess(res.data.info));
-			console.log(res.data)
+			//console.log(res.data)
 		} catch (error) {
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
@@ -34,7 +34,7 @@ export const validationClient = (client :any) => {
 };
 
 export const sendClient = (client :any) => {
-	console.log(client)
+	//console.log(client)
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client`, client);
@@ -65,7 +65,6 @@ export const sendCommerce = ( id_client: number, commerce :any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce`, commerce);
 			//localStorage.setItem('token', res.data.token);
-			console.log('Servidor de dimas', res.data.info)
 			dispatch(requestSuccess(res.data.info.id_commerce));
 		} catch (error) {
 			console.log(error.reponse)
@@ -86,18 +85,14 @@ export const sendCommerce = ( id_client: number, commerce :any) => {
 	}
 };
 
-export const sendImages = (body: any ) => {
-	console.log('hola')
-	for(var pair of body.entries()) {
-		 console.log(pair[0]+ ', '+ pair[1]);
-	}
+export const sendImages = (formData: any ) => {
 	return async (dispatch: any) => {
 		try {
-			const res: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, body);
+			const res: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, formData);
 			//localStorage.setItem('token', res.data.token);
 			Swal.fire('Success', res.data.message, 'success');
-			console.log(res.data)
-			dispatch(requestSuccess(res.data));
+			dispatch(requestSuccess(res.data.info));
+			console.log(res.data.info)
 		} catch (error) {
 			console.log(error.reponse)
 			dispatch(requestError());
@@ -107,6 +102,7 @@ export const sendImages = (body: any ) => {
 	function requestSuccess(state: any) {
 		return {
 			type: ActionType.sendImages,
+			payload: state
 		};
 	}
 	function requestError() {

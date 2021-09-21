@@ -219,9 +219,11 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [fm])
 
+
 	//SendForm
 	useEffect(() => {
 		if(sendForm === 1 && fm.id_client !== 0){
+			console.log('Listo Cliente');
 			dispatch(sendCommerce(fm.id_client, 
 				//Commerce
 				{
@@ -258,44 +260,40 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			setSendForm(2);
 			//Fin comerce
 		}else if (sendForm === 2 && fm.id_commerce !== 0 && fm.id_client !== 0) {
+			console.log('Listo Comercio');
+			for (const item of Object.entries(imagesForm)) {
+				if(item[1] !== null){
+					formData.append('images', item[1])
+				}
+			}
+			formData.append('id_client', fm.id_client)
+			formData.append('id_commerce', fm.id_commerce)
+		/*
+		for (var value of formData.values()) {
+			console.log(value);
+		}
+	 */
+		dispatch(sendImages(formData));
 			//update fm_imgaes 
 			setSendForm(3);
-			//handleSendForm();
+		}else if (sendForm === 3 && fm.id_images !== null) {
+			console.log('Listo Images');
+			setSendForm(4);
+			//send FM
+			handleSendForm();
 			//dispatch(cleanFM());
 		}
 		/*
-		else if (sendForm === 3 &&  fm.images !== 0) {
-			setSendForm(4);
-			//update 
-		}else if (sendForm === 4 && validarIdImages(fm.id_images)){
+		else if (sendForm === 4 && fm.fMM !== null){
 			setSendForm(5);
-			//update FM
-		}
-		}else if (sendForm === 5 && todoOk()){
-			//update FM
-			dispatch(CleanFM());
 			handleSendForm();
+			dispatch(cleanFM());
 		}
 		*/
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [sendForm, fm])
 
-	const handleSubmitImages = () => {
-		console.log('Creando Formdata', 1, 1)
-		const formData:any = new FormData();
-		formData.append('id_client', 1)
-		formData.append('id_commerce', 1)
-		for (const item of Object.entries(imagesForm)) {
-			const file:any = item[1]
-			if(item[1] !== null){
-				formData.append('images', file)
-			}
-		}
-		for (var value of formData.values()) {
-			console.log(value);
-		}
-		dispatch(sendImages(formData));
-	}
+	const formData:any = new FormData();
 
 	useEffect(() => {
 		//Get Type Doc Ident
@@ -517,12 +515,12 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+
+
 	const handleChangeImages = (event: any) => {
-		//Save Name
 		if(event.target.files[0]){
 			let file = event.target.files[0];
-			let blob = file.slice(0, file.size, 'image/png'); 
-			let newFile = new File([blob], `${event.target.name}`, {type: 'image/png'});
+			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: file.type });
 			//Save img
 			setImagesForm({
 				...imagesForm,
@@ -543,7 +541,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		) 
 			return
 		//Send FM
-		console.log('senddata')
+		console.log('Send FormM')
 		handleLoading();
 		setSendForm(1);
 		if(!fm.mashClient){
@@ -562,7 +560,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		});
 	}
 
-		/*
 	const handleSendForm = () => {
 		Swal.fire({
 			icon: 'success',
@@ -574,7 +571,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		setSelectedIndex(0);
 		history.push(baseUrl);
 	}
-		*/
 
 	const deleteImgContributor = (name: string) => {
 		setImagesForm({
