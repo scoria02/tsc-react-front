@@ -124,7 +124,7 @@ export const sendFM = (formM: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM`, formM);
 			//localStorage.setItem('token', res.data.token);
-			console.log('dimas',res.data.info)
+			//console.log('Res FM_Last',res.data.info)
 			dispatch(requestSuccess());
 		} catch (error) {
 			//console.log(error.reponse)

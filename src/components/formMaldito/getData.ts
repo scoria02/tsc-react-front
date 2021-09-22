@@ -1,8 +1,8 @@
-import useAxios from '../../config';
+import axios from '../../config';
 
 export const getEstados = async () => {
 	try{
-		const resp: string [] = await useAxios.get('/Location/estado').then((res) => {
+		const resp: string [] = await axios.get('/Location/estado').then((res) => {
 			//localStorage.setItem('token', res.data.token);
 			return res.data.info 
 		});
@@ -15,7 +15,7 @@ export const getEstados = async () => {
 
 export const getCiudad = async (id: any) => {
 	try{
-		const resp: string [] = await useAxios.get(`/Location/${id}/ciudad`).then((res) => {
+		const resp: string [] = await axios.get(`/Location/${id}/ciudad`).then((res) => {
 			//localStorage.setItem('token', res.data.token);
 			return res.data.info 
 		});
@@ -28,7 +28,7 @@ export const getCiudad = async (id: any) => {
 
 export const getMunicipio = async (id: any) => {
 	try{
-		const resp: string [] = await useAxios.get(`/Location/${id}/municipio`).then((res) => {
+		const resp: string [] = await axios.get(`/Location/${id}/municipio`).then((res) => {
 			//localStorage.setItem('token', res.data.token);
 			return res.data.info 
 		});
@@ -41,7 +41,7 @@ export const getMunicipio = async (id: any) => {
 
 export const getParroquia = async (id: any) => {
 	try{
-		const resp: string [] = await useAxios.get(`/Location/${id}/parroquia`).then((res) => {
+		const resp: string [] = await axios.get(`/Location/${id}/parroquia`).then((res) => {
 			//localStorage.setItem('token', res.data.token);
 			return res.data.info 
 		});
@@ -54,7 +54,7 @@ export const getParroquia = async (id: any) => {
 
 export const getPayMent = async () => {
 	try{
-		const resp: string [] = await useAxios.get('/payment/all').then((res) => {
+		const resp: string [] = await axios.get('/payment/all').then((res) => {
 			//localStorage.setItem('token', res.data.token);
 			return res.data.info 
 		});
@@ -67,7 +67,7 @@ export const getPayMent = async () => {
 
 export const getIdentTypes = async () => {
 	try{
-		const resp: string [] = await useAxios.get('/ident_type').then((res) => {
+		const resp: string [] = await axios.get('/ident_type').then((res) => {
 			//localStorage.setItem('token', res.data.token);
 			return res.data.info 
 		});
@@ -80,7 +80,7 @@ export const getIdentTypes = async () => {
 
 export const getActivity = async () => {
 	try{
-		const resp: string [] = await useAxios.get('/activity').then((res) => {
+		const resp: string [] = await axios.get('/activity').then((res) => {
 			//localStorage.setItem('token', res.data.token);
 			return res.data.info 
 		});
