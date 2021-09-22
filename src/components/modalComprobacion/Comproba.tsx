@@ -21,6 +21,9 @@ import PasoCuaTroDos from '../pasosComprobacion/PasoCuatroDos';
 import PasoCinco from '../pasosComprobacion/PasoCinco';
 import PasoCincoDos from '../pasosComprobacion/PasoCincoDos';
 
+//Redux
+import { RootState } from '../../store/store';
+
 import './comprobar.scss';
 import { stepComplete } from '../../store/actions/accept';
 
@@ -159,29 +162,11 @@ export default function Comproba() {
 	const [skipped, setSkipped] = React.useState(new Set<number>());
 	const steps = getSteps();
 
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+
 	const totalSteps = () => {
 		return getSteps().length;
 	};
-
-	// const isStepOptional = (step: number) => {
-	// 	return step === 1;
-	// };
-
-	// const handleSkip = () => {
-	// 	if (!isStepOptional(activeStep)) {
-	// 		// You probably want to guard against something like this
-	// 		// it should never occur unless someone's actively trying to break something.
-	// 		throw new Error("You can't skip a step that isn't optional.");
-	// 	}
-
-	// 	setActiveStep((prevActiveStep) => prevActiveStep + 1);
-	// 	setSkipped((prevSkipped) => {
-	// 		const newSkipped = new Set(prevSkipped.values());
-	// 		newSkipped.add(activeStep);
-	// 		return newSkipped;
-	// 	});
-	// };
-
 	const skippedSteps = () => {
 		return skipped.size;
 	};
@@ -238,6 +223,7 @@ export default function Comproba() {
 		setActiveStep(0);
 		setCompleted(new Set<number>());
 		setSkipped(new Set<number>());
+		//dispatch(); clean getDataAdmisiion
 		dispatch(CloseModal());
 	};
 
@@ -268,81 +254,70 @@ export default function Comproba() {
 	return (
 		<div>
 			<Dialog fullScreen open={modalOpen} onClose={handleClose} TransitionComponent={Transition}>
-				<div className={classes2.root}>
-					<Stepper alternativeLabel nonLinear activeStep={activeStep}>
-						{steps.map((label, index) => {
-							const stepProps: { completed?: boolean } = {};
-							const buttonProps: { optional?: React.ReactNode } = {};
-							// if (isStepOptional(index)) {
-							// 	buttonProps.optional = <Typography variant='caption'>Optional</Typography>;
-							// }
-							if (isStepSkipped(index)) {
-								stepProps.completed = false;
-							}
-							return (
-								<Step key={label} {...stepProps}>
-									<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
-										{label}
-									</StepButton>
-								</Step>
-							);
-						})}
-					</Stepper>
-					<div>
-						{allStepsCompleted() ? (
-							<div className='btn-divfloat'>
-								<Typography className={classes2.instructions}>
-									Todos los campos fueron Validados - Saludos BB
-								</Typography>
-								<Button onClick={handleReset}>Salir</Button>
-							</div>
-						) : (
-							<div>
-								<Typography className={classes2.instructions}>{getStepContent(activeStep)}</Typography>
+				{Object.keys(fm).length ?
+					<div className={classes2.root}>
+						<Stepper alternativeLabel nonLinear activeStep={activeStep}>
+							{steps.map((label, index) => {
+								const stepProps: { completed?: boolean } = {};
+								const buttonProps: { optional?: React.ReactNode } = {};
+								// if (isStepOptional(index)) {
+								// 	buttonProps.optional = <Typography variant='caption'>Optional</Typography>;
+								// }
+								if (isStepSkipped(index)) {
+									stepProps.completed = false;
+								}
+								return (
+									<Step key={label} {...stepProps}>
+										<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
+											{label}
+										</StepButton>
+									</Step>
+								);
+							})}
+						</Stepper>
+						<div>
+							{allStepsCompleted() ? (
 								<div className='btn-divfloat'>
-									<Button disabled={activeStep === 0} onClick={handleBack} className={classes2.button}>
-										Volver
-									</Button>
-									<Button variant='contained' color='primary' onClick={handleNext} className={classes2.button}>
-										Siguiente
-									</Button>
-									{/* {isStepOptional(activeStep) && !completed.has(activeStep) && (
-										// <Button variant='contained' color='primary' onClick={handleSkip} className={classes2.button}>
-										// 	Saltar
-										// </Button>
-									)} */}
-									{activeStep !== steps.length &&
-										(completed.has(activeStep) ? (
-											<Typography variant='caption' className={classes2.completed}>
-												Step {activeStep + 1} already completed
-											</Typography>
-										) : (
-											<Button variant='contained' color='primary' onClick={handleComplete}>
-												{/* <Button variant='contained' color='primary'> */}
-												{completedSteps() === totalSteps() - 1 ? 'Finish' : 'Verificado'}
-											</Button>
-										))}
+									<Typography className={classes2.instructions}>
+										Todos los campos fueron Validados - Saludos BB
+									</Typography>
+									<Button onClick={handleReset}>Salir</Button>
 								</div>
-							</div>
-						)}
+							) : (
+								<div>
+									<Typography className={classes2.instructions}>{getStepContent(activeStep)}</Typography>
+									<div className='btn-divfloat'>
+										<Button disabled={activeStep === 0} onClick={handleBack} className={classes2.button}>
+											Volver
+										</Button>
+										<Button variant='contained' color='primary' onClick={handleNext} className={classes2.button}>
+											Siguiente
+										</Button>
+										{/* {isStepOptional(activeStep) && !completed.has(activeStep) && (
+											// <Button variant='contained' color='primary' onClick={handleSkip} className={classes2.button}>
+											// 	Saltar
+											// </Button>
+										)} */}
+										{activeStep !== steps.length &&
+											(completed.has(activeStep) ? (
+												<Typography variant='caption' className={classes2.completed}>
+													Step {activeStep + 1} already completed
+												</Typography>
+											) : (
+												<Button variant='contained' color='primary' onClick={handleComplete}>
+													{/* <Button variant='contained' color='primary'> */}
+													{completedSteps() === totalSteps() - 1 ? 'Finish' : 'Verificado'}
+												</Button>
+											))}
+									</div>
+								</div>
+							)}
+						</div>
 					</div>
-				</div>
+					:
+					<h1>Loading...</h1>
+				}
 			</Dialog>
 		</div>
 	);
 }
-
-/*
-
-const dispatch = useDispatch();
-	const { modalOpen } = useSelector((state: any) => state.ui);
-
-	//   const handleOpen = () => {
-	//     setOpen(true);
-	//   };
-
-	const handleClose = () => {
-		// setOpen(false);
-		dispatch(CloseModal());
-	};
-*/

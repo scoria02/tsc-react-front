@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { acceptReducer } from './reducers/acceptReducer';
 import { fmReducer } from './reducers/fmReducer';
+import { admisionFM } from './reducers/admisionFM';
 
 declare global {
 	interface Window {
@@ -19,7 +20,8 @@ const reducers = combineReducers({
 	auth: authReducer,
 	alert: alert,
 	acceptance: acceptReducer,
-	fm: fmReducer
+	fm: fmReducer,
+	fmAdmision: admisionFM,
 });
 
 export const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));

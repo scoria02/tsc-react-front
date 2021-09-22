@@ -118,7 +118,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		phone1: '+584121234567',
 		phone2: '+584121234566',
 		//step2 Comercio
-		name_commerce: '1000Pagos',
+		name_commerce: 'MilPagitos',
 		id_ident_type_commerce: 3,
 		ident_num_commerce: '12349844',
 		text_account_number: '0102116516554',
@@ -277,8 +277,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			}));
 			/*
 			//mode_post: cursedForm.mode_post,
-			{
-			}
 			*/
 			setSendForm(4);
 		}

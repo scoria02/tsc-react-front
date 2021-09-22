@@ -6,9 +6,9 @@ import LRU from 'lru-cache';
 
 //const urlLocal = 'http://localhost';
 //const URL = 'http://localhost';
-const URL = 'http://10.198.68.21';
-const Port = '5051';
-const PortFiles = '6060';
+export const URL = 'http://10.198.68.21';
+export const Port = '5051';
+export const PortFiles = '6060';
 
 const configAxios: AxiosRequestConfig = {
 	baseURL: `${URL}:${Port}`,

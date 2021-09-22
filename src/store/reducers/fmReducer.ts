@@ -89,9 +89,7 @@ export const fmReducer = (state = initialState, action: any) => {
 			};
 		//Clean
 		case ActionType.cleanFm:
-			return {
-				initialState
-			};
+			return initialState;
 		default:
 			return state;
 	}
