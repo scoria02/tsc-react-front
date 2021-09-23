@@ -121,6 +121,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 		// necessary for content to be below app bar
 		...theme.mixins.toolbar,
 	},
+	link: {
+		textDecoration: 'none',
+		// color: theme.palette.primary.contrastText,
+	},
 }));
 
 const MainMenu: React.FC = () => {
@@ -337,7 +341,7 @@ const MainMenu: React.FC = () => {
 				</div>
 				<Divider />
 				<List>
-					<Link to={baseUrl}>
+					<Link to={baseUrl} className={classes.link}>
 						<ListItem
 						// button onClick={(event) => handleListItemClick(event, 0)}
 						>
