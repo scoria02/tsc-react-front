@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import Swal from 'sweetalert2';
+import useAxios from '../../config/index';
 import { ActionType } from '../types/types';
-import useAxios, { axiosFiles } from '../../config/index';
 
 export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
@@ -23,7 +23,7 @@ export const getDataFM = () => {
 	function requestSuccess(state: any) {
 		return {
 			type: ActionType.getDataFM,
-			payload: state
+			payload: state,
 		};
 	}
 	function requestError() {
@@ -35,11 +35,11 @@ export const getDataFM = () => {
 
 export const cleanAdmisionFM = () => {
 	return async (dispatch: any) => {
-			dispatch(request());
+		dispatch(request());
 	};
 	function request() {
 		return {
 			type: ActionType.cleanDataFM,
 		};
 	}
-}
+};

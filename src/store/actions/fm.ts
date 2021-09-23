@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { AxiosResponse } from 'axios';
 import Swal from 'sweetalert2';
-import { ActionType } from '../types/types';
 import useAxios, { axiosFiles } from '../../config/index';
+import { ActionType } from '../types/types';
 
 export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
 };
 
-export const validationClient = (client :any) => {
+export const validationClient = (client: any) => {
 	//console.log(client)
 	return async (dispatch: any) => {
 		try {
@@ -17,13 +18,13 @@ export const validationClient = (client :any) => {
 		} catch (error) {
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
-			console.log(error.response.data.message)
+			console.log(error.response.data.message);
 		}
 	};
 	function requestSuccess(state: boolean) {
 		return {
 			type: ActionType.validClient,
-			payload: state
+			payload: state,
 		};
 	}
 	function requestError() {
@@ -33,7 +34,7 @@ export const validationClient = (client :any) => {
 	}
 };
 
-export const sendClient = (client :any) => {
+export const sendClient = (client: any) => {
 	//console.log(client)
 	return async (dispatch: any) => {
 		try {
@@ -49,7 +50,7 @@ export const sendClient = (client :any) => {
 	function requestSuccess(state: any) {
 		return {
 			type: ActionType.sendClient,
-			payload: state
+			payload: state,
 		};
 	}
 	function requestError() {
@@ -59,15 +60,15 @@ export const sendClient = (client :any) => {
 	}
 };
 
-export const sendCommerce = ( id_client: number, commerce :any) => {
-	console.log('Client', id_client, 'Comercio', commerce)
+export const sendCommerce = (id_client: number, commerce: any) => {
+	console.log('Client', id_client, 'Comercio', commerce);
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce`, commerce);
 			//localStorage.setItem('token', res.data.token);
 			dispatch(requestSuccess(res.data.info.id_commerce));
 		} catch (error) {
-			console.log(error.reponse)
+			console.log(error.reponse);
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
@@ -75,7 +76,7 @@ export const sendCommerce = ( id_client: number, commerce :any) => {
 	function requestSuccess(state: any) {
 		return {
 			type: ActionType.sendCommerce,
-			payload: state
+			payload: state,
 		};
 	}
 	function requestError() {
@@ -85,12 +86,12 @@ export const sendCommerce = ( id_client: number, commerce :any) => {
 	}
 };
 
-export const sendImages = (formData: any ) => {
+export const sendImages = (formData: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, formData);
 			//localStorage.setItem('token', res.data.token);
-			let images:any = res.data.info;
+			let images: any = res.data.info;
 			/*
 			console.log('Dimas',images)
 			let copyImages:any = {};
@@ -100,7 +101,7 @@ export const sendImages = (formData: any ) => {
 			*/
 			dispatch(requestSuccess(images));
 		} catch (error) {
-			console.log(error.reponse)
+			console.log(error.reponse);
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
@@ -108,7 +109,7 @@ export const sendImages = (formData: any ) => {
 	function requestSuccess(state: any) {
 		return {
 			type: ActionType.sendImages,
-			payload: state
+			payload: state,
 		};
 	}
 	function requestError() {
@@ -119,7 +120,7 @@ export const sendImages = (formData: any ) => {
 };
 
 export const sendFM = (formM: any) => {
-	console.log('action', formM)
+	console.log('action', formM);
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM`, formM);
@@ -146,11 +147,11 @@ export const sendFM = (formM: any) => {
 
 export const cleanFM = () => {
 	return async (dispatch: any) => {
-			dispatch(request());
+		dispatch(request());
 	};
 	function request() {
 		return {
 			type: ActionType.cleanFm,
 		};
 	}
-}
+};
