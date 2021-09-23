@@ -6,8 +6,13 @@ import ReactImageZoom from 'react-image-zoom';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
-import luffy from '../../img/itachi2.png';
 import './pasos.scss';
+
+//Redux
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+//Url
+import { URL, PortFiles } from '../../config'
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -22,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function PasoDosDos() {
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 	const classes = useStyles();
 	const [state, setState] = React.useState({
 		checkedA: false,
@@ -31,13 +37,13 @@ export default function PasoDosDos() {
 		setState({ ...state, [event.target.name]: event.target.checked });
 	};
 
-	const props = { zoomPosition: 'original', height: 350, width: 450, img: luffy };
+	const props = { zoomPosition: 'original', height: 350, width: 450, img: `${URL}:${PortFiles}/${fm.rc_rif.path}` };
 
 	return (
 		<>
 			<form className={classes.root} noValidate autoComplete='off'>
-				<TextField className='btn_step btn_corto' id='outlined-basic ' label='Tipo ID' variant='outlined' />
-				<TextField className='btn_step' id='outlined-basic' label='Numero ID' variant='outlined' />
+				<TextField className='btn_step btn_corto' id='outlined-basic ' label='Tipo ID' variant='outlined'/>
+				<TextField className='btn_step' id='outlined-basic' label='Numero ID' variant='outlined'  disabled={true} value={fm.id_commerce.ident_num}/>
 				<FormControlLabel
 					control={<Switch checked={state.checkedA} onChange={handleChange} name='checkedA' color='primary' />}
 					label='Correcto'

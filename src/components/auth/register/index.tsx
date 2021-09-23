@@ -27,7 +27,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import luffy from '../../../img/itachi2.png';
+//import luffy from '../../../img/itachi2.png';
+import luffy from '../../../img/user.png';
 
 import {
 	Interface_RegisterUser,
@@ -266,7 +267,7 @@ const Register: React.FC = () => {
 								<div className='ed-grid s-grid-2'>
 									<Button size='small' color='primary' variant='contained' onClick={() => history.push('/auth/login')}>
 										<div className='ed-container'>
-											<div className='s-to-center'>Iniciar Session</div>
+											<div className='s-to-center button-login'>Iniciar Session</div>
 										</div>
 									</Button> 
 								</div>

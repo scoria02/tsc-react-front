@@ -39,7 +39,6 @@ export const validIdentNum = (value: string, op: number):boolean => {
 	return true;
 }
 
-
 export const validPhone = (value: string):boolean => {
 	if (value.trim() !== '' && 
 		/^[0-9]+$/.test(value) && 
@@ -80,7 +79,7 @@ export const sizeStep = (active: number): number => {
 		case 2:
 			return 19; 
 		case 3:
-			return 29; 
+			return 19; 
 		case 4:
 			return 29; 
 		default:
@@ -97,7 +96,7 @@ export const sizeImagesStep = (active: number): number => {
 		case 2:
 			return 5; 
 		case 3:
-			return 5; 
+			return 8;
 		case 4:
 			return 8; 
 		default:
@@ -105,7 +104,7 @@ export const sizeImagesStep = (active: number): number => {
 	}
 }
 
-export const allInputNotNUll = (last: number, form: any): boolean => {
+export const allInputNotNUll = (last: number, form: any, mashClient: boolean): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(form)) {
 		if (indice > last) {
@@ -114,16 +113,20 @@ export const allInputNotNUll = (last: number, form: any): boolean => {
 		indice++;
 		//No Check when item[0] === 'IdentType'
 		if (typeof item[1] === 'string') {
-			if(item[0] === 'phone1' || item[0] === 'phone2'){
-				if(phoneNotNull(item[1])){
+			if((item[0] === 'phone1' || item[0] === 'phone2')){
+				if(phoneNotNull(item[1]) && !mashClient){
 					return true;
 				}
 			}else{
-				if (item[1].trim() === '') {
-					return true;
+				if((item[0] === 'name' || item[0] === 'last_name') && mashClient) {
+					//no hago nada
+				}else{
+					if (item[1].trim() === '') {
+						return true;
+					}
 				}
 			}
-		}else if (typeof item[1] === 'number') {
+		}else if (typeof item[1] === 'number' && item[0] !== 'special_contributor') {
 			if(item[1] === 0){
 				return true;
 			}
@@ -132,7 +135,7 @@ export const allInputNotNUll = (last: number, form: any): boolean => {
 	return false;
 };
 
-export const allImgNotNUll = (last: number, images: any, special_contributor: boolean): boolean => {
+export const allImgNotNUll = (last: number, images: any, special_contributor: boolean, mashClient: boolean): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(images)) {
 		if (indice > last) {
@@ -142,15 +145,18 @@ export const allImgNotNUll = (last: number, images: any, special_contributor: bo
 		if(item[0] === 'rc_special_contributor' && !special_contributor){
 			//Salto
 		}else{
-			if(item[1] === null){
-				return true;
+			if((item[0] === 'rc_ident_card' || item[0] === 'rc_ref_perso') && mashClient) {
+				//No hago nada
+			}
+			else {
+				if(item[1] === null){
+					return true;
+				}
 			}
 		}
 	}	
 	return false;
 }
-
-
 
 export const checkErrorAllInput = (last: number, errors: any): boolean => {
 	let indice = 0;
@@ -165,7 +171,6 @@ export const checkErrorAllInput = (last: number, errors: any): boolean => {
 	}
 	return false;
 }
-
 
 export const phoneNotNull = (value: string): boolean => {
 	if(value.slice(0,3) === '+58' && value.slice(3).length > 0){

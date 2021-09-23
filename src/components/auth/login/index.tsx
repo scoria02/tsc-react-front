@@ -10,7 +10,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import luffy from '../../../img/itachi2.png';
+//import luffy from '../../../img/itachi2.png';
+import luffy from '../../../img/user.png';
 import { startLogin } from '../../../store/actions/auth';
 // import { useForm } from '../../../hooks/useForm';
 import { useStylesModalUser } from '../styles';
@@ -112,7 +113,7 @@ const Login: React.FC = () => {
 										variant='contained'
 										onClick={() => history.push('/auth/register')}>
 										<div className='ed-container'>
-											<div className='s-to-center'>Registrarte</div>
+											<div className='s-to-center button-login'>Registrarte</div>
 										</div>
 									</Button>
 								</div>

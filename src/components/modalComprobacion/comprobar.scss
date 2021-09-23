@@ -1,13 +1,14 @@
 .comprobar_container {
 	// background-color: blue;
-	height: 84vh;
+	// over
+	height: 100%;
 	display: grid;
 	grid-column-gap: 0;
 	grid-template-columns: 1.5fr 1fr;
 }
 .comprobar_container_2 {
 	// background-color: blue;
-	height: 84vh;
+	height: 100%;
 	display: grid;
 	grid-column-gap: 0;
 	grid-template-columns: 1fr 1fr;
@@ -40,7 +41,7 @@
 
 .btn-divfloat {
 	position: fixed !important;
-	bottom: 3px;
+	bottom: 1.5rem;
 	left: 38%;
 }
 
@@ -49,3 +50,8 @@
 	display: flex;
 	align-items: center;
 }
+
+.MuiDialog-paperFullScreen{
+	overflow-x: hidden;
+}
+

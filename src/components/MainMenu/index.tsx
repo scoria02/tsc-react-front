@@ -29,6 +29,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import luffy from '../../img/itachi2.png';
+//import luffy from '../../img/user.png';
 import { baseUrl, urlAceptacion, urlFM } from '../../routers/url';
 import { FinishLoading } from '../../store/actions/ui';
 //Redux
@@ -134,7 +135,6 @@ const MainMenu: React.FC = () => {
 	const history = useHistory();
 
 	const [open, setOpen] = React.useState(false);
-	const [selectedIndex, setSelectedIndex] = React.useState(0);
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [user, setUser] = React.useState({
@@ -174,7 +174,6 @@ const MainMenu: React.FC = () => {
 		if (index === 5) {
 			history.push(urlFM);
 		}
-		setSelectedIndex(index);
 	};
 
 	const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {

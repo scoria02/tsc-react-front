@@ -139,7 +139,7 @@ export const Step2: React.FC<Props> = ({ userForm, userFormError, handleChange, 
 						name='company' 
 						label='Company'>
 						<MenuItem value='1000Pagos'>1000Pagos</MenuItem>
-						<MenuItem value='Trandred'>Trandred</MenuItem>
+						<MenuItem value='Tranred'>Tranred</MenuItem>
 						<MenuItem value='Digo'>Digo</MenuItem>
 					</Select>
 				</FormControl>

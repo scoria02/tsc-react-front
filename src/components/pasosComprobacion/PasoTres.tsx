@@ -6,8 +6,15 @@ import ReactImageZoom from 'react-image-zoom';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
-import luffy from '../../img/itachi2.png';
+//import luffy from '../../img/itachi2.png';
+import luffy from '../../img/obama.jpg';
 import './pasos.scss';
+
+//Redux
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+//Url
+import { URL, PortFiles } from '../../config'
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -22,6 +29,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function PasoTres() {
+
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+
 	const classes = useStyles();
 	const [state, setState] = React.useState({
 		checkedA: false,
@@ -31,7 +41,7 @@ export default function PasoTres() {
 		setState({ ...state, [event.target.name]: event.target.checked });
 	};
 
-	const props = { zoomPosition: 'original', height: 350, width: 450, img: luffy };
+	const props = { zoomPosition: 'original', height: 350, width: 450, img: `${URL}:${PortFiles}/${fm.rc_account_number.path}` };
 
 	return (
 		<>
@@ -49,7 +59,6 @@ export default function PasoTres() {
 			</form>
 			<div className='img_container'>
 				<ReactImageZoom {...props} />
-				{/* <img className='img_tamano' src={luffy} alt='Cedula' /> */}
 			</div>
 		</>
 	);

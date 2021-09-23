@@ -11,12 +11,16 @@ import { DiagramaBarra } from '../diagramas/DiagramaBarra';
 import Diferidos from '../diferidos/Diferidos';
 import Comproba from '../modalComprobacion/Comproba';
 
+//import { RootState } from '../../store/store';
+import { getDataFM } from '../../store/actions/admisionFm';
+
 import './index.scss';
 
 export const Aceptacion = () => {
 	const dispatch = useDispatch();
 
 	const handleClick = () => {
+		dispatch(getDataFM());
 		dispatch(OpenModal());
 		console.log('Aqui ta el beta');
 		// console.log(object)
