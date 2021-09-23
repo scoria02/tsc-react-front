@@ -84,6 +84,7 @@ const Register: React.FC = () => {
 	const [errorPassword, setErrorPassword] = React.useState<Interface_ErrorPass>({
 		rango: true,
 		mayus: true,
+		minus: true,
 		sig: true,
 	});
 
@@ -97,16 +98,27 @@ const Register: React.FC = () => {
 				break;
 			case 'password':
 				let temPass: Interface_ErrorPass = { ...errorPassword };
+				//Rango Password
 				if (value.length < 8 || value.length > 12) temPass.rango = true;
 				else temPass.rango = false;
 
+				//Tenga 1 Mayuscula 
 				if (!/([A-Z]+)/g.test(value)) temPass.mayus = true;
 				else temPass.mayus = false;
 
-				if (!/[^a-z0-9\x20]/i.test(value)) temPass.sig = true;
+				//Al menos una minuscula 
+				if (!/([a-z]+)/g.test(value)) temPass.minus= true;
+				else temPass.minus= false;
+
+				//Al menos un signo
+				if (!/[^a-z0-9\x20]/i.test(value)) temPass.sig= true;
 				else temPass.sig = false;
 
-				if (temPass.rango || temPass.mayus || temPass.sig) temp.password = true;
+
+				console.log(temPass)
+
+				//No tenga ningun Error
+				if (temPass.rango || temPass.mayus || temPass.sig || temPass.minus) temp.password = true;
 				else temp.password = false;
 
 				if (userForm.confirmPassword.trim() !== '')
@@ -234,7 +246,7 @@ const Register: React.FC = () => {
 													onClick={handleSubmit}
 													disabled={!readyStep}
 													variant='contained'>
-													{isMediumScreen ? <SendIcon /> : <span>Registrarme</span>}
+													{isMediumScreen ? <SendIcon /> : <span style={{ color: '#fff' }}>Registrarme</span>}
 												</Button>
 											) : (
 												<Button

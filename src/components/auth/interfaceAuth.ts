@@ -25,5 +25,6 @@ export interface Interface_RegisterUserError {
 export interface Interface_ErrorPass {
 	rango: boolean;
 	mayus: boolean;
+	minus: boolean,
 	sig: boolean;
 }

@@ -103,7 +103,7 @@ export const Step1: React.FC<Props> = ({ userForm, userFormError, errorPassword,
 				}}
 				/>
 			<Snackbar
-				open={open && (errorPassword.rango || errorPassword.mayus || errorPassword.sig)}
+				open={open && (errorPassword.rango || errorPassword.mayus || errorPassword.sig || errorPassword.minus)}
 				anchorOrigin={{ 
 					vertical: 'top', 
 					horizontal: 'right',
@@ -118,6 +118,9 @@ export const Step1: React.FC<Props> = ({ userForm, userFormError, errorPassword,
 							</Typography>
 							<Typography className={classes.textM} style={{ display: `${errorPassword.mayus ? 'block' : 'none'}` }}>
 								<span>&#8226;</span> Al menos una MAYUSCULA
+							</Typography>
+							<Typography className={classes.textM} style={{ display: `${errorPassword.minus? 'block' : 'none'}` }}>
+								<span>&#8226;</span> Al menos 1 minuscula
 							</Typography>
 							<Typography className={classes.textM} style={{ display: `${errorPassword.sig ? 'block' : 'none'}` }}>
 								<span>&#8226;</span> Al menos 1 carater (#,$,*,@,!...)
