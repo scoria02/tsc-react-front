@@ -10,7 +10,6 @@ import { CloseModal } from '../../store/actions/ui';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
-import Comprobacion from '../comprobacion';
 import PasoUno from '../pasosComprobacion/PasoUno';
 import PasoUnoUser from '../pasosComprobacion/PasoUnoUser';
 import PasoDos from '../pasosComprobacion/PasoDos';
@@ -23,12 +22,7 @@ import PasoCinco from '../pasosComprobacion/PasoCinco';
 import PasoCincoDos from '../pasosComprobacion/PasoCincoDos';
 import PasoSeis from '../pasosComprobacion/PasoSeis';
 
-import LoaderPrimary from '../loaders/LoaderPrimary';
-
-//Redux
-import { RootState } from '../../store/store';
-
-import './comprobar.scss';
+import './index.scss';
 import { stepComplete } from '../../store/actions/accept';
 
 const Transition = React.forwardRef(function Transition(
@@ -148,16 +142,15 @@ function getStepContent(step: number) {
 	}
 }
 
-export default function Comproba() {
+const Comprobacion: React.FC<any> = ({special}) => {
 	const classes2 = useStyles2();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [completed, setCompleted] = React.useState(new Set<number>());
 	const [skipped, setSkipped] = React.useState(new Set<number>());
 	const steps = getSteps();
 
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-
 	function getSteps() {
+		if(special){
 			return [
 				'Informacion',
 				'Validacion (Cedula / Rif)',
@@ -166,6 +159,16 @@ export default function Comproba() {
 				'Validacion (Referencia Personal / Servicios)',
 				'Validacion Contribuyen Especial',
 			];
+		}
+		else{
+			return [
+				'Informacion',
+				'Validacion (Cedula / Rif)',
+				'Validacion (Cuenta / Referencia )',
+				'Validacion (Acta Constitutiva / Doc. Propiedad)',
+				'Validacion (Referencia Personal / Servicios)',
+			];
+		}
 	}
 
 	const totalSteps = () => {
@@ -212,12 +215,6 @@ export default function Comproba() {
 		dispatch(stepComplete(newCompleted));
 		console.log(newCompleted);
 		setCompleted(newCompleted);
-
-		/**
-		 * Sigh... it would be much nicer to replace the following if conditional with
-		 * `if (!this.allStepsComplete())` however state is not set when we do this,
-		 * thus we have to resort to not being very DRY.
-		 */
 		if (completed.size !== totalSteps() - skippedSteps()) {
 			handleNext();
 		}
@@ -239,16 +236,8 @@ export default function Comproba() {
 		return completed.has(step);
 	}
 
-	//******************************************************* */
-	// const classes = useStyles();
-	// const [open, setOpen] = React.useState(false);
-
 	const dispatch = useDispatch();
 	const { modalOpen } = useSelector((state: any) => state.ui);
-
-	//   const handleOpen = () => {
-	//     setOpen(true);
-	//   };
 
 	const handleClose = () => {
 		// setOpen(false);
@@ -258,12 +247,68 @@ export default function Comproba() {
 	return (
 		<div>
 			<Dialog fullScreen open={modalOpen} onClose={handleClose} TransitionComponent={Transition}>
-				{Object.keys(fm).length ?
-					<Comprobacion special={fm.special_contributor} />
-					:
-					<LoaderPrimary />
-				}
+					<div className={classes2.root}>
+						<Stepper alternativeLabel nonLinear activeStep={activeStep}>
+							{steps.map((label, index) => {
+								const stepProps: { completed?: boolean } = {};
+								const buttonProps: { optional?: React.ReactNode } = {};
+								// if (isStepOptional(index)) {
+								// 	buttonProps.optional = <Typography variant='caption'>Optional</Typography>;
+								// }
+								if (isStepSkipped(index)) {
+									stepProps.completed = false;
+								}
+								return (
+									<Step key={label} {...stepProps}>
+										<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
+											{label}
+										</StepButton>
+									</Step>
+								);
+							})}
+						</Stepper>
+						<div>
+							{allStepsCompleted() ? (
+								<div className='btn-divfloat'>
+									<Typography className={classes2.instructions}>
+										Todos los campos fueron Validados - Saludos BB
+									</Typography>
+									<Button onClick={handleReset}>Salir</Button>
+								</div>
+							) : (
+								<div>
+									<Typography className={classes2.instructions}>{getStepContent(activeStep)}</Typography>
+									<div className='btn-divfloat'>
+										<Button disabled={activeStep === 0} onClick={handleBack} className={classes2.button}>
+											Volver
+										</Button>
+										<Button variant='contained' color='primary' onClick={handleNext} className={classes2.button}>
+											Siguiente
+										</Button>
+										{/* {isStepOptional(activeStep) && !completed.has(activeStep) && (
+											// <Button variant='contained' color='primary' onClick={handleSkip} className={classes2.button}>
+											// 	Saltar
+											// </Button>
+										)} */}
+										{activeStep !== steps.length &&
+											(completed.has(activeStep) ? (
+												<Typography variant='caption' className={classes2.completed}>
+													Verificado
+												</Typography>
+											) : (
+												<Button variant='contained' color='primary' onClick={handleComplete}>
+													{/* <Button variant='contained' color='primary'> */}
+													{completedSteps() === totalSteps() - 1 ? 'Finish' : 'Verificado'}
+												</Button>
+											))}
+									</div>
+								</div>
+							)}
+						</div>
+					</div>
 			</Dialog>
 		</div>
 	);
 }
+
+export default Comprobacion;

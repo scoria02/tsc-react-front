@@ -66,6 +66,7 @@ export const sendCommerce = (id_client: number, commerce: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce`, commerce);
 			//localStorage.setItem('token', res.data.token);
+			console.log(res.data.info)
 			dispatch(requestSuccess(res.data.info.id_commerce));
 		} catch (error) {
 			console.log(error.reponse);

@@ -42,7 +42,7 @@ export default function PasoTres() {
 		zoomPosition: 'original',
 		height: 350,
 		width: 450,
-		img: `${URL}:${PortFiles}/${fm.rc_account_number.path}`,
+		img: `${URL}:${PortFiles}/${fm.path_rc_account_number}`,
 	};
 
 	return (
@@ -52,6 +52,7 @@ export default function PasoTres() {
 					className='btn_step btn_medio'
 					id='outlined-basic '
 					label='Numero de Cuenta'
+					value={fm.bank_account_num}
 					variant='outlined'
 				/>
 				<FormControlLabel

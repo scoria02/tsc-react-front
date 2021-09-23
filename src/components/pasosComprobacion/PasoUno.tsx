@@ -32,89 +32,77 @@ export default function PasoUno() {
 				id='outlined-basic' 
 				label='Nombre Completo'
 				variant='outlined'
-				name='nameClient'
-				value={fm.id_commerce.name}
-				disabled={true}
+				value={fm.name_commerce}
 			/>
 			<TextField 
 				className='btn_step'
 				id='outlined-basic' 
 				label='Tipo ID' 
 				variant='outlined' 
-				name='id_ident_type'
-				value={fm.id_commerce.id_ident_type}
-				disabled={true}
+				value={fm.ident_type_commerce}
 			/>
 			<TextField 
 				className='btn_step' 
 				id='outlined-basic'
 				label='Numero ID'
-				name='ident_num'
-				value={fm.id_commerce.ident_num}
-				disabled={true}
+				value={fm.ident_num_commerce}
 				variant='outlined' />
 			<TextField 
 				className='btn_step' 
 				id='outlined-basic'
 				label='Actividad Comercial' 
-				name='ident_num'
-				value={fm.id_commerce.activity}
-				disabled={true}
+				//value={fm.}
 				variant='outlined' />
 			<TextField 
 				className='btn_step' 
 				id='outlined-basic'
 				label='Contribuyente' 
-				name='special_contributor'
-				value={fm.id_commerce.special_contributor === 1 ? 'Si' : 'No'}
-				disabled={true}
+				value={fm.special_contributor === 1 ? 'Si' : 'No'}
 				variant='outlined' />
 			<TextField
 				className='btn_step'
 				id='outlined-basic'
 				label='Numero de Cuenta'
-				name='number_account'
 				value={fm.bank_account_num}
-				disabled={true}
 				variant='outlined'
 			/>
 			<TextField className='btn_step' 
 				id='outlined-basic' 
 				label='MetodoPago'
+				//value={fm.}
+				variant='outlined' 
+			/>
+			<TextField className='btn_step' 
+				id='outlined-basic' 
+				label='Estado'
+				value={fm.estado_commerce}
 				variant='outlined' />
 			<TextField className='btn_step' 
 				id='outlined-basic' 
 				label='Ciudad'
-				name="ciudad"
-				//value={fm.id_commerce.ciudad}
+				value={fm.ciudad_commerce}
 				variant='outlined' />
 			<TextField className='btn_step' 
 				id='outlined-basic' 
-				label='Estado'
+				value={fm.municipio_commerce}
 				variant='outlined' />
 			<TextField className='btn_step' 
 				id='outlined-basic' 
-				label='Municipio'
+				value={fm.parroquia_commerce}
 				variant='outlined' />
 			<TextField className='btn_step' 
 				id='outlined-basic' 
-				label='Parroquia'
-				variant='outlined' />
-			<TextField className='btn_step' 
-				id='outlined-basic' 
-				label='Sector'
+				value={fm.sector_commerce}
 				variant='outlined' />
 			<TextField className='btn_step' 
 				id='outlined-basic' 
 				label='Calle'
+				value={fm.calle_commerce}
 				variant='outlined' />
 			<TextField className='btn_step' 
 				id='outlined-basic' 
-		label='Local'
-		variant='outlined' />
-			<TextField className='btn_step' 
-				id='outlined-basic' 
-				label='CodigoPostal'
+				label='Local'
+				value={fm.local_commerce}
 				variant='outlined' />
 		</form>
 	);

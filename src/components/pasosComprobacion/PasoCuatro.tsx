@@ -37,7 +37,7 @@ export default function PasoCuatro() {
 		setState({ ...state, [event.target.name]: event.target.checked });
 	};
 
-	const props = { zoomPosition: 'original', height: 350, width: 450, img: `${URL}:${PortFiles}/${fm.rc_constitutive_act.path}` };
+	const props = { zoomPosition: 'original', height: 350, width: 450, img: `${URL}:${PortFiles}/${fm.path_rc_constitutive_act}` };
 
 	return (
 		<>

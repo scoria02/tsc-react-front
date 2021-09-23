@@ -37,7 +37,7 @@ export default function PasoTresDos() {
 		setState({ ...state, [event.target.name]: event.target.checked });
 	};
 
-	const props = { zoomPosition: 'original', height: 350, width: 450, img: `${URL}:${PortFiles}/${fm.rc_ref_bank.path}` };
+	const props = { zoomPosition: 'original', height: 350, width: 450, img: `${URL}:${PortFiles}/${fm.path_rc_ref_bank}` };
 
 	return (
 		<>
@@ -46,8 +46,8 @@ export default function PasoTresDos() {
 					className='btn_step btn_medio'
 					id='outlined-basic '
 					label='Referencia Bancaria'
+					value='Referencia Bancaria'
 					variant='outlined'
-					value='Foto de Referencia Bancaria'
 					disabled
 				/>
 				<FormControlLabel

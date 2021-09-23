@@ -146,11 +146,11 @@ export const Step5: React.FC<any> = ({
 					/>
 			</div>
 			<div className={classes.input}>
-			<TextField className={classes.inputM} variant="outlined" required id="standard-required" label="Sector" name='sector' onChange={handleChange} value={cursedForm.sector} />
-			<TextField className={classes.inputN} variant="outlined" required id="standard-required" label="Calle" name='calle' onChange={handleChange} value={cursedForm.calle} />
+			<TextField className={classes.inputM} variant="outlined" required id="standard-required" label="Sector" name='sector_pos' onChange={handleChange} value={cursedForm.sector_pos} />
+			<TextField className={classes.inputN} variant="outlined" required id="standard-required" label="Calle" name='calle_pos' onChange={handleChange} value={cursedForm.calle_pos} />
 			</div>
 			<div className={classes.input}>
-			<TextField className={classes.inputM} variant="outlined" required id="standard-required" label="Local" name='local' onChange={handleChange} value={cursedForm.local} />
+			<TextField className={classes.inputM} variant="outlined" required id="standard-required" label="Local" name='local_pos' onChange={handleChange} value={cursedForm.local_pos} />
 			</div>
 		</>
   )
