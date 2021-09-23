@@ -21,6 +21,8 @@ import PasoCuaTroDos from '../pasosComprobacion/PasoCuatroDos';
 import PasoCinco from '../pasosComprobacion/PasoCinco';
 import PasoCincoDos from '../pasosComprobacion/PasoCincoDos';
 
+import LoaderPrimary from '../loaders/LoaderPrimary';
+
 //Redux
 import { RootState } from '../../store/store';
 
@@ -315,7 +317,7 @@ export default function Comproba() {
 						</div>
 					</div>
 					:
-					<h1>Loading...</h1>
+					<LoaderPrimary />
 				}
 			</Dialog>
 		</div>
