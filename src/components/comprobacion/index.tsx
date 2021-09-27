@@ -22,6 +22,9 @@ import PasoCinco from '../pasosComprobacion/PasoCinco';
 import PasoCincoDos from '../pasosComprobacion/PasoCincoDos';
 import PasoSeis from '../pasosComprobacion/PasoSeis';
 
+import { RootState } from '../../store/store';
+import { updateStatusFM } from '../../store/actions/admisionFm';
+
 import './index.scss';
 import { stepComplete } from '../../store/actions/accept';
 
@@ -149,6 +152,10 @@ const Comprobacion: React.FC<any> = ({special}) => {
 	const [skipped, setSkipped] = React.useState(new Set<number>());
 	const steps = getSteps();
 
+	const dispatch = useDispatch();
+	const { modalOpen } = useSelector((state: any) => state.ui);
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+
 	function getSteps() {
 		if(special){
 			return [
@@ -199,6 +206,10 @@ const Comprobacion: React.FC<any> = ({special}) => {
 				: activeStep + 1;
 
 		setActiveStep(newActiveStep);
+		if(isLastStep() && completedSteps() === totalSteps() - 1){
+			console.log('Send FMMMMM')
+			dispatch(updateStatusFM(fm.id, 2));
+		}
 	};
 
 	const handleBack = () => {
@@ -236,8 +247,6 @@ const Comprobacion: React.FC<any> = ({special}) => {
 		return completed.has(step);
 	}
 
-	const dispatch = useDispatch();
-	const { modalOpen } = useSelector((state: any) => state.ui);
 
 	const handleClose = () => {
 		// setOpen(false);
@@ -285,11 +294,6 @@ const Comprobacion: React.FC<any> = ({special}) => {
 										<Button variant='contained' color='primary' onClick={handleNext} className={classes2.button}>
 											Siguiente
 										</Button>
-										{/* {isStepOptional(activeStep) && !completed.has(activeStep) && (
-											// <Button variant='contained' color='primary' onClick={handleSkip} className={classes2.button}>
-											// 	Saltar
-											// </Button>
-										)} */}
 										{activeStep !== steps.length &&
 											(completed.has(activeStep) ? (
 												<Typography variant='caption' className={classes2.completed}>
@@ -298,7 +302,7 @@ const Comprobacion: React.FC<any> = ({special}) => {
 											) : (
 												<Button variant='contained' color='primary' onClick={handleComplete}>
 													{/* <Button variant='contained' color='primary'> */}
-													{completedSteps() === totalSteps() - 1 ? 'Finish' : 'Verificado'}
+													{completedSteps() === totalSteps() - 1 ? 'Solicitud Revisada' : 'Verificado'}
 												</Button>
 											))}
 									</div>

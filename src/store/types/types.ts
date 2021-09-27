@@ -25,9 +25,11 @@ export enum ActionType {
 	sendFMError = '[FM] send FM Error',
 	cleanFm = '[FM] clear FM',
 
-	//FM Admision
+	//Admision FM
 	getDataFM = '[FM] Get FM',
 	getDataFMError = '[FM] Get FM Error',
+	updateStatusFM = '[FM] update Status FM',
+	updateStatusFMError = '[FM] update Status FM Error',
 	cleanDataFM= '[FM] CleanDataFM',
 
 	//Modals
