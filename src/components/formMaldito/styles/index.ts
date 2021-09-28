@@ -4,7 +4,7 @@ export const useStylesFM = makeStyles((styles) => ({
 	containerFM: {
 		position: 'relative',
 		height: '490px',
-		width: '500px'
+		width: '700px'
 	},
   buttonNext: {
     marginRight: styles.spacing(1),

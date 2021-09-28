@@ -12,7 +12,7 @@ import { RootState } from '../../store/store';
 //Url
 import { URL, PortFiles } from '../../config'
 
-import './pasos.scss';
+import './styles/pasos.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({

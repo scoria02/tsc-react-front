@@ -39,11 +39,13 @@ export const updateStatusFM = (id_fm: number, status: any) => {
 	const id_status:any = {
     "id_status_request": status
 	}
+	console.log(id_fm, id_status)
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.put(`/FM/${id_fm}/status`, id_status);
 			//localStorage.setItem('token', res.data.token);
 			console.log(res.data.info)
+			dispatch(CloseModal());
 			dispatch(requestSuccess());
 		} catch (error) {
 			console.log(error.response)

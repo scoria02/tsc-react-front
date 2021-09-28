@@ -12,7 +12,7 @@ import { PortFiles, URL } from '../../config';
 import { RootState } from '../../store/store';
 //import luffy from '../../img/itachi2.png';
 // import luffy from '../../img/obama.jpg';
-import './pasos.scss';
+import './styles/pasos.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({

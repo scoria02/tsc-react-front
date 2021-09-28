@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
-import './pasos.scss';
+import './styles/pasos.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -51,13 +51,13 @@ export default function PasoUnoUser() {
 				id='outlined-basic'
 				label='Telefono'
 				variant='outlined'
-				value={'telefono'}/>
+				value={fm.phone1}/>
 			<TextField 
 				className='btn_step'
 				id='outlined-basic'
 				label='Telefono2'
 				variant='outlined'
-				value={'telefono'}/>
+				value={fm.phone2}/>
 			<TextField 
 				className='btn_step btn_largo'
 				id='outlined-basic'

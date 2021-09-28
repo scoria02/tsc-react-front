@@ -6,7 +6,7 @@ import ReactImageZoom from 'react-image-zoom';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
-import './pasos.scss';
+import './styles/pasos.scss';
 import { useDispatch } from 'react-redux';
 import { Valid } from '../../store/actions/accept';
 

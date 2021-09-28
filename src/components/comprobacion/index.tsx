@@ -208,7 +208,7 @@ const Comprobacion: React.FC<any> = ({special}) => {
 		setActiveStep(newActiveStep);
 		if(isLastStep() && completedSteps() === totalSteps() - 1){
 			console.log('Send FMMMMM')
-			dispatch(updateStatusFM(fm.id, 2));
+			dispatch(updateStatusFM(fm.id_fm, 2));
 		}
 	};
 

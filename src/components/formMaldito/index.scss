@@ -51,3 +51,9 @@
 .fontStep {
 	font-size: 12px;
 }
+
+.container-location{
+	display: grid;
+	grid-column-gap: 2rem;
+	grid-template-columns: 1fr 1fr;
+}

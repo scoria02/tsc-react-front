@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
-import './pasos.scss';
+import './styles/pasos.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -28,7 +28,6 @@ export default function PasoUno() {
 	return (
 		<form className={classes.root} noValidate autoComplete='off'>
 			<TextField 
-				className='btn_step' 
 				id='outlined-basic' 
 				label='Nombre Completo'
 				variant='outlined'
@@ -50,14 +49,14 @@ export default function PasoUno() {
 			<TextField 
 				className='btn_step' 
 				id='outlined-basic'
-				label='Actividad Comercial' 
-				//value={fm.}
+				label='Contribuyente' 
+				value={fm.special_contributor === 1 ? 'Si' : 'No'}
 				variant='outlined' />
 			<TextField 
 				className='btn_step' 
 				id='outlined-basic'
-				label='Contribuyente' 
-				value={fm.special_contributor === 1 ? 'Si' : 'No'}
+				label='Actividad Comercial' 
+				value={'Actividad'}
 				variant='outlined' />
 			<TextField
 				className='btn_step'
@@ -69,7 +68,7 @@ export default function PasoUno() {
 			<TextField className='btn_step' 
 				id='outlined-basic' 
 				label='MetodoPago'
-				//value={fm.}
+				value={fm.paymet}
 				variant='outlined' 
 			/>
 			<TextField className='btn_step' 
