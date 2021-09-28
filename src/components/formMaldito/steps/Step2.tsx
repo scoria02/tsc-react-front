@@ -183,7 +183,7 @@ export const Step2: React.FC<any> = ({
 					/>
 				</Button>
 			</div>
-			<div className={classes.input} style={{ marginTop: '-2px' }}>
+			<div className={classes.input}>
 				<div className={classes.inputText}>
 					<FormControlLabel 
 						label=''

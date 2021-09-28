@@ -1,15 +1,24 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const useStylesFM = makeStyles((styles) => ({
+	containerFM: {
+		position: 'relative',
+		height: '490px',
+		width: '500px'
+	},
   buttonNext: {
-		bottom: '0',
     marginRight: styles.spacing(1),
     textTransform: 'none',
+		position: 'absolute',
+		bottom: 0,
+		right: 0,
   },
   buttonBack: {
-		bottom: '0',
     marginRight: styles.spacing(40),
     textTransform: 'none',
+		position: 'absolute',
+		bottom: 0,
+		left: 0,
   },
 	input: {
     display: 'flex',
@@ -62,8 +71,7 @@ export const useStylesFM = makeStyles((styles) => ({
 	},
 	inputText: {
     textAlign: 'center',
-		alignSelf: 'center',
-		fontSize: '1.2rem',
+		fontSize: '1.5rem',
     width: '100%',
 		padding: '15px',
 		marginTop: styles.spacing(1),
@@ -76,15 +84,13 @@ export const useStylesFM = makeStyles((styles) => ({
 	},
 	imgIdent: {
 		marginLeft: styles.spacing(1),
-		marginTop: styles.spacing(0.2),
 		marginBottom: styles.spacing(0.2),
-		padding: 0,
+		padding: '0',
     textTransform: 'none',
     width: '25%',
 	},
 	imgNroAccount: {
 		marginLeft: styles.spacing(1),
-		marginTop: styles.spacing(0.5),
 		marginBottom: styles.spacing(0.2),
 		padding: 0,
     textTransform: 'none',
@@ -98,7 +104,6 @@ export const useStylesFM = makeStyles((styles) => ({
 		marginLeft: styles.spacing(1),
 	},
 	imgStep1: {
-		marginTop: styles.spacing(0.5),
 		marginBottom: styles.spacing(0.5),
     textTransform: 'none',
     width: '50%',
