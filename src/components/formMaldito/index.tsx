@@ -28,7 +28,6 @@ import { Step1 } from './steps/Step1';
 import { Step2 } from './steps/Step2';
 import { Step3 } from './steps/Step3';
 import { Step4 } from './steps/Step4';
-import { Step5 } from './steps/Step5';
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
 
@@ -37,7 +36,6 @@ function getSteps() {
 		'Informacion Personal del Cliente',
 		'Informacion del Comercio',
 		'Ubicacion del Comercio/POS',
-		'Documentos del Comercio',
 		'Solicitud de POS',
 	];
 }
@@ -112,6 +110,14 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		ident_num: '187654321',
 		phone1: '+584121234567',
 		phone2: '+584121234566',
+		id_estado_client: 1,
+		id_ciudad_client: 1,
+		id_municipio_client: 1,
+		id_parroquia_client: 1,
+		sector_client: 'Uno client',
+		calle_client: '11 client',
+		local_client: 'A client',
+		codigo_postal_client: '',
 		//step2 Comercio
 		name_commerce: 'MilPagos',
 		id_ident_type_commerce: 3,
@@ -128,12 +134,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		calle: '13',
 		local: 'A1',
 		codigo_postal: '',
-		//Step4 Post
-		//Images
-		//step5 Post
-		number_post: 1,
-		id_model_post: 1,
-		id_payment_method: 1,
 		id_estado_pos: 1,
 		id_ciudad_pos: 1,
 		id_municipio_pos: 1,
@@ -141,6 +141,13 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		sector_pos: 'Dos',
 		calle_pos: '15',
 		local_pos: 'A2',
+		codigo_postal_pos: '',
+		//Step4 Post
+		
+		//step4 Post
+		id_payment_method: 1,
+		number_post: 1,
+		id_model_post: 1,
 	});
 
 	//name images
@@ -150,13 +157,13 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		rc_ref_perso: '', //6
 		//step2
 		rc_rif: '', //10
-		rc_account_number: '', //7
 		rc_ref_bank: '', //5
-		rc_special_contributor: '', //4
-		//step4
 		rc_constitutive_act: '', //1
 		rc_property_document: '', //2
 		rc_service_document: '', //3
+		rc_special_contributor: '', //4
+		//step4
+		rc_account_number: '', //7
 	});
 
 	//images
@@ -645,18 +652,8 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			handleChange={handleChange}
 		/>,
 		<Step4
-			namesImages={namesImages}
-			listPayment={listPayment}
-			error={cursedFormError}
-			payment={payment}
-			setPayment={setPayment}
-			cursedForm={cursedForm}
 			imagesForm={imagesForm}
-			setCursedForm={setCursedForm}
-			handleChange={handleChange}
-			handleChangeImages={handleChangeImages}
-		/>,
-		<Step5
+			namesImages={namesImages}
 			listLocationPos={listLocationPos}
 			listModelPos={listModelPos}
 			locationPos={locationPos}

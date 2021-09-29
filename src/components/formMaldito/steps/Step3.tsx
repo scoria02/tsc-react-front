@@ -77,7 +77,13 @@ export const Step3: React.FC<any> = ({
 							value={location.estado || null}
 							options={listLocation.estado}
 							getOptionLabel={(option:any) => option.estado ? option.estado : ''}
-							renderInput={(params:any) => <TextField {...params}  name="estado" label="Estado" variant="outlined" />}
+							renderInput={(params:any) => 
+								<TextField {...params} 
+									name="estado" 
+									label="Estado" 
+									variant="outlined" 
+								/>
+							}
 						/>
 					<Autocomplete
 							className={classes.inputN}
@@ -161,6 +167,7 @@ export const Step3: React.FC<any> = ({
 				</div>
 				<div className={classes.input}>
 				<TextField className={classes.inputM} variant="outlined" required id="standard-required" label="Local" name='local_pos' onChange={handleChange} value={cursedForm.local_pos} />
+				<TextField className={classes.inputN} variant="outlined" required id="standard-required" label="Codigo Postal" name='codigo_postal_pos' onChange={handleChange} value={cursedForm.codigo_postal_pos} />
 				</div>
 			</div>
 		</div>
