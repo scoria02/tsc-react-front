@@ -16,8 +16,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeIcon from '@material-ui/icons/Home';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -29,10 +27,11 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import luffy from '../../img/itachi2.png';
+//Redux
+import TranredLogo from '../../img/tranred-logo.png';
 //import luffy from '../../img/user.png';
 import { baseUrl, urlAceptacion, urlFM } from '../../routers/url';
 import { FinishLoading } from '../../store/actions/ui';
-//Redux
 import { RootState } from '../../store/store';
 
 const drawerWidth = 220;
@@ -117,7 +116,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 	toolbar: {
 		display: 'flex',
 		alignItems: 'center',
-		justifyContent: 'flex-end',
+		justifyContent: 'center',
 		padding: theme.spacing(0, 1),
 		// necessary for content to be below app bar
 		...theme.mixins.toolbar,
@@ -125,6 +124,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 	link: {
 		textDecoration: 'none',
 		// color: theme.palette.primary.contrastText,
+	},
+	img: {
+		'& img': {
+			maxWidth: 176,
+		},
 	},
 }));
 
@@ -334,9 +338,14 @@ const MainMenu: React.FC = () => {
 					}),
 				}}>
 				<div className={classes.toolbar}>
-					<IconButton onClick={handleDrawerClose}>
+					{/* <IconButton onClick={handleDrawerClose}>
 						{theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-					</IconButton>
+					</IconButton> */}
+					<div className={classes.img}>
+						<Link to={baseUrl} onClick={handleDrawerClose}>
+							<img src={TranredLogo} alt='logo tranred' />
+						</Link>
+					</div>
 				</div>
 				<Divider />
 				<List>
