@@ -154,7 +154,6 @@ export const allImgNotNUll = (last: number, images: any, special_contributor: bo
 			}
 			else {
 				if(item[1] === null){
-					console.log(item)
 					return true;
 				}
 			}

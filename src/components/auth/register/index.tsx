@@ -114,9 +114,6 @@ const Register: React.FC = () => {
 				if (!/[^a-z0-9\x20]/i.test(value)) temPass.sig= true;
 				else temPass.sig = false;
 
-
-				console.log(temPass)
-
 				//No tenga ningun Error
 				if (temPass.rango || temPass.mayus || temPass.sig || temPass.minus) temp.password = true;
 				else temp.password = false;
