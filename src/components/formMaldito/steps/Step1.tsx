@@ -11,6 +11,7 @@ import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import IconButton from '@material-ui/core/IconButton';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 //sytles
 import { useStylesFM } from '../styles';
@@ -26,7 +27,10 @@ export const Step1: React.FC<any> = ({
 	handleChange,
 	handleChangeImages,
 	handleBlurEmailIdent,
-	validateForm
+	validateForm,
+	listLocation,
+	location,
+	setLocation,
 }) => {
 	const classes = useStylesFM();
 	const fm: any = useSelector((state: RootState) => state.fm);
@@ -37,6 +41,28 @@ export const Step1: React.FC<any> = ({
 			[event.target.name]: event.target.value,
 		});
 		validateForm(event.target.name, event.target.value);
+	};
+
+	const handleSelectClient = (event: any, value: any, item: string) => {
+		if(value){
+			setCursedForm({
+				...cursedForm,
+				[`id_${item}_client`]: value.id
+			});
+			setLocation({
+				...location,
+				[item]: value 
+			});
+		} else{
+			setCursedForm({
+				...cursedForm,
+				[`id_${item}_client`]: 0
+			});
+			setLocation({
+				...location,
+				[item]: null
+			});
+		}
 	};
 
   return (
@@ -111,7 +137,6 @@ export const Step1: React.FC<any> = ({
 					/>
 					</Button>
 				</div>
-			</div>
 			<div className={classes.input}>
 				<TextField 
 					className={classes.inputM} 
@@ -161,8 +186,98 @@ export const Step1: React.FC<any> = ({
 				/>
 			</div>
 			<div className={classes.input}>
+					<Autocomplete
+							className={classes.inputC}
+							onChange={(event,value) => {
+								handleSelectClient(event,value,'estado') 
+							}}
+							value={location.estado || null}
+							options={listLocation.estado}
+							getOptionLabel={(option:any) => option.estado ? option.estado : ''}
+							renderInput={(params:any) => 
+								<TextField {...params} 
+									name="estado" 
+									label="Estado" 
+									variant="outlined" 
+								/>
+							}
+						/>
+					<Autocomplete
+							className={classes.inputC}
+							onChange={(event,value) => handleSelectClient(event,value,'ciudad')}
+							value={location.ciudad || null}
+							options={listLocation.ciudad}
+							getOptionLabel={(option:any) => option.ciudad ? option.ciudad : ''}
+							renderInput={(params:any) => <TextField {...params}  name="ciudad" label="Ciudad" variant="outlined" />}
+						/>
+			</div>
+			<div className={classes.input}>
+					<Autocomplete
+							className={classes.inputC}
+							onChange={(event,value) => handleSelectClient(event,value,'municipio')}
+							value={location.municipio || null}
+							options={listLocation.municipio}
+							getOptionLabel={(option:any) => option.municipio ?  option.municipio : ''}
+							renderInput={(params:any) => <TextField {...params}  name="municipio" label="Municipio" variant="outlined" />}
+						/>
+					<Autocomplete
+							className={classes.inputC}
+							onChange={(event,value) => handleSelectClient(event, value, 'parroquia')}
+							value={location.parroquia || null}
+							options={listLocation.parroquia}
+							getOptionLabel={(option:any) => option.parroquia ?  option.parroquia : ''} 
+							renderInput={(params:any) => <TextField {...params}  name="parroquia" label="Parroquia" variant="outlined" />}
+						/>
+			</div>
+			<div className={classes.input}>
+				<TextField
+					className={classes.inputC}
+					variant="outlined"
+					required
+					id="standard-required"
+					label="Sector"
+					name='sector_client'
+					onChange={handleChange}
+					value={cursedForm.sector_client}
+				/>
+				<TextField
+					className={classes.inputC}
+					variant="outlined"
+					required id="standard-required"
+					label="Calle"
+					name='calle_client'
+					onChange={handleChange}
+					value={cursedForm.calle_client}
+				/>
+			</div>
+			<div className={classes.input}>
+				<TextField
+					className={classes.inputC}
+					variant="outlined"
+					required
+					id="standard-required"
+					label="Casa/Quinta/Apart"
+					name='local_client'
+					onChange={handleChange}
+					value={cursedForm.local_client}
+				/>
+				<TextField
+					className={classes.inputC}
+					variant="outlined"
+					required
+					id="standard-required"
+					label="Cod.
+					Postal"
+					name='codigo_postal_client'
+					onChange={handleChange}
+					value={cursedForm.codigo_postal_client}
+				/>
+			</div>
+		</div>
+			<div className={classes.input}>
 				<b
-				className={classes.inputTextStep1}>
+					className={classes.inputTextStep1}
+				>
 					Referencia Personal
 				</b>
 				<Button

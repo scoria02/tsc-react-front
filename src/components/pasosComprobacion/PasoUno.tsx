@@ -83,14 +83,17 @@ export default function PasoUno() {
 				variant='outlined' />
 			<TextField className='btn_step' 
 				id='outlined-basic' 
+				label='Municipio'
 				value={fm.municipio_commerce}
 				variant='outlined' />
 			<TextField className='btn_step' 
 				id='outlined-basic' 
+				label='Parroquia'
 				value={fm.parroquia_commerce}
 				variant='outlined' />
 			<TextField className='btn_step' 
 				id='outlined-basic' 
+				label='Sector'
 				value={fm.sector_commerce}
 				variant='outlined' />
 			<TextField className='btn_step' 
@@ -102,6 +105,11 @@ export default function PasoUno() {
 				id='outlined-basic' 
 				label='Local'
 				value={fm.local_commerce}
+				variant='outlined' />
+			<TextField className='btn_step' 
+				id='outlined-basic' 
+				label='Cod. Postal'
+				value={'codigo postal'}
 				variant='outlined' />
 		</form>
 	);

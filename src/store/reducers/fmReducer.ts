@@ -10,6 +10,7 @@ interface inState {
 	loadedImages: boolean,
 	loadedFM: boolean,
 	errorClient: boolean,
+	errorNumBank: boolean,
 }
 
 const initialState: inState = {
@@ -22,6 +23,7 @@ const initialState: inState = {
 	loadedImages: false,
 	loadedFM: false,
 	errorClient: false,
+	errorNumBank: false,
 };
 
 export const fmReducer = (state = initialState, action: any) => {
@@ -38,6 +40,17 @@ export const fmReducer = (state = initialState, action: any) => {
 			return {
 				...state,
 				errorClient: true,
+			};
+		//Number Bank
+		case ActionType.validNumBank:
+			return {
+				...state,
+				errorNumBank: false,
+			};
+		case ActionType.validNumBankError:
+			return {
+				...state,
+				errorNumBank: true,
 			};
 		case ActionType.sendClient:
 			return {

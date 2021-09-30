@@ -6,6 +6,7 @@ import LRU from 'lru-cache';
 
 //export const URL = 'http://localhost';
 export const URL = 'http://10.198.68.21';
+export const ioURL = 'ws://10.198.68.21';
 export const Port = '5051';
 export const PortFiles = '6060';
 

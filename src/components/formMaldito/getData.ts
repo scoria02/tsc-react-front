@@ -90,3 +90,16 @@ export const getActivity = async () => {
 		return [];
 	}
 }
+
+export const getProducts = async () => {
+	try{
+		const resp: string [] = await axios.get('/products').then((res) => {
+			//localStorage.setItem('token', res.data.token);
+			return res.data.info 
+		});
+		return resp;
+	}catch(e){
+		console.log(e);
+		return [];
+	}
+}

@@ -11,20 +11,18 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 export const Step4: React.FC<any> = ({
 	imagesForm,
 	namesImages,
-	listLocationPos,
 	listModelPos,
-	locationPos,
-	setLocationPos,
-	listPayment, 
-	error,
-	payment,
-	modelPos,
-	setPayment,
 	setModelPost,
+	modelPos,
+	listPayment, 
+	setPayment,
+	payment,
+	error,
 	cursedForm,
 	setCursedForm,
 	handleChange,
 	handleChangeImages,
+	handleBlurNumBank,
 }) => {
 	const classes = useStylesFM();
 
@@ -62,51 +60,54 @@ export const Step4: React.FC<any> = ({
 
   return (
     <>
-			<div className={classes.input}>
-				<TextField 
-					className={classes.inputA}
-					variant="outlined"
-					required
-					id="standard-required"
-					label="Numero de Cuenta" 
-					name='text_account_number'
-					onChange={handleChange}
-					value={cursedForm.text_account_number}
+			<div className={classes.inputLine3}>
+				<Autocomplete
+						className={classes.input}
+						onChange={(event,value) => handleSelectPayment(event,value, 'payment_method')}
+						options={listPayment}
+						value={payment || null}
+						getOptionLabel={(option:any) => option.name ? option.name : ''}
+						renderInput={(params:any) => <TextField {...params}  name="payment_method" label="Forma de Pago" variant="outlined" />}
 				/>
-				<Button
-					className={classes.imgNroAccount}
-					variant="contained"
-					//color="secondary"
-					component="label"
-				>
-				{imagesForm.rc_account_number !== null ? (
-					<p className="nameImg" >{namesImages.rc_account_number.slice(0, 7)}...</p>
-				):(
-					<>
-						<b className="textSubir">Subir</b>
-						<IconButton aria-label="upload picture" component="span">
-							<PhotoCamera />
-						</IconButton>
-					</>
-					)
-				}
-				<input
-					type="file"
-					hidden
-					name="rc_account_number"
-					accept="image/png, image/jpeg, image/jpg"
-					onChange={handleChangeImages}
-				/>
-				</Button>
-			</div>
-			<Autocomplete
-					className={classes.input}
-					onChange={(event,value) => handleSelectPayment(event,value, 'payment_method')}
-					options={listPayment}
-					value={payment || null}
-					getOptionLabel={(option:any) => option.name ? option.name : ''}
-					renderInput={(params:any) => <TextField {...params}  name="payment_method" label="Forma de Pago" variant="outlined" />}
-			/>
+				<div className={classes.input}>
+					<TextField 
+						className={classes.inputA}
+						variant="outlined"
+						required
+						id="standard-required"
+						label="Numero de Cuenta" 
+						name='text_account_number'
+						onChange={handleChange}
+						onBlur={handleBlurNumBank}
+						value={cursedForm.text_account_number}
+						error={error.text_account_number}
+					/>
+					<Button
+						className={classes.imgNroAccount}
+						variant="contained"
+						//color="secondary"
+						component="label"
+					>
+					{imagesForm.rc_account_number !== null ? (
+						<p className="nameImg" >{namesImages.rc_account_number.slice(0, 7)}...</p>
+					):(
+						<>
+							<b className="textSubir">Subir</b>
+							<IconButton aria-label="upload picture" component="span">
+								<PhotoCamera />
+							</IconButton>
+						</>
+						)
+					}
+					<input
+						type="file"
+						hidden
+						name="rc_account_number"
+						accept="image/png, image/jpeg, image/jpg"
+						onChange={handleChangeImages}
+					/>
+					</Button>
+				</div>
 			<div className={classes.input}>
 				<TextField
 					className={classes.inputMP} 
@@ -127,6 +128,8 @@ export const Step4: React.FC<any> = ({
 							getOptionLabel={(option:any) => option.name ? option.name: ''}
 							renderInput={(params:any) => <TextField {...params}  name="model_post" label="Modelo de los POS" variant="outlined" />}
 					/>
+			</div>
+
 			</div>
 		</>
   )
