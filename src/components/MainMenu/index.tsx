@@ -134,6 +134,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const MainMenu: React.FC = () => {
 	const classes = useStyles();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const theme = useTheme();
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -370,6 +371,12 @@ const MainMenu: React.FC = () => {
 					)}
 					*/}
 
+					<ListItem button onClick={(event) => handleListItemClick(event, 5)}>
+						<ListItemIcon>
+							<AssignmentIcon />
+						</ListItemIcon>
+						<ListItemText primary='Formulario de Act.' />
+					</ListItem>
 					<ListItem button onClick={(event) => handleListItemClick(event, 3)}>
 						<Link to={'Aceptacion'}>
 							<ListItemIcon>
@@ -377,12 +384,6 @@ const MainMenu: React.FC = () => {
 							</ListItemIcon>
 						</Link>
 						<ListItemText primary='Admision' />
-					</ListItem>
-					<ListItem button onClick={(event) => handleListItemClick(event, 5)}>
-						<ListItemIcon>
-							<AssignmentIcon />
-						</ListItemIcon>
-						<ListItemText primary='Formulario de Act.' />
 					</ListItem>
 				</List>
 				<Divider />
