@@ -41,71 +41,76 @@ export const Step1: React.FC<any> = ({
 
   return (
     <>
-			<TextField 
-				required 
-				className={classes.input} 
-				type="email" 
-				variant="outlined" 
-				label="Correo" 
-				name='email' 
-				onChange={handleChange} 
-				onBlur={handleBlurEmailIdent}
-				value={cursedForm.email} 
-				error={error.email || validEmailIdent}
-			/>
-			<div className={classes.input}>
-				<FormControl variant='outlined' className={classes.inputTipoId} >
-					<InputLabel>DI</InputLabel>
-					<Select 
-            value={cursedForm.id_ident_type} 
-						onChange={handleSelect} 
+			<div className={classes.inputLine3}>
+				<div>
+					<TextField 
+						required 
+						className={classes.input}
+						type="email" 
+						variant="outlined" 
+						label="Correo" 
+						name='email' 
+						onChange={handleChange} 
 						onBlur={handleBlurEmailIdent}
-						name='id_ident_type' 
-						error={validEmailIdent}
-						label='Tipo'>
-						{listIdentType.map( (item:any) =>  (
-							<MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
-						))
-						}
-					</Select>
-				</FormControl>
-				<TextField 
-					className={classes.inputDoc} 
-					variant="outlined" 
-					required 
-					label="C.I." 
-					name='ident_num'
-					onChange={handleChange} 
-					onBlur={handleBlurEmailIdent}
-					value={cursedForm.ident_num}
-					error={error.ident_num || validEmailIdent}
-				/>
-				<Button
-					className={classes.imgIdent}
-					variant="contained"
-					//color="secondary"
-					component="label"
-					disabled={fm.mashClient}
-				>
-				{imagesForm.rc_ident_card !== null ? (
-					<p className="nameImg" >{namesImages.rc_ident_card.slice(0, 7)} ...</p>
-				):(
-					<>
-						<b className="textSubir">Subir</b>
-						<IconButton aria-label="upload picture" component="span">
-							<PhotoCamera />
-						</IconButton>
-					</>
-					)
-				}
-				<input
-					type="file"
-					hidden
-					name="rc_ident_card"
-					accept="image/png, image/jpeg, image/jpg"
-					onChange={handleChangeImages}
-				/>
-				</Button>
+						value={cursedForm.email} 
+						error={error.email || validEmailIdent}
+					/>
+				</div>
+				<div className={classes.input}>
+					<FormControl 
+						variant='outlined' className={classes.inputTipoId} >
+						<InputLabel>DI</InputLabel>
+						<Select 
+							value={cursedForm.id_ident_type} 
+							onChange={handleSelect} 
+							onBlur={handleBlurEmailIdent}
+							name='id_ident_type' 
+							error={validEmailIdent}
+							label='Tipo'>
+							{listIdentType.map( (item:any) =>  (
+								<MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+							))
+							}
+						</Select>
+					</FormControl>
+					<TextField 
+						className={classes.inputDoc} 
+						variant="outlined" 
+						required 
+						label="C.I." 
+						name='ident_num'
+						onChange={handleChange} 
+						onBlur={handleBlurEmailIdent}
+						value={cursedForm.ident_num}
+						error={error.ident_num || validEmailIdent}
+					/>
+					<Button
+						className={classes.imgIdent}
+						variant="contained"
+						//color="secondary"
+						component="label"
+						disabled={fm.mashClient}
+					>
+					{imagesForm.rc_ident_card !== null ? (
+						<p className="nameImg" >{namesImages.rc_ident_card.slice(0, 7)} ...</p>
+					):(
+						<>
+							<b className="textSubir">Subir</b>
+							<IconButton aria-label="upload picture" component="span">
+								<PhotoCamera />
+							</IconButton>
+						</>
+						)
+					}
+					<input
+						type="file"
+						hidden
+						name="rc_ident_card"
+						accept="image/png, image/jpeg, image/jpg"
+						onChange={handleChangeImages}
+					/>
+					</Button>
+				</div>
 			</div>
 			<div className={classes.input}>
 				<TextField 
@@ -131,31 +136,33 @@ export const Step1: React.FC<any> = ({
 					disabled={fm.mashClient}
 				/>
 			</div>
-			<TextField 
-				className={classes.input} 
-				variant="outlined" 
-				required 
-				label="Telefono" 
-				name='phone1' 
-				onChange={handleChange} 
-				value={cursedForm.phone1}
-				error={error.phone1}
-				disabled={fm.mashClient}
-			/>
-			<TextField 
-				className={classes.input}
-				variant="outlined"
-				required 
-				label="Telefono"
-				name='phone2'
-				onChange={handleChange}
-				value={cursedForm.phone2}
-				error={error.phone2}
-				disabled={fm.mashClient}
-			/>
+			<div className={classes.input}>
+				<TextField 
+					className={classes.inputM} 
+					variant="outlined" 
+					required 
+					label="Telefono" 
+					name='phone1' 
+					onChange={handleChange} 
+					value={cursedForm.phone1}
+					error={error.phone1}
+					disabled={fm.mashClient}
+				/>
+				<TextField 
+					className={classes.inputN} 
+					variant="outlined"
+					required 
+					label="Telefono"
+					name='phone2'
+					onChange={handleChange}
+					value={cursedForm.phone2}
+					error={error.phone2}
+					disabled={fm.mashClient}
+				/>
+			</div>
 			<div className={classes.input}>
 				<b
-				className={classes.inputText}>
+				className={classes.inputTextStep1}>
 					Referencia Personal
 				</b>
 				<Button

@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
-import './pasos.scss';
+import './styles/pasos.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -23,18 +23,47 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function PasoUnoUser() {
 	const classes = useStyles();
 
-	const client: any = useSelector((state: RootState) => state.fmAdmision.fm.id_client);
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 
 	return (
 		<form className={classes.root} noValidate autoComplete='off'>
-			<TextField className='btn_step btn_largo' id='outlined-basic' label='Nombre Completo' variant='outlined' disabled={true} 
-				value={`${client.name} ${client.last_name}`}
+			<TextField
+				className='btn_step btn_largo'
+				id='outlined-basic' 
+				label='Nombre Completo' 
+				variant='outlined' 
+				value={`${fm.name_client} ${fm.last_name_client}`}
 			/>
-			<TextField className='btn_step' id='outlined-basic ' label='Tipo ID' variant='outlined' disabled={true} value={'hola'}/>
-			<TextField className='btn_step' id='outlined-basic' label='Numero ID' variant='outlined' disabled={true} value={client.ident}/>
-			<TextField className='btn_step' id='outlined-basic' label='Telefono' variant='outlined' disabled={true} value={client.ident}/>
-			<TextField className='btn_step' id='outlined-basic' label='Telefono2' variant='outlined' disabled={true} value={client.ident}/>
-			<TextField className='btn_step btn_largo' id='outlined-basic' label='correo' variant='outlined' disabled={true} value={client.email}/>
+			<TextField 
+				className='btn_step'
+				id='outlined-basic'
+				label='Tipo ID' 
+				variant='outlined' 
+				value={fm.ident_type_client}/>
+			<TextField 
+				className='btn_step'
+				id='outlined-basic' 
+				label='Numero ID'
+				variant='outlined'
+				value={fm.ident_num_client}/>
+			<TextField 
+				className='btn_step'
+				id='outlined-basic'
+				label='Telefono'
+				variant='outlined'
+				value={fm.phone1}/>
+			<TextField 
+				className='btn_step'
+				id='outlined-basic'
+				label='Telefono2'
+				variant='outlined'
+				value={fm.phone2}/>
+			<TextField 
+				className='btn_step btn_largo'
+				id='outlined-basic'
+				label='correo'
+				variant='outlined'
+				value={fm.email_client}/>
 		</form>
 	);
 }

@@ -12,7 +12,7 @@ import { RootState } from '../../store/store';
 //Url
 import { URL, PortFiles } from '../../config'
 
-import './pasos.scss';
+import './styles/pasos.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -37,7 +37,7 @@ export default function PasoCincoDos() {
 		setState({ ...state, [event.target.name]: event.target.checked });
 	};
 
-	const props = { zoomPosition: 'original', height: 350, width: 450, img: `${URL}:${PortFiles}/${fm.rc_service_document.path}` };
+	const props = { zoomPosition: 'original', height: 350, width: 450, img: `${URL}:${PortFiles}/${fm.path_rc_service_document}` };
 
 	return (
 		<>

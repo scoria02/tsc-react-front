@@ -6,7 +6,7 @@ import ReactImageZoom from 'react-image-zoom';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
-import './pasos.scss';
+import './styles/pasos.scss';
 import { useDispatch } from 'react-redux';
 import { Valid } from '../../store/actions/accept';
 
@@ -46,7 +46,7 @@ export default function PasoDos() {
 		setState({ ...state, [event.target.name]: event.target.checked });
 	};
 
-	const props = { zoomPosition: 'original', height: 350, width: 450, img: `${URL}:${PortFiles}/${fm.rc_ident_card.path}` };
+	const props = { zoomPosition: 'original', height: 350, width: 450, img: `${URL}:${PortFiles}/${fm.path_rc_ident_card}` };
 
 	return (
 		<>
@@ -55,10 +55,12 @@ export default function PasoDos() {
 					id='outlined-basic' 
 					label='Tipo ID'
 					variant='outlined' 
+					value={fm.ident_type_client}
 				/>
 				<TextField className='btn_step' id='outlined-basic' 
 					label='Numero ID' 
 					variant='outlined' 
+					value={fm.ident_num_client}
 				/>
 				<FormControlLabel
 					control={<Switch checked={state.cedula} onChange={handleChange} name='cedula' color='primary' />}

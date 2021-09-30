@@ -6,7 +6,7 @@ import ReactImageZoom from 'react-image-zoom';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
-import './pasos.scss';
+import './styles/pasos.scss';
 
 //Redux
 import { useSelector } from 'react-redux';
@@ -37,13 +37,17 @@ export default function PasoDosDos() {
 		setState({ ...state, [event.target.name]: event.target.checked });
 	};
 
-	const props = { zoomPosition: 'original', height: 350, width: 450, img: `${URL}:${PortFiles}/${fm.rc_rif.path}` };
+	const props = { zoomPosition: 'original', height: 350, width: 450, img: `${URL}:${PortFiles}/${fm.path_rc_rif}` };
 
 	return (
 		<>
 			<form className={classes.root} noValidate autoComplete='off'>
-				<TextField className='btn_step btn_corto' id='outlined-basic ' label='Tipo ID' variant='outlined'/>
-				<TextField className='btn_step' id='outlined-basic' label='Numero ID' variant='outlined'  disabled={true} value={fm.id_commerce.ident_num}/>
+				<TextField className='btn_step btn_corto' id='outlined-basic ' label='Tipo ID' variant='outlined'
+					value={fm.ident_type_commerce}
+				/>
+				<TextField className='btn_step' id='outlined-basic' label='Numero ID' variant='outlined' 
+					value={fm.ident_num_commerce}
+				/>
 				<FormControlLabel
 					control={<Switch checked={state.checkedA} onChange={handleChange} name='checkedA' color='primary' />}
 					label='Correcto'

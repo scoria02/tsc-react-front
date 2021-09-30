@@ -79,7 +79,7 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		textTransform: 'none',
 		letterSpacing: '1px',
 		backgroundColor: styles.palette.success.main,
-		color: styles.palette.secondary.main,
+		color: styles.palette.secondary.contrastText,
 		'&:hover': {
 			backgroundColor: styles.palette.success.light,
 		},

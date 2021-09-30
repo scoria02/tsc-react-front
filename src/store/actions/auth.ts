@@ -39,7 +39,7 @@ export const refreshLogin = () => {
 			dispatch(StartLoading());
 			dispatch(requestSuccess(res.data.info));
 		} catch (error: any) {
-			Swal.fire('Error', error.response.data.message, 'error');
+			Swal.fire('Error', 'Sesión expirada, vuelva a iniciar sesión', 'error');
 		}
 	};
 	function requestSuccess(state: any) {

@@ -7,7 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
 import luffy from '../../img/itachi2.png';
-import './pasos.scss';
+import './styles/pasos.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({

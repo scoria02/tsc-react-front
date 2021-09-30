@@ -2,27 +2,43 @@ import { ActionType } from '../types/types';
 
 interface inState {
 	fm: any,
-	error: boolean,
+	errorGetData: boolean,
+	updatedStatus: boolean,
+	errorStatusFM: boolean,
 }
 
 const initialState: inState = {
 	fm: {},
-	error: false,
+	errorGetData: false,
+	updatedStatus: false,
+	errorStatusFM: false,
 };
 
 export const admisionFM = (state = initialState, action: any) => {
 	switch (action.type) {
-		//Client
+		//FM
 		case ActionType.getDataFM:
 			return {
 				...state,
 				fm: action.payload,
+				errorGetData: false,
 			};
 		case ActionType.getDataFMError:
 			return {
 				...state,
-				//fm: {},
-				error: true,
+				errorGetData: true,
+			};
+		//Status FM
+		case ActionType.updateStatusFM:
+			return {
+				...state,
+				updatedStatus: true,
+				errorStatusFM: false,
+			};
+		case ActionType.updateStatusFMError:
+			return {
+				...state,
+				errorStatusFM: true,
 			};
 		case ActionType.cleanDataFM:
 			return initialState;

@@ -12,7 +12,7 @@ import { RootState } from '../../store/store';
 //Url
 import { URL, PortFiles } from '../../config'
 
-import './pasos.scss';
+import './styles/pasos.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -37,7 +37,7 @@ export default function PasoSeis() {
 		setState({ ...state, [event.target.name]: event.target.checked });
 	};
 
-	const props = { zoomPosition: 'original', height: 350, width: 450, img: `${URL}:${PortFiles}/${fm.rc_special_contributor.path}` };
+	const props = { zoomPosition: 'original', height: 350, width: 450, img: `${URL}:${PortFiles}/${fm.path_rc_special_contributor}` };
 
 	return (
 		<>
@@ -45,9 +45,9 @@ export default function PasoSeis() {
 				<TextField
 					className='btn_step btn_medio'
 					id='outlined-basic '
-					label='Referencia Personal'
+					label='Contribuyente Especial'
 					variant='outlined'
-					value='Foto de Referencia Personal'
+					value='Foto de Contribuyente Especial'
 					disabled
 				/>
 				<FormControlLabel

@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { baseUrl } from '../../routers/url';
 import { cleanFM, sendClient, sendCommerce, sendFM, sendImages, validationClient } from '../../store/actions/fm';
+import LoaderPrimary from '../loaders/LoaderPrimary';
 //Redux
 import { RootState } from '../../store/store';
 import {
@@ -27,7 +28,6 @@ import { Step1 } from './steps/Step1';
 import { Step2 } from './steps/Step2';
 import { Step3 } from './steps/Step3';
 import { Step4 } from './steps/Step4';
-import { Step5 } from './steps/Step5';
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
 
@@ -35,8 +35,7 @@ function getSteps() {
 	return [
 		'Informacion Personal del Cliente',
 		'Informacion del Comercio',
-		'Ubicacion del Comercio',
-		'Documentos del Comercio',
+		'Ubicacion del Comercio/POS',
 		'Solicitud de POS',
 	];
 }
@@ -104,18 +103,26 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 
 	const [cursedForm, setCursedForm] = useState<any>({
 		//step1 Cliente
-		email: '1000pagos@correito.com',
+		email: '1000pagos@correo.com',
 		name: 'Mil',
 		last_name: 'Pagos',
 		id_ident_type: 1,
-		ident_num: '987654321',
+		ident_num: '187654321',
 		phone1: '+584121234567',
 		phone2: '+584121234566',
+		id_estado_client: 1,
+		id_ciudad_client: 1,
+		id_municipio_client: 1,
+		id_parroquia_client: 1,
+		sector_client: 'Uno client',
+		calle_client: '11 client',
+		local_client: 'A client',
+		codigo_postal_client: '',
 		//step2 Comercio
-		name_commerce: 'MilPagitos',
+		name_commerce: 'MilPagos',
 		id_ident_type_commerce: 3,
-		ident_num_commerce: '12349844',
-		text_account_number: '0102116516554',
+		ident_num_commerce: '12344321',
+		text_account_number: '0102156514444',
 		id_activity: 0,
 		special_contributor: 0,
 		//Step3 Location
@@ -126,12 +133,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		sector: 'Uno',
 		calle: '13',
 		local: 'A1',
-		//Step4 Post
-		//Images
-		//step5 Post
-		number_post: 1,
-		id_model_post: 1,
-		id_payment_method: 1,
+		codigo_postal: '',
 		id_estado_pos: 1,
 		id_ciudad_pos: 1,
 		id_municipio_pos: 1,
@@ -139,6 +141,13 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		sector_pos: 'Dos',
 		calle_pos: '15',
 		local_pos: 'A2',
+		codigo_postal_pos: '',
+		//Step4 Post
+		
+		//step4 Post
+		id_payment_method: 1,
+		number_post: 1,
+		id_model_post: 1,
 	});
 
 	//name images
@@ -148,13 +157,13 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		rc_ref_perso: '', //6
 		//step2
 		rc_rif: '', //10
-		rc_account_number: '', //7
 		rc_ref_bank: '', //5
-		rc_special_contributor: '', //4
-		//step4
 		rc_constitutive_act: '', //1
 		rc_property_document: '', //2
 		rc_service_document: '', //3
+		rc_special_contributor: '', //4
+		//step4
+		rc_account_number: '', //7
 	});
 
 	//images
@@ -292,27 +301,31 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		if (getDataControl === 0) {
 			if (listIdentType.length === 0) {
 				getIdentTypes().then((res) => {
-					res.forEach((item) => {
+					res.forEach((item,indice) => {
 						setListIdentType((prevState: any) => [...prevState, item]);
+						if(indice === res.length-1) {
+							setGetDataControl(1);
+						}
 					});
-					setGetDataControl(1);
 				});
 			}
 			//Get List Activity
-		} else if (getDataControl === 1) {
+		}else if (getDataControl === 1) {
 			if (listActivity.length === 0) {
 				getActivity().then((res) => {
-					res.forEach((item) => {
+					res.forEach((item,indice) => {
 						setListActivity((prevState: any) => [...prevState, item]);
+						if(indice === res.length-1) {
+							setGetDataControl(2);
+						}
 					});
-					setGetDataControl(2);
 				});
 			}
 			//Get Estados
-		} else if (getDataControl === 2) {
+		}else if (getDataControl === 2) {
 			if (listLocation.estado.length === 0) {
 				getEstados().then((res) => {
-					res.forEach((item) => {
+					res.forEach((item,indice) => {
 						setListLocation((prevState: any) => ({
 							...prevState,
 							estado: [...prevState.estado, item],
@@ -321,18 +334,22 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 							...prevState,
 							estado: [...prevState.estado, item],
 						}));
+						if(indice === res.length-1) {
+							setGetDataControl(3);
+						}
 					});
-					setGetDataControl(3);
 				});
 			}
 			//Get Payment
-		} else if (getDataControl === 3) {
+		}else if (getDataControl === 3) {
 			if (listPayment.length === 0) {
 				getPayMent().then((res) => {
-					res.forEach((item) => {
+					res.forEach((item, indice) => {
 						setListPayment((prevState: any) => [...prevState, item]);
+						if(indice === res.length-1) {
+							setGetDataControl(4);
+						}
 					});
-					setGetDataControl(4);
 				});
 			}
 		}
@@ -530,7 +547,8 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	const handleChangeImages = (event: any) => {
 		if (event.target.files[0]) {
 			let file = event.target.files[0];
-			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: file.type });
+			//let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: file.type });
+			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: 'image/jpeg' });
 			//Save img
 			setImagesForm({
 				...imagesForm,
@@ -626,23 +644,16 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			listLocation={listLocation}
 			location={locationCommerce}
 			setLocation={setLocationCommerce}
+			listLocationPos={listLocationPos}
+			locationPos={locationPos}
+			setLocationPos={setLocationPos}
 			cursedForm={cursedForm}
 			setCursedForm={setCursedForm}
 			handleChange={handleChange}
 		/>,
 		<Step4
-			namesImages={namesImages}
-			listPayment={listPayment}
-			error={cursedFormError}
-			payment={payment}
-			setPayment={setPayment}
-			cursedForm={cursedForm}
 			imagesForm={imagesForm}
-			setCursedForm={setCursedForm}
-			handleChange={handleChange}
-			handleChangeImages={handleChangeImages}
-		/>,
-		<Step5
+			namesImages={namesImages}
 			listLocationPos={listLocationPos}
 			listModelPos={listModelPos}
 			locationPos={locationPos}
@@ -661,44 +672,48 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 
 	return (
 		<div className='ed-container container-formMaldito'>
-			<form className='container-form'>
-				<div className='capitan-america'></div>
-				<h1 className='titleFM'>Formulario de Solicitud</h1>
-				<Stepper alternativeLabel nonLinear activeStep={activeStep} style={{ background: 'none', width: '100%' }}>
-					{steps.map((label) => {
-						const stepProps: { completed?: boolean } = {};
-						return (
-							<Step key={label} {...stepProps}>
-								<StepLabel>{label}</StepLabel>
-							</Step>
-						);
-					})}
-				</Stepper>
-				<div>
-					<div className='container-steps'>
-						{getStep[activeStep]}
-						<div style={{ marginTop: '1rem' }}>
-							<Button
-								size='large'
-								disabled={activeStep === 0}
-								variant='contained'
-								onClick={handleBack}
-								className={classes.buttonBack}>
-								Volver
-							</Button>
-							<Button
-								disabled={!readyStep}
-								size='large'
-								variant='contained'
-								color='primary'
-								onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
-								className={classes.buttonNext}>
-								{activeStep === steps.length - 1 ? 'Enviar' : 'Siguiente'}
-							</Button>
+			{listIdentType.length === 0 || listActivity === 0 || listPayment === 0 || listLocation.estado.length === 0 ? 
+				<LoaderPrimary />
+			:
+				<form className='container-form'>
+					<div className='capitan-america'></div>
+					<h1 className='titleFM'>Formulario de Solicitud</h1>
+					<Stepper alternativeLabel nonLinear activeStep={activeStep} style={{ background: 'none', width: '100%' }}>
+						{steps.map((label) => {
+							const stepProps: { completed?: boolean } = {};
+							return (
+								<Step key={label} {...stepProps}>
+									<StepLabel>{label}</StepLabel>
+								</Step>
+							);
+						})}
+					</Stepper>
+					<div className={classes.containerFM}>
+						<div className='container-steps'>
+							{getStep[activeStep]}
+							<div style={{ marginTop: '1rem' }}>
+								<Button
+									size='large'
+									disabled={activeStep === 0}
+									variant='contained'
+									onClick={handleBack}
+									className={classes.buttonBack}>
+									Volver
+								</Button>
+								<Button
+									//disabled={!readyStep}
+									size='large'
+									variant='contained'
+									color='primary'
+									onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
+									className={classes.buttonNext}>
+									{activeStep === steps.length - 1 ? 'Enviar' : 'Siguiente'}
+								</Button>
+							</div>
 						</div>
 					</div>
-				</div>
-			</form>
+				</form>
+			}
 		</div>
 	);
 };
