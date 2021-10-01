@@ -13,18 +13,18 @@ import { stepComplete } from '../../../store/actions/accept';
 import { updateStatusFM } from '../../../store/actions/admisionFm';
 import { CloseModal } from '../../../store/actions/ui';
 import { RootState } from '../../../store/store';
-import PasoCinco from '../../pasosComprobacion/PasoCinco';
-import PasoCincoDos from '../../pasosComprobacion/PasoCincoDos';
-import PasoCuatro from '../../pasosComprobacion/PasoCuatro';
-import PasoCuaTroDos from '../../pasosComprobacion/PasoCuatroDos';
-import PasoDos from '../../pasosComprobacion/PasoDos';
-import PasoDosDos from '../../pasosComprobacion/PasoDosDos';
-import PasoSeis from '../../pasosComprobacion/PasoSeis';
-import PasoTres from '../../pasosComprobacion/PasoTres';
-import PasoTresDos from '../../pasosComprobacion/PasoTresDos';
-import PasoUno from '../../pasosComprobacion/PasoUno';
-import PasoUnoUser from '../../pasosComprobacion/PasoUnoUser';
 import './index.scss';
+import PasoCinco from './pasosComprobacion/PasoCinco';
+import PasoCincoDos from './pasosComprobacion/PasoCincoDos';
+import PasoCuatro from './pasosComprobacion/PasoCuatro';
+import PasoCuaTroDos from './pasosComprobacion/PasoCuatroDos';
+import PasoDos from './pasosComprobacion/PasoDos';
+import PasoDosDos from './pasosComprobacion/PasoDosDos';
+import PasoSeis from './pasosComprobacion/PasoSeis';
+import PasoTres from './pasosComprobacion/PasoTres';
+import PasoTresDos from './pasosComprobacion/PasoTresDos';
+import PasoUno from './pasosComprobacion/PasoUno';
+import PasoUnoUser from './pasosComprobacion/PasoUnoUser';
 
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & { children?: React.ReactElement },
