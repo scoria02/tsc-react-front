@@ -27,17 +27,16 @@ export const Aceptacion = () => {
 	const [socket, setSocket] = useState<any>(null);
 
   useEffect(() => {
-    const newSocket = io(`${URL}:${Port}`);
-		newSocket.on("diferidos", (data:any) => {
+		//const socket = io(`http://localhost:5051`);
+    const socket = io(`${URL}:${Port}`);
+		socket.emit("client1", 'hola armando');
+		socket.on("client2", (arg:any) => {
+			console.log(arg);
+		});
+		/*
+		newSocket.on("mess", (data:any) => {
 			console.log(data);
 		});
-
-		/*
-    const newSocket = io(`${URL}:${Port}/socket.io/socket.io.main.js`);
-    newSocket.on("diferidos", (data:any) => {
-			console.log('socket',data)
-    });
-    setSocket(newSocket);
 		 */
   }, []);
 
