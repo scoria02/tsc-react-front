@@ -1,10 +1,10 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import React from 'react';
 import { Route } from 'react-router-dom';
+import Admision from '../components/Admision';
 import { FormMaldito } from '../components/formMaldito';
 import GestionUsuarios from '../components/GestionUsuarios';
 import MainMenu from '../components/MainMenu';
-import { Aceptacion } from '../components/milpagos/Aceptacion';
 import { baseUrl, urlAceptacion, urlFM } from '../routers/url';
 //Components
 import Inicio from './Home';
@@ -39,7 +39,7 @@ const Home: React.FC = () => {
 					path={urlAceptacion}
 					exact
 					render={() => {
-						return <Aceptacion />;
+						return <Admision />;
 					}}
 				/>
 				<Route
