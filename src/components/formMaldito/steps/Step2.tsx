@@ -1,5 +1,4 @@
 import TextField from '@material-ui/core/TextField';
-
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -114,7 +113,6 @@ export const Step2: React.FC<any> = ({
 					/>
 				</Button>
 				</div>
-			</div>
 			<Autocomplete
 					className={classes.input}
 					onChange={(event,value) => {
@@ -131,8 +129,58 @@ export const Step2: React.FC<any> = ({
 					/>
 					}
 				/>
-
-			<div className={classes.inputLine3}>
+				<div className={classes.input}>
+					<div className={classes.inputText}>
+						<FormControlLabel 
+							style={{ margin: 0 }}
+							label=''
+							control={
+								<>
+									<b style={{
+										fontSize: '1rem'}}>Contribuye Especial</b>
+									<Checkbox
+										name="special_contributor"
+										checked={cursedForm.special_contributor}
+										onChange={handleChecked}
+										color="primary"
+										inputProps={{ 'aria-label': 'secondary checkbox' }}
+									/>
+								</>
+							}
+						/>
+					</div>
+					<Button
+						className={classes.imgStep1}
+						style={{ visibility: cursedForm.special_contributor? 'visible' : 'hidden'}}
+						variant="contained"
+						//color="secondary"
+						component="label"
+					>
+						{imagesForm.rc_special_contributor !== null ? (
+							<>
+								<IconButton aria-label="upload picture" component="span">
+									<PhotoCamera />
+								</IconButton>
+								<p className="nameImg" >{namesImages.rc_special_contributor.slice(0, 10)}...</p>
+							</>
+						):(
+							<>
+								<b>Subir</b>
+								<IconButton aria-label="upload picture" component="span">
+									<PhotoCamera />
+								</IconButton>
+							</>
+							)
+						}
+						<input
+							type="file"
+							hidden
+							name="rc_special_contributor"
+							accept="image/png, image/jpeg, image/jpg"
+							onChange={handleChangeImages}
+						/>
+					</Button>
+				</div>
 				<div className={classes.input} style={{ justifyContent: 'center' }}>
 					<b
 					className={classes.inputText}>
@@ -267,58 +315,6 @@ export const Step2: React.FC<any> = ({
 							type="file"
 							hidden
 							name="rc_service_document"
-							accept="image/png, image/jpeg, image/jpg"
-							onChange={handleChangeImages}
-						/>
-					</Button>
-				</div>
-				<div className={classes.input}>
-					<div className={classes.inputText}>
-						<FormControlLabel 
-							style={{ margin: 0 }}
-							label=''
-							control={
-								<>
-									<b style={{
-										fontSize: '1rem'}}>Contribuye Especial</b>
-									<Checkbox
-										name="special_contributor"
-										checked={cursedForm.special_contributor}
-										onChange={handleChecked}
-										color="primary"
-										inputProps={{ 'aria-label': 'secondary checkbox' }}
-									/>
-								</>
-							}
-						/>
-					</div>
-					<Button
-						className={classes.imgStep1}
-						style={{ visibility: cursedForm.special_contributor? 'visible' : 'hidden'}}
-						variant="contained"
-						//color="secondary"
-						component="label"
-					>
-						{imagesForm.rc_special_contributor !== null ? (
-							<>
-								<IconButton aria-label="upload picture" component="span">
-									<PhotoCamera />
-								</IconButton>
-								<p className="nameImg" >{namesImages.rc_special_contributor.slice(0, 10)}...</p>
-							</>
-						):(
-							<>
-								<b>Subir</b>
-								<IconButton aria-label="upload picture" component="span">
-									<PhotoCamera />
-								</IconButton>
-							</>
-							)
-						}
-						<input
-							type="file"
-							hidden
-							name="rc_special_contributor"
 							accept="image/png, image/jpeg, image/jpg"
 							onChange={handleChangeImages}
 						/>

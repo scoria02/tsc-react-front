@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 export const useStylesFM = makeStyles((styles) => ({
 	containerFM: {
 		position: 'relative',
-		height: '420px',
+		height: '440px',
 		width: '80%'
 	},
   buttonNext: {
@@ -24,7 +24,7 @@ export const useStylesFM = makeStyles((styles) => ({
     display: 'flex',
     width: '100%',
     textAlign: 'center',
-		marginTop: styles.spacing(2),
+		marginTop: styles.spacing(2.2),
 		alignSelf: 'center',
 		justifyContent: 'center',
 	},
@@ -43,6 +43,13 @@ export const useStylesFM = makeStyles((styles) => ({
 		alignSelf: 'center',
 		marginRight: styles.spacing(0.5),
 	},
+	inputC: {
+    display: 'flex',
+    width: '50%',
+    textAlign: 'center',
+		alignSelf: 'center',
+		marginLeft: styles.spacing(0.5),
+	},
 	inputN: {
     display: 'flex',
     width: '50%',
@@ -52,14 +59,14 @@ export const useStylesFM = makeStyles((styles) => ({
 	},
 	inputMP: {
     display: 'flex',
-    width: '30%',
+    width: '35%',
     textAlign: 'center',
 		alignSelf: 'center',
 		marginRight: styles.spacing(0.5),
 	},
 	inputNP: {
     display: 'flex',
-    width: '70%',
+    width: '65%',
     textAlign: 'center',
 		alignSelf: 'center',
 		marginLeft: styles.spacing(0.5),

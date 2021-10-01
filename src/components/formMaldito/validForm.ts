@@ -69,19 +69,25 @@ export const validNum_post= (value: number):boolean => {
 		return false
 }
 
+export const validNumBank = (value: string):boolean => {
+	if(value.length !== 20)	
+		return true;
+	else
+		return false
+}
+
+
 //Extras
 export const sizeStep = (active: number): number => {
 	switch (active) {
 		case 0:
-			return 6;
+			return 15;
 		case 1:
-			return 12; 
+			return 19; 
 		case 2:
-			return 19; 
+			return 35; 
 		case 3:
-			return 19; 
-		case 4:
-			return 29; 
+			return 35; 
 		default:
 			return 0;
 	}
@@ -92,13 +98,11 @@ export const sizeImagesStep = (active: number): number => {
 		case 0:
 			return 1;
 		case 1:
-			return 5; 
+			return 7; 
 		case 2:
-			return 5; 
+			return 7; 
 		case 3:
 			return 8;
-		case 4:
-			return 8; 
 		default:
 			return 0;
 	}

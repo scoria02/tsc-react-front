@@ -34,6 +34,32 @@ export const validationClient = (client: any) => {
 	}
 };
 
+export const validationNumBank = (clientBank: any) => {
+	//console.log(client)
+	console.log(clientBank)
+	return async (dispatch: any) => {
+		try {
+			const res: AxiosResponse<any> = await useAxios.post(`/FM/bank/valid`, clientBank);
+			dispatch(requestSuccess());
+			//console.log(res.data)
+		} catch (error) {
+			dispatch(requestError());
+			Swal.fire('Error', error.response.data.message, 'error');
+			console.log(error.response.data.message);
+		}
+	};
+	function requestSuccess() {
+		return {
+			type: ActionType.validClient,
+		};
+	}
+	function requestError() {
+		return {
+			type: ActionType.validClientError,
+		};
+	}
+};
+
 export const sendClient = (client: any) => {
 	//console.log(client)
 	return async (dispatch: any) => {
@@ -121,7 +147,7 @@ export const sendImages = (formData: any) => {
 };
 
 export const sendFM = (formM: any) => {
-	console.log('action', formM);
+	console.log('SendFM', formM);
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM`, formM);
