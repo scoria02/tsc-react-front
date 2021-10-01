@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-export default function Home() {
+const Home: React.FC = () => {
 	const classes = useStyles();
 
 	const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -60,4 +60,6 @@ export default function Home() {
 			</main>
 		</div>
 	);
-}
+};
+
+export default Home;
