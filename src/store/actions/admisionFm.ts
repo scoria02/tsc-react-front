@@ -12,8 +12,7 @@ export const getDataFM = () => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.get(`/FM`);
-			//localStorage.setItem('token', res.data.token);
-			console.log(res.data.info)
+			updateToken(res);
 			dispatch(requestSuccess(res.data.info));
 		} catch (error) {
 			console.log(error.response)
@@ -43,8 +42,7 @@ export const updateStatusFM = (id_fm: number, status: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.put(`/FM/${id_fm}/status`, id_status);
-			//localStorage.setItem('token', res.data.token);
-			console.log(res.data.info)
+			updateToken(res);
 			dispatch(CloseModal());
 			dispatch(requestSuccess());
 		} catch (error) {

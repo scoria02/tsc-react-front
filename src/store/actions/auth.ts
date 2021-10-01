@@ -15,7 +15,7 @@ export const startLogin = (email: any, password: any) => {
 				email,
 				password,
 			});
-			localStorage.setItem('token', res.data.token);
+			updateToken(res)
 			Swal.fire('Success', res.data.message, 'success');
 			dispatch(StartLoading());
 			dispatch(requestSuccess(res.data.info.data));
@@ -54,6 +54,8 @@ export const registerUser = (user: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res = await useAxios.post('/auth/register', user);
+			updateToken(res)
+			Swal.fire('Success', res.data.message, 'success');
 			dispatch(requestSuccess(res));
 			const { email, password } = user;
 			dispatch(startLogin(email, password));
@@ -79,7 +81,8 @@ export const registerUser = (user: any) => {
 export const validationEmail = (email: string) => {
 	return async (dispatch: any) => {
 		try {
-			await useAxios.post('/auth/register/valid/1', { email });
+			const res = await useAxios.post('/auth/register/valid/1', { email });
+			updateToken(res)
 			dispatch(validationEmailSuccess());
 		} catch (error: any) {
 			console.log(error);

@@ -13,6 +13,7 @@ export const validationClient = (client: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
+			updateToken(res);
 			dispatch(requestSuccess(res.data.info));
 			//console.log(res.data)
 		} catch (error) {
@@ -38,7 +39,8 @@ export const validationNumBank = (clientBank: any) => {
 	//console.log(clientBank)
 	return async (dispatch: any) => {
 		try {
-			await useAxios.post(`/FM/bank/valid`, clientBank);
+			const res = await useAxios.post(`/FM/bank/valid`, clientBank);
+			updateToken(res)
 			dispatch(requestSuccess());
 		} catch (error) {
 			//console.log(error.response);
@@ -63,7 +65,7 @@ export const sendClient = (client: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client`, client);
-			//localStorage.setItem('token', res.data.token);
+			updateToken(res)
 			dispatch(requestSuccess(res.data.info.id));
 		} catch (error) {
 			//console.log(error.reponse)
@@ -89,8 +91,7 @@ export const sendCommerce = (id_client: number, commerce: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce`, commerce);
-			//localStorage.setItem('token', res.data.token);
-			console.log(res.data.info)
+			updateToken(res)
 			dispatch(requestSuccess(res.data.info.id_commerce));
 		} catch (error) {
 			console.log(error.reponse);
@@ -115,15 +116,8 @@ export const sendImages = (formData: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, formData);
-			//localStorage.setItem('token', res.data.token);
+			updateToken(res)
 			let images: any = res.data.info;
-			/*
-			console.log('Dimas',images)
-			let copyImages:any = {};
-			for (const item of Object.entries(images)) {
-				copyImages[`${item[0].split('.')[0]}`] = item[1];
-			}
-			*/
 			dispatch(requestSuccess(images));
 		} catch (error) {
 			console.log(error.reponse);
@@ -149,8 +143,7 @@ export const sendFM = (formM: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM`, formM);
-			//localStorage.setItem('token', res.data.token);
-			//console.log('Res FM_Last',res.data.info)
+			updateToken(res)
 			dispatch(requestSuccess());
 		} catch (error) {
 			//console.log(error.reponse)
