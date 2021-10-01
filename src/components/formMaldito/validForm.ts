@@ -14,6 +14,13 @@ export const validFullName = (value: string): boolean => {
 	return true;
 }
 
+export const validNameCommere = (value: string): boolean => {
+	if (3 < value.length && value.length < 255) {
+		return false;
+	}
+	return true;
+}
+
 export  const rangeTypeIdent = (value: string, min: number, max: number): boolean => {
 	if (value.length >= min && value.length <= max) return true;
 	else return false;

@@ -6,9 +6,14 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 //Pedido
 export const Step4: React.FC<any> = ({
+	listTypePay,
+	setTypePay,
+	typePay,
 	imagesForm,
 	namesImages,
 	listModelPos,
@@ -42,6 +47,22 @@ export const Step4: React.FC<any> = ({
 		}
 	};
 
+	const handleSelectTypePay= (event: any, value: any, item: string) => {
+		if(value){
+			setCursedForm({
+				...cursedForm,
+				[`id_${item}`]: value.id
+			});
+			setTypePay(value);
+		} else{
+			setCursedForm({
+				...cursedForm,
+				[`id_${item}`]: 0
+			});
+			setTypePay(null);
+		}
+	};
+
 	const handleSelectPos= (event: any, value: any, item: string) => {
 		if(value){
 			setCursedForm({
@@ -61,14 +82,24 @@ export const Step4: React.FC<any> = ({
   return (
     <>
 			<div className={classes.inputLine3}>
-				<Autocomplete
-						className={classes.input}
-						onChange={(event,value) => handleSelectPayment(event,value, 'payment_method')}
-						options={listPayment}
-						value={payment || null}
-						getOptionLabel={(option:any) => option.name ? option.name : ''}
-						renderInput={(params:any) => <TextField {...params}  name="payment_method" label="Forma de Pago" variant="outlined" />}
-				/>
+				<div className={classes.input} >
+					<Autocomplete
+							className={classes.inputM}
+							onChange={(event,value) => handleSelectPayment(event,value, 'payment_method')}
+							options={listPayment}
+							value={payment || null}
+							getOptionLabel={(option:any) => option.name ? option.name : ''}
+							renderInput={(params:any) => <TextField {...params}  name="payment_method" label="Forma de Pago" variant="outlined" />}
+					/>
+					<Autocomplete
+							className={classes.inputN}
+							onChange={(event,value) => handleSelectTypePay(event,value, 'type_pay')}
+							options={listTypePay}
+							value={typePay || null}
+							getOptionLabel={(option:any) => option.name ? option.name : ''}
+							renderInput={(params:any) => <TextField {...params}  name="type_pay" label="Tipo de Pago" variant="outlined" />}
+					/>
+				</div>
 				<div className={classes.input}>
 					<TextField 
 						className={classes.inputA}

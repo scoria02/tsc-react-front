@@ -18,6 +18,7 @@ export const Step2: React.FC<any> = ({
 	setActivity,
 	namesImages,
 	cursedForm,
+	error,
 	imagesForm,
 	setCursedForm,
 	handleChange,
@@ -71,6 +72,7 @@ export const Step2: React.FC<any> = ({
 						name='name_commerce' 
 						onChange={handleChange} 
 						value={cursedForm.name_commerce} 
+						error={error.name_commerce}
 					/>
 				</div>
 				<div className={classes.input}>

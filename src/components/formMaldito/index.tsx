@@ -102,9 +102,22 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	//Client
 	const [listIdentType, setListIdentType] = useState<any>([]);
 
-	//Comercio
+	//Activity commerce
 	const [listActivity, setListActivity] = useState<any>([]);
 	const [activity, setActivity] = useState<any>(null);
+
+	//
+	const [listTypePay, setListListTypePay] = useState<any>([
+		{ 
+			id: 1,
+			name: 'De contado' 
+		},
+		{ 
+			id: 2,
+			name: 'Fraccionado' 
+		},
+	]);
+	const [typePay, setTypePay] = useState<any>(null);
 
 	//POS
 	const [listPayment, setListPayment] = useState<any>([]);
@@ -158,6 +171,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		codigo_postal_pos: '33333',
 		//Step4 Post
 		id_payment_method: 1,
+		id_type_pay: 0,
 		number_post: 1,
 		id_model_post: 1,
 	});
@@ -565,6 +579,9 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 					temp.phone2 = valids.validPhone2(value.slice(3), cursedForm.phone1.slice(3));
 				} else temp.phone2 = true;
 				break;
+			case 'name_commerce':
+				temp.name_commerce = valids.validNameCommere(value);
+				break;
 			case 'number_post':
 				temp.number_post = valids.validNum_post(value);
 				break;
@@ -734,6 +751,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			activity={activity}
 			setActivity={setActivity}
 			namesImages={namesImages}
+			error={cursedFormError}
 			cursedForm={cursedForm}
 			imagesForm={imagesForm}
 			setCursedForm={setCursedForm}
@@ -753,6 +771,9 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			handleChange={handleChange}
 		/>,
 		<Step4
+			listTypePay={listTypePay}
+			setTypePay={setTypePay}
+			typePay={typePay}
 			imagesForm={imagesForm}
 			namesImages={namesImages}
 			listModelPos={listModelPos}
@@ -806,7 +827,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 									Volver
 								</Button>
 								<Button
-									disabled={!readyStep}
+									//disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'
