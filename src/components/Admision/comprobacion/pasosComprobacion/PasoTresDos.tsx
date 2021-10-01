@@ -8,10 +8,8 @@ import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useSelector } from 'react-redux';
 //Url
-import { PortFiles, URL } from '../../config';
-import { RootState } from '../../store/store';
-//import luffy from '../../img/itachi2.png';
-// import luffy from '../../img/obama.jpg';
+import { PortFiles, URL } from '../../../../config';
+import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,9 +24,8 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-export default function PasoTres() {
+export default function PasoTresDos() {
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-
 	const classes = useStyles();
 	const [state, setState] = React.useState({
 		checkedA: false,
@@ -42,7 +39,7 @@ export default function PasoTres() {
 		zoomPosition: 'original',
 		height: 350,
 		width: 450,
-		img: `${URL}:${PortFiles}/${fm.path_rc_account_number}`,
+		img: `${URL}:${PortFiles}/${fm.path_rc_ref_bank}`,
 	};
 
 	return (
@@ -51,9 +48,10 @@ export default function PasoTres() {
 				<TextField
 					className='btn_step btn_medio'
 					id='outlined-basic '
-					label='Numero de Cuenta'
-					value={fm.bank_account_num}
+					label='Referencia Bancaria'
+					value='Referencia Bancaria'
 					variant='outlined'
+					disabled
 				/>
 				<FormControlLabel
 					control={<Switch checked={state.checkedA} onChange={handleChange} name='checkedA' color='primary' />}
@@ -62,6 +60,7 @@ export default function PasoTres() {
 			</form>
 			<div className='img_container'>
 				<ReactImageZoom {...props} />
+				{/* <img className='img_tamano' src={luffy} alt='Cedula' /> */}
 			</div>
 		</>
 	);
