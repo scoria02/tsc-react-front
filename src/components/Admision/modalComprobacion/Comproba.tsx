@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CloseModal } from '../../../store/actions/ui';
 //Redux
 import { RootState } from '../../../store/store';
-import Comprobacion from '../../comprobacion';
 import LoaderPrimary from '../../loaders/LoaderPrimary';
+import Comprobacion from '../comprobacion';
 import './comprobar.scss';
 
 const Transition = React.forwardRef(function Transition(
