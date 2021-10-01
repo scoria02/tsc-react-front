@@ -27,9 +27,9 @@ export const Aceptacion = () => {
 
 	useEffect(() => {
 		if(socket){
-			socket.emit("on", 'hola armando');
-			socket.on("emit", (arg:any) => {
-				console.log(arg);
+			//socket.emit("list_diferidos", 'Mamaloooooooo');
+			socket.on("list_diferidos", (list:any) => {
+				console.log(list);
 			});
 		}
 	}, [socket])

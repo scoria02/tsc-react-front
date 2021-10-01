@@ -627,7 +627,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	};
 
 	const handleChangeImages = (event: any) => {
-		console.log('entreeeee')
 		if (event.target.files[0]) {
 			let file = event.target.files[0];
 			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: 'image/jpeg' });

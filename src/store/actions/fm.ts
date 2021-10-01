@@ -35,27 +35,25 @@ export const validationClient = (client: any) => {
 };
 
 export const validationNumBank = (clientBank: any) => {
-	//console.log(client)
-	console.log(clientBank)
+	//console.log(clientBank)
 	return async (dispatch: any) => {
 		try {
-			const res: AxiosResponse<any> = await useAxios.post(`/FM/bank/valid`, clientBank);
+			await useAxios.post(`/FM/bank/valid`, clientBank);
 			dispatch(requestSuccess());
-			//console.log(res.data)
 		} catch (error) {
+			//console.log(error.response);
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
-			console.log(error.response.data.message);
 		}
 	};
 	function requestSuccess() {
 		return {
-			type: ActionType.validClient,
+			type: ActionType.validNumBank,
 		};
 	}
 	function requestError() {
 		return {
-			type: ActionType.validClientError,
+			type: ActionType.validNumBankError,
 		};
 	}
 };
