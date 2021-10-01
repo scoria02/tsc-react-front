@@ -1,16 +1,13 @@
-import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CloseModal } from '../../store/actions/ui';
-import Comprobacion from '../comprobacion';
-
-import LoaderPrimary from '../loaders/LoaderPrimary';
-
+import { CloseModal } from '../../../store/actions/ui';
 //Redux
-import { RootState } from '../../store/store';
-
+import { RootState } from '../../../store/store';
+import Comprobacion from '../../comprobacion';
+import LoaderPrimary from '../../loaders/LoaderPrimary';
 import './comprobar.scss';
 
 const Transition = React.forwardRef(function Transition(
@@ -19,7 +16,6 @@ const Transition = React.forwardRef(function Transition(
 ) {
 	return <Slide direction='up' ref={ref} {...props} />;
 });
-
 
 export default function Comproba() {
 	const dispatch = useDispatch();
@@ -40,11 +36,7 @@ export default function Comproba() {
 	return (
 		<div>
 			<Dialog fullScreen open={modalOpen} onClose={handleClose} TransitionComponent={Transition}>
-				{Object.keys(fm).length ?
-					<Comprobacion special={fm.special_contributor} />
-					:
-					<LoaderPrimary />
-				}
+				{Object.keys(fm).length ? <Comprobacion special={fm.special_contributor} /> : <LoaderPrimary />}
 			</Dialog>
 		</div>
 	);

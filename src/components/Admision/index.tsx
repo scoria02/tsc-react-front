@@ -1,26 +1,21 @@
-import React, { useEffect, useState } from 'react';
 import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import WebSocket from '../../hooks/WebSocket';
+//import { RootState } from '../../store/store';
+import { getDataFM } from '../../store/actions/admisionFm';
 import { OpenModal } from '../../store/actions/ui';
-
 import { SolicitudesEnEspera } from '../backoffice/SolicitudesEnEspera';
 import { SolicitudesEnProceso } from '../backoffice/SolicitudesEnProceso';
 import { SolicitudesTerminadas } from '../backoffice/SolicitudesTerminadas';
 import { ChartTorta } from '../diagramas/ChartConfig';
 import { DiagramaBarra } from '../diagramas/DiagramaBarra';
-import Diferidos from '../diferidos/Diferidos';
-import Comproba from '../modalComprobacion/Comproba';
-
-
-//import { RootState } from '../../store/store';
-import { getDataFM } from '../../store/actions/admisionFm';
-
-import WebSocket from '../../hooks/WebSocket';
-
+import Diferidos from './diferidos/Diferidos';
 import './index.scss';
+import Comproba from './modalComprobacion/Comproba';
 
-export const Aceptacion = () => {
+const Admision: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const { socket } = WebSocket();
@@ -32,7 +27,7 @@ export const Aceptacion = () => {
 				console.log(list);
 			});
 		}
-	}, [socket])
+	}, [socket]);
 
 	const handleClick = () => {
 		dispatch(getDataFM());
@@ -74,3 +69,5 @@ export const Aceptacion = () => {
 		</div>
 	);
 };
+
+export default Admision;

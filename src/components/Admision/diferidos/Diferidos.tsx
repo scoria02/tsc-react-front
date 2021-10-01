@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarFilterButton } from '@material-ui/data-grid';
+import * as React from 'react';
 
 const columns: GridColDef[] = [
 	{ field: 'id', headerName: 'N-Solic', width: 150 },
@@ -37,7 +37,7 @@ const rows = [
 	{ id: 900000000, email: 'Roxi@gmail.come', cirif: '67435425' },
 ];
 
-export default function Diferidos() {
+const Diferidos: React.FC = () => {
 	// const {id, email, cirif} = rows
 	const customToolbar: () => JSX.Element = () => {
 		return (
@@ -66,4 +66,6 @@ export default function Diferidos() {
 			/>
 		</div>
 	);
-}
+};
+
+export default Diferidos;
