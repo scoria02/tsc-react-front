@@ -67,7 +67,7 @@ export const Step3: React.FC<any> = ({
   return (
     <div className="container-location">
 			<div>
-				<h2>Ubicacion del Comercio</h2>
+				<h2>Comercio</h2>
 				<div className={classes.input}>
 					<Autocomplete
 							className={classes.inputM}
@@ -122,7 +122,7 @@ export const Step3: React.FC<any> = ({
 				</div>
 			</div>
 			<div>
-				<h2>Ubicacion del POS</h2>
+				<h2>POS</h2>
 				<div className={classes.input}>
 					<Autocomplete
 							className={classes.inputM}

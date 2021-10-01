@@ -390,7 +390,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				});
 			}
 		}else if (getDataControl === 5) {
-			console.log('Todo ok')
+			console.log('Todo correcto')
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [getDataControl]);
@@ -827,7 +827,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 									Volver
 								</Button>
 								<Button
-									//disabled={!readyStep}
+									disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'

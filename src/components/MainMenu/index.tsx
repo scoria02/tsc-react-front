@@ -27,12 +27,14 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import luffy from '../../img/itachi2.png';
-//Redux
 import TranredLogo from '../../img/tranred-logo.png';
+//Redux
 //import luffy from '../../img/user.png';
 import { baseUrl, urlAceptacion, urlFM } from '../../routers/url';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
+
+import './index.scss';
 
 const drawerWidth = 220;
 
@@ -344,7 +346,7 @@ const MainMenu: React.FC = () => {
 					</IconButton> */}
 					<div className={classes.img}>
 						<Link to={baseUrl} onClick={handleDrawerClose}>
-							<img src={TranredLogo} alt='logo tranred' />
+							<img className="logo-nav-tranred" src={TranredLogo} alt='logo tranred' />
 						</Link>
 					</div>
 				</div>
