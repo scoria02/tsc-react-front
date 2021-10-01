@@ -12,33 +12,27 @@ import { DiagramaBarra } from '../diagramas/DiagramaBarra';
 import Diferidos from '../diferidos/Diferidos';
 import Comproba from '../modalComprobacion/Comproba';
 
-import {io} from 'socket.io-client';
 
 //import { RootState } from '../../store/store';
 import { getDataFM } from '../../store/actions/admisionFm';
 
-import { ioURL, Port, URL } from '../../config';
+import WebSocket from '../../hooks/WebSocket';
 
 import './index.scss';
 
 export const Aceptacion = () => {
 	const dispatch = useDispatch();
 
-	const [socket, setSocket] = useState<any>(null);
+	const { socket } = WebSocket();
 
-  useEffect(() => {
-		//const socket = io(`http://localhost:5051`);
-    const socket = io(`${URL}:${Port}`);
-		socket.emit("client1", 'hola armando');
-		socket.on("client2", (arg:any) => {
-			console.log(arg);
-		});
-		/*
-		newSocket.on("mess", (data:any) => {
-			console.log(data);
-		});
-		 */
-  }, []);
+	useEffect(() => {
+		if(socket){
+			socket.emit("on", 'hola armando');
+			socket.on("emit", (arg:any) => {
+				console.log(arg);
+			});
+		}
+	}, [socket])
 
 	const handleClick = () => {
 		dispatch(getDataFM());
