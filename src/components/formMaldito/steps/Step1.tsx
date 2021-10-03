@@ -31,6 +31,7 @@ export const Step1: React.FC<any> = ({
 	listLocation,
 	location,
 	setLocation,
+	handleUpdateLocation,
 }) => {
 	const classes = useStylesFM();
 	const fm: any = useSelector((state: RootState) => state.fm);
@@ -49,20 +50,13 @@ export const Step1: React.FC<any> = ({
 				...cursedForm,
 				[`id_${item}_client`]: value.id
 			});
-			setLocation({
-				...location,
-				[item]: value 
-			});
 		} else{
 			setCursedForm({
 				...cursedForm,
 				[`id_${item}_client`]: 0
 			});
-			setLocation({
-				...location,
-				[item]: null
-			});
 		}
+		handleUpdateLocation(item, value);
 	};
 
   return (
@@ -188,9 +182,7 @@ export const Step1: React.FC<any> = ({
 			<div className={classes.input}>
 					<Autocomplete
 							className={classes.inputC}
-							onChange={(event,value) => {
-								handleSelectClient(event,value,'estado') 
-							}}
+							onChange={(event,value) => handleSelectClient(event,value,'estado')}
 							value={location.estado || null}
 							options={listLocation.estado}
 							getOptionLabel={(option:any) => option.estado ? option.estado : ''}
