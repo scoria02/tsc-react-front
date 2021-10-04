@@ -24,7 +24,8 @@ const Admision: React.FC = () => {
 		if(socket){
 			//socket.emit("list_diferidos", 'Mamaloooooooo');
 			socket.on("list_diferidos", (list:any) => {
-				console.log(list);
+				console.log(list.diferidos);
+				console.log(list.diferidos.length);
 			});
 		}
 	}, [socket]);
@@ -33,7 +34,6 @@ const Admision: React.FC = () => {
 		dispatch(getDataFM());
 		dispatch(OpenModal());
 		console.log('Aqui ta el beta');
-		// console.log(object)
 	};
 
 	return (

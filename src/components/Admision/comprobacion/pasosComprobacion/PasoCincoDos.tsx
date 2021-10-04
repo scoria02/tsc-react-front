@@ -1,12 +1,13 @@
+import React, { useEffect } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
-import React from 'react';
 // @ts-expect-error
 import ReactImageZoom from 'react-image-zoom';
 //Redux
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Valid } from '../../../../store/actions/accept';
 //Url
 import { PortFiles, URL } from '../../../../config';
 import { RootState } from '../../../../store/store';
@@ -25,11 +26,16 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function PasoCincoDos() {
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 	const classes = useStyles();
-	const [state, setState] = React.useState({
-		checkedA: false,
-	});
+	const dispatch = useDispatch();
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+	const rc_service_document: any = useSelector((state: RootState) => state.acceptance.validado.rc_service_document);
+	const [state, setState] = React.useState(rc_service_document);
+
+	useEffect(() => {
+		dispatch(Valid({rc_service_document:state}));
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [state]);
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setState({ ...state, [event.target.name]: event.target.checked });
@@ -54,7 +60,7 @@ export default function PasoCincoDos() {
 					disabled
 				/>
 				<FormControlLabel
-					control={<Switch checked={state.checkedA} onChange={handleChange} name='checkedA' color='primary' />}
+					control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
 					label='Correcto'
 				/>
 			</form>

@@ -52,4 +52,5 @@ export enum ActionType {
 	//Acceptance
 	acceptRec = '[Accept] Valid Collection',
 	stepComplete = '[Accept] Step Completed',
+	cleanAcceptRec= '[Accept] Clean Accept Rec',
 }

@@ -9,3 +9,7 @@ export const Valid = (valid: any) => ({
 	type: ActionType.acceptRec,
 	payload: valid,
 });
+
+export const cleanRec = () => ({
+	type: ActionType.cleanAcceptRec,
+})

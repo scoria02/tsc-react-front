@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 // @ts-expect-error
 import ReactImageZoom from 'react-image-zoom';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import { RootState } from '../../../../store/store';
+
+//Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { Valid } from '../../../../store/actions/accept';
 
 import luffy from '../../img/itachi2.png';
 import './styles/pasos.scss';
@@ -23,6 +28,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function PasoSiete() {
 	const classes = useStyles();
+	const dispatch = useDispatch();
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+	const rc_rif: any = useSelector((state: RootState) => state.acceptance.validado.rc_rif);
+
 	const [state, setState] = React.useState({
 		checkedA: false,
 	});
