@@ -22,11 +22,10 @@ const Admision: React.FC = () => {
 
 	useEffect(() => {
 		if(socket){
-			console.log('socket refresh')
+			/*
 			socket.on("list_diferidos", (list:any) => {
-				console.log(list.diferidos);
-				console.log(list.diferidos.length);
 			});
+			*/
 		}
 	}, [socket]);
 

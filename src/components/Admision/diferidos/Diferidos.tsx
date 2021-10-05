@@ -1,22 +1,26 @@
 import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarFilterButton } from '@material-ui/data-grid';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //Socket
 import WebSocket from '../../../hooks/WebSocket';
 
 const columns: GridColDef[] = [
-	{ field: 'id', headerName: 'N-Solic', width: 150 },
+	{ field: 'id', headerName: 'Nro', width: 100 },
 	{
-		field: 'email',
-		headerName: 'Correo',
-		width: 300,
+		field: 'id_client',
+		headerName: 'Correo Cliente',
+		width: 250,
 		editable: false,
+		valueFormatter: (params) => params.row?.id_client?.email
 	},
 	{
-		field: 'cirif',
-		headerName: 'RIF',
-		width: 150,
+		field: 'id_commerce',
+		headerName: 'Comercio RIF',
+		width: 200,
 		editable: false,
+		valueFormatter: (params) => (
+			`J${params.row?.id_commerce?.ident_num}`
+		)
 	},
 ];
 
@@ -53,12 +57,14 @@ const Diferidos: React.FC = () => {
 
 	const { socket } = WebSocket();
 
+	const [diferidos, setDiferidos] = useState([]);
+
 	useEffect(() => {
 		if(socket){
 			//socket.emit("list_diferidos", 'Mamaloooooooo');
 			socket.on("list_diferidos", (list:any) => {
-				console.log(list.diferidos);
-				console.log(list.diferidos.length);
+				setDiferidos(list.diferidos)
+				console.log(list.diferidos)
 			});
 		}
 	}, [socket]);
@@ -69,16 +75,20 @@ const Diferidos: React.FC = () => {
 
 	return (
 		<div style={{ height: '100%', width: '100%' }}>
-			<DataGrid
-				components={{
-					Toolbar: customToolbar,
-				}}
-				rows={rows}
-				columns={columns}
-				pageSize={25}
-				onCellClick={handleRow}
-				rowsPerPageOptions={[25]}
-			/>
+			{/*diferidos.length > 0 ?
+				<DataGrid
+					components={{
+						Toolbar: customToolbar,
+					}}
+					rows={diferidos}
+					columns={columns}
+					pageSize={25}
+					onCellClick={handleRow}
+					rowsPerPageOptions={[25]}
+				/>
+				: 
+				null
+				*/}
 		</div>
 	);
 };
