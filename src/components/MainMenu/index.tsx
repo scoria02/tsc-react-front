@@ -25,7 +25,14 @@ import WorkIcon from '@material-ui/icons/Work';
 import classNames from 'classnames';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+
+import {
+	
+	Link,
+	useHistory
+  } from 'react-router-dom';
+
+
 import luffy from '../../img/itachi2.png';
 import TranredLogo from '../../img/tranred-logo.png';
 //Redux
@@ -177,9 +184,11 @@ const MainMenu: React.FC = () => {
 	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
 		if (index === 3) {
 			history.push(urlAceptacion);
+			localStorage.setItem('path', urlAceptacion );
 		}
 		if (index === 5) {
 			history.push(urlFM);
+			localStorage.setItem('path', urlFM );
 		}
 	};
 
@@ -265,7 +274,10 @@ const MainMenu: React.FC = () => {
 			</MenuItem>
 		</Menu>
 	);
+
+	
 	return (
+		
 		<div className={classes.root}>
 			<AppBar
 				position='fixed'
@@ -380,7 +392,7 @@ const MainMenu: React.FC = () => {
 						<ListItemText primary='Formulario de Act.' />
 					</ListItem>
 					<ListItem button onClick={(event) => handleListItemClick(event, 3)}>
-						<Link to={'Aceptacion'}>
+						<Link to={'/Aceptacion'}>
 							<ListItemIcon>
 								<WorkIcon />
 							</ListItemIcon>
@@ -407,6 +419,10 @@ const MainMenu: React.FC = () => {
 					*/}
 			</Drawer>
 		</div>
+
+					
+
+	
 	);
 };
 

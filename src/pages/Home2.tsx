@@ -1,11 +1,14 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import React from 'react';
-import { Route } from 'react-router-dom';
+// import { Route } from 'react-router-dom';
 import Admision from '../components/Admision';
 import { FormMaldito } from '../components/formMaldito';
 import GestionUsuarios from '../components/GestionUsuarios';
 import MainMenu from '../components/MainMenu';
 import { baseUrl, urlAceptacion, urlFM } from '../routers/url';
+
+import { Route, Redirect } from 'react-router-dom';
+
 //Components
 import Inicio from './Home';
 
@@ -24,6 +27,8 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 	})
 );
+
+const ruta = localStorage.getItem('path') || '/';
 
 const Home: React.FC = () => {
 	const classes = useStyles();
@@ -57,6 +62,8 @@ const Home: React.FC = () => {
 						return <Inicio />;
 					}}
 				/>
+
+				<Redirect to={ruta} />
 			</main>
 		</div>
 	);
