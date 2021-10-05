@@ -12,13 +12,21 @@ import { SolicitudesTerminadas } from '../backoffice/SolicitudesTerminadas';
 import { ChartTorta } from '../diagramas/ChartConfig';
 import { DiagramaBarra } from '../diagramas/DiagramaBarra';
 import Diferidos from './diferidos/Diferidos';
-import './index.scss';
 import Comproba from './modalComprobacion/Comproba';
+
+
+
+
+import './index.scss';
 
 const Admision: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const { socket } = WebSocket();
+
+	
+
+	
 
 	useEffect(() => {
 		if(socket){

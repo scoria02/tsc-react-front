@@ -7,6 +7,7 @@ import { esES } from '@material-ui/data-grid';
 import { esES as coreesES } from '@material-ui/core/locale';
 
 import './styles/styles.scss';
+import { SocketProvider } from './helpers/SocketContext';
 export * from './store/store';
 
 const theme = createTheme(
@@ -19,11 +20,14 @@ const theme = createTheme(
 
 function App() {
 	return (
-		<Provider store={store}>
+		<SocketProvider>
+			<Provider store={store}>
 			<ThemeProvider theme={theme}>
 				<AppRouter />
 			</ThemeProvider>
 		</Provider>
+			
+		</SocketProvider>
 	);
 }
 
