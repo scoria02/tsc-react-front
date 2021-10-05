@@ -24,6 +24,10 @@ const reducers = combineReducers({
 	fmAdmision: admisionFM,
 });
 
-export const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
+export const store = createStore(
+	reducers, 
+	applyMiddleware(thunk)
+	//composeEnhancers(applyMiddleware(thunk))
+);
 
 export type RootState = ReturnType<typeof reducers>;
