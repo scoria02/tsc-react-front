@@ -276,6 +276,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			}
 			formData.append('id_client', fm.id_client);
 			formData.append('id_commerce', fm.id_commerce);
+			formData.append('bank_account_num', cursedForm.text_account_number);
 			/*
 			for (var value of formData.values()) {
 				console.log(value);
@@ -719,7 +720,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		)
 			return;
 		//Send FM
-		console.log('On Submit');
 		handleLoading();
 		setSendForm(1);
 		if (!fm.mashClient) {

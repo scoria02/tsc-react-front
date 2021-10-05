@@ -87,7 +87,7 @@ export const sendClient = (client: any) => {
 };
 
 export const sendCommerce = (id_client: number, commerce: any) => {
-	console.log('Client', id_client, 'Comercio', commerce);
+	//console.log('Client', id_client, 'Comercio', commerce);
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce`, commerce);
@@ -139,7 +139,7 @@ export const sendImages = (formData: any) => {
 };
 
 export const sendFM = (formM: any) => {
-	console.log('SendFM', formM);
+	//console.log('SendFM', formM);
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM`, formM);

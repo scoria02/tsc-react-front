@@ -15,6 +15,7 @@ export const startLogin = (email: any, password: any) => {
 				email,
 				password,
 			});
+			console.log(res)
 			updateToken(res)
 			Swal.fire('Success', res.data.message, 'success');
 			dispatch(StartLoading());

@@ -1,5 +1,8 @@
 import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarFilterButton } from '@material-ui/data-grid';
-import * as React from 'react';
+import React, { useEffect } from 'react';
+
+//Socket
+import WebSocket from '../../../hooks/WebSocket';
 
 const columns: GridColDef[] = [
 	{ field: 'id', headerName: 'N-Solic', width: 150 },
@@ -11,7 +14,7 @@ const columns: GridColDef[] = [
 	},
 	{
 		field: 'cirif',
-		headerName: 'CI-RIF',
+		headerName: 'RIF',
 		width: 150,
 		editable: false,
 	},
@@ -47,6 +50,18 @@ const Diferidos: React.FC = () => {
 			</GridToolbarContainer>
 		);
 	};
+
+	const { socket } = WebSocket();
+
+	useEffect(() => {
+		if(socket){
+			//socket.emit("list_diferidos", 'Mamaloooooooo');
+			socket.on("list_diferidos", (list:any) => {
+				console.log(list.diferidos);
+				console.log(list.diferidos.length);
+			});
+		}
+	}, [socket]);
 
 	const handleRow = (event: any) => {
 		console.log(event.row);
