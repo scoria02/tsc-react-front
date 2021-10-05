@@ -34,9 +34,24 @@ export const getDataFM = () => {
 	}
 };
 
-export const updateStatusFM = (id_fm: number, status: any) => {
+export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
 	const id_status:any = {
-    "id_status_request": status
+    'id_status_request': status,
+		valids: {
+			valid_rc_ident_card: accept.rc_ident_card,
+			valid_rc_rif: accept.rc_rif, 
+			//step3
+			valid_rc_account_number: accept.rc_account_number,
+			valid_rc_ref_bank: accept.rc_ref_bank,
+			//step4
+			valid_rc_constitutive_act:accept.rc_constitutive_act,
+			valid_rc_property_document: accept.rc_property_document,
+			//step5
+			valid_rc_ref_perso: accept.rc_ref_perso,
+			valid_rc_service_document: accept.rc_service_document,
+			//step6
+			valid_rc_special_contributor: accept.rc_special_contributor, 
+		}
 	}
 	console.log(id_fm, id_status)
 	return async (dispatch: any) => {
@@ -45,6 +60,7 @@ export const updateStatusFM = (id_fm: number, status: any) => {
 			updateToken(res);
 			dispatch(CloseModal());
 			dispatch(requestSuccess());
+			Swal.fire('Success', 'Cliente Verificado');
 		} catch (error) {
 			console.log(error.response)
 			dispatch(CloseModal());

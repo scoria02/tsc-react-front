@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
@@ -7,7 +8,7 @@ import Stepper from '@material-ui/core/Stepper';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { TransitionProps } from '@material-ui/core/transitions';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { stepComplete } from '../../../store/actions/accept';
 import { updateStatusFM } from '../../../store/actions/admisionFm';
@@ -55,96 +56,98 @@ const useStyles2 = makeStyles((theme: Theme) =>
 	})
 );
 
-function getStepContent(step: number) {
-	switch (step) {
-		case 0:
-			return (
-				<div className='comprobar_container'>
-					<div>
-						<h1 className='titulo'>Informacion de Comercio </h1>
-						<PasoUno />
-					</div>
-					<div>
-						<h1 className='titulo'>Informacion de Cliente</h1>
-						<PasoUnoUser />
-					</div>
-				</div>
-			);
-		case 1:
-			return (
-				<div className='comprobar_container_2'>
-					<div>
-						{/* <h1 className='titulo'>Informacion </h1> */}
-						<PasoDos />
-					</div>
-					<div>
-						{/* <h1 className='titulo'>Informacion </h1> */}
-						<PasoDosDos />
-					</div>
-				</div>
-			);
-		case 2:
-			return (
-				<div className='comprobar_container_2'>
-					<div>
-						{/* <h1 className='titulo'>Informacion </h1> */}
-						<PasoTres />
-					</div>
-					<div>
-						{/* <h1 className='titulo'>Informacion </h1> */}
-						<PasoTresDos />
-					</div>
-				</div>
-			);
-		case 3:
-			return (
-				<div className='comprobar_container_2'>
-					<div>
-						{/* <h1 className='titulo'>Informacion </h1> */}
-						<PasoCuatro />
-					</div>
-					<div>
-						{/* <h1 className='titulo'>Informacion </h1> */}
-						<PasoCuaTroDos />
-					</div>
-				</div>
-			);
-		case 4:
-			return (
-				<div className='comprobar_container_2'>
-					<div>
-						{/* <h1 className='titulo'>Informacion </h1> */}
-						<PasoCinco />
-					</div>
-					<div>
-						{/* <h1 className='titulo'>Informacion </h1> */}
-						<PasoCincoDos />
-					</div>
-				</div>
-			);
-		case 5:
-			return (
-				<div className='comprobar_container_2'>
-					<div>
-						{/* <h1 className='titulo'>Informacion </h1> */}
-
-						<PasoSeis />
-						{/* Colocar condicion para que si no hay nada en contribuyente notifique */}
-					</div>
-					<div>
-						{/* <h1 className='titulo'>Informacion </h1>
-						<PasoCincoDos /> */}
-						{/* Uso Futuro */}
-					</div>
-				</div>
-			);
-		default:
-			return 'Invalid step';
-	}
-}
-
 const Comprobacion: React.FC<any> = ({ special }) => {
 	const classes2 = useStyles2();
+
+	function getStepContent(step: number) {
+		switch (step) {
+			case 0:
+				return (
+					<div className='comprobar_container'>
+						<div>
+							<h1 className='titulo'>Informacion de Comercio </h1>
+							<PasoUno />
+						</div>
+						<div>
+							<h1 className='titulo'>Informacion de Cliente</h1>
+							<PasoUnoUser />
+						</div>
+					</div>
+				);
+			case 1:
+				return (
+					<div className='comprobar_container_2'>
+						<div>
+							{/* <h1 className='titulo'>Informacion </h1> */}
+							<PasoDos/>
+						</div>
+						<div>
+							{/* <h1 className='titulo'>Informacion </h1> */}
+							<PasoDosDos />
+						</div>
+					</div>
+				);
+			case 2:
+				return (
+					<div className='comprobar_container_2'>
+						<div>
+							{/* <h1 className='titulo'>Informacion </h1> */}
+							<PasoTres />
+						</div>
+						<div>
+							{/* <h1 className='titulo'>Informacion </h1> */}
+							<PasoTresDos />
+						</div>
+					</div>
+				);
+			case 3:
+				return (
+					<div className='comprobar_container_2'>
+						<div>
+							{/* <h1 className='titulo'>Informacion </h1> */}
+							<PasoCuatro />
+						</div>
+						<div>
+							{/* <h1 className='titulo'>Informacion </h1> */}
+							<PasoCuaTroDos />
+						</div>
+					</div>
+				);
+			case 4:
+				return (
+					<div className='comprobar_container_2'>
+						<div>
+							{/* <h1 className='titulo'>Informacion </h1> */}
+							<PasoCinco />
+						</div>
+						<div>
+							{/* <h1 className='titulo'>Informacion </h1> */}
+							<PasoCincoDos />
+						</div>
+					</div>
+				);
+			case 5:
+				return (
+					<div className='comprobar_container_2'>
+						<div>
+							{/* <h1 className='titulo'>Informacion </h1> */}
+
+							<PasoSeis />
+							{/* Colocar condicion para que si no hay nada en contribuyente notifique */}
+						</div>
+						<div>
+							{/* <h1 className='titulo'>Informacion </h1>
+							<PasoCincoDos /> */}
+							{/* Uso Futuro */}
+						</div>
+					</div>
+				);
+			default:
+				return 'Invalid step';
+		}
+	}
+
+
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [completed, setCompleted] = React.useState(new Set<number>());
 	const [skipped, setSkipped] = React.useState(new Set<number>());
@@ -153,6 +156,8 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 	const dispatch = useDispatch();
 	const { modalOpen } = useSelector((state: any) => state.ui);
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+	const validated: any = useSelector((state: RootState) => state.acceptance.validado);
+	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatus);
 
 	function getSteps() {
 		if (special) {
@@ -201,13 +206,26 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 				  // find the first step that has been completed
 				  steps.findIndex((step, i) => !completed.has(i))
 				: activeStep + 1;
-
 		setActiveStep(newActiveStep);
-		if (isLastStep() && completedSteps() === totalSteps() - 1) {
-			console.log('Send FMMMMM');
-			dispatch(updateStatusFM(fm.id_fm, 2));
-		}
 	};
+
+	useEffect(() => {
+		if(allStepsCompleted() && !updatedStatus){
+			for (const item in validated) {
+				if(item.slice(0,3) === 'rc_'){
+					const element = validated[item]
+					if(element.status === false){
+						dispatch(updateStatusFM(fm.id_fm, 4, validated));
+						console.log('diferido')
+						return;
+					}
+				}
+			}
+		dispatch(updateStatusFM(fm.id_fm, 2, {}));
+		console.log('validated')
+		}
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [activeStep, dispatch, allStepsCompleted])
 
 	const handleBack = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -219,20 +237,32 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 
 	const handleComplete = async () => {
 		const newCompleted = new Set(completed);
-		newCompleted.add(activeStep);
-		dispatch(stepComplete(newCompleted));
-		console.log(newCompleted);
-		setCompleted(newCompleted);
-		if (completed.size !== totalSteps() - skippedSteps()) {
-			handleNext();
-		}
+		Swal.fire({
+			title: 'Confirmar verificación',
+			icon: 'warning',
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Verificado',
+			showCancelButton: true,
+			cancelButtonText: 'Atras',
+			showCloseButton: true,
+			customClass: { container: 'swal2-validated' }
+		}).then((result) => {
+			if (result.isConfirmed) {
+				newCompleted.add(activeStep);
+				dispatch(stepComplete(newCompleted));
+				setCompleted(newCompleted);
+				if (completed.size !== totalSteps() - skippedSteps()) {
+					handleNext();
+				}
+			}
+		})
 	};
 
 	const handleReset = () => {
 		setActiveStep(0);
 		setCompleted(new Set<number>());
 		setSkipped(new Set<number>());
-		//dispatch(); clean getDataAdmisiion
 		dispatch(CloseModal());
 	};
 
@@ -245,7 +275,6 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 	}
 
 	const handleClose = () => {
-		// setOpen(false);
 		dispatch(CloseModal());
 	};
 
@@ -257,9 +286,6 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 						{steps.map((label, index) => {
 							const stepProps: { completed?: boolean } = {};
 							const buttonProps: { optional?: React.ReactNode } = {};
-							// if (isStepOptional(index)) {
-							// 	buttonProps.optional = <Typography variant='caption'>Optional</Typography>;
-							// }
 							if (isStepSkipped(index)) {
 								stepProps.completed = false;
 							}
@@ -276,7 +302,7 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 						{allStepsCompleted() ? (
 							<div className='btn-divfloat'>
 								<Typography className={classes2.instructions}>
-									Todos los campos fueron Validados - Saludos BB
+									Todos los campos fueron Validados
 								</Typography>
 								<Button onClick={handleReset}>Salir</Button>
 							</div>
@@ -297,7 +323,6 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 											</Typography>
 										) : (
 											<Button variant='contained' color='primary' onClick={handleComplete}>
-												{/* <Button variant='contained' color='primary'> */}
 												{completedSteps() === totalSteps() - 1 ? 'Solicitud Revisada' : 'Verificado'}
 											</Button>
 										))}

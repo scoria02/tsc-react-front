@@ -9,13 +9,13 @@ import { useStylesFM } from '../styles';
 export const Step3: React.FC<any> = ({
 	listLocation,
 	location,
-	setLocation,
 	listLocationPos,
 	locationPos,
-	setLocationPos,
 	cursedForm,
 	setCursedForm,
 	handleChange,
+	handleUpdateLocationCommerce,
+	handleUpdateLocationPos,
 }) => {
 
 	const classes = useStylesFM();
@@ -26,20 +26,13 @@ export const Step3: React.FC<any> = ({
 				...cursedForm,
 				[`id_${item}_pos`]: value.id
 			});
-			setLocationPos({
-				...locationPos,
-				[item]: value 
-			});
 		} else{
 			setCursedForm({
 				...cursedForm,
 				[`id_${item}_pos`]: 0
 			});
-			setLocationPos({
-				...locationPos,
-				[item]: null
-			});
 		}
+		handleUpdateLocationPos(item, value);
 	};
 
 	const handleSelect= (event: any, value: any, item: string) => {
@@ -48,20 +41,13 @@ export const Step3: React.FC<any> = ({
 				...cursedForm,
 				[`id_${item}`]: value.id
 			});
-			setLocation({
-				...location,
-				[item]: value 
-			});
 		} else{
 			setCursedForm({
 				...cursedForm,
 				[`id_${item}`]: 0
 			});
-			setLocation({
-				...location,
-				[item]: null
-			});
 		}
+		handleUpdateLocationCommerce(item, value);
 	};
 
   return (

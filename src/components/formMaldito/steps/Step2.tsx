@@ -56,7 +56,7 @@ export const Step2: React.FC<any> = ({
 		}
 		setCursedForm({
 			...cursedForm,
-			[e.target.name]: !cursedForm.special_contributor
+			[e.target.name]: !cursedForm.special_contributor ? 1 : 0
 		})
 	}
 
@@ -142,7 +142,7 @@ export const Step2: React.FC<any> = ({
 										fontSize: '1rem'}}>Contribuye Especial</b>
 									<Checkbox
 										name="special_contributor"
-										checked={cursedForm.special_contributor}
+										checked={cursedForm.special_contributor ? true : false}
 										onChange={handleChecked}
 										color="primary"
 										inputProps={{ 'aria-label': 'secondary checkbox' }}

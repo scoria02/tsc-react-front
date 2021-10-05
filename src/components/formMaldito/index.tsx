@@ -73,7 +73,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	});
 
 	//Location Commerce
-	const [listLocation, setListLocation] = useState<any>({
+	const [listLocationCommerce, setListLocationCommerce] = useState<any>({
 		estado: [],
 		ciudad: [],
 		municipio: [],
@@ -234,7 +234,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		} else {
 			setValidEmailIdent(false);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [fm]);
 
 	//SendForm
@@ -248,7 +248,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 					{
 						id_ident_type: cursedForm.id_ident_type_commerce,
 						ident_num: cursedForm.ident_num_commerce,
-						special_contributor: 0,
+						special_contributor: cursedForm.special_contributor,
 						name: cursedForm.name_commerce,
 						bank_account_num: cursedForm.text_account_number,
 						id_activity: cursedForm.id_activity,
@@ -276,6 +276,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			}
 			formData.append('id_client', fm.id_client);
 			formData.append('id_commerce', fm.id_commerce);
+			formData.append('bank_account_num', cursedForm.text_account_number);
 			/*
 			for (var value of formData.values()) {
 				console.log(value);
@@ -347,10 +348,10 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			}
 			//Get Estados
 		}else if (getDataControl === 2) {
-			if (listLocation.estado.length === 0) {
+			if (listLocationCommerce.estado.length === 0) {
 				getEstados().then((res) => {
 					res.forEach((item,indice) => {
-						setListLocation((prevState: any) => ({
+						setListLocationCommerce((prevState: any) => ({
 							...prevState,
 							estado: [...prevState.estado, item],
 						}));
@@ -397,88 +398,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [getDataControl]);
 
-	//Commerce Location
-	useEffect(() => {
-		setLocationCommerce({ ...locationCommerce, ciudad: null, municipio: null, parroquia: null });
-		if (cursedForm.id_estado) {
-			setListLocation((prevState: any) => ({ ...prevState, ciudad: [], municipio: [], parroquia: [] }));
-			getCiudad(cursedForm.id_estado).then((res) => {
-				setListLocation({
-					...listLocation,
-					ciudad: res,
-				});
-			});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [locationCommerce.estado]);
-
-	useEffect(() => {
-		setLocationCommerce({ ...locationCommerce, municipio: null, parroquia: null });
-		if (cursedForm.id_ciudad) {
-			getMunicipio(cursedForm.id_estado).then((res) => {
-				setListLocation({
-					...listLocation,
-					municipio: res,
-				});
-			});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [locationCommerce.ciudad]);
-
-	useEffect(() => {
-		setLocationCommerce({ ...locationCommerce, parroquia: null });
-		if (cursedForm.id_municipio) {
-			getParroquia(cursedForm.id_municipio).then((res) => {
-				setListLocation({
-					...listLocation,
-					parroquia: res,
-				});
-			});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [locationCommerce.municipio]);
-
-	//Pos Location
-	useEffect(() => {
-		setLocationPos({ ...locationPos, ciudad: null, municipio: null, parroquia: null });
-		if (cursedForm.id_estado) {
-			setListLocation((prevState: any) => ({ ...prevState, ciudad: [], municipio: [], parroquia: [] }));
-			getCiudad(cursedForm.id_estado_pos).then((res) => {
-				setListLocationPos({
-					...listLocationPos,
-					ciudad: res,
-				});
-			});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [locationPos.estado]);
-
-	useEffect(() => {
-		setLocationPos({ ...locationPos, municipio: null, parroquia: null });
-		if (cursedForm.id_ciudad_pos) {
-			getMunicipio(cursedForm.id_estado_pos).then((res) => {
-				setListLocationPos({
-					...listLocationPos,
-					municipio: res,
-				});
-			});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [locationPos.ciudad]);
-
-	useEffect(() => {
-		setLocationPos({ ...locationPos, parroquia: null });
-		if (cursedForm.id_municipio_pos) {
-			getParroquia(cursedForm.id_municipio_pos).then((res) => {
-				setListLocationPos({
-					...listLocationPos,
-					parroquia: res,
-				});
-			});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [locationPos.municipio]);
-
 	//Client Location handle
 	const handleUpdateLocationClient = (op: any, value: any) => {
 		if(op === 'estado'){ //Select estado and Update List Ciudades
@@ -488,7 +407,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				municipio: null,
 				parroquia: null
 			});
-			setListLocation((prevState: any) => ({ ...prevState, ciudad: [], municipio: [], parroquia: [] }));
+			setListLocationCommerce((prevState: any) => ({ ...prevState, ciudad: [], municipio: [], parroquia: [] }));
 			if (value) {
 				getCiudad(value.id).then((res) => {
 					setListLocationClient({
@@ -504,7 +423,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				municipio: null,
 				parroquia: null
 			});
-			setListLocation((prevState: any) => ({ ...prevState, municipio: [], parroquia: [] }));
+			setListLocationCommerce((prevState: any) => ({ ...prevState, municipio: [], parroquia: [] }));
 			if (value) {
 				getMunicipio(cursedForm.id_estado_client).then((res) => {
 					setListLocationClient({
@@ -535,50 +454,117 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		}
 	}
 
-	/*
-	useEffect(() => {
-		setLocationClient({ ...locationClient, ciudad: null, municipio: null, parroquia: null });
-		if (cursedForm.id_estado_client) {
-			setListLocation((prevState: any) => ({ ...prevState, ciudad: [], municipio: [], parroquia: [] }));
-			getCiudad(cursedForm.id_estado_client).then((res) => {
-				setListLocationClient({
-					...listLocationClient,
-					ciudad: res,
+	//Commerce Location handle
+	const handleUpdateLocationCommerce = (op: any, value: any) => {
+		if(op === 'estado'){ //Select estado and Update List Ciudades
+			setLocationCommerce({ 
+				estado: value,
+				ciudad: null,
+				municipio: null,
+				parroquia: null
+			});
+			setListLocationCommerce((prevState: any) => ({ ...prevState, ciudad: [], municipio: [], parroquia: [] }));
+			if (value) {
+				getCiudad(value.id).then((res) => {
+					setListLocationCommerce({
+						...listLocationCommerce,
+						ciudad: res,
+					});
 				});
+			}
+		}else if (op === 'ciudad'){ //Select ciudad and Update List municipio 
+			setLocationCommerce({ 
+				...locationCommerce,
+				ciudad: value,
+				municipio: null,
+				parroquia: null
+			});
+			setListLocationCommerce((prevState: any) => ({ ...prevState, municipio: [], parroquia: [] }));
+			if (value) {
+				getMunicipio(cursedForm.id_estado).then((res) => {
+					setListLocationCommerce({
+						...listLocationCommerce,
+						municipio: res,
+					});
+				});
+			}
+		}else if (op === 'municipio') { //Select municipio and Update List parroquia
+			setLocationCommerce({ 
+				...locationCommerce,
+				municipio: value,
+				parroquia: null 
+			});
+			if (value) {
+				getParroquia(value.id).then((res) => {
+					setListLocationCommerce({
+						...listLocationCommerce,
+						parroquia: res,
+					});
+				});
+			}
+		}else if (op === 'parroquia') { //Select parroquia
+			setLocationCommerce({ 
+				...locationCommerce,
+				parroquia: value 
 			});
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [locationClient.estado]);
-	*/
- /*
-	useEffect(() => {
-		setLocationClient({ ...locationClient, municipio: null, parroquia: null });
-		if (cursedForm.id_ciudad_client) {
-			getMunicipio(cursedForm.id_estado_client).then((res) => {
-				setListLocationClient({
-					...listLocationClient,
-					municipio: res,
-				});
-			});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [locationClient.ciudad]);
-	*/
+	}
 
- /*
-	useEffect(() => {
-		setLocationClient({ ...locationClient, parroquia: null });
-		if (cursedForm.id_municipio_client) {
-			getParroquia(cursedForm.id_municipio_client).then((res) => {
-				setListLocationClient({
-					...listLocationClient,
-					parroquia: res,
+	//POS Location handle
+	const handleUpdateLocationPos = (op: any, value: any) => {
+		if(op === 'estado'){ //Select estado and Update List Ciudades
+			setLocationPos({ 
+				estado: value,
+				ciudad: null,
+				municipio: null,
+				parroquia: null
+			});
+			setListLocationPos((prevState: any) => ({ ...prevState, ciudad: [], municipio: [], parroquia: [] }));
+			if (value) {
+				getCiudad(value.id).then((res) => {
+					setListLocationPos({
+						...listLocationPos,
+						ciudad: res,
+					});
 				});
+			}
+		}else if (op === 'ciudad'){ //Select ciudad and Update List municipio 
+			setLocationPos({ 
+				...locationClient,
+				ciudad: value,
+				municipio: null,
+				parroquia: null
+			});
+			setListLocationPos((prevState: any) => ({ ...prevState, municipio: [], parroquia: [] }));
+			if (value) {
+				getMunicipio(cursedForm.id_estado).then((res) => {
+					setListLocationPos({
+						...listLocationPos,
+						municipio: res,
+					});
+				});
+			}
+		}else if (op === 'municipio') { //Select municipio and Update List parroquia
+			setLocationPos({ 
+				...locationPos,
+				municipio: value,
+				parroquia: null 
+			});
+			if (value) {
+				getParroquia(value.id).then((res) => {
+					setListLocationPos({
+						...listLocationPos,
+						parroquia: res,
+					});
+				});
+			}
+		}else if (op === 'parroquia') { //Select parroquia
+			setLocationPos({ 
+				...locationPos,
+				parroquia: value 
 			});
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [locationClient.municipio]);
-	*/
+	}
 
 	const validEndPointFM = () => {
 		if (fm.errorClient) {
@@ -734,7 +720,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		)
 			return;
 		//Send FM
-		console.log('On Submit');
 		handleLoading();
 		setSendForm(1);
 		if (!fm.mashClient) {
@@ -823,7 +808,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			deleteImgContributor={deleteImgContributor}
 		/>,
 		<Step3
-			listLocation={listLocation}
+			listLocation={listLocationCommerce}
 			location={locationCommerce}
 			setLocation={setLocationCommerce}
 			listLocationPos={listLocationPos}
@@ -832,6 +817,8 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			cursedForm={cursedForm}
 			setCursedForm={setCursedForm}
 			handleChange={handleChange}
+			handleUpdateLocationCommerce={handleUpdateLocationCommerce}
+			handleUpdateLocationPos={handleUpdateLocationPos}
 		/>,
 		<Step4
 			listTypePay={listTypePay}
@@ -859,7 +846,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			{listIdentType.length === 0 || 
 				listActivity === 0 || 
 				listPayment === 0 || 
-				listLocation.estado.length === 0  ||
+				listLocationCommerce.estado.length === 0  ||
 				listLocationClient.estado.length === 0 ||
 				listLocationPos.estado.length === 0 ? 
 				<LoaderPrimary />
@@ -890,7 +877,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 									Volver
 								</Button>
 								<Button
-									//disabled={!readyStep}
+									disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'

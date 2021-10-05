@@ -1,4 +1,5 @@
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+//import Swal from 'sweetalert2';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
@@ -26,19 +27,41 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function PasoDos() {
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+	const rc_ident_card: any = useSelector((state: RootState) => state.acceptance.validado.rc_ident_card);
+
 	const dispatch = useDispatch();
 
 	const classes = useStyles();
-	const [state, setState] = React.useState({
-		cedula: false,
-	});
+	const [state, setState] = React.useState(rc_ident_card);
 
+	//const [text,setText] = React.useState('')
 	useEffect(() => {
-		dispatch(Valid(state));
-	}, [setState, dispatch, state]);
+		dispatch(Valid({ rc_ident_card: state }));
+		/*
+		if(state.rc_ident_card === false) {
+			Swal.fire({
+				input: 'textarea',
+				inputLabel: 'Este mesaje sera enviado el cliente por correo',
+				inputPlaceholder: 'Escribe aqui',
+				preConfirm: (value) => {
+					console.log('entre', value)
+				},
+				customClass: { container: 'swal2-validated' },
+				showCancelButton: true,
+				cancelButtonText: 'Cerrar',
+				confirmButtonText: 'Mensaje',
+				showCloseButton: true,
+			})
+		}
+		 */
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [state]);
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({ ...state, [event.target.name]: event.target.checked });
+		setState({ 
+			...state, 
+			[event.target.name]: event.target.checked,
+		});
 	};
 
 	const props = {
@@ -66,7 +89,7 @@ export default function PasoDos() {
 					value={fm.ident_num_client}
 				/>
 				<FormControlLabel
-					control={<Switch checked={state.cedula} onChange={handleChange} name='cedula' color='primary' />}
+					control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
 					label='Correcto'
 				/>
 			</form>

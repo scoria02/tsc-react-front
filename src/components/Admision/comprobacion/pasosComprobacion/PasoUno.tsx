@@ -1,6 +1,5 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import React from 'react';
 //Redux
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
