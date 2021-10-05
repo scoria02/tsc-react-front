@@ -5,22 +5,30 @@ import React, { useEffect, useState } from 'react';
 import WebSocket from '../../../hooks/WebSocket';
 
 const columns: GridColDef[] = [
-	{ field: 'id', headerName: 'Nro', width: 100 },
+	{ field: 'id_fm', headerName: 'Nro', width: 100 },
 	{
-		field: 'id_client',
+		field: 'email_client',
 		headerName: 'Correo Cliente',
-		width: 250,
+		width: 220,
 		editable: false,
-		valueFormatter: (params) => params.row?.id_client?.email
 	},
 	{
-		field: 'id_commerce',
+		field: 'ident_type_client',
+		headerName: 'Cliente',
+		width: 150,
+		editable: false,
+		valueFormatter: (value) => {
+			return `${value.row?.ident_type_client}${value.row?.ident_num_client}` 
+		}
+	},
+	{
+		field: 'ident_type_commerce',
 		headerName: 'Comercio RIF',
 		width: 200,
 		editable: false,
-		valueFormatter: (params) => (
-			`J${params.row?.id_commerce?.ident_num}`
-		)
+		valueFormatter: (value) => {
+			return `${value.row?.ident_type_commerce}${value.row?.ident_num_commerce}` 
+		}
 	},
 ];
 
@@ -75,20 +83,21 @@ const Diferidos: React.FC = () => {
 
 	return (
 		<div style={{ height: '100%', width: '100%' }}>
-			{/*diferidos.length > 0 ?
+			{diferidos.length > 0 ?
 				<DataGrid
 					components={{
 						Toolbar: customToolbar,
 					}}
 					rows={diferidos}
 					columns={columns}
-					pageSize={25}
+					pageSize={5}
 					onCellClick={handleRow}
 					rowsPerPageOptions={[25]}
+					getRowId={(row) => row.id_fm}
 				/>
 				: 
 				null
-				*/}
+				}
 		</div>
 	);
 };
