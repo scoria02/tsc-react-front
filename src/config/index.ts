@@ -9,8 +9,9 @@ import LRU from 'lru-cache';
 
 //QA
 export const URL = `http://10.198.73.15`; 
-export const ioURL = 'ws://10.198.73.15';
+//export const ioURL = 'ws://10.198.73.15';
 
+//Aldrin
 //export const URL = 'http://10.198.68.21';
 //export const ioURL = 'ws://10.198.68.21';
 
