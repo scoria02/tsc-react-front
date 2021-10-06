@@ -32,6 +32,7 @@ const columns: GridColDef[] = [
 	},
 ];
 
+/*
 const rows = [
 	{ id: 100000000, email: 'Snow@gmail.com', cirif: '67435425', tel: null },
 	{ id: 200000000, email: 'Lannister@gmail.com', cirif: '67435425' },
@@ -51,6 +52,7 @@ const rows = [
 	{ id: 900000010, email: 'Roxi@gmail.come', cirif: '67435425' },
 	{ id: 900000000, email: 'Roxi@gmail.come', cirif: '67435425' },
 ];
+*/
 
 const Diferidos: React.FC = () => {
 	// const {id, email, cirif} = rows
