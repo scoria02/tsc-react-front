@@ -1,0 +1,39 @@
+image: node:16
+before_script:
+  - apt-get update -qq
+  - apt-get install -qq git dos2unix
+  - apt-get install -y sudo
+  - mkdir ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  - echo $SSH_PRIVATE_KEY >> ~/.ssh/key_64.pem
+  - cat ~/.ssh/key_64.pem |base64 -d > ~/.ssh/key.pem
+  - chmod 400 ~/.ssh/key.pem
+  - eval "$(ssh-agent -s)"
+  - cat ~/.ssh/key.pem
+
+stages:
+  - build
+  - deploy
+
+build:
+  only:
+    - qa
+  script:
+  - node -v
+  - npm install
+  #- npm install yarn -g
+  - npm run build
+  stage: build
+  artifacts:
+    paths:
+      - build/
+
+deploy:
+  only:
+    - qa
+  script:
+    - sudo scp  -i ~/.ssh/key.pem  -r build/* $USUARIO@$IP_REMOTEQA:$DOCUMENT_ROOT
+
+  stage: deploy
+  dependencies:
+    - build

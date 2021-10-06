@@ -32,6 +32,7 @@ const columns: GridColDef[] = [
 	},
 ];
 
+/*
 const rows = [
 	{ id: 100000000, email: 'Snow@gmail.com', cirif: '67435425', tel: null },
 	{ id: 200000000, email: 'Lannister@gmail.com', cirif: '67435425' },
@@ -51,6 +52,7 @@ const rows = [
 	{ id: 900000010, email: 'Roxi@gmail.come', cirif: '67435425' },
 	{ id: 900000000, email: 'Roxi@gmail.come', cirif: '67435425' },
 ];
+*/
 
 const Diferidos: React.FC = () => {
 	// const {id, email, cirif} = rows
@@ -71,8 +73,9 @@ const Diferidos: React.FC = () => {
 		if(socket){
 			//socket.emit("list_diferidos", 'Mamaloooooooo');
 			socket.on("list_diferidos", (list:any) => {
-				setDiferidos(list.diferidos)
-				console.log(list.diferidos)
+				if(list.diferidos){
+					setDiferidos(list.diferidos)
+				}
 			});
 		}
 	}, [socket]);
@@ -83,21 +86,17 @@ const Diferidos: React.FC = () => {
 
 	return (
 		<div style={{ height: '100%', width: '100%' }}>
-			{diferidos.length > 0 ?
-				<DataGrid
-					components={{
-						Toolbar: customToolbar,
-					}}
-					rows={diferidos}
-					columns={columns}
-					pageSize={5}
-					onCellClick={handleRow}
-					rowsPerPageOptions={[25]}
-					getRowId={(row) => row.id_fm}
-				/>
-				: 
-				null
-				}
+			<DataGrid
+				components={{
+					Toolbar: customToolbar,
+				}}
+				rows={diferidos}
+				columns={columns}
+				pageSize={5}
+				onCellClick={handleRow}
+				rowsPerPageOptions={[25]}
+				getRowId={(row) => row.id_fm}
+			/>
 		</div>
 	);
 };
