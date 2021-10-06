@@ -4,14 +4,14 @@ import LRU from 'lru-cache';
 
 // Set config defaults when creating the instance
 
-//export const URL = 'http://localhost';
+export const URL = 'http://localhost';
 //export const ioURL = 'ws://localhost';
 
 //QA
 //export const URL = `http://10.198.73.15`; 
 //export const ioURL = 'ws://10.198.73.15';
 
-export const URL = 'http://10.198.68.21';
+//export const URL = 'http://10.198.68.21';
 export const ioURL = 'ws://10.198.68.21';
 
 export const Port = '5051';
