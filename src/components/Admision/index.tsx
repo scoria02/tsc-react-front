@@ -1,8 +1,7 @@
 import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import WebSocket from '../../hooks/WebSocket';
 //import { RootState } from '../../store/store';
 import { getDataFM } from '../../store/actions/admisionFm';
 import { OpenModal } from '../../store/actions/ui';
@@ -14,27 +13,26 @@ import { DiagramaBarra } from '../diagramas/DiagramaBarra';
 import Diferidos from './diferidos/Diferidos';
 import Comproba from './modalComprobacion/Comproba';
 
-
-
+import { SocketContext } from '../../helpers/SocketContext';
+import { getNuevosTicket } from '../../sockets/getAdmicion';
 
 import './index.scss';
 
 const Admision: React.FC = () => {
 	const dispatch = useDispatch();
 
-	const { socket } = WebSocket();
-
-	
-
-	
+	const { socket } = useContext(SocketContext);
 
 	useEffect(() => {
-		if(socket){
-			/*
-			socket.on("list_diferidos", (list:any) => {
-			});
-			*/
-		}
+		getNuevosTicket();
+	}, []);
+
+	useEffect(() => {
+		socket.on('solicitar-nuevosticket', () => {});
+
+		return () => {
+			socket.off('solicitar-nuevosticket');
+		};
 	}, [socket]);
 
 	const handleClick = () => {

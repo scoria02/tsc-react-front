@@ -8,11 +8,14 @@ import LRU from 'lru-cache';
 //export const ioURL = 'ws://localhost';
 
 //QA
-//export const URL = `http://10.198.73.15`; 
+//export const URL = `http://10.198.73.15`;
 //export const ioURL = 'ws://10.198.73.15';
 
-export const URL = 'http://10.198.68.21';
-export const ioURL = 'ws://10.198.68.21';
+// export const URL = 'http://10.198.68.21';
+// export const ioURL = 'ws://10.198.68.21';
+
+export const URL = 'http://localhost';
+export const ioURL = 'ws://localhost';
 
 export const Port = '5051';
 export const PortFiles = '6060';
@@ -33,12 +36,12 @@ const axios = Axios.create(configAxios);
 export const axiosFiles = Axios.create(configAxiosFiles);
 
 axios.interceptors.response.use((resp: AxiosResponse<any>): AxiosResponse<any> => {
-	if(resp.data.token){
+	if (resp.data.token) {
 		axios.defaults.headers.common['token'] = resp.data.token;
-		localStorage.setItem('token', resp.data.token)
+		localStorage.setItem('token', resp.data.token);
 	}
-	return resp
-})
+	return resp;
+});
 
 const cache = new LRU({ max: 10 });
 
