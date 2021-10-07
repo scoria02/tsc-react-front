@@ -12,20 +12,9 @@ import { PortFiles, URL } from '../../../../config';
 import { Valid } from '../../../../store/actions/accept';
 import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
+import { useStyles } from './styles/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		root: {
-			'& > *': {
-				margin: theme.spacing(1),
-				width: '25ch',
-				// height: '10px',
-			},
-		},
-	})
-);
-
-export default function PasoDos() {
+export default function PasoClient() {
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 	const rc_ident_card: any = useSelector((state: RootState) => state.acceptance.validado.rc_ident_card);
 
@@ -37,24 +26,6 @@ export default function PasoDos() {
 	//const [text,setText] = React.useState('')
 	useEffect(() => {
 		dispatch(Valid({ rc_ident_card: state }));
-		/*
-		if(state.rc_ident_card === false) {
-			Swal.fire({
-				input: 'textarea',
-				inputLabel: 'Este mesaje sera enviado el cliente por correo',
-				inputPlaceholder: 'Escribe aqui',
-				preConfirm: (value) => {
-					console.log('entre', value)
-				},
-				customClass: { container: 'swal2-validated' },
-				showCancelButton: true,
-				cancelButtonText: 'Cerrar',
-				confirmButtonText: 'Mensaje',
-				showCloseButton: true,
-			})
-		}
-		 */
-		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state]);
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,29 +44,45 @@ export default function PasoDos() {
 
 	return (
 		<>
-			<form className={classes.root} noValidate autoComplete='off'>
-				<TextField
-					className='btn_step btn_corto'
-					id='outlined-basic'
-					label='Tipo ID'
-					variant='outlined'
-					value={fm.ident_type_client}
-				/>
-				<TextField
-					className='btn_step'
-					id='outlined-basic'
-					label='Numero ID'
-					variant='outlined'
-					value={fm.ident_num_client}
-				/>
+			<form className="container-step" noValidate autoComplete='off'>
+				<div className={classes.btn_stepM}>
+					<TextField
+						className={classes.btn_stepT}
+						id='outlined-basic'
+						label='Nombre'
+						variant='outlined'
+						value={fm.name_client}
+					/>
+					<TextField
+						className={classes.btn_stepT}
+						id='outlined-basic'
+						label='Apellido'
+						variant='outlined'
+						value={fm.last_name_client}
+					/>
+					<TextField
+						className={classes.btn_stepT}
+						id='outlined-basic'
+						label='Numero ID'
+						variant='outlined'
+						value={`${fm.ident_type_client} ${fm.ident_num_client}`}
+					/>
 				<FormControlLabel
-					control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
-					label='Correcto'
+					control={<Switch
+						checked={state.status}
+						onChange={handleChange}
+						name='status'
+						color='primary'
+						/>}
+					className={classes.checkText}
+					label={state.status ? 'Correcto' : 'Incorrecto'}
 				/>
+				</div>
 			</form>
 			<div className='img_container'>
-				<ReactImageZoom {...props} />
+				<ReactImageZoom className={classes.img_zoom} {...props} />
 			</div>
 		</>
 	);
 }
+

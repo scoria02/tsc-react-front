@@ -19,13 +19,13 @@ import PasoCinco from './pasosComprobacion/PasoCinco';
 import PasoCincoDos from './pasosComprobacion/PasoCincoDos';
 import PasoCuatro from './pasosComprobacion/PasoCuatro';
 import PasoCuaTroDos from './pasosComprobacion/PasoCuatroDos';
-import PasoDos from './pasosComprobacion/PasoDos';
-import PasoDosDos from './pasosComprobacion/PasoDosDos';
 import PasoSeis from './pasosComprobacion/PasoSeis';
-import PasoTres from './pasosComprobacion/PasoTres';
+import PasoAccountNumber from './pasosComprobacion/PasoAccountNumber';
 import PasoTresDos from './pasosComprobacion/PasoTresDos';
-import PasoUno from './pasosComprobacion/PasoUno';
-import PasoUnoUser from './pasosComprobacion/PasoUnoUser';
+
+import PasoCommerce from './pasosComprobacion/PasoCommerce';
+import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
+import PasoClient from './pasosComprobacion/PasoClient';
 
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & { children?: React.ReactElement },
@@ -38,7 +38,7 @@ const useStyles2 = makeStyles((theme: Theme) =>
 	createStyles({
 		root: {
 			width: '100%',
-			margin: '2rem',
+			margin: '1.5rem',
 		},
 		button: {
 			marginRight: theme.spacing(1),
@@ -63,27 +63,20 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 		switch (step) {
 			case 0:
 				return (
-					<div className='comprobar_container'>
-						<div>
-							<h1 className='titulo'>Informacion de Comercio </h1>
-							<PasoUno />
-						</div>
-						<div>
-							<h1 className='titulo'>Informacion de Cliente</h1>
-							<PasoUnoUser />
-						</div>
+					<div>
+						<h1 className='titulo'>Informacion del Cliente</h1>
+						<PasoClient/>
 					</div>
 				);
 			case 1:
 				return (
 					<div className='comprobar_container_2'>
 						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
-							<PasoDos/>
+							<h1 className='titulo'>Informacion del Comercio </h1>
+							<PasoCommerce/>
 						</div>
 						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
-							<PasoDosDos />
+							<PasoCommerce2/>
 						</div>
 					</div>
 				);
@@ -92,11 +85,10 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 					<div className='comprobar_container_2'>
 						<div>
 							{/* <h1 className='titulo'>Informacion </h1> */}
-							<PasoTres />
+							<PasoAccountNumber />
 						</div>
 						<div>
 							{/* <h1 className='titulo'>Informacion </h1> */}
-							<PasoTresDos />
 						</div>
 					</div>
 				);
@@ -159,23 +151,29 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 	const validated: any = useSelector((state: RootState) => state.acceptance.validado);
 	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatus);
 
+	console.log(fm)
+
 	function getSteps() {
 		if (special) {
 			return [
-				'Informacion',
-				'Validacion (Cedula / Rif)',
-				'Validacion (Cuenta / Referencia )',
+				'Validacion (Cliente)',
+				'Validacion (Comercio)',
+				'Validacion (Referencia Bancaria)',
+				/*
 				'Validacion (Acta Constitutiva / Doc. Propiedad)',
 				'Validacion (Referencia Personal / Servicios)',
 				'Validacion Contribuyen Especial',
+				 */
 			];
 		} else {
 			return [
-				'Informacion',
-				'Validacion (Cedula / Rif)',
-				'Validacion (Cuenta / Referencia )',
+				'Validacion (Cliente)',
+				'Validacion (Comercio)',
+				'Validacion (Referencia Bancaria)',
+				/*
 				'Validacion (Acta Constitutiva / Doc. Propiedad)',
 				'Validacion (Referencia Personal / Servicios)',
+				 */
 			];
 		}
 	}

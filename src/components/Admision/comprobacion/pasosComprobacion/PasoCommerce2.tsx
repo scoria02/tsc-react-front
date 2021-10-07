@@ -12,20 +12,9 @@ import { Valid } from '../../../../store/actions/accept';
 import { PortFiles, URL } from '../../../../config';
 import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
+import { useStyles } from './styles/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		root: {
-			'& > *': {
-				margin: theme.spacing(1),
-				width: '25ch',
-				// height: '10px',
-			},
-		},
-	})
-);
-
-export default function PasoDosDos() {
+export default function PasoCommerce2() {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
@@ -45,19 +34,14 @@ export default function PasoDosDos() {
 
 	return (
 		<>
-			<form className={classes.root} noValidate autoComplete='off'>
-				<TextField className='btn_step btn_corto' id='outlined-basic ' label='Tipo ID' variant='outlined'
-					value={fm.ident_type_commerce}
-				/>
-				<TextField className='btn_step' id='outlined-basic' label='Numero ID' variant='outlined' 
-					value={fm.ident_num_commerce}
-				/>
+			<div className={classes.check}>
 				<FormControlLabel
 					control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
-					label='Correcto'
+					className={classes.checkText}
+					label={state.status ? 'Correcto' : 'Incorrecto'}
 				/>
-			</form>
-			<div className='img_container'>
+			</div>
+			<div className='img_container_2'>
 				<ReactImageZoom {...props} />
 				{/* <img className='img_tamano' src={luffy} alt='Cedula' /> */}
 			</div>

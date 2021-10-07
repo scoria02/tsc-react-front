@@ -45,8 +45,7 @@ export default function PasoAccountNumber() {
 			<form className="container-step" noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
 					<TextField
-						className='btn_step btn_medio'
-						id='outlined-basic '
+						className={classes.btn_stepNro}
 						label='Numero de Cuenta'
 						value={fm.bank_account_num}
 						variant='outlined'
@@ -63,3 +62,4 @@ export default function PasoAccountNumber() {
 		</>
 	);
 }
+
