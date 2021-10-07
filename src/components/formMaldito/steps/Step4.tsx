@@ -77,65 +77,39 @@ export const Step4: React.FC<any> = ({
 	};
 
   return (
-    <>
-			<div className={classes.inputLine3}>
-				<div className={classes.input} >
-					<Autocomplete
-							className={classes.inputM}
-							onChange={(event,value) => handleSelectPayment(event,value, 'payment_method')}
-							options={listPayment}
-							value={payment || null}
-							getOptionLabel={(option:any) => option.name ? option.name : ''}
-							renderInput={(params:any) => <TextField {...params}  name="payment_method" label="Forma de Pago" variant="outlined" />}
-					/>
-					<Autocomplete
-							className={classes.inputN}
-							onChange={(event,value) => handleSelectTypePay(event,value, 'type_pay')}
-							options={listTypePay}
-							value={typePay || null}
-							getOptionLabel={(option:any) => option.name ? option.name : ''}
-							renderInput={(params:any) => <TextField {...params}  name="type_pay" label="Tipo de Pago" variant="outlined" />}
-					/>
-				</div>
-				<div className={classes.input}>
-					<TextField 
-						className={classes.inputA}
-						variant="outlined"
-						required
-						id="standard-required"
-						label="Numero de Cuenta" 
-						name='text_account_number'
-						onChange={handleChange}
-						onBlur={handleBlurNumBank}
-						value={cursedForm.text_account_number}
-						error={error.text_account_number}
-					/>
-					<Button
-						className={classes.imgNroAccount}
-						variant="contained"
-						//color="secondary"
-						component="label"
-					>
-					{imagesForm.rc_account_number !== null ? (
-						<p className="nameImg" >{namesImages.rc_account_number.slice(0, 7)}...</p>
-					):(
-						<>
-							<b className="textSubir">Subir</b>
-							<IconButton aria-label="upload picture" component="span">
-								<PhotoCamera />
-							</IconButton>
-						</>
-						)
-					}
-					<input
-						type="file"
-						hidden
-						name="rc_account_number"
-						accept="image/png, image/jpeg, image/jpg"
-						onChange={handleChangeImages}
-					/>
-					</Button>
-				</div>
+		<div className={classes.inputLine3}>
+			<div className={classes.input} >
+				<Autocomplete
+						className={classes.inputM}
+						onChange={(event,value) => handleSelectPayment(event,value, 'payment_method')}
+						options={listPayment}
+						value={payment || null}
+						getOptionLabel={(option:any) => option.name ? option.name : ''}
+						renderInput={(params:any) => <TextField {...params}  name="payment_method" label="Modalidad de Pago" variant="outlined" />}
+				/>
+				<Autocomplete
+						className={classes.inputN}
+						onChange={(event,value) => handleSelectTypePay(event,value, 'type_pay')}
+						options={listTypePay}
+						value={typePay || null}
+						getOptionLabel={(option:any) => option.name ? option.name : ''}
+						renderInput={(params:any) => <TextField {...params}  name="type_pay" label="Tipo de Pago" variant="outlined" />}
+				/>
+			</div>
+			<div className={classes.input}>
+				<TextField 
+					className={classes.inputA}
+					variant="outlined"
+					required
+					id="standard-required"
+					label="Numero de Cuenta" 
+					name='text_account_number'
+					onChange={handleChange}
+					onBlur={handleBlurNumBank}
+					value={cursedForm.text_account_number}
+					error={error.text_account_number}
+				/>
+			</div>
 			<div className={classes.input}>
 				<TextField
 					className={classes.inputMP} 
@@ -157,8 +131,37 @@ export const Step4: React.FC<any> = ({
 							renderInput={(params:any) => <TextField {...params}  name="model_post" label="Modelo de los POS" variant="outlined" />}
 					/>
 			</div>
-
+			<div className={classes.input} style={{ justifyContent: 'center' }}>
+				<b className={classes.inputText}>Referencia Bancaria</b>
+				<Button
+					className={classes.imgStep1}
+					variant='contained'
+					//color="secondary"
+					component='label'>
+					{imagesForm.rc_ref_bank!== null ? (
+						<>
+							<IconButton aria-label='upload picture' component='span'>
+								<PhotoCamera />
+							</IconButton>
+							<p className='nameImg'>{namesImages.rc_ref_bank.slice(0, 10)}...</p>
+						</>
+					) : (
+						<>
+							<b>Subir</b>
+							<IconButton aria-label='upload picture' component='span'>
+								<PhotoCamera />
+							</IconButton>
+						</>
+					)}
+					<input
+						type='file'
+						hidden
+						name='rc_ref_bank'
+						accept='image/png, image/jpeg, image/jpg'
+						onChange={handleChangeImages}
+					/>
+				</Button>
 			</div>
-		</>
+		</div>
   )
 }

@@ -119,11 +119,11 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	const [listTypePay, setListListTypePay] = useState<any>([
 		{
 			id: 1,
-			name: 'De contado',
+			name: 'De Contado',
 		},
 		{
 			id: 2,
-			name: 'Fraccionado',
+			name: 'Inicial',
 		},
 	]);
 	const [typePay, setTypePay] = useState<any>(null);
