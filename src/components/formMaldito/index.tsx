@@ -147,9 +147,9 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		codigo_postal_client: '',
 		//step2 Comercio
 		name_commerce: '',
+		id_activity: 0,
 		id_ident_type_commerce: 3,
 		ident_num_commerce: '',
-		id_activity: 0,
 		special_contributor: 0,
 		//Step3 Location
 			//Commerce
@@ -237,13 +237,10 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		//rc_ref_perso: '', //6
 		//step2
 		rc_rif: '', //10
-		rc_special_contributor: '', //4
-		rc_ref_bank: '', //5
 		rc_constitutive_act: '', //1
-		rc_property_document: '', //2
-		rc_service_document: '', //3
+		rc_special_contributor: '', //4
 		//step4
-		rc_account_number: '', //7
+		rc_ref_bank: '', //5
 	});
 
 	//images
@@ -253,13 +250,10 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		//rc_ref_perso: null, //6
 		//Step2
 		rc_rif: null, //10
-		rc_ref_bank: null, //5
 		rc_constitutive_act: null, //1
-		rc_property_document: null, //2
-		rc_service_document: null, //3
 		rc_special_contributor: null, //4
 		//Step4
-		rc_account_number: null, //7
+		rc_ref_bank: null, //5
 	});
 
 	const [cursedFormError, setCursedFormError] = useState<any>({
