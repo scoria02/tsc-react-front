@@ -88,9 +88,9 @@ export const validNumBank = (value: string):boolean => {
 export const sizeStep = (active: number): number => {
 	switch (active) {
 		case 0:
-			return 15;
+			return 14;
 		case 1:
-			return 19; 
+			return 18; 
 		case 2:
 			return 35; 
 		case 3:
@@ -118,6 +118,7 @@ export const sizeImagesStep = (active: number): number => {
 export const allInputNotNUll = (last: number, form: any, mashClient: boolean): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(form)) {
+		console.log(item)
 		if (indice > last) {
 			return false;
 		}

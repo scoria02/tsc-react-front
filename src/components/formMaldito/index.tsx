@@ -130,6 +130,57 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 
 	const [cursedForm, setCursedForm] = useState<any>({
 		//step1 Cliente
+		email: '',
+		name: '',
+		last_name: '',
+		id_ident_type: 1,
+		ident_num: '',
+		phone1: '+58',
+		phone2: '+58',
+		id_estado_client: 0,
+		id_ciudad_client: 0,
+		id_municipio_client: 0,
+		id_parroquia_client: 0,
+		sector_client: '',
+		calle_client: '',
+		local_client: '',
+		codigo_postal_client: '',
+		//step2 Comercio
+		name_commerce: '',
+		id_ident_type_commerce: 3,
+		ident_num_commerce: '',
+		id_activity: 0,
+		special_contributor: 0,
+		//Step3 Location
+			//Commerce
+		id_estado: 0,
+		id_ciudad: 0,
+		id_municipio: 0,
+		id_parroquia: 0,
+		sector: '',
+		calle: '',
+		local: '',
+		codigo_postal: '',
+			//Pos
+		id_estado_pos: 0,
+		id_ciudad_pos: 0,
+		id_municipio_pos: 0,
+		id_parroquia_pos: 0,
+		sector_pos: '',
+		calle_pos: '',
+		local_pos: '',
+		codigo_postal_pos: '',
+		//Step4 Post
+		id_payment_method: 0,
+		id_type_pay: 0,
+		text_account_number: '',
+		number_post: 1,
+		id_model_post: 0,
+	});
+
+	/*
+	const [cursedForm, setCursedForm] = useState<any>({
+		//step1 Cliente
 		email: '1000pagos@correo.com',
 		name: 'Mil',
 		last_name: 'Pagos',
@@ -149,7 +200,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		name_commerce: 'MilPagos',
 		id_ident_type_commerce: 3,
 		ident_num_commerce: '12344321',
-		text_account_number: '01021565144444344444',
 		id_activity: 0,
 		special_contributor: 0,
 		//Step3 Location
@@ -174,9 +224,11 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		//Step4 Post
 		id_payment_method: 1,
 		id_type_pay: 0,
+		text_account_number: '01021565144444344444',
 		number_post: 1,
 		id_model_post: 1,
 	});
+	*/
 
 	//name images
 	const [namesImages, setNamesImages] = useState<any>({
