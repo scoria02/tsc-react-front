@@ -5,6 +5,7 @@ import React from 'react';
 import { useStylesFM } from '../styles';
 
 export const Step3: React.FC<any> = ({
+	setAutoCompleteCommerce,
 	listLocation,
 	location,
 	listLocationPos,
@@ -46,6 +47,12 @@ export const Step3: React.FC<any> = ({
 		}
 		handleUpdateLocationCommerce(item, value);
 	};
+
+	const handleChangeCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setAutoCompleteCommerce(false);
+		handleChange(event);
+	};
+
 
 	return (
 		<div className='container-location'>
@@ -105,7 +112,7 @@ export const Step3: React.FC<any> = ({
 						id='standard-required'
 						label='Sector'
 						name='sector'
-						onChange={handleChange}
+						onChange={handleChangeCommerce}
 						value={cursedForm.sector}
 					/>
 					<TextField
@@ -115,7 +122,7 @@ export const Step3: React.FC<any> = ({
 						id='standard-required'
 						label='Calle'
 						name='calle'
-						onChange={handleChange}
+						onChange={handleChangeCommerce}
 						value={cursedForm.calle}
 					/>
 				</div>
@@ -127,7 +134,7 @@ export const Step3: React.FC<any> = ({
 						id='standard-required'
 						label='Local'
 						name='local'
-						onChange={handleChange}
+						onChange={handleChangeCommerce}
 						value={cursedForm.local}
 					/>
 					<TextField
@@ -137,7 +144,7 @@ export const Step3: React.FC<any> = ({
 						id='standard-required'
 						label='Codigo Postal'
 						name='codigo_postal'
-						onChange={handleChange}
+						onChange={handleChangeCommerce}
 						value={cursedForm.codigo_postal}
 					/>
 				</div>
