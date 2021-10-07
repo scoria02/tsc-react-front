@@ -234,7 +234,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	const [namesImages, setNamesImages] = useState<any>({
 		//step1
 		rc_ident_card: '', //11
-		rc_ref_perso: '', //6
+		//rc_ref_perso: '', //6
 		//step2
 		rc_rif: '', //10
 		rc_special_contributor: '', //4
@@ -250,7 +250,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	const [imagesForm, setImagesForm] = useState({
 		//Step1
 		rc_ident_card: null, //11
-		rc_ref_perso: null, //6
+		//rc_ref_perso: null, //6
 		//Step2
 		rc_rif: null, //10
 		rc_ref_bank: null, //5
@@ -450,6 +450,28 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [getDataControl]);
 
+
+	//Autocomplete location
+	const [autoCompleteCommerce, setAutoCompleteCommerce] = useState<boolean>(true);
+	const [autoCompletePos, setAutoCompletePos] = useState<boolean>(true);
+
+	//Copyrighter
+	useEffect(() => {
+		if(activeStep === 1 && autoCompleteCommerce){
+			setLocationCommerce(locationClient)
+			setListLocationCommerce(listLocationClient)
+			setCursedForm({
+				...cursedForm,
+				sector: cursedForm.sector_client,
+				calle: cursedForm.calle_client,
+				local: cursedForm.local,
+				codigo_postal: cursedForm.codigo_postal_client,
+			})
+		}
+		console.log('listClient', listLocationClient);
+		console.log('listCo', listLocationCommerce);
+	}, [activeStep])
+
 	//Client Location handle
 	const handleUpdateLocationClient = (op: any, value: any) => {
 		if(op === 'estado'){ //Select estado and Update List Ciudades
@@ -508,7 +530,11 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 
 	//Commerce Location handle
 	const handleUpdateLocationCommerce = (op: any, value: any) => {
+		if(value)
+			setAutoCompleteCommerce(false);
 		if(op === 'estado'){ //Select estado and Update List Ciudades
+			if(!value)
+				setAutoCompleteCommerce(true);
 			setLocationCommerce({ 
 				estado: value,
 				ciudad: null,
@@ -727,20 +753,20 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		}	
 	}
 
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setCursedForm({
-			...cursedForm,
-			[event.target.name]: event.target.value,
-		});
-		validateForm(event.target.name, event.target.value);
-	};
-
 	const handleNext = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
 	};
 
 	const handleBack = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
+	};
+
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setCursedForm({
+			...cursedForm,
+			[event.target.name]: event.target.value,
+		});
+		validateForm(event.target.name, event.target.value);
 	};
 
 	const handleChangeImages = (event: any) => {

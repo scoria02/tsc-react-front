@@ -266,6 +266,7 @@ export const Step1: React.FC<any> = ({
 				/>
 			</div>
 		</div>
+		{/*
 			<div className={classes.input}>
 				<b
 					className={classes.inputTextStep1}
@@ -292,7 +293,7 @@ export const Step1: React.FC<any> = ({
 									<PhotoCamera />
 								</IconButton>
 							</>
-					}
+						}
 					<input
 						type="file"
 						hidden
@@ -302,6 +303,7 @@ export const Step1: React.FC<any> = ({
 					/>
 				</Button>
 			</div>
+			*/}
     </>
   )
 }
