@@ -1023,7 +1023,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 					<div className={classes.containerFM}>
 						<div className='container-steps'>
 							{getStep[activeStep]}
-							<div style={{ marginTop: '1rem' }}>
+							<div className={classes.buttonFixed}>
 								<Button
 									size='large'
 									disabled={activeStep === 0}

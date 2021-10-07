@@ -3,22 +3,16 @@ import { makeStyles } from '@material-ui/core/styles';
 export const useStylesFM = makeStyles((styles) => ({
 	containerFM: {
 		position: 'relative',
-		height: '440px',
+		// height: '440px',
 		width: '80%',
 	},
 	buttonNext: {
 		marginRight: styles.spacing(1),
 		textTransform: 'none',
-		position: 'absolute',
-		bottom: 0,
-		right: '20%',
 	},
 	buttonBack: {
 		marginRight: styles.spacing(40),
 		textTransform: 'none',
-		position: 'absolute',
-		bottom: 0,
-		left: '20%',
 	},
 	input: {
 		display: 'flex',
@@ -159,5 +153,12 @@ export const useStylesFM = makeStyles((styles) => ({
 		textTransform: 'none',
 		width: '25%',
 		marginLeft: styles.spacing(1),
+	},
+	buttonFixed: {
+		position: 'fixed',
+		display: 'flex',
+		justifyContent: 'center',
+		width: '100%',
+		bottom: '2rem',
 	},
 }));
