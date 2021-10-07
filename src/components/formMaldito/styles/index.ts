@@ -9,6 +9,7 @@ export const useStylesFM = makeStyles((styles) => ({
 	buttonNext: {
 		marginRight: styles.spacing(1),
 		textTransform: 'none',
+		width: 115,
 	},
 	buttonBack: {
 		marginRight: styles.spacing(40),
