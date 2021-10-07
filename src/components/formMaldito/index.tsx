@@ -178,11 +178,12 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		local_pos: '',
 		codigo_postal_pos: '',
 		//Step4 Post
-		id_payment_method: 0,
-		id_type_pay: 0,
-		text_account_number: '',
 		number_post: 1,
 		id_model_post: 0,
+		text_account_number: '',
+		id_payment_method: 0,
+		id_type_pay: 0,
+		discount: 0,
 	});
 
 	/*

@@ -132,7 +132,7 @@ export const Step2: React.FC<any> = ({
 							<p className='nameImg'>{namesImages.rc_rif.slice(0, 7)}...</p>
 						) : (
 							<>
-								<b className='textSubir'>Subir</b>
+								<b>Subir</b>
 								<IconButton aria-label='upload picture' component='span'>
 									<PhotoCamera />
 								</IconButton>

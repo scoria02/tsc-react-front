@@ -9,6 +9,7 @@ export const useStylesFM = makeStyles((styles) => ({
 	buttonNext: {
 		marginRight: styles.spacing(1),
 		textTransform: 'none',
+		width: 115,
 	},
 	buttonBack: {
 		marginRight: styles.spacing(40),
@@ -21,6 +22,19 @@ export const useStylesFM = makeStyles((styles) => ({
 		marginTop: styles.spacing(2.2),
 		alignSelf: 'center',
 		justifyContent: 'center',
+	},
+	row: {
+		display: 'flex',
+		width: '100%',
+		justifyContent: 'space-between',
+	},
+	buttonStep4: {
+		textTransform: 'none',
+		width: '45%',
+		marginLeft: styles.spacing(0),
+		marginBottom: styles.spacing(0.5),
+		padding: 0,
+		height: '100%',
 	},
 	inputLine3: {
 		width: '100%',
@@ -53,14 +67,14 @@ export const useStylesFM = makeStyles((styles) => ({
 	},
 	inputMP: {
 		display: 'flex',
-		width: '35%',
+		width: '25%',
 		textAlign: 'center',
 		alignSelf: 'center',
 		marginRight: styles.spacing(0.5),
 	},
 	inputNP: {
 		display: 'flex',
-		width: '65%',
+		width: '100%',
 		textAlign: 'center',
 		alignSelf: 'center',
 		marginLeft: styles.spacing(0.5),
@@ -91,7 +105,7 @@ export const useStylesFM = makeStyles((styles) => ({
 		textAlign: 'center',
 		fontSize: '1rem',
 		width: '48%',
-		marginTop: styles.spacing(1),
+		// marginTop: styles.spacing(1),
 		marginRight: styles.spacing(-1),
 		alignItems: 'center',
 		display: 'flex',
@@ -112,7 +126,7 @@ export const useStylesFM = makeStyles((styles) => ({
 	},
 	imgIdent: {
 		marginLeft: styles.spacing(1),
-		marginBottom: styles.spacing(0.2),
+		// marginBottom: styles.spacing(0.2),
 		padding: '0',
 		textTransform: 'none',
 		width: '25%',
