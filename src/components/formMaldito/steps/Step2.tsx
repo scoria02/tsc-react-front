@@ -9,6 +9,7 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { useEffect, useState } from 'react';
 import { useStylesFM } from '../styles';
 
 export const Step2: React.FC<any> = ({
@@ -26,6 +27,7 @@ export const Step2: React.FC<any> = ({
 	deleteImgContributor,
 }) => {
 	const classes = useStylesFM();
+	const [actaFlag, setActaFlag] = useState(false);
 
 	const handleSelect = (event: any) => {
 		setCursedForm({
@@ -59,6 +61,13 @@ export const Step2: React.FC<any> = ({
 			[e.target.name]: !cursedForm.special_contributor ? 1 : 0,
 		});
 	};
+
+	useEffect(() => {
+		setActaFlag(false);
+		if (cursedForm.id_ident_type_commerce === 3) {
+			setActaFlag(true);
+		}
+	}, [cursedForm.id_ident_type_commerce]);
 
 	return (
 		<>
@@ -139,7 +148,7 @@ export const Step2: React.FC<any> = ({
 					</Button>
 				</div>
 				<div className={classes.input} style={{ justifyContent: 'center' }}>
-					{true && (
+					{actaFlag && (
 						<>
 							<b className={classes.inputText}>Acta Constitutiva</b>
 							<Button
