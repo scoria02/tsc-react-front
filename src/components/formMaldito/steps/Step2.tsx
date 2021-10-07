@@ -173,37 +173,6 @@ export const Step2: React.FC<any> = ({
 						</>
 					)}
 				</div>
-				<div className={classes.input} style={{ justifyContent: 'center' }}>
-					<b className={classes.inputText}>Referencia Bancaria</b>
-					<Button
-						className={classes.imgStep1}
-						variant='contained'
-						//color="secondary"
-						component='label'>
-						{imagesForm.rc_ref_bank !== null ? (
-							<>
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-								<p className='nameImg'>{namesImages.rc_ref_bank.slice(0, 10)}...</p>
-							</>
-						) : (
-							<>
-								<b>Subir</b>
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-							</>
-						)}
-						<input
-							type='file'
-							hidden
-							name='rc_ref_bank'
-							accept='image/png, image/jpeg, image/jpg'
-							onChange={handleChangeImages}
-						/>
-					</Button>
-				</div>
 				<div className={classes.input}>
 					<div className={classes.inputText}>
 						<FormControlLabel
