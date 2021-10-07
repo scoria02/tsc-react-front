@@ -6,6 +6,7 @@ import { useStylesFM } from '../styles';
 
 export const Step3: React.FC<any> = ({
 	setAutoCompleteCommerce,
+	setAutoCompletePos,
 	listLocation,
 	location,
 	listLocationPos,
@@ -50,6 +51,11 @@ export const Step3: React.FC<any> = ({
 
 	const handleChangeCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setAutoCompleteCommerce(false);
+		handleChange(event);
+	};
+
+	const handleChangePos = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setAutoCompletePos(false);
 		handleChange(event);
 	};
 
@@ -205,7 +211,7 @@ export const Step3: React.FC<any> = ({
 						id='standard-required'
 						label='Sector'
 						name='sector_pos'
-						onChange={handleChange}
+						onChange={handleChangePos}
 						value={cursedForm.sector_pos}
 					/>
 					<TextField
@@ -215,7 +221,7 @@ export const Step3: React.FC<any> = ({
 						id='standard-required'
 						label='Calle'
 						name='calle_pos'
-						onChange={handleChange}
+						onChange={handleChangePos}
 						value={cursedForm.calle_pos}
 					/>
 				</div>
@@ -227,7 +233,7 @@ export const Step3: React.FC<any> = ({
 						id='standard-required'
 						label='Local'
 						name='local_pos'
-						onChange={handleChange}
+						onChange={handleChangePos}
 						value={cursedForm.local_pos}
 					/>
 					<TextField
@@ -237,7 +243,7 @@ export const Step3: React.FC<any> = ({
 						id='standard-required'
 						label='Codigo Postal'
 						name='codigo_postal_pos'
-						onChange={handleChange}
+						onChange={handleChangePos}
 						value={cursedForm.codigo_postal_pos}
 					/>
 				</div>

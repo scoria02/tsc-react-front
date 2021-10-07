@@ -938,6 +938,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		/>,
 		<Step3
 			setAutoCompleteCommerce={setAutoCompleteCommerce}
+			setAutoCompletePos={setAutoCompletePos}
 			listLocation={listLocationCommerce}
 			location={locationCommerce}
 			setLocation={setLocationCommerce}
