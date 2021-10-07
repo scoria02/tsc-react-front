@@ -929,7 +929,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 									Volver
 								</Button>
 								<Button
-									disabled={!readyStep}
+									//disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'
