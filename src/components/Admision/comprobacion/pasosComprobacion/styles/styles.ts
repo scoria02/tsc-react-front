@@ -29,6 +29,14 @@ export const useStyles = makeStyles((styles) => ({
 		marginRight: '5%',
 	},
 	checkText: {
+		marginLeft: '1rem',
 		width: '100px'
-	}
+	},
+	containerBtn: {
+		display: 'flex',
+		justifyContent: 'center',
+	},
+	btnSend: {
+		margin: '1rem',
+	},
 }));

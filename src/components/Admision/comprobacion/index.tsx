@@ -15,17 +15,13 @@ import { updateStatusFM } from '../../../store/actions/admisionFm';
 import { CloseModal } from '../../../store/actions/ui';
 import { RootState } from '../../../store/store';
 import './index.scss';
-import PasoCinco from './pasosComprobacion/PasoCinco';
-import PasoCincoDos from './pasosComprobacion/PasoCincoDos';
-import PasoCuatro from './pasosComprobacion/PasoCuatro';
-import PasoCuaTroDos from './pasosComprobacion/PasoCuatroDos';
-import PasoSeis from './pasosComprobacion/PasoSeis';
-import PasoAccountNumber from './pasosComprobacion/PasoAccountNumber';
-import PasoTresDos from './pasosComprobacion/PasoTresDos';
 
+import PasoClient from './pasosComprobacion/PasoClient';
 import PasoCommerce from './pasosComprobacion/PasoCommerce';
 import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
-import PasoClient from './pasosComprobacion/PasoClient';
+import PasoAccountNumber from './pasosComprobacion/PasoAccountNumber';
+import PasoActaConst from './pasosComprobacion/PasoActaConst';
+import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & { children?: React.ReactElement },
@@ -90,10 +86,14 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 				return (
 					<div className='comprobar_container_2'>
 						<div>
-							<PasoCuatro />
+							{fm.path_rc_constitutive_act &&
+								<PasoActaConst/>
+							}
 						</div>
 						<div>
-							<PasoSeis />
+							{fm.path_rc_special_contributor &&
+								<PasoContriSpecial />
+							}
 						</div>
 					</div>
 				);

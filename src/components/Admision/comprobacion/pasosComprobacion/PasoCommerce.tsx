@@ -1,4 +1,3 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 //Redux
 import { useSelector } from 'react-redux';
@@ -11,6 +10,7 @@ export default function PasoUno() {
 	const classes = useStyles();
 
 	return (
+		<>
 		<form className="container-step" noValidate autoComplete='off'>
 			<div className={classes.btn_stepM}>
 				<TextField 
@@ -93,5 +93,6 @@ export default function PasoUno() {
 				/>
 			</div>
 		</form>
+		</>
 	);
 }
