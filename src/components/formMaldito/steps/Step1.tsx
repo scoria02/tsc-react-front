@@ -8,6 +8,7 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import classNames from 'classnames';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
@@ -60,10 +61,20 @@ export const Step1: React.FC<any> = ({
 	return (
 		<>
 			<div className={classes.inputLine3}>
-				<div>
+				<div className={classes.input}>
+					<Autocomplete
+						className={classNames(classes.inputText, classes.inputTextLeft)}
+						onChange={(event, value) => handleSelectClient(event, value, 'estado')}
+						value={location.estado || null}
+						options={listLocation.estado}
+						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
+						renderInput={(params: any) => (
+							<TextField {...params} name='origenSol' label='Origen de Solicitud' variant='outlined' />
+						)}
+					/>
 					<TextField
 						required
-						className={classes.input}
+						className={classes.inputText}
 						type='email'
 						variant='outlined'
 						label='Correo'
@@ -75,7 +86,7 @@ export const Step1: React.FC<any> = ({
 					/>
 				</div>
 				<div className={classes.input}>
-					<FormControl variant='outlined' className={classes.inputTipoId}>
+					<FormControl variant='outlined' className={classes.inputMP}>
 						<InputLabel>DI</InputLabel>
 						<Select
 							value={cursedForm.id_ident_type}
@@ -92,7 +103,7 @@ export const Step1: React.FC<any> = ({
 						</Select>
 					</FormControl>
 					<TextField
-						className={classes.inputDoc}
+						className={classes.inputTextLeft}
 						variant='outlined'
 						required
 						label='C.I.'
@@ -129,7 +140,7 @@ export const Step1: React.FC<any> = ({
 				</div>
 				<div className={classes.input}>
 					<TextField
-						className={classes.inputM}
+						className={classNames(classes.inputText, classes.inputTextLeft)}
 						variant='outlined'
 						required
 						label='Nombre'
@@ -140,7 +151,7 @@ export const Step1: React.FC<any> = ({
 						disabled={fm.mashClient}
 					/>
 					<TextField
-						className={classes.inputN}
+						className={classes.inputText}
 						variant='outlined'
 						required
 						label='Apellido'
@@ -153,7 +164,7 @@ export const Step1: React.FC<any> = ({
 				</div>
 				<div className={classes.input}>
 					<TextField
-						className={classes.inputM}
+						className={classNames(classes.inputText, classes.inputTextLeft)}
 						variant='outlined'
 						required
 						label='Telefono'
@@ -164,7 +175,7 @@ export const Step1: React.FC<any> = ({
 						disabled={fm.mashClient}
 					/>
 					<TextField
-						className={classes.inputN}
+						className={classes.inputText}
 						variant='outlined'
 						required
 						label='Telefono'
@@ -177,7 +188,7 @@ export const Step1: React.FC<any> = ({
 				</div>
 				<div className={classes.input}>
 					<Autocomplete
-						className={classes.inputC}
+						className={classNames(classes.inputText, classes.inputTextLeft)}
 						onChange={(event, value) => handleSelectClient(event, value, 'estado')}
 						value={location.estado || null}
 						options={listLocation.estado}
@@ -187,7 +198,7 @@ export const Step1: React.FC<any> = ({
 						)}
 					/>
 					<Autocomplete
-						className={classes.inputC}
+						className={classes.inputText}
 						onChange={(event, value) => handleSelectClient(event, value, 'ciudad')}
 						value={location.ciudad || null}
 						options={listLocation.ciudad}
@@ -199,7 +210,7 @@ export const Step1: React.FC<any> = ({
 				</div>
 				<div className={classes.input}>
 					<Autocomplete
-						className={classes.inputC}
+						className={classNames(classes.inputText, classes.inputTextLeft)}
 						onChange={(event, value) => handleSelectClient(event, value, 'municipio')}
 						value={location.municipio || null}
 						options={listLocation.municipio}
@@ -209,7 +220,7 @@ export const Step1: React.FC<any> = ({
 						)}
 					/>
 					<Autocomplete
-						className={classes.inputC}
+						className={classes.inputText}
 						onChange={(event, value) => handleSelectClient(event, value, 'parroquia')}
 						value={location.parroquia || null}
 						options={listLocation.parroquia}
@@ -221,7 +232,7 @@ export const Step1: React.FC<any> = ({
 				</div>
 				<div className={classes.input}>
 					<TextField
-						className={classes.inputC}
+						className={classNames(classes.inputText, classes.inputTextLeft)}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -231,7 +242,7 @@ export const Step1: React.FC<any> = ({
 						value={cursedForm.sector_client}
 					/>
 					<TextField
-						className={classes.inputC}
+						className={classes.inputText}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -243,7 +254,7 @@ export const Step1: React.FC<any> = ({
 				</div>
 				<div className={classes.input}>
 					<TextField
-						className={classes.inputC}
+						className={classNames(classes.inputText, classes.inputTextLeft)}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -253,7 +264,7 @@ export const Step1: React.FC<any> = ({
 						value={cursedForm.local_client}
 					/>
 					<TextField
-						className={classes.inputC}
+						className={classes.inputText}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -265,44 +276,6 @@ export const Step1: React.FC<any> = ({
 					/>
 				</div>
 			</div>
-			{/*
-			<div className={classes.input}>
-				<b
-					className={classes.inputTextStep1}
-				>
-					Referencia Personal
-				</b>
-				<Button
-					className={classes.imgStep1}
-					variant="contained"
-					component="label"
-					disabled={fm.mashClient}
-				>
-					{imagesForm.rc_ref_perso !== null ?
-							<>
-								<IconButton aria-label="upload picture" component="span">
-									<PhotoCamera />
-								</IconButton>
-								<p className="nameImg" >{namesImages.rc_ref_perso.slice(0, 10)}...</p>
-							</>
-						: 
-							<>
-								<b>Subir</b>
-								<IconButton aria-label="upload picture" component="span">
-									<PhotoCamera />
-								</IconButton>
-							</>
-						}
-					<input
-						type="file"
-						hidden
-						name="rc_ref_perso"
-						accept="image/png, image/jpeg, image/jpg"
-						onChange={handleChangeImages}
-					/>
-				</Button>
-			</div>
-			*/}
 		</>
 	);
 };
