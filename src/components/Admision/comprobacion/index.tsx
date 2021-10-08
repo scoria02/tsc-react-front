@@ -82,55 +82,18 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 				);
 			case 2:
 				return (
-					<div className='comprobar_container_2'>
-						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
-							<PasoAccountNumber />
-						</div>
-						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
-						</div>
+					<div> 
+						<PasoAccountNumber />
 					</div>
 				);
 			case 3:
 				return (
 					<div className='comprobar_container_2'>
 						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
 							<PasoCuatro />
 						</div>
 						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
-							<PasoCuaTroDos />
-						</div>
-					</div>
-				);
-			case 4:
-				return (
-					<div className='comprobar_container_2'>
-						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
-							<PasoCinco />
-						</div>
-						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
-							<PasoCincoDos />
-						</div>
-					</div>
-				);
-			case 5:
-				return (
-					<div className='comprobar_container_2'>
-						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
-
 							<PasoSeis />
-							{/* Colocar condicion para que si no hay nada en contribuyente notifique */}
-						</div>
-						<div>
-							{/* <h1 className='titulo'>Informacion </h1>
-							<PasoCincoDos /> */}
-							{/* Uso Futuro */}
 						</div>
 					</div>
 				);
@@ -139,47 +102,50 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 		}
 	}
 
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+	const dispatch = useDispatch();
+	const { modalOpen } = useSelector((state: any) => state.ui);
+	const validated: any = useSelector((state: RootState) => state.acceptance.validado);
+	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatus);
+
 
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [completed, setCompleted] = React.useState(new Set<number>());
 	const [skipped, setSkipped] = React.useState(new Set<number>());
-	const steps = getSteps();
-
-	const dispatch = useDispatch();
-	const { modalOpen } = useSelector((state: any) => state.ui);
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const validated: any = useSelector((state: RootState) => state.acceptance.validado);
-	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatus);
-
-	console.log(fm)
-
-	function getSteps() {
-		if (special) {
+	const steps = getSteps(fm);
+	function getSteps(form:any) {
+		if(form.path_rc_constitutive_act || form.path_rc_special_contributor) {
 			return [
 				'Validacion (Cliente)',
 				'Validacion (Comercio)',
 				'Validacion (Referencia Bancaria)',
-				/*
-				'Validacion (Acta Constitutiva / Doc. Propiedad)',
-				'Validacion (Referencia Personal / Servicios)',
-				'Validacion Contribuyen Especial',
-				 */
-			];
-		} else {
+				`
+				Validacion (
+				${ 
+					form.path_rc_constitutive_act ?
+						`Acta Constitutiva ${form.path_rc_special_contributor ? '/' : ''}`
+					:
+					''
+				}
+				${ 
+					form.path_rc_special_contributor ?
+						'Contribuidor Especial' 
+					:
+					''
+				}
+				)`,
+			]
+		}else{
 			return [
 				'Validacion (Cliente)',
 				'Validacion (Comercio)',
 				'Validacion (Referencia Bancaria)',
-				/*
-				'Validacion (Acta Constitutiva / Doc. Propiedad)',
-				'Validacion (Referencia Personal / Servicios)',
-				 */
-			];
+			]
 		}
 	}
 
 	const totalSteps = () => {
-		return getSteps().length;
+		return getSteps(fm).length;
 	};
 	const skippedSteps = () => {
 		return skipped.size;

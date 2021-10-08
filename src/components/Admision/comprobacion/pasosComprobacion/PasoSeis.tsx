@@ -64,7 +64,7 @@ export default function PasoSeis() {
 					label='Correcto'
 				/>
 			</form>
-			<div className='img_container'>
+			<div className='img_container_2'>
 				<ReactImageZoom {...props} />
 			</div>
 		</>

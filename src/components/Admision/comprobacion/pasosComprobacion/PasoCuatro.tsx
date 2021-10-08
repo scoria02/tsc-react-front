@@ -64,7 +64,7 @@ export default function PasoCuatro() {
 					label='Correcto'
 				/>
 			</form>
-			<div className='img_container'>
+			<div className='img_container_1'>
 				<ReactImageZoom {...props} />
 				{/* <img className='img_tamano' src={luffy} alt='Cedula' /> */}
 			</div>

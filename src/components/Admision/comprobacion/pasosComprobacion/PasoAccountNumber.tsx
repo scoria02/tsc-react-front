@@ -56,7 +56,7 @@ export default function PasoAccountNumber() {
 					/>
 				</div>
 			</form>
-			<div className='img_container_1'>
+			<div className='img_container'>
 				<ReactImageZoom {...props} />
 			</div>
 		</>
