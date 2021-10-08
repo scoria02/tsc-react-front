@@ -4,7 +4,6 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { useStylesFM } from '../styles';
 
@@ -96,10 +95,11 @@ export const Step4: React.FC<any> = ({
 	}, [typePay, cursedForm.discount]);
 
 	return (
-		<div className={classes.inputLine3}>
+		<div className={classes.grid}>
 			<div className={classes.input}>
 				<TextField
-					className={classes.inputMP}
+					className={classes.inputSelect}
+					style={{ marginRight: '2%' }}
 					variant='outlined'
 					required
 					id='standard-required'
@@ -111,7 +111,7 @@ export const Step4: React.FC<any> = ({
 					value={cursedForm.number_post}
 				/>
 				<Autocomplete
-					className={classes.inputNP}
+					className={classes.inputText}
 					onChange={(event, value) => handleSelectPos(event, value, 'model_post')}
 					value={modelPos || null}
 					options={listModelPos}
@@ -123,7 +123,7 @@ export const Step4: React.FC<any> = ({
 			</div>
 			<div className={classes.input}>
 				<TextField
-					className={classes.inputA}
+					className={classes.inputText}
 					variant='outlined'
 					required
 					id='standard-required'
@@ -134,10 +134,10 @@ export const Step4: React.FC<any> = ({
 					value={cursedForm.text_account_number}
 					error={error.text_account_number}
 				/>
-				<div className={classNames(classes.row)}>
-					<b className={classes.inputText}>Referencia Bancaria</b>
+				<div className={classes.row}>
+					<b className={classes.labels}>Referencia Bancaria</b>
 					<Button
-						className={classes.buttonStep4}
+						className={classes.imgIdent}
 						variant='contained'
 						//color="secondary"
 						component='label'>
@@ -168,7 +168,7 @@ export const Step4: React.FC<any> = ({
 			</div>
 			<div className={classes.input}>
 				<Autocomplete
-					className={classes.inputM}
+					className={classes.inputTextLeft}
 					onChange={(event, value) => handleSelectPayment(event, value, 'payment_method')}
 					options={listPayment}
 					value={payment || null}
@@ -178,7 +178,7 @@ export const Step4: React.FC<any> = ({
 					)}
 				/>
 				<Autocomplete
-					className={classes.inputN}
+					className={classes.inputText}
 					onChange={(event, value) => handleSelectTypePay(event, value, 'type_pay')}
 					options={listTypePay}
 					value={typePay || null}
@@ -191,7 +191,7 @@ export const Step4: React.FC<any> = ({
 			{fraccion && (
 				<div className={classes.input}>
 					<Autocomplete
-						className={classes.inputM}
+						className={classes.inputTextLeft}
 						onChange={(event, value) => handleSelectPayment(event, value, 'payment_method')}
 						options={listPayment}
 						value={payment || null}
@@ -201,7 +201,7 @@ export const Step4: React.FC<any> = ({
 						)}
 					/>
 					<Autocomplete
-						className={classes.inputN}
+						className={classes.inputText}
 						onChange={(event, value) => handleSelectTypePay(event, value, 'type_pay')}
 						options={listTypePay}
 						value={typePay || null}

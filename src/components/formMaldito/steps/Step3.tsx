@@ -1,6 +1,7 @@
 //Materail
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import classnames from 'classnames';
 import React from 'react';
 import { useStylesFM } from '../styles';
 
@@ -63,9 +64,9 @@ export const Step3: React.FC<any> = ({
 		<div className='container-location'>
 			<div>
 				<h2>Dirección Fiscal</h2>
-				<div className={classes.input}>
+				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
-						className={classes.inputM}
+						className={classes.inputTextLeft}
 						onChange={(event, value) => {
 							handleSelect(event, value, 'estado');
 						}}
@@ -77,7 +78,7 @@ export const Step3: React.FC<any> = ({
 						)}
 					/>
 					<Autocomplete
-						className={classes.inputN}
+						className={classes.inputText}
 						onChange={(event, value) => handleSelect(event, value, 'ciudad')}
 						value={location.ciudad || null}
 						options={listLocation.ciudad}
@@ -87,9 +88,9 @@ export const Step3: React.FC<any> = ({
 						)}
 					/>
 				</div>
-				<div className={classes.input}>
+				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
-						className={classes.inputM}
+						className={classes.inputTextLeft}
 						onChange={(event, value) => handleSelect(event, value, 'municipio')}
 						value={location.municipio || null}
 						options={listLocation.municipio}
@@ -99,7 +100,7 @@ export const Step3: React.FC<any> = ({
 						)}
 					/>
 					<Autocomplete
-						className={classes.inputN}
+						className={classes.inputText}
 						onChange={(event, value) => handleSelect(event, value, 'parroquia')}
 						value={location.parroquia || null}
 						options={listLocation.parroquia}
@@ -109,9 +110,9 @@ export const Step3: React.FC<any> = ({
 						)}
 					/>
 				</div>
-				<div className={classes.input}>
+				<div className={classnames(classes.row, classes.input)}>
 					<TextField
-						className={classes.inputM}
+						className={classes.inputTextLeft}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -121,7 +122,7 @@ export const Step3: React.FC<any> = ({
 						value={cursedForm.sector}
 					/>
 					<TextField
-						className={classes.inputN}
+						className={classes.inputText}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -131,9 +132,9 @@ export const Step3: React.FC<any> = ({
 						value={cursedForm.calle}
 					/>
 				</div>
-				<div className={classes.input}>
+				<div className={classnames(classes.row, classes.input)}>
 					<TextField
-						className={classes.inputM}
+						className={classes.inputTextLeft}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -143,7 +144,7 @@ export const Step3: React.FC<any> = ({
 						value={cursedForm.local}
 					/>
 					<TextField
-						className={classes.inputN}
+						className={classes.inputText}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -156,9 +157,9 @@ export const Step3: React.FC<any> = ({
 			</div>
 			<div>
 				<h2>Dirección POS</h2>
-				<div className={classes.input}>
+				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
-						className={classes.inputM}
+						className={classes.inputTextLeft}
 						onChange={(event, value) => {
 							handleSelectPos(event, value, 'estado');
 						}}
@@ -170,7 +171,7 @@ export const Step3: React.FC<any> = ({
 						)}
 					/>
 					<Autocomplete
-						className={classes.inputN}
+						className={classes.inputText}
 						onChange={(event, value) => handleSelectPos(event, value, 'ciudad')}
 						options={listLocationPos.ciudad}
 						value={locationPos.ciudad || null}
@@ -180,9 +181,9 @@ export const Step3: React.FC<any> = ({
 						)}
 					/>
 				</div>
-				<div className={classes.input}>
+				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
-						className={classes.inputM}
+						className={classes.inputTextLeft}
 						onChange={(event, value) => handleSelectPos(event, value, 'municipio')}
 						value={locationPos.municipio || null}
 						options={listLocationPos.municipio}
@@ -192,7 +193,7 @@ export const Step3: React.FC<any> = ({
 						)}
 					/>
 					<Autocomplete
-						className={classes.inputN}
+						className={classes.inputText}
 						onChange={(event, value) => handleSelectPos(event, value, 'parroquia')}
 						options={listLocationPos.parroquia}
 						value={locationPos.parroquia || null}
@@ -202,9 +203,9 @@ export const Step3: React.FC<any> = ({
 						)}
 					/>
 				</div>
-				<div className={classes.input}>
+				<div className={classnames(classes.row, classes.input)}>
 					<TextField
-						className={classes.inputM}
+						className={classes.inputTextLeft}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -214,7 +215,7 @@ export const Step3: React.FC<any> = ({
 						value={cursedForm.sector_pos}
 					/>
 					<TextField
-						className={classes.inputN}
+						className={classes.inputText}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -224,9 +225,9 @@ export const Step3: React.FC<any> = ({
 						value={cursedForm.calle_pos}
 					/>
 				</div>
-				<div className={classes.input}>
+				<div className={classnames(classes.row, classes.input)}>
 					<TextField
-						className={classes.inputM}
+						className={classes.inputTextLeft}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -236,7 +237,7 @@ export const Step3: React.FC<any> = ({
 						value={cursedForm.local_pos}
 					/>
 					<TextField
-						className={classes.inputN}
+						className={classes.inputText}
 						variant='outlined'
 						required
 						id='standard-required'

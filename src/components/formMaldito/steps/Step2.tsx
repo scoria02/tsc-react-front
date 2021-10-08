@@ -71,10 +71,10 @@ export const Step2: React.FC<any> = ({
 
 	return (
 		<>
-			<div className={classes.inputLine3}>
-				<div>
+			<div className={classes.grid}>
+				<div className={classes.input}>
 					<TextField
-						className={classes.input}
+						className={classes.inputText}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -98,7 +98,7 @@ export const Step2: React.FC<any> = ({
 					)}
 				/>
 				<div className={classes.input}>
-					<FormControl variant='outlined' className={classes.inputTipoId}>
+					<FormControl variant='outlined' className={classes.inputSelect}>
 						<InputLabel id='demo-simple-select-outlined-label'>Rif</InputLabel>
 						<Select
 							value={cursedForm.id_ident_type_commerce}
@@ -114,7 +114,7 @@ export const Step2: React.FC<any> = ({
 						</Select>
 					</FormControl>
 					<TextField
-						className={classes.inputDoc}
+						className={classes.inputTextLeft}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -147,12 +147,12 @@ export const Step2: React.FC<any> = ({
 						/>
 					</Button>
 				</div>
-				<div className={classes.input} style={{ justifyContent: 'center' }}>
+				<div className={classes.input}>
 					{actaFlag && (
 						<>
 							<b className={classes.inputText}>Acta Constitutiva</b>
 							<Button
-								className={classes.imgStep1}
+								className={classes.imgIdent}
 								variant='contained'
 								//color="secondary"
 								component='label'>
@@ -207,7 +207,7 @@ export const Step2: React.FC<any> = ({
 						/>
 					</div>
 					<Button
-						className={classes.imgStep1}
+						className={classes.imgIdent}
 						style={{ visibility: cursedForm.special_contributor ? 'visible' : 'hidden' }}
 						variant='contained'
 						//color="secondary"
@@ -236,7 +236,7 @@ export const Step2: React.FC<any> = ({
 						/>
 					</Button>
 				</div>
-				{/* <div className={classes.input} style={{ justifyContent: 'center' }}>
+				{/* <div className={classes.input} >
 					<b className={classes.inputText}>Documento de Propiedad</b>
 					<Button
 						className={classes.imgStep1}
@@ -267,7 +267,7 @@ export const Step2: React.FC<any> = ({
 						/>
 					</Button>
 				</div> */}
-				{/* <div className={classes.input} style={{ justifyContent: 'center' }}>
+				{/* <div className={classes.input} >
 					<b className={classes.inputText}>Servicios</b>
 					<Button className={classes.imgStep1} variant='contained' component='label'>
 						{imagesForm.rc_service_document !== null ? (

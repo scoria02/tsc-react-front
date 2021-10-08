@@ -28,70 +28,18 @@ export const useStylesFM = makeStyles((styles) => ({
 		width: '100%',
 		justifyContent: 'space-between',
 	},
-	buttonStep4: {
-		textTransform: 'none',
-		width: '45%',
-		marginLeft: styles.spacing(0),
-		marginBottom: styles.spacing(0.5),
-		padding: 0,
-		height: '100%',
-	},
-	inputLine3: {
+	grid: {
 		width: '100%',
-		textAlign: 'center',
-		alignSelf: 'center',
 		display: 'grid',
 		gridColumnGap: '1%',
 		gridTemplateColumns: '1fr 1fr',
 	},
-	inputM: {
-		display: 'flex',
-		width: '50%',
-		textAlign: 'center',
-		alignSelf: 'center',
-		// marginRight: styles.spacing(0.5),
-	},
-	inputC: {
-		display: 'flex',
-		width: '50%',
-		textAlign: 'center',
-		alignSelf: 'center',
-		// marginLeft: styles.spacing(0.5),
-	},
-	inputN: {
-		display: 'flex',
-		width: '50%',
-		textAlign: 'center',
-		alignSelf: 'center',
-		// marginLeft: styles.spacing(0.5),
-	},
-	inputMP: {
+	inputSelect: {
 		display: 'flex',
 		width: '25%',
 		textAlign: 'center',
 		alignSelf: 'center',
 		marginRight: '2%',
-	},
-	inputNP: {
-		display: 'flex',
-		width: '100%',
-		textAlign: 'center',
-		alignSelf: 'center',
-		marginLeft: styles.spacing(0.5),
-	},
-	inputA: {
-		display: 'flex',
-		width: '100%',
-		textAlign: 'center',
-		alignSelf: 'center',
-	},
-	inputTipoId: {
-		width: '15%',
-		margin: 0,
-		marginRight: styles.spacing(1.5),
-	},
-	inputDoc: {
-		width: '60%',
 	},
 	inputText: {
 		width: '100%',
@@ -103,23 +51,9 @@ export const useStylesFM = makeStyles((styles) => ({
 	imgIdent: {
 		padding: '0',
 		textTransform: 'none',
-		width: '35%',
-		height: '100%',
-	},
-	imgContributor: {
-		textTransform: 'none',
-		width: '50%',
-		marginTop: styles.spacing(1),
-		marginBottom: styles.spacing(1),
-		marginLeft: styles.spacing(1),
-		height: '100%',
-	},
-	imgStep1: {
-		textTransform: 'none',
-		width: '30%',
-		marginLeft: styles.spacing(0),
-		marginBottom: styles.spacing(0.5),
-		padding: 0,
+		width: '100%',
+		maxWidth: 100,
+		minHeight: 56,
 		height: '100%',
 	},
 	buttonFixed: {
@@ -128,5 +62,10 @@ export const useStylesFM = makeStyles((styles) => ({
 		justifyContent: 'center',
 		width: '100%',
 		bottom: '2rem',
+	},
+	labels: {
+		maxWidth: 120,
+		display: 'flex',
+		alignItems: 'center',
 	},
 }));

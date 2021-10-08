@@ -60,7 +60,7 @@ export const Step1: React.FC<any> = ({
 
 	return (
 		<>
-			<div className={classes.inputLine3}>
+			<div className={classes.grid}>
 				<div className={classes.input}>
 					<Autocomplete
 						className={classNames(classes.inputText, classes.inputTextLeft)}
@@ -86,7 +86,7 @@ export const Step1: React.FC<any> = ({
 					/>
 				</div>
 				<div className={classes.input}>
-					<FormControl variant='outlined' className={classes.inputMP}>
+					<FormControl variant='outlined' className={classes.inputSelect}>
 						<InputLabel>DI</InputLabel>
 						<Select
 							value={cursedForm.id_ident_type}
