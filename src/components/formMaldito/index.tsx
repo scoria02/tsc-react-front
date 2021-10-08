@@ -42,9 +42,9 @@ import * as valids from './validForm';
 
 function getSteps() {
 	return [
-		'Informacion Personal del Cliente',
-		'Informacion del Comercio',
-		'Ubicacion del Comercio/POS',
+		'Información Personal del Cliente',
+		'Información del Comercio',
+		'Dirección del Comercio/POS',
 		'Solicitud de POS',
 	];
 }
