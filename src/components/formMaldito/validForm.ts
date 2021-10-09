@@ -118,7 +118,6 @@ export const sizeImagesStep = (active: number): number => {
 export const allInputNotNUll = (last: number, form: any, mashClient: boolean): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(form)) {
-		console.log(item)
 		if (indice > last) {
 			return false;
 		}

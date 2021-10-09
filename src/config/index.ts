@@ -12,6 +12,7 @@ export const URL = 'http://localhost';
 //export const ioURL = 'ws://10.198.73.15';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 //export const URL = 'http://10.198.68.21';
 export const ioURL = 'ws://10.198.68.21';
 =======
@@ -21,6 +22,14 @@ export const ioURL = 'ws://10.198.68.21';
 export const URL = 'http://localhost';
 export const ioURL = 'ws://localhost';
 >>>>>>> 2ae35deaff06318841878ee3af8a201f0c95df06
+=======
+//Aldrin
+export const URL = 'http://10.198.68.21';
+export const ioURL = 'ws://10.198.68.21';
+
+//export const URL = 'http://localhost';
+//export const ioURL = 'ws://localhost';
+>>>>>>> 8d6d2de304060d849973bc1fe477660cb72930fa
 
 export const Port = '5051';
 export const PortFiles = '6060';

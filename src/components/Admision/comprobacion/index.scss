@@ -1,23 +1,35 @@
 .comprobar_container {
-	// background-color: blue;
-	// over
-	height: 100%;
-	display: grid;
-	grid-column-gap: 0;
-	grid-template-columns: 1.5fr 1fr;
+	width: 90%;
 }
 .comprobar_container_2 {
-	// background-color: blue;
-	height: 100%;
+	width: 90%;
 	display: grid;
-	grid-column-gap: 0;
+	grid-column-gap: 5% !important;
 	grid-template-columns: 1fr 1fr;
 }
 
 .img_container {
-	display: flex;
+	display: center;
+	position: fixed;
 	justify-content: center;
-	// padding: 3px;
+	top: 50%;
+	left: 50%;
+	margin-top: -100px; 
+	margin-left: -250px;	
+}
+
+.img_container_1 {
+	display: flex;
+	position: fixed;
+	justify-content: center;
+	left: 5%;
+}
+
+.img_container_2 {
+	display: flex;
+	position: fixed;
+	justify-content: center;
+	right: 15%;
 }
 
 .prueba {
@@ -49,6 +61,8 @@
 	color: red;
 	display: flex;
 	align-items: center;
+	margin: 1rem;
+	margin-top: -1rem;
 }
 
 .MuiDialog-paperFullScreen{
