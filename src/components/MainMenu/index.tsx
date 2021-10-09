@@ -25,14 +25,7 @@ import WorkIcon from '@material-ui/icons/Work';
 import classNames from 'classnames';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import {
-	
-	Link,
-	useHistory
-  } from 'react-router-dom';
-
-
+import { Link, useHistory } from 'react-router-dom';
 import luffy from '../../img/itachi2.png';
 import TranredLogo from '../../img/tranred-logo.png';
 //Redux
@@ -40,7 +33,6 @@ import TranredLogo from '../../img/tranred-logo.png';
 import { baseUrl, urlAceptacion, urlFM } from '../../routers/url';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
-
 import './index.scss';
 
 const drawerWidth = 220;
@@ -184,12 +176,17 @@ const MainMenu: React.FC = () => {
 	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
 		if (index === 3) {
 			history.push(urlAceptacion);
-			localStorage.setItem('path', urlAceptacion );
+			localStorage.setItem('path', urlAceptacion);
 		}
 		if (index === 5) {
 			history.push(urlFM);
-			localStorage.setItem('path', urlFM );
+			localStorage.setItem('path', urlFM);
 		}
+		if (index === 0) {
+			// history.push(baseUrl);
+			localStorage.setItem('path', baseUrl);
+		}
+		handleDrawerClose();
 	};
 
 	const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -203,6 +200,10 @@ const MainMenu: React.FC = () => {
 	const handleMenuClose = () => {
 		setAnchorEl(null);
 		handleMobileMenuClose();
+	};
+	const handleLogoClick = () => {
+		localStorage.setItem('path', baseUrl);
+		handleDrawerClose();
 	};
 
 	const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -275,12 +276,11 @@ const MainMenu: React.FC = () => {
 		</Menu>
 	);
 
-	
 	return (
-		
 		<div className={classes.root}>
 			<AppBar
 				position='fixed'
+				onClick={handleMenuClose}
 				className={classNames(classes.appBar, {
 					[classes.appBarShift]: open,
 				})}>
@@ -357,17 +357,15 @@ const MainMenu: React.FC = () => {
 						{theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
 					</IconButton> */}
 					<div className={classes.img}>
-						<Link to={baseUrl} onClick={handleDrawerClose}>
-							<img className="logo-nav-tranred" src={TranredLogo} alt='logo tranred' />
+						<Link to={baseUrl} onClick={handleLogoClick}>
+							<img className='logo-nav-tranred' src={TranredLogo} alt='logo tranred' />
 						</Link>
 					</div>
 				</div>
 				<Divider />
 				<List>
-					<Link to={baseUrl} className={classes.link}>
-						<ListItem
-						// button onClick={(event) => handleListItemClick(event, 0)}
-						>
+					<Link to={baseUrl} className={classes.link} onClick={handleDrawerClose}>
+						<ListItem button onClick={(event) => handleListItemClick(event, 0)}>
 							<ListItemIcon>
 								<HomeIcon />
 							</ListItemIcon>
@@ -419,10 +417,6 @@ const MainMenu: React.FC = () => {
 					*/}
 			</Drawer>
 		</div>
-
-					
-
-	
 	);
 };
 
