@@ -26,9 +26,17 @@ export const Step4: React.FC<any> = ({
 	handleChange,
 	handleChangeImages,
 	handleBlurNumBank,
+	listRequestSource,
+	requestSource,
+	setRequestSource,
+	initial,
+	setInitial,
 }) => {
 	const classes = useStylesFM();
 	const [fraccion, setFraccion] = useState(false);
+	const [referido, setReferido] = useState(false);
+	// const cuotasText = ['5 cuotas de 50$', '4 cuotas de 50$', '3 cuotas de 50$'];
+	const [cuotasTexto, setCuotasTexto] = useState('');
 
 	const handleSelectPayment = (event: any, value: any, item: string) => {
 		if (value) {
@@ -85,14 +93,46 @@ export const Step4: React.FC<any> = ({
 		});
 	};
 
+	const handleSelectOrigin = (event: any, value: any, item: string) => {
+		setRequestSource(value);
+
+		// setCursedForm({
+		// 	...cursedForm,
+		// 	[event.target.name]: event.target.value,
+		// });
+		// validateForm(event.target.name, event.target.value);
+	};
+
 	useEffect(() => {
 		if (typePay) {
 			if (typePay.id === 2) {
 				setFraccion(true);
+			} else {
+				setFraccion(false);
 			}
+		} else {
+			setFraccion(false);
 		}
-		console.log('entrego punto', cursedForm.discount);
-	}, [typePay, cursedForm.discount]);
+		if (requestSource) {
+			switch (requestSource.id) {
+				case 1:
+					setReferido(true);
+					break;
+				case 2:
+					setReferido(true);
+					break;
+				default:
+					setReferido(false);
+			}
+		} else {
+			setReferido(false);
+		}
+		if (initial) {
+			let valor = 350 - initial;
+			let cuotas = valor / 50;
+			setCuotasTexto(`${cuotas} cuotas de 50$`);
+		}
+	}, [initial, requestSource, typePay]);
 
 	return (
 		<div className={classes.grid}>
@@ -169,6 +209,32 @@ export const Step4: React.FC<any> = ({
 			<div className={classes.input}>
 				<Autocomplete
 					className={classes.inputTextLeft}
+					onChange={(event, value) => handleSelectOrigin(event, value, 'origenSol')}
+					value={requestSource || null}
+					options={listRequestSource}
+					getOptionLabel={(option: any) => (option.name ? option.name : '')}
+					renderInput={(params: any) => (
+						<TextField {...params} name='origenSol' label='Origen de Solicitud' variant='outlined' />
+					)}
+				/>
+				{referido && (
+					<TextField
+						className={classes.inputText}
+						variant='outlined'
+						required
+						id='standard-required'
+						label='Numero de Cédula'
+						name='text_refe_number'
+						onChange={handleChange}
+						// onBlur={handleBlurNumBank}
+						value={cursedForm.text_account_number}
+						error={error.text_account_number}
+					/>
+				)}
+			</div>
+			<div className={classes.input}>
+				<Autocomplete
+					className={classes.inputTextLeft}
 					onChange={(event, value) => handleSelectPayment(event, value, 'payment_method')}
 					options={listPayment}
 					value={payment || null}
@@ -188,30 +254,45 @@ export const Step4: React.FC<any> = ({
 					)}
 				/>
 			</div>
-			{fraccion && (
-				<div className={classes.input}>
-					<Autocomplete
-						className={classes.inputTextLeft}
-						onChange={(event, value) => handleSelectPayment(event, value, 'payment_method')}
-						options={listPayment}
-						value={payment || null}
-						getOptionLabel={(option: any) => (option.name ? option.name : '')}
-						renderInput={(params: any) => (
-							<TextField {...params} name='payment_method' label='Modalidad de Pago' variant='outlined' />
-						)}
-					/>
-					<Autocomplete
-						className={classes.inputText}
-						onChange={(event, value) => handleSelectTypePay(event, value, 'type_pay')}
-						options={listTypePay}
-						value={typePay || null}
-						getOptionLabel={(option: any) => (option.name ? option.name : '')}
-						renderInput={(params: any) => (
-							<TextField {...params} name='type_pay' label='Tipo de Pago' variant='outlined' />
-						)}
-					/>
-				</div>
-			)}
+			<div className={classes.input}>
+				{fraccion && (
+					<>
+						{/* <Autocomplete
+							className={classes.inputTextLeft}
+							onChange={(event, value) => handleSelectPayment(event, value, 'inicial')}
+							options={listPayment}
+							value={payment || null}
+							getOptionLabel={(option: any) => (option.name ? option.name : '')}
+							renderInput={(params: any) => (
+								<TextField {...params} type='number' name='payment_method' label='Inicial' variant='outlined' />
+							)}
+						/> */}
+						<TextField
+							id='initial'
+							label='Inicial'
+							className={classes.inputTextLeft}
+							type='number'
+							variant='outlined'
+							value={initial}
+							onChange={(e) => {
+								setInitial(e.target.value);
+							}}
+						/>
+						<TextField
+							disabled
+							id='initial'
+							label='Cantidad de cuotas'
+							className={classes.inputText}
+							type='text'
+							variant='outlined'
+							value={cuotasTexto}
+							onChange={(e) => {
+								setInitial(e.target.value);
+							}}
+						/>
+					</>
+				)}
+			</div>
 			<div className={classes.inputText}>
 				<FormControlLabel
 					style={{ marginTop: 17.6 }}
@@ -220,7 +301,7 @@ export const Step4: React.FC<any> = ({
 						<>
 							<Checkbox
 								name='discount'
-								checked={cursedForm.discount ? true : false}
+								checked={cursedForm.discount === 1 ? true : false}
 								onChange={handleChecked}
 								color='primary'
 								inputProps={{ 'aria-label': 'secondary checkbox' }}
