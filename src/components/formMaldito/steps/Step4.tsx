@@ -130,7 +130,15 @@ export const Step4: React.FC<any> = ({
 		if (initial) {
 			let valor = 350 - initial;
 			let cuotas = valor / 50;
-			setCuotasTexto(`${cuotas} cuotas de 50$`);
+			if (cuotas % 1 === 0 && cuotas > 0 && cuotas < 8) {
+				setCuotasTexto(`${cuotas} cuotas de 50$`);
+			} else {
+				if (cuotas > 7) {
+					setCuotasTexto('La inicial es mas que el valor');
+				} else {
+					setCuotasTexto('Ingrese multiplo de 50');
+				}
+			}
 		}
 	}, [initial, requestSource, typePay]);
 
