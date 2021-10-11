@@ -186,7 +186,7 @@ const MainMenu: React.FC = () => {
 			localStorage.setItem('path', urlFM);
 		}
 		if (index === 0) {
-			// history.push(baseUrl);
+			history.push(baseUrl);
 			localStorage.setItem('path', baseUrl);
 		}
 		handleDrawerClose();
@@ -368,14 +368,12 @@ const MainMenu: React.FC = () => {
 				</div>
 				<Divider />
 				<List>
-					<Link to={baseUrl} className={classes.link} onClick={handleDrawerClose}>
-						<ListItem button onClick={(event) => handleListItemClick(event, 0)}>
-							<ListItemIcon>
-								<HomeIcon />
-							</ListItemIcon>
-							<ListItemText primary='Inicio' />
-						</ListItem>
-					</Link>
+					<ListItem button onClick={(event) => handleListItemClick(event, 0)}>
+						<ListItemIcon>
+							<HomeIcon />
+						</ListItemIcon>
+						<ListItemText primary='Inicio' />
+					</ListItem>
 					{/*
 					{open2 && (
 						<ListItem button onClick={(event) => handleListItemClick(event, 2)}>
