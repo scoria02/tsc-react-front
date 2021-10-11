@@ -15,17 +15,13 @@ import { updateStatusFM } from '../../../store/actions/admisionFm';
 import { CloseModal } from '../../../store/actions/ui';
 import { RootState } from '../../../store/store';
 import './index.scss';
-import PasoCinco from './pasosComprobacion/PasoCinco';
-import PasoCincoDos from './pasosComprobacion/PasoCincoDos';
-import PasoCuatro from './pasosComprobacion/PasoCuatro';
-import PasoCuaTroDos from './pasosComprobacion/PasoCuatroDos';
-import PasoSeis from './pasosComprobacion/PasoSeis';
-import PasoAccountNumber from './pasosComprobacion/PasoAccountNumber';
-import PasoTresDos from './pasosComprobacion/PasoTresDos';
 
+import PasoClient from './pasosComprobacion/PasoClient';
 import PasoCommerce from './pasosComprobacion/PasoCommerce';
 import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
-import PasoClient from './pasosComprobacion/PasoClient';
+import PasoAccountNumber from './pasosComprobacion/PasoAccountNumber';
+import PasoActaConst from './pasosComprobacion/PasoActaConst';
+import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & { children?: React.ReactElement },
@@ -82,55 +78,22 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 				);
 			case 2:
 				return (
-					<div className='comprobar_container_2'>
-						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
-							<PasoAccountNumber />
-						</div>
-						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
-						</div>
+					<div> 
+						<PasoAccountNumber />
 					</div>
 				);
 			case 3:
 				return (
 					<div className='comprobar_container_2'>
 						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
-							<PasoCuatro />
+							{fm.path_rc_constitutive_act &&
+								<PasoActaConst/>
+							}
 						</div>
 						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
-							<PasoCuaTroDos />
-						</div>
-					</div>
-				);
-			case 4:
-				return (
-					<div className='comprobar_container_2'>
-						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
-							<PasoCinco />
-						</div>
-						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
-							<PasoCincoDos />
-						</div>
-					</div>
-				);
-			case 5:
-				return (
-					<div className='comprobar_container_2'>
-						<div>
-							{/* <h1 className='titulo'>Informacion </h1> */}
-
-							<PasoSeis />
-							{/* Colocar condicion para que si no hay nada en contribuyente notifique */}
-						</div>
-						<div>
-							{/* <h1 className='titulo'>Informacion </h1>
-							<PasoCincoDos /> */}
-							{/* Uso Futuro */}
+							{fm.path_rc_special_contributor &&
+								<PasoContriSpecial />
+							}
 						</div>
 					</div>
 				);
@@ -139,47 +102,50 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 		}
 	}
 
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+	const dispatch = useDispatch();
+	const { modalOpen } = useSelector((state: any) => state.ui);
+	const validated: any = useSelector((state: RootState) => state.acceptance.validado);
+	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatus);
+
 
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [completed, setCompleted] = React.useState(new Set<number>());
 	const [skipped, setSkipped] = React.useState(new Set<number>());
-	const steps = getSteps();
-
-	const dispatch = useDispatch();
-	const { modalOpen } = useSelector((state: any) => state.ui);
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const validated: any = useSelector((state: RootState) => state.acceptance.validado);
-	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatus);
-
-	console.log(fm)
-
-	function getSteps() {
-		if (special) {
+	const steps = getSteps(fm);
+	function getSteps(form:any) {
+		if(form.path_rc_constitutive_act || form.path_rc_special_contributor) {
 			return [
 				'Validacion (Cliente)',
 				'Validacion (Comercio)',
 				'Validacion (Referencia Bancaria)',
-				/*
-				'Validacion (Acta Constitutiva / Doc. Propiedad)',
-				'Validacion (Referencia Personal / Servicios)',
-				'Validacion Contribuyen Especial',
-				 */
-			];
-		} else {
+				`
+				Validacion (
+				${ 
+					form.path_rc_constitutive_act ?
+						`Acta Constitutiva ${form.path_rc_special_contributor ? '/' : ''}`
+					:
+					''
+				}
+				${ 
+					form.path_rc_special_contributor ?
+						'Contribuidor Especial' 
+					:
+					''
+				}
+				)`,
+			]
+		}else{
 			return [
 				'Validacion (Cliente)',
 				'Validacion (Comercio)',
 				'Validacion (Referencia Bancaria)',
-				/*
-				'Validacion (Acta Constitutiva / Doc. Propiedad)',
-				'Validacion (Referencia Personal / Servicios)',
-				 */
-			];
+			]
 		}
 	}
 
 	const totalSteps = () => {
-		return getSteps().length;
+		return getSteps(fm).length;
 	};
 	const skippedSteps = () => {
 		return skipped.size;

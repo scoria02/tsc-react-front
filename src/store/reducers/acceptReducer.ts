@@ -3,24 +3,31 @@ import { ActionType } from '../types/types';
 interface inState {
 	stepComplete: any[];
 	validado: {
-		infoGeneral: boolean;
-
+		//step1
+		rc_ident_card: {
+			status: boolean,
+			msg: string
+		};
 		//step2
-		rc_ident_card: any;
-		rc_rif: any; 
+		rc_rif: {
+			status: boolean,
+			msg: string
+		};
 		//step3
-		rc_account_number: any;
-		rc_ref_bank: any;
+		rc_ref_bank: {
+			status: boolean,
+			msg: string
+		};
 		//step4
-		rc_constitutive_act: any; 
-		rc_property_document: any;
-		//step5
-		rc_ref_perso: any; 
-		rc_service_document: any;
-		//step6
-		rc_special_contributor: any;
-
-		contrubuyente: any;
+		rc_constitutive_act: {
+			status: boolean,
+			msg: string
+		};
+		rc_special_contributor: {
+			status: boolean,
+			msg: string
+		};
+		contrubuyente: number;
 		localFrente: boolean;
 		localDentro: boolean;
 	};
@@ -29,21 +36,17 @@ interface inState {
 const initialState: inState = {
 	stepComplete: [],
 	validado: {
-		infoGeneral: false,
-		//step2
+		//step1
 		rc_ident_card: {
 			status: true,
 			msg: ''
 		},
+		//step2
 		rc_rif: {
 			status: true,
 			msg: ''
 		}, 
 		//step3
-		rc_account_number: {
-			status: true,
-			msg: ''
-		},
 		rc_ref_bank: {
 			status: true,
 			msg: ''
@@ -53,25 +56,11 @@ const initialState: inState = {
 			status: true,
 			msg: ''
 		},
-		rc_property_document: {
-			status: true,
-			msg: ''
-		},
-		//step5
-		rc_ref_perso: {
-			status: true,
-			msg: ''
-		}, 
-		rc_service_document: {
-			status: true,
-			msg: ''
-		},
-		//step6
 		rc_special_contributor: {
 			status: true,
 			msg: ''
 		}, 
-		contrubuyente: null,
+		contrubuyente: 0,
 		localFrente: false,
 		localDentro: false,
 	},
@@ -86,6 +75,7 @@ export const acceptReducer = (state = initialState, action: any) => {
 			};
 
 		case ActionType.acceptRec:
+			console.log(action.payload)
 			return {
 				...state,
 				validado: {

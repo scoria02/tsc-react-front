@@ -1,0 +1,45 @@
+.paperUser {
+	position: relative;
+	background: white;
+	border-radius: 20px;
+	width: 50vw;
+	padding: 1rem;
+	z-index: 9999;
+}
+
+.container-modal {
+	display: grid;
+	margin: '0';
+	border-radius: 20px;
+	transition: all 200ms ease;
+	background: #ffffff;
+	width: 100%;
+	height: auto;
+	align-items: center;
+	justify-content: center;
+}
+
+.container-top {
+	width: 500px;
+}
+
+.icons-alert {
+	font-size: 5rem !important;
+	color: #FF0000;
+}
+
+.textarea-alert {
+	width: 100%;
+	box-sizing: border-box;
+	border: none;
+	border-radius: 3px;
+	resize: none;
+	font-size: 20px;
+	line-height: 24px;
+	overflow: auto;
+	height: auto;
+	padding: 8px;
+	box-shadow: 0px 4px 10px -8px #000000;
+	margin: 1rem;
+}
+

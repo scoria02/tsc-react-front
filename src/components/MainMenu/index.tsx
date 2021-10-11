@@ -136,13 +136,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 const MainMenu: React.FC = () => {
 	const classes = useStyles();
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const theme = useTheme();
 	const dispatch = useDispatch();
 	const history = useHistory();
 
-	const [open, setOpen] = React.useState(false);
-	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+	const [open, setOpen] = React.useState(false); //Nav Left
+	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>();
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+
 	const [user, setUser] = React.useState({
 		name: '',
 		last_name: '',
@@ -198,6 +198,7 @@ const MainMenu: React.FC = () => {
 	};
 
 	const handleMenuClose = () => {
+		console.log('close')
 		setAnchorEl(null);
 		handleMobileMenuClose();
 	};
@@ -216,12 +217,13 @@ const MainMenu: React.FC = () => {
 			anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
 			id={menuId}
 			keepMounted
+			style={{ marginTop: '3rem', }}
 			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
 			open={isMenuOpen}
 			onClose={handleMenuClose}>
-			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
-			<MenuItem onClick={handleMenuLogout}>Salir</MenuItem>
+			<MenuItem onClick={handleMenuClose}>Perfil</MenuItem>
+			<MenuItem onClick={handleMenuClose}>Mi Cuenta</MenuItem>
+			<MenuItem onClick={handleMenuLogout}>Cerrar sesión</MenuItem>
 		</Menu>
 	);
 
@@ -250,28 +252,26 @@ const MainMenu: React.FC = () => {
 				</IconButton>
 				<p>Notifications</p>
 			</MenuItem>
-			<MenuItem onClick={handleProfileMenuOpen}>
+			<MenuItem>
 				<IconButton
 					aria-label='account of current user'
 					aria-controls='primary-search-account-menu'
 					aria-haspopup='true'
 					color='inherit'>
-					{/* <AccountCircle /> */}
-
 					<Avatar alt='Remy Sharp' src={luffy} />
 				</IconButton>
-
-				<p>Profile</p>
+				<p>Perfil</p>
 			</MenuItem>
-			<MenuItem onClick={handleProfileMenuOpen}>
+			<MenuItem onClick={handleMenuLogout} >
 				<IconButton
+					style={{ paddingTop: 0 }}
 					aria-label='account of current user'
 					aria-controls='primary-search-account-menu'
 					aria-haspopup='true'
 					color='inherit'>
 					<AccountCircle />
 				</IconButton>
-				<p>Salir</p>
+				<p>Cerrar sesión</p>
 			</MenuItem>
 		</Menu>
 	);
@@ -280,7 +280,7 @@ const MainMenu: React.FC = () => {
 		<div className={classes.root}>
 			<AppBar
 				position='fixed'
-				onClick={handleMenuClose}
+				//onClick={handleMenuClose}
 				className={classNames(classes.appBar, {
 					[classes.appBarShift]: open,
 				})}>
@@ -311,20 +311,24 @@ const MainMenu: React.FC = () => {
 								<NotificationsIcon />
 							</Badge>
 						</IconButton>
-						<Typography className={classes.userName} variant='h6' noWrap>
-							{user.name} {user.last_name}
-						</Typography>
-						<IconButton
-							edge='end'
-							aria-label='account of current user'
-							aria-controls={menuId}
-							aria-haspopup='true'
+						<div
+							className="menu-user"
 							onClick={handleProfileMenuOpen}
-							color='inherit'>
-							{/* <AccountCircle /> */}
+						>
+							<Typography className={classes.userName} variant='h6' noWrap>
+								{user.name} {user.last_name}
+							</Typography>
+							<IconButton
+								edge='end'
+								aria-label='account of current user'
+								aria-controls={menuId}
+								aria-haspopup='true'
+								color='inherit'>
+								{/* <AccountCircle /> */}
 
-							<Avatar alt='Remy Sharp' src={luffy} />
-						</IconButton>
+								<Avatar alt='Remy Sharp' src={luffy} />
+							</IconButton>
+						</div>
 					</div>
 					<div className={classes.sectionMobile}>
 						<IconButton

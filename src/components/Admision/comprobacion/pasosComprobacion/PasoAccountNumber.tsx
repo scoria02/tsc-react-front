@@ -19,13 +19,13 @@ import { useStyles } from './styles/styles';
 export default function PasoAccountNumber() {
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 
-	const rc_account_number: any = useSelector((state: RootState) => state.acceptance.validado.rc_account_number);
+	const rc_ref_bank: any = useSelector((state: RootState) => state.acceptance.validado.rc_ref_bank);
 	const dispatch = useDispatch();
 	const classes = useStyles();
-	const [state, setState] = React.useState(rc_account_number);
+	const [state, setState] = React.useState(rc_ref_bank);
 
 	useEffect(() => {
-		dispatch(Valid({rc_account_number:state}));
+		dispatch(Valid({rc_ref_bank:state}));
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state]);
 
@@ -37,7 +37,7 @@ export default function PasoAccountNumber() {
 		zoomPosition: 'original',
 		height: 350,
 		width: 450,
-		img: `${URL}:${PortFiles}/${fm.path_rc_account_number}`,
+		img: `${URL}:${PortFiles}/${fm.path_rc_ref_bank}`,
 	};
 
 	return (
@@ -52,11 +52,12 @@ export default function PasoAccountNumber() {
 					/>
 					<FormControlLabel
 						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
-						label='Correcto'
+						className={classes.checkText}
+						label={state.status ? 'Correcto' : 'Incorrecto'}
 					/>
 				</div>
 			</form>
-			<div className='img_container_1'>
+			<div className='img_container'>
 				<ReactImageZoom {...props} />
 			</div>
 		</>
