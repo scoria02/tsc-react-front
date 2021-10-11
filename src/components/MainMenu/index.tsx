@@ -16,6 +16,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeIcon from '@material-ui/icons/Home';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -135,6 +137,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const MainMenu: React.FC = () => {
 	const classes = useStyles();
+	const theme = useTheme();
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -198,7 +201,7 @@ const MainMenu: React.FC = () => {
 	};
 
 	const handleMenuClose = () => {
-		console.log('close')
+		console.log('close');
 		setAnchorEl(null);
 		handleMobileMenuClose();
 	};
@@ -217,7 +220,7 @@ const MainMenu: React.FC = () => {
 			anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
 			id={menuId}
 			keepMounted
-			style={{ marginTop: '3rem', }}
+			style={{ marginTop: '3rem' }}
 			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
 			open={isMenuOpen}
 			onClose={handleMenuClose}>
@@ -262,7 +265,7 @@ const MainMenu: React.FC = () => {
 				</IconButton>
 				<p>Perfil</p>
 			</MenuItem>
-			<MenuItem onClick={handleMenuLogout} >
+			<MenuItem onClick={handleMenuLogout}>
 				<IconButton
 					style={{ paddingTop: 0 }}
 					aria-label='account of current user'
@@ -311,10 +314,7 @@ const MainMenu: React.FC = () => {
 								<NotificationsIcon />
 							</Badge>
 						</IconButton>
-						<div
-							className="menu-user"
-							onClick={handleProfileMenuOpen}
-						>
+						<div className='menu-user' onClick={handleProfileMenuOpen}>
 							<Typography className={classes.userName} variant='h6' noWrap>
 								{user.name} {user.last_name}
 							</Typography>
@@ -357,14 +357,14 @@ const MainMenu: React.FC = () => {
 					}),
 				}}>
 				<div className={classes.toolbar}>
-					{/* <IconButton onClick={handleDrawerClose}>
-						{theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-					</IconButton> */}
 					<div className={classes.img}>
 						<Link to={baseUrl} onClick={handleLogoClick}>
 							<img className='logo-nav-tranred' src={TranredLogo} alt='logo tranred' />
 						</Link>
 					</div>
+					<IconButton onClick={handleDrawerClose}>
+						{theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+					</IconButton>
 				</div>
 				<Divider />
 				<List>
