@@ -24,7 +24,7 @@ const Admision: React.FC = () => {
 	const { socket } = useContext(SocketContext);
 
 	useEffect(() => {
-		getNuevosTicket();
+		//getNuevosTicket();
 	}, []);
 
 	useEffect(() => {
