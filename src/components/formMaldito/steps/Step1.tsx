@@ -62,16 +62,6 @@ export const Step1: React.FC<any> = ({
 		<>
 			<div className={classes.grid}>
 				<div className={classes.input}>
-					<Autocomplete
-						className={classNames(classes.inputText, classes.inputTextLeft)}
-						onChange={(event, value) => handleSelectClient(event, value, 'estado')}
-						value={location.estado || null}
-						options={listLocation.estado}
-						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
-						renderInput={(params: any) => (
-							<TextField {...params} name='origenSol' label='Origen de Solicitud' variant='outlined' />
-						)}
-					/>
 					<TextField
 						required
 						className={classes.inputText}
