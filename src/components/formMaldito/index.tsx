@@ -112,6 +112,31 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 
 	const [listIdentType, setListIdentType] = useState<any>([]);
 
+	// Origen de solicitud
+	const [listRequestSource, setListRequestSol] = useState<any>([
+		{
+			id: 1,
+			name: 'Referido',
+		},
+		{
+			id: 2,
+			name: 'ACI',
+		},
+		{
+			id: 3,
+			name: 'Call Center',
+		},
+		{
+			id: 4,
+			name: 'Feria',
+		},
+		{
+			id: 5,
+			name: 'Pagina WEB',
+		},
+	]);
+	const [requestSource, setRequestSource] = useState<any>(listRequestSource[0]);
+	const [initial, setInitial] = useState(0);
 	//Activity commerce
 	const [listActivity, setListActivity] = useState<any>([]);
 	const [activity, setActivity] = useState<any>(null);
@@ -182,8 +207,12 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		number_post: 1,
 		id_model_post: 0,
 		text_account_number: '',
+		// falta id_requestSource: 0,
+		// falta reqSource_docnum: '',
 		id_payment_method: 0,
 		id_type_pay: 0,
+		// falta Inicial
+		// falta cuotas
 		discount: 0,
 	});
 
@@ -992,6 +1021,11 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			handleChange={handleChange}
 			handleChangeImages={handleChangeImages}
 			handleBlurNumBank={handleBlurNumBank}
+			listRequestSource={listRequestSource}
+			requestSource={requestSource}
+			setRequestSource={setRequestSource}
+			initial={initial}
+			setInitial={setInitial}
 		/>,
 	];
 
