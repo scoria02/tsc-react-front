@@ -94,13 +94,19 @@ export const Step4: React.FC<any> = ({
 	};
 
 	const handleSelectOrigin = (event: any, value: any, item: string) => {
-		setRequestSource(value);
-
-		// setCursedForm({
-		// 	...cursedForm,
-		// 	[event.target.name]: event.target.value,
-		// });
-		// validateForm(event.target.name, event.target.value);
+		if (value) {
+			setCursedForm({
+				...cursedForm,
+				[`id_${item}`]: value.id,
+			});
+			setRequestSource(value);
+		} else {
+			setCursedForm({
+				...cursedForm,
+				[`id_${item}`]: 0,
+			});
+			setRequestSource(null);
+		}
 	};
 
 	useEffect(() => {
@@ -217,32 +223,6 @@ export const Step4: React.FC<any> = ({
 			<div className={classes.input}>
 				<Autocomplete
 					className={classes.inputTextLeft}
-					onChange={(event, value) => handleSelectOrigin(event, value, 'origenSol')}
-					value={requestSource || null}
-					options={listRequestSource}
-					getOptionLabel={(option: any) => (option.name ? option.name : '')}
-					renderInput={(params: any) => (
-						<TextField {...params} name='origenSol' label='Origen de Solicitud' variant='outlined' />
-					)}
-				/>
-				{referido && (
-					<TextField
-						className={classes.inputText}
-						variant='outlined'
-						required
-						id='standard-required'
-						label='Numero de Cédula'
-						name='text_refe_number'
-						onChange={handleChange}
-						// onBlur={handleBlurNumBank}
-						value={cursedForm.text_account_number}
-						error={error.text_account_number}
-					/>
-				)}
-			</div>
-			<div className={classes.input}>
-				<Autocomplete
-					className={classes.inputTextLeft}
 					onChange={(event, value) => handleSelectPayment(event, value, 'payment_method')}
 					options={listPayment}
 					value={payment || null}
@@ -260,6 +240,31 @@ export const Step4: React.FC<any> = ({
 					renderInput={(params: any) => (
 						<TextField {...params} name='type_pay' label='Tipo de Pago' variant='outlined' />
 					)}
+				/>
+			</div>
+			<div className={classes.input}>
+				<Autocomplete
+					className={classes.inputTextLeft}
+					onChange={(event, value) => handleSelectOrigin(event, value, 'requestSource')}
+					value={requestSource || null}
+					options={listRequestSource}
+					getOptionLabel={(option: any) => (option.name ? option.name : '')}
+					renderInput={(params: any) => (
+						<TextField {...params} name='origenSol' label='Origen de Solicitud' variant='outlined' />
+					)}
+				/>
+				<TextField
+					className={classes.inputText}
+					style={{ opacity: `${referido ? 1 : 0}` }}
+					variant='outlined'
+					required
+					id='standard-required'
+					label='Numero de Cédula'
+					name='reqSource_docnum'
+					onChange={handleChange}
+					// onBlur={handleBlurNumBank}
+					value={cursedForm.reqSource_docnum}
+					//error={erorr.reqSource_docnum}
 				/>
 			</div>
 			<div className={classes.input}>

@@ -110,6 +110,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		parroquia: null,
 	});
 
+	//Ident Type
 	const [listIdentType, setListIdentType] = useState<any>([]);
 
 	// Origen de solicitud
@@ -137,6 +138,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	]);
 	const [requestSource, setRequestSource] = useState<any>(listRequestSource[0]);
 	const [initial, setInitial] = useState(0);
+
 	//Activity commerce
 	const [listActivity, setListActivity] = useState<any>([]);
 	const [activity, setActivity] = useState<any>(null);
@@ -207,12 +209,12 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		number_post: 1,
 		id_model_post: 0,
 		text_account_number: '',
-		// falta id_requestSource: 0,
-		// falta reqSource_docnum: '',
 		id_payment_method: 0,
 		id_type_pay: 0,
-		// falta Inicial
-		// falta cuotas
+		//orgien sol
+		id_requestSource: 0,
+		reqSource_docnum: '',
+		cuotas: 0, //Si es inical coutas cambia
 		discount: 0,
 	});
 
