@@ -14,20 +14,58 @@ import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 
+import { ModalAlert }from '../ModalAlert';
+
 export default function PasoActaConst() {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 	const rc_constitutive_act: any = useSelector((state: RootState) => state.acceptance.validado.rc_constitutive_act);
 	const [state, setState] = React.useState(rc_constitutive_act);
+	const [openModal, setOpenModal] = React.useState<boolean>(false);
+
+	const handleOpenModal = () => {
+		handleCancel()
+		setOpenModal(true);
+	};
+	const handleCloseModal = (cancel: boolean) => {
+		if(cancel){
+			setState({ 
+				...state, 
+				status: !state.status,
+			});
+		}
+		setOpenModal(false);
+	};
 
 	useEffect(() => {
 		dispatch(Valid({rc_constitutive_act: state}));
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state]);
+	}, [state.status]);
+
+	const handleIncorret = () => {
+		dispatch(Valid({ rc_ident_card: state }));
+		handleCloseModal(false);
+	};
+
+	const handleCancel = () => {
+		handleCloseModal(true);
+	};
+
+	const handleChangeI = (event:any) => {
+		setState({ 
+			...state, 
+			[event.target.name]: event.target.value,
+		});
+	}
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({ ...state, [event.target.name]: event.target.checked });
+		setState({ 
+			...state, 
+			[event.target.name]: event.target.checked,
+		});
+		if(!event.target.checked)
+			handleOpenModal();
 	};
 
 	const props = {
@@ -59,6 +97,14 @@ export default function PasoActaConst() {
 			<div className='img_container_1'>
 				<ReactImageZoom {...props} />
 			</div>
+			<ModalAlert 
+				openModal={openModal}
+				handleCloseModal={handleCloseModal}
+				state={state}
+				handleChangeI={handleChangeI}
+				handleIncorret={handleIncorret}
+				handleCancel={handleCancel}
+			/>
 		</>
 	);
 }

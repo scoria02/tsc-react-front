@@ -19,9 +19,9 @@ export default function PasoClient() {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-
-	const [openModal, setOpenModal] = React.useState<boolean>(false);
+	const [ flag, setFlag ] = useState<boolean>(false); //Flag for loading
 	const [state, setState] = React.useState(rc_ident_card);
+	const [openModal, setOpenModal] = React.useState<boolean>(false);
 
 	const handleOpenModal = () => {
 		handleCancel()
@@ -36,8 +36,6 @@ export default function PasoClient() {
 		}
 		setOpenModal(false);
 	};
-
-	const [ flag, setFlag ] = useState<boolean>(false);
 
 	setTimeout(() => {
 		setFlag(true);
