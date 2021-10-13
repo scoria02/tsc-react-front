@@ -16,6 +16,8 @@ import { CloseModal } from '../../../store/actions/ui';
 import { RootState } from '../../../store/store';
 import './index.scss';
 
+import CancelIcon from '@material-ui/icons/Cancel';
+
 import PasoClient from './pasosComprobacion/PasoClient';
 import PasoCommerce from './pasosComprobacion/PasoCommerce';
 import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
@@ -35,6 +37,7 @@ const useStyles2 = makeStyles((theme: Theme) =>
 		root: {
 			width: '100%',
 			margin: '1.5rem',
+			padding: '1rem',
 		},
 		button: {
 			marginRight: theme.spacing(1),
@@ -49,6 +52,21 @@ const useStyles2 = makeStyles((theme: Theme) =>
 			marginTop: theme.spacing(1),
 			marginBottom: theme.spacing(1),
 		},
+		cancelIcon: {
+			fontSize: '3rem',
+			position: 'fixed',
+			right: '2rem',
+			top: '1rem',
+			color: theme.palette.secondary.main,
+			zIndex: 10,
+			cursor: 'pointer',
+			'&:hover': {
+				color: theme.palette.secondary.light,
+			},
+		},
+		containerStep: {
+			marginTop: '3rem'
+		},
 	})
 );
 
@@ -60,7 +78,6 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 			case 0:
 				return (
 					<div>
-						<h1 className='titulo'>Informacion del Cliente</h1>
 						<PasoClient/>
 					</div>
 				);
@@ -68,7 +85,6 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 				return (
 					<div className='comprobar_container_2'>
 						<div>
-							<h1 className='titulo'>Informacion del Comercio </h1>
 							<PasoCommerce/>
 						</div>
 						<div>
@@ -244,7 +260,8 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 
 	return (
 		<div>
-			<Dialog fullScreen open={modalOpen} onClose={handleClose} TransitionComponent={Transition}>
+			<Dialog fullScreen open={modalOpen} onClose={handleClose} TransitionComponent={Transition} >
+				<CancelIcon className={classes2.cancelIcon} onClick={handleClose}/>
 				<div className={classes2.root}>
 					<Stepper alternativeLabel nonLinear activeStep={activeStep}>
 						{steps.map((label, index) => {
@@ -256,13 +273,13 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 							return (
 								<Step key={label} {...stepProps}>
 									<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
-										{label}
+										<b>{label}</b>
 									</StepButton>
 								</Step>
 							);
 						})}
 					</Stepper>
-					<div>
+					<div className={classes2.containerStep}>
 						{allStepsCompleted() ? (
 							<div className='btn-divfloat'>
 								<Typography className={classes2.instructions}>
