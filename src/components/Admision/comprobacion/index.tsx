@@ -41,6 +41,7 @@ const useStyles2 = makeStyles((theme: Theme) =>
 		},
 		button: {
 			marginRight: theme.spacing(1),
+			textTransform: 'none',
 		},
 		backButton: {
 			marginRight: theme.spacing(1),
@@ -67,6 +68,9 @@ const useStyles2 = makeStyles((theme: Theme) =>
 		containerStep: {
 			marginTop: '3rem'
 		},
+		buttonS: {
+			textTransform: 'none',
+		}
 	})
 );
 
@@ -294,16 +298,16 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 									<Button disabled={activeStep === 0} onClick={handleBack} className={classes2.button}>
 										Volver
 									</Button>
-									<Button variant='contained' color='primary' onClick={handleNext} className={classes2.button}>
+									<Button  variant='contained' color='primary' onClick={handleNext} className={classes2.button}>
 										Siguiente
 									</Button>
 									{activeStep !== steps.length &&
 										(completed.has(activeStep) ? (
 											<Typography variant='caption' className={classes2.completed}>
-												Verificado
+												Verificar
 											</Typography>
 										) : (
-											<Button variant='contained' color='primary' onClick={handleComplete}>
+											<Button className={classes2.buttonS} variant='contained' color='primary' onClick={handleComplete}>
 												{completedSteps() === totalSteps() - 1 ? 'Solicitud Revisada' : 'Verificado'}
 											</Button>
 										))}
