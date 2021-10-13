@@ -1,6 +1,6 @@
 .paperUser {
 	position: relative;
-	background: white;
+	background: #fcfcfc;
 	border-radius: 20px;
 	width: 50vw;
 	padding: 1rem;
@@ -12,7 +12,7 @@
 	margin: '0';
 	border-radius: 20px;
 	transition: all 200ms ease;
-	background: #ffffff;
+	// background: #ffffff;
 	width: 100%;
 	height: auto;
 	align-items: center;
@@ -25,7 +25,7 @@
 
 .icons-alert {
 	font-size: 5rem !important;
-	color: #FF0000;
+	color: #ff0000;
 }
 
 .textarea-alert {
@@ -43,3 +43,9 @@
 	margin: 1rem;
 }
 
+.container-text {
+	max-width: 500px;
+	font-size: 18px;
+	text-align: justify;
+	margin: 1rem 0;
+}
