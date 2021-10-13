@@ -66,7 +66,7 @@ const useStyles2 = makeStyles((theme: Theme) =>
 			},
 		},
 		containerStep: {
-			marginTop: '3rem'
+			marginTop: theme.spacing(2),
 		},
 		buttonS: {
 			textTransform: 'none',
