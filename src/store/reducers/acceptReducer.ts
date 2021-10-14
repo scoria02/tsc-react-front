@@ -27,6 +27,10 @@ interface inState {
 			status: boolean,
 			msg: string
 		};
+		rc_comp_dep: {
+			status: boolean,
+			msg: string
+		};
 		contrubuyente: number;
 		localFrente: boolean;
 		localDentro: boolean;
@@ -60,6 +64,10 @@ const initialState: inState = {
 			status: true,
 			msg: ''
 		}, 
+		rc_comp_dep: {
+			status: true,
+			msg: ''
+		},
 		contrubuyente: 0,
 		localFrente: false,
 		localDentro: false,

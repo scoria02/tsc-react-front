@@ -24,6 +24,7 @@ import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
 import PasoAccountNumber from './pasosComprobacion/PasoAccountNumber';
 import PasoActaConst from './pasosComprobacion/PasoActaConst';
 import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
+import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
 
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & { children?: React.ReactElement },
@@ -117,6 +118,12 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 						</div>
 					</div>
 				);
+			case 4:
+				return (
+					<div>
+						<PasoPaymentReceipt />
+					</div>
+				);
 			default:
 				return 'Invalid step';
 		}
@@ -135,32 +142,65 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 	const steps = getSteps(fm);
 	function getSteps(form:any) {
 		if(form.path_rc_constitutive_act || form.path_rc_special_contributor) {
-			return [
-				'Validacion (Cliente)',
-				'Validacion (Comercio)',
-				'Validacion (Referencia Bancaria)',
-				`
-				Validacion (
-				${ 
-					form.path_rc_constitutive_act ?
-						`Acta Const. ${form.path_rc_special_contributor ? '/' : ''}`
-					:
-					''
-				}
-				${ 
-					form.path_rc_special_contributor ?
-						'Con. Especial' 
-					:
-					''
-				}
-				)`,
-			]
+			if(true){
+				return [
+					'Validacion (Cliente)',
+					'Validacion (Comercio)',
+					'Validacion (Referencia Bancaria)',
+					`
+					Validacion (
+					${ 
+						form.path_rc_constitutive_act ?
+							`Acta Const. ${form.path_rc_special_contributor ? '/' : ''}`
+						:
+						''
+					}
+					${ 
+						form.path_rc_special_contributor ?
+							'Con. Especial' 
+						:
+						''
+					}
+					)`,
+					'Validacion (Comprobante de Pago)',
+				]
+			}else{
+				return [
+					'Validacion (Cliente)',
+					'Validacion (Comercio)',
+					'Validacion (Referencia Bancaria)',
+					`
+					Validacion (
+					${ 
+						form.path_rc_constitutive_act ?
+							`Acta Const. ${form.path_rc_special_contributor ? '/' : ''}`
+						:
+						''
+					}
+					${ 
+						form.path_rc_special_contributor ?
+							'Con. Especial' 
+						:
+						''
+					}
+					)`,
+				]
+			}
 		}else{
-			return [
-				'Validacion (Cliente)',
-				'Validacion (Comercio)',
-				'Validacion (Referencia Bancaria)',
-			]
+			if(form.path_rc_comp_dep){
+				return [
+					'Validacion (Cliente)',
+					'Validacion (Comercio)',
+					'Validacion (Referencia Bancaria)',
+					'Validacion (Comprobante de Pago)',
+				]
+			}else{
+				return [
+					'Validacion (Cliente)',
+					'Validacion (Comercio)',
+					'Validacion (Referencia Bancaria)',
+				]
+			}
 		}
 	}
 
