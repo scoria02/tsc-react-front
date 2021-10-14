@@ -137,7 +137,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		},
 	]);
 	const [requestSource, setRequestSource] = useState<any>(listRequestSource[0]);
-	const [initial, setInitial] = useState(0);
+	const [initial, setInitial] = useState(50);
 
 	//Activity commerce
 	const [listActivity, setListActivity] = useState<any>([]);
