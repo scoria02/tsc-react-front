@@ -17,7 +17,7 @@ export const ModalAlert: React.FC<any> = ({
 	return (
 		<AnimationModal openModal={openModal} handleCloseModal={handleCloseModal}>
 			<div className='paperUser'>
-				<div className='container-modal' style={{ width: '100%', height: '100%', gridColumnGap: '0' }}>
+				<div className='container-modal'>
 					<div className='container-item'>
 						<div className='container-top'>
 							<ErrorOutlineIcon className='icons-alert' />
