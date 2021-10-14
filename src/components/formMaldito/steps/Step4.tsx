@@ -135,8 +135,10 @@ export const Step4: React.FC<any> = ({
 			setReferido(false);
 		}
 		if (initial) {
-			let valor = cursedForm.number_post * 350 - initial;
-			let cuotas = valor / 50;
+			// cable pelado para el monto del precio del modelo seleccionado para calcular las cuotas
+			let valor = cursedForm.number_post * (350 - initial);
+			let cuotas = valor / (cursedForm.number_post * 50);
+
 			if (valor < 0) {
 				setInitial(50);
 			}
@@ -293,7 +295,7 @@ export const Step4: React.FC<any> = ({
 							inputProps={{
 								maxLength: 5,
 								step: '50',
-								min: '50',
+								min: '100',
 							}}
 							onChange={(e) => {
 								setInitial(e.target.value);
