@@ -11,7 +11,7 @@ export default function PasoUno() {
 
 	return (
 		<>
-		<form className="container-step" noValidate autoComplete='off'>
+		<form className="container-step" noValidate autoComplete='off' style={{ marginTop: '1rem' }}>
 			<div className={classes.btn_stepM}>
 				<TextField 
 					className={classes.btn_stepT}

@@ -43,6 +43,7 @@ export default function PasoClient() {
 
 	useEffect(() => {
 		dispatch(Valid({ rc_ident_card: state }));
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.status]);
 
 	const handleIncorret = () => {

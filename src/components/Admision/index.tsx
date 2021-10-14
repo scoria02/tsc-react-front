@@ -14,7 +14,7 @@ import Diferidos from './diferidos/Diferidos';
 import Comproba from './modalComprobacion/Comproba';
 
 import { SocketContext } from '../../helpers/SocketContext';
-import { getNuevosTicket } from '../../sockets/getAdmicion';
+//import { getNuevosTicket } from '../../sockets/getAdmicion';
 
 import './index.scss';
 

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
-import TextField from '@material-ui/core/TextField';
 // @ts-expect-error
 import ReactImageZoom from 'react-image-zoom';
 //Redux
@@ -20,8 +18,8 @@ export default function PasoCommerce2() {
 	const dispatch = useDispatch();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 	const rc_rif: any = useSelector((state: RootState) => state.acceptance.validado.rc_rif);
-	const [state, setState] = React.useState(rc_rif);
-	const [openModal, setOpenModal] = React.useState<boolean>(false);
+	const [state, setState] = useState(rc_rif);
+	const [openModal, setOpenModal] = useState<boolean>(false);
 
 	const handleOpenModal = () => {
 		handleCancel()
@@ -37,7 +35,7 @@ export default function PasoCommerce2() {
 		setOpenModal(false);
 	};
 	const handleIncorret = () => {
-		dispatch(Valid({ rc_ident_card: state }));
+		dispatch(Valid({ rc_rif: state }));
 		handleCloseModal(false);
 	};
 
@@ -79,7 +77,6 @@ export default function PasoCommerce2() {
 			</div>
 			<div className='img_container_2'>
 				<ReactImageZoom {...props} />
-				{/* <img className='img_tamano' src={luffy} alt='Cedula' /> */}
 			</div>
 			<ModalAlert 
 				openModal={openModal}

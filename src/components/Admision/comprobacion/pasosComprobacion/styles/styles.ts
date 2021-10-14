@@ -38,5 +38,6 @@ export const useStyles = makeStyles((styles) => ({
 	},
 	btnSend: {
 		margin: '1rem',
+		textTransform: 'none',
 	},
 }));

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 // @ts-expect-error
@@ -46,7 +45,7 @@ export default function PasoAccountNumber() {
 	}, [state.status]);
 
 	const handleIncorret = () => {
-		dispatch(Valid({ rc_ident_card: state }));
+		dispatch(Valid({ rc_ref_bank: state }));
 		handleCloseModal(false);
 	};
 

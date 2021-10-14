@@ -158,10 +158,7 @@ export const Step2: React.FC<any> = ({
 								component='label'>
 								{imagesForm.rc_constitutive_act !== null ? (
 									<>
-										<IconButton aria-label='upload picture' component='span'>
-											<PhotoCamera />
-										</IconButton>
-										<p className='nameImg'>{namesImages.rc_constitutive_act.slice(0, 10)}...</p>
+										<p className='nameImg'>{namesImages.rc_constitutive_act.slice(0, 7)}...</p>
 									</>
 								) : (
 									<>
@@ -214,10 +211,7 @@ export const Step2: React.FC<any> = ({
 						component='label'>
 						{imagesForm.rc_special_contributor !== null ? (
 							<>
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-								<p className='nameImg'>{namesImages.rc_special_contributor.slice(0, 10)}...</p>
+								<p className='nameImg'>{namesImages.rc_special_contributor.slice(0, 7)}...</p>
 							</>
 						) : (
 							<>

@@ -16,7 +16,7 @@ import { CloseModal } from '../../../store/actions/ui';
 import { RootState } from '../../../store/store';
 import './index.scss';
 
-import CancelIcon from '@material-ui/icons/Cancel';
+//import CancelIcon from '@material-ui/icons/Cancel';
 
 import PasoClient from './pasosComprobacion/PasoClient';
 import PasoCommerce from './pasosComprobacion/PasoCommerce';
@@ -143,13 +143,13 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 				Validacion (
 				${ 
 					form.path_rc_constitutive_act ?
-						`Acta Constitutiva ${form.path_rc_special_contributor ? '/' : ''}`
+						`Acta Const. ${form.path_rc_special_contributor ? '/' : ''}`
 					:
 					''
 				}
 				${ 
 					form.path_rc_special_contributor ?
-						'Contribuidor Especial' 
+						'Con. Especial' 
 					:
 					''
 				}
@@ -205,7 +205,7 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 					}
 				}
 			}
-		dispatch(updateStatusFM(fm.id_fm, 2, {}));
+			dispatch(updateStatusFM(fm.id_fm, 2, {}));
 		console.log('validated')
 		}
 		//eslint-disable-next-line react-hooks/exhaustive-deps
@@ -265,7 +265,10 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 	return (
 		<div>
 			<Dialog fullScreen open={modalOpen} onClose={handleClose} TransitionComponent={Transition} >
-				<CancelIcon className={classes2.cancelIcon} onClick={handleClose}/>
+				{/*
+					<CancelIcon className={classes2.cancelIcon} onClick={handleClose}/>
+					*/}
+				<div className="close" onClick={handleClose}></div>
 				<div className={classes2.root}>
 					<Stepper alternativeLabel nonLinear activeStep={activeStep}>
 						{steps.map((label, index) => {

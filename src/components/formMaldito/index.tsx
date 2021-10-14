@@ -281,6 +281,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		rc_special_contributor: '', //4
 		//step4
 		rc_ref_bank: '', //5
+		rc_comp_dep: '',
 	});
 
 	//images
@@ -757,6 +758,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		}
 	};
 
+	//CheckStepAcual
 	useEffect(() => {
 		if (
 			!valids.allInputNotNUll(valids.sizeStep(activeStep), cursedForm, fm.mashClient) &&
@@ -1044,17 +1046,20 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			) : (
 				<form className='container-form'>
 					<div className='capitan-america'></div>
-					<h1 className='titleFM'>Formulario de Solicitud</h1>
 					<Stepper
 						alternativeLabel
-						nonLinear
 						activeStep={activeStep}
 						style={{ background: 'none', width: '100%' }}>
 						{steps.map((label) => {
 							const stepProps: { completed?: boolean } = {};
 							return (
-								<Step key={label} {...stepProps}>
-									<StepLabel>{label}</StepLabel>
+								<Step 
+									key={label} 
+									{...stepProps}
+								>
+									<StepLabel>
+										<b>{label}</b>
+									</StepLabel>
 								</Step>
 							);
 						})}
