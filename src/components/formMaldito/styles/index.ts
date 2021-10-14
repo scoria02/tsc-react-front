@@ -68,4 +68,8 @@ export const useStylesFM = makeStyles((styles) => ({
 		display: 'flex',
 		alignItems: 'center',
 	},
+	containerBtn: {
+		display: 'flex',
+		justifyContent: 'center',
+	},
 }));

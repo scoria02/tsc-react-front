@@ -4,6 +4,7 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { useStylesFM } from '../styles';
 
@@ -134,19 +135,18 @@ export const Step4: React.FC<any> = ({
 			setReferido(false);
 		}
 		if (initial) {
-			let valor = 350 - initial;
+			let valor = cursedForm.number_post * 350 - initial;
 			let cuotas = valor / 50;
-			if (cuotas % 1 === 0 && cuotas > 0 && cuotas < 8) {
-				setCuotasTexto(`${cuotas} cuotas de 50$`);
+			if (valor < 0) {
+				setInitial(50);
+			}
+			if (cuotas % 1 === 0 && cuotas > 0 && cuotas) {
+				setCuotasTexto(`${cuotas} cuota/s de 50$`);
 			} else {
-				if (cuotas > 7) {
-					setCuotasTexto('La inicial es mas que el valor');
-				} else {
-					setCuotasTexto('Ingrese multiplo de 50');
-				}
+				setCuotasTexto('Elija tipo pago De Contado');
 			}
 		}
-	}, [initial, requestSource, typePay]);
+	}, [cursedForm.number_post, initial, requestSource, setInitial, typePay]);
 
 	return (
 		<div className={classes.grid}>
@@ -287,10 +287,19 @@ export const Step4: React.FC<any> = ({
 							type='number'
 							variant='outlined'
 							value={initial}
+							onKeyDown={(e) => {
+								e.preventDefault();
+							}}
+							inputProps={{
+								maxLength: 5,
+								step: '50',
+								min: '50',
+							}}
 							onChange={(e) => {
 								setInitial(e.target.value);
 							}}
 						/>
+
 						<TextField
 							disabled
 							id='initial'
@@ -306,9 +315,40 @@ export const Step4: React.FC<any> = ({
 					</>
 				)}
 			</div>
-			<div className={classes.inputText}>
+			<div className={classes.input}>
+				<div className={classNames(classes.row, classes.inputTextLeft)}>
+					<b className={classes.labels}>Comprobante de pago</b>
+					<Button
+						className={classes.imgIdent}
+						variant='contained'
+						//color="secondary"
+						component='label'>
+						{imagesForm.rc_comp_dep !== null ? (
+							<>
+								<IconButton aria-label='upload picture' component='span'>
+									<PhotoCamera />
+								</IconButton>
+								<p className='nameImg'>{namesImages.rc_comp_dep.slice(0, 10)}...</p>
+							</>
+						) : (
+							<>
+								<b>Subir</b>
+								<IconButton aria-label='upload picture' component='span'>
+									<PhotoCamera />
+								</IconButton>
+							</>
+						)}
+						<input
+							type='file'
+							hidden
+							name='rc_comp_dep'
+							accept='image/png, image/jpeg, image/jpg'
+							onChange={handleChangeImages}
+						/>
+					</Button>
+				</div>
 				<FormControlLabel
-					style={{ marginTop: 17.6 }}
+					className={classNames(classes.inputText, classes.containerBtn)}
 					label=''
 					control={
 						<>

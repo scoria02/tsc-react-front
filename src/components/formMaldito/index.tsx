@@ -294,6 +294,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		rc_special_contributor: null, //4
 		//Step4
 		rc_ref_bank: null, //5
+		rc_comp_dep: null,
 	});
 
 	const [cursedFormError, setCursedFormError] = useState<any>({
