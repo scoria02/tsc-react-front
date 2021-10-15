@@ -953,6 +953,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	};
 
 	const deleteImgContributor = (name: string) => {
+		console.log(name)
 		setImagesForm({
 			...imagesForm,
 			[`rc_${name}`]: null,

@@ -106,14 +106,13 @@ export const Step1: React.FC<any> = ({
 					<Button
 						className={classes.imgIdent}
 						variant='contained'
-						//color="secondary"
+						style={{ background: imagesForm.rc_ident_card ? '#5c62c5' : '#bbdefb' }}
 						component='label'
 						disabled={fm.mashClient}>
 						{imagesForm.rc_ident_card !== null ? (
 							<p className='nameImg'>{namesImages.rc_ident_card.slice(0, 7)} ...</p>
 						) : (
 							<>
-								<b>Subir</b>
 								<IconButton aria-label='upload picture' component='span'>
 									<PhotoCamera />
 								</IconButton>

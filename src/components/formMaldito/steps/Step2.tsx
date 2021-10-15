@@ -65,6 +65,7 @@ export const Step2: React.FC<any> = ({
 	useEffect(() => {
 		setActaFlag(false);
 		if (cursedForm.id_ident_type_commerce === 3) {
+			deleteImgContributor('constitutive_act');
 			setActaFlag(true);
 		}
 	}, [cursedForm.id_ident_type_commerce]);
@@ -126,13 +127,13 @@ export const Step2: React.FC<any> = ({
 					<Button
 						className={classes.imgIdent}
 						variant='contained'
-						//color="secondary"
+						style={{ background: imagesForm.rc_rif? '#5c62c5' : '#bbdefb' }}
 						component='label'>
 						{imagesForm.rc_rif !== null ? (
 							<p className='nameImg'>{namesImages.rc_rif.slice(0, 7)}...</p>
 						) : (
 							<>
-								<b>Subir</b>
+								{/*<b>Subir</b>*/}
 								<IconButton aria-label='upload picture' component='span'>
 									<PhotoCamera />
 								</IconButton>
@@ -154,7 +155,7 @@ export const Step2: React.FC<any> = ({
 							<Button
 								className={classes.imgIdent}
 								variant='contained'
-								//color="secondary"
+								style={{ background: imagesForm.rc_constitutive_act ? '#5c62c5' : '#bbdefb' }}
 								component='label'>
 								{imagesForm.rc_constitutive_act !== null ? (
 									<>
@@ -162,7 +163,7 @@ export const Step2: React.FC<any> = ({
 									</>
 								) : (
 									<>
-										<b>Subir</b>
+										{/*<b>Subir</b>*/}
 										<IconButton aria-label='upload picture' component='span'>
 											<PhotoCamera />
 										</IconButton>
@@ -205,9 +206,11 @@ export const Step2: React.FC<any> = ({
 					</div>
 					<Button
 						className={classes.imgIdent}
-						style={{ visibility: cursedForm.special_contributor ? 'visible' : 'hidden' }}
 						variant='contained'
-						//color="secondary"
+						style={{ 
+							background: imagesForm.rc_special_contributor ? '#5c62c5' : '#bbdefb',
+							visibility: cursedForm.special_contributor ? 'visible' : 'hidden'
+						}}
 						component='label'>
 						{imagesForm.rc_special_contributor !== null ? (
 							<>
@@ -215,7 +218,7 @@ export const Step2: React.FC<any> = ({
 							</>
 						) : (
 							<>
-								<b>Subir</b>
+								{/*<b>Subir</b>*/}
 								<IconButton aria-label='upload picture' component='span'>
 									<PhotoCamera />
 								</IconButton>

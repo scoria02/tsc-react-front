@@ -50,6 +50,7 @@ export const useStylesFM = makeStyles((styles) => ({
 	},
 	imgIdent: {
 		padding: '0',
+		fontSize: '.7rem',
 		textTransform: 'none',
 		width: '100%',
 		maxWidth: 100,

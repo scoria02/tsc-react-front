@@ -195,7 +195,7 @@ export const Step4: React.FC<any> = ({
 					<Button
 						className={classes.imgIdent}
 						variant='contained'
-						//color="secondary"
+						style={{ background: imagesForm.rc_ref_bank ? '#5c62c5' : '#bbdefb' }}
 						component='label'>
 						{imagesForm.rc_ref_bank !== null ? (
 							<>
@@ -203,7 +203,7 @@ export const Step4: React.FC<any> = ({
 							</>
 						) : (
 							<>
-								<b>Subir</b>
+								{/*<b>Subir</b>*/}
 								<IconButton aria-label='upload picture' component='span'>
 									<PhotoCamera />
 								</IconButton>
@@ -320,7 +320,7 @@ export const Step4: React.FC<any> = ({
 					<Button
 						className={classes.imgIdent}
 						variant='contained'
-						//color="secondary"
+						style={{ background: imagesForm.rc_comp_dep ? '#5c62c5' : '#bbdefb' }}
 						component='label'>
 						{imagesForm.rc_comp_dep !== null ? (
 							<>
@@ -328,7 +328,7 @@ export const Step4: React.FC<any> = ({
 							</>
 						) : (
 							<>
-								<b>Subir</b>
+								{/*<b>Subir</b>*/}
 								<IconButton aria-label='upload picture' component='span'>
 									<PhotoCamera />
 								</IconButton>
