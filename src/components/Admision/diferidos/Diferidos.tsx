@@ -1,7 +1,14 @@
 import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarFilterButton } from '@material-ui/data-grid';
+import { makeStyles } from '@material-ui/styles';
 import React, { useEffect, useState } from 'react';
 //Socket
 import WebSocket from '../../../hooks/WebSocket';
+
+const useStyle = makeStyles(() => ({
+	tableTitle: {
+		margin: '1rem',
+	},
+}));
 
 const columns: GridColDef[] = [
 	{ field: 'id_fm', headerName: 'ID', width: 75 },
@@ -38,11 +45,12 @@ const columns: GridColDef[] = [
 ];
 
 const Diferidos: React.FC = () => {
+	const classes = useStyle();
 	// const {id, email, cirif} = rows
 	const customToolbar: () => JSX.Element = () => {
 		return (
-			<GridToolbarContainer className='m-main-justify m-px-2'>
-				<h1 className='m-px-1'>Diferidos</h1>
+			<GridToolbarContainer className='m-main-justify m-px-2' style={{ minHeight: '4rem' }}>
+				<h1 className={classes.tableTitle}>Diferidos</h1>
 				<GridToolbarFilterButton className='m-px-1' />
 			</GridToolbarContainer>
 		);
