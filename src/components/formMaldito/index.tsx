@@ -137,7 +137,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		},
 	]);
 	const [requestSource, setRequestSource] = useState<any>(listRequestSource[0]);
-	const [initial, setInitial] = useState(50);
+	const [initial, setInitial] = useState(100);
 
 	//Activity commerce
 	const [listActivity, setListActivity] = useState<any>([]);
@@ -953,7 +953,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	};
 
 	const deleteImgContributor = (name: string) => {
-		console.log(name)
+		console.log(name);
 		setImagesForm({
 			...imagesForm,
 			[`rc_${name}`]: null,
@@ -1047,17 +1047,11 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			) : (
 				<form className='container-form'>
 					<div className='capitan-america'></div>
-					<Stepper
-						alternativeLabel
-						activeStep={activeStep}
-						style={{ background: 'none', width: '100%' }}>
+					<Stepper alternativeLabel activeStep={activeStep} style={{ background: 'none', width: '100%' }}>
 						{steps.map((label) => {
 							const stepProps: { completed?: boolean } = {};
 							return (
-								<Step 
-									key={label} 
-									{...stepProps}
-								>
+								<Step key={label} {...stepProps}>
 									<StepLabel>
 										<b>{label}</b>
 									</StepLabel>
