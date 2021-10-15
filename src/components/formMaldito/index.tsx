@@ -958,6 +958,10 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			...imagesForm,
 			[`rc_${name}`]: null,
 		});
+		setNamesImages({
+			...namesImages,
+			[`rc_${name}`] : ''
+		})
 	};
 
 	const steps = getSteps();
@@ -1032,6 +1036,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			setRequestSource={setRequestSource}
 			initial={initial}
 			setInitial={setInitial}
+			deleteImgContributor={deleteImgContributor}
 		/>,
 	];
 

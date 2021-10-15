@@ -65,8 +65,11 @@ export const Step2: React.FC<any> = ({
 	useEffect(() => {
 		setActaFlag(false);
 		if (cursedForm.id_ident_type_commerce === 3) {
-			deleteImgContributor('constitutive_act');
 			setActaFlag(true);
+		}else{
+			if(imagesForm.rc_constitutive_act){
+				deleteImgContributor('constitutive_act');
+			}
 		}
 	}, [cursedForm.id_ident_type_commerce]);
 

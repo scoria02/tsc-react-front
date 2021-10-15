@@ -32,10 +32,12 @@ export const Step4: React.FC<any> = ({
 	setRequestSource,
 	initial,
 	setInitial,
+	deleteImgContributor,
 }) => {
 	const classes = useStylesFM();
-	const [fraccion, setFraccion] = useState(false);
-	const [referido, setReferido] = useState(false);
+	const [fraccion, setFraccion] = useState<boolean>(false);
+	const [referido, setReferido] = useState<boolean>(false);
+	const [deleted, setDeleted] = useState<boolean>(false);
 	// const cuotasText = ['5 cuotas de 50$', '4 cuotas de 50$', '3 cuotas de 50$'];
 	const [cuotasTexto, setCuotasTexto] = useState('');
 
@@ -149,6 +151,14 @@ export const Step4: React.FC<any> = ({
 			}
 		}
 	}, [cursedForm.number_post, initial, requestSource, setInitial, typePay]);
+
+	useEffect(() => {
+		if(imagesForm.rc_comp_dep){
+			setDeleted(true)
+		}else{
+			setDeleted(false)
+		}
+	}, [imagesForm.rc_comp_dep])
 
 	return (
 		<div className={classes.grid}>
@@ -321,6 +331,12 @@ export const Step4: React.FC<any> = ({
 						className={classes.imgIdent}
 						variant='contained'
 						style={{ background: imagesForm.rc_comp_dep ? '#5c62c5' : '#bbdefb' }}
+						onClick={
+							() => {
+								deleted &&
+									deleteImgContributor('comp_dep')
+							}
+						}
 						component='label'>
 						{imagesForm.rc_comp_dep !== null ? (
 							<>
@@ -339,6 +355,7 @@ export const Step4: React.FC<any> = ({
 							hidden
 							name='rc_comp_dep'
 							accept='image/png, image/jpeg, image/jpg'
+							disabled={deleted}
 							onChange={handleChangeImages}
 						/>
 					</Button>
