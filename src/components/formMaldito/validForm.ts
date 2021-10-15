@@ -88,7 +88,7 @@ export const validNumBank = (value: string):boolean => {
 export const sizeStep = (active: number): number => {
 	switch (active) {
 		case 0:
-			return 14;
+			return 15;
 		case 1:
 			return 18; 
 		case 2:
@@ -129,7 +129,7 @@ export const allInputNotNUll = (last: number, form: any, mashClient: boolean): b
 					return true;
 				}
 			}else{
-				if((item[0] === 'name' || item[0] === 'last_name') && mashClient) {
+				if(mashClient && indice < 16) {
 					//no hago nada
 				}else{
 					if (item[1].trim() === '') {

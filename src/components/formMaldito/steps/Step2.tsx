@@ -71,6 +71,7 @@ export const Step2: React.FC<any> = ({
 				deleteImgContributor('constitutive_act');
 			}
 		}
+		/* eslint-disable react-hooks/exhaustive-deps */
 	}, [cursedForm.id_ident_type_commerce]);
 
 	return (

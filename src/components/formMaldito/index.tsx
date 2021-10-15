@@ -111,7 +111,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	});
 
 	//Ident Type
-	const [listIdentType, setListIdentType] = useState<any>([]);
+	const [listIdentType, setListIdentType] = useState<any[]>([]);
 
 	// Origen de solicitud
 	const [listRequestSource, setListRequestSol] = useState<any>([
@@ -136,11 +136,11 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			name: 'Pagina WEB',
 		},
 	]);
-	const [requestSource, setRequestSource] = useState<any>(listRequestSource[0]);
+	const [requestSource, setRequestSource] = useState<any[]>(listRequestSource[0]);
 	const [initial, setInitial] = useState(100);
 
 	//Activity commerce
-	const [listActivity, setListActivity] = useState<any>([]);
+	const [listActivity, setListActivity] = useState<any[]>([]);
 	const [activity, setActivity] = useState<any>(null);
 
 	//
@@ -157,10 +157,10 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	const [typePay, setTypePay] = useState<any>(null);
 
 	//POS
-	const [listPayment, setListPayment] = useState<any>([]);
+	const [listPayment, setListPayment] = useState<any[]>([]);
 	const [payment, setPayment] = useState<any>(null);
 
-	const [listModelPos, setListModelPos] = useState<any>([]);
+	const [listModelPos, setListModelPos] = useState<any[]>([]);
 	const [modelPos, setModelPost] = useState<any>(null);
 
 	const [cursedForm, setCursedForm] = useState<any>({
@@ -217,58 +217,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		cuotas: 0, //Si es inical coutas cambia
 		discount: 0,
 	});
-
-	/*
-	const [cursedForm, setCursedForm] = useState<any>({
-		//step1 Cliente
-		email: '1000pagos@correo.com',
-		name: 'Mil',
-		last_name: 'Pagos',
-		id_ident_type: 1,
-		ident_num: '187654321',
-		phone1: '+584121234567',
-		phone2: '+584121234566',
-		id_estado_client: 1,
-		id_ciudad_client: 1,
-		id_municipio_client: 1,
-		id_parroquia_client: 1,
-		sector_client: 'Uno client',
-		calle_client: '11 client',
-		local_client: 'A client',
-		codigo_postal_client: '1111',
-		//step2 Comercio
-		name_commerce: 'MilPagos',
-		id_ident_type_commerce: 3,
-		ident_num_commerce: '12344321',
-		id_activity: 0,
-		special_contributor: 0,
-		//Step3 Location
-			//Commerce
-		id_estado: 1,
-		id_ciudad: 1,
-		id_municipio: 1,
-		id_parroquia: 1,
-		sector: 'Uno',
-		calle: '13',
-		local: 'A1',
-		codigo_postal: '2222',
-			//Pos
-		id_estado_pos: 1,
-		id_ciudad_pos: 1,
-		id_municipio_pos: 1,
-		id_parroquia_pos: 1,
-		sector_pos: 'Dos',
-		calle_pos: '15',
-		local_pos: 'A2',
-		codigo_postal_pos: '33333',
-		//Step4 Post
-		id_payment_method: 1,
-		id_type_pay: 0,
-		text_account_number: '01021565144444344444',
-		number_post: 1,
-		id_model_post: 1,
-	});
-	*/
 
 	//name images
 	const [namesImages, setNamesImages] = useState<any>({
@@ -378,11 +326,17 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			dispatch(
 				sendFM({
 					...fm.id_images,
-					number_post: cursedForm.number_post,
-					bank_account_num: cursedForm.text_account_number,
-					id_payment_method: cursedForm.id_payment_method,
 					id_client: fm.id_client,
 					id_commerce: fm.id_commerce,
+					number_post: cursedForm.number_post,
+					id_model_post: cursedForm.id_model_post,
+					id_payment_method: cursedForm.id_payment_method,
+					bank_account_num: cursedForm.text_account_number,
+					id_type_pay: cursedForm.id_type_pay,
+					id_requestSource: cursedForm.id_requestSource,
+					requestSource_docnum: cursedForm.requestSource,
+					coutas: cursedForm.cuotas,
+					discount: cursedForm.discount,
 					dir_pos: {
 						id_estado: cursedForm.id_estado_pos,
 						id_municipio: cursedForm.id_municipio_pos,
@@ -1043,8 +997,8 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	return (
 		<div className='ed-container container-formMaldito'>
 			{listIdentType.length === 0 ||
-			listActivity === 0 ||
-			listPayment === 0 ||
+			listActivity.length === 0 ||
+			listPayment.length === 0 ||
 			listLocationCommerce.estado.length === 0 ||
 			listLocationClient.estado.length === 0 ||
 			listLocationPos.estado.length === 0 ? (
@@ -1077,7 +1031,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 									Volver
 								</Button>
 								<Button
-									//disabled={!readyStep}
+									disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'
