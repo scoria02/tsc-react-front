@@ -1,14 +1,12 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import React from 'react';
+import { Redirect, Route } from 'react-router-dom';
 // import { Route } from 'react-router-dom';
 import Admision from '../components/Admision';
 import { FormMaldito } from '../components/formMaldito';
 import GestionUsuarios from '../components/GestionUsuarios';
 import MainMenu from '../components/MainMenu';
-import { baseUrl, urlAceptacion, urlFM } from '../routers/url';
-
-import { Route, Redirect } from 'react-router-dom';
-
+import { baseUrl, urlAdmision, urlFM } from '../routers/url';
 //Components
 import Inicio from './Home';
 
@@ -41,7 +39,7 @@ const Home: React.FC = () => {
 			<MainMenu />
 			<main className={classes.content}>
 				<Route
-					path={urlAceptacion}
+					path={urlAdmision}
 					exact
 					render={() => {
 						return <Admision />;

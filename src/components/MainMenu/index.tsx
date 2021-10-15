@@ -32,7 +32,7 @@ import luffy from '../../img/itachi2.png';
 import TranredLogo from '../../img/tranred-logo.png';
 //Redux
 //import luffy from '../../img/user.png';
-import { baseUrl, urlAceptacion, urlFM } from '../../routers/url';
+import { baseUrl, urlAdmision, urlFM } from '../../routers/url';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
 import './index.scss';
@@ -178,8 +178,8 @@ const MainMenu: React.FC = () => {
 
 	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
 		if (index === 3) {
-			history.push(urlAceptacion);
-			localStorage.setItem('path', urlAceptacion);
+			history.push(urlAdmision);
+			localStorage.setItem('path', urlAdmision);
 		}
 		if (index === 5) {
 			history.push(urlFM);
@@ -392,7 +392,7 @@ const MainMenu: React.FC = () => {
 						<ListItemText primary='Formulario de Act.' />
 					</ListItem>
 					<ListItem button onClick={(event) => handleListItemClick(event, 3)}>
-						<Link to={'/Aceptacion'}>
+						<Link to={urlAdmision}>
 							<ListItemIcon>
 								<WorkIcon />
 							</ListItemIcon>

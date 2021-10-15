@@ -1,3 +1,3 @@
 export const baseUrl = '/';
-export const urlAceptacion = `${baseUrl}Aceptacion`;
-export const urlFM= `${baseUrl}Solicitud`;
+export const urlAdmision = `${baseUrl}Admision`;
+export const urlFM = `${baseUrl}Solicitud`;
