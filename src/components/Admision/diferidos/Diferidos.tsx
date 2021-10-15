@@ -1,58 +1,41 @@
 import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarFilterButton } from '@material-ui/data-grid';
 import React, { useEffect, useState } from 'react';
-
 //Socket
 import WebSocket from '../../../hooks/WebSocket';
 
 const columns: GridColDef[] = [
-	{ field: 'id_fm', headerName: 'Nro', width: 100 },
+	{ field: 'id_fm', headerName: 'ID', width: 75 },
 	{
-		field: 'email_client',
-		headerName: 'Correo Cliente',
+		field: 'dif_date',
+		headerName: 'Fecha diferido',
+		width: 150,
+		editable: false,
+	},
+	{
+		field: 'name_commerce',
+		headerName: 'Nombre comercio',
 		width: 220,
 		editable: false,
 	},
 	{
-		field: 'ident_type_client',
-		headerName: 'Cliente',
-		width: 150,
-		editable: false,
-		valueFormatter: (value) => {
-			return `${value.row?.ident_type_client}${value.row?.ident_num_client}` 
-		}
-	},
-	{
-		field: 'ident_type_commerce',
-		headerName: 'Comercio RIF',
+		field: 'name_client',
+		headerName: 'Nombre cliente',
 		width: 200,
 		editable: false,
 		valueFormatter: (value) => {
-			return `${value.row?.ident_type_commerce}${value.row?.ident_num_commerce}` 
-		}
+			return `${value.row?.name_client} ${value.row?.last_name_client}`;
+		},
+	},
+	{
+		field: 'ident_type_commerce',
+		headerName: 'RIF',
+		width: 150,
+		editable: false,
+		valueFormatter: (value) => {
+			return `${value.row?.ident_type_commerce}${value.row?.ident_num_commerce}`;
+		},
 	},
 ];
-
-/*
-const rows = [
-	{ id: 100000000, email: 'Snow@gmail.com', cirif: '67435425', tel: null },
-	{ id: 200000000, email: 'Lannister@gmail.com', cirif: '67435425' },
-	{ id: 300000000, email: 'Lannister@gmail.com', cirif: '67435425' },
-	{ id: 400000000, email: 'Stark@gmail.com', cirif: '67435425' },
-	{ id: 500000000, email: 'Targaryen@gmail.com', cirif: '67435425' },
-	{ id: 700000000, email: 'Clifford@gmail.com', cirif: '67435425' },
-	{ id: 800000000, email: 'Frances@gmail.com', cirif: '67435425' },
-	{ id: 900040000, email: 'Roxi@gmail.come', cirif: '67435425' },
-	{ id: 9000400000, email: 'Roxi@gmail.come', cirif: '67435425' },
-	{ id: 901200000, email: 'Roxi@gmail.come', cirif: '67435425' },
-	{ id: 900100000, email: 'Roxi@gmail.come', cirif: '67435425' },
-	{ id: 900200000, email: 'Roxi@gmail.come', cirif: '67435425' },
-	{ id: 9000500, email: 'Roxi@gmail.come', cirif: '67435425' },
-	{ id: 900000300, email: 'Roxi@gmail.come', cirif: '67435425' },
-	{ id: 90000000, email: 'Roxi@gmail.come', cirif: '67435425' },
-	{ id: 900000010, email: 'Roxi@gmail.come', cirif: '67435425' },
-	{ id: 900000000, email: 'Roxi@gmail.come', cirif: '67435425' },
-];
-*/
 
 const Diferidos: React.FC = () => {
 	// const {id, email, cirif} = rows
@@ -70,11 +53,11 @@ const Diferidos: React.FC = () => {
 	const [diferidos, setDiferidos] = useState([]);
 
 	useEffect(() => {
-		if(socket){
+		if (socket) {
 			//socket.emit("list_diferidos", 'Mamaloooooooo');
-			socket.on("list_diferidos", (list:any) => {
-				if(list.diferidos){
-					setDiferidos(list.diferidos)
+			socket.on('list_diferidos', (list: any) => {
+				if (list.diferidos) {
+					setDiferidos(list.diferidos);
 				}
 			});
 		}
@@ -95,6 +78,7 @@ const Diferidos: React.FC = () => {
 				pageSize={5}
 				onCellClick={handleRow}
 				rowsPerPageOptions={[25]}
+				disableColumnMenu
 				getRowId={(row) => row.id_fm}
 			/>
 		</div>
