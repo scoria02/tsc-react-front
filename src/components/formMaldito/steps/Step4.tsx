@@ -98,11 +98,16 @@ export const Step4: React.FC<any> = ({
 
 	const handleSelectOrigin = (event: any, value: any, item: string) => {
 		if (value) {
+			console.log('obj', {
+				[`id_${item}`]: value.id,
+			});
+
 			setCursedForm({
 				...cursedForm,
 				[`id_${item}`]: value.id,
 			});
 			setRequestSource(value);
+			console.log();
 		} else {
 			setCursedForm({
 				...cursedForm,
@@ -153,12 +158,12 @@ export const Step4: React.FC<any> = ({
 	}, [cursedForm.number_post, initial, requestSource, setInitial, typePay]);
 
 	useEffect(() => {
-		if(imagesForm.rc_comp_dep){
-			setDeleted(true)
-		}else{
-			setDeleted(false)
+		if (imagesForm.rc_comp_dep) {
+			setDeleted(true);
+		} else {
+			setDeleted(false);
 		}
-	}, [imagesForm.rc_comp_dep])
+	}, [imagesForm.rc_comp_dep]);
 
 	return (
 		<div className={classes.grid}>
@@ -254,12 +259,12 @@ export const Step4: React.FC<any> = ({
 			<div className={classes.input}>
 				<Autocomplete
 					className={classes.inputTextLeft}
-					onChange={(event, value) => handleSelectOrigin(event, value, 'requestSource')}
+					onChange={(event, value) => handleSelectOrigin(event, value, 'request_origin')}
 					value={requestSource || null}
 					options={listRequestSource}
 					getOptionLabel={(option: any) => (option.name ? option.name : '')}
 					renderInput={(params: any) => (
-						<TextField {...params} name='origenSol' label='Origen de Solicitud' variant='outlined' />
+						<TextField {...params} name='request_origin' label='Origen de Solicitud' variant='outlined' />
 					)}
 				/>
 				<TextField
@@ -331,12 +336,9 @@ export const Step4: React.FC<any> = ({
 						className={classes.imgIdent}
 						variant='contained'
 						style={{ background: imagesForm.rc_comp_dep ? '#5c62c5' : '#bbdefb' }}
-						onClick={
-							() => {
-								deleted &&
-									deleteImgContributor('comp_dep')
-							}
-						}
+						onClick={() => {
+							deleted && deleteImgContributor('comp_dep');
+						}}
 						component='label'>
 						{imagesForm.rc_comp_dep !== null ? (
 							<>

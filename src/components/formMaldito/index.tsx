@@ -211,8 +211,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		text_account_number: '',
 		id_payment_method: 0,
 		id_type_pay: 0,
-		//orgien sol
-		id_requestSource: 0,
+		id_request_origin: 0,
 		reqSource_docnum: '',
 		cuotas: 0, //Si es inical coutas cambia
 		discount: 0,
@@ -332,9 +331,10 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 					id_model_post: cursedForm.id_model_post,
 					id_payment_method: cursedForm.id_payment_method,
 					bank_account_num: cursedForm.text_account_number,
-					id_type_pay: cursedForm.id_type_pay,
-					id_requestSource: cursedForm.id_requestSource,
-					requestSource_docnum: cursedForm.requestSource,
+					id_type_payment: cursedForm.id_type_pay,
+					id_request_origin: cursedForm.id_request_origin,
+					ci_referred: cursedForm.reqSource_docnum,
+					requestSource_docnum: cursedForm.id_requestSource,
 					coutas: cursedForm.cuotas,
 					discount: cursedForm.discount,
 					dir_pos: {
@@ -914,8 +914,8 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		});
 		setNamesImages({
 			...namesImages,
-			[`rc_${name}`] : ''
-		})
+			[`rc_${name}`]: '',
+		});
 	};
 
 	const steps = getSteps();
@@ -1031,7 +1031,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 									Volver
 								</Button>
 								<Button
-									disabled={!readyStep}
+									// disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'
