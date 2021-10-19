@@ -13,6 +13,7 @@ export const validationClient = (client: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
+			console.log('client', res.data.info)
 			updateToken(res);
 			dispatch(requestSuccess(res.data.info));
 			//console.log(res.data)

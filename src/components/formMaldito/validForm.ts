@@ -138,9 +138,13 @@ export const allInputNotNUll = (last: number, form: any, mashClient: boolean): b
 				}
 			}
 		}else if (typeof item[1] === 'number' && item[0] !== 'special_contributor') {
-			if(item[1] === 0){
-				return true;
-			}
+			if(mashClient && indice < 15) {
+				//no hago nada
+			}else{
+				if(item[1] === 0){
+					return true;
+				}
+			}	
 		}	
 	}
 	return false;
@@ -159,7 +163,7 @@ export const allImgNotNUll = (last: number, images: any, special_contributor: bo
 			item[0] === 'rc_constitutive_act' && isActa !== 3 ){
 			//nada
 		}else{
-			if((item[0] === 'rc_ident_card' || item[0] === 'rc_ref_perso') && mashClient) {
+			if(item[0] === 'rc_ident_card' && mashClient) {
 				//No hago nada
 			}
 			else {
