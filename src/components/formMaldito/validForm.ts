@@ -90,11 +90,11 @@ export const sizeStep = (active: number): number => {
 		case 0:
 			return 15;
 		case 1:
-			return 18; 
+			return 20; 
 		case 2:
-			return 35; 
+			return 36; 
 		case 3:
-			return 35; 
+			return 45; 
 		default:
 			return 0;
 	}
@@ -105,11 +105,11 @@ export const sizeImagesStep = (active: number): number => {
 		case 0:
 			return 1;
 		case 1:
-			return 7; 
+			return 4; 
 		case 2:
-			return 7; 
+			return 4; 
 		case 3:
-			return 8;
+			return 6;
 		default:
 			return 0;
 	}
@@ -118,7 +118,7 @@ export const sizeImagesStep = (active: number): number => {
 export const allInputNotNUll = (last: number, form: any, mashClient: boolean): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(form)) {
-		if (indice > last) {
+		if (indice === last) {
 			return false;
 		}
 		indice++;
@@ -146,15 +146,18 @@ export const allInputNotNUll = (last: number, form: any, mashClient: boolean): b
 	return false;
 };
 
-export const allImgNotNUll = (last: number, images: any, special_contributor: boolean, mashClient: boolean): boolean => {
+export const allImgNotNUll = (last: number, images: any, special_contributor: boolean, mashClient: boolean, isActa: number): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(images)) {
-		if (indice > last) {
+		if (indice === last) {
 			return false;
 		}
 		indice++;
-		if(item[0] === 'rc_special_contributor' && !special_contributor){
+		if(item[0] === 'rc_special_contributor' && !special_contributor) {
 			//Salto
+		}else if (
+			item[0] === 'rc_constitutive_act' && isActa !== 3 ){
+			//nada
 		}else{
 			if((item[0] === 'rc_ident_card' || item[0] === 'rc_ref_perso') && mashClient) {
 				//No hago nada

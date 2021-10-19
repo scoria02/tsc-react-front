@@ -12,6 +12,7 @@ export const getDataFM = () => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.get(`/FM`);
+			console.log('aqui', res.data)
 			updateToken(res);
 			dispatch(requestSuccess(res.data.info));
 		} catch (error) {

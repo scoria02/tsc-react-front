@@ -137,7 +137,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		},
 	]);
 	const [requestSource, setRequestSource] = useState<any[]>(listRequestSource[0]);
-	const [initial, setInitial] = useState(100);
 
 	//Activity commerce
 	const [listActivity, setListActivity] = useState<any[]>([]);
@@ -176,10 +175,10 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		id_ciudad_client: 0,
 		id_municipio_client: 0,
 		id_parroquia_client: 0,
+		codigo_postal_client: '',
 		sector_client: '',
 		calle_client: '',
 		local_client: '',
-		codigo_postal_client: '',
 		//step2 Comercio
 		name_commerce: '',
 		id_activity: 0,
@@ -192,19 +191,19 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		id_ciudad: 0,
 		id_municipio: 0,
 		id_parroquia: 0,
+		codigo_postal: '',
 		sector: '',
 		calle: '',
 		local: '',
-		codigo_postal: '',
 		//Pos
 		id_estado_pos: 0,
 		id_ciudad_pos: 0,
 		id_municipio_pos: 0,
 		id_parroquia_pos: 0,
+		codigo_postal_pos: '',
 		sector_pos: '',
 		calle_pos: '',
 		local_pos: '',
-		codigo_postal_pos: '',
 		//Step4 Post
 		number_post: 1,
 		id_model_post: 0,
@@ -213,6 +212,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		id_type_pay: 0,
 		id_request_origin: 0,
 		reqSource_docnum: '',
+		initial: 100,
 		cuotas: 0, //Si es inical coutas cambia
 		discount: 0,
 	});
@@ -720,11 +720,13 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				valids.sizeImagesStep(activeStep),
 				imagesForm,
 				cursedForm.special_contributor,
-				fm.mashClient
+				fm.mashClient,
+				cursedForm.id_ident_type_commerce
 			) &&
 			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) &&
 			validEndPointFM()
 		) {
+			console.log('Vas Bien')
 			setReadyStep(true);
 		} else {
 			setReadyStep(false);
@@ -851,7 +853,8 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				valids.sizeImagesStep(activeStep),
 				imagesForm,
 				cursedForm.special_contributor,
-				fm.mashClient
+				fm.mashClient,
+				cursedForm.id_ident_type_commerce
 			) ||
 			valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError)
 		)
@@ -988,8 +991,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			listRequestSource={listRequestSource}
 			requestSource={requestSource}
 			setRequestSource={setRequestSource}
-			initial={initial}
-			setInitial={setInitial}
 			deleteImgContributor={deleteImgContributor}
 		/>,
 	];
@@ -1031,7 +1032,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 									Volver
 								</Button>
 								<Button
-									// disabled={!readyStep}
+									disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'

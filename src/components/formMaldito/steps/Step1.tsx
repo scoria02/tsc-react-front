@@ -225,20 +225,21 @@ export const Step1: React.FC<any> = ({
 						variant='outlined'
 						required
 						id='standard-required'
-						label='Sector'
-						name='sector_client'
+						label='Cod.
+					Postal'
+						name='codigo_postal_client'
 						onChange={handleChange}
-						value={cursedForm.sector_client}
+						value={cursedForm.codigo_postal_client}
 					/>
 					<TextField
 						className={classes.inputText}
 						variant='outlined'
 						required
 						id='standard-required'
-						label='Calle'
-						name='calle_client'
+						label='Sector'
+						name='sector_client'
 						onChange={handleChange}
-						value={cursedForm.calle_client}
+						value={cursedForm.sector_client}
 					/>
 				</div>
 				<div className={classes.input}>
@@ -247,21 +248,20 @@ export const Step1: React.FC<any> = ({
 						variant='outlined'
 						required
 						id='standard-required'
-						label='Casa/Quinta/Apart'
-						name='local_client'
+						label='Calle'
+						name='calle_client'
 						onChange={handleChange}
-						value={cursedForm.local_client}
+						value={cursedForm.calle_client}
 					/>
 					<TextField
 						className={classes.inputText}
 						variant='outlined'
 						required
 						id='standard-required'
-						label='Cod.
-					Postal'
-						name='codigo_postal_client'
+						label='Casa/Quinta/Apart'
+						name='local_client'
 						onChange={handleChange}
-						value={cursedForm.codigo_postal_client}
+						value={cursedForm.local_client}
 					/>
 				</div>
 			</div>

@@ -30,8 +30,6 @@ export const Step4: React.FC<any> = ({
 	listRequestSource,
 	requestSource,
 	setRequestSource,
-	initial,
-	setInitial,
 	deleteImgContributor,
 }) => {
 	const classes = useStylesFM();
@@ -98,16 +96,11 @@ export const Step4: React.FC<any> = ({
 
 	const handleSelectOrigin = (event: any, value: any, item: string) => {
 		if (value) {
-			console.log('obj', {
-				[`id_${item}`]: value.id,
-			});
-
 			setCursedForm({
 				...cursedForm,
 				[`id_${item}`]: value.id,
 			});
 			setRequestSource(value);
-			console.log();
 		} else {
 			setCursedForm({
 				...cursedForm,
@@ -141,21 +134,32 @@ export const Step4: React.FC<any> = ({
 		} else {
 			setReferido(false);
 		}
-		if (initial) {
+		if (cursedForm.initial && modelPos) {
 			// cable pelado para el monto del precio del modelo seleccionado para calcular las cuotas
-			let valor = cursedForm.number_post * (350 - initial);
+			let valor = cursedForm.number_post * (modelPos.price - cursedForm.initial);
 			let cuotas = valor / (cursedForm.number_post * 50);
 
+			setCursedForm({
+				...cursedForm,
+				'cuotas':  valor / (cursedForm.number_post * 50)
+			})
+
 			if (valor < 0) {
-				setInitial(50);
+				setCursedForm({
+					...cursedForm,
+					'initial':100 
+				})
 			}
 			if (cuotas % 1 === 0 && cuotas > 0 && cuotas) {
 				setCuotasTexto(`${cuotas} cuota/s de 50$`);
 			} else {
-				setCuotasTexto('Elija tipo pago De Contado');
+				setCursedForm({
+					...cursedForm,
+					'initial':100 
+				})
 			}
 		}
-	}, [cursedForm.number_post, initial, requestSource, setInitial, typePay]);
+	}, [cursedForm.number_post, cursedForm.initial, requestSource, typePay, modelPos]);
 
 	useEffect(() => {
 		if (imagesForm.rc_comp_dep) {
@@ -299,8 +303,9 @@ export const Step4: React.FC<any> = ({
 							label='Inicial'
 							className={classes.inputTextLeft}
 							type='number'
+							name='initial'
 							variant='outlined'
-							value={initial}
+							value={cursedForm.initial}
 							onKeyDown={(e) => {
 								e.preventDefault();
 							}}
@@ -309,11 +314,8 @@ export const Step4: React.FC<any> = ({
 								step: '50',
 								min: '100',
 							}}
-							onChange={(e) => {
-								setInitial(e.target.value);
-							}}
+							onChange={handleChange}
 						/>
-
 						<TextField
 							disabled
 							id='initial'
@@ -322,9 +324,6 @@ export const Step4: React.FC<any> = ({
 							type='text'
 							variant='outlined'
 							value={cuotasTexto}
-							onChange={(e) => {
-								setInitial(e.target.value);
-							}}
 						/>
 					</>
 				)}

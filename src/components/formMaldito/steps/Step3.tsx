@@ -112,6 +112,16 @@ export const Step3: React.FC<any> = ({
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
 					<TextField
+						className={classes.inputText}
+						variant='outlined'
+						required
+						id='standard-required'
+						label='Codigo Postal'
+						name='codigo_postal'
+						onChange={handleChangeCommerce}
+						value={cursedForm.codigo_postal}
+					/>
+					<TextField
 						className={classes.inputTextLeft}
 						variant='outlined'
 						required
@@ -121,6 +131,8 @@ export const Step3: React.FC<any> = ({
 						onChange={handleChangeCommerce}
 						value={cursedForm.sector}
 					/>
+				</div>
+				<div className={classnames(classes.row, classes.input)}>
 					<TextField
 						className={classes.inputText}
 						variant='outlined'
@@ -131,8 +143,6 @@ export const Step3: React.FC<any> = ({
 						onChange={handleChangeCommerce}
 						value={cursedForm.calle}
 					/>
-				</div>
-				<div className={classnames(classes.row, classes.input)}>
 					<TextField
 						className={classes.inputTextLeft}
 						variant='outlined'
@@ -142,16 +152,6 @@ export const Step3: React.FC<any> = ({
 						name='local'
 						onChange={handleChangeCommerce}
 						value={cursedForm.local}
-					/>
-					<TextField
-						className={classes.inputText}
-						variant='outlined'
-						required
-						id='standard-required'
-						label='Codigo Postal'
-						name='codigo_postal'
-						onChange={handleChangeCommerce}
-						value={cursedForm.codigo_postal}
 					/>
 				</div>
 			</div>
@@ -205,6 +205,16 @@ export const Step3: React.FC<any> = ({
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
 					<TextField
+						className={classes.inputText}
+						variant='outlined'
+						required
+						id='standard-required'
+						label='Codigo Postal'
+						name='codigo_postal_pos'
+						onChange={handleChangePos}
+						value={cursedForm.codigo_postal_pos}
+					/>
+					<TextField
 						className={classes.inputTextLeft}
 						variant='outlined'
 						required
@@ -214,6 +224,8 @@ export const Step3: React.FC<any> = ({
 						onChange={handleChangePos}
 						value={cursedForm.sector_pos}
 					/>
+				</div>
+				<div className={classnames(classes.row, classes.input)}>
 					<TextField
 						className={classes.inputText}
 						variant='outlined'
@@ -224,8 +236,6 @@ export const Step3: React.FC<any> = ({
 						onChange={handleChangePos}
 						value={cursedForm.calle_pos}
 					/>
-				</div>
-				<div className={classnames(classes.row, classes.input)}>
 					<TextField
 						className={classes.inputTextLeft}
 						variant='outlined'
@@ -235,16 +245,6 @@ export const Step3: React.FC<any> = ({
 						name='local_pos'
 						onChange={handleChangePos}
 						value={cursedForm.local_pos}
-					/>
-					<TextField
-						className={classes.inputText}
-						variant='outlined'
-						required
-						id='standard-required'
-						label='Codigo Postal'
-						name='codigo_postal_pos'
-						onChange={handleChangePos}
-						value={cursedForm.codigo_postal_pos}
 					/>
 				</div>
 			</div>
