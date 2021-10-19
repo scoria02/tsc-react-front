@@ -210,7 +210,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		text_account_number: '',
 		id_payment_method: 0,
 		id_type_pay: 0,
-		id_request_origin: 0,
+		id_request_origin: 1,
 		reqSource_docnum: '',
 		initial: 100,
 		cuotas: 0, //Si es inical coutas cambia
@@ -277,27 +277,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		if (sendForm === 1 && fm.id_client !== 0) {
 			console.log('Listo Cliente');
 			dispatch(
-				sendCommerce(
-					fm.id_client,
-					//Commerce
-					{
-						id_ident_type: cursedForm.id_ident_type_commerce,
-						ident_num: cursedForm.ident_num_commerce,
-						special_contributor: cursedForm.special_contributor,
-						name: cursedForm.name_commerce,
-						bank_account_num: cursedForm.text_account_number,
-						id_activity: cursedForm.id_activity,
-						location: {
-							id_estado: cursedForm.id_estado,
-							id_municipio: cursedForm.id_municipio,
-							id_parroquia: cursedForm.id_parroquia,
-							id_ciudad: cursedForm.id_ciudad,
-							sector: cursedForm.sector,
-							calle: cursedForm.calle,
-							local: cursedForm.local,
-						},
-					}
-				)
+				sendCommerce(fm.id_client, cursedForm)
 			);
 			setSendForm(2);
 			//Fin comerce
@@ -312,41 +292,13 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			formData.append('id_client', fm.id_client);
 			formData.append('id_commerce', fm.id_commerce);
 			formData.append('bank_account_num', cursedForm.text_account_number);
-			/*
-			for (var value of formData.values()) {
-				console.log(value);
-			}
-		 */
 			dispatch(sendImages(formData));
 			//update fm_imgaes
 			setSendForm(3);
 		} else if (sendForm === 3 && fm.id_images !== null && fm.id_commerce !== 0 && fm.id_client !== 0) {
 			console.log('Listo Images, Client/Comercio:', fm.id_client, fm.id_commerce);
 			dispatch(
-				sendFM({
-					...fm.id_images,
-					id_client: fm.id_client,
-					id_commerce: fm.id_commerce,
-					number_post: cursedForm.number_post,
-					id_model_post: cursedForm.id_model_post,
-					id_payment_method: cursedForm.id_payment_method,
-					bank_account_num: cursedForm.text_account_number,
-					id_type_payment: cursedForm.id_type_pay,
-					id_request_origin: cursedForm.id_request_origin,
-					ci_referred: cursedForm.reqSource_docnum,
-					requestSource_docnum: cursedForm.id_requestSource,
-					coutas: cursedForm.cuotas,
-					discount: cursedForm.discount,
-					dir_pos: {
-						id_estado: cursedForm.id_estado_pos,
-						id_municipio: cursedForm.id_municipio_pos,
-						id_parroquia: cursedForm.id_parroquia_pos,
-						id_ciudad: cursedForm.id_ciudad_pos,
-						sector: cursedForm.sector_pos,
-						calle: cursedForm.calle_pos,
-						local: cursedForm.local_pos,
-					},
-				})
+				sendFM(cursedForm, fm)
 			);
 			/*
 			//mode_post: cursedForm.mode_post,
@@ -863,26 +815,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		handleLoading();
 		setSendForm(1);
 		if (!fm.mashClient) {
-			dispatch(
-				sendClient({
-					email: cursedForm.email,
-					name: cursedForm.name,
-					last_name: cursedForm.last_name,
-					id_ident_type: cursedForm.id_ident_type,
-					ident_num: cursedForm.ident_num,
-					phone1: cursedForm.phone1,
-					phone2: cursedForm.phone2,
-					location: {
-						id_estado: cursedForm.id_estado_client,
-						id_municipio: cursedForm.id_municipio_client,
-						id_parroquia: cursedForm.id_parroquia_client,
-						id_ciudad: cursedForm.id_ciudad_client,
-						sector: cursedForm.sector_client,
-						calle: cursedForm.calle_client,
-						local: cursedForm.local_client,
-					},
-				})
-			);
+			dispatch(sendClient(cursedForm));
 		}
 	};
 
