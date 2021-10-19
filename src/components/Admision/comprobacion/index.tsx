@@ -135,7 +135,6 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 	const validated: any = useSelector((state: RootState) => state.acceptance.validado);
 	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatus);
 
-
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [completed, setCompleted] = React.useState(new Set<number>());
 	const [skipped, setSkipped] = React.useState(new Set<number>());
@@ -225,11 +224,11 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 
 	const handleNext = () => {
 		const newActiveStep =
-			isLastStep() && !allStepsCompleted()
-				? // It's the last step, but not all steps have been completed
-				  // find the first step that has been completed
-				  steps.findIndex((step, i) => !completed.has(i))
-				: activeStep + 1;
+			isLastStep() && 
+			!allStepsCompleted() ? 
+				steps.findIndex((step, i) => !completed.has(i))
+			: 
+				activeStep + 1;
 		setActiveStep(newActiveStep);
 	};
 

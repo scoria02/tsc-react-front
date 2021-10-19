@@ -40,14 +40,14 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
     'id_status_request': status,
 		valids: {
 			//step1
-			valid_rc_ident_card: accept.rc_ident_card,
+			valid_rc_ident_card: accept.rc_ident_card.msg,
 			//step2
-			valid_rc_rif: accept.rc_rif, 
+			valid_rc_rif: accept.rc_rif.msg, 
 			//step3
-			valid_rc_ref_bank: accept.rc_ref_bank,
+			valid_rc_ref_bank: accept.rc_ref_bank.msg,
 			//step4
-			valid_rc_constitutive_act:accept.rc_constitutive_act,
-			valid_rc_special_contributor: accept.rc_special_contributor, 
+			valid_rc_constitutive_act:accept.rc_constitutive_act.msg,
+			valid_rc_special_contributor: accept.rc_special_contributor.msg, 
 		}
 	}
 	console.log(id_fm, id_status)
