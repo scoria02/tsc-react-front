@@ -13,9 +13,9 @@ export const validationClient = (client: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
-			console.log('client', res.data.info)
 			updateToken(res);
 			dispatch(requestSuccess(res.data.info));
+			return res.data.info;
 			//console.log(res.data)
 		} catch (error) {
 			dispatch(requestError());
@@ -32,6 +32,40 @@ export const validationClient = (client: any) => {
 	function requestError() {
 		return {
 			type: ActionType.validClientError,
+		};
+	}
+};
+
+export const validationCommerce = (id_client: number, commerce: any) => {
+	return async (dispatch: any) => {
+		try {
+			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce/valid`, commerce);
+			if(res.data.info){
+				updateToken(res);
+				dispatch(requestSuccess(res.data.info));
+			}else{
+				dispatch(requestSuccessOk());
+			}
+		} catch (error) {
+			dispatch(requestError());
+			Swal.fire('Error', error.response.data.message, 'error');
+			console.log(error.response.data.message);
+		}
+	};
+	function requestSuccess(state: boolean) {
+		return {
+			type: ActionType.validCommerce,
+			payload: state,
+		};
+	}
+	function requestSuccessOk() {
+		return {
+			type: ActionType.validCommerceOk,
+		};
+	}
+	function requestError() {
+		return {
+			type: ActionType.validCommerceError,
 		};
 	}
 };
@@ -125,6 +159,9 @@ export const sendCommerce = (id_client: number, cursedForm: any) => {
 			local: cursedForm.local,
 		},
 	}
+	console.log('client', id_client)
+	console.log('commerce', commerce)
+
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce`, commerce);

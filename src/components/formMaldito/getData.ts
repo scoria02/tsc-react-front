@@ -81,7 +81,6 @@ export const getPayMent = async () => {
 export const getActivity = async () => {
 	try{
 		const resp: string [] = await axios.get('/activity').then((res) => {
-		console.log('res', res)
 		localStorage.setItem('token', res.data.token);
 		return res.data.info 
 		});

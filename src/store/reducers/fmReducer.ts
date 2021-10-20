@@ -1,22 +1,28 @@
 import { ActionType } from '../types/types';
 
 interface inState {
-	id_client: number,
-	mashClient: boolean,
-	id_commerce: number,
-	id_images: any,
-	loadedClient: boolean,
-	loadedCommerce: boolean,
-	loadedImages: boolean,
-	loadedFM: boolean,
-	errorClient: boolean,
-	errorNumBank: boolean,
+	id_client: number;
+	clientMash: any;
+	mashClient: boolean;
+	id_commerce: number;
+	commerceMash: any;
+	mashCommerce: boolean,
+	id_images: any;
+	loadedClient: boolean;
+	loadedCommerce: boolean;
+	loadedImages: boolean;
+	loadedFM: boolean;
+	errorClient: boolean;
+	errorNumBank: boolean;
 }
 
 const initialState: inState = {
 	id_client: 0,
+	clientMash: {},
 	mashClient: false,
 	id_commerce: 0,
+	commerceMash: {},
+	mashCommerce: false,
 	id_images: null,
 	loadedClient: false,
 	loadedCommerce: false,
@@ -34,12 +40,34 @@ export const fmReducer = (state = initialState, action: any) => {
 				...state,
 				errorClient: false,
 				mashClient: action.payload.mash,
-				id_client: action.payload.mash ? action.payload.id : 0,
+				id_client: action.payload.mash ? action.payload.client.id : 0,
+				clientMash: action.payload.client,
 			};
 		case ActionType.validClientError:
 			return {
 				...state,
+				id_client: 0,
+				clientMash: {},
+				mashClient: false,
 				errorClient: true,
+			};
+		case ActionType.validCommerce:
+			return {
+				...state,
+				commerceMash: action.payload,
+				mashCommerce: true,
+			};
+		case ActionType.validCommerceOk: //reset commerce
+			return {
+				...state,
+				commerceMash: {},
+				mashCommerce: false,
+			};
+		case ActionType.validCommerceError:
+			return {
+				...state,
+				commerceMash: {},
+				mashCommerce: false,
 			};
 		//Number Bank
 		case ActionType.validNumBank:

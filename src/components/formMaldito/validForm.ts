@@ -115,7 +115,7 @@ export const sizeImagesStep = (active: number): number => {
 	}
 }
 
-export const allInputNotNUll = (last: number, form: any, mashClient: boolean): boolean => {
+export const allInputNotNUll = (last: number, form: any, mashClient: boolean, mashCommerce: boolean): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(form)) {
 		if (indice === last) {
@@ -130,6 +130,8 @@ export const allInputNotNUll = (last: number, form: any, mashClient: boolean): b
 				}
 			}else{
 				if(mashClient && indice < 16) {
+					//no hago nada
+				}else if(mashCommerce && 15 < indice && indice < 21){
 					//no hago nada
 				}else{
 					if (item[1].trim() === '') {
@@ -150,7 +152,7 @@ export const allInputNotNUll = (last: number, form: any, mashClient: boolean): b
 	return false;
 };
 
-export const allImgNotNUll = (last: number, images: any, special_contributor: boolean, mashClient: boolean, isActa: number): boolean => {
+export const allImgNotNUll = (last: number, images: any, special_contributor: boolean, mashClient: boolean, mashCommerce: boolean, isActa: number): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(images)) {
 		if (indice === last) {
@@ -163,7 +165,10 @@ export const allImgNotNUll = (last: number, images: any, special_contributor: bo
 			item[0] === 'rc_constitutive_act' && isActa !== 3 ){
 			//nada
 		}else{
-			if(item[0] === 'rc_ident_card' && mashClient) {
+			if(mashClient && indice < 2) {
+				//No hago nada
+			}
+			else if (mashCommerce && 1 < indice && indice < 5) {
 				//No hago nada
 			}
 			else {
