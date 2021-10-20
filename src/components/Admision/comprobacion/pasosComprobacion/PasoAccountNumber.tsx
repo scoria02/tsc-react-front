@@ -73,7 +73,7 @@ export default function PasoAccountNumber() {
 		zoomPosition: 'original',
 		height: 350,
 		width: 450,
-		img: `${URL}:${PortFiles}/${fm.path_rc_ref_bank}`,
+		img: `${URL}:${PortFiles}/${fm.rc_ref_bank.path}`,
 	};
 
 	return (

@@ -83,7 +83,6 @@ export const acceptReducer = (state = initialState, action: any) => {
 			};
 
 		case ActionType.acceptRec:
-			console.log(action.payload)
 			return {
 				...state,
 				validado: {

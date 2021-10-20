@@ -159,13 +159,12 @@ export const sendCommerce = (id_client: number, cursedForm: any) => {
 			local: cursedForm.local,
 		},
 	}
-	console.log('client', id_client)
-	console.log('commerce', commerce)
 
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce`, commerce);
 			updateToken(res)
+			console.log(res.data.info)
 			dispatch(requestSuccess(res.data.info.id_commerce));
 		} catch (error) {
 			console.log(error.reponse);
@@ -219,7 +218,7 @@ export const sendFM = (cursedForm: any, fm: any) => {
 		id_client: fm.id_client,
 		id_commerce: fm.id_commerce,
 		number_post: cursedForm.number_post,
-		id_model_post: cursedForm.id_model_post,
+		id_product: cursedForm.id_model_post,
 		id_payment_method: cursedForm.id_payment_method,
 		bank_account_num: cursedForm.text_account_number,
 		id_type_payment: cursedForm.id_type_pay,

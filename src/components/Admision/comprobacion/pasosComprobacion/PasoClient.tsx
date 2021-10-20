@@ -75,7 +75,7 @@ export default function PasoClient() {
 		zoomPosition: 'original',
 		height: 350,
 		width: 450,
-		img: `${URL}:${PortFiles}/${fm.path_rc_ident_card}`,
+		img: `${URL}:${PortFiles}/${fm.rc_ident_card.path}`,
 	};
 
 	return (
@@ -87,21 +87,21 @@ export default function PasoClient() {
 						id='outlined-basic'
 						label='Nombre'
 						variant='outlined'
-						value={fm.name_client}
+						value={fm.id_client.name}
 					/>
 					<TextField
 						className={classes.btn_stepT}
 						id='outlined-basic'
 						label='Apellido'
 						variant='outlined'
-						value={fm.last_name_client}
+						value={fm.id_client.last_name}
 					/>
 					<TextField
 						className={classes.btn_stepT}
 						id='outlined-basic'
 						label='Numero ID'
 						variant='outlined'
-						value={`${fm.ident_type_client} ${fm.ident_num_client}`}
+						value={`${fm.id_client.id_ident_type.name} ${fm.id_client.ident_num}`}
 					/>
 				<FormControlLabel
 					control={<Switch

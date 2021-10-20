@@ -277,7 +277,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	useEffect(() => {
 		if (sendForm === 1 && fm.id_client !== 0) {
 			console.log('Listo Cliente');
-			if (fm.mashCommerce) {
+			if (!fm.mashCommerce) {
 				dispatch(
 					sendCommerce(fm.id_client, cursedForm)
 				);
@@ -777,6 +777,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	//MashClient
 	useEffect(() => {
 		if(fm.mashClient && fm.id_client){
+			console.log('x', fm.clientMash.id_location.id_estado)
 			setCursedForm({
 				...cursedForm,
 				email: fm.clientMash.email,
@@ -784,10 +785,10 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				last_name: fm.clientMash.last_name,
 				phone1: '+58 falta',
 				phone2: '+58 falta',
-				id_estado_client: fm.clientMash.id_location.id_estado.estado,
-				id_ciudad_client: fm.clientMash.id_location.id_ciudad.ciudad,
-				id_municipio_client: fm.clientMash.id_location.id_municipio.municipio,
-				id_parroquia_client: fm.clientMash.id_location.id_parroquia.parroquia,
+				id_estado_client: fm.clientMash.id_location.id_estado.id,
+				id_ciudad_client: fm.clientMash.id_location.id_ciudad.id,
+				id_municipio_client: fm.clientMash.id_location.id_municipio.id,
+				id_parroquia_client: fm.clientMash.id_location.id_parroquia.id,
 				codigo_postal_client: 'falta codigo postal',
 				sector_client: fm.clientMash.id_location.sector,
 				calle_client: fm.clientMash.id_location.calle,
@@ -835,30 +836,21 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				name_commerce: fm.commerceMash.name,
 				id_activity: fm.commerceMash.id_activity.id,
 				special_contributor: fm.commerceMash.special_contributor,
-				//step2
-				id_estado: 0,
-				id_ciudad: 0,
-				id_municipio: 0,
-				id_parroquia: 0,
-				codigo_postal: 'falta',
+				//step2 
+				id_estado: fm.clientMash.id_location.id_estado.id,
+				id_ciudad: fm.clientMash.id_location.id_ciudad.id,
+				id_municipio: fm.clientMash.id_location.id_municipio.id,
+				id_parroquia: fm.clientMash.id_location.id_parroquia.id,
+				codigo_postal: 'falta codigo postal',
 				sector: fm.commerceMash.id_location.sector,
 				calle: fm.commerceMash.id_location.calle,
 				local: fm.commerceMash.id_location.local,
-				//Pos
-				id_estado_pos: 0,
-				id_ciudad_pos: 0,
-				id_municipio_pos: 0,
-				id_parroquia_pos: 0,
-				codigo_postal_pos: '',
-				sector_pos: fm.commerceMash.id_location.sector,
-				calle_pos: fm.commerceMash.id_location.calle,
-				local_pos: fm.commerceMash.id_location.local,
 			});
 			setLocationCommerce({
-				estado: null,
-				ciudad: null,
-				municipio: null,
-				parroquia: null,
+				estado: fm.clientMash.id_location.id_estado,
+				ciudad: fm.clientMash.id_location.id_ciudad,
+				municipio: fm.clientMash.id_location.id_municipio,
+				parroquia: fm.clientMash.id_location.id_parroquia,
 			})
 			setActivity(fm.commerceMash.id_activity);
 		}else if(!fm.mashCommerce){

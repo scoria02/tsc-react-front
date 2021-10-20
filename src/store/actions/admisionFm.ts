@@ -12,9 +12,15 @@ export const getDataFM = () => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.get(`/FM`);
-			console.log('aqui', res.data)
-			updateToken(res);
-			dispatch(requestSuccess(res.data.info));
+			if(res.data.info){
+				updateToken(res);
+				dispatch(requestSuccess(res.data.info));
+			}
+			else{
+				dispatch(CloseModal());
+				dispatch(requestError());
+				Swal.fire('Error', 'Dimas cuando no hay fm debiera ser error', 'error');
+			}
 		} catch (error) {
 			console.log(error.response)
 			dispatch(CloseModal());
@@ -48,17 +54,19 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
 			//step4
 			valid_rc_constitutive_act:accept.rc_constitutive_act.msg,
 			valid_rc_special_contributor: accept.rc_special_contributor.msg, 
+			valid_rc_comp_dep: accept.rc_comp_dep.msg
 		}
 	}
-	console.log(id_fm, id_status)
 	return async (dispatch: any) => {
-		console.log(id_status)
 		try {
 			const res: AxiosResponse<any> = await useAxios.put(`/FM/${id_fm}/status`, id_status);
 			updateToken(res);
 			dispatch(CloseModal());
 			dispatch(requestSuccess());
-			Swal.fire('Success', 'Cliente Verificado');
+			if(id_status === 2)
+				Swal.fire('Success', 'Formulario Verificado');
+			else if (id_status === 4)
+				Swal.fire('Success', 'Formulario Diferido');
 		} catch (error) {
 			console.log(error.response)
 			dispatch(CloseModal());

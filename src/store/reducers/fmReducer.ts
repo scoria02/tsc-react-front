@@ -55,6 +55,7 @@ export const fmReducer = (state = initialState, action: any) => {
 			return {
 				...state,
 				commerceMash: action.payload,
+				id_commerce: action.payload.id,
 				mashCommerce: true,
 			};
 		case ActionType.validCommerceOk: //reset commerce

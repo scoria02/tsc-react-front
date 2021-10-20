@@ -206,6 +206,7 @@ export const Step2: React.FC<any> = ({
 										name='special_contributor'
 										checked={cursedForm.special_contributor ? true : false}
 										onChange={handleChecked}
+										disabled={fm.mashCommerce}
 										color='primary'
 										inputProps={{ 'aria-label': 'secondary checkbox' }}
 									/>

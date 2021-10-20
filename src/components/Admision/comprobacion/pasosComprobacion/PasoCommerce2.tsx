@@ -64,7 +64,12 @@ export default function PasoCommerce2() {
 			handleOpenModal();
 	};
 
-	const props = { zoomPosition: 'original', height: 350, width: 450, img: `${URL}:${PortFiles}/${fm.path_rc_rif}` };
+	const props = {
+		zoomPosition: 'original',
+		height: 350,
+		width: 450,
+		img: `${URL}:${PortFiles}/${fm.rc_rif.path}`,
+	};
 
 	return (
 		<>
