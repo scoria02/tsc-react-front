@@ -193,7 +193,7 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 				]
 			}
 		}else{
-			if(form.path_rc_comp_dep){
+			if(form.rc_comp_dep){
 				return [
 					'Validacion (Cliente)',
 					'Validacion (Comercio)',
