@@ -70,7 +70,7 @@ export default function PasoContriSpecial() {
 		zoomPosition: 'original',
 		height: 350,
 		width: 450,
-		img: `${URL}:${PortFiles}/${fm.path_rc_special_contributor}`,
+		img: `${URL}:${PortFiles}/${fm.rc_special_contributor.path}`,
 	};
 
 	return (

@@ -213,6 +213,7 @@ export const sendImages = (formData: any) => {
 
 export const sendFM = (cursedForm: any, fm: any) => {
 	//console.log('SendFM', formM);
+	console.log(fm.id_images)
 	const form = {
 		...fm.id_images,
 		id_client: fm.id_client,

@@ -72,7 +72,7 @@ export default function PasoPaymentReceipt() {
 		height: 350,
 		width: 450,
 		//falta
-		img: `${URL}:${PortFiles}/${fm.path_rc_ident_card}`,
+		img: `${URL}:${PortFiles}/${fm.rc_ident_card.path}`,
 	};
 
 	return (

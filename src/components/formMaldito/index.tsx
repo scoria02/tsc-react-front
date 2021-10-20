@@ -303,9 +303,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			dispatch(
 				sendFM(cursedForm, fm)
 			);
-			/*
-			//mode_post: cursedForm.mode_post,
-			*/
 			setSendForm(4);
 		} else if (sendForm === 4 && fm.loadedFM) {
 			console.log('Ready All FM');
