@@ -844,10 +844,10 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				local: fm.commerceMash.id_location.local,
 			});
 			setLocationCommerce({
-				estado: fm.clientMash.id_location.id_estado,
-				ciudad: fm.clientMash.id_location.id_ciudad,
-				municipio: fm.clientMash.id_location.id_municipio,
-				parroquia: fm.clientMash.id_location.id_parroquia,
+				estado: fm.commerceMash.id_location.id_estado,
+				ciudad: fm.commerceMash.id_location.id_ciudad,
+				municipio: fm.commerceMash.id_location.id_municipio,
+				parroquia: fm.commerceMash.id_location.id_parroquia,
 			})
 			setActivity(fm.commerceMash.id_activity);
 		}else if(!fm.mashCommerce){

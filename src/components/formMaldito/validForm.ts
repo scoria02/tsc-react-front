@@ -109,7 +109,7 @@ export const sizeImagesStep = (active: number): number => {
 		case 2:
 			return 4; 
 		case 3:
-			return 6;
+			return 5; //6 con rc_comp_dep
 		default:
 			return 0;
 	}

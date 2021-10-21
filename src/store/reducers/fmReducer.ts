@@ -4,9 +4,11 @@ interface inState {
 	id_client: number;
 	clientMash: any;
 	mashClient: boolean;
+	imagesClient: boolean;
 	id_commerce: number;
 	commerceMash: any;
 	mashCommerce: boolean,
+	imagesCommerce: boolean;
 	id_images: any;
 	loadedClient: boolean;
 	loadedCommerce: boolean;
@@ -20,7 +22,9 @@ const initialState: inState = {
 	id_client: 0,
 	clientMash: {},
 	mashClient: false,
+	imagesClient: false,
 	id_commerce: 0,
+	imagesCommerce: false,
 	commerceMash: {},
 	mashCommerce: false,
 	id_images: null,
@@ -39,7 +43,8 @@ export const fmReducer = (state = initialState, action: any) => {
 			return {
 				...state,
 				errorClient: false,
-				mashClient: action.payload.mash,
+				mashClient: action.payload.matsh,
+				imagesClient: action.payload.matshImg,
 				id_client: action.payload.mash ? action.payload.client.id : 0,
 				clientMash: action.payload.client,
 			};
@@ -49,6 +54,7 @@ export const fmReducer = (state = initialState, action: any) => {
 				id_client: 0,
 				clientMash: {},
 				mashClient: false,
+				imagesClient: false,
 				errorClient: true,
 			};
 		case ActionType.validCommerce:
@@ -56,13 +62,15 @@ export const fmReducer = (state = initialState, action: any) => {
 				...state,
 				commerceMash: action.payload,
 				id_commerce: action.payload.id,
-				mashCommerce: true,
+				mashCommerce: action.payload.matshImg,
+				imagesCommerce: action.payload.matshImg,
 			};
 		case ActionType.validCommerceOk: //reset commerce
 			return {
 				...state,
 				commerceMash: {},
 				mashCommerce: false,
+				imagesCommerce: false,
 			};
 		case ActionType.validCommerceError:
 			return {

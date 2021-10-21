@@ -13,6 +13,7 @@ export const validationClient = (client: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
+			console.log('client a', res.data.info)
 			updateToken(res);
 			dispatch(requestSuccess(res.data.info));
 			return res.data.info;
@@ -191,6 +192,7 @@ export const sendImages = (formData: any) => {
 			const res: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, formData);
 			updateToken(res)
 			let images: any = res.data.info;
+			console.log('images_dimas', images)
 			dispatch(requestSuccess(images));
 		} catch (error) {
 			console.log(error.reponse);
