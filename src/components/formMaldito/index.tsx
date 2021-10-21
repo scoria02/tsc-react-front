@@ -672,7 +672,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				valids.sizeImagesStep(activeStep),
 				imagesForm,
 				cursedForm.special_contributor,
-				fm.mashClient,
+				fm.imagesClient,
 				fm.mashCommerce,
 				cursedForm.id_ident_type_commerce
 			) &&
@@ -928,7 +928,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				valids.sizeImagesStep(activeStep),
 				imagesForm,
 				cursedForm.special_contributor,
-				fm.mashClient,
+				fm.imagesClient,
 				fm.mashCommerce,
 				cursedForm.id_ident_type_commerce
 			) ||

@@ -106,7 +106,7 @@ export const Step1: React.FC<any> = ({
 					<Button
 						className={classes.imgIdent}
 						variant='contained'
-						disabled={fm.mashClient}
+						disabled={fm.imagesClient}
 						style={{ 
 							background: imagesForm.rc_ident_card ? '#5c62c5' : '#bbdefb' }}
 						component='label'

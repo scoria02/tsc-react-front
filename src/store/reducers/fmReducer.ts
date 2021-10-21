@@ -40,12 +40,13 @@ export const fmReducer = (state = initialState, action: any) => {
 	switch (action.type) {
 		//Client
 		case ActionType.validClient:
+			console.log(action.payload)
 			return {
 				...state,
 				errorClient: false,
+				id_client: action.payload.mash ? action.payload.client.id : 0,
 				mashClient: action.payload.matsh,
 				imagesClient: action.payload.matshImg,
-				id_client: action.payload.mash ? action.payload.client.id : 0,
 				clientMash: action.payload.client,
 			};
 		case ActionType.validClientError:
@@ -62,7 +63,7 @@ export const fmReducer = (state = initialState, action: any) => {
 				...state,
 				commerceMash: action.payload,
 				id_commerce: action.payload.id,
-				mashCommerce: action.payload.matshImg,
+				mashCommerce: action.payload.matsh,
 				imagesCommerce: action.payload.matshImg,
 			};
 		case ActionType.validCommerceOk: //reset commerce
@@ -77,6 +78,7 @@ export const fmReducer = (state = initialState, action: any) => {
 				...state,
 				commerceMash: {},
 				mashCommerce: false,
+				imagesCommerce: false,
 			};
 		//Number Bank
 		case ActionType.validNumBank:

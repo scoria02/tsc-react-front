@@ -17,7 +17,6 @@ export const validationClient = (client: any) => {
 			updateToken(res);
 			dispatch(requestSuccess(res.data.info));
 			return res.data.info;
-			//console.log(res.data)
 		} catch (error) {
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
@@ -43,14 +42,15 @@ export const validationCommerce = (id_client: number, commerce: any) => {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce/valid`, commerce);
 			if(res.data.info){
 				updateToken(res);
+				console.log(res.data.info)
 				dispatch(requestSuccess(res.data.info));
 			}else{
 				dispatch(requestSuccessOk());
 			}
 		} catch (error) {
 			dispatch(requestError());
+			console.log('dimas', error.response.data)
 			Swal.fire('Error', error.response.data.message, 'error');
-			console.log(error.response.data.message);
 		}
 	};
 	function requestSuccess(state: boolean) {
