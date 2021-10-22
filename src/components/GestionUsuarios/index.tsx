@@ -9,10 +9,16 @@ import {
 	Paper,
 	TextField,
 } from '@material-ui/core';
-import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarFilterButton } from '@material-ui/data-grid';
+import {
+	DataGrid,
+	GridColDef,
+	GridToolbarContainer,
+	GridToolbarFilterButton,
+	GridValueGetterParams,
+} from '@material-ui/data-grid';
 import CloseIcon from '@material-ui/icons/Close';
 import classnames from 'classnames';
-import React from 'react';
+import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import axios from '../../config';
 import luffy from '../../img/luffy.png';
@@ -29,28 +35,28 @@ const columns: GridColDef[] = [
 		sortable: false,
 	},
 	{
-		field: 'correo',
+		field: 'email',
 		headerName: 'Correo',
 		width: 180,
 		sortable: false,
 		disableColumnMenu: true,
 	},
-	{
-		field: 'name',
-		width: 180,
-		headerName: 'Nombre',
-		sortable: false,
-		disableColumnMenu: true,
-	},
 	// {
-	// 	field: 'fullName',
-	// 	headerName: 'Full name',
-	// 	description: 'This column has a value getter and is not sortable.',
+	// 	field: 'name',
+	// 	width: 180,
+	// 	headerName: 'Nombre',
 	// 	sortable: false,
-	// 	width: 160,
-	// 	valueGetter: (params: GridValueGetterParams) =>
-	// 		`${params.getValue(params.id, 'firstName') || ''} ${params.getValue(params.id, 'lastName') || ''}`,
+	// 	disableColumnMenu: true,
 	// },
+	{
+		field: 'fullName',
+		headerName: 'Nombre',
+		description: 'This column has a value getter and is not sortable.',
+		sortable: false,
+		width: 160,
+		valueGetter: (params: GridValueGetterParams) =>
+			`${params.getValue(params.id, 'name') || ''} ${params.getValue(params.id, 'last_name') || ''}`,
+	},
 ];
 
 const rows = [
@@ -159,25 +165,31 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 		);
 	};
 
-	const [openUserView, setUserView] = React.useState<boolean>();
-	const [checkbox, setCheckbox] = React.useState<boolean>(true);
-	const [email, setEmail] = React.useState<string>('');
-	const [name, setName] = React.useState<string>('');
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	let [roles, setRol] = React.useState<any[]>([]);
-	let [arr_rol_user, setArrRolUser] = React.useState<any[]>([]);
+	const [openUserView, setUserView] = useState<boolean>();
+	const [checkbox, setCheckbox] = useState<boolean>(true);
+	const [loading, setLoading] = useState<boolean>(true);
+	const [email, setEmail] = useState<string>('');
+	const [name, setName] = useState<string>('');
+	let [arr_rol_user, setArrRolUser] = useState<any[]>([]);
+	const [allUser, setUser] = useState<any[]>([]);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		try {
-			axios.get('roles/all').then((data: any) => {
-				setRol(data.data.info);
+			setLoading(false);
+			axios.get('worker/all').then(async (data: any) => {
+				const users = data.data.info;
+
+				await setUser(users);
 			});
+			setLoading(true);
 		} catch (error) {
+			setLoading(true);
 			console.log('error', error);
 		}
 	}, []);
 
 	const handleRow = (event: any) => {
+		console.log('row', event.row);
 		getuserRol(event.row.id);
 		setUserView(true);
 	};
@@ -202,14 +214,14 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 
 	const getuserRol = async (id: number) => {
 		try {
-			const resp2 = await axios.get(`/roles/${id}/worker`);
+			// const resp2 = await axios.get(`/roles/${id}/worker`);
 			const resp = await axios.get(`/worker/${id}`);
 			const data = resp.data.info;
-			const dataRol = resp2.data.info;
-			setArrRolUser(dataRol);
+			// const dataRol = resp2.data.info;
+			// setArrRolUser(dataRol);
 			setEmail(data.email);
 			setName(data.name);
-			arr_rol_user = dataRol;
+			// arr_rol_user = dataRol;
 		} catch (error) {
 			console.log('error getuserRol', error);
 		}
@@ -260,15 +272,17 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 			<Grid container spacing={4} className={classes.layout}>
 				<Grid item xs={5}>
 					<div style={{ height: '75vh', width: '100%' }}>
-						<DataGrid
-							components={{
-								Toolbar: customToolbar,
-							}}
-							rows={rows}
-							columns={columns}
-							rowsPerPageOptions={[25, 100]}
-							onCellClick={handleRow}
-						/>
+						{loading && (
+							<DataGrid
+								components={{
+									Toolbar: customToolbar,
+								}}
+								rows={allUser}
+								columns={columns}
+								rowsPerPageOptions={[25, 100]}
+								onCellClick={handleRow}
+							/>
+						)}
 					</div>
 				</Grid>
 				<Grid item xs={7}>

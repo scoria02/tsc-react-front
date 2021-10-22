@@ -1,8 +1,12 @@
 import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import React, { useContext, useEffect } from 'react';
+import React, {
+	// useContext,
+	useEffect,
+} from 'react';
 import { useDispatch } from 'react-redux';
-import { SocketContext } from '../../helpers/SocketContext';
+import { getNuevosTicket } from '../../sockets/getAdmicion';
+// import { SocketContext } from '../../helpers/SocketContext';
 //import { RootState } from '../../store/store';
 import { getDataFM } from '../../store/actions/admisionFm';
 import { OpenModal } from '../../store/actions/ui';
@@ -12,26 +16,25 @@ import { SolicitudesTerminadas } from '../backoffice/SolicitudesTerminadas';
 import { ChartTorta } from '../diagramas/ChartConfig';
 import { DiagramaBarra } from '../diagramas/DiagramaBarra';
 import Diferidos from './diferidos/Diferidos';
-//import { getNuevosTicket } from '../../sockets/getAdmicion';
 import './index.scss';
 import Comproba from './modalComprobacion/Comproba';
 
 const Admision: React.FC = () => {
 	const dispatch = useDispatch();
 
-	const { socket } = useContext(SocketContext);
+	// const { socket } = useContext(SocketContext);
 
 	useEffect(() => {
-		//getNuevosTicket();
+		getNuevosTicket();
 	}, []);
 
-	useEffect(() => {
-		// socket.on('solicitar-nuevosticket', () => {});
+	// useEffect(() => {
+	// 	socket.on('solicitar-nuevosticket', () => {});
 
-		return () => {
-			socket.off('solicitar-nuevosticket');
-		};
-	}, [socket]);
+	// 	return () => {
+	// 		socket.off('solicitar-nuevosticket');
+	// 	};
+	// }, [socket]);
 
 	const handleClick = () => {
 		dispatch(getDataFM());
