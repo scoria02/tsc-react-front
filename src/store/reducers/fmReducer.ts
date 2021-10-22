@@ -19,14 +19,17 @@ interface inState {
 }
 
 const initialState: inState = {
+
 	id_client: 0,
 	clientMash: {},
 	mashClient: false,
 	imagesClient: false,
+
 	id_commerce: 0,
-	imagesCommerce: false,
 	commerceMash: {},
 	mashCommerce: false,
+	imagesCommerce: false,
+
 	id_images: null,
 	loadedClient: false,
 	loadedCommerce: false,
@@ -40,11 +43,10 @@ export const fmReducer = (state = initialState, action: any) => {
 	switch (action.type) {
 		//Client
 		case ActionType.validClient:
-			console.log(action.payload)
 			return {
 				...state,
 				errorClient: false,
-				id_client: action.payload.mash ? action.payload.client.id : 0,
+				id_client: action.payload.matsh ? action.payload.client.id : 0,
 				mashClient: action.payload.matsh,
 				imagesClient: action.payload.matshImg,
 				clientMash: action.payload.client,
@@ -61,10 +63,11 @@ export const fmReducer = (state = initialState, action: any) => {
 		case ActionType.validCommerce:
 			return {
 				...state,
-				commerceMash: action.payload,
 				id_commerce: action.payload.id,
-				mashCommerce: action.payload.matsh,
-				imagesCommerce: action.payload.matshImg,
+				commerceMash: action.payload,
+				mashCommerce: true,
+				imagesCommerce: action.payload.matchImg,
+
 			};
 		case ActionType.validCommerceOk: //reset commerce
 			return {

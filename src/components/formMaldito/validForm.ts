@@ -48,9 +48,9 @@ export const validIdentNum = (value: string, op: number):boolean => {
 
 export const validPhone = (value: string):boolean => {
 	if (value.trim() !== '' && 
-		/^[0-9]+$/.test(value) && 
+		/^[0-9]+$/.test(value) &&  //only number
 		!/[^a-z0-9\x20]/i.test(value) &&
-		value.length >= 10) {
+		value.length >= 9) {
 			if(/^((4(1|2)4|4(1|2)6|412))([0-9]{7})$|^(2)(([0-9]){9})$/.test(value))
 				return false;
 			else
@@ -124,19 +124,19 @@ export const allInputNotNUll = (last: number, form: any, mashClient: boolean, ma
 		indice++;
 		//No Check when item[0] === 'IdentType'
 		if (typeof item[1] === 'string') {
-			if((item[0] === 'phone1' || item[0] === 'phone2')){
-				if(phoneNotNull(item[1]) && !mashClient){
-					return true;
-				}
+			if(mashClient && indice < 16) {
+				//no hago nada
+			}else if(mashCommerce && 15 < indice && indice < 21){
+				//no hago nada
+			}else if(
+				item[0] === 'reqSource_docnum' && 
+				form.id_request_origin !== 1 &&
+				form.id_request_origin !== 2 
+			) {
+				//no hago nada
 			}else{
-				if(mashClient && indice < 16) {
-					//no hago nada
-				}else if(mashCommerce && 15 < indice && indice < 21){
-					//no hago nada
-				}else{
-					if (item[1].trim() === '') {
-						return true;
-					}
+				if (item[1].trim() === '') {
+					return true;
 				}
 			}
 		}else if (typeof item[1] === 'number' && item[0] !== 'special_contributor') {
@@ -194,10 +194,3 @@ export const checkErrorAllInput = (last: number, errors: any): boolean => {
 	}
 	return false;
 }
-
-export const phoneNotNull = (value: string): boolean => {
-	if(value.slice(0,3) === '+58' && value.slice(3).length > 0){
-		return false
-	}else
-		return true;
-};

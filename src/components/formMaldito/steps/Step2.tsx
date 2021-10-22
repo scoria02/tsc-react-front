@@ -139,7 +139,7 @@ export const Step2: React.FC<any> = ({
 					/>
 					<Button
 						className={classes.imgIdent}
-						disabled={fm.mashCommerce}
+						disabled={fm.imagesCommerce}
 						variant='contained'
 						style={{ background: imagesForm.rc_rif? '#5c62c5' : '#bbdefb' }}
 						component='label'>
@@ -206,7 +206,7 @@ export const Step2: React.FC<any> = ({
 										name='special_contributor'
 										checked={cursedForm.special_contributor ? true : false}
 										onChange={handleChecked}
-										disabled={fm.mashCommerce}
+										disabled={fm.imagesCommerce}
 										color='primary'
 										inputProps={{ 'aria-label': 'secondary checkbox' }}
 									/>
@@ -222,7 +222,7 @@ export const Step2: React.FC<any> = ({
 					</div>
 					<Button
 						className={classes.imgIdent}
-						disabled={fm.mashCommerce}
+						disabled={fm.imagesCommerce}
 						variant='contained'
 						style={{ 
 							background: imagesForm.rc_special_contributor ? '#5c62c5' : '#bbdefb',

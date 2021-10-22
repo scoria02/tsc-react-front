@@ -13,7 +13,6 @@ export const validationClient = (client: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
-			console.log('client a', res.data.info)
 			updateToken(res);
 			dispatch(requestSuccess(res.data.info));
 			return res.data.info;
@@ -96,7 +95,7 @@ export const validationNumBank = (clientBank: any) => {
 	}
 };
 
-export const sendClient = (cursedForm: any) => {
+export const sendClient = (cursedForm: any, codePhone: string) => {
 	//console.log(client)
 	const client = {
 		email: cursedForm.email,
@@ -104,8 +103,8 @@ export const sendClient = (cursedForm: any) => {
 		last_name: cursedForm.last_name,
 		id_ident_type: cursedForm.id_ident_type,
 		ident_num: cursedForm.ident_num,
-		phone1: cursedForm.phone1,
-		phone2: cursedForm.phone2,
+		phone1: codePhone + cursedForm.phone1,
+		phone2: codePhone + cursedForm.phone2,
 		location: {
 			id_estado: cursedForm.id_estado_client,
 			id_municipio: cursedForm.id_municipio_client,
@@ -191,7 +190,7 @@ export const sendImages = (formData: any) => {
 		try {
 			const res: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, formData);
 			updateToken(res)
-			let images: any = res.data.info;
+			const images: any = res.data.info;
 			console.log('images_dimas', images)
 			dispatch(requestSuccess(images));
 		} catch (error) {

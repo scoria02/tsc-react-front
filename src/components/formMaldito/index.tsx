@@ -64,6 +64,8 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	const [readyStep, setReadyStep] = React.useState<boolean>(false);
 	const [sendForm, setSendForm] = React.useState<number>(0);
 
+	const codePhone = '+58';
+
 	const fm: any = useSelector((state: RootState) => state.fm);
 
 	//Client Location
@@ -143,7 +145,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	const [listActivity, setListActivity] = useState<any[]>([]);
 	const [activity, setActivity] = useState<any>(null);
 
-	//
+	//list tipo de pago
 	const [listTypePay, setListListTypePay] = useState<any>([
 		{
 			id: 1,
@@ -170,8 +172,8 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		last_name: '',
 		id_ident_type: 1,
 		ident_num: '',
-		phone1: '+58',
-		phone2: '+58',
+		phone1: '',
+		phone2: '',
 		id_estado_client: 0,
 		id_ciudad_client: 0,
 		id_municipio_client: 0,
@@ -396,9 +398,9 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	const [autoCompleteCommerce, setAutoCompleteCommerce] = useState<boolean>(true);
 	const [autoCompletePos, setAutoCompletePos] = useState<boolean>(true);
 
-	//Copyrighter
+	//Copyrighter Client to Commerce 
 	useEffect(() => {
-		if (activeStep === 1 && autoCompleteCommerce) {
+		if (activeStep === 1 && autoCompleteCommerce && !fm.mashCommerce) {
 			setLocationCommerce(locationClient);
 			setListLocationCommerce(listLocationClient);
 			setLocationPos(locationClient);
@@ -423,9 +425,9 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				codigo_postal_pos: cursedForm.codigo_postal_client,
 			});
 		}
-	}, [activeStep]);
+	}, [activeStep, fm.commerceMash]);
 
-	//Copyrighter
+	//Copyrighter Commerce to pos
 	useEffect(() => {
 		if (activeStep === 2 && autoCompletePos) {
 			setLocationPos(locationCommerce);
@@ -442,7 +444,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				codigo_postal_pos: cursedForm.codigo_postal,
 			});
 		}
-	}, [locationCommerce, cursedForm.sector, cursedForm.calle, cursedForm.local, cursedForm.codigo_postal]);
+	}, [activeStep, locationCommerce, cursedForm.sector, cursedForm.calle, cursedForm.local, cursedForm.codigo_postal, fm.commerceMash]);
 
 	//Client Location handle
 	const handleUpdateLocationClient = (op: any, value: any) => {
@@ -673,13 +675,12 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				imagesForm,
 				cursedForm.special_contributor,
 				fm.imagesClient,
-				fm.mashCommerce,
+				fm.imagesCommerce,
 				cursedForm.id_ident_type_commerce
 			) &&
 			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) &&
 			validEndPointFM()
 		) {
-			console.log('Vas Bien')
 			setReadyStep(true);
 		} else {
 			setReadyStep(false);
@@ -704,22 +705,12 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				break;
 			case 'ident_num':
 				temp.ident_num = valids.validIdentNum(value, cursedForm.id_ident_type);
-				//console.log(temp.ident_num)
 				break;
 			case 'phone1':
-				if (value.slice(0, 3) === '+58') {
-					temp.phone1 = valids.validPhone(value.slice(3));
-					if (cursedForm.phone2.length > 3) {
-						temp.phone2 = valids.validPhone2(cursedForm.phone2.slice(3), value.slice(3));
-					}
-				} else {
-					temp.phone1 = true;
-				}
+				temp.phone1 = valids.validPhone(value);
 				break;
 			case 'phone2':
-				if (value.slice(0, 3) === '+58') {
-					temp.phone2 = valids.validPhone2(value.slice(3), cursedForm.phone1.slice(3));
-				} else temp.phone2 = true;
+				temp.phone2 = valids.validPhone2(value, cursedForm.phone1);
 				break;
 			case 'name_commerce':
 				temp.name_commerce = valids.validNameCommere(value);
@@ -774,14 +765,13 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	//MashClient
 	useEffect(() => {
 		if(fm.mashClient && fm.id_client){
-			console.log('x', fm.clientMash.id_location.id_estado)
 			setCursedForm({
 				...cursedForm,
 				email: fm.clientMash.email,
 				name: fm.clientMash.name,
 				last_name: fm.clientMash.last_name,
-				phone1: '+58 falta',
-				phone2: '+58 falta',
+				phone1: fm.clientMash.phones[0].phone,
+				phone2: fm.clientMash.phones[1].phone,
 				id_estado_client: fm.clientMash.id_location.id_estado.id,
 				id_ciudad_client: fm.clientMash.id_location.id_ciudad.id,
 				id_municipio_client: fm.clientMash.id_location.id_municipio.id,
@@ -797,14 +787,23 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				municipio: fm.clientMash.id_location.id_municipio,
 				parroquia: fm.clientMash.id_location.id_parroquia,
 			})
+			setCursedFormError({
+				...cursedFormError,
+				email: false,
+				name: false,
+				last_name: false,
+				ident_num: false,
+				phone1: false,
+				phone2: false,
+			})
 		} else if(!fm.mashClient){
 			console.log('vaciar client')
 			setCursedForm({
 				...cursedForm,
 				name: '',
 				last_name: '',
-				phone1: '+58',
-				phone2: '+58',
+				phone1: '',
+				phone2: '',
 				id_estado_client: 0,
 				id_ciudad_client: 0,
 				id_municipio_client: 0,
@@ -823,10 +822,13 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		}
 	}, [fm.mashClient, fm.clientMash, fm.id_client])
 
+	const [oldCommerceMatsh, setOldCommerceMatsh] = useState<boolean>(false);
 
 	//MashCommerce
 	useEffect(() => {
-		if(fm.mashClient && fm.mashCommerce){
+		if(fm.mashCommerce){
+			console.log('comercio ya existe')
+			setOldCommerceMatsh(true);
 			setCursedForm({
 				...cursedForm,
 				//step1
@@ -850,33 +852,26 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				parroquia: fm.commerceMash.id_location.id_parroquia,
 			})
 			setActivity(fm.commerceMash.id_activity);
-		}else if(!fm.mashCommerce){
+			setCursedFormError({
+				...cursedFormError,
+				name_commerce: false,
+				ident_num_commerce: false,
+				id_activity: false,
+			})
+		}else if(!fm.mashCommerce && oldCommerceMatsh){
+			setOldCommerceMatsh(false);
 			console.log('vaciar Commercio', fm.commerceMash)
 			setCursedForm({
 				...cursedForm,
 				name_commerce: '',
 				id_activity: 0,
 				special_contributor: 0,
-				//Step3 Location
-				//Commerce
-				id_estado: 0,
-				id_ciudad: 0,
-				id_municipio: 0,
-				id_parroquia: 0,
-				codigo_postal: '',
-				sector: '',
-				calle: '',
-				local: '',
+				//Step3 Location 
+				//Location se carga del cliente
 			});
-			setLocationCommerce({
-				estado: null,
-				ciudad: null,
-				municipio: null,
-				parroquia: null,
-			})
-			setActivity(fm.commerceMash.id_activity);
+			setActivity(null);
 		}
-	}, [fm.mashCommerce])
+	}, [fm.mashCommerce, fm.commerceMash])
 
 	const handleBlurNumBank = () => {
 		if (activeStep === 3 && cursedForm.email !== '' && cursedForm.text_account_number !== '') {
@@ -929,7 +924,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				imagesForm,
 				cursedForm.special_contributor,
 				fm.imagesClient,
-				fm.mashCommerce,
+				fm.imagesCommerce,
 				cursedForm.id_ident_type_commerce
 			) ||
 			valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError)
@@ -939,7 +934,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		handleLoading();
 		setSendForm(1);
 		if (!fm.mashClient) {
-			dispatch(sendClient(cursedForm));
+			dispatch(sendClient(cursedForm, codePhone));
 		}
 	};
 
@@ -967,7 +962,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	};
 
 	const deleteImgContributor = (name: string) => {
-		console.log(name);
 		setImagesForm({
 			...imagesForm,
 			[`rc_${name}`]: null,
@@ -995,8 +989,8 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			validateForm={validateForm}
 			listLocation={listLocationClient}
 			location={locationClient}
-			setLocation={setLocationClient}
 			handleUpdateLocation={handleUpdateLocationClient}
+			codePhone={codePhone}
 		/>,
 		<Step2
 			listIdentType={listIdentType}
