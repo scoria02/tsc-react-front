@@ -71,8 +71,7 @@ export default function PasoPaymentReceipt() {
 		zoomPosition: 'original',
 		height: 350,
 		width: 450,
-		//falta
-		img: `${URL}:${PortFiles}/${fm.path_rc_ident_card}`,
+		img: `${URL}:${PortFiles}/${fm.rc_comp_dep.path}`,
 	};
 
 	return (
@@ -93,7 +92,6 @@ export default function PasoPaymentReceipt() {
 				</div>
 			<div className='img_container'>
 				<ReactImageZoom className={classes.img_zoom} {...props} />
-
 			</div>
 			<ModalAlert 
 				openModal={openModal}

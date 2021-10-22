@@ -15,6 +15,9 @@ export enum ActionType {
 	//FM Solicitud
 	validClient = '[FM] validation Client',
 	validClientError = '[FM] validation Client Error',
+	validCommerce= '[FM] validation Commerce',
+	validCommerceOk= '[FM] validation Commerce No existe',
+	validCommerceError = '[FM] validation Commerce Error',
 	sendClient = '[FM] send Client',
 	sendClientError = '[FM] send Client Error',
 	validNumBank= '[FM] validation Number Bank',

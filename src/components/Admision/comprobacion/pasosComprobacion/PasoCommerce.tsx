@@ -18,14 +18,14 @@ export default function PasoUno() {
 					id='outlined-basic'
 					label='Nombre Completo'
 					variant='outlined'
-					value={fm.name_commerce}
+					value={fm.id_commerce.name}
 				/>
 				<TextField
 					className={classes.btn_stepT}
 					id='outlined-basic'
 					label='Numero ID'
 					variant='outlined'
-					value={`${fm.ident_type_commerce} ${fm.ident_num_commerce}`}
+					value={`${fm.id_commerce.id_ident_type.name} ${fm.id_commerce.ident_num}`}
 				/>
 			</div>
 			<div className={classes.btn_stepM}>
@@ -33,14 +33,14 @@ export default function PasoUno() {
 					className={classes.btn_stepT}
 					id='outlined-basic'
 					label='Estado'
-					value={fm.estado_commerce}
+					value={fm.id_commerce.id_location.id}
 					variant='outlined'
 				/>
 				<TextField
 					className={classes.btn_stepT}
 					id='outlined-basic'
 					label='Ciudad'
-					value={fm.ciudad_commerce}
+					value={fm.id_commerce.id_location.id}
 					variant='outlined'
 				/>
 			</div>
@@ -49,14 +49,14 @@ export default function PasoUno() {
 					className={classes.btn_stepT}
 					id='outlined-basic'
 					label='Municipio'
-					value={fm.municipio_commerce}
+					value={fm.id_commerce.id_location.id}
 					variant='outlined'
 				/>
 				<TextField
 					className={classes.btn_stepT}
 					id='outlined-basic'
 					label='Parroquia'
-					value={fm.parroquia_commerce}
+					value={fm.id_commerce.id_location.id}
 					variant='outlined'
 				/>
 			</div>
@@ -65,14 +65,14 @@ export default function PasoUno() {
 					className={classes.btn_stepT}
 					id='outlined-basic'
 					label='Sector'
-					value={fm.sector_commerce}
+					value={fm.id_commerce.id_location.sector}
 					variant='outlined'
 				/>
 				<TextField
 					className={classes.btn_stepT}
 					id='outlined-basic'
 					label='Calle'
-					value={fm.calle_commerce}
+					value={fm.id_commerce.id_location.calle}
 					variant='outlined'
 				/>
 			</div>
@@ -81,7 +81,7 @@ export default function PasoUno() {
 					className={classes.btn_stepT}
 					id='outlined-basic'
 					label='Local'
-					value={fm.local_commerce}
+					value={fm.id_commerce.id_location.local}
 					variant='outlined'
 				/>
 				<TextField

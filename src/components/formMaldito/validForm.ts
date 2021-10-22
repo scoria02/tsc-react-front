@@ -90,11 +90,11 @@ export const sizeStep = (active: number): number => {
 		case 0:
 			return 15;
 		case 1:
-			return 18; 
+			return 20; 
 		case 2:
-			return 35; 
+			return 36; 
 		case 3:
-			return 35; 
+			return 45; 
 		default:
 			return 0;
 	}
@@ -105,20 +105,20 @@ export const sizeImagesStep = (active: number): number => {
 		case 0:
 			return 1;
 		case 1:
-			return 7; 
+			return 4; 
 		case 2:
-			return 7; 
+			return 4; 
 		case 3:
-			return 8;
+			return 5; //6 con rc_comp_dep
 		default:
 			return 0;
 	}
 }
 
-export const allInputNotNUll = (last: number, form: any, mashClient: boolean): boolean => {
+export const allInputNotNUll = (last: number, form: any, mashClient: boolean, mashCommerce: boolean): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(form)) {
-		if (indice > last) {
+		if (indice === last) {
 			return false;
 		}
 		indice++;
@@ -131,6 +131,8 @@ export const allInputNotNUll = (last: number, form: any, mashClient: boolean): b
 			}else{
 				if(mashClient && indice < 16) {
 					//no hago nada
+				}else if(mashCommerce && 15 < indice && indice < 21){
+					//no hago nada
 				}else{
 					if (item[1].trim() === '') {
 						return true;
@@ -138,25 +140,35 @@ export const allInputNotNUll = (last: number, form: any, mashClient: boolean): b
 				}
 			}
 		}else if (typeof item[1] === 'number' && item[0] !== 'special_contributor') {
-			if(item[1] === 0){
-				return true;
-			}
+			if(mashClient && indice < 15) {
+				//no hago nada
+			}else{
+				if(item[1] === 0){
+					return true;
+				}
+			}	
 		}	
 	}
 	return false;
 };
 
-export const allImgNotNUll = (last: number, images: any, special_contributor: boolean, mashClient: boolean): boolean => {
+export const allImgNotNUll = (last: number, images: any, special_contributor: boolean, mashClient: boolean, mashCommerce: boolean, isActa: number): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(images)) {
-		if (indice > last) {
+		if (indice === last) {
 			return false;
 		}
 		indice++;
-		if(item[0] === 'rc_special_contributor' && !special_contributor){
+		if(item[0] === 'rc_special_contributor' && !special_contributor) {
 			//Salto
+		}else if (
+			item[0] === 'rc_constitutive_act' && isActa !== 3 ){
+			//nada
 		}else{
-			if((item[0] === 'rc_ident_card' || item[0] === 'rc_ref_perso') && mashClient) {
+			if(mashClient && indice < 2) {
+				//No hago nada
+			}
+			else if (mashCommerce && 1 < indice && indice < 5) {
 				//No hago nada
 			}
 			else {

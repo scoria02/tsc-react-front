@@ -104,20 +104,29 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 					</div>
 				);
 			case 3:
+				if(fm.rc_constitutive_act || fm.rc_special_contributor) {
 				return (
 					<div className='comprobar_container_2'>
 						<div>
-							{fm.path_rc_constitutive_act &&
+							{fm.rc_constitutive_act &&
 								<PasoActaConst/>
 							}
 						</div>
 						<div>
-							{fm.path_rc_special_contributor &&
+							{fm.rc_special_contributor &&
 								<PasoContriSpecial />
 							}
 						</div>
 					</div>
 				);
+				}else if(fm.rc_comp_dep){
+					return (
+						<div>
+							<PasoPaymentReceipt />
+						</div>
+					);
+				} else
+					return 
 			case 4:
 				return (
 					<div>
@@ -135,28 +144,26 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 	const validated: any = useSelector((state: RootState) => state.acceptance.validado);
 	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatus);
 
-
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [completed, setCompleted] = React.useState(new Set<number>());
 	const [skipped, setSkipped] = React.useState(new Set<number>());
 	const steps = getSteps(fm);
 	function getSteps(form:any) {
-		if(form.path_rc_constitutive_act || form.path_rc_special_contributor) {
-			if(true){
+		if(form.rc_constitutive_act|| form.rc_special_contributor) {
+			if(form.rc_comp_dep){ //existe deposito
 				return [
 					'Validacion (Cliente)',
 					'Validacion (Comercio)',
 					'Validacion (Referencia Bancaria)',
 					`
 					Validacion (
-					${ 
-						form.path_rc_constitutive_act ?
-							`Acta Const. ${form.path_rc_special_contributor ? '/' : ''}`
+					${form.rc_constitutive_act ?
+							`Acta Const. ${form.rc_special_contributor ? '/' : ''}`
 						:
 						''
 					}
 					${ 
-						form.path_rc_special_contributor ?
+						form.rc_special_contributor ?
 							'Con. Especial' 
 						:
 						''
@@ -171,14 +178,13 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 					'Validacion (Referencia Bancaria)',
 					`
 					Validacion (
-					${ 
-						form.path_rc_constitutive_act ?
-							`Acta Const. ${form.path_rc_special_contributor ? '/' : ''}`
+					${form.rc_constitutive_act ?
+							`Acta Const. ${form.rc_special_contributor ? '/' : ''}`
 						:
 						''
 					}
 					${ 
-						form.path_rc_special_contributor ?
+						form.rc_special_contributor ?
 							'Con. Especial' 
 						:
 						''
@@ -187,7 +193,7 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 				]
 			}
 		}else{
-			if(form.path_rc_comp_dep){
+			if(form.rc_comp_dep){
 				return [
 					'Validacion (Cliente)',
 					'Validacion (Comercio)',
@@ -225,11 +231,11 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 
 	const handleNext = () => {
 		const newActiveStep =
-			isLastStep() && !allStepsCompleted()
-				? // It's the last step, but not all steps have been completed
-				  // find the first step that has been completed
-				  steps.findIndex((step, i) => !completed.has(i))
-				: activeStep + 1;
+			isLastStep() && 
+			!allStepsCompleted() ? 
+				steps.findIndex((step, i) => !completed.has(i))
+			: 
+				activeStep + 1;
 		setActiveStep(newActiveStep);
 	};
 
@@ -239,14 +245,14 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 				if(item.slice(0,3) === 'rc_'){
 					const element = validated[item]
 					if(element.status === false){
-						dispatch(updateStatusFM(fm.id_fm, 4, validated));
+						dispatch(updateStatusFM(fm.id, 4, validated));
 						console.log('diferido')
 						return;
 					}
 				}
 			}
-			dispatch(updateStatusFM(fm.id_fm, 2, {}));
-		console.log('validated')
+			dispatch(updateStatusFM(fm.id, 2, validated));
+			console.log('validated')
 		}
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activeStep, dispatch, allStepsCompleted])

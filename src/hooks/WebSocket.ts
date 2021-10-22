@@ -6,8 +6,8 @@ const WebSocket = () => {
   const [socket , setSocket] = useState<any>(null);
 
   useEffect(() => {
-    const sockete = io(`${URL}:${Port}`);
-    setSocket(sockete)
+    //const sockete = io(`${URL}:${Port}`);
+    //setSocket(sockete)
   }, []);
 
   return { 

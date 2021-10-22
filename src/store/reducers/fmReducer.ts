@@ -1,22 +1,32 @@
 import { ActionType } from '../types/types';
 
 interface inState {
-	id_client: number,
-	mashClient: boolean,
-	id_commerce: number,
-	id_images: any,
-	loadedClient: boolean,
-	loadedCommerce: boolean,
-	loadedImages: boolean,
-	loadedFM: boolean,
-	errorClient: boolean,
-	errorNumBank: boolean,
+	id_client: number;
+	clientMash: any;
+	mashClient: boolean;
+	imagesClient: boolean;
+	id_commerce: number;
+	commerceMash: any;
+	mashCommerce: boolean,
+	imagesCommerce: boolean;
+	id_images: any;
+	loadedClient: boolean;
+	loadedCommerce: boolean;
+	loadedImages: boolean;
+	loadedFM: boolean;
+	errorClient: boolean;
+	errorNumBank: boolean;
 }
 
 const initialState: inState = {
 	id_client: 0,
+	clientMash: {},
 	mashClient: false,
+	imagesClient: false,
 	id_commerce: 0,
+	imagesCommerce: false,
+	commerceMash: {},
+	mashCommerce: false,
 	id_images: null,
 	loadedClient: false,
 	loadedCommerce: false,
@@ -30,16 +40,45 @@ export const fmReducer = (state = initialState, action: any) => {
 	switch (action.type) {
 		//Client
 		case ActionType.validClient:
+			console.log(action.payload)
 			return {
 				...state,
 				errorClient: false,
-				mashClient: action.payload.mash,
-				id_client: action.payload.mash ? action.payload.id : 0,
+				id_client: action.payload.mash ? action.payload.client.id : 0,
+				mashClient: action.payload.matsh,
+				imagesClient: action.payload.matshImg,
+				clientMash: action.payload.client,
 			};
 		case ActionType.validClientError:
 			return {
 				...state,
+				id_client: 0,
+				clientMash: {},
+				mashClient: false,
+				imagesClient: false,
 				errorClient: true,
+			};
+		case ActionType.validCommerce:
+			return {
+				...state,
+				commerceMash: action.payload,
+				id_commerce: action.payload.id,
+				mashCommerce: action.payload.matsh,
+				imagesCommerce: action.payload.matshImg,
+			};
+		case ActionType.validCommerceOk: //reset commerce
+			return {
+				...state,
+				commerceMash: {},
+				mashCommerce: false,
+				imagesCommerce: false,
+			};
+		case ActionType.validCommerceError:
+			return {
+				...state,
+				commerceMash: {},
+				mashCommerce: false,
+				imagesCommerce: false,
 			};
 		//Number Bank
 		case ActionType.validNumBank:

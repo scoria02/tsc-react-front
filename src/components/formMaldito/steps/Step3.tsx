@@ -4,6 +4,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import classnames from 'classnames';
 import React from 'react';
 import { useStylesFM } from '../styles';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 
 export const Step3: React.FC<any> = ({
 	setAutoCompleteCommerce,
@@ -19,6 +21,8 @@ export const Step3: React.FC<any> = ({
 	handleUpdateLocationPos,
 }) => {
 	const classes = useStylesFM();
+
+	const fm: any = useSelector((state: RootState) => state.fm);
 
 	const handleSelectPos = (event: any, value: any, item: string) => {
 		if (value) {
@@ -71,6 +75,7 @@ export const Step3: React.FC<any> = ({
 							handleSelect(event, value, 'estado');
 						}}
 						value={location.estado || null}
+						disabled={fm.mashCommerce}
 						options={listLocation.estado}
 						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
 						renderInput={(params: any) => (
@@ -81,6 +86,7 @@ export const Step3: React.FC<any> = ({
 						className={classes.inputText}
 						onChange={(event, value) => handleSelect(event, value, 'ciudad')}
 						value={location.ciudad || null}
+						disabled={fm.mashCommerce}
 						options={listLocation.ciudad}
 						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
 						renderInput={(params: any) => (
@@ -93,6 +99,7 @@ export const Step3: React.FC<any> = ({
 						className={classes.inputTextLeft}
 						onChange={(event, value) => handleSelect(event, value, 'municipio')}
 						value={location.municipio || null}
+						disabled={fm.mashCommerce}
 						options={listLocation.municipio}
 						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
 						renderInput={(params: any) => (
@@ -103,6 +110,7 @@ export const Step3: React.FC<any> = ({
 						className={classes.inputText}
 						onChange={(event, value) => handleSelect(event, value, 'parroquia')}
 						value={location.parroquia || null}
+						disabled={fm.mashCommerce}
 						options={listLocation.parroquia}
 						getOptionLabel={(option: any) => (option.parroquia ? option.parroquia : '')}
 						renderInput={(params: any) => (
@@ -116,20 +124,22 @@ export const Step3: React.FC<any> = ({
 						variant='outlined'
 						required
 						id='standard-required'
-						label='Sector'
-						name='sector'
+						label='Codigo Postal'
+						disabled={fm.mashCommerce}
+						name='codigo_postal'
 						onChange={handleChangeCommerce}
-						value={cursedForm.sector}
+						value={cursedForm.codigo_postal}
 					/>
 					<TextField
 						className={classes.inputText}
 						variant='outlined'
 						required
 						id='standard-required'
-						label='Calle'
-						name='calle'
+						disabled={fm.mashCommerce}
+						label='Sector'
+						name='sector'
 						onChange={handleChangeCommerce}
-						value={cursedForm.calle}
+						value={cursedForm.sector}
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
@@ -138,20 +148,22 @@ export const Step3: React.FC<any> = ({
 						variant='outlined'
 						required
 						id='standard-required'
-						label='Local'
-						name='local'
+						disabled={fm.mashCommerce}
+						label='Calle'
+						name='calle'
 						onChange={handleChangeCommerce}
-						value={cursedForm.local}
+						value={cursedForm.calle}
 					/>
 					<TextField
 						className={classes.inputText}
 						variant='outlined'
 						required
 						id='standard-required'
-						label='Codigo Postal'
-						name='codigo_postal'
+						label='Local'
+						disabled={fm.mashCommerce}
+						name='local'
 						onChange={handleChangeCommerce}
-						value={cursedForm.codigo_postal}
+						value={cursedForm.local}
 					/>
 				</div>
 			</div>
@@ -209,20 +221,20 @@ export const Step3: React.FC<any> = ({
 						variant='outlined'
 						required
 						id='standard-required'
-						label='Sector'
-						name='sector_pos'
+						label='Codigo Postal'
+						name='codigo_postal_pos'
 						onChange={handleChangePos}
-						value={cursedForm.sector_pos}
+						value={cursedForm.codigo_postal_pos}
 					/>
 					<TextField
 						className={classes.inputText}
 						variant='outlined'
 						required
 						id='standard-required'
-						label='Calle'
-						name='calle_pos'
+						label='Sector'
+						name='sector_pos'
 						onChange={handleChangePos}
-						value={cursedForm.calle_pos}
+						value={cursedForm.sector_pos}
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
@@ -231,20 +243,20 @@ export const Step3: React.FC<any> = ({
 						variant='outlined'
 						required
 						id='standard-required'
-						label='Local'
-						name='local_pos'
+						label='Calle'
+						name='calle_pos'
 						onChange={handleChangePos}
-						value={cursedForm.local_pos}
+						value={cursedForm.calle_pos}
 					/>
 					<TextField
 						className={classes.inputText}
 						variant='outlined'
 						required
 						id='standard-required'
-						label='Codigo Postal'
-						name='codigo_postal_pos'
+						label='Local'
+						name='local_pos'
 						onChange={handleChangePos}
-						value={cursedForm.codigo_postal_pos}
+						value={cursedForm.local_pos}
 					/>
 				</div>
 			</div>

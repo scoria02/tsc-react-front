@@ -106,9 +106,11 @@ export const Step1: React.FC<any> = ({
 					<Button
 						className={classes.imgIdent}
 						variant='contained'
-						style={{ background: imagesForm.rc_ident_card ? '#5c62c5' : '#bbdefb' }}
+						disabled={fm.imagesClient}
+						style={{ 
+							background: imagesForm.rc_ident_card ? '#5c62c5' : '#bbdefb' }}
 						component='label'
-						disabled={fm.mashClient}>
+						>
 						{imagesForm.rc_ident_card !== null ? (
 							<p className='nameImg'>{namesImages.rc_ident_card.slice(0, 7)} ...</p>
 						) : (
@@ -177,6 +179,7 @@ export const Step1: React.FC<any> = ({
 				</div>
 				<div className={classes.input}>
 					<Autocomplete
+						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
 						onChange={(event, value) => handleSelectClient(event, value, 'estado')}
 						value={location.estado || null}
@@ -187,6 +190,7 @@ export const Step1: React.FC<any> = ({
 						)}
 					/>
 					<Autocomplete
+						disabled={fm.mashClient}
 						className={classes.inputText}
 						onChange={(event, value) => handleSelectClient(event, value, 'ciudad')}
 						value={location.ciudad || null}
@@ -199,6 +203,7 @@ export const Step1: React.FC<any> = ({
 				</div>
 				<div className={classes.input}>
 					<Autocomplete
+						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
 						onChange={(event, value) => handleSelectClient(event, value, 'municipio')}
 						value={location.municipio || null}
@@ -209,6 +214,7 @@ export const Step1: React.FC<any> = ({
 						)}
 					/>
 					<Autocomplete
+						disabled={fm.mashClient}
 						className={classes.inputText}
 						onChange={(event, value) => handleSelectClient(event, value, 'parroquia')}
 						value={location.parroquia || null}
@@ -221,7 +227,19 @@ export const Step1: React.FC<any> = ({
 				</div>
 				<div className={classes.input}>
 					<TextField
+						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
+						variant='outlined'
+						required
+						id='standard-required'
+						label='Cod. Postal'
+						name='codigo_postal_client'
+						onChange={handleChange}
+						value={cursedForm.codigo_postal_client}
+					/>
+					<TextField
+						disabled={fm.mashClient}
+						className={classes.inputText}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -230,8 +248,11 @@ export const Step1: React.FC<any> = ({
 						onChange={handleChange}
 						value={cursedForm.sector_client}
 					/>
+				</div>
+				<div className={classes.input}>
 					<TextField
-						className={classes.inputText}
+						disabled={fm.mashClient}
+						className={classNames(classes.inputText, classes.inputTextLeft)}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -240,10 +261,9 @@ export const Step1: React.FC<any> = ({
 						onChange={handleChange}
 						value={cursedForm.calle_client}
 					/>
-				</div>
-				<div className={classes.input}>
 					<TextField
-						className={classNames(classes.inputText, classes.inputTextLeft)}
+						disabled={fm.mashClient}
+						className={classes.inputText}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -251,17 +271,6 @@ export const Step1: React.FC<any> = ({
 						name='local_client'
 						onChange={handleChange}
 						value={cursedForm.local_client}
-					/>
-					<TextField
-						className={classes.inputText}
-						variant='outlined'
-						required
-						id='standard-required'
-						label='Cod.
-					Postal'
-						name='codigo_postal_client'
-						onChange={handleChange}
-						value={cursedForm.codigo_postal_client}
 					/>
 				</div>
 			</div>

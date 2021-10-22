@@ -2,6 +2,8 @@ import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 import IconButton from '@material-ui/core/IconButton';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -22,12 +24,15 @@ export const Step2: React.FC<any> = ({
 	error,
 	imagesForm,
 	setCursedForm,
+	handleBlurCommerce,
 	handleChange,
 	handleChangeImages,
 	deleteImgContributor,
 }) => {
 	const classes = useStylesFM();
 	const [actaFlag, setActaFlag] = useState(false);
+
+	const fm: any = useSelector((state: RootState) => state.fm);
 
 	const handleSelect = (event: any) => {
 		setCursedForm({
@@ -88,10 +93,12 @@ export const Step2: React.FC<any> = ({
 						onChange={handleChange}
 						value={cursedForm.name_commerce}
 						error={error.name_commerce}
+						disabled={fm.mashCommerce}
 					/>
 				</div>
 				<Autocomplete
 					className={classes.input}
+					disabled={fm.mashCommerce}
 					onChange={(event, value) => {
 						handleSelectActivity(event, value, 'activity');
 					}}
@@ -110,6 +117,7 @@ export const Step2: React.FC<any> = ({
 							onChange={handleSelect}
 							name='id_ident_type_commerce'
 							label='Tipo'
+							onBlur={handleBlurCommerce}
 							placeholder=''>
 							{listIdentType.map((item: any) => (
 								<MenuItem key={item.id} value={item.id}>
@@ -126,10 +134,12 @@ export const Step2: React.FC<any> = ({
 						label={cursedForm.id_ident_type_commerce === 3 ? 'Numero de Rif' : 'C.I.'}
 						name='ident_num_commerce'
 						onChange={handleChange}
+						onBlur={handleBlurCommerce}
 						value={cursedForm.ident_num_commerce}
 					/>
 					<Button
 						className={classes.imgIdent}
+						disabled={fm.mashCommerce}
 						variant='contained'
 						style={{ background: imagesForm.rc_rif? '#5c62c5' : '#bbdefb' }}
 						component='label'>
@@ -157,6 +167,7 @@ export const Step2: React.FC<any> = ({
 						<>
 							<b className={classes.inputText}>Acta Constitutiva</b>
 							<Button
+								disabled={fm.mashCommerce}
 								className={classes.imgIdent}
 								variant='contained'
 								style={{ background: imagesForm.rc_constitutive_act ? '#5c62c5' : '#bbdefb' }}
@@ -195,6 +206,7 @@ export const Step2: React.FC<any> = ({
 										name='special_contributor'
 										checked={cursedForm.special_contributor ? true : false}
 										onChange={handleChecked}
+										disabled={fm.mashCommerce}
 										color='primary'
 										inputProps={{ 'aria-label': 'secondary checkbox' }}
 									/>
@@ -210,6 +222,7 @@ export const Step2: React.FC<any> = ({
 					</div>
 					<Button
 						className={classes.imgIdent}
+						disabled={fm.mashCommerce}
 						variant='contained'
 						style={{ 
 							background: imagesForm.rc_special_contributor ? '#5c62c5' : '#bbdefb',
