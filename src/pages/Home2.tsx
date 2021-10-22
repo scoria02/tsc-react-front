@@ -6,7 +6,7 @@ import Admision from '../components/Admision';
 import { FormMaldito } from '../components/formMaldito';
 import GestionUsuarios from '../components/GestionUsuarios';
 import MainMenu from '../components/MainMenu';
-import { baseUrl, urlAdmision, urlFM } from '../routers/url';
+import { baseUrl, urlAdmision, urlFM, userAdmin } from '../routers/url';
 //Components
 import Inicio from './Home';
 
@@ -31,36 +31,15 @@ const ruta = localStorage.getItem('path') || '/';
 const Home: React.FC = () => {
 	const classes = useStyles();
 
-	const [selectedIndex, setSelectedIndex] = React.useState(0);
-
 	return (
 		<div className={classes.root}>
 			{/* <CssBaseline /> */}
 			<MainMenu />
 			<main className={classes.content}>
-				<Route
-					path={urlAdmision}
-					exact
-					render={() => {
-						return <Admision />;
-					}}
-				/>
-				<Route
-					path={urlFM}
-					exact
-					render={() => {
-						return <FormMaldito setSelectedIndex={setSelectedIndex} />;
-					}}
-				/>
-				{selectedIndex === 4 && <GestionUsuarios />}
-				<Route
-					exact
-					path={baseUrl}
-					render={() => {
-						return <Inicio />;
-					}}
-				/>
-
+				<Route exact path={urlAdmision} component={Admision} />
+				<Route exact path={urlFM} component={FormMaldito} />
+				<Route exact path={userAdmin} component={GestionUsuarios} />
+				<Route exact path={baseUrl} component={Inicio} />
 				<Redirect to={ruta} />
 			</main>
 		</div>

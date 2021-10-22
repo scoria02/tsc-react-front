@@ -51,11 +51,9 @@ function getSteps() {
 	];
 }
 
-interface Props {
-	setSelectedIndex: any;
-}
+interface Props {}
 
-export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
+export const FormMaldito: React.FC<Props> = () => {
 	const history = useHistory();
 	const classes = useStylesFM();
 	const dispatch = useDispatch();
@@ -280,9 +278,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		if (sendForm === 1 && fm.id_client !== 0) {
 			console.log('Listo Cliente');
 			if (!fm.mashCommerce) {
-				dispatch(
-					sendCommerce(fm.id_client, cursedForm)
-				);
+				dispatch(sendCommerce(fm.id_client, cursedForm));
 			}
 			setSendForm(2);
 			//Fin comerce
@@ -302,9 +298,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			setSendForm(3);
 		} else if (sendForm === 3 && fm.id_images !== null && fm.id_commerce !== 0 && fm.id_client !== 0) {
 			console.log('Listo Images, Client/Comercio:', fm.id_client, fm.id_commerce);
-			dispatch(
-				sendFM(cursedForm, fm)
-			);
+			dispatch(sendFM(cursedForm, fm));
 			setSendForm(4);
 		} else if (sendForm === 4 && fm.loadedFM) {
 			console.log('Ready All FM');
@@ -748,11 +742,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 	};
 
 	const handleBlurCommerce = () => {
-		if (
-			activeStep === 1 &&
-			cursedForm.id_ident_type_commerce !== '' &&
-			cursedForm.ident_num_commerce !== ''
-		) {
+		if (activeStep === 1 && cursedForm.id_ident_type_commerce !== '' && cursedForm.ident_num_commerce !== '') {
 			dispatch(
 				validationCommerce(fm.id_client, {
 					id_ident_type: cursedForm.id_ident_type_commerce,
@@ -764,7 +754,12 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 
 	//MashClient
 	useEffect(() => {
+<<<<<<< HEAD
 		if(fm.mashClient && fm.id_client){
+=======
+		if (fm.mashClient && fm.id_client) {
+			console.log('x', fm.clientMash.id_location.id_estado);
+>>>>>>> a1434b935279b658cd17227f114203ddb46a6244
 			setCursedForm({
 				...cursedForm,
 				email: fm.clientMash.email,
@@ -786,6 +781,7 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				ciudad: fm.clientMash.id_location.id_ciudad,
 				municipio: fm.clientMash.id_location.id_municipio,
 				parroquia: fm.clientMash.id_location.id_parroquia,
+<<<<<<< HEAD
 			})
 			setCursedFormError({
 				...cursedFormError,
@@ -798,6 +794,11 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			})
 		} else if(!fm.mashClient){
 			console.log('vaciar client')
+=======
+			});
+		} else if (!fm.mashClient) {
+			console.log('vaciar client');
+>>>>>>> a1434b935279b658cd17227f114203ddb46a6244
 			setCursedForm({
 				...cursedForm,
 				name: '',
@@ -818,8 +819,9 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				ciudad: null,
 				municipio: null,
 				parroquia: null,
-			})
+			});
 		}
+<<<<<<< HEAD
 	}, [fm.mashClient, fm.clientMash, fm.id_client])
 
 	const [oldCommerceMatsh, setOldCommerceMatsh] = useState<boolean>(false);
@@ -829,13 +831,20 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		if(fm.mashCommerce){
 			console.log('comercio ya existe')
 			setOldCommerceMatsh(true);
+=======
+	}, [fm.mashClient, fm.clientMash, fm.id_client]);
+
+	//MashCommerce
+	useEffect(() => {
+		if (fm.mashClient && fm.mashCommerce) {
+>>>>>>> a1434b935279b658cd17227f114203ddb46a6244
 			setCursedForm({
 				...cursedForm,
 				//step1
 				name_commerce: fm.commerceMash.name,
 				id_activity: fm.commerceMash.id_activity.id,
 				special_contributor: fm.commerceMash.special_contributor,
-				//step2 
+				//step2
 				id_estado: fm.clientMash.id_location.id_estado.id,
 				id_ciudad: fm.clientMash.id_location.id_ciudad.id,
 				id_municipio: fm.clientMash.id_location.id_municipio.id,
@@ -850,8 +859,9 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				ciudad: fm.commerceMash.id_location.id_ciudad,
 				municipio: fm.commerceMash.id_location.id_municipio,
 				parroquia: fm.commerceMash.id_location.id_parroquia,
-			})
+			});
 			setActivity(fm.commerceMash.id_activity);
+<<<<<<< HEAD
 			setCursedFormError({
 				...cursedFormError,
 				name_commerce: false,
@@ -861,6 +871,10 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 		}else if(!fm.mashCommerce && oldCommerceMatsh){
 			setOldCommerceMatsh(false);
 			console.log('vaciar Commercio', fm.commerceMash)
+=======
+		} else if (!fm.mashCommerce) {
+			console.log('vaciar Commercio', fm.commerceMash);
+>>>>>>> a1434b935279b658cd17227f114203ddb46a6244
 			setCursedForm({
 				...cursedForm,
 				name_commerce: '',
@@ -869,9 +883,21 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 				//Step3 Location 
 				//Location se carga del cliente
 			});
+<<<<<<< HEAD
 			setActivity(null);
 		}
 	}, [fm.mashCommerce, fm.commerceMash])
+=======
+			setLocationCommerce({
+				estado: null,
+				ciudad: null,
+				municipio: null,
+				parroquia: null,
+			});
+			setActivity(fm.commerceMash.id_activity);
+		}
+	}, [fm.mashCommerce]);
+>>>>>>> a1434b935279b658cd17227f114203ddb46a6244
 
 	const handleBlurNumBank = () => {
 		if (activeStep === 3 && cursedForm.email !== '' && cursedForm.text_account_number !== '') {
@@ -957,7 +983,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			timer: 1500,
 		});
 		//Redirect home
-		setSelectedIndex(0);
 		history.push(baseUrl);
 	};
 
