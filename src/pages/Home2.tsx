@@ -36,29 +36,10 @@ const Home: React.FC = () => {
 			{/* <CssBaseline /> */}
 			<MainMenu />
 			<main className={classes.content}>
-				<Route
-					path={urlAdmision}
-					exact
-					render={() => {
-						return <Admision />;
-					}}
-				/>
-				<Route
-					path={urlFM}
-					exact
-					render={() => {
-						return <FormMaldito />;
-					}}
-				/>
+				<Route exact path={urlAdmision} component={Admision} />
+				<Route exact path={urlFM} component={FormMaldito} />
 				<Route exact path={userAdmin} component={GestionUsuarios} />
-				<Route
-					exact
-					path={baseUrl}
-					render={() => {
-						return <Inicio />;
-					}}
-				/>
-
+				<Route exact path={baseUrl} component={Inicio} />
 				<Redirect to={ruta} />
 			</main>
 		</div>
