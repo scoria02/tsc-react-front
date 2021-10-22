@@ -53,7 +53,7 @@ function getSteps() {
 
 interface Props {}
 
-export const FormMaldito: React.FC<Props> = ({}) => {
+export const FormMaldito: React.FC<Props> = () => {
 	const history = useHistory();
 	const classes = useStylesFM();
 	const dispatch = useDispatch();
@@ -276,9 +276,7 @@ export const FormMaldito: React.FC<Props> = ({}) => {
 		if (sendForm === 1 && fm.id_client !== 0) {
 			console.log('Listo Cliente');
 			if (!fm.mashCommerce) {
-				dispatch(
-					sendCommerce(fm.id_client, cursedForm)
-				);
+				dispatch(sendCommerce(fm.id_client, cursedForm));
 			}
 			setSendForm(2);
 			//Fin comerce
@@ -298,9 +296,7 @@ export const FormMaldito: React.FC<Props> = ({}) => {
 			setSendForm(3);
 		} else if (sendForm === 3 && fm.id_images !== null && fm.id_commerce !== 0 && fm.id_client !== 0) {
 			console.log('Listo Images, Client/Comercio:', fm.id_client, fm.id_commerce);
-			dispatch(
-				sendFM(cursedForm, fm)
-			);
+			dispatch(sendFM(cursedForm, fm));
 			setSendForm(4);
 		} else if (sendForm === 4 && fm.loadedFM) {
 			console.log('Ready All FM');
@@ -677,7 +673,7 @@ export const FormMaldito: React.FC<Props> = ({}) => {
 			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) &&
 			validEndPointFM()
 		) {
-			console.log('Vas Bien')
+			console.log('Vas Bien');
 			setReadyStep(true);
 		} else {
 			setReadyStep(false);
@@ -755,11 +751,7 @@ export const FormMaldito: React.FC<Props> = ({}) => {
 	};
 
 	const handleBlurCommerce = () => {
-		if (
-			activeStep === 1 &&
-			cursedForm.id_ident_type_commerce !== '' &&
-			cursedForm.ident_num_commerce !== ''
-		) {
+		if (activeStep === 1 && cursedForm.id_ident_type_commerce !== '' && cursedForm.ident_num_commerce !== '') {
 			dispatch(
 				validationCommerce(fm.id_client, {
 					id_ident_type: cursedForm.id_ident_type_commerce,
@@ -771,8 +763,8 @@ export const FormMaldito: React.FC<Props> = ({}) => {
 
 	//MashClient
 	useEffect(() => {
-		if(fm.mashClient && fm.id_client){
-			console.log('x', fm.clientMash.id_location.id_estado)
+		if (fm.mashClient && fm.id_client) {
+			console.log('x', fm.clientMash.id_location.id_estado);
 			setCursedForm({
 				...cursedForm,
 				email: fm.clientMash.email,
@@ -794,9 +786,9 @@ export const FormMaldito: React.FC<Props> = ({}) => {
 				ciudad: fm.clientMash.id_location.id_ciudad,
 				municipio: fm.clientMash.id_location.id_municipio,
 				parroquia: fm.clientMash.id_location.id_parroquia,
-			})
-		} else if(!fm.mashClient){
-			console.log('vaciar client')
+			});
+		} else if (!fm.mashClient) {
+			console.log('vaciar client');
 			setCursedForm({
 				...cursedForm,
 				name: '',
@@ -817,21 +809,20 @@ export const FormMaldito: React.FC<Props> = ({}) => {
 				ciudad: null,
 				municipio: null,
 				parroquia: null,
-			})
+			});
 		}
-	}, [fm.mashClient, fm.clientMash, fm.id_client])
-
+	}, [fm.mashClient, fm.clientMash, fm.id_client]);
 
 	//MashCommerce
 	useEffect(() => {
-		if(fm.mashClient && fm.mashCommerce){
+		if (fm.mashClient && fm.mashCommerce) {
 			setCursedForm({
 				...cursedForm,
 				//step1
 				name_commerce: fm.commerceMash.name,
 				id_activity: fm.commerceMash.id_activity.id,
 				special_contributor: fm.commerceMash.special_contributor,
-				//step2 
+				//step2
 				id_estado: fm.clientMash.id_location.id_estado.id,
 				id_ciudad: fm.clientMash.id_location.id_ciudad.id,
 				id_municipio: fm.clientMash.id_location.id_municipio.id,
@@ -846,10 +837,10 @@ export const FormMaldito: React.FC<Props> = ({}) => {
 				ciudad: fm.commerceMash.id_location.id_ciudad,
 				municipio: fm.commerceMash.id_location.id_municipio,
 				parroquia: fm.commerceMash.id_location.id_parroquia,
-			})
+			});
 			setActivity(fm.commerceMash.id_activity);
-		}else if(!fm.mashCommerce){
-			console.log('vaciar Commercio', fm.commerceMash)
+		} else if (!fm.mashCommerce) {
+			console.log('vaciar Commercio', fm.commerceMash);
 			setCursedForm({
 				...cursedForm,
 				name_commerce: '',
@@ -871,10 +862,10 @@ export const FormMaldito: React.FC<Props> = ({}) => {
 				ciudad: null,
 				municipio: null,
 				parroquia: null,
-			})
+			});
 			setActivity(fm.commerceMash.id_activity);
 		}
-	}, [fm.mashCommerce])
+	}, [fm.mashCommerce]);
 
 	const handleBlurNumBank = () => {
 		if (activeStep === 3 && cursedForm.email !== '' && cursedForm.text_account_number !== '') {
