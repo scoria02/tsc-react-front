@@ -23,6 +23,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import PeopleIcon from '@material-ui/icons/PeopleAlt';
 import WorkIcon from '@material-ui/icons/Work';
 import classNames from 'classnames';
 import React, { useEffect } from 'react';
@@ -32,7 +33,7 @@ import luffy from '../../img/itachi2.png';
 import TranredLogo from '../../img/tranred-logo.png';
 //Redux
 //import luffy from '../../img/user.png';
-import { baseUrl, urlAdmision, urlFM } from '../../routers/url';
+import { baseUrl, urlAdmision, urlFM, userAdmin } from '../../routers/url';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
 import './index.scss';
@@ -113,7 +114,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 		overflowX: 'hidden',
 		width: theme.spacing(7) + 1,
 		[theme.breakpoints.up('sm')]: {
-			width: theme.spacing(9) + 1,
+			// width: theme.spacing(9) + 1,
 		},
 	},
 	toolbar: {
@@ -132,6 +133,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 		'& img': {
 			maxWidth: 176,
 		},
+	},
+	icon: {
+		minWidth: 40,
 	},
 }));
 
@@ -188,6 +192,10 @@ const MainMenu: React.FC = () => {
 		if (index === 0) {
 			history.push(baseUrl);
 			localStorage.setItem('path', baseUrl);
+		}
+		if (index === 4) {
+			history.push(userAdmin);
+			localStorage.setItem('path', userAdmin);
 		}
 		handleDrawerClose();
 	};
@@ -369,7 +377,7 @@ const MainMenu: React.FC = () => {
 				<Divider />
 				<List>
 					<ListItem button onClick={(event) => handleListItemClick(event, 0)}>
-						<ListItemIcon>
+						<ListItemIcon classes={{ root: classes.icon }}>
 							<HomeIcon />
 						</ListItemIcon>
 						<ListItemText primary='Inicio' />
@@ -386,14 +394,14 @@ const MainMenu: React.FC = () => {
 					*/}
 
 					<ListItem button onClick={(event) => handleListItemClick(event, 5)}>
-						<ListItemIcon>
+						<ListItemIcon classes={{ root: classes.icon }}>
 							<AssignmentIcon />
 						</ListItemIcon>
 						<ListItemText primary='Formulario de Act.' />
 					</ListItem>
 					<ListItem button onClick={(event) => handleListItemClick(event, 3)}>
 						<Link to={urlAdmision}>
-							<ListItemIcon>
+							<ListItemIcon classes={{ root: classes.icon }}>
 								<WorkIcon />
 							</ListItemIcon>
 						</Link>
@@ -401,22 +409,23 @@ const MainMenu: React.FC = () => {
 					</ListItem>
 				</List>
 				<Divider />
-				{/*
+
 				<List>
-					{['Trash', 'Spam'].map((text, index) => (
+					{/* {['Trash', 'Spam'].map((text, index) => (
 						<ListItem button key={text}>
-							<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <SettingsIcon />}</ListItemIcon>
-							<ListItemText primary={text} />
+						<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <SettingsIcon />}</ListItemIcon>
+						<ListItemText primary={text} />
 						</ListItem>
-					))}
+					))} */}
 					<ListItem button key={'Gestion de Usuarios'} onClick={(event) => handleListItemClick(event, 4)}>
-						<ListItemIcon>
-							<PeopleIcon />
-						</ListItemIcon>
+						<Link to={urlAdmision}>
+							<ListItemIcon classes={{ root: classes.icon }}>
+								<PeopleIcon />
+							</ListItemIcon>
+						</Link>
 						<ListItemText primary={'Gestion de Usuarios'} />
 					</ListItem>
 				</List>
-					*/}
 			</Drawer>
 		</div>
 	);
