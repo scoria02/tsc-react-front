@@ -1046,7 +1046,10 @@ export const FormMaldito: React.FC<Props> = () => {
 			listLocationPos.estado.length === 0 ? (
 				<LoaderPrimary />
 			) : (
-				<form className='container-form'>
+				<form 
+					className="container-form" 
+					//autoComplete="off"
+					>
 					<div className='capitan-america'></div>
 					<Stepper alternativeLabel activeStep={activeStep} style={{ background: 'none', width: '100%' }}>
 						{steps.map((label) => {

@@ -251,7 +251,7 @@ const Comprobacion: React.FC<any> = ({ special }) => {
 					}
 				}
 			}
-			dispatch(updateStatusFM(fm.id, 2, validated));
+			dispatch(updateStatusFM(fm.id, 3, validated));
 			console.log('validated')
 		}
 		//eslint-disable-next-line react-hooks/exhaustive-deps

@@ -161,6 +161,7 @@ export const Step1: React.FC<any> = ({
 						required
 						label='Telefono'
 						name='phone1'
+						autoComplete="telefono1"
 						onChange={handleChange}
 						error={error.phone1}
 						disabled={fm.mashClient}
@@ -180,6 +181,7 @@ export const Step1: React.FC<any> = ({
 						label='Telefono'
 						name='phone2'
 						onChange={handleChange}
+						autoComplete="telefono2"
 						error={error.phone2}
 						disabled={fm.mashClient}
 						value={cursedForm.phone2}
@@ -201,7 +203,7 @@ export const Step1: React.FC<any> = ({
 						options={listLocation.estado}
 						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='estado' label='Estado' variant='outlined' />
+							<TextField {...params} name='estado' label='Estado' inputProps={{ ...params.inputProps, autoComplete: 'estado', }} variant='outlined' />
 						)}
 					/>
 					<Autocomplete
@@ -212,7 +214,7 @@ export const Step1: React.FC<any> = ({
 						options={listLocation.ciudad}
 						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='ciudad' label='Ciudad' variant='outlined' />
+							<TextField {...params} name='ciudad' label='Ciudad' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'ciudad', }}/>
 						)}
 					/>
 				</div>
@@ -225,7 +227,7 @@ export const Step1: React.FC<any> = ({
 						options={listLocation.municipio}
 						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='municipio' label='Municipio' variant='outlined' />
+							<TextField {...params} name='municipio' label='Municipio' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'municipio', }}/>
 						)}
 					/>
 					<Autocomplete
@@ -236,7 +238,7 @@ export const Step1: React.FC<any> = ({
 						options={listLocation.parroquia}
 						getOptionLabel={(option: any) => (option.parroquia ? option.parroquia : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='parroquia' label='Parroquia' variant='outlined' />
+							<TextField {...params} name='parroquia' label='Parroquia' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'parroquia', }}/>
 						)}
 					/>
 				</div>

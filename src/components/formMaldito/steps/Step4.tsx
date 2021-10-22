@@ -160,6 +160,7 @@ export const Step4: React.FC<any> = ({
 				});
 			}
 		}
+		/* eslint-disable react-hooks/exhaustive-deps */
 	}, [cursedForm.number_post, cursedForm.initial, requestSource, typePay, modelPos]);
 
 	useEffect(() => {
@@ -168,6 +169,7 @@ export const Step4: React.FC<any> = ({
 		} else {
 			setDeleted(false);
 		}
+		/* eslint-disable react-hooks/exhaustive-deps */
 	}, [imagesForm.rc_comp_dep]);
 
 	return (
