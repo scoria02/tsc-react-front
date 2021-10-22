@@ -754,12 +754,7 @@ export const FormMaldito: React.FC<Props> = () => {
 
 	//MashClient
 	useEffect(() => {
-<<<<<<< HEAD
 		if(fm.mashClient && fm.id_client){
-=======
-		if (fm.mashClient && fm.id_client) {
-			console.log('x', fm.clientMash.id_location.id_estado);
->>>>>>> a1434b935279b658cd17227f114203ddb46a6244
 			setCursedForm({
 				...cursedForm,
 				email: fm.clientMash.email,
@@ -781,7 +776,6 @@ export const FormMaldito: React.FC<Props> = () => {
 				ciudad: fm.clientMash.id_location.id_ciudad,
 				municipio: fm.clientMash.id_location.id_municipio,
 				parroquia: fm.clientMash.id_location.id_parroquia,
-<<<<<<< HEAD
 			})
 			setCursedFormError({
 				...cursedFormError,
@@ -794,11 +788,6 @@ export const FormMaldito: React.FC<Props> = () => {
 			})
 		} else if(!fm.mashClient){
 			console.log('vaciar client')
-=======
-			});
-		} else if (!fm.mashClient) {
-			console.log('vaciar client');
->>>>>>> a1434b935279b658cd17227f114203ddb46a6244
 			setCursedForm({
 				...cursedForm,
 				name: '',
@@ -821,7 +810,6 @@ export const FormMaldito: React.FC<Props> = () => {
 				parroquia: null,
 			});
 		}
-<<<<<<< HEAD
 	}, [fm.mashClient, fm.clientMash, fm.id_client])
 
 	const [oldCommerceMatsh, setOldCommerceMatsh] = useState<boolean>(false);
@@ -831,13 +819,6 @@ export const FormMaldito: React.FC<Props> = () => {
 		if(fm.mashCommerce){
 			console.log('comercio ya existe')
 			setOldCommerceMatsh(true);
-=======
-	}, [fm.mashClient, fm.clientMash, fm.id_client]);
-
-	//MashCommerce
-	useEffect(() => {
-		if (fm.mashClient && fm.mashCommerce) {
->>>>>>> a1434b935279b658cd17227f114203ddb46a6244
 			setCursedForm({
 				...cursedForm,
 				//step1
@@ -861,7 +842,6 @@ export const FormMaldito: React.FC<Props> = () => {
 				parroquia: fm.commerceMash.id_location.id_parroquia,
 			});
 			setActivity(fm.commerceMash.id_activity);
-<<<<<<< HEAD
 			setCursedFormError({
 				...cursedFormError,
 				name_commerce: false,
@@ -871,10 +851,6 @@ export const FormMaldito: React.FC<Props> = () => {
 		}else if(!fm.mashCommerce && oldCommerceMatsh){
 			setOldCommerceMatsh(false);
 			console.log('vaciar Commercio', fm.commerceMash)
-=======
-		} else if (!fm.mashCommerce) {
-			console.log('vaciar Commercio', fm.commerceMash);
->>>>>>> a1434b935279b658cd17227f114203ddb46a6244
 			setCursedForm({
 				...cursedForm,
 				name_commerce: '',
@@ -883,21 +859,9 @@ export const FormMaldito: React.FC<Props> = () => {
 				//Step3 Location 
 				//Location se carga del cliente
 			});
-<<<<<<< HEAD
 			setActivity(null);
 		}
 	}, [fm.mashCommerce, fm.commerceMash])
-=======
-			setLocationCommerce({
-				estado: null,
-				ciudad: null,
-				municipio: null,
-				parroquia: null,
-			});
-			setActivity(fm.commerceMash.id_activity);
-		}
-	}, [fm.mashCommerce]);
->>>>>>> a1434b935279b658cd17227f114203ddb46a6244
 
 	const handleBlurNumBank = () => {
 		if (activeStep === 3 && cursedForm.email !== '' && cursedForm.text_account_number !== '') {

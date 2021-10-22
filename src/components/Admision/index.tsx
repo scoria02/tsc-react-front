@@ -19,6 +19,7 @@ import Comproba from './modalComprobacion/Comproba';
 const Admision: React.FC = () => {
 	const dispatch = useDispatch();
 
+	/*
 	const { socket } = useContext(SocketContext);
 
 	useEffect(() => {
@@ -32,6 +33,7 @@ const Admision: React.FC = () => {
 			socket.off('solicitar-nuevosticket');
 		};
 	}, [socket]);
+	 */
 
 	const handleClick = () => {
 		dispatch(getDataFM());
