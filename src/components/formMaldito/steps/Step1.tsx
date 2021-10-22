@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 //Material
+import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import IconButton from '@material-ui/core/IconButton';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -29,8 +30,8 @@ export const Step1: React.FC<any> = ({
 	validateForm,
 	listLocation,
 	location,
-	setLocation,
 	handleUpdateLocation,
+	codePhone,
 }) => {
 	const classes = useStylesFM();
 	const fm: any = useSelector((state: RootState) => state.fm);
@@ -161,9 +162,16 @@ export const Step1: React.FC<any> = ({
 						label='Telefono'
 						name='phone1'
 						onChange={handleChange}
-						value={cursedForm.phone1}
 						error={error.phone1}
 						disabled={fm.mashClient}
+						value={cursedForm.phone1}
+						InputProps={{ 
+							startAdornment: (
+								<InputAdornment position="start">
+									{codePhone}
+								</InputAdornment>
+							)
+						}}
 					/>
 					<TextField
 						className={classes.inputText}
@@ -172,9 +180,16 @@ export const Step1: React.FC<any> = ({
 						label='Telefono'
 						name='phone2'
 						onChange={handleChange}
-						value={cursedForm.phone2}
 						error={error.phone2}
 						disabled={fm.mashClient}
+						value={cursedForm.phone2}
+						InputProps={{ 
+							startAdornment: (
+								<InputAdornment position="start">
+									{codePhone}
+								</InputAdornment>
+							)
+						}}
 					/>
 				</div>
 				<div className={classes.input}>
