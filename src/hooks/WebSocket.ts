@@ -1,19 +1,19 @@
-import { Port, URL } from '../config';
-import {io} from 'socket.io-client';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// import { Port, URL } from '../config';
+// import {io} from 'socket.io-client';
 import { useEffect, useState } from 'react';
 
 const WebSocket = () => {
-  const [socket , setSocket] = useState<any>(null);
+	const [socket, setSocket] = useState<any>(null);
 
-  useEffect(() => {
-    //const sockete = io(`${URL}:${Port}`);
-    //setSocket(sockete)
-  }, []);
+	useEffect(() => {
+		//const sockete = io(`${URL}:${Port}`);
+		//setSocket(sockete)
+	}, []);
 
-  return { 
-    socket,
-  }
-}
+	return {
+		socket,
+	};
+};
 
 export default WebSocket;
-

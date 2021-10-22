@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Checkbox, FormControlLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
@@ -141,22 +142,22 @@ export const Step4: React.FC<any> = ({
 
 			setCursedForm({
 				...cursedForm,
-				'cuotas':  valor / (cursedForm.number_post * 50)
-			})
+				cuotas: valor / (cursedForm.number_post * 50),
+			});
 
 			if (valor < 0) {
 				setCursedForm({
 					...cursedForm,
-					'initial':100 
-				})
+					initial: 100,
+				});
 			}
 			if (cuotas % 1 === 0 && cuotas > 0 && cuotas) {
 				setCuotasTexto(`${cuotas} cuota/s de 50$`);
 			} else {
 				setCursedForm({
 					...cursedForm,
-					'initial':100 
-				})
+					initial: 100,
+				});
 			}
 		}
 	}, [cursedForm.number_post, cursedForm.initial, requestSource, typePay, modelPos]);
