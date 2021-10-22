@@ -50,11 +50,9 @@ function getSteps() {
 	];
 }
 
-interface Props {
-	setSelectedIndex: any;
-}
+interface Props {}
 
-export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
+export const FormMaldito: React.FC<Props> = ({}) => {
 	const history = useHistory();
 	const classes = useStylesFM();
 	const dispatch = useDispatch();
@@ -902,7 +900,6 @@ export const FormMaldito: React.FC<Props> = ({ setSelectedIndex }) => {
 			timer: 1500,
 		});
 		//Redirect home
-		setSelectedIndex(0);
 		history.push(baseUrl);
 	};
 
