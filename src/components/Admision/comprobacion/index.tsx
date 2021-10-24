@@ -75,7 +75,7 @@ const useStyles2 = makeStyles((theme: Theme) =>
 	})
 );
 
-const Comprobacion: React.FC<any> = ({ special }) => {
+const Comprobacion: React.FC<any> = () => {
 	const classes2 = useStyles2();
 
 	function getStepContent(step: number) {
