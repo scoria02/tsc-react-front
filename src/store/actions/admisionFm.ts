@@ -46,15 +46,15 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
     'id_status_request': status,
 		valids: {
 			//step1
-			valid_rc_ident_card: accept.rc_ident_card.msg,
+			valid_ident_card: accept.rc_ident_card.msg,
 			//step2
-			valid_rc_rif: accept.rc_rif.msg, 
+			valid_rif: accept.rc_rif.msg, 
 			//step3
-			valid_rc_ref_bank: accept.rc_ref_bank.msg,
+			valid_ref_bank: accept.rc_ref_bank.msg,
 			//step4
-			valid_rc_constitutive_act:accept.rc_constitutive_act.msg,
-			valid_rc_special_contributor: accept.rc_special_contributor.msg, 
-			valid_rc_comp_dep: accept.rc_comp_dep.msg
+			valid_constitutive_act:accept.rc_constitutive_act.msg,
+			valid_special_contributor: accept.rc_special_contributor.msg, 
+			valid_comp_dep: accept.rc_comp_dep.msg
 		}
 	}
 	return async (dispatch: any) => {
