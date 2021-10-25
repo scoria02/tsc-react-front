@@ -23,7 +23,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import PeopleIcon from '@material-ui/icons/PeopleAlt';
+// import PeopleIcon from '@material-ui/icons/PeopleAlt';
 import WorkIcon from '@material-ui/icons/Work';
 import classNames from 'classnames';
 import React, { useEffect } from 'react';
@@ -411,20 +411,14 @@ const MainMenu: React.FC = () => {
 				<Divider />
 
 				<List>
-					{/* {['Trash', 'Spam'].map((text, index) => (
-						<ListItem button key={text}>
-						<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <SettingsIcon />}</ListItemIcon>
-						<ListItemText primary={text} />
-						</ListItem>
-					))} */}
-					<ListItem button key={'Gestion de Usuarios'} onClick={(event) => handleListItemClick(event, 4)}>
+					{/* <ListItem button key={'Gestion de Usuarios'} onClick={(event) => handleListItemClick(event, 4)}>
 						<Link to={urlAdmision}>
 							<ListItemIcon classes={{ root: classes.icon }}>
 								<PeopleIcon />
 							</ListItemIcon>
 						</Link>
 						<ListItemText primary={'Gestion de Usuarios'} />
-					</ListItem>
+					</ListItem> */}
 				</List>
 			</Drawer>
 		</div>
