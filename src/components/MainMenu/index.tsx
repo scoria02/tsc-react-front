@@ -18,6 +18,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import FolderIcon from '@material-ui/icons/Folder';
 import HomeIcon from '@material-ui/icons/Home';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -33,7 +34,7 @@ import luffy from '../../img/itachi2.png';
 import TranredLogo from '../../img/tranred-logo.png';
 //Redux
 //import luffy from '../../img/user.png';
-import { baseUrl, urlAdmision, urlFM, userAdmin } from '../../routers/url';
+import { baseUrl, urlAdministracion, urlAdmision, urlFM, userAdmin } from '../../routers/url';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
 import './index.scss';
@@ -181,21 +182,28 @@ const MainMenu: React.FC = () => {
 	};
 
 	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
-		if (index === 3) {
-			history.push(urlAdmision);
-			localStorage.setItem('path', urlAdmision);
-		}
-		if (index === 5) {
-			history.push(urlFM);
-			localStorage.setItem('path', urlFM);
-		}
-		if (index === 0) {
-			history.push(baseUrl);
-			localStorage.setItem('path', baseUrl);
-		}
-		if (index === 4) {
-			history.push(userAdmin);
-			localStorage.setItem('path', userAdmin);
+		switch (index) {
+			case 1:
+				history.push(urlAdministracion);
+				localStorage.setItem('path', urlAdministracion);
+				break;
+			case 3:
+				history.push(urlAdmision);
+				localStorage.setItem('path', urlAdmision);
+				break;
+			case 4:
+				history.push(userAdmin);
+				localStorage.setItem('path', userAdmin);
+				break;
+			case 5:
+				history.push(urlFM);
+				localStorage.setItem('path', urlFM);
+				break;
+
+			default:
+				history.push(baseUrl);
+				localStorage.setItem('path', baseUrl);
+				break;
 		}
 		handleDrawerClose();
 	};
@@ -406,6 +414,14 @@ const MainMenu: React.FC = () => {
 							</ListItemIcon>
 						</Link>
 						<ListItemText primary='Admision' />
+					</ListItem>
+					<ListItem button onClick={(event) => handleListItemClick(event, 1)}>
+						<Link to={urlAdministracion}>
+							<ListItemIcon classes={{ root: classes.icon }}>
+								<FolderIcon />
+							</ListItemIcon>
+						</Link>
+						<ListItemText primary='Administracion 1' />
 					</ListItem>
 				</List>
 				<Divider />

@@ -6,7 +6,8 @@ import Admision from '../components/Admision';
 import { FormMaldito } from '../components/formMaldito';
 import GestionUsuarios from '../components/GestionUsuarios';
 import MainMenu from '../components/MainMenu';
-import { baseUrl, urlAdmision, urlFM, userAdmin } from '../routers/url';
+import { baseUrl, urlAdministracion, urlAdmision, urlFM, userAdmin } from '../routers/url';
+import Administracion from './Administracion';
 //Components
 import Inicio from './Home';
 
@@ -36,6 +37,7 @@ const Home: React.FC = () => {
 			{/* <CssBaseline /> */}
 			<MainMenu />
 			<main className={classes.content}>
+				<Route exact path={urlAdministracion} component={Administracion} />
 				<Route exact path={urlAdmision} component={Admision} />
 				<Route exact path={urlFM} component={FormMaldito} />
 				<Route exact path={userAdmin} component={GestionUsuarios} />
