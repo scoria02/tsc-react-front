@@ -12,15 +12,8 @@ export const getDataFM = () => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.get(`/FM`);
-			if(res.data.info){
-				updateToken(res);
-				dispatch(requestSuccess(res.data.info));
-			}
-			else{
-				dispatch(CloseModal());
-				dispatch(requestError());
-				Swal.fire('Error', 'Dimas cuando no hay fm debiera ser error', 'error');
-			}
+			updateToken(res);
+			dispatch(requestSuccess(res.data.info));
 		} catch (error) {
 			console.log(error.response)
 			dispatch(CloseModal());
@@ -59,6 +52,7 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
 	}
 	return async (dispatch: any) => {
 		try {
+		//	const res: AxiosResponse<any> = await useAxios.put(`/FM/admision/${id_fm}/status`, id_status);
 			const res: AxiosResponse<any> = await useAxios.put(`/FM/${id_fm}/status`, id_status);
 			updateToken(res);
 			dispatch(requestSuccess(status));
