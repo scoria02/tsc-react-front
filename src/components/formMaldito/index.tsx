@@ -181,10 +181,10 @@ export const FormMaldito: React.FC<Props> = () => {
 		calle_client: '',
 		local_client: '',
 		//step2 Comercio
-		name_commerce: '',
-		id_activity: 0,
 		id_ident_type_commerce: 3,
 		ident_num_commerce: '',
+		name_commerce: '',
+		id_activity: 0,
 		special_contributor: 0,
 		//Step3 Location
 		//Commerce
@@ -255,9 +255,9 @@ export const FormMaldito: React.FC<Props> = () => {
 		phone1: false,
 		phone2: false,
 		//step2 Comercio
-		name_commerce: false,
 		ident_num_commerce: false,
 		id_activity: false,
+		name_commerce: false,
 		//step4 Pedido
 		text_account_number: false,
 		number_post: false,
@@ -1080,7 +1080,7 @@ export const FormMaldito: React.FC<Props> = () => {
 									Volver
 								</Button>
 								<Button
-									disabled={!readyStep}
+									//disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'
