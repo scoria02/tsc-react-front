@@ -2,8 +2,6 @@ import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store/store';
 import IconButton from '@material-ui/core/IconButton';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -12,6 +10,8 @@ import TextField from '@material-ui/core/TextField';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 import { useStylesFM } from '../styles';
 
 export const Step2: React.FC<any> = ({
@@ -71,8 +71,8 @@ export const Step2: React.FC<any> = ({
 		setActaFlag(false);
 		if (cursedForm.id_ident_type_commerce === 3) {
 			setActaFlag(true);
-		}else{
-			if(imagesForm.rc_constitutive_act){
+		} else {
+			if (imagesForm.rc_constitutive_act) {
 				deleteImgContributor('constitutive_act');
 			}
 		}
@@ -82,33 +82,6 @@ export const Step2: React.FC<any> = ({
 	return (
 		<>
 			<div className={classes.grid}>
-				<div className={classes.input}>
-					<TextField
-						className={classes.inputText}
-						variant='outlined'
-						required
-						id='standard-required'
-						label='Nombre del Comercio'
-						name='name_commerce'
-						onChange={handleChange}
-						value={cursedForm.name_commerce}
-						error={error.name_commerce}
-						disabled={fm.mashCommerce}
-					/>
-				</div>
-				<Autocomplete
-					className={classes.input}
-					disabled={fm.mashCommerce}
-					onChange={(event, value) => {
-						handleSelectActivity(event, value, 'activity');
-					}}
-					options={listActivity}
-					value={activity || null}
-					getOptionLabel={(option: any) => (option.name ? option.name : '')}
-					renderInput={(params: any) => (
-						<TextField {...params} name='activity' label='Actividad Comercial' variant='outlined' />
-					)}
-				/>
 				<div className={classes.input}>
 					<FormControl variant='outlined' className={classes.inputSelect}>
 						<InputLabel id='demo-simple-select-outlined-label'>Rif</InputLabel>
@@ -141,7 +114,7 @@ export const Step2: React.FC<any> = ({
 						className={classes.imgIdent}
 						disabled={fm.imagesCommerce}
 						variant='contained'
-						style={{ background: imagesForm.rc_rif? '#5c62c5' : '#bbdefb' }}
+						style={{ background: imagesForm.rc_rif ? '#5c62c5' : '#bbdefb' }}
 						component='label'>
 						{imagesForm.rc_rif !== null ? (
 							<p className='nameImg'>{namesImages.rc_rif.slice(0, 7)}...</p>
@@ -162,6 +135,33 @@ export const Step2: React.FC<any> = ({
 						/>
 					</Button>
 				</div>
+				<div className={classes.input}>
+					<TextField
+						className={classes.inputText}
+						variant='outlined'
+						required
+						id='standard-required'
+						label='Nombre del Comercio'
+						name='name_commerce'
+						onChange={handleChange}
+						value={cursedForm.name_commerce}
+						error={error.name_commerce}
+						disabled={fm.mashCommerce}
+					/>
+				</div>
+				<Autocomplete
+					className={classes.input}
+					disabled={fm.mashCommerce}
+					onChange={(event, value) => {
+						handleSelectActivity(event, value, 'activity');
+					}}
+					options={listActivity}
+					value={activity || null}
+					getOptionLabel={(option: any) => (option.name ? option.name : '')}
+					renderInput={(params: any) => (
+						<TextField {...params} name='activity' label='Actividad Comercial' variant='outlined' />
+					)}
+				/>
 				<div className={classes.input}>
 					{actaFlag && (
 						<>
@@ -224,9 +224,9 @@ export const Step2: React.FC<any> = ({
 						className={classes.imgIdent}
 						disabled={fm.imagesCommerce}
 						variant='contained'
-						style={{ 
+						style={{
 							background: imagesForm.rc_special_contributor ? '#5c62c5' : '#bbdefb',
-							visibility: cursedForm.special_contributor ? 'visible' : 'hidden'
+							visibility: cursedForm.special_contributor ? 'visible' : 'hidden',
 						}}
 						component='label'>
 						{imagesForm.rc_special_contributor !== null ? (
