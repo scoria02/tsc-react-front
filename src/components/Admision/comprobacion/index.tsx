@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { stepComplete } from '../../../store/actions/accept';
-import { updateStatusFM } from '../../../store/actions/admisionFm';
+import { updateStatusFM, cleanAdmisionFM } from '../../../store/actions/admisionFm';
 import { CloseModal } from '../../../store/actions/ui';
 import { RootState } from '../../../store/store';
 import './index.scss';
@@ -143,6 +143,7 @@ const Comprobacion: React.FC<any> = () => {
 	const { modalOpen } = useSelector((state: any) => state.ui);
 	const validated: any = useSelector((state: RootState) => state.acceptance.validado);
 	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatus);
+	const id_statusFM: any = useSelector((state: RootState) => state.fmAdmision.id_statusFM);
 
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [completed, setCompleted] = React.useState(new Set<number>());
@@ -239,23 +240,44 @@ const Comprobacion: React.FC<any> = () => {
 		setActiveStep(newActiveStep);
 	};
 
-	useEffect(() => {
-		if(allStepsCompleted() && !updatedStatus){
-			for (const item in validated) {
-				if(item.slice(0,3) === 'rc_'){
-					const element = validated[item]
-					if(element.status === false){
-						dispatch(updateStatusFM(fm.id, 4, validated));
-						console.log('diferido')
-						return;
-					}
+	const validStatusFm = (): boolean => {
+		for (const item in validated) {
+			if(item.slice(0,3) === 'rc_'){
+				const element = validated[item]
+				if(element.status === false){
+					return true;
 				}
 			}
-			dispatch(updateStatusFM(fm.id, 3, validated));
-			console.log('validated')
+		}
+		return false;
+	}
+
+	useEffect(() => {
+		if(allStepsCompleted() && !updatedStatus){
+			if(validStatusFm()){
+				dispatch(updateStatusFM(fm.id, 4, validated));
+				console.log('mandado diferido')
+			}else{
+				dispatch(updateStatusFM(fm.id, 3, validated));
+				console.log('fin validacion')
+			}
 		}
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activeStep, dispatch, allStepsCompleted])
+
+	useEffect(() => {
+		console.log('aquiiii', id_statusFM)
+		if(id_statusFM !== 0) {
+			const idStatus = id_statusFM;
+			console.log('abrete', id_statusFM)
+			Swal.fire({
+				title: `${idStatus === 3 ? 'Formulario Verificado' : 'Formulario Diferido'}`,
+				icon: `${idStatus === 3 ? 'success' : 'warning'}`,
+				customClass: { container: 'swal2-validated' }
+			})	
+			dispatch(cleanAdmisionFM())
+		}
+	}, [id_statusFM, updatedStatus])
 
 	const handleBack = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);

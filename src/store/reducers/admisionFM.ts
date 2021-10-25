@@ -5,6 +5,7 @@ interface inState {
 	errorGetData: boolean,
 	updatedStatus: boolean,
 	errorStatusFM: boolean,
+	id_statusFM: number;
 }
 
 const initialState: inState = {
@@ -12,6 +13,7 @@ const initialState: inState = {
 	errorGetData: false,
 	updatedStatus: false,
 	errorStatusFM: false,
+	id_statusFM: 0,
 };
 
 export const admisionFM = (state = initialState, action: any) => {
@@ -34,11 +36,14 @@ export const admisionFM = (state = initialState, action: any) => {
 				...state,
 				updatedStatus: true,
 				errorStatusFM: false,
+				id_statusFM: action.payload,
 			};
 		case ActionType.updateStatusFMError:
 			return {
 				...state,
+				updatedStatus: false,
 				errorStatusFM: true,
+				id_statusFM: 0,
 			};
 		case ActionType.cleanDataFM:
 			return initialState;

@@ -15,12 +15,12 @@ import { ModalAlert }from '../ModalAlert';
 
 export default function PasoPaymentReceipt() {
 	//falta
-	const rc_ident_card: any = useSelector((state: RootState) => state.acceptance.validado.rc_ident_card);
+	const rc_comp_dep: any = useSelector((state: RootState) => state.acceptance.validado.rc_comp_dep);
 
 	const dispatch = useDispatch();
 	const classes = useStyles();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const [state, setState] = React.useState(rc_ident_card);//falta
+	const [state, setState] = useState(rc_comp_dep);//falta
 	const [openModal, setOpenModal] = useState<boolean>(false);
 
 	const handleOpenModal = () => {

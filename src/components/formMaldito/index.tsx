@@ -38,7 +38,7 @@ import './index.scss';
 import { Step1 } from './steps/Step1';
 import { Step2 } from './steps/Step2';
 import { Step3 } from './steps/Step3';
-import { Step4 } from './steps/Step4';
+import { Step4 } from './steps/Step4'
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
 
@@ -752,9 +752,12 @@ export const FormMaldito: React.FC<Props> = () => {
 		}
 	};
 
+	const [oldClientMatsh, setOldClientMatsh] = useState<boolean>(false);
+
 	//MashClient
 	useEffect(() => {
 		if(fm.mashClient && fm.id_client){
+			setOldClientMatsh(true);
 			setCursedForm({
 				...cursedForm,
 				email: fm.clientMash.email,
@@ -787,6 +790,7 @@ export const FormMaldito: React.FC<Props> = () => {
 				phone2: false,
 			})
 		} else if(!fm.mashClient){
+			setOldClientMatsh(false);
 			console.log('vaciar client')
 			setCursedForm({
 				...cursedForm,

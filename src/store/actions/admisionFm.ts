@@ -61,12 +61,7 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.put(`/FM/${id_fm}/status`, id_status);
 			updateToken(res);
-			dispatch(CloseModal());
-			dispatch(requestSuccess());
-			if(id_status === 2)
-				Swal.fire('Success', 'Formulario Verificado');
-			else if (id_status === 4)
-				Swal.fire('Success', 'Formulario Diferido');
+			dispatch(requestSuccess(status));
 		} catch (error) {
 			console.log(error.response)
 			dispatch(CloseModal());
@@ -74,9 +69,10 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
 	};
-	function requestSuccess() {
+	function requestSuccess(status: number) {
 		return {
 			type: ActionType.updateStatusFM,
+			payload: status
 		};
 	}
 	function requestError() {
@@ -89,6 +85,7 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
 
 export const cleanAdmisionFM = () => {
 	return async (dispatch: any) => {
+		dispatch(CloseModal());
 		dispatch(request());
 	};
 	function request() {
