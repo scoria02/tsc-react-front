@@ -59,35 +59,6 @@ const columns: GridColDef[] = [
 	},
 ];
 
-const rows = [
-	{ id: 1, correo: 'Snow', name: 'Jon' },
-	{ id: 2, correo: 'Lannister', name: 'Cersei' },
-	{ id: 3, correo: 'Lannister', name: 'Jaime' },
-	{ id: 4, correo: 'Stark', name: 'Arya' },
-	{ id: 5, correo: 'Targaryen', name: 'Daenerys' },
-	{ id: 6, correo: 'Melisandre', name: null },
-	{ id: 7, correo: 'Clifford', name: 'Ferrara' },
-	{ id: 8, correo: 'Frances', name: 'Rossini' },
-	{ id: 9, correo: 'Roxie', name: 'Harvey' },
-	{ id: 10, correo: 'Snow', name: 'Jon' },
-	{ id: 11, correo: 'Lannister', name: 'Cersei' },
-	{ id: 12, correo: 'Lannister', name: 'Jaime' },
-	{ id: 13, correo: 'Lannister', name: 'Jaime' },
-	{ id: 14, correo: 'Stark', name: 'Arya' },
-	{ id: 15, correo: 'Targaryen', name: 'Daenerys' },
-	{ id: 16, correo: 'Melisandre', name: null },
-	{ id: 17, correo: 'Clifford', name: 'Ferrara' },
-	{ id: 18, correo: 'Frances', name: 'Rossini' },
-	{ id: 19, correo: 'Roxie', name: 'Harvey' },
-	{ id: 20, correo: 'Roxie', name: 'Harvey' },
-	{ id: 21, correo: 'Roxie', name: 'Harvey' },
-	{ id: 22, correo: 'Roxie', name: 'Harvey' },
-	{ id: 23, correo: 'Roxie', name: 'Harvey' },
-	{ id: 24, correo: 'Roxie', name: 'Harvey' },
-	{ id: 25, correo: 'Roxie', name: 'Harvey' },
-	{ id: 26, correo: 'Roxie', name: 'Harvey' },
-];
-
 const useStyles = makeStyles((styles) => ({
 	layout: {
 		padding: '0 1rem',
