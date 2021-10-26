@@ -52,8 +52,7 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
 	}
 	return async (dispatch: any) => {
 		try {
-		//	const res: AxiosResponse<any> = await useAxios.put(`/FM/admision/${id_fm}/status`, id_status);
-			const res: AxiosResponse<any> = await useAxios.put(`/FM/${id_fm}/status`, id_status);
+			const res: AxiosResponse<any> = await useAxios.put(`/FM/admision/${id_fm}/status`, id_status);
 			updateToken(res);
 			dispatch(requestSuccess(status));
 		} catch (error) {

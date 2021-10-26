@@ -1080,7 +1080,7 @@ export const FormMaldito: React.FC<Props> = () => {
 									Volver
 								</Button>
 								<Button
-									//disabled={!readyStep}
+									disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'
