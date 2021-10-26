@@ -8,9 +8,9 @@ import LRU from 'lru-cache';
 //export const URL = `http://10.198.73.15`;
 
 //Aldrin
-///export const URL = 'http://10.198.68.21';
+export const URL = `http://10.198.68.21`;
 
-export const URL = 'http://localhost';
+// export const URL = 'http://localhost';
 
 export const Port = '5051';
 export const PortFiles = '6060';
