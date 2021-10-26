@@ -1,6 +1,14 @@
 import { Button, makeStyles, Paper, Theme } from '@material-ui/core';
-import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarFilterButton } from '@material-ui/data-grid';
+import {
+	DataGrid,
+	GridColDef,
+	GridRowParams,
+	GridToolbarContainer,
+	GridToolbarFilterButton,
+	GridValueGetterParams,
+} from '@material-ui/data-grid';
 import CloseIcon from '@material-ui/icons/Close';
+import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
 
 interface AdministracionProp {}
@@ -37,11 +45,32 @@ const useStyles = makeStyles((theme: Theme) => ({
 		width: 40,
 		height: 40,
 		position: 'absolute',
-		top: 4,
+		top: 16,
 		right: 16,
 		padding: 0,
 		minWidth: 'unset',
 		borderRadius: 20,
+	},
+	red: {
+		backgroundColor: theme.palette.error.main,
+		color: theme.palette.secondary.contrastText,
+		'&:hover': {
+			backgroundColor: `${theme.palette.error.light} !important`,
+		},
+	},
+	yellow: {
+		backgroundColor: theme.palette.warning.main,
+		color: theme.palette.secondary.contrastText,
+		'&:hover': {
+			backgroundColor: `${theme.palette.warning.light} !important`,
+		},
+	},
+	green: {
+		backgroundColor: theme.palette.success.main,
+		color: theme.palette.secondary.contrastText,
+		'&:hover': {
+			backgroundColor: `${theme.palette.success.light} !important`,
+		},
 	},
 }));
 
@@ -66,18 +95,40 @@ const Administracion: FC<AdministracionProp> = () => {
 			sortable: false,
 		},
 		{
-			field: 'name',
+			field: 'fullname',
 			headerName: 'Nombre',
-			width: 200,
+			width: 120,
+			valueGetter: (params: GridValueGetterParams) =>
+				`${params.getValue(params.id, 'name') || ''} ${params.getValue(params.id, 'lastname') || ''}`,
+			disableColumnMenu: true,
+			sortable: false,
+		},
+		{
+			field: 'fecha',
+			headerName: 'Fecha',
+			width: 120,
 			disableColumnMenu: true,
 			sortable: false,
 		},
 	];
 	const [selected, setSelected] = useState(false);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [rowSelected, setRowSelect] = useState({ id: null, name: '' });
+	const d = new Date();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [rows, setRows] = useState([
-		{ id: 1, name: 'Armando' },
-		{ id: 2, name: 'Jesus' },
+		{
+			id: 1,
+			name: 'Armando',
+			lastname: 'Rivas',
+			fecha: d.getDay() + '/' + d.getMonth() + '/' + d.getFullYear(),
+		},
+		{
+			id: 2,
+			name: 'Jesus',
+			lastname: 'Creador',
+			fecha: d.getDay() - 1 + '/' + d.getMonth() + '/' + d.getFullYear(),
+		},
 	]);
 
 	const handleRow = (event: any) => {
@@ -91,8 +142,8 @@ const Administracion: FC<AdministracionProp> = () => {
 	};
 
 	useEffect(() => {
-		console.log('rowSelected', rowSelected);
-	}, [rowSelected]);
+		// console.log('rowSelected', rowSelected);
+	}, []);
 
 	return (
 		<>
@@ -106,6 +157,13 @@ const Administracion: FC<AdministracionProp> = () => {
 					columns={columns}
 					rowsPerPageOptions={[25, 100]}
 					className={classes.dataGrid}
+					getRowClassName={(params: GridRowParams) =>
+						classNames({
+							[classes.red]: false,
+							[classes.yellow]: false,
+							[classes.green]: false,
+						})
+					}
 				/>
 				{selected && (
 					<>
