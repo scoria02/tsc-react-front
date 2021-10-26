@@ -11,6 +11,7 @@ import { useStylesFM } from '../styles';
 
 //Pedido
 export const Step4: React.FC<any> = ({
+	cursedForm,
 	listTypePay,
 	setTypePay,
 	typePay,
@@ -23,7 +24,6 @@ export const Step4: React.FC<any> = ({
 	setPayment,
 	payment,
 	error,
-	cursedForm,
 	setCursedForm,
 	handleChange,
 	handleChangeImages,
@@ -91,7 +91,7 @@ export const Step4: React.FC<any> = ({
 	const handleChecked = (e: any) => {
 		setCursedForm({
 			...cursedForm,
-			[e.target.name]: !cursedForm.discount ? 1 : 0,
+			[e.target.name]: !cursedForm[`${e.target.name}`] ? 1 : 0,
 		});
 	};
 
@@ -381,6 +381,27 @@ export const Step4: React.FC<any> = ({
 									fontSize: '1rem',
 								}}>
 								Entrego Punto
+							</b>
+						</>
+					}
+				/>
+				<FormControlLabel
+					className={classNames(classes.inputText, classes.containerBtn)}
+					label=''
+					control={
+						<>
+							<Checkbox
+								name='pagadero'
+								checked={cursedForm.pagadero === 1 ? true : false}
+								onChange={handleChecked}
+								color='primary'
+								inputProps={{ 'aria-label': 'secondary checkbox' }}
+							/>
+							<b
+								style={{
+									fontSize: '1rem',
+								}}>
+								Pagadero en Destino
 							</b>
 						</>
 					}

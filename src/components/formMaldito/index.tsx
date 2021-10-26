@@ -38,7 +38,7 @@ import './index.scss';
 import { Step1 } from './steps/Step1';
 import { Step2 } from './steps/Step2';
 import { Step3 } from './steps/Step3';
-import { Step4 } from './steps/Step4'
+import { Step4 } from './steps/Step4';
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
 
@@ -216,6 +216,7 @@ export const FormMaldito: React.FC<Props> = () => {
 		initial: 100,
 		cuotas: 0, //Si es inical coutas cambia
 		discount: 0,
+		pagadero: 0,
 	});
 
 	//name images
@@ -392,7 +393,7 @@ export const FormMaldito: React.FC<Props> = () => {
 	const [autoCompleteCommerce, setAutoCompleteCommerce] = useState<boolean>(true);
 	const [autoCompletePos, setAutoCompletePos] = useState<boolean>(true);
 
-	//Copyrighter Client to Commerce 
+	//Copyrighter Client to Commerce
 	useEffect(() => {
 		if (activeStep === 1 && autoCompleteCommerce && !fm.mashCommerce) {
 			setLocationCommerce(locationClient);
@@ -438,7 +439,15 @@ export const FormMaldito: React.FC<Props> = () => {
 				codigo_postal_pos: cursedForm.codigo_postal,
 			});
 		}
-	}, [activeStep, locationCommerce, cursedForm.sector, cursedForm.calle, cursedForm.local, cursedForm.codigo_postal, fm.commerceMash]);
+	}, [
+		activeStep,
+		locationCommerce,
+		cursedForm.sector,
+		cursedForm.calle,
+		cursedForm.local,
+		cursedForm.codigo_postal,
+		fm.commerceMash,
+	]);
 
 	//Client Location handle
 	const handleUpdateLocationClient = (op: any, value: any) => {
@@ -756,7 +765,7 @@ export const FormMaldito: React.FC<Props> = () => {
 
 	//MashClient
 	useEffect(() => {
-		if(fm.mashClient && fm.id_client){
+		if (fm.mashClient && fm.id_client) {
 			setOldClientMatsh(true);
 			setCursedForm({
 				...cursedForm,
@@ -779,7 +788,7 @@ export const FormMaldito: React.FC<Props> = () => {
 				ciudad: fm.clientMash.id_location.id_ciudad,
 				municipio: fm.clientMash.id_location.id_municipio,
 				parroquia: fm.clientMash.id_location.id_parroquia,
-			})
+			});
 			setCursedFormError({
 				...cursedFormError,
 				email: false,
@@ -788,10 +797,10 @@ export const FormMaldito: React.FC<Props> = () => {
 				ident_num: false,
 				phone1: false,
 				phone2: false,
-			})
-		} else if(!fm.mashClient){
+			});
+		} else if (!fm.mashClient) {
 			setOldClientMatsh(false);
-			console.log('vaciar client')
+			console.log('vaciar client');
 			setCursedForm({
 				...cursedForm,
 				name: '',
@@ -814,14 +823,14 @@ export const FormMaldito: React.FC<Props> = () => {
 				parroquia: null,
 			});
 		}
-	}, [fm.mashClient, fm.clientMash, fm.id_client])
+	}, [fm.mashClient, fm.clientMash, fm.id_client]);
 
 	const [oldCommerceMatsh, setOldCommerceMatsh] = useState<boolean>(false);
 
 	//MashCommerce
 	useEffect(() => {
-		if(fm.mashCommerce){
-			console.log('comercio ya existe')
+		if (fm.mashCommerce) {
+			console.log('comercio ya existe');
 			setOldCommerceMatsh(true);
 			setCursedForm({
 				...cursedForm,
@@ -851,21 +860,21 @@ export const FormMaldito: React.FC<Props> = () => {
 				name_commerce: false,
 				ident_num_commerce: false,
 				id_activity: false,
-			})
-		}else if(!fm.mashCommerce && oldCommerceMatsh){
+			});
+		} else if (!fm.mashCommerce && oldCommerceMatsh) {
 			setOldCommerceMatsh(false);
-			console.log('vaciar Commercio', fm.commerceMash)
+			console.log('vaciar Commercio', fm.commerceMash);
 			setCursedForm({
 				...cursedForm,
 				name_commerce: '',
 				id_activity: 0,
 				special_contributor: 0,
-				//Step3 Location 
+				//Step3 Location
 				//Location se carga del cliente
 			});
 			setActivity(null);
 		}
-	}, [fm.mashCommerce, fm.commerceMash])
+	}, [fm.mashCommerce, fm.commerceMash]);
 
 	const handleBlurNumBank = () => {
 		if (activeStep === 3 && cursedForm.email !== '' && cursedForm.text_account_number !== '') {
@@ -1050,10 +1059,10 @@ export const FormMaldito: React.FC<Props> = () => {
 			listLocationPos.estado.length === 0 ? (
 				<LoaderPrimary />
 			) : (
-				<form 
-					className="container-form" 
+				<form
+					className='container-form'
 					//autoComplete="off"
-					>
+				>
 					<div className='capitan-america'></div>
 					<Stepper alternativeLabel activeStep={activeStep} style={{ background: 'none', width: '100%' }}>
 						{steps.map((label) => {

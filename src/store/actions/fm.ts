@@ -39,16 +39,16 @@ export const validationCommerce = (id_client: number, commerce: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce/valid`, commerce);
-			if(res.data.info){
+			if (res.data.info) {
 				updateToken(res);
-				console.log(res.data.info)
+				console.log(res.data.info);
 				dispatch(requestSuccess(res.data.info));
-			}else{
+			} else {
 				dispatch(requestSuccessOk());
 			}
 		} catch (error) {
 			dispatch(requestError());
-			console.log('dimas', error.response.data)
+			console.log('dimas', error.response.data);
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
 	};
@@ -75,7 +75,7 @@ export const validationNumBank = (clientBank: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res = await useAxios.post(`/FM/bank/valid`, clientBank);
-			updateToken(res)
+			updateToken(res);
 			dispatch(requestSuccess());
 		} catch (error) {
 			//console.log(error.response);
@@ -114,12 +114,12 @@ export const sendClient = (cursedForm: any, codePhone: string) => {
 			calle: cursedForm.calle_client,
 			local: cursedForm.local_client,
 		},
-	}
+	};
 
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client`, client);
-			updateToken(res)
+			updateToken(res);
 			dispatch(requestSuccess(res.data.info.id));
 		} catch (error) {
 			//console.log(error.reponse)
@@ -158,13 +158,13 @@ export const sendCommerce = (id_client: number, cursedForm: any) => {
 			calle: cursedForm.calle,
 			local: cursedForm.local,
 		},
-	}
+	};
 
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce`, commerce);
-			updateToken(res)
-			console.log(res.data.info)
+			updateToken(res);
+			console.log(res.data.info);
 			dispatch(requestSuccess(res.data.info.id_commerce));
 		} catch (error) {
 			console.log(error.reponse);
@@ -189,9 +189,9 @@ export const sendImages = (formData: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, formData);
-			updateToken(res)
+			updateToken(res);
 			const images: any = res.data.info;
-			console.log('images_dimas', images)
+			console.log('images_dimas', images);
 			dispatch(requestSuccess(images));
 		} catch (error) {
 			console.log(error.reponse);
@@ -214,7 +214,7 @@ export const sendImages = (formData: any) => {
 
 export const sendFM = (cursedForm: any, fm: any) => {
 	//console.log('SendFM', formM);
-	console.log(fm.id_images)
+	console.log(fm.id_images);
 	const form = {
 		...fm.id_images,
 		id_client: fm.id_client,
@@ -229,6 +229,7 @@ export const sendFM = (cursedForm: any, fm: any) => {
 		requestSource_docnum: cursedForm.id_requestSource,
 		coutas: cursedForm.cuotas,
 		discount: cursedForm.discount,
+		pagadero: cursedForm.pagadero,
 		dir_pos: {
 			id_estado: cursedForm.id_estado_pos,
 			id_municipio: cursedForm.id_municipio_pos,
@@ -238,11 +239,11 @@ export const sendFM = (cursedForm: any, fm: any) => {
 			calle: cursedForm.calle_pos,
 			local: cursedForm.local_pos,
 		},
-	}
+	};
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM`, form);
-			updateToken(res)
+			updateToken(res);
 			dispatch(requestSuccess());
 		} catch (error) {
 			//console.log(error.reponse)
