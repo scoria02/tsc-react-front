@@ -37,6 +37,13 @@ export enum ActionType {
 	updateStatusFMError = '[FM] update Status FM Error',
 	cleanDataFM= '[FM] CleanDataFM',
 
+	//Administracion FM
+	getDataFMAdministration = '[FM] Get FM Administration',
+	getDataFMErrorAdministration = '[FM] Get FM Error Administration',
+	updateStatusFMAdministration = '[FM] update Status FM Administration',
+	updateStatusFMErrorAdministration = '[FM] update Status FM Error Administration',
+	cleanDataFMAdministration = '[FM] CleanDataFM Administration',
+
 	//Modals
 	uiOpenModal = '[ui] Open modal',
 	uiCloseModal = '[ui] Close modal',

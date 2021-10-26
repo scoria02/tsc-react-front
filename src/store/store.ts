@@ -6,6 +6,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { acceptReducer } from './reducers/acceptReducer';
 import { fmReducer } from './reducers/fmReducer';
 import { admisionFM } from './reducers/admisionFM';
+import { administrationReducer } from './reducers/administrationReducer';
 
 declare global {
 	interface Window {
@@ -22,6 +23,7 @@ const reducers = combineReducers({
 	acceptance: acceptReducer,
 	fm: fmReducer,
 	fmAdmision: admisionFM,
+	administration: administrationReducer,
 });
 
 export const store = createStore(
