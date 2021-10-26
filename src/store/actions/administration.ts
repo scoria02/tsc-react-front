@@ -11,7 +11,6 @@ export const getDataFMAdministration = () => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.get(`/FM/administration`);
-			console.log(res)
 			updateToken(res);
 			dispatch(requestSuccess(res.data.info));
 		} catch (error) {

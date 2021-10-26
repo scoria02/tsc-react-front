@@ -128,7 +128,7 @@ const Administracion: FC<AdministracionProp> = () => {
 	const columns: GridColDef[] = [
 		{
 			field: 'id_request',
-			headerName: 'ID',
+			headerName: 'Cod.',
 			width: 120,
 			editable: false,
 			sortable: false,
@@ -139,11 +139,21 @@ const Administracion: FC<AdministracionProp> = () => {
 		{
 			field: 'id_payment_method',
 			headerName: 'Metodo de Pago',
-			width: 200,
+			width: 160,
 			valueFormatter: (value) => {
 				return value.row?.id_request.id_payment_method.name;
 			},
 			sortable: false,
+		},
+		{
+			field: 'id_type_payment',
+			headerName: 'Tipo de pago',
+			width: 120,
+			editable: false,
+			sortable: false,
+			valueFormatter: (value) => {
+				return value.row?.id_request.id_type_payment.name;
+			},
 		},
 		/*
 		{
