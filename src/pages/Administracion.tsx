@@ -10,6 +10,9 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { getDataFMAdministration } from '../store/actions/administration';
 
 interface AdministracionProp {}
 
@@ -76,6 +79,42 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Administracion: FC<AdministracionProp> = () => {
 	const classes = useStyles();
+	const dispatch = useDispatch();
+
+	const administration: any = useSelector((state: RootState) => state.administration);
+
+	const [selected, setSelected] = useState(false);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [rowSelected, setRowSelect] = useState({ id: null, name: '' });
+	const d = new Date();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	//
+	const [rowsAd, setRowsAd] = useState([]);
+
+	const [rows, setRows] = useState([
+		{
+			id: 1,
+			name: 'Armando',
+			lastname: 'Rivas',
+			fecha: d.getDay() + '/' + d.getMonth() + '/' + d.getFullYear(),
+		},
+		{
+			id: 2,
+			name: 'Jesus',
+			lastname: 'Creador',
+			fecha: d.getDay() - 1 + '/' + d.getMonth() + '/' + d.getFullYear(),
+		},
+	]);
+
+
+	useEffect(() => {
+		dispatch(getDataFMAdministration());
+		// console.log('rowSelected', rowSelected);
+	}, []);
+
+	useEffect(() => {
+		setRowsAd(administration.fmAd)
+	}, [administration])
 
 	const customToolbar: () => JSX.Element = () => {
 		return (
@@ -88,12 +127,25 @@ const Administracion: FC<AdministracionProp> = () => {
 
 	const columns: GridColDef[] = [
 		{
-			field: 'id',
+			field: 'id_request',
 			headerName: 'ID',
-			width: 60,
-			disableColumnMenu: true,
+			width: 120,
+			editable: false,
+			sortable: false,
+			valueFormatter: (value) => {
+				return value.row?.id_request.id;
+			},
+		},
+		{
+			field: 'id_payment_method',
+			headerName: 'Metodo de Pago',
+			width: 200,
+			valueFormatter: (value) => {
+				return value.row?.id_request.id_payment_method.name;
+			},
 			sortable: false,
 		},
+		/*
 		{
 			field: 'fullname',
 			headerName: 'Nombre',
@@ -110,29 +162,10 @@ const Administracion: FC<AdministracionProp> = () => {
 			disableColumnMenu: true,
 			sortable: false,
 		},
+		 */
 	];
-	const [selected, setSelected] = useState(false);
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [rowSelected, setRowSelect] = useState({ id: null, name: '' });
-	const d = new Date();
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [rows, setRows] = useState([
-		{
-			id: 1,
-			name: 'Armando',
-			lastname: 'Rivas',
-			fecha: d.getDay() + '/' + d.getMonth() + '/' + d.getFullYear(),
-		},
-		{
-			id: 2,
-			name: 'Jesus',
-			lastname: 'Creador',
-			fecha: d.getDay() - 1 + '/' + d.getMonth() + '/' + d.getFullYear(),
-		},
-	]);
 
 	const handleRow = (event: any) => {
-		console.log('row', event.row);
 		setRowSelect((prev): any => rows.find((value) => value.id === event.row.id));
 		setSelected(true);
 	};
@@ -141,30 +174,30 @@ const Administracion: FC<AdministracionProp> = () => {
 		setSelected(false);
 	};
 
-	useEffect(() => {
-		// console.log('rowSelected', rowSelected);
-	}, []);
-
 	return (
 		<>
 			<div className={classes.administracion}>
-				<DataGrid
-					onCellClick={handleRow}
-					components={{
-						Toolbar: customToolbar,
-					}}
-					rows={rows}
-					columns={columns}
-					rowsPerPageOptions={[25, 100]}
-					className={classes.dataGrid}
-					getRowClassName={(params: GridRowParams) =>
-						classNames({
-							[classes.red]: false,
-							[classes.yellow]: false,
-							[classes.green]: false,
-						})
-					}
-				/>
+				{!rowsAd.length ?
+					<h1>loading...</h1>
+				:
+					<DataGrid
+						onCellClick={handleRow}
+						components={{
+							Toolbar: customToolbar,
+						}}
+						rows={rowsAd}
+						columns={columns}
+						rowsPerPageOptions={[25, 100]}
+						className={classes.dataGrid}
+						getRowClassName={(params: GridRowParams) =>
+							classNames({
+								[classes.red]: false,
+								[classes.yellow]: false,
+								[classes.green]: false,
+							})
+						}
+					/>
+				}
 				{selected && (
 					<>
 						<Paper variant='outlined' elevation={3} className={classes.view}>
