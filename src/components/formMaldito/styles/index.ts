@@ -73,4 +73,8 @@ export const useStylesFM = makeStyles((styles) => ({
 		display: 'flex',
 		justifyContent: 'center',
 	},
+	containerCheckBox: {
+		display: 'flex',
+		justifyContent: 'start',
+	},
 }));

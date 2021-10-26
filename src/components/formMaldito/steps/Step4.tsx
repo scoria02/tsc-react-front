@@ -364,48 +364,50 @@ export const Step4: React.FC<any> = ({
 						/>
 					</Button>
 				</div>
-				<FormControlLabel
-					className={classNames(classes.inputText, classes.containerBtn)}
-					label=''
-					control={
-						<>
-							<Checkbox
-								name='discount'
-								checked={cursedForm.discount === 1 ? true : false}
-								onChange={handleChecked}
-								color='primary'
-								inputProps={{ 'aria-label': 'secondary checkbox' }}
-							/>
-							<b
-								style={{
-									fontSize: '1rem',
-								}}>
-								Entrego Punto
-							</b>
-						</>
-					}
-				/>
-				<FormControlLabel
-					className={classNames(classes.inputText, classes.containerBtn)}
-					label=''
-					control={
-						<>
-							<Checkbox
-								name='pagadero'
-								checked={cursedForm.pagadero === 1 ? true : false}
-								onChange={handleChecked}
-								color='primary'
-								inputProps={{ 'aria-label': 'secondary checkbox' }}
-							/>
-							<b
-								style={{
-									fontSize: '1rem',
-								}}>
-								Pagadero en Destino
-							</b>
-						</>
-					}
-				/>
+				<div className={classes.inputText}>
+					<FormControlLabel
+						className={classNames(classes.inputText, classes.containerCheckBox)}
+						label=''
+						control={
+							<>
+								<Checkbox
+									name='discount'
+									checked={cursedForm.discount === 1 ? true : false}
+									onChange={handleChecked}
+									color='primary'
+									inputProps={{ 'aria-label': 'secondary checkbox' }}
+								/>
+								<b
+									style={{
+										fontSize: '1rem',
+									}}>
+									Entrego Punto
+								</b>
+							</>
+						}
+					/>
+					<FormControlLabel
+						className={classNames(classes.inputText, classes.containerCheckBox)}
+						label=''
+						control={
+							<>
+								<Checkbox
+									name='pagadero'
+									checked={cursedForm.pagadero === 1 ? true : false}
+									onChange={handleChecked}
+									color='primary'
+									inputProps={{ 'aria-label': 'secondary checkbox' }}
+								/>
+								<b
+									style={{
+										fontSize: '1rem',
+									}}>
+									Pagadero en Destino
+								</b>
+							</>
+						}
+					/>
+				</div>
 			</div>
 		</div>
 	);
