@@ -84,13 +84,14 @@ export const Step2: React.FC<any> = ({
 			<div className={classes.grid}>
 				<div className={classes.input}>
 					<FormControl variant='outlined' className={classes.inputSelect}>
-						<InputLabel id='demo-simple-select-outlined-label'>Rif</InputLabel>
+						<InputLabel id='demo-simple-select-outlined-label'>Doc.</InputLabel>
 						<Select
 							value={cursedForm.id_ident_type_commerce}
 							onChange={handleSelect}
 							name='id_ident_type_commerce'
 							label='Tipo'
 							onBlur={handleBlurCommerce}
+							error={fm.errorCommerce}
 							placeholder=''>
 							{listIdentType.map((item: any) => (
 								<MenuItem key={item.id} value={item.id}>
@@ -109,6 +110,7 @@ export const Step2: React.FC<any> = ({
 						onChange={handleChange}
 						onBlur={handleBlurCommerce}
 						value={cursedForm.ident_num_commerce}
+						error={fm.errorCommerce}
 					/>
 					<Button
 						className={classes.imgIdent}

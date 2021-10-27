@@ -664,7 +664,11 @@ export const FormMaldito: React.FC<Props> = () => {
 	const validEndPointFM = () => {
 		if (fm.errorClient) {
 			return false;
-		} else {
+		}else if(fm.errorCommerce && activeStep > 0){
+			return false;
+		}else if(fm.errorNumBank && activeStep > 2){
+			return false;
+		}else {
 			return true;
 		}
 	};
@@ -798,7 +802,7 @@ export const FormMaldito: React.FC<Props> = () => {
 				phone1: false,
 				phone2: false,
 			});
-		} else if (!fm.mashClient) {
+		} else if (!fm.mashClient && oldClientMatsh) {
 			setOldClientMatsh(false);
 			console.log('vaciar client');
 			setCursedForm({
@@ -930,7 +934,8 @@ export const FormMaldito: React.FC<Props> = () => {
 				fm.imagesCommerce,
 				cursedForm.id_ident_type_commerce
 			) ||
-			valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError)
+			valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) ||
+			!validEndPointFM()
 		)
 			return;
 		//Send FM
@@ -1049,6 +1054,18 @@ export const FormMaldito: React.FC<Props> = () => {
 		/>,
 	];
 
+	const stepError = (key: number) => {
+		if(key === 0 && fm.errorClient){ //Cliente
+			return true
+		}else if (key === 1 && fm.errorCommerce){ //comercio
+			return true
+		} 	
+		else if (key === 3 && fm.errorClient){ //comercio
+			return true
+		} 	
+		return false 
+	}
+
 	return (
 		<div className='ed-container container-formMaldito'>
 			{listIdentType.length === 0 ||
@@ -1065,11 +1082,11 @@ export const FormMaldito: React.FC<Props> = () => {
 				>
 					<div className='capitan-america'></div>
 					<Stepper alternativeLabel activeStep={activeStep} style={{ background: 'none', width: '100%' }}>
-						{steps.map((label) => {
+						{steps.map((label, index) => {
 							const stepProps: { completed?: boolean } = {};
 							return (
 								<Step key={label} {...stepProps}>
-									<StepLabel>
+									<StepLabel error={stepError(index)}>
 										<b>{label}</b>
 									</StepLabel>
 								</Step>

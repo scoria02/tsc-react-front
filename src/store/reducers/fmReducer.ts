@@ -15,6 +15,7 @@ interface inState {
 	loadedImages: boolean;
 	loadedFM: boolean;
 	errorClient: boolean;
+	errorCommerce: boolean;
 	errorNumBank: boolean;
 }
 
@@ -36,6 +37,7 @@ const initialState: inState = {
 	loadedImages: false,
 	loadedFM: false,
 	errorClient: false,
+	errorCommerce: false,
 	errorNumBank: false,
 };
 
@@ -67,7 +69,7 @@ export const fmReducer = (state = initialState, action: any) => {
 				commerceMash: action.payload,
 				mashCommerce: true,
 				imagesCommerce: action.payload.matchImg,
-
+				errorCommerce: false,
 			};
 		case ActionType.validCommerceOk: //reset commerce
 			return {
@@ -75,6 +77,7 @@ export const fmReducer = (state = initialState, action: any) => {
 				commerceMash: {},
 				mashCommerce: false,
 				imagesCommerce: false,
+				errorCommerce: false,
 			};
 		case ActionType.validCommerceError:
 			return {
@@ -82,6 +85,7 @@ export const fmReducer = (state = initialState, action: any) => {
 				commerceMash: {},
 				mashCommerce: false,
 				imagesCommerce: false,
+				errorCommerce: true,
 			};
 		//Number Bank
 		case ActionType.validNumBank:

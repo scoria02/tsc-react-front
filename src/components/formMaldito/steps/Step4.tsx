@@ -9,6 +9,9 @@ import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { useStylesFM } from '../styles';
 
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+
 //Pedido
 export const Step4: React.FC<any> = ({
 	cursedForm,
@@ -39,6 +42,8 @@ export const Step4: React.FC<any> = ({
 	const [deleted, setDeleted] = useState<boolean>(false);
 	// const cuotasText = ['5 cuotas de 50$', '4 cuotas de 50$', '3 cuotas de 50$'];
 	const [cuotasTexto, setCuotasTexto] = useState('');
+
+	const fm: any = useSelector((state: RootState) => state.fm);
 
 	const handleSelectPayment = (event: any, value: any, item: string) => {
 		if (value) {
@@ -210,7 +215,7 @@ export const Step4: React.FC<any> = ({
 					onChange={handleChange}
 					onBlur={handleBlurNumBank}
 					value={cursedForm.text_account_number}
-					error={error.text_account_number}
+					error={error.text_account_number || fm.errorNumBank}
 				/>
 				<div className={classes.row}>
 					<b className={classes.labels}>Referencia Bancaria</b>
