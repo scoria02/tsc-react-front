@@ -69,6 +69,7 @@ export const Step1: React.FC<any> = ({
 						type='email'
 						variant='outlined'
 						label='Correo'
+						autoComplete="off"
 						name='email'
 						onChange={handleChange}
 						onBlur={handleBlurEmailIdent}
@@ -98,6 +99,7 @@ export const Step1: React.FC<any> = ({
 						variant='outlined'
 						required
 						label='C.I.'
+						autoComplete="off"
 						name='ident_num'
 						onChange={handleChange}
 						onBlur={handleBlurEmailIdent}
@@ -136,6 +138,7 @@ export const Step1: React.FC<any> = ({
 						variant='outlined'
 						required
 						label='Nombre'
+						autoComplete="nombre"
 						name='name'
 						onChange={handleChange}
 						value={cursedForm.name}
@@ -147,6 +150,7 @@ export const Step1: React.FC<any> = ({
 						variant='outlined'
 						required
 						label='Apellido'
+						autoComplete="last_name"
 						name='last_name'
 						onChange={handleChange}
 						value={cursedForm.last_name}

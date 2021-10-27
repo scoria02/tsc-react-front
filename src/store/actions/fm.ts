@@ -230,6 +230,7 @@ export const sendFM = (cursedForm: any, fm: any) => {
 		coutas: cursedForm.cuotas,
 		discount: !!cursedForm.discount,
 		pagadero: !!cursedForm.pagadero,
+		nro_comp_dep: cursedForm.nro_comp_dep,
 		dir_pos: {
 			id_estado: cursedForm.id_estado_pos,
 			id_municipio: cursedForm.id_municipio_pos,

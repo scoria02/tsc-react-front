@@ -215,6 +215,7 @@ export const FormMaldito: React.FC<Props> = () => {
 		reqSource_docnum: '',
 		initial: 100,
 		cuotas: 0, //Si es inical coutas cambia
+		nro_comp_dep: '',
 		discount: 0,
 		pagadero: 0,
 	});
@@ -678,12 +679,13 @@ export const FormMaldito: React.FC<Props> = () => {
 		if (
 			!valids.allInputNotNUll(valids.sizeStep(activeStep), cursedForm, fm.mashClient, fm.mashCommerce) &&
 			!valids.allImgNotNUll(
+				cursedForm,
 				valids.sizeImagesStep(activeStep),
 				imagesForm,
 				cursedForm.special_contributor,
 				fm.imagesClient,
 				fm.imagesCommerce,
-				cursedForm.id_ident_type_commerce
+				cursedForm.id_ident_type_commerce,
 			) &&
 			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) &&
 			validEndPointFM()
@@ -927,6 +929,7 @@ export const FormMaldito: React.FC<Props> = () => {
 		if (
 			valids.allInputNotNUll(valids.sizeStep(activeStep), cursedForm, fm.mashClient, fm.mashCommerce) ||
 			valids.allImgNotNUll(
+				cursedForm,
 				valids.sizeImagesStep(activeStep),
 				imagesForm,
 				cursedForm.special_contributor,
