@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button, makeStyles, Paper, Theme } from '@material-ui/core';
 import {
 	DataGrid,
@@ -11,8 +13,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store/store';
 import { getDataFMAdministration } from '../store/actions/administration';
+import { RootState } from '../store/store';
 
 interface AdministracionProp {}
 
@@ -77,6 +79,65 @@ const useStyles = makeStyles((theme: Theme) => ({
 	},
 }));
 
+const columns: GridColDef[] = [
+	{
+		field: 'id_request',
+		headerName: 'Cod.',
+		width: 120,
+		editable: false,
+		sortable: false,
+		valueFormatter: (value: GridValueGetterParams) => {
+			return value.row?.id_request.code;
+		},
+	},
+	{
+		field: 'name_commerce',
+		headerName: 'Comercio',
+		width: 160,
+		valueFormatter: (value: GridValueGetterParams) => {
+			return value.row?.id_request.id_commerce.name;
+		},
+		sortable: false,
+	},
+	{
+		field: 'name_client',
+		headerName: 'Cliente',
+		width: 160,
+		valueFormatter: (value: GridValueGetterParams) => {
+			return `${value.row?.id_request.id_client.name} ${value.row?.id_request.id_client.last_name}`;
+		},
+		sortable: false,
+	},
+	{
+		field: 'id_type_payment',
+		headerName: 'Paga Despues',
+		width: 200,
+		editable: false,
+		sortable: false,
+		valueFormatter: (value: GridValueGetterParams) => {
+			return value.row?.id_request.pagadero ? 'Si' : 'No';
+		},
+	},
+	/*
+	{
+		field: 'fullname',
+		headerName: 'Nombre',
+		width: 120,
+		valueGetter: (params: GridValueGetterParams) =>
+			`${params.getValue(params.id, 'name') || ''} ${params.getValue(params.id, 'lastname') || ''}`,
+		disableColumnMenu: true,
+		sortable: false,
+	},
+	{
+		field: 'fecha',
+		headerName: 'Fecha',
+		width: 120,
+		disableColumnMenu: true,
+		sortable: false,
+	},
+	 */
+];
+
 const Administracion: FC<AdministracionProp> = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
@@ -84,11 +145,8 @@ const Administracion: FC<AdministracionProp> = () => {
 	const administration: any = useSelector((state: RootState) => state.administration);
 
 	const [selected, setSelected] = useState(false);
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [rowSelected, setRowSelect] = useState({ id: null, name: '' });
 	const d = new Date();
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	//
 	const [rowsAd, setRowsAd] = useState([]);
 
 	const [rows, setRows] = useState([
@@ -106,15 +164,14 @@ const Administracion: FC<AdministracionProp> = () => {
 		},
 	]);
 
-
 	useEffect(() => {
 		dispatch(getDataFMAdministration());
 		// console.log('rowSelected', rowSelected);
 	}, []);
 
 	useEffect(() => {
-		setRowsAd(administration.fmAd)
-	}, [administration])
+		setRowsAd(administration.fmAd);
+	}, [administration]);
 
 	const customToolbar: () => JSX.Element = () => {
 		return (
@@ -124,65 +181,6 @@ const Administracion: FC<AdministracionProp> = () => {
 			</GridToolbarContainer>
 		);
 	};
-
-	const columns: GridColDef[] = [
-		{
-			field: 'id_request',
-			headerName: 'Cod.',
-			width: 120,
-			editable: false,
-			sortable: false,
-			valueFormatter: (value) => {
-				return value.row?.id_request.code;
-			},
-		},
-		{
-			field: 'name_commerce',
-			headerName: 'Comercio',
-			width: 160,
-			valueFormatter: (value) => {
-				return value.row?.id_request.id_commerce.name;
-			},
-			sortable: false,
-		},
-		{
-			field: 'name_client',
-			headerName: 'Cliente',
-			width: 160,
-			valueFormatter: (value) => {
-				return `${value.row?.id_request.id_client.name} ${value.row?.id_request.id_client.last_name}`;
-			},
-			sortable: false,
-		},
-		{
-			field: 'id_type_payment',
-			headerName: 'Paga Despues',
-			width: 200,
-			editable: false,
-			sortable: false,
-			valueFormatter: (value) => {
-				return value.row?.id_request.pagadero ? 'Si' : 'No';
-			},
-		},
-		/*
-		{
-			field: 'fullname',
-			headerName: 'Nombre',
-			width: 120,
-			valueGetter: (params: GridValueGetterParams) =>
-				`${params.getValue(params.id, 'name') || ''} ${params.getValue(params.id, 'lastname') || ''}`,
-			disableColumnMenu: true,
-			sortable: false,
-		},
-		{
-			field: 'fecha',
-			headerName: 'Fecha',
-			width: 120,
-			disableColumnMenu: true,
-			sortable: false,
-		},
-		 */
-	];
 
 	const handleRow = (event: any) => {
 		setRowSelect((prev): any => rows.find((value) => value.id === event.row.id));
@@ -196,9 +194,9 @@ const Administracion: FC<AdministracionProp> = () => {
 	return (
 		<>
 			<div className={classes.administracion}>
-				{!rowsAd.length ?
+				{!rowsAd.length ? (
 					<h1>loading...</h1>
-				:
+				) : (
 					<DataGrid
 						onCellClick={handleRow}
 						components={{
@@ -216,7 +214,7 @@ const Administracion: FC<AdministracionProp> = () => {
 							})
 						}
 					/>
-				}
+				)}
 				{selected && (
 					<>
 						<Paper variant='outlined' elevation={3} className={classes.view}>
