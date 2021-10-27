@@ -36,6 +36,7 @@ const initialState: inState = {
 	loadedCommerce: false,
 	loadedImages: false,
 	loadedFM: false,
+
 	errorClient: false,
 	errorCommerce: false,
 	errorNumBank: false,
