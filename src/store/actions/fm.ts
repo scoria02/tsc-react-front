@@ -228,7 +228,7 @@ export const sendFM = (cursedForm: any, fm: any) => {
 		ci_referred: cursedForm.reqSource_docnum,
 		requestSource_docnum: cursedForm.id_requestSource,
 		coutas: cursedForm.cuotas,
-		POS_received: !!cursedForm.discount,
+		discount: !!cursedForm.discount,
 		pagadero: !!cursedForm.pagadero,
 		dir_pos: {
 			id_estado: cursedForm.id_estado_pos,

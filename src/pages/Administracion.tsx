@@ -161,7 +161,7 @@ const Administracion: FC<AdministracionProp> = () => {
 			editable: false,
 			sortable: false,
 			valueFormatter: (value) => {
-				return value.row?.id_request.pagadero == 1 ? 'Si' : 'No';
+				return value.row?.id_request.pagadero ? 'Si' : 'No';
 			},
 		},
 		/*
