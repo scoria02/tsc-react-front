@@ -19,6 +19,10 @@ import img from '../img/17009.jpg';
 import { getDataFMAdministration } from '../store/actions/administration';
 import { RootState } from '../store/store';
 
+import { Form } from '../components/administration/Form'
+
+import { PortFiles, URL } from '../config';
+
 interface AdministracionProp {}
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -178,7 +182,21 @@ const Administracion: FC<AdministracionProp> = () => {
 
 	const [selected, setSelected] = useState(false);
 	const [pagadero, setPagadero] = useState(false);
-	const [rowSelected, setRowSelect] = useState({ id: null, name: '' });
+	const [rowSelected, setRowSelect] = useState({ 
+		id: null ,
+		paymentmethod: {
+			name: '',
+			id: null,
+		},
+		type_payment: {
+			name: '',
+			id: null,
+		},
+		nro_comp_dep: '',
+		urlImgCompDep: {
+			path: null,
+		},
+	});
 	const d = new Date();
 	const [rowsAd, setRowsAd] = useState([]);
 
@@ -219,8 +237,15 @@ const Administracion: FC<AdministracionProp> = () => {
 
 	const handleRow = (event: any) => {
 		console.log('viene pagadero', event.row?.id_request.pagadero);
-		setPagadero(event.row?.id_request.pagadero || null);
-		setRowSelect((prev): any => rows.find((value) => value.id === event.row.id));
+		setPagadero(event.row?.id_request.pagadero || false);
+		console.log(event.row.id_request)
+		setRowSelect({
+			id: event.row.id_request.id,
+			paymentmethod: event.row.id_request.id_payment_method,
+			type_payment: event.row.id_request.id_type_payment,
+			nro_comp_dep: event.row.id_request.nro_comp_dep,
+			urlImgCompDep: event.row.id_request.rc_comp_dep,
+		});
 		setSelected(true);
 	};
 
@@ -240,38 +265,8 @@ const Administracion: FC<AdministracionProp> = () => {
 			// 	);
 
 			default:
-				return (
-					<div className={classes.content}>
-						<div className={classes.row}>
-							<TextField
-								className={classes.textfieldLeft}
-								id='outlined-basic'
-								label='Numero de referencia'
-								variant='outlined'
-								value={'fm.id_client.name'}
-							/>
-							<TextField
-								// className={classes.btn_stepT}
-								id='outlined-basic'
-								label='Numero de referencia'
-								variant='outlined'
-								value={'fm.id_client.name'}
-							/>
-						</div>
-						<ReactImageZoom
-							className={classes.img_zoom}
-							zoomPosition='original'
-							height={400}
-							width={500}
-							img={img}
-						/>
-						<FormControlLabel
-							control={<Switch checked={false} onChange={handleChange} name='pagoRecibido' color='primary' />}
-							className={classes.switchControl}
-							label={'¿Pago confirmado?'}
-						/>
-					</div>
-				);
+			break;
+			//				return ();
 		}
 	};
 
@@ -306,7 +301,7 @@ const Administracion: FC<AdministracionProp> = () => {
 								<CloseIcon />
 							</Button>
 							<div className={classes.tableTitle}>Formularios</div>
-							<div className={classes.wrapper}>{getModalContent()}</div>
+							<Form fm={rowSelected} handleChange={handleChange}/>
 						</Paper>
 					</>
 				)}
