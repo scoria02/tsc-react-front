@@ -421,7 +421,7 @@ const MainMenu: React.FC = () => {
 								<FolderIcon />
 							</ListItemIcon>
 						</Link>
-						<ListItemText primary='Administracion 1' />
+						<ListItemText primary='Administracion' />
 					</ListItem>
 				</List>
 				<Divider />

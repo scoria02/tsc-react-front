@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Button, makeStyles, Paper, Theme } from '@material-ui/core';
+import { Button, FormControlLabel, makeStyles, Paper, Switch, TextField, Theme } from '@material-ui/core';
 import {
 	DataGrid,
 	GridColDef,
@@ -12,7 +12,10 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
+// @ts-expect-error
+import ReactImageZoom from 'react-image-zoom';
 import { useDispatch, useSelector } from 'react-redux';
+import img from '../img/17009.jpg';
 import { getDataFMAdministration } from '../store/actions/administration';
 import { RootState } from '../store/store';
 
@@ -43,7 +46,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 	view: {
 		width: '100%',
 		padding: '1rem',
-		// height: '75vh',
+		display: 'flex',
+		flexDirection: 'column',
 		position: 'relative',
 	},
 	closeBtn: {
@@ -76,6 +80,34 @@ const useStyles = makeStyles((theme: Theme) => ({
 		'&:hover': {
 			backgroundColor: `${theme.palette.success.light} !important`,
 		},
+	},
+	wrapper: {
+		padding: '16px 0',
+		height: '100%',
+	},
+	img_zoom: {
+		position: 'fixed',
+		display: 'flex',
+		justifyContent: 'center',
+	},
+	content: {
+		display: 'flex',
+		height: '100%',
+		flexDirection: 'column',
+	},
+	row: {
+		display: 'flex',
+		width: '100%',
+		marginBottom: 8,
+		justifyContent: 'space-around',
+	},
+	textfieldLeft: {
+		marginRight: 8,
+	},
+	switchControl: {
+		position: 'absolute',
+		bottom: 0,
+		left: '35%',
 	},
 }));
 
@@ -145,6 +177,7 @@ const Administracion: FC<AdministracionProp> = () => {
 	const administration: any = useSelector((state: RootState) => state.administration);
 
 	const [selected, setSelected] = useState(false);
+	const [pagadero, setPagadero] = useState(false);
 	const [rowSelected, setRowSelect] = useState({ id: null, name: '' });
 	const d = new Date();
 	const [rowsAd, setRowsAd] = useState([]);
@@ -182,13 +215,64 @@ const Administracion: FC<AdministracionProp> = () => {
 		);
 	};
 
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {};
+
 	const handleRow = (event: any) => {
+		console.log('viene pagadero', event.row?.id_request.pagadero);
+		setPagadero(event.row?.id_request.pagadero || null);
 		setRowSelect((prev): any => rows.find((value) => value.id === event.row.id));
 		setSelected(true);
 	};
 
 	const handleCloseRow = (event: any) => {
 		setSelected(false);
+	};
+
+	const getModalContent = () => {
+		switch (pagadero) {
+			// case true:
+			// 	return (
+			// 		<div
+			// 		// className={ }
+			// 		>
+			// 			true
+			// 		</div>
+			// 	);
+
+			default:
+				return (
+					<div className={classes.content}>
+						<div className={classes.row}>
+							<TextField
+								className={classes.textfieldLeft}
+								id='outlined-basic'
+								label='Numero de referencia'
+								variant='outlined'
+								value={'fm.id_client.name'}
+							/>
+							<TextField
+								// className={classes.btn_stepT}
+								id='outlined-basic'
+								label='Numero de referencia'
+								variant='outlined'
+								value={'fm.id_client.name'}
+							/>
+						</div>
+						<ReactImageZoom
+							className={classes.img_zoom}
+							zoomPosition='original'
+							height={400}
+							width={500}
+							img={img}
+						/>
+						<FormControlLabel
+							control={<Switch checked={false} onChange={handleChange} name='pagoRecibido' color='primary' />}
+							className={classes.switchControl}
+							label={'¿Pago confirmado?'}
+						/>
+					</div>
+				);
+		}
 	};
 
 	return (
@@ -218,10 +302,11 @@ const Administracion: FC<AdministracionProp> = () => {
 				{selected && (
 					<>
 						<Paper variant='outlined' elevation={3} className={classes.view}>
-							<div className={classes.tableTitle}>Formularios</div>
 							<Button className={classes.closeBtn} onClick={handleCloseRow}>
 								<CloseIcon />
 							</Button>
+							<div className={classes.tableTitle}>Formularios</div>
+							<div className={classes.wrapper}>{getModalContent()}</div>
 						</Paper>
 					</>
 				)}
