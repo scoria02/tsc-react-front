@@ -1060,7 +1060,7 @@ export const FormMaldito: React.FC<Props> = () => {
 		}else if (key === 1 && fm.errorCommerce){ //comercio
 			return true
 		} 	
-		else if (key === 3 && fm.errorClient){ //comercio
+		else if (key === 3 && fm.errorNumBank){ //comercio
 			return true
 		} 	
 		return false 
@@ -1106,7 +1106,7 @@ export const FormMaldito: React.FC<Props> = () => {
 									Volver
 								</Button>
 								<Button
-									disabled={!readyStep}
+									//disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'
