@@ -133,26 +133,35 @@ const Administracion: FC<AdministracionProp> = () => {
 			editable: false,
 			sortable: false,
 			valueFormatter: (value) => {
-				return value.row?.id_request.id;
+				return value.row?.id_request.code;
 			},
 		},
 		{
-			field: 'id_payment_method',
-			headerName: 'Metodo de Pago',
+			field: 'name_commerce',
+			headerName: 'Comercio',
 			width: 160,
 			valueFormatter: (value) => {
-				return value.row?.id_request.id_payment_method.name;
+				return value.row?.id_request.id_commerce.name;
+			},
+			sortable: false,
+		},
+		{
+			field: 'name_client',
+			headerName: 'Cliente',
+			width: 160,
+			valueFormatter: (value) => {
+				return `${value.row?.id_request.id_client.name} ${value.row?.id_request.id_client.last_name}`;
 			},
 			sortable: false,
 		},
 		{
 			field: 'id_type_payment',
-			headerName: 'Tipo de pago',
-			width: 120,
+			headerName: 'Paga Despues',
+			width: 200,
 			editable: false,
 			sortable: false,
 			valueFormatter: (value) => {
-				return value.row?.id_request.id_type_payment.name;
+				return value.row?.id_request.pagadero == 1 ? 'Si' : 'No';
 			},
 		},
 		/*
