@@ -94,7 +94,7 @@ export const sizeStep = (active: number): number => {
 		case 2:
 			return 36; 
 		case 3:
-			return 45; 
+			return 46; 
 		default:
 			return 0;
 	}
@@ -109,7 +109,7 @@ export const sizeImagesStep = (active: number): number => {
 		case 2:
 			return 4; 
 		case 3:
-			return 5; //6 con rc_comp_dep
+			return 6; //6 con rc_comp_dep
 		default:
 			return 0;
 	}
@@ -132,9 +132,11 @@ export const allInputNotNUll = (last: number, form: any, mashClient: boolean, ma
 				item[0] === 'reqSource_docnum' && 
 				form.id_request_origin !== 1 &&
 				form.id_request_origin !== 2 
-			) {
+			){
 				//no hago nada
-			}else{
+			}else if(form.pagadero && item[0] === 'nro_comp_dep'){
+				//no hago nada
+			} else{
 				if (item[1].trim() === '') {
 					return true;
 				}
@@ -152,7 +154,7 @@ export const allInputNotNUll = (last: number, form: any, mashClient: boolean, ma
 	return false;
 };
 
-export const allImgNotNUll = (last: number, images: any, special_contributor: boolean, mashClient: boolean, mashCommerce: boolean, isActa: number): boolean => {
+export const allImgNotNUll = (form: any, last: number, images: any, special_contributor: boolean, mashClient: boolean, mashCommerce: boolean, isActa: number): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(images)) {
 		if (indice === last) {
@@ -169,6 +171,9 @@ export const allImgNotNUll = (last: number, images: any, special_contributor: bo
 				//No hago nada
 			}
 			else if (mashCommerce && 1 < indice && indice < 5) {
+				//No hago nada
+			}
+			else if (form.pagadero && item[0] === 'rc_comp_dep') {
 				//No hago nada
 			}
 			else {

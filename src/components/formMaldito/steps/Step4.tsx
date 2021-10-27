@@ -100,6 +100,18 @@ export const Step4: React.FC<any> = ({
 		});
 	};
 
+	const handleCheckedPagadero = (e: any) => {
+		if (!!cursedForm.pagadero) {
+			deleteImgContributor('comp_dep');
+		}
+		setCursedForm({
+			...cursedForm,
+			[e.target.name]: !cursedForm[`${e.target.name}`] ? 1 : 0,
+			'nro_comp_dep': '',
+		});
+	};
+
+
 	const handleSelectOrigin = (event: any, value: any, item: string) => {
 		if (value) {
 			setCursedForm({
@@ -337,6 +349,55 @@ export const Step4: React.FC<any> = ({
 				)}
 			</div>
 			<div className={classes.input}>
+				<FormControlLabel
+					className={classNames(classes.inputText, classes.containerCheckBox)}
+					label=''
+					control={
+						<>
+							<Checkbox
+								name='discount'
+								checked={cursedForm.discount === 1 ? true : false}
+								onChange={handleChecked}
+								color='primary'
+								inputProps={{ 'aria-label': 'secondary checkbox' }}
+							/>
+							<b
+								style={{
+									fontSize: '1rem',
+								}}>
+								Entrego Punto
+							</b>
+						</>
+					}
+				/>
+				<FormControlLabel
+					className={classNames(classes.inputText, classes.containerCheckBox)}
+					label=''
+					control={
+						<>
+							<Checkbox
+								name='pagadero'
+								checked={cursedForm.pagadero === 1 ? true : false}
+								onChange={handleCheckedPagadero}
+								color='primary'
+								inputProps={{ 'aria-label': 'secondary checkbox' }}
+							/>
+							<b
+								style={{
+									fontSize: '1rem',
+								}}>
+								Pagadero en Destino
+							</b>
+						</>
+					}
+				/>
+			</div>
+			<div>
+		</div>
+		{cursedForm.pagadero ?
+			null
+		:
+			<div className={classes.input}>
 				<div className={classNames(classes.row, classes.inputTextLeft)}>
 					<b className={classes.labels}>Comprobante de pago</b>
 					<Button
@@ -368,52 +429,23 @@ export const Step4: React.FC<any> = ({
 							onChange={handleChangeImages}
 						/>
 					</Button>
+					</div>
+					<div className={classes.inputText}>
+						<TextField
+							className={classes.inputText}
+							variant='outlined'
+							required
+							id='standard-required'
+							label='Referencia'
+							placeholder='Numero de comprobante'
+							name='nro_comp_dep'
+							onChange={handleChange}
+							value={cursedForm.nro_comp_dep}
+							//error={erorr.reqSource_docnum}
+						/>
+					</div>
 				</div>
-				<div className={classes.inputText}>
-					<FormControlLabel
-						className={classNames(classes.inputText, classes.containerCheckBox)}
-						label=''
-						control={
-							<>
-								<Checkbox
-									name='discount'
-									checked={cursedForm.discount === 1 ? true : false}
-									onChange={handleChecked}
-									color='primary'
-									inputProps={{ 'aria-label': 'secondary checkbox' }}
-								/>
-								<b
-									style={{
-										fontSize: '1rem',
-									}}>
-									Entrego Punto
-								</b>
-							</>
-						}
-					/>
-					<FormControlLabel
-						className={classNames(classes.inputText, classes.containerCheckBox)}
-						label=''
-						control={
-							<>
-								<Checkbox
-									name='pagadero'
-									checked={cursedForm.pagadero === 1 ? true : false}
-									onChange={handleChecked}
-									color='primary'
-									inputProps={{ 'aria-label': 'secondary checkbox' }}
-								/>
-								<b
-									style={{
-										fontSize: '1rem',
-									}}>
-									Pagadero en Destino
-								</b>
-							</>
-						}
-					/>
-				</div>
-			</div>
+		}
 		</div>
 	);
 };
