@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Button, FormControlLabel, makeStyles, Paper, Switch, TextField, Theme } from '@material-ui/core';
+import Swal from 'sweetalert2';
 // @ts-expect-error
 import ReactImageZoom from 'react-image-zoom';
 //Redux
@@ -7,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 //Url
 import { PortFiles, URL } from '../../config';
 import { RootState } from '../../store/store';
+import './styles/index.scss';
 
 const useStyles = makeStyles((theme: Theme) => ({
 	administracion: {
@@ -122,6 +124,25 @@ export const Form: React.FC<any> = ({fm, handleChange}) => {
 		img: fm.urlImgCompDep ? `${URL}:${PortFiles}/${fm.urlImgCompDep.path}` : '',
 	};
 
+	const handleVerificated = () => {
+		console.log('entreeeee')
+		Swal.fire({
+			title: 'Confirmar verificación',
+			icon: 'warning',
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Verificado',
+			showCancelButton: true,
+			cancelButtonText: 'Atras',
+			showCloseButton: true,
+			customClass: { container: 'swal2-validated' },
+		}).then((result) => {
+			if (result.isConfirmed) {
+				console.log('confirmar')
+			}
+		});
+	}
+
 	return (
 		<>
 			<h2 className={classes.tableTitle}>Formulario: <span className={classes.codeFm}>{fm.code}</span></h2>
@@ -159,6 +180,7 @@ export const Form: React.FC<any> = ({fm, handleChange}) => {
 					}
 							<Button
 								className={classes.buttonV}
+								onClick={handleVerificated}
 								variant='contained'
 								color='primary'>	
 								Verificar
