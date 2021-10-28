@@ -12,16 +12,12 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
-// @ts-expect-error
-import ReactImageZoom from 'react-image-zoom';
 import { useDispatch, useSelector } from 'react-redux';
-import img from '../img/17009.jpg';
 import { getDataFMAdministration } from '../store/actions/administration';
 import { RootState } from '../store/store';
+import { PortFiles, URL } from '../config';
 
 import { Form } from '../components/administration/Form'
-
-import { PortFiles, URL } from '../config';
 
 interface AdministracionProp {}
 
@@ -195,12 +191,13 @@ const Administracion: FC<AdministracionProp> = () => {
 			id: null,
 		},
 		nro_comp_dep: '',
-		urlImgCompDep: {
-			path: null,
-		},
+		urlImgCompDep: '',
 	});
 	const d = new Date();
 	const [rowsAd, setRowsAd] = useState([]);
+
+	const [uploadImg, setUploadImg] = useState<any>(null);
+	const [nameImg, setNameImage] = useState<string>('');
 
 	const [rows, setRows] = useState([
 		{
@@ -239,6 +236,8 @@ const Administracion: FC<AdministracionProp> = () => {
 
 	const handleRow = (event: any) => {
 		console.log('viene pagadero', event.row?.id_request.pagadero);
+		setUploadImg(null); 
+		setNameImage('');
 		setPagadero(event.row?.id_request.pagadero || false);
 		console.log(event.row.id_request)
 		setRowSelect({
@@ -247,7 +246,11 @@ const Administracion: FC<AdministracionProp> = () => {
 			paymentmethod: event.row.id_request.id_payment_method,
 			type_payment: event.row.id_request.id_type_payment,
 			nro_comp_dep: event.row.id_request.nro_comp_dep,
-			urlImgCompDep: event.row.id_request.rc_comp_dep,
+			urlImgCompDep: 
+			event.row.id_request.rc_comp_dep ? 
+				`${URL}:${PortFiles}/${event.row.id_request.rc_comp_dep.path}`
+			:
+				'',
 			code: event.row.id_request.code,
 		});
 		setSelected(true);
@@ -304,7 +307,15 @@ const Administracion: FC<AdministracionProp> = () => {
 							<Button className={classes.closeBtn} onClick={handleCloseRow}>
 								<CloseIcon />
 							</Button>
-							<Form fm={rowSelected} handleChange={handleChange}/>
+							<Form 
+								fm={rowSelected}
+								setFm={setRowSelect}
+								handleChange={handleChange}
+								uploadImg={uploadImg}
+								nameImg={nameImg}
+								setUploadImg={setUploadImg}
+								setNameImage={setNameImage}
+							/>
 						</Paper>
 					</>
 				)}

@@ -54,7 +54,10 @@ const Register: React.FC = () => {
 
 	//States
 	const [readyStep, setReadyStep] = useState<boolean>(false);
+
 	const [activeStep, setActiveStep] = useState<number>(0);
+
+	const codePhone = '+58';
 
 	const [userForm, setUserForm] = useState<Interface_RegisterUser>({
 		email: '',
@@ -64,7 +67,7 @@ const Register: React.FC = () => {
 		last_name: '',
 		id_ident_type: 1,
 		ident_num: '',
-		phone: '+58',
+		phone: '',
 		company: '',
 		id_department: 1,
 	});
@@ -138,10 +141,7 @@ const Register: React.FC = () => {
 				temp.ident_num = valids.validIdentNum(value, userForm.id_ident_type);
 				break;
 			case 'phone':
-				if(value.slice(0,3) === '+58')
-					temp.phone = valids.validPhone(value.slice(3));
-				else
-					temp.phone = true;
+				temp.phone = valids.validPhone(value);
 				break;
 			default:
 				break;
@@ -207,6 +207,7 @@ const Register: React.FC = () => {
 			userFormError={userFormError}
 			handleSelect={handleSelect}
 			handleChange={handleChangeForm}
+			codePhone={codePhone}
 		/>,
 	];
 

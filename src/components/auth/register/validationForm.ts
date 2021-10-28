@@ -90,7 +90,7 @@ export const checkErrorInputEndPoint = (errorEndPoint: any): boolean => {
 }
 
 export const phoneNotNull = (value: string): boolean => {
-	if(value.slice(0,3) === '+58' && value.slice(3).length > 0){
+	if(value.length > 0){
 		return false
 	}else
 		return true;

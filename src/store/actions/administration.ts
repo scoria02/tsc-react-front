@@ -32,14 +32,15 @@ export const getDataFMAdministration = () => {
 };
 
 export const updateStatusFMAdministration = (id_fm: number, id_statusFMAd: number, newP: any) => {
-	const newPay = {
+	const data = {
 		...newP,
 		id_status_request: id_statusFMAd,
 	}
 	return async (dispatch: any) => {
 		try {
-			const res: AxiosResponse<any> = await useAxios.put(`/FM/administration/${id_fm}/status`, newPay);
-			updateToken(res);
+			const res: AxiosResponse<any> = await useAxios.put(`/FM/administration/${id_fm}/status`, data);
+			console.log(res)
+			//updateToken(res);
 			dispatch(requestSuccess(id_statusFMAd));
 		} catch (error) {
 			console.log(error.response)

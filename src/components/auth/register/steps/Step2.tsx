@@ -1,5 +1,6 @@
 import React from "react"
 import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import { useDispatch, useSelector } from 'react-redux';
 
 //Material
@@ -17,7 +18,6 @@ import { checkErrorInput } from '../validationForm';
 import { RootState }  from '../../../../store/store';
 import { validationIdentDoc } from '../../../../store/actions/auth';
 
-
 //Interfaces
 import {
 	Interface_RegisterUser,
@@ -29,10 +29,11 @@ interface Props {
 	userFormError: Interface_RegisterUserError; //json
 	handleChange: (event:React.ChangeEvent<HTMLInputElement>) => void;
 	handleSelect: (event: any) => void;
+	codePhone: string;
 }
 
 
-export const Step2: React.FC<Props> = ({ userForm, userFormError, handleChange, handleSelect}) => {
+export const Step2: React.FC<Props> = ({ userForm, userFormError, handleChange, handleSelect, codePhone}) => {
 	const dispatch = useDispatch();
 	const classes = useStylesModalUser();
 
@@ -115,17 +116,25 @@ export const Step2: React.FC<Props> = ({ userForm, userFormError, handleChange, 
 			</div>
 			<div className={classes.input}>
 				<TextField
-					name='phone'
-					type='text'
-					className={classes.inputPhone}
-					value={userForm.phone}
-					onChange={handleChange}
-					id='phone'
-					placeholder='Ej: 4121234567'
-					label='Telefono'
-					variant='outlined'
-					error={userFormError.phone}
 					required
+					className={classes.inputPhone}
+					variant='outlined'
+					value={userForm.phone}
+					label='Telefono'
+					id='phone'
+					type='text'
+					name='phone'
+					placeholder='Ej: 4121234567'
+					autoComplete="telefono1"
+					onChange={handleChange}
+					error={userFormError.phone}
+					InputProps={{ 
+						startAdornment: (
+							<InputAdornment position="start">
+								{codePhone}
+							</InputAdornment>
+						)
+					}}
 				/>
 				<FormControl 
 					style={{ marginLeft: '2%' }} 

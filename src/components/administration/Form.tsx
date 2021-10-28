@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react';
-import { Button, FormControlLabel, makeStyles, Paper, Switch, TextField, Theme } from '@material-ui/core';
+import React, { useState, useEffect }  from 'react';
+import { Button, makeStyles, TextField, Theme } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Swal from 'sweetalert2';
 // @ts-expect-error
 import ReactImageZoom from 'react-image-zoom';
 //Redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 //Url
-import { PortFiles, URL } from '../../config';
-import { RootState } from '../../store/store';
 import './styles/index.scss';
+import { updateStatusFMAdministration } from '../../store/actions/administration';
 
 const useStyles = makeStyles((theme: Theme) => ({
 	administracion: {
@@ -78,7 +80,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 	},
 	wrapper: {
 		justifyContent: 'center',
-		padding: '16px 0',
+		padding: '2px 0',
 		height: '100%',
 	},
 	img_zoom: {
@@ -110,22 +112,64 @@ const useStyles = makeStyles((theme: Theme) => ({
 	},
 	codeFm: {
 		color: theme.palette.primary.main,
+	},
+	uploadImg: {
+		margin: '1rem',
+		padding: '0',
+		fontSize: '.7rem',
+		textTransform: 'none',
+		minWidth: 200,
+		width: '100px',
+		minHeight: 50,
+		height: '500x',
+		alignSelf: 'center',
+	},
+	iconUpload: {
+		fontSize: '4rem',
+	},
+	nameImg: {
+		fontSize: '1rem',
+		marginBottom: '-3px',
 	}
 }));
 
-export const Form: React.FC<any> = ({fm, handleChange}) => {
+export const Form: React.FC<any> = ({
+	fm,
+	setFm,
+	handleChange,
+	uploadImg,
+	nameImg,
+	setUploadImg,
+	setNameImage,
+}) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
+	const handleChangeImages = (event: any) => {
+		const path = URL.createObjectURL(event.target.files[0]);
+		if (event.target.files[0]) {
+			let file = event.target.files[0];
+			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: 'image/jpeg' });
+			//Save img
+			setUploadImg(newFile); 
+			setNameImage(event.target.files[0].name);
+			setFm({
+				...fm,
+				urlImgCompDep: path
+			});
+		}
+	};
+
+	console.log(fm.urlImgCompDep)
+
 	const props = {
 		zoomPosition: 'original',
-		height: 300,
-		width: 400,
-		img: fm.urlImgCompDep ? `${URL}:${PortFiles}/${fm.urlImgCompDep.path}` : '',
+		height: 350,
+		width: 500,
+		img: fm.urlImgCompDep 
 	};
 
 	const handleVerificated = () => {
-		console.log('entreeeee')
 		Swal.fire({
 			title: 'Confirmar verificación',
 			icon: 'warning',
@@ -133,12 +177,12 @@ export const Form: React.FC<any> = ({fm, handleChange}) => {
 			cancelButtonColor: '#d33',
 			confirmButtonText: 'Verificado',
 			showCancelButton: true,
-			cancelButtonText: 'Atras',
+			cancelButtonText: 'Cancelar',
 			showCloseButton: true,
 			customClass: { container: 'swal2-validated' },
 		}).then((result) => {
 			if (result.isConfirmed) {
-				console.log('confirmar')
+				dispatch(updateStatusFMAdministration(fm.id, 3, null))
 			}
 		});
 	}
@@ -172,27 +216,52 @@ export const Form: React.FC<any> = ({fm, handleChange}) => {
 								/>
 							}
 						</div>
-					{(fm.urlImgCompDep && !fm.pagadero) &&
+					{(fm.urlImgCompDep && !fm.pagadero) ?
 						<div className={classes.containerImg}>
-							{console.log(fm.urlImgCompDep.path)}
+							<ReactImageZoom className={classes.img_zoom} {...props} />
+						</div>
+					:
+					<>
+					{uploadImg &&
+						<div className={classes.containerImg}>
 							<ReactImageZoom className={classes.img_zoom} {...props} />
 						</div>
 					}
-							<Button
-								className={classes.buttonV}
-								onClick={handleVerificated}
-								variant='contained'
-								color='primary'>	
-								Verificar
-							</Button>
-	{/*
-							<FormControlLabel
-								control={<Switch checked={false} onChange={handleChange} name='pagoRecibido' color='primary' />}
-								className={classes.switchControl}
-								label={'¿Pago confirmado?'}
-							/>
-						*/}
-					</div>
+					<Button
+						className={classes.uploadImg}
+						variant='contained'
+						component='label'
+						//style={{ 
+							//		background: imagesForm.rc_ident_card ? '#5c62c5' : '#bbdefb' }}
+						>
+
+						{uploadImg !== null ? (
+							<IconButton aria-label='upload picture' component='span'>
+								<p className={classes.nameImg}>{nameImg.slice(0, 10)} ...</p>
+							</IconButton>
+						) : (
+							<IconButton aria-label='upload picture' component='span'>
+								<CloudUploadIcon className={classes.iconUpload}/>
+							</IconButton>
+						)}
+						<input
+							type='file'
+							hidden
+							name='rc_comp_dep'
+							accept='image/png, image/jpeg, image/jpg'
+							onChange={handleChangeImages}
+						/>
+					</Button>
+				</>
+					}
+				<Button
+					className={classes.buttonV}
+					onClick={handleVerificated}
+					variant='contained'
+					color='primary'>	
+					Verificar
+				</Button>
+			</div>
 		</div>
 		</>
 	);
