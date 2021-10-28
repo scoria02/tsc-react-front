@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 		height: '75vh',
 	},
 	tableTitle: {
-		fontSize: 32,
+		fontSize: 20,
 		fontWeight: 'bold',
 		padding: '0 8px',
 	},
@@ -54,6 +54,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 			backgroundColor: `${theme.palette.error.light} !important`,
 		},
 	},
+	buttonV: {
+		textTransform: 'none',
+		marginRight: theme.spacing(1),
+		width: 115,
+		alignSelf: 'center',
+	},
 	yellow: {
 		backgroundColor: theme.palette.warning.main,
 		color: theme.palette.secondary.contrastText,
@@ -69,6 +75,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 		},
 	},
 	wrapper: {
+		justifyContent: 'center',
 		padding: '16px 0',
 		height: '100%',
 	},
@@ -76,6 +83,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 		position: 'fixed',
 		display: 'flex',
 		justifyContent: 'center',
+	},
+	containerImg: {
+		alignSelf: 'center',
 	},
 	content: {
 		display: 'flex',
@@ -96,6 +106,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 		bottom: 0,
 		left: '35%',
 	},
+	codeFm: {
+		color: theme.palette.primary.main,
+	}
 }));
 
 export const Form: React.FC<any> = ({fm, handleChange}) => {
@@ -111,7 +124,7 @@ export const Form: React.FC<any> = ({fm, handleChange}) => {
 
 	return (
 		<>
-			<div className={classes.tableTitle}>Formularios</div>
+			<h2 className={classes.tableTitle}>Formulario: <span className={classes.codeFm}>{fm.code}</span></h2>
 			<div className={classes.wrapper}>
 					<div className={classes.content}>
 						<div className={classes.row}>
@@ -123,24 +136,40 @@ export const Form: React.FC<any> = ({fm, handleChange}) => {
 								value={fm.paymentmethod.name}
 							/>
 							<TextField
-								// className={classes.btn_stepT}
+								className={classes.textfieldLeft}
 								id='outlined-basic'
 								label='Tipo de Pago'
 								variant='outlined'
 								value={fm.type_payment.name}
 							/>
+							{(fm.urlImgCompDep && !fm.pagadero) &&
+								<TextField
+									id='outlined-basic'
+									label='Referencia'
+									variant='outlined'
+									value={fm.nro_comp_dep}
+								/>
+							}
 						</div>
-					{fm.urlImgCompDep &&
-						<>
-						{console.log(fm.urlImgCompDep.path)}
-						<ReactImageZoom className={classes.img_zoom} {...props} />
-						</>
+					{(fm.urlImgCompDep && !fm.pagadero) &&
+						<div className={classes.containerImg}>
+							{console.log(fm.urlImgCompDep.path)}
+							<ReactImageZoom className={classes.img_zoom} {...props} />
+						</div>
 					}
-						<FormControlLabel
-							control={<Switch checked={false} onChange={handleChange} name='pagoRecibido' color='primary' />}
-							className={classes.switchControl}
-							label={'¿Pago confirmado?'}
-						/>
+							<Button
+								className={classes.buttonV}
+								variant='contained'
+								color='primary'>	
+								Verificar
+							</Button>
+	{/*
+							<FormControlLabel
+								control={<Switch checked={false} onChange={handleChange} name='pagoRecibido' color='primary' />}
+								className={classes.switchControl}
+								label={'¿Pago confirmado?'}
+							/>
+						*/}
 					</div>
 		</div>
 		</>

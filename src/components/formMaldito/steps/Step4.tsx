@@ -101,8 +101,8 @@ export const Step4: React.FC<any> = ({
 	};
 
 	const handleCheckedPagadero = (e: any) => {
-		if (!!cursedForm.pagadero) {
-			deleteImgContributor('comp_dep');
+		if (!cursedForm[`${e.target.name}`]) {
+				deleteImgContributor('comp_dep')
 		}
 		setCursedForm({
 			...cursedForm,

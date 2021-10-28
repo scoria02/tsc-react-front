@@ -323,7 +323,6 @@ const Comprobacion: React.FC<any> = () => {
 						{allStepsCompleted() ? (
 							<div className='btn-divfloat'>
 								<Typography className={classes2.instructions}>Todos los campos fueron Validados</Typography>
-								<Button onClick={handleReset}>Salir</Button>
 							</div>
 						) : (
 							<div>

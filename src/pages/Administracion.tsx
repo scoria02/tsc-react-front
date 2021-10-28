@@ -184,6 +184,8 @@ const Administracion: FC<AdministracionProp> = () => {
 	const [pagadero, setPagadero] = useState(false);
 	const [rowSelected, setRowSelect] = useState({ 
 		id: null ,
+		code: '',
+		pagadero: false,
 		paymentmethod: {
 			name: '',
 			id: null,
@@ -241,10 +243,12 @@ const Administracion: FC<AdministracionProp> = () => {
 		console.log(event.row.id_request)
 		setRowSelect({
 			id: event.row.id_request.id,
+			pagadero: event.row.id_request.pagadero,
 			paymentmethod: event.row.id_request.id_payment_method,
 			type_payment: event.row.id_request.id_type_payment,
 			nro_comp_dep: event.row.id_request.nro_comp_dep,
 			urlImgCompDep: event.row.id_request.rc_comp_dep,
+			code: event.row.id_request.code,
 		});
 		setSelected(true);
 	};
@@ -300,7 +304,6 @@ const Administracion: FC<AdministracionProp> = () => {
 							<Button className={classes.closeBtn} onClick={handleCloseRow}>
 								<CloseIcon />
 							</Button>
-							<div className={classes.tableTitle}>Formularios</div>
 							<Form fm={rowSelected} handleChange={handleChange}/>
 						</Paper>
 					</>
