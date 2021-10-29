@@ -1,6 +1,7 @@
 import React, { useState, useEffect }  from 'react';
 import { Button, makeStyles, TextField, Theme } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Swal from 'sweetalert2';
@@ -11,6 +12,7 @@ import { useDispatch } from 'react-redux';
 //Url
 import './styles/index.scss';
 import { updateStatusFMAdministration } from '../../store/actions/administration';
+import { sendImages } from '../../store/actions/fm';
 
 const useStyles = makeStyles((theme: Theme) => ({
 	administracion: {
@@ -105,6 +107,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 	textfieldLeft: {
 		marginRight: 8,
 	},
+	textAutoCompleteLeft: {
+		marginRight: 8,
+		width: '100%',
+	},
 	switchControl: {
 		position: 'absolute',
 		bottom: 0,
@@ -141,6 +147,12 @@ export const Form: React.FC<any> = ({
 	nameImg,
 	setUploadImg,
 	setNameImage,
+	payment,
+	setPayment,
+	listPayment,
+	typePay,
+	setTypePay,
+	listTypePay,
 }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
@@ -159,8 +171,6 @@ export const Form: React.FC<any> = ({
 			});
 		}
 	};
-
-	console.log(fm.urlImgCompDep)
 
 	const props = {
 		zoomPosition: 'original',
@@ -182,10 +192,36 @@ export const Form: React.FC<any> = ({
 			customClass: { container: 'swal2-validated' },
 		}).then((result) => {
 			if (result.isConfirmed) {
+				console.log(payment, typePay)
+				const data:any = !fm.pagadero ? 
+					{} 
+					:
+					{
+						id_payment_method: payment.id,
+						id_type_payment: typePay.id,
+					}
+				console.log(data)
+				//dispatch() //images
 				dispatch(updateStatusFMAdministration(fm.id, 3, null))
 			}
 		});
 	}
+
+	const handleSelectPayment = (event: any, value: any, item: string) => {
+		if (value) {
+			setPayment(value);
+		} else {
+			setPayment(null);
+		}
+	};
+
+	const handleSelectTypePay = (event: any, value: any, item: string) => {
+		if (value) {
+			setTypePay(value);
+		} else {
+			setTypePay(null);
+		}
+	};
 
 	return (
 		<>
@@ -193,13 +229,42 @@ export const Form: React.FC<any> = ({
 			<div className={classes.wrapper}>
 					<div className={classes.content}>
 						<div className={classes.row}>
-							<TextField
-								className={classes.textfieldLeft}
-								id='outlined-basic'
-								label='Metodo de Pago'
-								variant='outlined'
-								value={fm.paymentmethod.name}
-							/>
+							{fm.pagadero ?
+								<Autocomplete
+									className={classes.textAutoCompleteLeft}
+									onChange={(event, value) => handleSelectPayment(event, value, 'payment_method')}
+									options={listPayment}
+									value={payment || null}
+									getOptionLabel={(option: any) => (option.name ? option.name : '')}
+									renderInput={(params: any) => (
+										<TextField {...params} name='payment_method' label='Modalidad de Pago' variant='outlined' 
+										className={classes.textfieldLeft}
+										/>
+									)}
+								/>
+								:
+								<TextField
+									className={classes.textfieldLeft}
+									id='outlined-basic'
+									label='Metodo de Pago'
+									variant='outlined'
+									value={fm.paymentmethod.name}
+								/>
+							} 
+							{fm.pagadero ?
+								<Autocomplete
+									className={classes.textAutoCompleteLeft}
+									onChange={(event, value) => handleSelectTypePay(event, value, 'payment_method')}
+									options={listTypePay}
+									value={typePay|| null}
+									getOptionLabel={(option: any) => (option.name ? option.name : '')}
+									renderInput={(params: any) => (
+										<TextField {...params} name='typePay' label='Tipo de Pago' variant='outlined' 
+										className={classes.textfieldLeft}
+										/>
+									)}
+								/>
+								:
 							<TextField
 								className={classes.textfieldLeft}
 								id='outlined-basic'
@@ -207,6 +272,7 @@ export const Form: React.FC<any> = ({
 								variant='outlined'
 								value={fm.type_payment.name}
 							/>
+						}
 							{(fm.urlImgCompDep && !fm.pagadero) &&
 								<TextField
 									id='outlined-basic'

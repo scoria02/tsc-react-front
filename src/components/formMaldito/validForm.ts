@@ -134,7 +134,7 @@ export const allInputNotNUll = (last: number, form: any, mashClient: boolean, ma
 				form.id_request_origin !== 2 
 			){
 				//no hago nada
-			}else if(form.pagadero && item[0] === 'nro_comp_dep'){
+			}else if((form.pagadero || form.id_payment_method === 2) && item[0] === 'nro_comp_dep'){
 				//no hago nada
 			} else{
 				if (item[1].trim() === '') {
@@ -173,7 +173,7 @@ export const allImgNotNUll = (form: any, last: number, images: any, special_cont
 			else if (mashCommerce && 1 < indice && indice < 5) {
 				//No hago nada
 			}
-			else if (form.pagadero && item[0] === 'rc_comp_dep') {
+			else if ((form.pagadero || form.id_payment_method === 2)  && item[0] === 'rc_comp_dep') {
 				//No hago nada
 			}
 			else {

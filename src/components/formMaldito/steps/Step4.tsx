@@ -394,7 +394,7 @@ export const Step4: React.FC<any> = ({
 			</div>
 			<div>
 		</div>
-		{cursedForm.pagadero ?
+		{cursedForm.pagadero || cursedForm.id_payment_method === 2 ?
 			null
 		:
 			<div className={classes.input}>

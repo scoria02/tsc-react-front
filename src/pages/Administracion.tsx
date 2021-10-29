@@ -17,6 +17,10 @@ import { getDataFMAdministration } from '../store/actions/administration';
 import { RootState } from '../store/store';
 import { PortFiles, URL } from '../config';
 
+import {
+	getPayMent,
+} from '../components/formMaldito/getData';
+
 import { Form } from '../components/administration/Form'
 
 interface AdministracionProp {}
@@ -174,6 +178,23 @@ const Administracion: FC<AdministracionProp> = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
+	//list tipo de pago
+	const [listTypePay, setListListTypePay] = useState<any>([
+		{
+			id: 1,
+			name: 'De Contado',
+		},
+		{
+			id: 2,
+			name: 'Inicial',
+		},
+	]);
+	const [typePay, setTypePay] = useState<any>(null);
+
+	//POS
+	const [listPayment, setListPayment] = useState<any[]>([]);
+	const [payment, setPayment] = useState<any>(null);
+
 	const administration: any = useSelector((state: RootState) => state.administration);
 
 	const [selected, setSelected] = useState(false);
@@ -192,6 +213,8 @@ const Administracion: FC<AdministracionProp> = () => {
 		},
 		nro_comp_dep: '',
 		urlImgCompDep: '',
+		id_commerce: 0,
+		id_client: 0,
 	});
 	const d = new Date();
 	const [rowsAd, setRowsAd] = useState([]);
@@ -199,20 +222,26 @@ const Administracion: FC<AdministracionProp> = () => {
 	const [uploadImg, setUploadImg] = useState<any>(null);
 	const [nameImg, setNameImage] = useState<string>('');
 
-	const [rows, setRows] = useState([
-		{
-			id: 1,
-			name: 'Armando',
-			lastname: 'Rivas',
-			fecha: d.getDay() + '/' + d.getMonth() + '/' + d.getFullYear(),
-		},
-		{
-			id: 2,
-			name: 'Jesus',
-			lastname: 'Creador',
-			fecha: d.getDay() - 1 + '/' + d.getMonth() + '/' + d.getFullYear(),
-		},
-	]);
+	const [getDataControl, setGetDataControl] = useState<number>(0);
+
+	useEffect(() => {
+		//Get Type Doc Ident
+		if (getDataControl === 0) {
+			if (listPayment.length === 0) {
+				getPayMent().then((res) => {
+					res.forEach((item, indice) => {
+						setListPayment((prevState: any) => [...prevState, item]);
+						if (indice === res.length - 1) {
+							setGetDataControl(1);
+						}
+					});
+				});
+			}
+		} else if (getDataControl === 1) {
+			console.log('Todo correcto');
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [getDataControl]);
 
 	useEffect(() => {
 		dispatch(getDataFMAdministration());
@@ -239,7 +268,8 @@ const Administracion: FC<AdministracionProp> = () => {
 		setUploadImg(null); 
 		setNameImage('');
 		setPagadero(event.row?.id_request.pagadero || false);
-		console.log(event.row.id_request)
+		setPayment(event.row.id_request.id_payment_method);
+		setTypePay(event.row.id_request.id_type_payment);
 		setRowSelect({
 			id: event.row.id_request.id,
 			pagadero: event.row.id_request.pagadero,
@@ -252,6 +282,8 @@ const Administracion: FC<AdministracionProp> = () => {
 			:
 				'',
 			code: event.row.id_request.code,
+			id_commerce: event.row.id_request.id_commerce.id,
+			id_client: event.row.id_request.id_client.id,
 		});
 		setSelected(true);
 	};
@@ -315,6 +347,12 @@ const Administracion: FC<AdministracionProp> = () => {
 								nameImg={nameImg}
 								setUploadImg={setUploadImg}
 								setNameImage={setNameImage}
+								payment={payment}
+								setPayment={setPayment}
+								listPayment={listPayment}
+								typePay={typePay}
+								setTypePay={setTypePay}
+								listTypePay={listTypePay}
 							/>
 						</Paper>
 					</>
