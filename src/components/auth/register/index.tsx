@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useDispatch,  useSelector } from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {useHistory} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
 
 //icons
 import SendIcon from '@material-ui/icons/Send';
@@ -8,18 +8,18 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 //styles
-import { useStylesModalUser } from '../styles';
+import {useStylesModalUser} from '../styles';
 import './index.scss';
 
 //valids
 import * as valids from './validationForm';
 
 //Redux
-import { RootState }  from '../../../store/store';
-import { registerUser } from '../../../store/actions/auth';
+import {RootState} from '../../../store/store';
+import {registerUser} from '../../../store/actions/auth';
 
 //Material UI
-import { useMediaQuery } from '@material-ui/core';
+import {useMediaQuery} from '@material-ui/core';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -36,8 +36,8 @@ import {
 	Interface_ErrorPass,
 } from '../interfaceAuth';
 
-import { Step1 } from './steps/Step1';
-import { Step2 } from './steps/Step2';
+import {Step1} from './steps/Step1';
+import {Step2} from './steps/Step2';
 
 const Register: React.FC = () => {
 	const history = useHistory();
@@ -45,7 +45,7 @@ const Register: React.FC = () => {
 	const classes = useStylesModalUser();
 
 	//Dispatch
-	const auth : any = useSelector((state: RootState) => state.auth);
+	const auth: any = useSelector((state: RootState) => state.auth);
 	const registrationUser = (user: Interface_RegisterUser) => {
 		dispatch(registerUser(user));
 	};
@@ -93,14 +93,14 @@ const Register: React.FC = () => {
 
 	//Validations
 	const validateForm = (name: string, value: any) => {
-		let temp: Interface_RegisterUserError = { ...userFormError };
+		let temp: Interface_RegisterUserError = {...userFormError};
 		switch (name) {
 			//step1
 			case 'email':
 				temp.email = valids.validEmail(value);
 				break;
 			case 'password':
-				let temPass: Interface_ErrorPass = { ...errorPassword };
+				let temPass: Interface_ErrorPass = {...errorPassword};
 				//Rango Password
 				if (value.length < 8 || value.length > 12) temPass.rango = true;
 				else temPass.rango = false;
@@ -110,11 +110,11 @@ const Register: React.FC = () => {
 				else temPass.mayus = false;
 
 				//Al menos una minuscula 
-				if (!/([a-z]+)/g.test(value)) temPass.minus= true;
-				else temPass.minus= false;
+				if (!/([a-z]+)/g.test(value)) temPass.minus = true;
+				else temPass.minus = false;
 
 				//Al menos un signo
-				if (!/[^a-z0-9\x20]/i.test(value)) temPass.sig= true;
+				if (!/[^a-z0-9\x20]/i.test(value)) temPass.sig = true;
 				else temPass.sig = false;
 
 				//No tenga ningun Error
@@ -162,7 +162,7 @@ const Register: React.FC = () => {
 	}, [userForm, activeStep, userFormError, auth]);
 
 	//Handle
-	const handleChangeForm= (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChangeForm = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setUserForm({
 			...userForm,
 			[event.target.name]: event.target.value,
@@ -196,13 +196,13 @@ const Register: React.FC = () => {
 
 	//Steps
 	const getStep = [
-		<Step1 
+		<Step1
 			userForm={userForm}
 			userFormError={userFormError}
 			errorPassword={errorPassword}
 			handleChange={handleChangeForm}
 		/>,
-		<Step2 
+		<Step2
 			userForm={userForm}
 			userFormError={userFormError}
 			handleSelect={handleSelect}
@@ -234,7 +234,7 @@ const Register: React.FC = () => {
 										variant='dots'
 										steps={2}
 										position='static'
-										style={{ background: 'none' }}
+										style={{background: 'none'}}
 										activeStep={activeStep}
 										className={classes.step}
 										nextButton={
@@ -244,7 +244,7 @@ const Register: React.FC = () => {
 													onClick={handleSubmit}
 													disabled={!readyStep}
 													variant='contained'>
-													{isMediumScreen ? <SendIcon /> : <span style={{ color: '#fff' }}>Registrarme</span>}
+													{isMediumScreen ? <SendIcon /> : <span style={{color: '#fff'}}>Registrarme</span>}
 												</Button>
 											) : (
 												<Button
@@ -274,12 +274,12 @@ const Register: React.FC = () => {
 										}
 									/>
 								</div>
-								<div className='ed-grid s-grid-2'>
+								<div className='ed-grid s-grid-2 containerButton-login'>
 									<Button size='small' color='primary' variant='contained' onClick={() => history.push('/auth/login')}>
 										<div className='ed-container'>
-											<div className='s-to-center button-login'>Iniciar Session</div>
+											<div className='s-to-center button-login'>Volver a Inicio</div>
 										</div>
-									</Button> 
+									</Button>
 								</div>
 							</form>
 						</div>

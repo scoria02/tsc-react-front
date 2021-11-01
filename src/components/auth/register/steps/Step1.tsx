@@ -1,5 +1,5 @@
 import React from "react"
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 //Material
 import TextField from '@material-ui/core/TextField';
@@ -8,19 +8,20 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Visibility from '@material-ui/icons/Visibility';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Typography from '@material-ui/core/Typography';
 
+import Alert from '../../../alert/Alert1';
+
 //validation
-import { checkErrorInput } from '../validationForm';
+import {checkErrorInput} from '../validationForm';
 
 //Styles
-import { useStylesModalUser } from '../../styles';
+import {useStylesModalUser} from '../../styles';
 
 //Redux
-import { RootState }  from '../../../../store/store';
-import { validationEmail } from '../../../../store/actions/auth';
+import {RootState} from '../../../../store/store';
+import {validationEmail} from '../../../../store/actions/auth';
 
 import {
 	Interface_RegisterUser,
@@ -28,23 +29,20 @@ import {
 	Interface_ErrorPass
 } from '../../interfaceAuth';
 
-function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 interface Props {
 	userForm: Interface_RegisterUser; //json
 	userFormError: Interface_RegisterUserError; //json
 	errorPassword: Interface_ErrorPass;
-	handleChange: (event:React.ChangeEvent<HTMLInputElement>) => void;
+	handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 
-export const Step1: React.FC<Props> = ({ userForm, userFormError, errorPassword, handleChange}) => {
+export const Step1: React.FC<Props> = ({userForm, userFormError, errorPassword, handleChange}) => {
 	const dispatch = useDispatch();
 
 	//selector
-	const auth : any = useSelector((state: RootState) => state.auth);
+	const auth: any = useSelector((state: RootState) => state.auth);
 
 	//State
 	const [open, setOpen] = React.useState(false); //Show errors Password
@@ -60,7 +58,7 @@ export const Step1: React.FC<Props> = ({ userForm, userFormError, errorPassword,
 	};
 
 	return (
-	<>
+		<>
 			<TextField
 				required
 				className={classes.input}
@@ -101,28 +99,28 @@ export const Step1: React.FC<Props> = ({ userForm, userFormError, errorPassword,
 						</InputAdornment>
 					)
 				}}
-				/>
+			/>
 			<Snackbar
 				open={open && (errorPassword.rango || errorPassword.mayus || errorPassword.sig || errorPassword.minus)}
-				anchorOrigin={{ 
-					vertical: 'top', 
+				anchorOrigin={{
+					vertical: 'top',
 					horizontal: 'right',
 				}}
 			>
 				<SnackbarContent
-					style={{ padding: '0', margin: '0', height: 0 }}
+					style={{padding: '0', margin: '0', height: 0}}
 					message={
-						<Alert className={classes.alertPassword} severity='error'>
-							<Typography className={classes.textM} style={{ display: `${errorPassword.rango ? 'block' : 'none'}` }}>
+						<Alert>
+							<Typography className={classes.textM} style={{display: `${errorPassword.rango ? 'block' : 'none'}`}}>
 								<span>&#8226;</span> Entre 8 a 12 carateres
 							</Typography>
-							<Typography className={classes.textM} style={{ display: `${errorPassword.mayus ? 'block' : 'none'}` }}>
+							<Typography className={classes.textM} style={{display: `${errorPassword.mayus ? 'block' : 'none'}`}}>
 								<span>&#8226;</span> Al menos una MAYUSCULA
 							</Typography>
-							<Typography className={classes.textM} style={{ display: `${errorPassword.minus? 'block' : 'none'}` }}>
+							<Typography className={classes.textM} style={{display: `${errorPassword.minus ? 'block' : 'none'}`}}>
 								<span>&#8226;</span> Al menos 1 minuscula
 							</Typography>
-							<Typography className={classes.textM} style={{ display: `${errorPassword.sig ? 'block' : 'none'}` }}>
+							<Typography className={classes.textM} style={{display: `${errorPassword.sig ? 'block' : 'none'}`}}>
 								<span>&#8226;</span> Al menos 1 carater (#,$,*,@,!...)
 							</Typography>
 						</Alert>

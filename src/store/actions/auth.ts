@@ -1,8 +1,8 @@
-import { AxiosResponse } from 'axios';
+import {AxiosResponse} from 'axios';
 import Swal from 'sweetalert2';
 import useAxios from '../../config';
-import { ActionType } from '../types/types';
-import { StartLoading } from './ui';
+import {ActionType} from '../types/types';
+import {StartLoading} from './ui';
 
 export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
@@ -39,6 +39,7 @@ export const refreshLogin = () => {
 			dispatch(StartLoading());
 			dispatch(requestSuccess(res.data.info));
 		} catch (error: any) {
+			localStorage.clear();
 			Swal.fire('Error', 'Sesión expirada, vuelva a iniciar sesión', 'error');
 		}
 	};
@@ -57,7 +58,7 @@ export const registerUser = (user: any) => {
 			updateToken(res)
 			Swal.fire('Success', res.data.message, 'success');
 			dispatch(requestSuccess(res));
-			const { email, password } = user;
+			const {email, password} = user;
 			dispatch(startLogin(email, password));
 		} catch (error: any) {
 			console.log(error);
@@ -81,7 +82,7 @@ export const registerUser = (user: any) => {
 export const validationEmail = (email: string) => {
 	return async (dispatch: any) => {
 		try {
-			const res = await useAxios.post('/auth/register/valid/1', { email });
+			const res = await useAxios.post('/auth/register/valid/1', {email});
 			updateToken(res)
 			dispatch(validationEmailSuccess());
 		} catch (error: any) {

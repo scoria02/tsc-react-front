@@ -1,21 +1,21 @@
-import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
-import { AuthRouter } from './AuthRouter';
+import {BrowserRouter as Router, Redirect, Switch} from 'react-router-dom';
+import {AuthRouter} from './AuthRouter';
 import Home from '../pages/Home2';
-import { PublicRoute } from './PublicRoute';
-import { PrivateRoute } from './PrivateRoute';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import {PublicRoute} from './PublicRoute';
+import {PrivateRoute} from './PrivateRoute';
+import {useDispatch, useSelector} from 'react-redux';
+import {useEffect, useState} from 'react';
 
 //Redux
-import { refreshLogin } from '../store/actions/auth';
-import { FinishLoading } from '../store/actions/ui';
+import {refreshLogin} from '../store/actions/auth';
+import {FinishLoading} from '../store/actions/ui';
 
 export const AppRouter = () => {
 	const dispatch = useDispatch();
 
 	const [checking, setChecking] = useState<boolean>(true);
 	// const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-	const { loading } = useSelector((state: any) => state.ui);
+	const {loading} = useSelector((state: any) => state.ui);
 
 	useEffect(() => {
 		dispatch(FinishLoading());

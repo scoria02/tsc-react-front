@@ -11,10 +11,10 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import classNames from 'classnames';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store/store';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../store/store';
 //sytles
-import { useStylesFM } from '../styles';
+import {useStylesFM} from '../styles';
 
 export const Step1: React.FC<any> = ({
 	namesImages,
@@ -58,6 +58,13 @@ export const Step1: React.FC<any> = ({
 		}
 		handleUpdateLocation(item, value);
 	};
+
+
+	const handleChangePhone = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.value !== '0') {
+			handleChange(event);
+		}
+	}
 
 	return (
 		<>
@@ -110,10 +117,11 @@ export const Step1: React.FC<any> = ({
 						className={classes.imgIdent}
 						variant='contained'
 						disabled={fm.imagesClient}
-						style={{ 
-							background: imagesForm.rc_ident_card ? '#5c62c5' : '#bbdefb' }}
+						style={{
+							background: imagesForm.rc_ident_card ? '#5c62c5' : '#bbdefb'
+						}}
 						component='label'
-						>
+					>
 						{imagesForm.rc_ident_card !== null ? (
 							<p className='nameImg'>{namesImages.rc_ident_card.slice(0, 7)} ...</p>
 						) : (
@@ -166,11 +174,11 @@ export const Step1: React.FC<any> = ({
 						label='Telefono'
 						name='phone1'
 						autoComplete="telefono1"
-						onChange={handleChange}
+						onChange={handleChangePhone}
 						error={error.phone1}
 						disabled={fm.mashClient}
 						value={cursedForm.phone1}
-						InputProps={{ 
+						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">
 									{codePhone}
@@ -184,12 +192,12 @@ export const Step1: React.FC<any> = ({
 						required
 						label='Telefono'
 						name='phone2'
-						onChange={handleChange}
+						onChange={handleChangePhone}
 						autoComplete="telefono2"
 						error={error.phone2}
 						disabled={fm.mashClient}
 						value={cursedForm.phone2}
-						InputProps={{ 
+						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">
 									{codePhone}
@@ -207,7 +215,7 @@ export const Step1: React.FC<any> = ({
 						options={listLocation.estado}
 						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='estado' label='Estado' inputProps={{ ...params.inputProps, autoComplete: 'estado', }} variant='outlined' />
+							<TextField {...params} name='estado' label='Estado' inputProps={{...params.inputProps, autoComplete: 'estado', }} variant='outlined' />
 						)}
 					/>
 					<Autocomplete
@@ -218,7 +226,7 @@ export const Step1: React.FC<any> = ({
 						options={listLocation.ciudad}
 						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='ciudad' label='Ciudad' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'ciudad', }}/>
+							<TextField {...params} name='ciudad' label='Ciudad' variant='outlined' inputProps={{...params.inputProps, autoComplete: 'ciudad', }} />
 						)}
 					/>
 				</div>
@@ -231,7 +239,7 @@ export const Step1: React.FC<any> = ({
 						options={listLocation.municipio}
 						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='municipio' label='Municipio' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'municipio', }}/>
+							<TextField {...params} name='municipio' label='Municipio' variant='outlined' inputProps={{...params.inputProps, autoComplete: 'municipio', }} />
 						)}
 					/>
 					<Autocomplete
@@ -242,7 +250,7 @@ export const Step1: React.FC<any> = ({
 						options={listLocation.parroquia}
 						getOptionLabel={(option: any) => (option.parroquia ? option.parroquia : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='parroquia' label='Parroquia' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'parroquia', }}/>
+							<TextField {...params} name='parroquia' label='Parroquia' variant='outlined' inputProps={{...params.inputProps, autoComplete: 'parroquia', }} />
 						)}
 					/>
 				</div>

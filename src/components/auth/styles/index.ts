@@ -118,10 +118,6 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		color: '#fff',
 		fontSize: '15px',
 	},
-	alertPassword: {
-		width: '100%',
-		alignSelf: 'center',
-	},
 	ErrorLogin: {
 		color: styles.palette.error.main,
 	},

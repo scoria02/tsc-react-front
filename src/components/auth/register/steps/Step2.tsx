@@ -1,7 +1,7 @@
 import React from "react"
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 //Material
 import FormControl from '@material-ui/core/FormControl';
@@ -10,13 +10,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
 //Styles
-import { useStylesModalUser } from '../../styles';
+import {useStylesModalUser} from '../../styles';
 
-import { checkErrorInput } from '../validationForm';
+import {checkErrorInput} from '../validationForm';
 
 //Redux
-import { RootState }  from '../../../../store/store';
-import { validationIdentDoc } from '../../../../store/actions/auth';
+import {RootState} from '../../../../store/store';
+import {validationIdentDoc} from '../../../../store/actions/auth';
 
 //Interfaces
 import {
@@ -27,22 +27,22 @@ import {
 interface Props {
 	userForm: Interface_RegisterUser; //json
 	userFormError: Interface_RegisterUserError; //json
-	handleChange: (event:React.ChangeEvent<HTMLInputElement>) => void;
+	handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	handleSelect: (event: any) => void;
 	codePhone: string;
 }
 
 
-export const Step2: React.FC<Props> = ({ userForm, userFormError, handleChange, handleSelect, codePhone}) => {
+export const Step2: React.FC<Props> = ({userForm, userFormError, handleChange, handleSelect, codePhone}) => {
 	const dispatch = useDispatch();
 	const classes = useStylesModalUser();
 
-	const validationIdent = (doc: { id_ident_type: number; ident_num: string }) => {
+	const validationIdent = (doc: {id_ident_type: number; ident_num: string}) => {
 		dispatch(validationIdentDoc(doc));
 	};
 
 	//selector
-	const auth : any = useSelector((state: RootState) => state.auth);
+	const auth: any = useSelector((state: RootState) => state.auth);
 
 	//Handle
 	const handleBlurIdent = () => {
@@ -54,6 +54,12 @@ export const Step2: React.FC<Props> = ({ userForm, userFormError, handleChange, 
 		}
 	};
 
+	const handleChangePhone = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.value !== '0') {
+			handleChange(event);
+		}
+	}
+
 	return (
 		<>
 			<div className={classes.input}>
@@ -64,7 +70,7 @@ export const Step2: React.FC<Props> = ({ userForm, userFormError, handleChange, 
 					value={userForm.name}
 					name='name'
 					onChange={handleChange}
-					style={{ marginRight: '1%' }}
+					style={{marginRight: '1%'}}
 					id='name'
 					label='Nombre'
 					variant='outlined'
@@ -77,7 +83,7 @@ export const Step2: React.FC<Props> = ({ userForm, userFormError, handleChange, 
 					value={userForm.last_name}
 					name='last_name'
 					onChange={handleChange}
-					style={{ marginLeft: '1%' }}
+					style={{marginLeft: '1%'}}
 					id='last_name'
 					label='Apellido'
 					variant='outlined'
@@ -85,14 +91,14 @@ export const Step2: React.FC<Props> = ({ userForm, userFormError, handleChange, 
 				/>
 			</div>
 			<div className={classes.input}>
-				<FormControl style={{ marginRight: '2%' }} variant='outlined' className={classes.formControl}>
+				<FormControl style={{marginRight: '2%'}} variant='outlined' className={classes.formControl}>
 					<InputLabel id='demo-simple-select-outlined-label'>Tipo</InputLabel>
-					<Select 
-						value={userForm.id_ident_type} 
-						onChange={handleSelect} 
+					<Select
+						value={userForm.id_ident_type}
+						onChange={handleSelect}
 						onBlur={handleBlurIdent}
-						name='id_ident_type' 
-						label='Tipo' 
+						name='id_ident_type'
+						label='Tipo'
 						placeholder=''>
 						<MenuItem value='1'>V</MenuItem>
 						<MenuItem value='2'>E</MenuItem>
@@ -124,11 +130,11 @@ export const Step2: React.FC<Props> = ({ userForm, userFormError, handleChange, 
 					id='phone'
 					type='text'
 					name='phone'
-					placeholder='Ej: 4121234567'
+					placeholder='Ej: 412*******'
 					autoComplete="telefono1"
-					onChange={handleChange}
+					onChange={handleChangePhone}
 					error={userFormError.phone}
-					InputProps={{ 
+					InputProps={{
 						startAdornment: (
 							<InputAdornment position="start">
 								{codePhone}
@@ -136,16 +142,16 @@ export const Step2: React.FC<Props> = ({ userForm, userFormError, handleChange, 
 						)
 					}}
 				/>
-				<FormControl 
-					style={{ marginLeft: '2%' }} 
+				<FormControl
+					style={{marginLeft: '2%'}}
 					className={classes.formControlCompany}
-					variant='outlined' 
+					variant='outlined'
 				>
 					<InputLabel id='demo-simple-select-outlined-label'>Compañía</InputLabel>
-					<Select 
+					<Select
 						value={userForm.company}
-						onChange={handleSelect} 
-						name='company' 
+						onChange={handleSelect}
+						name='company'
 						label='Company'>
 						<MenuItem value='1000Pagos'>1000Pagos</MenuItem>
 						<MenuItem value='Tranred'>Tranred</MenuItem>
