@@ -53,8 +53,20 @@ export const refreshLogin = () => {
 
 export const registerUser = (user: any) => {
 	return async (dispatch: any) => {
+		const newUser = {
+			email: user.email,
+			password: user.password,
+			confirmPassword: user.confirmPassword,
+			name: user.name,
+			last_name: user.last_name,
+			id_ident_type: user.id_ident_type,
+			ident_num: user.ident_num,
+			phone: user.code + user.phone,
+			id_company: user.id_company,
+			id_department: user.id_department,
+		}
 		try {
-			const res = await useAxios.post('/auth/register', user);
+			const res = await useAxios.post('/auth/register', newUser);
 			updateToken(res)
 			Swal.fire('Success', res.data.message, 'success');
 			dispatch(requestSuccess(res));

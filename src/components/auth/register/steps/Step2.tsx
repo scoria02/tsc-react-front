@@ -30,10 +30,18 @@ interface Props {
 	handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	handleSelect: (event: any) => void;
 	codePhone: string;
+	company: any;
 }
 
 
-export const Step2: React.FC<Props> = ({userForm, userFormError, handleChange, handleSelect, codePhone}) => {
+export const Step2: React.FC<Props> = ({
+	userForm,
+	userFormError,
+	handleChange,
+	handleSelect,
+	codePhone,
+	company,
+}) => {
 	const dispatch = useDispatch();
 	const classes = useStylesModalUser();
 
@@ -43,6 +51,7 @@ export const Step2: React.FC<Props> = ({userForm, userFormError, handleChange, h
 
 	//selector
 	const auth: any = useSelector((state: RootState) => state.auth);
+
 
 	//Handle
 	const handleBlurIdent = () => {
@@ -149,13 +158,15 @@ export const Step2: React.FC<Props> = ({userForm, userFormError, handleChange, h
 				>
 					<InputLabel id='demo-simple-select-outlined-label'>Compañía</InputLabel>
 					<Select
-						value={userForm.company}
+						value={userForm.id_company}
 						onChange={handleSelect}
-						name='company'
+						name='id_company'
 						label='Company'>
-						<MenuItem value='1000Pagos'>1000Pagos</MenuItem>
-						<MenuItem value='Tranred'>Tranred</MenuItem>
-						<MenuItem value='Digo'>Digo</MenuItem>
+						{company.map((item: any) => (
+							<MenuItem key={item.id} value={item.id}>
+								{item.name}
+							</MenuItem>
+						))}
 					</Select>
 				</FormControl>
 			</div>

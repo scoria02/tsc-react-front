@@ -59,6 +59,21 @@ const Register: React.FC = () => {
 
 	const codePhone = '+58';
 
+	const [company, setListListTypePay] = useState<any>([
+		{
+			id: 1,
+			name: 'Tranred',
+		},
+		{
+			id: 2,
+			name: '1000pagos',
+		},
+		{
+			id: 3,
+			name: 'Digo',
+		},
+	]);
+
 	const [userForm, setUserForm] = useState<Interface_RegisterUser>({
 		email: '',
 		password: '',
@@ -68,8 +83,9 @@ const Register: React.FC = () => {
 		id_ident_type: 1,
 		ident_num: '',
 		phone: '',
-		company: '',
+		id_company: 0,
 		id_department: 1,
+		code: '+58',
 	});
 
 	//State Errors
@@ -181,7 +197,7 @@ const Register: React.FC = () => {
 	const handleSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setUserForm({
 			...userForm,
-			[event.target.name]: event.target.name === 'company' ? event.target.value : parseInt(event.target.value, 10),
+			[event.target.name]: event.target.name === 'id_company' ? event.target.value : parseInt(event.target.value, 10),
 		});
 		validateForm(event.target.name, event.target.value);
 	};
@@ -208,6 +224,7 @@ const Register: React.FC = () => {
 			handleSelect={handleSelect}
 			handleChange={handleChangeForm}
 			codePhone={codePhone}
+			company={company}
 		/>,
 	];
 
