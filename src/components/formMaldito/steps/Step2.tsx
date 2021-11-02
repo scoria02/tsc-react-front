@@ -169,7 +169,7 @@ export const Step2: React.FC<any> = ({
 						<>
 							<b className={classes.inputText}>Acta Constitutiva</b>
 							<Button
-								disabled={fm.mashCommerce}
+								disabled={fm.imagesCommerce}
 								className={classes.imgIdent}
 								variant='contained'
 								style={{ background: imagesForm.rc_constitutive_act ? '#5c62c5' : '#bbdefb' }}

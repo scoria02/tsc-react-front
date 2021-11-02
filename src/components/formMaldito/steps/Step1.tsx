@@ -180,9 +180,14 @@ export const Step1: React.FC<any> = ({
 						value={cursedForm.phone1}
 						InputProps={{
 							startAdornment: (
-								<InputAdornment position="start">
-									{codePhone}
-								</InputAdornment>
+								fm.mashClient ? 
+									null
+								:
+								(
+									<InputAdornment position="start">
+										{codePhone}
+									</InputAdornment>
+								)
 							)
 						}}
 					/>
@@ -199,9 +204,14 @@ export const Step1: React.FC<any> = ({
 						value={cursedForm.phone2}
 						InputProps={{
 							startAdornment: (
-								<InputAdornment position="start">
-									{codePhone}
-								</InputAdornment>
+								fm.mashClient ? 
+									null
+								:
+								(
+									<InputAdornment position="start">
+										{codePhone}
+									</InputAdornment>
+								)
 							)
 						}}
 					/>
