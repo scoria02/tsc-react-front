@@ -1,60 +1,8 @@
 import {AxiosResponse} from 'axios';
 import Swal from 'sweetalert2';
 import useAxios from '../../config';
-import {ActionType} from '../types/types';
-import {StartLoading} from './ui';
-
-export const updateToken = (token: any) => {
-	localStorage.setItem('token', token.data.token);
-};
-
-export const startLogin = (email: any, password: any) => {
-	return async (dispatch: any) => {
 		try {
-			const res: AxiosResponse<any> = await useAxios.post(`/auth/login`, {
-				email,
-				password,
-			});
-			updateToken(res)
-			Swal.fire('Success', res.data.message, 'success');
-			dispatch(StartLoading());
-			dispatch(requestSuccess(res.data.info.data));
-		} catch (error) {
-			Swal.fire('Error', error.response.data.message, 'error');
-		}
-	};
-	function requestSuccess(state: any) {
-		return {
-			type: ActionType.login,
-			payload: state,
-		};
-	}
-};
-
-export const refreshLogin = () => {
-	return async (dispatch: any) => {
-		try {
-			const res = await useAxios.get('/worker');
-			updateToken(res);
-			dispatch(StartLoading());
-			dispatch(requestSuccess(res.data.info));
-		} catch (error: any) {
-			localStorage.clear();
-			Swal.fire('Error', 'Sesión expirada, vuelva a iniciar sesión', 'error');
-		}
-	};
-	function requestSuccess(state: any) {
-		return {
-			type: ActionType.refreshUser,
-			payload: state,
-		};
-	}
-};
-
-export const registerUser = (user: any) => {
-	return async (dispatch: any) => {
-		try {
-			const res = await useAxios.post('/auth/register', user);
+			const res = await useAxios.post('/auth/register', newUser);
 			updateToken(res)
 			Swal.fire('Success', res.data.message, 'success');
 			dispatch(requestSuccess(res));

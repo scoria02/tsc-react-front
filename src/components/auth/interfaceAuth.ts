@@ -7,8 +7,9 @@ export interface Interface_RegisterUser {
 	id_ident_type: number;
 	ident_num: string;
 	phone: string;
-	company: string,
+	id_company: number,
 	id_department: number,
+	code: string;
 }
 
 export interface Interface_RegisterUserError {
