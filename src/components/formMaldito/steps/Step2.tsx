@@ -67,6 +67,12 @@ export const Step2: React.FC<any> = ({
 		});
 	};
 
+	const handleIdentNum = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if(/^[0-9]+$/.test(event.target.value) || event.target.value === ''){
+			handleChange(event);
+		}
+	}
+
 	useEffect(() => {
 		setActaFlag(false);
 		if (cursedForm.id_ident_type_commerce === 3) {
@@ -107,7 +113,7 @@ export const Step2: React.FC<any> = ({
 						id='standard-required'
 						label={cursedForm.id_ident_type_commerce === 3 ? 'Numero de Rif' : 'C.I.'}
 						name='ident_num_commerce'
-						onChange={handleChange}
+						onChange={handleIdentNum}
 						onBlur={handleBlurCommerce}
 						value={cursedForm.ident_num_commerce}
 						error={fm.errorCommerce}
@@ -116,7 +122,10 @@ export const Step2: React.FC<any> = ({
 						className={classes.imgIdent}
 						disabled={fm.imagesCommerce}
 						variant='contained'
-						style={{ background: imagesForm.rc_rif ? '#5c62c5' : '#bbdefb' }}
+						style={{ 
+							opacity: fm.imagesCommerce ? 0 : 1,
+							background: imagesForm.rc_rif ? '#5c62c5' : '#f44336' 
+						}}
 						component='label'>
 						{imagesForm.rc_rif !== null ? (
 							<p className='nameImg'>{namesImages.rc_rif.slice(0, 7)}...</p>
@@ -167,12 +176,19 @@ export const Step2: React.FC<any> = ({
 				<div className={classes.input}>
 					{actaFlag && (
 						<>
-							<b className={classes.inputText}>Acta Constitutiva</b>
+							<b className={classes.inputText}>
+								{!fm.imagesCommerce &&
+									'Ya tiene Acta Constitutiva'
+								}
+							</b>
 							<Button
-								disabled={fm.imagesCommerce}
 								className={classes.imgIdent}
 								variant='contained'
-								style={{ background: imagesForm.rc_constitutive_act ? '#5c62c5' : '#bbdefb' }}
+								disabled={fm.imagesCommerce}
+								style={{ 
+									opacity: fm.imagesCommerce ? 0 : 1,
+									background: imagesForm.rc_constitutive_act ? '#5c62c5' : '#f44336' 
+								}}
 								component='label'>
 								{imagesForm.rc_constitutive_act !== null ? (
 									<>
@@ -227,7 +243,7 @@ export const Step2: React.FC<any> = ({
 						disabled={fm.imagesCommerce}
 						variant='contained'
 						style={{
-							background: imagesForm.rc_special_contributor ? '#5c62c5' : '#bbdefb',
+							background: imagesForm.rc_special_contributor ? '#5c62c5' : '#f44336',
 							visibility: cursedForm.special_contributor ? 'visible' : 'hidden',
 						}}
 						component='label'>

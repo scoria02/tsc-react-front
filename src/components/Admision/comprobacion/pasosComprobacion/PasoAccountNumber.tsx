@@ -72,7 +72,7 @@ export default function PasoAccountNumber() {
 	const props = {
 		zoomPosition: 'original',
 		height: 350,
-		width: 450,
+		width: 500,
 		img: `${URL}:${PortFiles}/${fm.rc_ref_bank.path}`,
 	};
 

@@ -300,7 +300,6 @@ export const Form: React.FC<any> = ({
 						//style={{ 
 							//		background: imagesForm.rc_ident_card ? '#5c62c5' : '#bbdefb' }}
 						>
-
 						{uploadImg !== null ? (
 							<IconButton aria-label='upload picture' component='span'>
 								<p className={classes.nameImg}>{nameImg.slice(0, 10)} ...</p>
