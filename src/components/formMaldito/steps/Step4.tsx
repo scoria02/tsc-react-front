@@ -7,10 +7,9 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
-import { useStylesFM } from '../styles';
-
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
+import { useStylesFM } from '../styles';
 
 //Pedido
 export const Step4: React.FC<any> = ({
@@ -102,15 +101,14 @@ export const Step4: React.FC<any> = ({
 
 	const handleCheckedPagadero = (e: any) => {
 		if (!cursedForm[`${e.target.name}`]) {
-				deleteImgContributor('comp_dep')
+			deleteImgContributor('comp_dep');
 		}
 		setCursedForm({
 			...cursedForm,
 			[e.target.name]: !cursedForm[`${e.target.name}`] ? 1 : 0,
-			'nro_comp_dep': '',
+			nro_comp_dep: '',
 		});
 	};
-
 
 	const handleSelectOrigin = (event: any, value: any, item: string) => {
 		if (value) {
@@ -228,6 +226,7 @@ export const Step4: React.FC<any> = ({
 					onBlur={handleBlurNumBank}
 					value={cursedForm.text_account_number}
 					error={error.text_account_number || fm.errorNumBank}
+					inputProps={{ maxLength: 20 }}
 				/>
 				<div className={classes.row}>
 					<b className={classes.labels}>Referencia Bancaria</b>
@@ -392,43 +391,39 @@ export const Step4: React.FC<any> = ({
 					}
 				/>
 			</div>
-			<div>
-		</div>
-		{cursedForm.pagadero || cursedForm.id_payment_method === 2 ?
-			null
-		:
-			<div className={classes.input}>
-				<div className={classNames(classes.row, classes.inputTextLeft)}>
-					<b className={classes.labels}>Comprobante de pago</b>
-					<Button
-						className={classes.imgIdent}
-						variant='contained'
-						style={{ background: imagesForm.rc_comp_dep ? '#5c62c5' : '#bbdefb' }}
-						onClick={() => {
-							deleted && deleteImgContributor('comp_dep');
-						}}
-						component='label'>
-						{imagesForm.rc_comp_dep !== null ? (
-							<>
-								<p className='nameImg'>{namesImages.rc_comp_dep.slice(0, 7)}...</p>
-							</>
-						) : (
-							<>
-								{/*<b>Subir</b>*/}
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-							</>
-						)}
-						<input
-							type='file'
-							hidden
-							name='rc_comp_dep'
-							accept='image/png, image/jpeg, image/jpg'
-							disabled={deleted}
-							onChange={handleChangeImages}
-						/>
-					</Button>
+			{cursedForm.pagadero || cursedForm.id_payment_method === 2 ? null : (
+				<div className={classes.input}>
+					<div className={classNames(classes.row, classes.inputTextLeft)}>
+						<b className={classes.labels}>Comprobante de pago</b>
+						<Button
+							className={classes.imgIdent}
+							variant='contained'
+							style={{ background: imagesForm.rc_comp_dep ? '#5c62c5' : '#bbdefb' }}
+							onClick={() => {
+								deleted && deleteImgContributor('comp_dep');
+							}}
+							component='label'>
+							{imagesForm.rc_comp_dep !== null ? (
+								<>
+									<p className='nameImg'>{namesImages.rc_comp_dep.slice(0, 7)}...</p>
+								</>
+							) : (
+								<>
+									{/*<b>Subir</b>*/}
+									<IconButton aria-label='upload picture' component='span'>
+										<PhotoCamera />
+									</IconButton>
+								</>
+							)}
+							<input
+								type='file'
+								hidden
+								name='rc_comp_dep'
+								accept='image/png, image/jpeg, image/jpg'
+								disabled={deleted}
+								onChange={handleChangeImages}
+							/>
+						</Button>
 					</div>
 					<div className={classes.inputText}>
 						<TextField
@@ -445,7 +440,7 @@ export const Step4: React.FC<any> = ({
 						/>
 					</div>
 				</div>
-		}
+			)}
 		</div>
 	);
 };
