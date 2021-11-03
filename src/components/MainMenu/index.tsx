@@ -18,6 +18,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import CreditCardIcon from '@material-ui/icons/CreditCard';
 import FolderIcon from '@material-ui/icons/Folder';
 import HomeIcon from '@material-ui/icons/Home';
 import MailIcon from '@material-ui/icons/Mail';
@@ -34,7 +35,7 @@ import luffy from '../../img/itachi2.png';
 import TranredLogo from '../../img/tranred-logo.png';
 //Redux
 //import luffy from '../../img/user.png';
-import { baseUrl, urlAdministracion, urlAdmision, urlFM, userAdmin } from '../../routers/url';
+import { baseUrl, urlAdministracion, urlAdmision, urlCont, urlFM, userAdmin } from '../../routers/url';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
 import './index.scss';
@@ -198,6 +199,10 @@ const MainMenu: React.FC = () => {
 			case 5:
 				history.push(urlFM);
 				localStorage.setItem('path', urlFM);
+				break;
+			case 6:
+				history.push(urlCont);
+				localStorage.setItem('path', urlCont);
 				break;
 
 			default:
@@ -422,6 +427,14 @@ const MainMenu: React.FC = () => {
 							</ListItemIcon>
 						</Link>
 						<ListItemText primary='Administracion' />
+					</ListItem>
+					<ListItem button onClick={(event) => handleListItemClick(event, 6)}>
+						<Link to={urlCont}>
+							<ListItemIcon classes={{ root: classes.icon }}>
+								<CreditCardIcon />
+							</ListItemIcon>
+						</Link>
+						<ListItemText primary='Contabilidad' />
 					</ListItem>
 				</List>
 				<Divider />
