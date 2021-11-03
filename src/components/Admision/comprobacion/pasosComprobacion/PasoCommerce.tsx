@@ -16,7 +16,7 @@ export default function PasoUno() {
 				<TextField 
 					className={classes.btn_stepT}
 					id='outlined-basic'
-					label='Nombre Completo'
+					label='Nombre del Comercio'
 					variant='outlined'
 					value={fm.id_commerce.name}
 				/>
@@ -33,14 +33,14 @@ export default function PasoUno() {
 					className={classes.btn_stepT}
 					id='outlined-basic'
 					label='Estado'
-					value={fm.id_commerce.id_location.id}
+					value={fm.id_commerce.id_location.id_estado.estado}
 					variant='outlined'
 				/>
 				<TextField
 					className={classes.btn_stepT}
 					id='outlined-basic'
 					label='Ciudad'
-					value={fm.id_commerce.id_location.id}
+					value={fm.id_commerce.id_location.id_ciudad.ciudad}
 					variant='outlined'
 				/>
 			</div>
@@ -49,14 +49,14 @@ export default function PasoUno() {
 					className={classes.btn_stepT}
 					id='outlined-basic'
 					label='Municipio'
-					value={fm.id_commerce.id_location.id}
+					value={fm.id_commerce.id_location.id_municipio.municipio}
 					variant='outlined'
 				/>
 				<TextField
 					className={classes.btn_stepT}
 					id='outlined-basic'
 					label='Parroquia'
-					value={fm.id_commerce.id_location.id}
+					value={fm.id_commerce.id_location.id_parroquia.parroquia}
 					variant='outlined'
 				/>
 			</div>

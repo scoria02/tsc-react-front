@@ -82,9 +82,9 @@ export default function PasoPaymentReceipt() {
 					<TextField
 						className='btn_step btn_medio'
 						id='outlined-basic '
-						label='Acta Constitutiva'
+						label='Comprobantede pago'
 						variant='outlined'
-						value='Foto de Comprobante de Pago'
+						value={fm.nro_comp_dep}
 						disabled
 					/>
 					<FormControlLabel

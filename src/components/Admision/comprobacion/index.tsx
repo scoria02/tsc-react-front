@@ -231,10 +231,8 @@ const Comprobacion: React.FC<any> = () => {
 	}, [activeStep, dispatch, allStepsCompleted]);
 
 	useEffect(() => {
-		console.log('aquiiii', id_statusFM);
 		if (id_statusFM !== 0) {
 			const idStatus = id_statusFM;
-			console.log('abrete', id_statusFM);
 			Swal.fire({
 				title: `${idStatus === 3 ? 'Formulario Verificado' : 'Formulario Diferido'}`,
 				icon: `${idStatus === 3 ? 'success' : 'warning'}`,

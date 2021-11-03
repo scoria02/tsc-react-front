@@ -582,8 +582,8 @@ export const FormMaldito: React.FC<Props> = () => {
 				municipio: value,
 				parroquia: null,
 			});
+			setListLocationCommerce((prevState: any) => ({ ...prevState, parroquia: [] }));
 			if (value) {
-				setListLocationCommerce((prevState: any) => ({ ...prevState, parroquia: [] }));
 				getParroquia(value.id).then((res) => {
 					setListLocationCommerce({
 						...listLocationCommerce,
@@ -644,8 +644,8 @@ export const FormMaldito: React.FC<Props> = () => {
 				municipio: value,
 				parroquia: null,
 			});
+			setListLocationPos((prevState: any) => ({ ...prevState, parroquia: [] }));
 			if (value) {
-				setListLocationPos((prevState: any) => ({ ...prevState, parroquia: [] }));
 				getParroquia(value.id).then((res) => {
 					setListLocationPos({
 						...listLocationPos,
@@ -1109,7 +1109,7 @@ export const FormMaldito: React.FC<Props> = () => {
 									Volver
 								</Button>
 								<Button
-									//disabled={!readyStep}
+									disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'
