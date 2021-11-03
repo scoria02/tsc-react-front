@@ -48,6 +48,9 @@ export const useStylesFM = makeStyles((styles) => ({
 		width: '100%',
 		marginRight: '2%',
 	},
+  noBorder: {
+    border: "none"
+  },
 	imgIdent: {
 		padding: '0',
 		fontSize: '.7rem',

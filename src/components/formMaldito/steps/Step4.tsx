@@ -233,7 +233,9 @@ export const Step4: React.FC<any> = ({
 					<Button
 						className={classes.imgIdent}
 						variant='contained'
-						style={{ background: imagesForm.rc_ref_bank ? '#5c62c5' : '#bbdefb' }}
+						style={{ 
+							background: imagesForm.rc_ref_bank ? '#5c62c5' : '#f44336' 
+						}}
 						component='label'>
 						{imagesForm.rc_ref_bank !== null ? (
 							<>
@@ -398,7 +400,7 @@ export const Step4: React.FC<any> = ({
 						<Button
 							className={classes.imgIdent}
 							variant='contained'
-							style={{ background: imagesForm.rc_comp_dep ? '#5c62c5' : '#bbdefb' }}
+							style={{ background: imagesForm.rc_comp_dep ? '#5c62c5' : '#f44336' }}
 							onClick={() => {
 								deleted && deleteImgContributor('comp_dep');
 							}}

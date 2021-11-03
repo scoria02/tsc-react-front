@@ -74,7 +74,7 @@ export default function PasoClient() {
 	const props = {
 		zoomPosition: 'original',
 		height: 350,
-		width: 450,
+		width: 500,
 		img: `${URL}:${PortFiles}/${fm.rc_ident_card.path}`,
 	};
 

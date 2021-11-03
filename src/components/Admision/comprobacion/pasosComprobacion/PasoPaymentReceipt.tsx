@@ -1,6 +1,7 @@
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import React, { useEffect, useState } from 'react';
+import TextField from '@material-ui/core/TextField';
 // @ts-expect-error
 import ReactImageZoom from 'react-image-zoom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -70,26 +71,29 @@ export default function PasoPaymentReceipt() {
 	const props = {
 		zoomPosition: 'original',
 		height: 350,
-		width: 450,
+		width: 500,
 		img: `${URL}:${PortFiles}/${fm.rc_comp_dep.path}`,
 	};
 
 	return (
 		<>
 			<form className="container-step" noValidate autoComplete='off'>
-			</form>
 				<div className={classes.btn_stepM}>
+					<TextField
+						className='btn_step btn_medio'
+						id='outlined-basic '
+						label='Acta Constitutiva'
+						variant='outlined'
+						value='Foto de Comprobante de Pago'
+						disabled
+					/>
 					<FormControlLabel
-						control={<Switch
-							checked={state.status}
-							onChange={handleChange}
-							name='status'
-							color='primary'
-							/>}
 						className={classes.checkText}
-						label={state.status ? 'Correcto' : 'Incorrecto'}
+						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
+						label='Correcto'
 					/>
 				</div>
+			</form>
 			<div className='img_container'>
 				<ReactImageZoom className={classes.img_zoom} {...props} />
 			</div>

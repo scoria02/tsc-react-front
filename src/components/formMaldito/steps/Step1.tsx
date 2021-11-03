@@ -66,6 +66,12 @@ export const Step1: React.FC<any> = ({
 		}
 	}
 
+	const handleIdentNum = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if(/^[0-9]+$/.test(event.target.value) || event.target.value === ''){
+			handleChange(event);
+		}
+	}
+
 	return (
 		<>
 			<div className={classes.grid}>
@@ -108,7 +114,7 @@ export const Step1: React.FC<any> = ({
 						label='C.I.'
 						autoComplete="off"
 						name='ident_num'
-						onChange={handleChange}
+						onChange={handleIdentNum}
 						onBlur={handleBlurEmailIdent}
 						value={cursedForm.ident_num}
 						error={error.ident_num || validEmailIdent}
@@ -117,8 +123,9 @@ export const Step1: React.FC<any> = ({
 						className={classes.imgIdent}
 						variant='contained'
 						disabled={fm.imagesClient}
-						style={{
-							background: imagesForm.rc_ident_card ? '#5c62c5' : '#bbdefb'
+						style={{ 
+							opacity: fm.imagesClient ? 0 : 1,
+							background: imagesForm.rc_ident_card ? '#5c62c5' : '#f44336' 
 						}}
 						component='label'
 					>
@@ -180,9 +187,14 @@ export const Step1: React.FC<any> = ({
 						value={cursedForm.phone1}
 						InputProps={{
 							startAdornment: (
-								<InputAdornment position="start">
-									{codePhone}
-								</InputAdornment>
+								fm.mashClient ? 
+									null
+								:
+								(
+									<InputAdornment position="start">
+										{codePhone}
+									</InputAdornment>
+								)
 							)
 						}}
 					/>
@@ -199,9 +211,14 @@ export const Step1: React.FC<any> = ({
 						value={cursedForm.phone2}
 						InputProps={{
 							startAdornment: (
-								<InputAdornment position="start">
-									{codePhone}
-								</InputAdornment>
+								fm.mashClient ? 
+									null
+								:
+								(
+									<InputAdornment position="start">
+										{codePhone}
+									</InputAdornment>
+								)
 							)
 						}}
 					/>
