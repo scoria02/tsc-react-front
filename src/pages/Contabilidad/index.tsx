@@ -10,7 +10,7 @@ const useStyles = makeStyles((styles: Theme) => ({
 const Contabilidad: FC = () => {
 	const classes = useStyles();
 
-	return <div className={classes.wrapper}>Hola</div>;
+	return <div className={classes.wrapper}>Esto es cont</div>;
 };
 
 export default Contabilidad;
