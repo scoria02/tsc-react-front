@@ -8,9 +8,10 @@ import Stepper from '@material-ui/core/Stepper';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { TransitionProps } from '@material-ui/core/transitions';
 import Typography from '@material-ui/core/Typography';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import { SocketContext } from '../../../context/SocketContext';
 import { stepComplete } from '../../../store/actions/accept';
 import { cleanAdmisionFM, updateStatusFM } from '../../../store/actions/admisionFm';
 import { CloseModal } from '../../../store/actions/ui';
@@ -230,6 +231,8 @@ const Comprobacion: React.FC<any> = () => {
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activeStep, dispatch, allStepsCompleted]);
 
+	const { socket } = useContext(SocketContext);
+
 	useEffect(() => {
 		console.log('aquiiii', id_statusFM);
 		if (id_statusFM !== 0) {
@@ -241,6 +244,7 @@ const Comprobacion: React.FC<any> = () => {
 				customClass: { container: 'swal2-validated' },
 			});
 			dispatch(cleanAdmisionFM());
+			socket.emit('cliente:loadDiferidos');
 		}
 	}, [id_statusFM, updatedStatus]);
 

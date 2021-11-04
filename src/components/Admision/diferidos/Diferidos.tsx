@@ -1,8 +1,11 @@
 import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarFilterButton } from '@material-ui/data-grid';
 import { makeStyles } from '@material-ui/styles';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { SocketContext } from '../../../context/SocketContext';
+import { getDiferidos } from '../../../helpers/getDiferidos';
+// import { getDiferidos } from '../../../helpers/getDiferidos';
 //Socket
-import WebSocket from '../../../hooks/WebSocket';
+// import WebSocket from '../../../hooks/WebSocket';
 
 const useStyle = makeStyles(() => ({
 	tableTitle: {
@@ -10,39 +13,7 @@ const useStyle = makeStyles(() => ({
 	},
 }));
 
-const columns: GridColDef[] = [
-	{ field: 'id_fm', headerName: 'ID', width: 75 },
-	{
-		field: 'dif_date',
-		headerName: 'Fecha diferido',
-		width: 150,
-		editable: false,
-	},
-	{
-		field: 'name_commerce',
-		headerName: 'Nombre comercio',
-		width: 220,
-		editable: false,
-	},
-	{
-		field: 'name_client',
-		headerName: 'Nombre cliente',
-		width: 200,
-		editable: false,
-		valueFormatter: (value) => {
-			return `${value.row?.name_client} ${value.row?.last_name_client}`;
-		},
-	},
-	{
-		field: 'ident_type_commerce',
-		headerName: 'RIF',
-		width: 150,
-		editable: false,
-		valueFormatter: (value) => {
-			return `${value.row?.ident_type_commerce}${value.row?.ident_num_commerce}`;
-		},
-	},
-];
+const columns: GridColDef[] = [{ field: 'id', headerName: 'ID', width: 75 }];
 
 const Diferidos: React.FC = () => {
 	const classes = useStyle();
@@ -56,20 +27,24 @@ const Diferidos: React.FC = () => {
 		);
 	};
 
-	const { socket } = WebSocket();
+	const { socket } = useContext(SocketContext);
 
 	const [diferidos, setDiferidos] = useState([]);
 
 	useEffect(() => {
-		if (socket) {
-			//socket.emit("list_diferidos", 'Mamaloooooooo');
-			socket.on('list_diferidos', (list: any) => {
-				if (list.diferidos) {
-					setDiferidos(list.diferidos);
-				}
-			});
-		}
+		socket.emit('prueba');
+		socket.emit('cliente:loadDiferidos');
 	}, [socket]);
+
+	useEffect(() => {
+		// getDiferidos();
+		socket.emit('cliente:loadDiferidos');
+
+		socket.on('server:loadDiferidos', (data: any) => {
+			setDiferidos(data);
+			console.log(data);
+		});
+	}, []);
 
 	const handleRow = (event: any) => {
 		console.log(event.row);
@@ -87,7 +62,7 @@ const Diferidos: React.FC = () => {
 				onCellClick={handleRow}
 				rowsPerPageOptions={[25]}
 				disableColumnMenu
-				getRowId={(row) => row.id_fm}
+				getRowId={(row) => row.id}
 			/>
 		</div>
 	);

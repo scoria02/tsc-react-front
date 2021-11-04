@@ -5,9 +5,9 @@ import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import { Provider } from 'react-redux';
 import { AppRouter } from './routers/AppRouter';
 import { store } from './store/store';
-import './styles/styles.scss';
+import { SocketProvider } from './context/SocketContext';
 
-// import { SocketProvider } from './helpers/SocketContext';
+import './styles/styles.scss';
 export * from './store/store';
 
 const theme = createTheme(
@@ -20,14 +20,13 @@ const theme = createTheme(
 
 function App() {
 	return (
-		// <SocketProvider>
-		<Provider store={store}>
-			<ThemeProvider theme={theme}>
-				<AppRouter />
-			</ThemeProvider>
-		</Provider>
-
-		// </SocketProvider>
+		<SocketProvider>
+			<Provider store={store}>
+				<ThemeProvider theme={theme}>
+					<AppRouter />
+				</ThemeProvider>
+			</Provider>
+		</SocketProvider>
 	);
 }
 

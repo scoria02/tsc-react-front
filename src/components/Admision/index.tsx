@@ -1,7 +1,8 @@
 import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
+import { SocketContext } from '../../context/SocketContext';
 // import { SocketContext } from '../../helpers/SocketContext';
 //import { RootState } from '../../store/store';
 import { getDataFM } from '../../store/actions/admisionFm';
@@ -34,9 +35,14 @@ const Admision: React.FC = () => {
 	}, [socket]);
 	 */
 
+	const { socket } = useContext(SocketContext);
+
 	const handleClick = () => {
-		dispatch(getDataFM());
-		dispatch(OpenModal());
+		// dispatch(getDataFM());
+		// dispatch(OpenModal());
+
+		socket.emit('prueba');
+
 		console.log('Aqui ta el beta');
 	};
 
