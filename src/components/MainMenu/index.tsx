@@ -35,7 +35,7 @@ import luffy from '../../img/itachi2.png';
 import TranredLogo from '../../img/tranred-logo.png';
 //Redux
 //import luffy from '../../img/user.png';
-import { baseUrl, urlAdministracion, urlAdmision, urlCont, urlFM, userAdmin } from '../../routers/url';
+import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, userAdmin } from '../../routers/url';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
 import './index.scss';
@@ -201,8 +201,8 @@ const MainMenu: React.FC = () => {
 				localStorage.setItem('path', urlFM);
 				break;
 			case 6:
-				history.push(urlCont);
-				localStorage.setItem('path', urlCont);
+				history.push(urlCobr);
+				localStorage.setItem('path', urlCobr);
 				break;
 
 			default:
@@ -429,12 +429,12 @@ const MainMenu: React.FC = () => {
 						<ListItemText primary='Administracion' />
 					</ListItem>
 					<ListItem button onClick={(event) => handleListItemClick(event, 6)}>
-						<Link to={urlCont}>
+						<Link to={urlCobr}>
 							<ListItemIcon classes={{ root: classes.icon }}>
 								<CreditCardIcon />
 							</ListItemIcon>
 						</Link>
-						<ListItemText primary='Contabilidad' />
+						<ListItemText primary='Cobranza' />
 					</ListItem>
 				</List>
 				<Divider />
