@@ -1,9 +1,8 @@
 import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // import { SocketContext } from '../../helpers/SocketContext';
-//import { RootState } from '../../store/store';
 import { getDataFM } from '../../store/actions/admisionFm';
 import { OpenModal } from '../../store/actions/ui';
 import { SolicitudesEnEspera } from '../backoffice/SolicitudesEnEspera';
@@ -13,26 +12,13 @@ import { ChartTorta } from '../diagramas/ChartConfig';
 import { DiagramaBarra } from '../diagramas/DiagramaBarra';
 import Diferidos from './diferidos/Diferidos';
 import './index.scss';
-import Comproba from './modalComprobacion/Comproba';
+import Comprobacion from './comprobacion';
+
 
 const Admision: React.FC = () => {
 	const dispatch = useDispatch();
 
-	/*
-	const { socket } = useContext(SocketContext);
-
-	useEffect(() => {
-		getNuevosTicket();
-	}, []);
-
-	 useEffect(() => {
-	 	socket.on('solicitar-nuevosticket', () => {});
-
-		return () => {
-			socket.off('solicitar-nuevosticket');
-		};
-	}, [socket]);
-	 */
+	const { modalOpen } = useSelector((state: any) => state.ui);
 
 	const handleClick = () => {
 		dispatch(getDataFM());
@@ -67,7 +53,9 @@ const Admision: React.FC = () => {
 					<Fab color='primary' aria-label='add' onClick={handleClick}>
 						<AddIcon />
 					</Fab>
-					<Comproba />
+					{modalOpen &&
+						<Comprobacion /> 
+					}
 				</div>
 			</div>
 		</div>

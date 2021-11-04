@@ -5,7 +5,7 @@ interface inState {
 	errorGetDataAd: boolean,
 	updatedStatusAd: boolean,
 	errorStatusFMAd: boolean,
-	id_statusFMAd: number;
+	id_statusFMAd: number,
 }
 
 const initialState: inState = {

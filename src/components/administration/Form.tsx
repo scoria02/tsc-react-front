@@ -2,7 +2,6 @@ import React, { useState, useEffect }  from 'react';
 import { Button, makeStyles, TextField, Theme } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Swal from 'sweetalert2';
 // @ts-expect-error
