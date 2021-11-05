@@ -6,6 +6,8 @@ import {
 	GridRowParams,
 	GridSortDirection,
 	GridSortModel,
+	GridToolbarContainer,
+	GridToolbarFilterButton,
 	GridValueGetterParams,
 } from '@material-ui/data-grid';
 import classNames from 'classnames';
@@ -22,6 +24,23 @@ export const columns: GridColDef[] = [
 	// 	// sortable: true,
 	// },
 	{
+		field: 'sinceToday',
+		headerName: 'Dias',
+		sortable: true,
+		width: 90,
+		disableColumnMenu: true,
+		valueGetter: (params: GridValueGetterParams) => {
+			const celda = params.getValue(params.id, 'fecha')!.toString();
+			// obtengo la fecha de la celta
+			const tope = DateTime.fromISO(celda);
+			// obtengo la fecha de hoy
+			const today = DateTime.now();
+			// resto de 'today' la fecha tope en dias para saber cuantos dias han pasado del ultimo pago y redondeo
+			const daysFromToday = Math.round(today.diff(tope, ['days']).days);
+			return daysFromToday;
+		},
+	},
+	{
 		field: 'fechaF',
 		headerName: 'Fecha',
 		// sortable: true,
@@ -30,7 +49,7 @@ export const columns: GridColDef[] = [
 		valueGetter: (params: GridValueGetterParams) => {
 			const fecha = params.getValue(params.id, 'fecha')!.toString();
 			const fechaFormateada = DateTime.fromISO(fecha).toFormat('dd/LL/yyyy').toLocaleString();
-			return `${fechaFormateada}`;
+			return fechaFormateada;
 		},
 	},
 	{
@@ -48,10 +67,19 @@ const Pending: FC = () => {
 	const classes = useStyles();
 	const [sortModel, setSortModel] = useState<GridSortModel>([
 		{
-			field: 'fechaF',
-			sort: 'asc' as GridSortDirection,
+			field: 'sinceToday',
+			sort: 'desc' as GridSortDirection,
 		},
 	]);
+
+	const customToolbar: () => JSX.Element = () => {
+		return (
+			<GridToolbarContainer className={classes.containerFlex}>
+				{/* <div className={classes.tableTitle}>Formularios</div> */}
+				<GridToolbarFilterButton className='m-px-1' />
+			</GridToolbarContainer>
+		);
+	};
 
 	const [rows, setRows] = useState<any[]>([
 		{
@@ -132,6 +160,30 @@ const Pending: FC = () => {
 			last_name: 'Joaquin',
 			fecha: DateTime.fromISO(DateTime.now().minus({ days: 7 }).toISO()),
 		},
+		{
+			id: 14,
+			name: 'Jose',
+			last_name: 'Joaquin',
+			fecha: DateTime.fromISO(DateTime.now().minus({ days: 1 }).toISO()),
+		},
+		{
+			id: 15,
+			name: 'Jose',
+			last_name: 'Joaquin',
+			fecha: DateTime.fromISO(DateTime.now().minus({ days: 2 }).toISO()),
+		},
+		{
+			id: 16,
+			name: 'Jose',
+			last_name: 'Joaquin',
+			fecha: DateTime.fromISO(DateTime.now().minus({ days: 3 }).toISO()),
+		},
+		{
+			id: 17,
+			name: 'Jose',
+			last_name: 'Joaquin',
+			fecha: DateTime.fromISO(DateTime.now().minus({ days: 4 }).toISO()),
+		},
 	]);
 
 	const handleRow = (event: any) => {
@@ -143,29 +195,26 @@ const Pending: FC = () => {
 			<Grid item spacing={4}>
 				<div style={{ height: '70vh', width: '100%' }}>
 					<DataGrid
-						// components={{
-						// 	Toolbar: customToolbar,
-						// }}
+						components={{
+							Toolbar: customToolbar,
+						}}
 						sortingOrder={['desc', 'asc']}
 						sortModel={sortModel}
+						onSortModelChange={(model) => setSortModel(model)}
 						rows={rows}
 						columns={columns}
 						rowsPerPageOptions={[25, 50, 100]}
 						onCellClick={handleRow}
 						getRowClassName={(params: GridRowParams) => {
-							// obtengo la fecha en formato iso y le hago parse a string
-							const fechaRow = params.getValue(params.id, 'fecha')!.toString();
-							// obtengo mi tope calculandolo desde la fecha de la celda
-							const tope = DateTime.fromISO(fechaRow);
-							// obtengo la fecha de hoy
-							const today = DateTime.now();
-							// resto de 'today' la fecha tope en dias para saber cuantos dias han pasado del ultimo pago
-							const daysFromToday = today.diff(tope, ['days']).days;
-							//
+							// obtengo los dias y le hago parse de RowCell a string
+							const fechaRow = params.getValue(params.id, 'sinceToday')!.toString();
+							// transformo el string a number y lo redondeo
+							const number = Math.round(parseInt(fechaRow, 10));
+							// si el number esta entre los siguientes valores debera elegir la clase correspondiente
 							return classNames({
-								[classes.green]: daysFromToday <= 20,
-								[classes.yellow]: daysFromToday <= 30 && daysFromToday > 20,
-								[classes.red]: daysFromToday > 30,
+								[classes.green]: number <= 20,
+								[classes.yellow]: number <= 30 && number > 20,
+								[classes.red]: number > 30,
 							});
 						}}
 					/>

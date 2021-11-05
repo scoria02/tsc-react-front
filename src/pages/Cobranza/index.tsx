@@ -39,6 +39,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
 		fontWeight: 'bold',
 		fontSize: '0.85rem',
 	},
+	containerFlex: {},
 }));
 
 const Cobranza: FC = () => {
