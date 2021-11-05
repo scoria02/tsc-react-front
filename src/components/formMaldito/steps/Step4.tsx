@@ -253,7 +253,7 @@ export const Step4: React.FC<any> = ({
 							type='file'
 							hidden
 							name='rc_ref_bank'
-							accept='image/png, image/jpeg, image/jpg'
+							accept='image/png, image/jpeg, image/jpg, .pdf'
 							onChange={handleChangeImages}
 						/>
 					</Button>
@@ -421,7 +421,7 @@ export const Step4: React.FC<any> = ({
 								type='file'
 								hidden
 								name='rc_comp_dep'
-								accept='image/png, image/jpeg, image/jpg'
+								accept='image/png, image/jpeg, image/jpg, .pdf'
 								disabled={deleted}
 								onChange={handleChangeImages}
 							/>

@@ -11,10 +11,14 @@ import { Valid } from '../../../../store/actions/accept';
 import { PortFiles, URL } from '../../../../config';
 import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
-import { useStyles } from './styles/styles';
-import { ModalAlert }from '../ModalAlert';
+import { useStyles, imgStyle } from './styles/styles';
+import { ModalAlert } from '../ModalAlert';
 
-export default function PasoContriSpecial() {
+interface Prop {
+	positionImg: string
+}
+
+const PasoContriSpecial: React.FC<Prop> = ({ positionImg }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
@@ -67,9 +71,7 @@ export default function PasoContriSpecial() {
 	};
 
 	const props = {
-		zoomPosition: 'original',
-		height: 350,
-		width: 450,
+		...imgStyle,
 		img: `${URL}:${PortFiles}/${fm.rc_special_contributor.path}`,
 	};
 
@@ -92,7 +94,7 @@ export default function PasoContriSpecial() {
 					/>
 				</div>
 			</form>
-			<div className='img_container_2'>
+			<div className={positionImg}>
 				<ReactImageZoom {...props} />
 			</div>
 			<ModalAlert 
@@ -106,3 +108,5 @@ export default function PasoContriSpecial() {
 		</>
 	);
 }
+
+export default PasoContriSpecial;

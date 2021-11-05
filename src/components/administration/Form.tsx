@@ -295,15 +295,12 @@ export const Form: React.FC<any> = ({
 					<Button
 						className={classes.uploadImg}
 						variant='contained'
-						component='label'
-						//style={{ 
-							//		background: imagesForm.rc_ident_card ? '#5c62c5' : '#bbdefb' }}
-						>
+						component='label'>
 						{uploadImg !== null ? (
 							<IconButton aria-label='upload picture' component='span'>
 								<p className={classes.nameImg}>{nameImg.slice(0, 10)} ...</p>
 							</IconButton>
-						) : (
+						):(
 							<IconButton aria-label='upload picture' component='span'>
 								<CloudUploadIcon className={classes.iconUpload}/>
 							</IconButton>

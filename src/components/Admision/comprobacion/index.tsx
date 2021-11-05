@@ -1,8 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Slide from '@material-ui/core/Slide';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { TransitionProps } from '@material-ui/core/transitions';
-import Typography from '@material-ui/core/Typography';
 import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -21,48 +18,6 @@ import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
 import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
 import FullModal from '../../modals/FullModal';
-
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		root: {
-			width: '100%',
-			margin: '1.5rem',
-			padding: '1rem',
-		},
-		button: {
-			marginRight: theme.spacing(1),
-			textTransform: 'none',
-		},
-		backButton: {
-			marginRight: theme.spacing(1),
-		},
-		completed: {
-			display: 'inline-block',
-		},
-		instructions: {
-			marginTop: theme.spacing(1),
-			marginBottom: theme.spacing(1),
-		},
-		cancelIcon: {
-			fontSize: '3rem',
-			position: 'fixed',
-			right: '2rem',
-			top: '1rem',
-			color: theme.palette.secondary.main,
-			zIndex: 10,
-			cursor: 'pointer',
-			'&:hover': {
-				color: theme.palette.secondary.light,
-			},
-		},
-		containerStep: {
-			marginTop: theme.spacing(2),
-		},
-		buttonS: {
-			textTransform: 'none',
-		},
-	})
-);
 
 const Comprobacion: React.FC<any> = () => {
 	function getStepContent(step: number) {
@@ -93,9 +48,25 @@ const Comprobacion: React.FC<any> = () => {
 			case 3:
 				if (fm.rc_constitutive_act || fm.rc_special_contributor) {
 					return (
-						<div className='comprobar_container_2'>
-							<div>{fm.rc_constitutive_act && <PasoActaConst />}</div>
-							<div>{fm.rc_special_contributor && <PasoContriSpecial />}</div>
+						<div className={fm.rc_constitutive_act && fm.rc_special_contributor && 'comprobar_container_2'}>
+							<div>
+								{fm.rc_constitutive_act && (
+									<PasoActaConst
+										positionImg={
+											fm.rc_constitutive_act && fm.rc_special_contributor ? 'img_container_1' : 'img_container'
+										}
+									/>
+								)}
+							</div>
+							<div>
+								{fm.rc_special_contributor && (
+									<PasoContriSpecial
+										positionImg={
+											fm.rc_constitutive_act && fm.rc_special_contributor ? 'img_container_2' : 'img_container'
+										}
+									/>
+								)}
+							</div>
 						</div>
 					);
 				} else if (fm.rc_comp_dep) {

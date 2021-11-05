@@ -14,7 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import { default as AccountCircle } from '@material-ui/icons/AccountCircle';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -25,17 +25,15 @@ import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-// import PeopleIcon from '@material-ui/icons/PeopleAlt';
+import PeopleIcon from '@material-ui/icons/PeopleAlt';
 import WorkIcon from '@material-ui/icons/Work';
 import classNames from 'classnames';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import luffy from '../../img/itachi2.png';
 import TranredLogo from '../../img/tranred-logo.png';
 //Redux
-//import luffy from '../../img/user.png';
-import { baseUrl, urlAdministracion, urlAdmision, urlCont, urlFM, userAdmin } from '../../routers/url';
+import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, userAdmin } from '../../routers/url';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
 import './index.scss';
@@ -139,6 +137,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 	icon: {
 		minWidth: 40,
 	},
+	avatarLetter: {
+		textTransform: 'uppercase',
+		backgroundColor: theme.palette.primary.light,
+	},
 }));
 
 const MainMenu: React.FC = () => {
@@ -203,8 +205,8 @@ const MainMenu: React.FC = () => {
 				localStorage.setItem('path', urlFM);
 				break;
 			case 6:
-				history.push(urlCont);
-				localStorage.setItem('path', urlCont);
+				history.push(urlCobr);
+				localStorage.setItem('path', urlCobr);
 				break;
 
 			default:
@@ -284,7 +286,7 @@ const MainMenu: React.FC = () => {
 					aria-controls='primary-search-account-menu'
 					aria-haspopup='true'
 					color='inherit'>
-					<Avatar alt='Remy Sharp' src={luffy} />
+					{user.name && <Avatar className={classes.avatarLetter}>{user.name.slice(0, 1)}</Avatar>}
 				</IconButton>
 				<p>Perfil</p>
 			</MenuItem>
@@ -327,16 +329,18 @@ const MainMenu: React.FC = () => {
 
 					<div className={classes.grow} />
 					<div className={classes.sectionDesktop}>
-						<IconButton aria-label='show 4 new mails' color='inherit'>
-							<Badge badgeContent={4} color='secondary'>
-								<MailIcon />
-							</Badge>
-						</IconButton>
-						<IconButton aria-label='show 17 new notifications' color='inherit'>
-							<Badge badgeContent={17} color='secondary'>
-								<NotificationsIcon />
-							</Badge>
-						</IconButton>
+						{/*
+							<IconButton aria-label='show 4 new mails' color='inherit'>
+								<Badge badgeContent={4} color='secondary'>
+									<MailIcon />
+								</Badge>
+							</IconButton>
+							<IconButton aria-label='show 17 new notifications' color='inherit'>
+								<Badge badgeContent={17} color='secondary'>
+									<NotificationsIcon />
+								</Badge>
+							</IconButton>
+						*/}
 						<div className='menu-user' onClick={handleProfileMenuOpen}>
 							<Typography className={classes.userName} variant='h6' noWrap>
 								{user.name} {user.last_name}
@@ -347,9 +351,7 @@ const MainMenu: React.FC = () => {
 								aria-controls={menuId}
 								aria-haspopup='true'
 								color='inherit'>
-								{/* <AccountCircle /> */}
-
-								<Avatar alt='Remy Sharp' src={luffy} />
+								{user.name && <Avatar className={classes.avatarLetter}>{user.name.slice(0, 1)}</Avatar>}
 							</IconButton>
 						</div>
 					</div>
@@ -431,25 +433,25 @@ const MainMenu: React.FC = () => {
 						<ListItemText primary='Administracion' />
 					</ListItem>
 					<ListItem button onClick={(event) => handleListItemClick(event, 6)}>
-						<Link to={urlCont}>
+						<Link to={urlCobr}>
 							<ListItemIcon classes={{ root: classes.icon }}>
 								<CreditCardIcon />
 							</ListItemIcon>
 						</Link>
-						<ListItemText primary='Contabilidad' />
+						<ListItemText primary='Cobranza' />
 					</ListItem>
 				</List>
 				<Divider />
 
 				<List>
-					{/* <ListItem button key={'Gestion de Usuarios'} onClick={(event) => handleListItemClick(event, 4)}>
+					<ListItem button key={'Gestion de Usuarios'} onClick={(event) => handleListItemClick(event, 4)}>
 						<Link to={urlAdmision}>
 							<ListItemIcon classes={{ root: classes.icon }}>
 								<PeopleIcon />
 							</ListItemIcon>
 						</Link>
 						<ListItemText primary={'Gestion de Usuarios'} />
-					</ListItem> */}
+					</ListItem>
 				</List>
 			</Drawer>
 		</div>

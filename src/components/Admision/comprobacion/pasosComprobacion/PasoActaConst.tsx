@@ -15,7 +15,12 @@ import { useStyles } from './styles/styles';
 
 import { ModalAlert }from '../ModalAlert';
 
-export default function PasoActaConst() {
+
+interface Prop {
+	positionImg: string
+}
+
+const PasoActaConst: React.FC<Prop> = ({ positionImg }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
@@ -70,7 +75,7 @@ export default function PasoActaConst() {
 	const props = {
 		zoomPosition: 'original',
 		height: 350,
-		width: 450,
+		width: 500,
 		img: `${URL}:${PortFiles}/${fm.rc_constitutive_act.path}`,
 	};
 
@@ -93,7 +98,7 @@ export default function PasoActaConst() {
 					/>
 				</div>
 			</form>
-			<div className='img_container_1'>
+			<div className={positionImg}>
 				<ReactImageZoom {...props} />
 			</div>
 			<ModalAlert 
@@ -107,3 +112,6 @@ export default function PasoActaConst() {
 		</>
 	);
 }
+
+
+export default PasoActaConst;

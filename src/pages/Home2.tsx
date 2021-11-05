@@ -4,11 +4,11 @@ import { Redirect, Route } from 'react-router-dom';
 // import { Route } from 'react-router-dom';
 import Admision from '../components/Admision';
 import { FormMaldito } from '../components/formMaldito';
-import GestionUsuarios from '../components/GestionUsuarios';
 import MainMenu from '../components/MainMenu';
-import { baseUrl, urlAdministracion, urlAdmision, urlCont, urlFM, userAdmin } from '../routers/url';
+import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, userAdmin } from '../routers/url';
 import Administracion from './Administracion';
-import Contabilidad from './Contabilidad';
+import Cobranza from './Cobranza';
+import GestionUsuarios from './GestionUsuarios';
 //Components
 import Inicio from './Home';
 
@@ -38,7 +38,7 @@ const Home: React.FC = () => {
 			{/* <CssBaseline /> */}
 			<MainMenu />
 			<main className={classes.content}>
-				<Route exact path={urlCont} component={Contabilidad} />
+				<Route exact path={urlCobr} component={Cobranza} />
 				<Route exact path={urlAdministracion} component={Administracion} />
 				<Route exact path={urlAdmision} component={Admision} />
 				<Route exact path={urlFM} component={FormMaldito} />

@@ -21,7 +21,7 @@ import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import axios from '../../config';
-import luffy from '../../img/luffy.png';
+// import luffy from '../../img/luffy.png';
 import './scss/index.scss';
 
 interface GestionUsuariosProps {}
@@ -185,11 +185,12 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 
 	const getuserRol = async (id: number) => {
 		try {
-			// const resp2 = await axios.get(`/roles/${id}/worker`);
+			const resp_rol = await axios.get(`/roles/all`);
 			const resp = await axios.get(`/worker/${id}`);
 			const data = resp.data.info;
+			console.log('data', data);
 			// const dataRol = resp2.data.info;
-			// setArrRolUser(dataRol);
+			setArrRolUser(resp_rol.data.info);
 			setEmail(data.email);
 			setName(data.name);
 			// arr_rol_user = dataRol;
@@ -263,9 +264,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 								<Button className={classes.closeBtn} onClick={handleCloseRow}>
 									<CloseIcon />
 								</Button>
-								<div className={classes.img}>
-									<img src={luffy} alt='imagen' />
-								</div>
+								<div className={classes.img}>{/* <img src={luffy} alt='imagen' /> */}</div>
 								<form className={classes.form}>
 									<div className={classes.row}>
 										<TextField
