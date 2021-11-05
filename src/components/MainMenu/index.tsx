@@ -1,5 +1,4 @@
 import AppBar from '@material-ui/core/AppBar';
-import Avatar from '@material-ui/core/Avatar';
 import Badge from '@material-ui/core/Badge';
 // import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -14,7 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import { default as AccountCircle, default as AccountCircleIcon } from '@material-ui/icons/AccountCircle';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -25,21 +24,17 @@ import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-// import PeopleIcon from '@material-ui/icons/PeopleAlt';
+import PeopleIcon from '@material-ui/icons/PeopleAlt';
 import WorkIcon from '@material-ui/icons/Work';
 import classNames from 'classnames';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import TranredLogo from '../../img/tranred-logo.png';
-//Redux
-import luffy from '../../img/user.png';
 import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, userAdmin } from '../../routers/url';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
 import './index.scss';
-
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const drawerWidth = 220;
 
@@ -284,7 +279,7 @@ const MainMenu: React.FC = () => {
 					aria-haspopup='true'
 					color='inherit'>
 					<AccountCircleIcon />
-				{/*
+					{/*
 				<Avatar alt='Remy Sharp' src={luffy} />
 					*/}
 				</IconButton>
@@ -353,9 +348,7 @@ const MainMenu: React.FC = () => {
 								color='inherit'>
 								{/* <AccountCircle /> */}
 
-								<AccountCircleIcon 
-									fontSize="large"
-								/>
+								<AccountCircleIcon fontSize='large' />
 								{/* 
 								<Avatar alt='Remy Sharp' src={luffy} />
 							*/}
@@ -451,14 +444,14 @@ const MainMenu: React.FC = () => {
 				<Divider />
 
 				<List>
-					{/* <ListItem button key={'Gestion de Usuarios'} onClick={(event) => handleListItemClick(event, 4)}>
+					<ListItem button key={'Gestion de Usuarios'} onClick={(event) => handleListItemClick(event, 4)}>
 						<Link to={urlAdmision}>
 							<ListItemIcon classes={{ root: classes.icon }}>
 								<PeopleIcon />
 							</ListItemIcon>
 						</Link>
 						<ListItemText primary={'Gestion de Usuarios'} />
-					</ListItem> */}
+					</ListItem>
 				</List>
 			</Drawer>
 		</div>
