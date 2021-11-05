@@ -178,7 +178,7 @@ export const Step2: React.FC<any> = ({
 						<>
 							<b className={classes.inputText}>
 								{!fm.imagesCommerce &&
-									'Ya tiene Acta Constitutiva'
+									'Acta Constitutiva'
 								}
 							</b>
 							<Button
@@ -243,6 +243,7 @@ export const Step2: React.FC<any> = ({
 						disabled={fm.imagesCommerce}
 						variant='contained'
 						style={{
+							opacity: fm.imagesCommerce ? 0 : 1,
 							background: imagesForm.rc_special_contributor ? '#5c62c5' : '#f44336',
 							visibility: cursedForm.special_contributor ? 'visible' : 'hidden',
 						}}

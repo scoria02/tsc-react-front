@@ -83,7 +83,7 @@ const Register: React.FC = () => {
 		id_ident_type: 1,
 		ident_num: '',
 		phone: '',
-		id_company: 0,
+		id_company: 1,
 		id_department: 1,
 		code: '+58',
 	});

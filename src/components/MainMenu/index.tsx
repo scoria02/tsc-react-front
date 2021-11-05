@@ -1,4 +1,5 @@
 import AppBar from '@material-ui/core/AppBar';
+import Avatar from '@material-ui/core/Avatar';
 import Badge from '@material-ui/core/Badge';
 // import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -13,7 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { default as AccountCircle, default as AccountCircleIcon } from '@material-ui/icons/AccountCircle';
+import { default as AccountCircle } from '@material-ui/icons/AccountCircle';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -31,6 +32,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import TranredLogo from '../../img/tranred-logo.png';
+//Redux
 import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, userAdmin } from '../../routers/url';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
@@ -134,6 +136,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 	},
 	icon: {
 		minWidth: 40,
+	},
+	avatarLetter: {
+		textTransform: 'uppercase',
+		backgroundColor: theme.palette.primary.light,
 	},
 }));
 
@@ -278,10 +284,7 @@ const MainMenu: React.FC = () => {
 					aria-controls='primary-search-account-menu'
 					aria-haspopup='true'
 					color='inherit'>
-					<AccountCircleIcon />
-					{/*
-				<Avatar alt='Remy Sharp' src={luffy} />
-					*/}
+					{user.name && <Avatar className={classes.avatarLetter}>{user.name.slice(0, 1)}</Avatar>}
 				</IconButton>
 				<p>Perfil</p>
 			</MenuItem>
@@ -346,12 +349,7 @@ const MainMenu: React.FC = () => {
 								aria-controls={menuId}
 								aria-haspopup='true'
 								color='inherit'>
-								{/* <AccountCircle /> */}
-
-								<AccountCircleIcon fontSize='large' />
-								{/* 
-								<Avatar alt='Remy Sharp' src={luffy} />
-							*/}
+								{user.name && <Avatar className={classes.avatarLetter}>{user.name.slice(0, 1)}</Avatar>}
 							</IconButton>
 						</div>
 					</div>
