@@ -31,14 +31,15 @@ import classNames from 'classnames';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import luffy from '../../img/itachi2.png';
 import TranredLogo from '../../img/tranred-logo.png';
 //Redux
-//import luffy from '../../img/user.png';
+import luffy from '../../img/user.png';
 import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, userAdmin } from '../../routers/url';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
 import './index.scss';
+
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const drawerWidth = 220;
 
@@ -282,7 +283,10 @@ const MainMenu: React.FC = () => {
 					aria-controls='primary-search-account-menu'
 					aria-haspopup='true'
 					color='inherit'>
-					<Avatar alt='Remy Sharp' src={luffy} />
+					<AccountCircleIcon />
+				{/*
+				<Avatar alt='Remy Sharp' src={luffy} />
+					*/}
 				</IconButton>
 				<p>Perfil</p>
 			</MenuItem>
@@ -325,16 +329,18 @@ const MainMenu: React.FC = () => {
 
 					<div className={classes.grow} />
 					<div className={classes.sectionDesktop}>
-						<IconButton aria-label='show 4 new mails' color='inherit'>
-							<Badge badgeContent={4} color='secondary'>
-								<MailIcon />
-							</Badge>
-						</IconButton>
-						<IconButton aria-label='show 17 new notifications' color='inherit'>
-							<Badge badgeContent={17} color='secondary'>
-								<NotificationsIcon />
-							</Badge>
-						</IconButton>
+						{/*
+							<IconButton aria-label='show 4 new mails' color='inherit'>
+								<Badge badgeContent={4} color='secondary'>
+									<MailIcon />
+								</Badge>
+							</IconButton>
+							<IconButton aria-label='show 17 new notifications' color='inherit'>
+								<Badge badgeContent={17} color='secondary'>
+									<NotificationsIcon />
+								</Badge>
+							</IconButton>
+						*/}
 						<div className='menu-user' onClick={handleProfileMenuOpen}>
 							<Typography className={classes.userName} variant='h6' noWrap>
 								{user.name} {user.last_name}
@@ -347,7 +353,12 @@ const MainMenu: React.FC = () => {
 								color='inherit'>
 								{/* <AccountCircle /> */}
 
+								<AccountCircleIcon 
+									fontSize="large"
+								/>
+								{/* 
 								<Avatar alt='Remy Sharp' src={luffy} />
+							*/}
 							</IconButton>
 						</div>
 					</div>

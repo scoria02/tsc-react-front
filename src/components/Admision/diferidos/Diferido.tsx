@@ -19,12 +19,6 @@ import FullModal from '../../modals/FullModal';
 
 import StepDiferido from './StepDiferido';
 
-const Transition = React.forwardRef(function Transition(
-	props: TransitionProps & { children?: React.ReactElement },
-	ref: React.Ref<unknown>
-) {
-	return <Slide direction='up' ref={ref} {...props} />;
-});
 
 const useStyles2 = makeStyles((theme: Theme) =>
 	createStyles({
@@ -69,9 +63,7 @@ const useStyles2 = makeStyles((theme: Theme) =>
 );
 
 const Diferido: React.FC<any> = ({ fm }) => {
-	const classes2 = useStyles2();
 	const dispatch = useDispatch();
-
 
 	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
 

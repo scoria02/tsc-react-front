@@ -57,6 +57,79 @@ export const FormMaldito: React.FC<Props> = () => {
 	const history = useHistory();
 	const classes = useStylesFM();
 	const dispatch = useDispatch();
+
+	const [cursedForm, setCursedForm] = useState<any>({
+		//step1 Cliente
+		email: '',
+		name: '',
+		last_name: '',
+		id_ident_type: 1,
+		ident_num: '',
+		phone1: '',
+		phone2: '',
+		id_estado_client: 0,
+		id_ciudad_client: 0,
+		id_municipio_client: 0,
+		id_parroquia_client: 0,
+		codigo_postal_client: '',
+		sector_client: '',
+		calle_client: '',
+		local_client: '',
+		//step2 Comercio
+		id_ident_type_commerce: 3,
+		ident_num_commerce: '',
+		name_commerce: '',
+		id_activity: 0,
+		special_contributor: 0,
+		//Step3 Location
+		//Commerce
+		id_estado: 0,
+		id_ciudad: 0,
+		id_municipio: 0,
+		id_parroquia: 0,
+		codigo_postal: '',
+		sector: '',
+		calle: '',
+		local: '',
+		//Pos
+		id_estado_pos: 0,
+		id_ciudad_pos: 0,
+		id_municipio_pos: 0,
+		id_parroquia_pos: 0,
+		codigo_postal_pos: '',
+		sector_pos: '',
+		calle_pos: '',
+		local_pos: '',
+		//Step4 Post
+		number_post: 1,
+		id_model_post: 0,
+		text_account_number: '',
+		id_payment_method: 0,
+		id_type_pay: 0,
+		id_request_origin: 1,
+		reqSource_docnum: '',
+		initial: 100,
+		cuotas: 0, //Si es inical coutas cambia
+		nro_comp_dep: '',
+		discount: 0,
+		pagadero: 0,
+	});
+
+	//images
+	const [imagesForm, setImagesForm] = useState({
+		//Step1
+		rc_ident_card: null, //11
+		//rc_ref_perso: null, //6
+		//Step2
+		rc_rif: null, //10
+		rc_constitutive_act: null, //1
+		rc_special_contributor: null, //4
+		//Step4
+		rc_ref_bank: null, //5
+		rc_comp_dep: null,
+	});
+
+
 	const [validEmailIdent, setValidEmailIdent] = useState<boolean>(false);
 	const [activeStep, setActiveStep] = useState<number>(0);
 	const [readyStep, setReadyStep] = React.useState<boolean>(false);
@@ -163,63 +236,6 @@ export const FormMaldito: React.FC<Props> = () => {
 	const [listModelPos, setListModelPos] = useState<any[]>([]);
 	const [modelPos, setModelPost] = useState<any>(null);
 
-	const [cursedForm, setCursedForm] = useState<any>({
-		//step1 Cliente
-		email: '',
-		name: '',
-		last_name: '',
-		id_ident_type: 1,
-		ident_num: '',
-		phone1: '',
-		phone2: '',
-		id_estado_client: 0,
-		id_ciudad_client: 0,
-		id_municipio_client: 0,
-		id_parroquia_client: 0,
-		codigo_postal_client: '',
-		sector_client: '',
-		calle_client: '',
-		local_client: '',
-		//step2 Comercio
-		id_ident_type_commerce: 3,
-		ident_num_commerce: '',
-		name_commerce: '',
-		id_activity: 0,
-		special_contributor: 0,
-		//Step3 Location
-		//Commerce
-		id_estado: 0,
-		id_ciudad: 0,
-		id_municipio: 0,
-		id_parroquia: 0,
-		codigo_postal: '',
-		sector: '',
-		calle: '',
-		local: '',
-		//Pos
-		id_estado_pos: 0,
-		id_ciudad_pos: 0,
-		id_municipio_pos: 0,
-		id_parroquia_pos: 0,
-		codigo_postal_pos: '',
-		sector_pos: '',
-		calle_pos: '',
-		local_pos: '',
-		//Step4 Post
-		number_post: 1,
-		id_model_post: 0,
-		text_account_number: '',
-		id_payment_method: 0,
-		id_type_pay: 0,
-		id_request_origin: 1,
-		reqSource_docnum: '',
-		initial: 100,
-		cuotas: 0, //Si es inical coutas cambia
-		nro_comp_dep: '',
-		discount: 0,
-		pagadero: 0,
-	});
-
 	//name images
 	const [namesImages, setNamesImages] = useState<any>({
 		//step1
@@ -232,20 +248,6 @@ export const FormMaldito: React.FC<Props> = () => {
 		//step4
 		rc_ref_bank: '', //5
 		rc_comp_dep: '',
-	});
-
-	//images
-	const [imagesForm, setImagesForm] = useState({
-		//Step1
-		rc_ident_card: null, //11
-		//rc_ref_perso: null, //6
-		//Step2
-		rc_rif: null, //10
-		rc_constitutive_act: null, //1
-		rc_special_contributor: null, //4
-		//Step4
-		rc_ref_bank: null, //5
-		rc_comp_dep: null,
 	});
 
 	const [cursedFormError, setCursedFormError] = useState<any>({

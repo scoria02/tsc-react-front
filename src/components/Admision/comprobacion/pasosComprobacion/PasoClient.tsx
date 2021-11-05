@@ -10,7 +10,7 @@ import { PortFiles, URL } from '../../../../config';
 import { Valid } from '../../../../store/actions/accept';
 import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
-import { useStyles } from './styles/styles';
+import { useStyles, imgStyle } from './styles/styles';
 
 import { ModalAlert }from '../ModalAlert';
 
@@ -72,9 +72,7 @@ export default function PasoClient() {
 	};
 
 	const props = {
-		zoomPosition: 'original',
-		height: 350,
-		width: 500,
+		...imgStyle,
 		img: `${URL}:${PortFiles}/${fm.rc_ident_card.path}`,
 	};
 

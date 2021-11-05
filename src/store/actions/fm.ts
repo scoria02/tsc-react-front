@@ -216,21 +216,12 @@ export const sendFM = (cursedForm: any, fm: any) => {
 	//console.log('SendFM', formM);
 	console.log(fm.id_images);
 	const form = {
+		//Data FM
+		number_post: cursedForm.number_post,
 		...fm.id_images,
+		id_payment_method: cursedForm.id_payment_method,
 		id_client: fm.id_client,
 		id_commerce: fm.id_commerce,
-		number_post: cursedForm.number_post,
-		id_product: cursedForm.id_model_post,
-		id_payment_method: cursedForm.id_payment_method,
-		bank_account_num: cursedForm.text_account_number,
-		id_type_payment: cursedForm.id_type_pay,
-		id_request_origin: cursedForm.id_request_origin,
-		ci_referred: cursedForm.reqSource_docnum,
-		requestSource_docnum: cursedForm.id_requestSource,
-		coutas: cursedForm.cuotas,
-		discount: !!cursedForm.discount,
-		pagadero: !!cursedForm.pagadero,
-		nro_comp_dep: cursedForm.nro_comp_dep,
 		dir_pos: {
 			id_estado: cursedForm.id_estado_pos,
 			id_municipio: cursedForm.id_municipio_pos,
@@ -240,6 +231,17 @@ export const sendFM = (cursedForm: any, fm: any) => {
 			calle: cursedForm.calle_pos,
 			local: cursedForm.local_pos,
 		},
+		bank_account_num: cursedForm.text_account_number,
+		id_request_origin: cursedForm.id_request_origin,
+		id_type_payment: cursedForm.id_type_pay,
+		ci_referred: cursedForm.reqSource_docnum,
+		id_product: cursedForm.id_model_post,
+		requestSource_docnum: cursedForm.id_requestSource,
+		discount: !!cursedForm.discount,
+		nro_comp_dep: cursedForm.nro_comp_dep,
+		pagadero: !!cursedForm.pagadero,
+		coutas: cursedForm.cuotas,
+		initial: cursedForm.initial,
 	};
 	return async (dispatch: any) => {
 		try {
