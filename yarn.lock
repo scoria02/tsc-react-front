@@ -2097,6 +2097,11 @@
   "resolved" "https://registry.npmjs.org/@types/lru-cache/-/lru-cache-5.1.1.tgz"
   "version" "5.1.1"
 
+"@types/luxon@^2.0.5":
+  "integrity" "sha512-GKrG5v16BOs9XGpouu33hOkAFaiSDi3ZaDXG9F2yAoyzHRBtksZnI60VWY5aM/yAENCccBejrxw8jDY+9OVlxw=="
+  "resolved" "https://registry.npmjs.org/@types/luxon/-/luxon-2.0.5.tgz"
+  "version" "2.0.5"
+
 "@types/minimatch@*":
   "integrity" "sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ=="
   "resolved" "https://registry.npmjs.org/@types/minimatch/-/minimatch-3.0.5.tgz"
@@ -7755,6 +7760,11 @@
   "version" "6.0.0"
   dependencies:
     "yallist" "^4.0.0"
+
+"luxon@^2.0.2":
+  "integrity" "sha512-ZRioYLCgRHrtTORaZX1mx+jtxKtKuI5ZDvHNAmqpUzGqSrR+tL4FVLn/CUGMA3h0+AKD1MAxGI5GnCqR5txNqg=="
+  "resolved" "https://registry.npmjs.org/luxon/-/luxon-2.0.2.tgz"
+  "version" "2.0.2"
 
 "lz-string@^1.4.4":
   "integrity" "sha1-wNjq82BZ9wV5bh40SBHPTEmNOiY="

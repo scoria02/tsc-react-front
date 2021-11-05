@@ -7,18 +7,43 @@ import { FC, useState } from 'react';
 import Completed from './views/Completed';
 import Pending from './views/Pending';
 
-const useStyles = makeStyles((styles: Theme) => ({
+export const useStyles = makeStyles((theme: Theme) => ({
+	red: {
+		backgroundColor: theme.palette.error.main,
+		color: theme.palette.secondary.contrastText,
+		'&:hover': {
+			backgroundColor: `${theme.palette.error.light} !important`,
+		},
+	},
+	yellow: {
+		backgroundColor: theme.palette.warning.main,
+		color: theme.palette.secondary.contrastText,
+		'&:hover': {
+			backgroundColor: `${theme.palette.warning.light} !important`,
+		},
+	},
+	green: {
+		backgroundColor: theme.palette.success.main,
+		color: theme.palette.secondary.contrastText,
+		'&:hover': {
+			backgroundColor: `${theme.palette.success.light} !important`,
+		},
+	},
 	wrapper: {
 		flexGrow: 1,
 	},
 	tabPanel: {
 		padding: 16,
 	},
+	tabLabel: {
+		fontWeight: 'bold',
+		fontSize: '0.85rem',
+	},
 }));
 
 const Cobranza: FC = () => {
 	const classes = useStyles();
-	const [value, setValue] = useState('one');
+	const [value, setValue] = useState('pending');
 
 	const handleChange = (event: any, newValue: any) => {
 		setValue(newValue);
@@ -28,13 +53,13 @@ const Cobranza: FC = () => {
 		<div className={classes.wrapper}>
 			<TabContext value={value}>
 				<TabList
+					// centered
 					onChange={handleChange}
 					aria-label='lab API tabs example'
-					// centered
 					indicatorColor='primary'
 					textColor='primary'>
-					<Tab label='Solicitudes Por Cobrar' value={'pending'} wrapped />
-					<Tab label='Solicitudes Completas' value={'completed'} wrapped />
+					<Tab label='Solicitudes Por Cobrar' value={'pending'} wrapped classes={{ root: classes.tabLabel }} />
+					<Tab label='Solicitudes Completas' value={'completed'} wrapped classes={{ root: classes.tabLabel }} />
 				</TabList>
 				<TabPanel value={'pending'} classes={{ root: classes.tabPanel }}>
 					<Pending />
