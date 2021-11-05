@@ -154,24 +154,6 @@ const columns: GridColDef[] = [
 			return value.row?.id_request.pagadero ? 'Si' : 'No';
 		},
 	},
-	/*
-	{
-		field: 'fullname',
-		headerName: 'Nombre',
-		width: 120,
-		valueGetter: (params: GridValueGetterParams) =>
-			`${params.getValue(params.id, 'name') || ''} ${params.getValue(params.id, 'lastname') || ''}`,
-		disableColumnMenu: true,
-		sortable: false,
-	},
-	{
-		field: 'fecha',
-		headerName: 'Fecha',
-		width: 120,
-		disableColumnMenu: true,
-		sortable: false,
-	},
-	 */
 ];
 
 const Administracion: FC<AdministracionProp> = () => {
@@ -216,7 +198,7 @@ const Administracion: FC<AdministracionProp> = () => {
 		id_commerce: 0,
 		id_client: 0,
 	});
-	const d = new Date();
+
 	const [rowsAd, setRowsAd] = useState([]);
 
 	const [uploadImg, setUploadImg] = useState<any>(null);

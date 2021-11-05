@@ -1,139 +1,204 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
+/* eslint-disable react-hooks/exhaustive-deps */
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import Slide from '@material-ui/core/Slide';
+import Step from '@material-ui/core/Step';
+import StepButton from '@material-ui/core/StepButton';
+import Stepper from '@material-ui/core/Stepper';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { TransitionProps } from '@material-ui/core/transitions';
+import Typography from '@material-ui/core/Typography';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import { stepComplete } from '../../../store/actions/accept';
+import { cleanAdmisionFM, updateStatusFM } from '../../../store/actions/admisionFm';
+import { CloseModalDiferido } from '../../../store/actions/ui';
+import FullModal from '../../modals/FullModal';
 
-interface Column {
-	id: 'name' | 'code' | 'population';
-	label: string;
-	minWidth?: number;
-	align?: 'right';
-	format?: (value: number) => string;
-}
 
-const columns: Column[] = [
-	{ id: 'name', label: 'Name', minWidth: 170 },
-	{ id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-	{
-		id: 'population',
-		label: 'Population',
-		minWidth: 170,
-		align: 'right',
-		format: (value: number) => value.toLocaleString('en-US'),
-	},
-];
+import StepDiferido from './StepDiferido';
 
-interface Data {
-	name: string;
-	code: string;
-	population: number;
-}
-
-function createData(name: string, code: string, population: number): Data {
-	return { name, code, population };
-}
-
-const rows = [
-	createData('India', 'IN', 1324171354),
-	createData('China', 'CN', 1403500365),
-	createData('Italy', 'IT', 60483973),
-	createData('United States', 'US', 327167434),
-	createData('Canada', 'CA', 37602103),
-	createData('Australia', 'AU', 25475400),
-	createData('Germany', 'DE', 83019200),
-	createData('Ireland', 'IE', 4857000),
-	createData('Mexico', 'MX', 126577691),
-	createData('Japan', 'JP', 126317000),
-	createData('France', 'FR', 67022000),
-	createData('United Kingdom', 'GB', 67545757),
-	createData('Russia', 'RU', 146793744),
-	createData('Nigeria', 'NG', 200962417),
-	createData('Brazil', 'BR', 210147125),
-];
-
-const useStyles = makeStyles({
-	root: {
-		width: '100%',
-	},
-	container: {
-		maxHeight: 440,
-	},
+const Transition = React.forwardRef(function Transition(
+	props: TransitionProps & { children?: React.ReactElement },
+	ref: React.Ref<unknown>
+) {
+	return <Slide direction='up' ref={ref} {...props} />;
 });
 
-const Diferido = () => {
-	const classes = useStyles();
-	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(10);
+const useStyles2 = makeStyles((theme: Theme) =>
+	createStyles({
+		root: {
+			width: '100%',
+			margin: '1.5rem',
+			padding: '1rem',
+		},
+		button: {
+			marginRight: theme.spacing(1),
+			textTransform: 'none',
+		},
+		backButton: {
+			marginRight: theme.spacing(1),
+		},
+		completed: {
+			display: 'inline-block',
+		},
+		instructions: {
+			marginTop: theme.spacing(1),
+			marginBottom: theme.spacing(1),
+		},
+		cancelIcon: {
+			fontSize: '3rem',
+			position: 'fixed',
+			right: '2rem',
+			top: '1rem',
+			color: theme.palette.secondary.main,
+			zIndex: 10,
+			cursor: 'pointer',
+			'&:hover': {
+				color: theme.palette.secondary.light,
+			},
+		},
+		containerStep: {
+			marginTop: theme.spacing(2),
+		},
+		buttonS: {
+			textTransform: 'none',
+		},
+	})
+);
 
-	const handleChangePage = (event: unknown, newPage: number) => {
-		setPage(newPage);
+const Diferido: React.FC<any> = ({ fm }) => {
+	const classes2 = useStyles2();
+	const dispatch = useDispatch();
+
+
+	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
+
+	const [activeStep, setActiveStep] = React.useState(0);
+	const [completed, setCompleted] = React.useState(new Set<number>());
+	const [skipped, setSkipped] = React.useState(new Set<number>());
+
+	const steps = getSteps();
+
+	function getSteps() {
+		let list: string[] = [];
+		list = [
+			'xxx'
+		]
+		//valids
+		return list ;
+	}
+
+	function getStepContent(step: number) {
+		switch (step) {
+			case 0:
+				return (
+					<div>
+						<StepDiferido 
+							fm={fm}
+						/>
+					</div>
+				);
+			default:
+				return 'Invalid step';
+		}
+	}
+
+	const totalSteps = () => {
+		return getSteps().length;
+	};
+	const skippedSteps = () => {
+		return skipped.size;
 	};
 
-	const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setRowsPerPage(+event.target.value);
-		setPage(0);
+	const completedSteps = () => {
+		return completed.size;
 	};
 
-	// const handleRow = (e: any) => {
-	// 	console.log(e.target.children);
-	// };
+	const allStepsCompleted = () => {
+		return completedSteps() === totalSteps() - skippedSteps();
+	};
+
+	const isLastStep = () => {
+		return activeStep === totalSteps() - 1;
+	};
+
+
+	function isStepComplete(step: number) {
+		return completed.has(step);
+	}
+
+	const handleBack = () => {
+		setActiveStep((prevActiveStep) => prevActiveStep - 1);
+	};
+
+	const handleStep = (step: number) => () => {
+		setActiveStep(step);
+	};
+
+	const handleNext = () => {
+		const newActiveStep =
+			isLastStep() && !allStepsCompleted() ? steps.findIndex((step, i) => !completed.has(i)) : activeStep + 1;
+		setActiveStep(newActiveStep);
+	};
+
+	const validStatusFm = (): boolean => {
+		//validar la new imagen
+		return true;
+	};
+
+	const handleClose = () => {
+		dispatch(CloseModalDiferido());
+	};
+
+	const handleComplete = async () => {
+		const newCompleted = new Set(completed);
+		Swal.fire({
+			title: 'Confirmar verificación',
+			icon: 'warning',
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Verificado',
+			showCancelButton: true,
+			cancelButtonText: 'Atras',
+			showCloseButton: true,
+			customClass: { container: 'swal2-validated' },
+		}).then((result) => {
+			if (result.isConfirmed) {
+				newCompleted.add(activeStep);
+				dispatch(stepComplete(newCompleted));
+				setCompleted(newCompleted);
+				if (completed.size !== totalSteps() - skippedSteps()) {
+					handleNext();
+				}
+			}
+		});
+	};
+
+	const isStepSkipped = (step: number) => {
+		return skipped.has(step);
+	};
 
 	return (
-		<Paper className={classes.root}>
-			<TableContainer className={classes.container}>
-				<Table stickyHeader aria-label='sticky table'>
-					<TableHead>
-						<TableRow>
-							{/* <h1 className='titulo'>Difiredos</h1> */}
-							{columns.map((column) => (
-								<TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
-									{column.label}
-								</TableCell>
-							))}
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-							const handleRow = () => {
-								console.log(row.name, row.code, row.population);
-							};
-							return (
-								<TableRow hover role='checkbox' tabIndex={-1} key={row.code} onClick={handleRow}>
-									{columns.map((column) => {
-										const value = row[column.id];
-										return (
-											<TableCell
-												key={column.id}
-												align={column.align}
-												// onClick={(event: any) => handleData(column, event)}
-											>
-												{column.format && typeof value === 'number' ? column.format(value) : value}
-											</TableCell>
-										);
-									})}
-								</TableRow>
-							);
-						})}
-					</TableBody>
-				</Table>
-			</TableContainer>
-			<TablePagination
-				rowsPerPageOptions={[10, 25, 100]}
-				component='div'
-				count={rows.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onPageChange={handleChangePage}
-				onRowsPerPageChange={handleChangeRowsPerPage}
-			/>
-		</Paper>
-	);
+		<FullModal 
+			stepComplete={stepComplete}
+			clean={cleanAdmisionFM}
+			updatedStatus={updateStatusFM}
+			CloseModal={CloseModalDiferido}
+			steps={steps}
+			getStepContent={getStepContent}
+			fm={fm}
+			modalOpen={modalOpenDiferido}
+			id_status={0}
+			getSteps={getSteps}
+			activeStep={activeStep}
+			setActiveStep={setActiveStep}
+			completed={completed}
+			setCompleted={setCompleted}
+			skipped={skipped}
+		/>
+	)
 };
 
 export default Diferido;

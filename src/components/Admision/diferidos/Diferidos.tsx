@@ -1,4 +1,11 @@
-import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarFilterButton } from '@material-ui/data-grid';
+import {
+	DataGrid,
+	GridColDef,
+	GridRowParams,
+	GridToolbarContainer,
+	GridToolbarFilterButton,
+	GridValueGetterParams,
+} from '@material-ui/data-grid';
 import { makeStyles } from '@material-ui/styles';
 import React, { useContext, useEffect, useState } from 'react';
 import { SocketContext } from '../../../context/SocketContext';
@@ -7,17 +14,61 @@ import { getDiferidos } from '../../../helpers/getDiferidos';
 //Socket
 // import WebSocket from '../../../hooks/WebSocket';
 
-const useStyle = makeStyles(() => ({
-	tableTitle: {
-		margin: '1rem',
-	},
-}));
+import { useDispatch, useSelector } from 'react-redux';
+
+import { useStyles } from './styles';
+import classNames from 'classnames';
+
+import { RootState } from '../../../store/store';
+import { getDataFMAdministration } from '../../../store/actions/administration';
+
+import { OpenModalDiferido } from '../../../store/actions/ui';
+
+import Diferido from './Diferido';
 
 const columns: GridColDef[] = [{ field: 'id', headerName: 'ID', width: 75 }];
 
 const Diferidos: React.FC = () => {
-	const classes = useStyle();
-	// const {id, email, cirif} = rows
+	const classes = useStyles();
+
+	const administration: any = useSelector((state: RootState) => state.administration);
+
+	const [rowSelected, setRowSelect] = useState({
+		id: null,
+		code: '',
+		pagadero: false,
+		paymentmethod: {
+			name: '',
+			id: null,
+		},
+		type_payment: {
+			name: '',
+			id: null,
+		},
+		nro_comp_dep: '',
+		urlImgCompDep: '',
+		id_commerce: 0,
+		id_client: 0,
+	});
+
+	const [rowsAd, setRowsAd] = useState([]);
+
+	const [uploadImg, setUploadImg] = useState<any>(null);
+	const [nameImg, setNameImage] = useState<string>('');
+	const [selected, setSelected] = useState(false);
+
+	const [select, setSelect] = useState({});
+
+	const dispatch = useDispatch();
+	useEffect(() => {
+		dispatch(getDataFMAdministration());
+		// console.log('rowSelected', rowSelected);
+	}, []);
+
+	useEffect(() => {
+		setRowsAd(administration.fmAd);
+	}, [administration]);
+
 	const customToolbar: () => JSX.Element = () => {
 		return (
 			<GridToolbarContainer className='m-main-justify m-px-2' style={{ minHeight: '4rem' }}>
@@ -47,7 +98,12 @@ const Diferidos: React.FC = () => {
 	}, []);
 
 	const handleRow = (event: any) => {
-		console.log(event.row);
+		dispatch(OpenModalDiferido());
+		setSelected(true);
+	};
+
+	const handleCloseRow = (event: any) => {
+		setSelected(false);
 	};
 
 	return (

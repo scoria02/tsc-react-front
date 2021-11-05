@@ -1,19 +1,31 @@
 import { ActionType } from '../types/types';
 
 interface inState {
+	//validation Fm
 	fm: any,
 	errorGetData: boolean,
 	updatedStatus: boolean,
 	errorStatusFM: boolean,
 	id_statusFM: number;
+
+	diferido: any,
+	id_statusDiferido: number,
+	updatedStatusDiferido: boolean,
+	errorStatusDiferido: boolean,
 }
 
 const initialState: inState = {
+	//validation Fm
 	fm: {},
 	errorGetData: false,
 	updatedStatus: false,
 	errorStatusFM: false,
 	id_statusFM: 0,
+
+	diferido: {},
+	id_statusDiferido: 0,
+	updatedStatusDiferido: false,
+	errorStatusDiferido: false,
 };
 
 export const admisionFM = (state = initialState, action: any) => {

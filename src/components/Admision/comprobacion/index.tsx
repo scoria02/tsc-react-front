@@ -1,10 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
-import Step from '@material-ui/core/Step';
-import StepButton from '@material-ui/core/StepButton';
-import Stepper from '@material-ui/core/Stepper';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { TransitionProps } from '@material-ui/core/transitions';
 import Typography from '@material-ui/core/Typography';
@@ -25,15 +20,9 @@ import PasoCommerce from './pasosComprobacion/PasoCommerce';
 import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
 import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
+import FullModal from '../../modals/FullModal';
 
-const Transition = React.forwardRef(function Transition(
-	props: TransitionProps & { children?: React.ReactElement },
-	ref: React.Ref<unknown>
-) {
-	return <Slide direction='up' ref={ref} {...props} />;
-});
-
-const useStyles2 = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		root: {
 			width: '100%',
@@ -76,8 +65,6 @@ const useStyles2 = makeStyles((theme: Theme) =>
 );
 
 const Comprobacion: React.FC<any> = () => {
-	const classes2 = useStyles2();
-
 	function getStepContent(step: number) {
 		switch (step) {
 			case 0:
@@ -131,14 +118,18 @@ const Comprobacion: React.FC<any> = () => {
 
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 	const dispatch = useDispatch();
+
+	//selectores
 	const { modalOpen } = useSelector((state: any) => state.ui);
 	const validated: any = useSelector((state: RootState) => state.acceptance.validado);
 	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatus);
 	const id_statusFM: any = useSelector((state: RootState) => state.fmAdmision.id_statusFM);
 
+	//states
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [completed, setCompleted] = React.useState(new Set<number>());
 	const [skipped, setSkipped] = React.useState(new Set<number>());
+
 	const steps = getSteps(fm);
 	function getSteps(form: any) {
 		if (form.rc_constitutive_act || form.rc_special_contributor) {
@@ -200,12 +191,6 @@ const Comprobacion: React.FC<any> = () => {
 		return activeStep === totalSteps() - 1;
 	};
 
-	const handleNext = () => {
-		const newActiveStep =
-			isLastStep() && !allStepsCompleted() ? steps.findIndex((step, i) => !completed.has(i)) : activeStep + 1;
-		setActiveStep(newActiveStep);
-	};
-
 	const validStatusFm = (): boolean => {
 		for (const item in validated) {
 			if (item.slice(0, 3) === 'rc_') {
@@ -234,10 +219,8 @@ const Comprobacion: React.FC<any> = () => {
 	const { socket } = useContext(SocketContext);
 
 	useEffect(() => {
-		console.log('aquiiii', id_statusFM);
 		if (id_statusFM !== 0) {
 			const idStatus = id_statusFM;
-			console.log('abrete', id_statusFM);
 			Swal.fire({
 				title: `${idStatus === 3 ? 'Formulario Verificado' : 'Formulario Diferido'}`,
 				icon: `${idStatus === 3 ? 'success' : 'warning'}`,
@@ -248,117 +231,24 @@ const Comprobacion: React.FC<any> = () => {
 		}
 	}, [id_statusFM, updatedStatus]);
 
-	const handleBack = () => {
-		setActiveStep((prevActiveStep) => prevActiveStep - 1);
-	};
-
-	const handleStep = (step: number) => () => {
-		setActiveStep(step);
-	};
-
-	const handleComplete = async () => {
-		const newCompleted = new Set(completed);
-		Swal.fire({
-			title: 'Confirmar verificación',
-			icon: 'warning',
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: 'Verificado',
-			showCancelButton: true,
-			cancelButtonText: 'Atras',
-			showCloseButton: true,
-			customClass: { container: 'swal2-validated' },
-		}).then((result) => {
-			if (result.isConfirmed) {
-				newCompleted.add(activeStep);
-				dispatch(stepComplete(newCompleted));
-				setCompleted(newCompleted);
-				if (completed.size !== totalSteps() - skippedSteps()) {
-					handleNext();
-				}
-			}
-		});
-	};
-
-	const handleReset = () => {
-		setActiveStep(0);
-		setCompleted(new Set<number>());
-		setSkipped(new Set<number>());
-		dispatch(CloseModal());
-	};
-
-	const isStepSkipped = (step: number) => {
-		return skipped.has(step);
-	};
-
-	function isStepComplete(step: number) {
-		return completed.has(step);
-	}
-
-	const handleClose = () => {
-		dispatch(CloseModal());
-	};
-
 	return (
-		<div>
-			<Dialog fullScreen open={modalOpen} onClose={handleClose} TransitionComponent={Transition}>
-				{/*
-					<CancelIcon className={classes2.cancelIcon} onClick={handleClose}/>
-					*/}
-				<div className='close' onClick={handleClose}></div>
-				<div className={classes2.root}>
-					<Stepper alternativeLabel nonLinear activeStep={activeStep}>
-						{steps.map((label, index) => {
-							const stepProps: { completed?: boolean } = {};
-							const buttonProps: { optional?: React.ReactNode } = {};
-							if (isStepSkipped(index)) {
-								stepProps.completed = false;
-							}
-							return (
-								<Step key={label} {...stepProps}>
-									<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
-										<b>{label}</b>
-									</StepButton>
-								</Step>
-							);
-						})}
-					</Stepper>
-					<div className={classes2.containerStep}>
-						{allStepsCompleted() ? (
-							<div className='btn-divfloat'>
-								<Typography className={classes2.instructions}>Todos los campos fueron Validados</Typography>
-							</div>
-						) : (
-							<div>
-								<Typography className={classes2.instructions}>{getStepContent(activeStep)}</Typography>
-								<div className='btn-divfloat'>
-									<Button disabled={activeStep === 0} onClick={handleBack} className={classes2.button}>
-										Volver
-									</Button>
-									<Button variant='contained' color='primary' onClick={handleNext} className={classes2.button}>
-										Siguiente
-									</Button>
-									{activeStep !== steps.length &&
-										(completed.has(activeStep) ? (
-											<Typography variant='caption' className={classes2.completed}>
-												Verificar
-											</Typography>
-										) : (
-											<Button
-												className={classes2.buttonS}
-												variant='contained'
-												color='primary'
-												onClick={handleComplete}>
-												{completedSteps() === totalSteps() - 1 ? 'Solicitud Revisada' : 'Verificado'}
-											</Button>
-										))}
-								</div>
-							</div>
-						)}
-					</div>
-				</div>
-			</Dialog>
-		</div>
+		<FullModal
+			stepComplete={stepComplete}
+			clean={cleanAdmisionFM}
+			updatedStatus={updateStatusFM}
+			steps={steps}
+			getStepContent={getStepContent}
+			fm={fm}
+			modalOpen={modalOpen}
+			CloseModal={CloseModal}
+			id_status={id_statusFM}
+			getSteps={getSteps}
+			activeStep={activeStep}
+			setActiveStep={setActiveStep}
+			completed={completed}
+			setCompleted={setCompleted}
+			skipped={skipped}
+		/>
 	);
 };
 
