@@ -9,6 +9,7 @@ import {
 import { makeStyles } from '@material-ui/styles';
 import React, { useContext, useEffect, useState } from 'react';
 import { SocketContext } from '../../../context/SocketContext';
+import { DateTime } from 'luxon';
 import { getDiferidos } from '../../../helpers/getDiferidos';
 // import { getDiferidos } from '../../../helpers/getDiferidos';
 //Socket
@@ -26,7 +27,50 @@ import { OpenModalDiferido } from '../../../store/actions/ui';
 
 import Diferido from './Diferido';
 
-const columns: GridColDef[] = [{ field: 'id', headerName: 'ID', width: 75 }];
+const columns: GridColDef[] = [
+	{ 
+		field: 'code',
+		headerName: 'Cod.',
+		width: 80,
+		editable: false,
+		sortable: false,
+	},
+	{ 
+		field: 'nameComer', 
+		headerName: 'Nombre Comercio', 
+		width: 150,
+		editable: false,
+		sortable: false,
+	},
+	{
+		field: 'nameClient',
+		headerName: 'Cliente',
+		width: 120,
+		valueFormatter: (value: GridValueGetterParams) => {
+			return `${value.row?.nameClient} ${value.row?.lastnameClient}`;
+		},
+		sortable: false,
+	},
+	{
+		field: 'identNumComer',
+		headerName: 'DI Comercio',
+		width: 140,
+		valueFormatter: (value: GridValueGetterParams) => {
+			return `${value.row?.identTypeComer} ${value.row?.identNumComer}`;
+		},
+		sortable: false,
+	},
+	{
+		field: 'updatedAt',
+		headerName: 'Fecha',
+		width: 120,
+		valueFormatter: (value: GridValueGetterParams) => {
+			const fechaFormateada = DateTime.fromISO(value.row?.updatedAt).toFormat('dd/LL/yyyy').toLocaleString();
+			return `${fechaFormateada}`;
+		},
+		sortable: false,
+	},
+];
 
 const Diferidos: React.FC = () => {
 	const classes = useStyles();
