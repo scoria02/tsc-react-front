@@ -1,4 +1,4 @@
-import {withStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 
 export const HtmlTooltip = withStyles(() => ({
@@ -17,7 +17,7 @@ export const useStylesModalUser = makeStyles((styles) => ({
 	},
 	containerRight: {
 		margin: 0,
-		position: 'relative'
+		position: 'relative',
 	},
 	media: {
 		height: 400,
@@ -46,7 +46,7 @@ export const useStylesModalUser = makeStyles((styles) => ({
 	inputNro: {
 		width: '70%',
 	},
-	inputPhone:{
+	inputPhone: {
 		width: '52%',
 	},
 	formControl: {
@@ -128,6 +128,11 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		alignSelf: 'center',
 	},
 	typography: {
-    padding: styles.spacing(2),
-  },
+		padding: styles.spacing(2),
+	},
+	containerLeft: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 }));
