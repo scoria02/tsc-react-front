@@ -92,7 +92,8 @@ export const updateStatusFMDiferido = (id_fm: number, formData: any) => {
 	return async (dispatch: any) => {
 		console.log('fm',id_fm)
 		try {
-			const res:any = await axiosFiles.put(`/FM/${id_fm}/status`, formData);
+			const res:any = await axiosFiles.put(`/1000pagosRC/RC/admition/${id_fm}/diferidos`, formData);
+			console.log('updateimg', res)
 			dispatch(requestSuccess());
 		} catch (error) {
 			console.log(error.response)

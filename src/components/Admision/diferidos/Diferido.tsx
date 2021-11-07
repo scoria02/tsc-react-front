@@ -182,7 +182,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 
 
 	useEffect(() => {
-		/*
 		if (updatedStatus) {
 			Swal.fire({
 				title: 'Formulario Verificado',
@@ -191,7 +190,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 			});
 			dispatch(cleanDataFmDiferido());
 		}
-		 */
 	}, [updatedStatus]);
 
 	const handleComplete = async () => { const newCompleted = new Set(completed);
