@@ -75,7 +75,6 @@ const StepDiferido: React.FC<any> = ({
 		<>
 			<form className="container-step" noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					{console.log(ready)}
 				<Button
 					className={classes.uploadImg}
 					variant='contained'

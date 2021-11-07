@@ -1,24 +1,17 @@
 import {
 	DataGrid,
 	GridColDef,
-	GridRowParams,
 	GridToolbarContainer,
 	GridToolbarFilterButton,
 	GridValueGetterParams,
 } from '@material-ui/data-grid';
-import { makeStyles } from '@material-ui/styles';
 import React, { useContext, useEffect, useState } from 'react';
 import { SocketContext } from '../../../context/SocketContext';
 import { DateTime } from 'luxon';
-import { getDiferidos } from '../../../helpers/getDiferidos';
-// import { getDiferidos } from '../../../helpers/getDiferidos';
-//Socket
-// import WebSocket from '../../../hooks/WebSocket';
 
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useStyles } from './styles';
-import classNames from 'classnames';
 
 import { RootState } from '../../../store/store';
 import { getDataFMAdministration } from '../../../store/actions/administration';
@@ -91,7 +84,6 @@ const Diferidos: React.FC = () => {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		dispatch(getDataFMAdministration());
-		// console.log('rowSelected', rowSelected);
 	}, []);
 
 	useEffect(() => {
@@ -128,7 +120,10 @@ const Diferidos: React.FC = () => {
 	const handleRow = (event: any) => {
 		setRowSelect(null);
 		socket.emit('Editar_diferido', event.row?.id, (res:any) => {
-			setRowSelect(res)
+			setRowSelect({
+				...res,
+				id: event.row?.id,
+			})
 		})
 		dispatch(OpenModalDiferido());
 		setSelected(true);

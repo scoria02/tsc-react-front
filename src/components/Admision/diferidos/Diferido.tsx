@@ -14,7 +14,7 @@ import './index.scss';
 const Diferido: React.FC<any> = ({ fm }) => {
 	const dispatch = useDispatch();
 
-	const { id_valid_request, ...recaudos } = fm;
+	const {id, id_valid_request, ...recaudos } = fm;
 
 	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
 
@@ -67,11 +67,9 @@ const Diferido: React.FC<any> = ({ fm }) => {
 			let index = 0;
 			for (const item of Object.entries(uploadImgs)) {
 				if(item[1]){
-					console.log(item[0])
 					index++;
 				}
 			}
-			console.log(index, activeStep+1)
 			return (index === activeStep+1) ? true : false
 		}
 		setReadyStep(!validStep())
@@ -171,12 +169,12 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				const formData: any = new FormData();
 				for (const item of Object.entries(uploadImgs)) {
 					if (item[1] !== null) {
-						console.log(item[0])
+						console.log(item[0], 'tiene data')
 						formData.append('images', item[1]);
 					}
 				}
 				dispatch(updateStatusFMDiferido(fm.id, formData));
-				console.log('fin validacion');
+				console.log('imagen updateada');
 			}
 		}
 		//eslint-disable-next-line react-hooks/exhaustive-deps
@@ -218,8 +216,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 			}
 		});
 	};
-
-	console.log()
 
 	return (
 		<FullModal 

@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import Swal from 'sweetalert2';
-import useAxios from '../../config/index';
+import useAxios, { axiosFiles } from '../../config/index';
 import { ActionType } from '../types/types';
 import { CloseModal, CloseModalDiferido } from './ui';
 
@@ -90,14 +90,13 @@ export const cleanAdmisionFM = () => {
 
 export const updateStatusFMDiferido = (id_fm: number, formData: any) => {
 	return async (dispatch: any) => {
-		console.log(formData)
+		console.log('fm',id_fm)
 		try {
-			//await useAxios.put(`/FM/${id_fm}/status`, formData);
-			console.log('api de images')
+			const res:any = await axiosFiles.put(`/FM/${id_fm}/status`, formData);
 			dispatch(requestSuccess());
 		} catch (error) {
 			console.log(error.response)
-			dispatch(CloseModal());
+			dispatch(CloseModalDiferido());
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
