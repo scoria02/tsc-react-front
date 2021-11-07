@@ -1,6 +1,3 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 // import CardActionArea from '@material-ui/core/CardActionArea';
@@ -10,6 +7,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 //import luffy from '../../../img/itachi2.png';
 import luffy from '../../../img/user.png';
 import { startLogin } from '../../../store/actions/auth';
@@ -70,12 +70,8 @@ const Login: React.FC = () => {
 		<Card className={classes.root}>
 			<CardContent>
 				<div className='ed-grid s-grid-1 m-grid-2 '>
-					{' '}
-					<div className='ed-container'>
-						<div className='s-to-center'>
-							{' '}
-							<CardMedia className={classes.media} image={luffy} title='Rey de los Piratas' />
-						</div>
+					<div className={classes.containerLeft}>
+						<CardMedia className={classes.media} image={luffy} title='Logo Mil Pagos' />
 					</div>
 					<CardContent>
 						<div className='s-py-4'>
