@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 const Inicio: React.FC<HomeInt> = () => {
 	const classes = useStyles();
+
 	return (
 		<>
 			<div className='ed-container'>

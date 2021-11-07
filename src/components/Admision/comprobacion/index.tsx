@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Slide from '@material-ui/core/Slide';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import { SocketContext } from '../../../context/SocketContext';
 import { stepComplete } from '../../../store/actions/accept';
 import { cleanAdmisionFM, updateStatusFM } from '../../../store/actions/admisionFm';
 import { CloseModal } from '../../../store/actions/ui';
@@ -19,7 +20,6 @@ import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
 import FullModal from '../../modals/FullModal';
 
 const Comprobacion: React.FC<any> = () => {
-
 	function getStepContent(step: number) {
 		switch (step) {
 			case 0:
@@ -48,16 +48,24 @@ const Comprobacion: React.FC<any> = () => {
 			case 3:
 				if (fm.rc_constitutive_act || fm.rc_special_contributor) {
 					return (
-						<div className={(fm.rc_constitutive_act && fm.rc_special_contributor) && 'comprobar_container_2'}>
-							<div>{fm.rc_constitutive_act && 
-								<PasoActaConst 
-									positionImg={(fm.rc_constitutive_act && fm.rc_special_contributor) ? 'img_container_1' : 'img_container'}
-								/>}
+						<div className={fm.rc_constitutive_act && fm.rc_special_contributor && 'comprobar_container_2'}>
+							<div>
+								{fm.rc_constitutive_act && (
+									<PasoActaConst
+										positionImg={
+											fm.rc_constitutive_act && fm.rc_special_contributor ? 'img_container_1' : 'img_container'
+										}
+									/>
+								)}
 							</div>
-							<div>{fm.rc_special_contributor && 
-								<PasoContriSpecial 
-									positionImg={(fm.rc_constitutive_act && fm.rc_special_contributor) ? 'img_container_2' : 'img_container'}
-								/>}
+							<div>
+								{fm.rc_special_contributor && (
+									<PasoContriSpecial
+										positionImg={
+											fm.rc_constitutive_act && fm.rc_special_contributor ? 'img_container_2' : 'img_container'
+										}
+									/>
+								)}
 							</div>
 						</div>
 					);
@@ -179,6 +187,8 @@ const Comprobacion: React.FC<any> = () => {
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activeStep, dispatch, allStepsCompleted]);
 
+	const { socket } = useContext(SocketContext);
+
 	useEffect(() => {
 		if (id_statusFM !== 0) {
 			const idStatus = id_statusFM;
@@ -188,12 +198,12 @@ const Comprobacion: React.FC<any> = () => {
 				customClass: { container: 'swal2-validated' },
 			});
 			dispatch(cleanAdmisionFM());
+			socket.emit('cliente:loadDiferidos');
 		}
 	}, [id_statusFM, updatedStatus]);
 
-
 	return (
-		<FullModal 
+		<FullModal
 			stepComplete={stepComplete}
 			clean={cleanAdmisionFM}
 			updatedStatus={updateStatusFM}

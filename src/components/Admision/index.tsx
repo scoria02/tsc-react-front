@@ -1,7 +1,8 @@
 import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { SocketContext } from '../../context/SocketContext';
 // import { SocketContext } from '../../helpers/SocketContext';
 import { getDataFM } from '../../store/actions/admisionFm';
 import { OpenModal } from '../../store/actions/ui';
@@ -14,15 +15,22 @@ import Diferidos from './diferidos/Diferidos';
 import './index.scss';
 import Comprobacion from './comprobacion';
 
-
 const Admision: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const { modalOpen } = useSelector((state: any) => state.ui);
+	const { user } = useSelector((state: any) => state.auth);
+
+	const { socket } = useContext(SocketContext);
 
 	const handleClick = () => {
-		dispatch(getDataFM());
-		dispatch(OpenModal());
+		// dispatch(getDataFM());
+		// dispatch(OpenModal());
+
+		socket.emit('Trabanjando_Solic', user, (solic: any) => {
+			console.log(solic);
+		});
+
 		console.log('Aqui ta el beta');
 	};
 
@@ -53,9 +61,7 @@ const Admision: React.FC = () => {
 					<Fab color='primary' aria-label='add' onClick={handleClick}>
 						<AddIcon />
 					</Fab>
-					{modalOpen &&
-						<Comprobacion /> 
-					}
+					{modalOpen && <Comprobacion />}
 				</div>
 			</div>
 		</div>

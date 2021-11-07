@@ -7,10 +7,13 @@ import {
 	GridValueGetterParams,
 } from '@material-ui/data-grid';
 import { makeStyles } from '@material-ui/styles';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { SocketContext } from '../../../context/SocketContext';
+import { DateTime } from 'luxon';
+import { getDiferidos } from '../../../helpers/getDiferidos';
+// import { getDiferidos } from '../../../helpers/getDiferidos';
 //Socket
-import WebSocket from '../../../hooks/WebSocket';
-import { PortFiles, URL } from '../../../config';
+// import WebSocket from '../../../hooks/WebSocket';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -25,43 +28,47 @@ import { OpenModalDiferido } from '../../../store/actions/ui';
 import Diferido from './Diferido';
 
 const columns: GridColDef[] = [
-	{
-		field: 'id_request',
+	{ 
+		field: 'code',
 		headerName: 'Cod.',
-		width: 120,
+		width: 80,
 		editable: false,
 		sortable: false,
-		valueFormatter: (value: GridValueGetterParams) => {
-			return value.row?.id_request.code;
-		},
 	},
-	{
-		field: 'name_commerce',
-		headerName: 'Comercio',
-		width: 160,
-		valueFormatter: (value: GridValueGetterParams) => {
-			return value.row?.id_request.id_commerce.name;
-		},
+	{ 
+		field: 'nameComer', 
+		headerName: 'Nombre Comercio', 
+		width: 150,
+		editable: false,
 		sortable: false,
 	},
 	{
-		field: 'name_client',
+		field: 'nameClient',
 		headerName: 'Cliente',
-		width: 160,
+		width: 120,
 		valueFormatter: (value: GridValueGetterParams) => {
-			return `${value.row?.id_request.id_client.name} ${value.row?.id_request.id_client.last_name}`;
+			return `${value.row?.nameClient} ${value.row?.lastnameClient}`;
 		},
 		sortable: false,
 	},
 	{
-		field: 'id_type_payment',
-		headerName: 'Paga Despues',
-		width: 200,
-		editable: false,
-		sortable: false,
+		field: 'identNumComer',
+		headerName: 'DI Comercio',
+		width: 140,
 		valueFormatter: (value: GridValueGetterParams) => {
-			return value.row?.id_request.pagadero ? 'Si' : 'No';
+			return `${value.row?.identTypeComer} ${value.row?.identNumComer}`;
 		},
+		sortable: false,
+	},
+	{
+		field: 'updatedAt',
+		headerName: 'Fecha',
+		width: 120,
+		valueFormatter: (value: GridValueGetterParams) => {
+			const fechaFormateada = DateTime.fromISO(value.row?.updatedAt).toFormat('dd/LL/yyyy').toLocaleString();
+			return `${fechaFormateada}`;
+		},
+		sortable: false,
 	},
 ];
 
@@ -70,8 +77,8 @@ const Diferidos: React.FC = () => {
 
 	const administration: any = useSelector((state: RootState) => state.administration);
 
-	const [rowSelected, setRowSelect] = useState({ 
-		id: null ,
+	const [rowSelected, setRowSelect] = useState({
+		id: null,
 		code: '',
 		pagadero: false,
 		paymentmethod: {
@@ -115,41 +122,27 @@ const Diferidos: React.FC = () => {
 		);
 	};
 
-	const { socket } = WebSocket();
+	const { socket } = useContext(SocketContext);
 
 	const [diferidos, setDiferidos] = useState([]);
 
 	useEffect(() => {
-		if (socket) {
-			//socket.emit("list_diferidos", 'Mamaloooooooo');
-			socket.on('list_diferidos', (list: any) => {
-				if (list.diferidos) {
-					setDiferidos(list.diferidos);
-				}
-			});
-		}
+		socket.emit('prueba');
+		socket.emit('cliente:loadDiferidos');
 	}, [socket]);
+
+	useEffect(() => {
+		// getDiferidos();
+		socket.emit('cliente:loadDiferidos');
+
+		socket.on('server:loadDiferidos', (data: any) => {
+			setDiferidos(data);
+			console.log(data);
+		});
+	}, []);
 
 	const handleRow = (event: any) => {
 		dispatch(OpenModalDiferido());
-		setUploadImg(null); 
-		setNameImage('');
-		setRowSelect({
-			id: event.row.id_request.id,
-			pagadero: event.row.id_request.pagadero,
-			paymentmethod: event.row.id_request.id_payment_method,
-			type_payment: event.row.id_request.id_type_payment,
-			nro_comp_dep: event.row.id_request.nro_comp_dep,
-			urlImgCompDep: 
-			event.row.id_request.rc_comp_dep ? 
-				`${URL}:${PortFiles}/${event.row.id_request.rc_comp_dep.path}`
-			:
-				'',
-			code: event.row.id_request.code,
-			id_commerce: event.row.id_request.id_commerce.id,
-			id_client: event.row.id_request.id_client.id,
-		});
-		setSelect(event.row.id_request);
 		setSelected(true);
 	};
 
@@ -159,32 +152,18 @@ const Diferidos: React.FC = () => {
 
 	return (
 		<div style={{ height: '100%', width: '100%' }}>
-			{!rowsAd.length ? (
-				<h1>loading...</h1>
-			) : (
-				<DataGrid
-					onCellClick={handleRow}
-					components={{
-						Toolbar: customToolbar,
-					}}
-					rows={rowsAd}
-					columns={columns}
-					rowsPerPageOptions={[25, 100]}
-					className={classes.dataGrid}
-					getRowClassName={(params: GridRowParams) =>
-						classNames({
-							[classes.red]: false,
-							[classes.yellow]: false,
-							[classes.green]: false,
-						})
-					}
-				/>
-			)}
-			{(select && selected) &&
-				<Diferido 
-					fm={select}
-				/>
-			}
+			<DataGrid
+				components={{
+					Toolbar: customToolbar,
+				}}
+				rows={diferidos}
+				columns={columns}
+				pageSize={5}
+				onCellClick={handleRow}
+				rowsPerPageOptions={[25]}
+				disableColumnMenu
+				getRowId={(row) => row.id}
+			/>
 		</div>
 	);
 };

@@ -189,10 +189,12 @@ const MainMenu: React.FC = () => {
 			case 1:
 				history.push(urlAdministracion);
 				localStorage.setItem('path', urlAdministracion);
+
 				break;
 			case 3:
 				history.push(urlAdmision);
 				localStorage.setItem('path', urlAdmision);
+				// socket.emit('prueba');
 				break;
 			case 4:
 				history.push(userAdmin);
