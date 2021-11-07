@@ -14,6 +14,7 @@ export const URL = 'http://10.198.68.21';
 
 export const Port = '5051';
 export const PortFiles = '6060';
+export const PortSocket = '777';
 
 const configAxios: AxiosRequestConfig = {
 	baseURL: `${URL}:${Port}`,

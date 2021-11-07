@@ -76,24 +76,9 @@ const Diferidos: React.FC = () => {
 	const classes = useStyles();
 
 	const administration: any = useSelector((state: RootState) => state.administration);
+	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
 
-	const [rowSelected, setRowSelect] = useState({
-		id: null,
-		code: '',
-		pagadero: false,
-		paymentmethod: {
-			name: '',
-			id: null,
-		},
-		type_payment: {
-			name: '',
-			id: null,
-		},
-		nro_comp_dep: '',
-		urlImgCompDep: '',
-		id_commerce: 0,
-		id_client: 0,
-	});
+	const [rowSelected, setRowSelect] = useState(null);
 
 	const [rowsAd, setRowsAd] = useState([]);
 
@@ -137,11 +122,14 @@ const Diferidos: React.FC = () => {
 
 		socket.on('server:loadDiferidos', (data: any) => {
 			setDiferidos(data);
-			console.log(data);
 		});
 	}, []);
 
 	const handleRow = (event: any) => {
+		setRowSelect(null);
+		socket.emit('Editar_diferido', event.row?.id, (res:any) => {
+			setRowSelect(res)
+		})
 		dispatch(OpenModalDiferido());
 		setSelected(true);
 	};
@@ -164,6 +152,11 @@ const Diferidos: React.FC = () => {
 				disableColumnMenu
 				getRowId={(row) => row.id}
 			/>
+			{(modalOpenDiferido && rowSelected) && 
+			<Diferido
+				fm={rowSelected}
+			/>
+			}
 		</div>
 	);
 };

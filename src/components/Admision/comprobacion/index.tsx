@@ -20,6 +20,7 @@ import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
 import FullModal from '../../modals/FullModal';
 
 const Comprobacion: React.FC<any> = () => {
+
 	function getStepContent(step: number) {
 		switch (step) {
 			case 0:
@@ -87,11 +88,11 @@ const Comprobacion: React.FC<any> = () => {
 		}
 	}
 
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 	const dispatch = useDispatch();
 
 	//selectores
 	const { modalOpen } = useSelector((state: any) => state.ui);
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 	const validated: any = useSelector((state: RootState) => state.acceptance.validado);
 	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatus);
 	const id_statusFM: any = useSelector((state: RootState) => state.fmAdmision.id_statusFM);
@@ -158,10 +159,6 @@ const Comprobacion: React.FC<any> = () => {
 		return completedSteps() === totalSteps() - skippedSteps();
 	};
 
-	const isLastStep = () => {
-		return activeStep === totalSteps() - 1;
-	};
-
 	const validStatusFm = (): boolean => {
 		for (const item in validated) {
 			if (item.slice(0, 3) === 'rc_') {
@@ -202,6 +199,39 @@ const Comprobacion: React.FC<any> = () => {
 		}
 	}, [id_statusFM, updatedStatus]);
 
+	const isLastStep = () => {
+		return activeStep === totalSteps() - 1;
+	};
+
+	const handleNext = () => {
+		const newActiveStep =
+			isLastStep() && !allStepsCompleted() ? steps.findIndex((step:any, i:any) => !completed.has(i)) : activeStep + 1;
+		setActiveStep(newActiveStep);
+	};
+
+	const handleComplete = async () => { const newCompleted = new Set(completed);
+		Swal.fire({
+			title: 'Confirmar verificación',
+			icon: 'warning',
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Verificado',
+			showCancelButton: true,
+			cancelButtonText: 'Atras',
+			showCloseButton: true,
+			customClass: { container: 'swal2-validated' },
+		}).then((result) => {
+			if (result.isConfirmed) {
+				newCompleted.add(activeStep);
+				dispatch(stepComplete(newCompleted));
+				setCompleted(newCompleted);
+				if (completed.size !== totalSteps() - skippedSteps()) {
+					handleNext();
+				}
+			}
+		});
+	};
+
 	return (
 		<FullModal
 			stepComplete={stepComplete}
@@ -219,6 +249,9 @@ const Comprobacion: React.FC<any> = () => {
 			completed={completed}
 			setCompleted={setCompleted}
 			skipped={skipped}
+			readyStep={false}
+			handleNext={handleNext}
+			handleComplete={handleComplete}
 		/>
 	);
 };

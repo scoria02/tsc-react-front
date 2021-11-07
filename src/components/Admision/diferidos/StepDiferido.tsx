@@ -8,7 +8,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import ReactImageZoom from 'react-image-zoom';
 import { useDispatch, useSelector } from 'react-redux';
 //Url
-import { PortFiles, URL as URLBD} from '../../../config';
+import { PortFiles, URL as urlBack} from '../../../config';
 import { Valid } from '../../../store/actions/accept';
 import { RootState } from '../../../store/store';
 import '../comprobacion/pasosComprobacion/styles/pasos.scss';
@@ -16,7 +16,15 @@ import { useStyles } from './styles';
 
 import luffy from '../../../img/obama.jpg';
 
-const StepDiferido: React.FC<any> = ({ fm }) => {
+const StepDiferido: React.FC<any> = ({
+	name,
+	fm,
+	path,
+	handleChangeImages,
+	uploadImg,
+	readyStep,
+	ready,
+}) => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 	const [ flag, setFlag ] = useState<boolean>(false); //Flag for loading
@@ -26,21 +34,6 @@ const StepDiferido: React.FC<any> = ({ fm }) => {
 	const [openModal, setOpenModal] = React.useState<boolean>(false);
 
 	const [nameImg, setNameImage] = useState<string>('');
-	const [uploadImg, setUploadImg] = useState<any>(null);
-	const [Path, setPath] = useState<string>('');
-
-	const handleChangeImages = (event: any) => {
-		const path = URL.createObjectURL(event.target.files[0]);
-		if (event.target.files[0]) {
-			let file = event.target.files[0];
-			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: 'image/jpeg' });
-			//Save img
-			setUploadImg(newFile); 
-			setNameImage(event.target.files[0].name);
-			//prueba
-			setPath(path)
-		}
-	};
 
 	const handleOpenModal = () => {
 		handleCancel()
@@ -67,55 +60,30 @@ const StepDiferido: React.FC<any> = ({ fm }) => {
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state]);
 
-	const handleIncorret = () => {
-		dispatch(Valid({ rc_ident_card: state }));
-		handleCloseModal(false);
-	};
-
 	const handleCancel = () => {
 		handleCloseModal(true);
-	};
-
-	const handleChangeI = (event:any) => {
-		setState({ 
-			...state, 
-			[event.target.name]: event.target.value,
-		});
-	}
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({ 
-			...state, 
-			[event.target.name]: event.target.checked,
-		});
-		if(!event.target.checked)
-			handleOpenModal();
 	};
 
 	const props = {
 		zoomPosition: 'original',
 		height: 350,
 		width: 500,
-		img: uploadImg ? Path : luffy,
+		img: uploadImg ? path : `${urlBack}:${PortFiles}/${fm.path}`,
 	};
 
 	return (
 		<>
 			<form className="container-step" noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					<TextField
-						className={classes.btn_stepT}
-						id='outlined-basic'
-						label='Nro'
-						variant='outlined'
-						value={fm.code}
-					/>
+					{console.log(ready)}
 				<Button
 					className={classes.uploadImg}
 					variant='contained'
 					component='label'
+					disabled={ready}
 					style={{ 
-						background: uploadImg ? '#00c853' : '#f44336' 
+						background: uploadImg ? '#00c853' : '#f44336' ,
+						opacity: !ready ? 1 : 0,
 					}}
 				>
 					<IconButton aria-label='upload picture' component='span'>
@@ -124,7 +92,7 @@ const StepDiferido: React.FC<any> = ({ fm }) => {
 					<input
 						type='file'
 						hidden
-						name='rc_comp_dep'
+						name={name}
 						accept='image/png, image/jpeg, image/jpg'
 						onChange={handleChangeImages}
 					/>

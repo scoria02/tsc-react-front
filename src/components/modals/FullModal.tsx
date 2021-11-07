@@ -81,12 +81,15 @@ const FullModal: React.FC<any> = ({
 	activeStep, 
 	setActiveStep,
 	completed, 
-	setCompleted,
 	skipped, 
+	readyStep,
+	handleNext,
+	handleComplete,
 }) => {
 	const classes = useStyles();
 
 	const totalSteps = () => {
+		console.log(getSteps(fm).length)
 		return getSteps(fm).length;
 	};
 
@@ -104,9 +107,6 @@ const FullModal: React.FC<any> = ({
 		return completedSteps() === totalSteps() - skippedSteps();
 	};
 
-	const isLastStep = () => {
-		return activeStep === totalSteps() - 1;
-	};
 
 	useEffect(() => {
 		if (id_status !== 0) {
@@ -120,41 +120,12 @@ const FullModal: React.FC<any> = ({
 		}
 	}, [id_status, updatedStatus]);
 
-	const handleNext = () => {
-		const newActiveStep =
-			isLastStep() && !allStepsCompleted() ? steps.findIndex((step:any, i:any) => !completed.has(i)) : activeStep + 1;
-		setActiveStep(newActiveStep);
-	};
-
 	const handleBack = () => {
 		setActiveStep((prevActiveStep:any) => prevActiveStep - 1);
 	};
 
 	const handleStep = (step: number) => () => {
 		setActiveStep(step);
-	};
-
-	const handleComplete = async () => { const newCompleted = new Set(completed);
-		Swal.fire({
-			title: 'Confirmar verificación',
-			icon: 'warning',
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: 'Verificado',
-			showCancelButton: true,
-			cancelButtonText: 'Atras',
-			showCloseButton: true,
-			customClass: { container: 'swal2-validated' },
-		}).then((result) => {
-			if (result.isConfirmed) {
-				newCompleted.add(activeStep);
-				dispatch(stepComplete(newCompleted));
-				setCompleted(newCompleted);
-				if (completed.size !== totalSteps() - skippedSteps()) {
-					handleNext();
-				}
-			}
-		});
 	};
 
 	const isStepSkipped = (step: number) => {
@@ -190,11 +161,17 @@ const FullModal: React.FC<any> = ({
 										stepProps.completed = false;
 									}
 									return (
-										<Step key={label} {...stepProps}>
-											<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
-												<b>{label}</b>
-											</StepButton>
-										</Step>
+											totalSteps() > 1 ? (
+												<Step key={label} {...stepProps}>
+													<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
+														<b>{label}</b>
+													</StepButton>
+												</Step>
+											):(
+												<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
+													<b>{label}</b>
+												</StepButton>
+											)
 									);
 								})}
 							</Stepper>
@@ -216,15 +193,16 @@ const FullModal: React.FC<any> = ({
 											{activeStep !== steps.length &&
 												(completed.has(activeStep) ? (
 													<Typography variant='caption' className={classes.completed}>
-														Verificar
+														Verificado
 													</Typography>
 												) : (
 													<Button
 														className={classes.buttonS}
 														variant='contained'
 														color='primary'
+														disabled={readyStep}
 														onClick={handleComplete}>
-														{completedSteps() === totalSteps() - 1 ? 'Solicitud Revisada' : 'Verificado'}
+														{completedSteps() === totalSteps() - 1 ? 'Solicitud Revisada' : 'Verificar'}
 													</Button>
 												))}
 										</div>

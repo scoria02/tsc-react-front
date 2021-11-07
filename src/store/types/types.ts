@@ -37,6 +37,11 @@ export enum ActionType {
 	updateStatusFMError = '[FM] update Status FM Error',
 	cleanDataFM= '[FM] CleanDataFM',
 
+	//Admision Diferdio
+	updatedStatusDiferido= '[FM] update Status FM Diferido',
+	updateStatusErrorDiferido = '[FM] update Status FM Error Diferido',
+	cleanDataDiferido= '[FM] CleanDataFM Diferido',
+
 	//Administracion FM
 	getDataFMAdministration = '[FM] Get FM Administration',
 	getDataFMErrorAdministration = '[FM] Get FM Error Administration',

@@ -59,6 +59,21 @@ export const admisionFM = (state = initialState, action: any) => {
 			};
 		case ActionType.cleanDataFM:
 			return initialState;
+		//Status Diferido
+		case ActionType.updatedStatusDiferido:
+			return {
+				...state,
+				updatedStatusDiferido: true,
+				errorStatusDiferido: false,
+			};
+		case ActionType.updateStatusErrorDiferido:
+			return {
+				...state,
+				updatedStatusDiferido: false,
+				errorStatusDiferido: true,
+			};
+		case ActionType.cleanDataDiferido:
+			return initialState;
 		default:
 			return state;
 	}

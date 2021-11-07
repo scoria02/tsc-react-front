@@ -24,8 +24,8 @@ const Admision: React.FC = () => {
 	const { socket } = useContext(SocketContext);
 
 	const handleClick = () => {
-		// dispatch(getDataFM());
-		// dispatch(OpenModal());
+		dispatch(getDataFM());
+		dispatch(OpenModal());
 
 		socket.emit('Trabanjando_Solic', user, (solic: any) => {
 			console.log(solic);

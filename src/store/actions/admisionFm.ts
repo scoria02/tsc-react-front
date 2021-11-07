@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import Swal from 'sweetalert2';
 import useAxios from '../../config/index';
 import { ActionType } from '../types/types';
-import { CloseModal } from './ui';
+import { CloseModal, CloseModalDiferido } from './ui';
 
 export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
@@ -87,3 +87,42 @@ export const cleanAdmisionFM = () => {
 		};
 	}
 };
+
+export const updateStatusFMDiferido = (id_fm: number, formData: any) => {
+	return async (dispatch: any) => {
+		console.log(formData)
+		try {
+			//await useAxios.put(`/FM/${id_fm}/status`, formData);
+			console.log('api de images')
+			dispatch(requestSuccess());
+		} catch (error) {
+			console.log(error.response)
+			dispatch(CloseModal());
+			dispatch(requestError());
+			Swal.fire('Error', error.response.data.message, 'error');
+		}
+	};
+	function requestSuccess() {
+		return {
+			type: ActionType.updatedStatusDiferido,
+		};
+	}
+	function requestError() {
+		return {
+			type: ActionType.updateStatusErrorDiferido,
+		};
+	}
+};
+
+export const cleanDataFmDiferido = () => {
+	return async (dispatch: any) => {
+		dispatch(CloseModalDiferido());
+		dispatch(request());
+	};
+	function request() {
+		return {
+			type: ActionType.cleanDataDiferido,
+		};
+	}
+};
+
