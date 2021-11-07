@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
+	Avatar,
 	Button,
 	Checkbox,
 	FormControlLabel,
@@ -9,19 +10,12 @@ import {
 	Paper,
 	TextField,
 } from '@material-ui/core';
-import {
-	DataGrid,
-	GridColDef,
-	GridToolbarContainer,
-	GridToolbarFilterButton,
-	GridValueGetterParams,
-} from '@material-ui/data-grid';
+import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarFilterButton } from '@material-ui/data-grid';
 import CloseIcon from '@material-ui/icons/Close';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import axios from '../../config';
-// import luffy from '../../img/luffy.png';
 import './scss/index.scss';
 
 interface GestionUsuariosProps {}
@@ -41,22 +35,32 @@ const columns: GridColDef[] = [
 		sortable: false,
 		disableColumnMenu: true,
 	},
-	// {
-	// 	field: 'name',
-	// 	width: 180,
-	// 	headerName: 'Nombre',
-	// 	sortable: false,
-	// 	disableColumnMenu: true,
-	// },
 	{
-		field: 'fullName',
+		field: 'name',
+		width: 120,
 		headerName: 'Nombre',
-		description: 'This column has a value getter and is not sortable.',
 		sortable: false,
-		width: 160,
-		valueGetter: (params: GridValueGetterParams) =>
-			`${params.getValue(params.id, 'name') || ''} ${params.getValue(params.id, 'last_name') || ''}`,
+		disableColumnMenu: true,
 	},
+	{
+		field: 'last_name',
+		width: 120,
+		headerName: 'Apellido',
+		sortable: false,
+		disableColumnMenu: true,
+	},
+	// {
+	// 	field: 'fullName',
+	// 	headerName: 'Nombre',
+	// 	description: 'This column has a value getter and is not sortable.',
+	// 	sortable: false,
+	// 	width: 160,
+	// 	valueGetter: (params: GridValueGetterParams) => {
+	// 		console.log('name de params', params);
+
+	// 		return `${params.getValue(params.id, 'name') || ''} ${params.getValue(params.id, 'last_name') || ''}`;
+	// 	},
+	// },
 ];
 
 const useStyles = makeStyles((styles) => ({
@@ -64,7 +68,8 @@ const useStyles = makeStyles((styles) => ({
 		padding: '0 1rem',
 	},
 	card: {
-		display: 'flex',
+		display: 'grid',
+		gridTemplateColumns: '1fr 4fr',
 		alignItems: 'center',
 		padding: '1rem',
 		position: 'relative',
@@ -91,7 +96,7 @@ const useStyles = makeStyles((styles) => ({
 	img: {
 		width: 170,
 		height: 170,
-		'& img': {
+		'& div': {
 			width: '100%',
 			height: '100%',
 			borderRadius: '50%',
@@ -123,10 +128,26 @@ const useStyles = makeStyles((styles) => ({
 		fontSize: 16,
 		fontWeight: 'bold',
 	},
+	avatarLetter: {
+		textTransform: 'uppercase',
+		backgroundColor: styles.palette.primary.light,
+		fontSize: 56,
+	},
 }));
 
 const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	const classes = useStyles();
+
+	const [allUserRoles, setAllUserRoles] = useState<any[]>([]);
+	const [openUserView, setUserView] = useState<boolean>();
+	const [checkbox, setCheckbox] = useState<boolean>(true);
+	const [loading, setLoading] = useState<boolean>(true);
+	const [userRol, setUserRol] = useState<any[]>([]);
+	const [allUser, setUsers] = useState<any[]>([]);
+	const [email, setEmail] = useState<string>('');
+	const [lname, setLName] = useState<string>('');
+	const [name, setName] = useState<string>('');
+
 	const customToolbar: () => JSX.Element = () => {
 		return (
 			<GridToolbarContainer className='m-main-justify m-px-2'>
@@ -136,21 +157,14 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 		);
 	};
 
-	const [openUserView, setUserView] = useState<boolean>();
-	const [checkbox, setCheckbox] = useState<boolean>(true);
-	const [loading, setLoading] = useState<boolean>(true);
-	const [email, setEmail] = useState<string>('');
-	const [name, setName] = useState<string>('');
-	let [arr_rol_user, setArrRolUser] = useState<any[]>([]);
-	const [allUser, setUser] = useState<any[]>([]);
-
 	useEffect(() => {
 		try {
 			setLoading(false);
+			axios.get('/roles/all').then(async (data: any) => {
+				await setAllUserRoles(data.data.info);
+			});
 			axios.get('worker/all').then(async (data: any) => {
-				const users = data.data.info;
-
-				await setUser(users);
+				await setUsers(data.data.info);
 			});
 			setLoading(true);
 		} catch (error) {
@@ -159,44 +173,38 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 		}
 	}, []);
 
-	const handleRow = (event: any) => {
-		console.log('row', event.row);
-		getuserRol(event.row.id);
-		setUserView(true);
-	};
-
 	const handleCloseRow = (event: any) => {
 		setUserView(false);
 	};
 
-	const handleInputChanges: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-		e.preventDefault();
-		switch (e.target.id) {
-			case 'email':
-				setEmail(e.target.value);
-				break;
-			case 'name':
-				setName(e.target.value);
-				break;
-			default:
-				break;
-		}
+	const handleRow = (event: any) => {
+		getuserRol(event.row.id);
+		setUserView(true);
 	};
 
-	const getuserRol = async (id: number) => {
-		try {
-			const resp_rol = await axios.get(`/roles/all`);
-			const resp = await axios.get(`/worker/${id}`);
-			const data = resp.data.info;
-			console.log('data', data);
-			// const dataRol = resp2.data.info;
-			setArrRolUser(resp_rol.data.info);
-			setEmail(data.email);
-			setName(data.name);
-			// arr_rol_user = dataRol;
-		} catch (error) {
-			console.log('error getuserRol', error);
-		}
+	// const handleInputChanges: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+	// 	e.preventDefault();
+	// 	switch (e.target.id) {
+	// 		case 'email':
+	// 			setEmail(e.target.value);
+	// 			break;
+	// 		case 'name':
+	// 			setName(e.target.value);
+	// 			break;
+	// 		default:
+	// 			break;
+	// 	}
+	// };
+
+	const isInUserRol = (id: number) => {
+		let ret = false;
+		userRol.map((val) => {
+			if (val.id === id) {
+				ret = true;
+			}
+			return val;
+		});
+		return ret;
 	};
 
 	const updateCB = (array: any[], item: any, value: boolean) => {
@@ -205,14 +213,46 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 			array[index].valid = value;
 			setCheckbox(true);
 			return array;
-		} else return array;
+		} else {
+			return array;
+		}
 	};
 
-	const handleCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const getuserRol = async (id: number) => {
+		try {
+			const resp = await axios.get(`/worker/${id}`);
+			const data = resp.data.info;
+			setLName(data.last_name);
+			setUserRol(data.roles);
+			setEmail(data.email);
+			setName(data.name);
+		} catch (error) {
+			console.log('error getuserRol', error);
+		}
+	};
+
+	const handleCheckbox = async (event: React.ChangeEvent<HTMLInputElement>) => {
 		setCheckbox(false);
-		setArrRolUser((prev) => {
+		const id = parseInt(event.target.id, 10);
+		setAllUserRoles((prev) => {
 			return updateCB(prev, event.target.name, event.target.checked);
 		});
+		switch (event.target.checked) {
+			case true:
+				setUserRol((prev) => {
+					const index: number = prev.findIndex((i: any) => i.id === id);
+					if (index === -1) {
+						return [...prev, { id: id, name: event.target.name }];
+					}
+					return prev;
+				});
+				break;
+			default:
+				setUserRol((prev) => {
+					return prev.filter((rol) => id !== rol.id);
+				});
+				break;
+		}
 	};
 
 	const handleSaveData = () => {
@@ -264,7 +304,9 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 								<Button className={classes.closeBtn} onClick={handleCloseRow}>
 									<CloseIcon />
 								</Button>
-								<div className={classes.img}>{/* <img src={luffy} alt='imagen' /> */}</div>
+								<div className={classes.img}>
+									{<Avatar className={classes.avatarLetter}>{`${name.slice(0, 1)}${lname.slice(0, 1)}`}</Avatar>}
+								</div>
 								<form className={classes.form}>
 									<div className={classes.row}>
 										<TextField
@@ -275,19 +317,20 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 											variant='outlined'
 											type='email'
 											value={email}
-											onChange={handleInputChanges}
+											// onChange={handleInputChanges}
 											style={{ marginRight: 8 }}
 											key={0}
 										/>
 										<TextField
+											disabled
 											key={1}
 											id='name'
 											name='name'
-											label='Nombre'
+											label='Nombre Completo'
 											variant='outlined'
 											type='text'
-											value={name}
-											onChange={handleInputChanges}
+											value={name + ' ' + lname}
+											// onChange={handleInputChanges}
 										/>
 									</div>
 									<div className={classnames(classes.row, classes.column)}>
@@ -295,14 +338,15 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 										<FormGroup>
 											<Grid container>
 												{checkbox &&
-													arr_rol_user.map((rol, i) => {
+													allUserRoles.map((rol, i) => {
 														return (
 															<Grid item xs={3} key={i}>
 																<FormControlLabel
 																	label={rol.name}
 																	control={
 																		<Checkbox
-																			checked={rol.valid}
+																			id={rol.id}
+																			checked={isInUserRol(rol.id)}
 																			onChange={handleCheckbox}
 																			name={rol.name}
 																			color={'primary'}
