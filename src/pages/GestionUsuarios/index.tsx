@@ -305,7 +305,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 									<CloseIcon />
 								</Button>
 								<div className={classes.img}>
-									{<Avatar className={classes.avatarLetter}>{`${name.slice(0, 1)}${lname.slice(0, 1)}`}</Avatar>}
+									<Avatar className={classes.avatarLetter}>{`${name.slice(0, 1)}${lname.slice(0, 1)}`}</Avatar>
 								</div>
 								<form className={classes.form}>
 									<div className={classes.row}>
