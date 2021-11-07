@@ -144,6 +144,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [userRol, setUserRol] = useState<any[]>([]);
 	const [allUser, setUsers] = useState<any[]>([]);
+	const [userID, setUserID] = useState<number>(0);
 	const [email, setEmail] = useState<string>('');
 	const [lname, setLName] = useState<string>('');
 	const [name, setName] = useState<string>('');
@@ -225,6 +226,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 			setLName(data.last_name);
 			setUserRol(data.roles);
 			setEmail(data.email);
+			setUserID(data.id);
 			setName(data.name);
 		} catch (error) {
 			console.log('error getuserRol', error);
@@ -266,10 +268,11 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 				confirmButton: 'order-2',
 				denyButton: 'order-3',
 			},
-		}).then((result) => {
+		}).then(async (result) => {
 			if (result.isConfirmed) {
 				try {
 					// Aca envio los datos al endpoint de dimas
+					await axios.put(`/roles/worker/${userID}`, { roles: userRol });
 					Swal.fire('Cambios Guardados', '', 'success');
 				} catch (error) {
 					Swal.fire('Hubo un error guardando sus cambios', '', 'info');
