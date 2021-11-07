@@ -115,7 +115,7 @@ const Diferidos: React.FC = () => {
 		socket.on('server:loadDiferidos', (data: any) => {
 			setDiferidos(data);
 		});
-	}, []);
+	}, [modalOpenDiferido]);
 
 	const handleRow = (event: any) => {
 		setRowSelect(null);
