@@ -14,7 +14,8 @@ declare global {
 	}
 }
 
-const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
+//Delete for QA
+//const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
 const reducers = combineReducers({
 	ui: uiReducer,
@@ -28,8 +29,8 @@ const reducers = combineReducers({
 
 export const store = createStore(
 	reducers, 
-	//applyMiddleware(thunk)
-	composeEnhancers(applyMiddleware(thunk))
+	applyMiddleware(thunk)
+	//composeEnhancers(applyMiddleware(thunk))
 );
 
 export type RootState = ReturnType<typeof reducers>;

@@ -22,7 +22,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [completed, setCompleted] = React.useState(new Set<number>());
-	const [skipped, setSkipped] = React.useState(new Set<number>());
 	const [readyStep, setReadyStep] = useState<boolean>(true);
 
 	const [uploadImgs, setUploadImgs ] = useState<any>({
@@ -83,7 +82,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				icon: 'success',
 				customClass: { container: 'swal2-validated' },
 			});
-			console.log('Clean data diferido')
 			dispatch(cleanDataFmDiferido());
 		}
 	}, [updatedStatus]);
@@ -145,16 +143,13 @@ const Diferido: React.FC<any> = ({ fm }) => {
 	const totalSteps = () => {
 		return getSteps().length;
 	};
-	const skippedSteps = () => {
-		return skipped.size;
-	};
 
 	const completedSteps = () => {
 		return completed.size;
 	};
 
 	const allStepsCompleted = () => {
-		return completedSteps() === totalSteps() - skippedSteps();
+		return completedSteps() === totalSteps();
 	};
 
 	const isLastStep = () => {
@@ -223,7 +218,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				newCompleted.add(activeStep);
 				dispatch(stepComplete(newCompleted));
 				setCompleted(newCompleted);
-				if (completed.size !== totalSteps() - skippedSteps()) {
+				if (completed.size !== totalSteps()) {
 					handleNext();
 				}
 			}
@@ -246,7 +241,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 			setActiveStep={setActiveStep}
 			completed={completed}
 			setCompleted={setCompleted}
-			skipped={skipped}
 			readyStep={readyStep}
 			handleNext={handleNext}
 			handleComplete={handleComplete}

@@ -37,7 +37,6 @@ export const refreshLogin = () => {
 			const res = await useAxios.get('/worker');
 			updateToken(res);
 			dispatch(StartLoading());
-			console.log(res)
 			dispatch(requestSuccess(res.data.info));
 		} catch (error: any) {
 			localStorage.clear();

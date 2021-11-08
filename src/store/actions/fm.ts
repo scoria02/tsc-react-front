@@ -48,7 +48,6 @@ export const validationCommerce = (id_client: number, commerce: any) => {
 			}
 		} catch (error) {
 			dispatch(requestError());
-			console.log('dimas', error.response.data);
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
 	};
@@ -191,7 +190,6 @@ export const sendImages = (formData: any) => {
 			const res: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, formData);
 			updateToken(res);
 			const images: any = res.data.info;
-			console.log('images_dimas', images);
 			dispatch(requestSuccess(images));
 		} catch (error) {
 			console.log(error.reponse);

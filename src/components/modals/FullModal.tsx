@@ -80,7 +80,6 @@ const FullModal: React.FC<any> = ({
 	activeStep, 
 	setActiveStep,
 	completed, 
-	skipped, 
 	readyStep,
 	handleNext,
 	handleComplete,
@@ -93,16 +92,12 @@ const FullModal: React.FC<any> = ({
 
 	const dispatch = useDispatch();
 
-	const skippedSteps = () => {
-		return skipped.size;
-	};
-
 	const completedSteps = () => {
 		return completed.size;
 	};
 
 	const allStepsCompleted = () => {
-		return completedSteps() === totalSteps() - skippedSteps();
+		return completedSteps() === totalSteps();
 	};
 
 	const handleBack = () => {
@@ -113,16 +108,14 @@ const FullModal: React.FC<any> = ({
 		setActiveStep(step);
 	};
 
-	const isStepSkipped = (step: number) => {
-		return skipped.has(step);
-	};
-
 	function isStepComplete(step: number) {
 		return completed.has(step);
 	}
 
 	const handleClose = () => {
+		console.log('clean for close')
 		dispatch(CloseModal());
+		dispatch(clean())
 	};
 
 	return (
@@ -142,9 +135,6 @@ const FullModal: React.FC<any> = ({
 								{steps.map((label:any, index:number) => {
 									const stepProps: { completed?: boolean } = {};
 									const buttonProps: { optional?: React.ReactNode } = {};
-									if (isStepSkipped(index)) {
-										stepProps.completed = false;
-									}
 									return (
 											totalSteps() > 1 ? (
 												<Step key={label} {...stepProps}>

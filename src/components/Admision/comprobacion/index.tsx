@@ -99,7 +99,6 @@ const Comprobacion: React.FC<any> = () => {
 	//states
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [completed, setCompleted] = React.useState(new Set<number>());
-	const [skipped, setSkipped] = React.useState(new Set<number>());
 
 	const steps = getSteps(fm);
 	function getSteps(form: any) {
@@ -146,16 +145,12 @@ const Comprobacion: React.FC<any> = () => {
 	const totalSteps = () => {
 		return getSteps(fm).length;
 	};
-	const skippedSteps = () => {
-		return skipped.size;
-	};
-
 	const completedSteps = () => {
 		return completed.size;
 	};
 
 	const allStepsCompleted = () => {
-		return completedSteps() === totalSteps() - skippedSteps();
+		return completedSteps() === totalSteps();
 	};
 
 	const validStatusFm = (): boolean => {
@@ -193,7 +188,6 @@ const Comprobacion: React.FC<any> = () => {
 				icon: `${idStatus === 3 ? 'success' : 'warning'}`,
 				customClass: { container: 'swal2-validated' },
 			});
-			console.log('Clean data FM')
 			dispatch(cleanAdmisionFM());
 			socket.emit('cliente:loadDiferidos');
 		}
@@ -225,7 +219,7 @@ const Comprobacion: React.FC<any> = () => {
 				newCompleted.add(activeStep);
 				dispatch(stepComplete(newCompleted));
 				setCompleted(newCompleted);
-				if (completed.size !== totalSteps() - skippedSteps()) {
+				if (completed.size !== totalSteps()) {
 					handleNext();
 				}
 			}
@@ -248,7 +242,6 @@ const Comprobacion: React.FC<any> = () => {
 			setActiveStep={setActiveStep}
 			completed={completed}
 			setCompleted={setCompleted}
-			skipped={skipped}
 			readyStep={false}
 			handleNext={handleNext}
 			handleComplete={handleComplete}

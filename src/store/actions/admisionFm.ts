@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import useAxios, { axiosFiles } from '../../config/index';
 import { ActionType } from '../types/types';
 import { CloseModal, CloseModalDiferido } from './ui';
+import { cleanRec } from './accept';
 
 export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
@@ -75,9 +76,10 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
 	}
 };
 
-
 export const cleanAdmisionFM = () => {
 	return async (dispatch: any) => {
+		console.log('Clean data FM & accept')
+		dispatch(cleanRec());
 		dispatch(CloseModal());
 		dispatch(request());
 	};
@@ -116,6 +118,7 @@ export const updateStatusFMDiferido = (id_fm: number, formData: any) => {
 
 export const cleanDataFmDiferido = () => {
 	return async (dispatch: any) => {
+		console.log('Clean data Diferido')
 		dispatch(CloseModalDiferido());
 		dispatch(request());
 	};
