@@ -15,6 +15,7 @@ import { useStyles } from './styles/styles';
 
 import { ModalAlert }from '../ModalAlert';
 
+import { recaudo } from '../../../utilis/recaudos';
 
 interface Prop {
 	positionImg: string
@@ -73,9 +74,9 @@ const PasoActaConst: React.FC<Prop> = ({ positionImg }) => {
 	};
 
 	const props = {
-		zoomPosition: 'original',
-		height: 350,
-		width: 500,
+		zoomPosition: recaudo.position,
+		height: recaudo.h,
+		width: recaudo.w,
 		img: `${URL}:${PortFiles}/${fm.rc_constitutive_act.path}`,
 	};
 

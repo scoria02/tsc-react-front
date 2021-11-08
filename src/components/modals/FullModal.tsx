@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -14,7 +14,6 @@ import Typography from '@material-ui/core/Typography';
 
 import LoaderPrimary from '../loaders/LoaderPrimary';
 
-import Swal from 'sweetalert2';
 import './scss/fullmodal.scss';
 
 const Transition = React.forwardRef(function Transition(
@@ -89,7 +88,6 @@ const FullModal: React.FC<any> = ({
 	const classes = useStyles();
 
 	const totalSteps = () => {
-		console.log(getSteps(fm).length)
 		return getSteps(fm).length;
 	};
 
@@ -106,19 +104,6 @@ const FullModal: React.FC<any> = ({
 	const allStepsCompleted = () => {
 		return completedSteps() === totalSteps() - skippedSteps();
 	};
-
-
-	useEffect(() => {
-		if (id_status !== 0) {
-			const idStatus = id_status;
-			Swal.fire({
-				title: `${idStatus === 3 ? 'Formulario Verificado' : 'Formulario Diferido'}`,
-				icon: `${idStatus === 3 ? 'success' : 'warning'}`,
-				customClass: { container: 'swal2-validated' },
-			});
-			dispatch(clean());
-		}
-	}, [id_status, updatedStatus]);
 
 	const handleBack = () => {
 		setActiveStep((prevActiveStep:any) => prevActiveStep - 1);
@@ -169,7 +154,7 @@ const FullModal: React.FC<any> = ({
 												</Step>
 											):(
 												<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
-													<b>{label}</b>
+													<b style={{ fontSize: "1.2rem" }}>{label}</b>
 												</StepButton>
 											)
 									);

@@ -75,6 +75,19 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		setReadyStep(!validStep())
 	}, [activeStep, uploadImgs])
 
+
+	useEffect(() => {
+		if (updatedStatus) {
+			Swal.fire({
+				title: 'Formulario Verificado',
+				icon: 'success',
+				customClass: { container: 'swal2-validated' },
+			});
+			console.log('Clean data diferido')
+			dispatch(cleanDataFmDiferido());
+		}
+	}, [updatedStatus]);
+
 	const steps = getSteps();
 
 	function nameSteps (name:any) {
@@ -98,26 +111,28 @@ const Diferido: React.FC<any> = ({ fm }) => {
 
 	function getSteps() {
 		let list: string[] = [];
-		for (const item of Object.entries(recaudos)) {
-			list.push(nameSteps(item[0]));
+
+		for (const item of Object.entries(recaudos).reverse()) {
+			const ob:any = item[1];
+			list.push(nameSteps(ob.descript));
 		}
-		//valids
 		return list ;
 	}
 
 	function getStepContent(step: number) {
 		let index = 0;
-		for (const item of Object.entries(recaudos)) {
+		for (const item of Object.entries(recaudos).reverse()) {
+			const element:any = item[1];
 			if(step === index) {
 				const ready = completed.has(activeStep);
 				return (
 					<StepDiferido 
 						key={index}
-						name={item[0]}
-						fm={item[1]}
-						path={paths[item[0]]}
+						name={element.descript}
+						fm={element}
+						path={paths[element.descript]}
 						handleChangeImages={handleChangeImages}
-						uploadImg={uploadImgs[item[0]]}
+						uploadImg={uploadImgs[element.descript]}
 						readyStep={readyStep}
 						ready={ready}
 					/>

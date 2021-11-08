@@ -1,11 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export const imgStyle = {
-	zoomPosition: 'original',
-	height: 350,
-	width: 500,
-}
-
 export const useStyles = makeStyles((styles) => ({
 	btn_stepM:{
 		width: '100%',

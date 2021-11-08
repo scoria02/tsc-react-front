@@ -59,7 +59,7 @@ const Register: React.FC = () => {
 
 	const codePhone = '+58';
 
-	const [company, setListListTypePay] = useState<any>([
+	const [company, setListCompany] = useState<any>([
 		{
 			id: 1,
 			name: 'Tranred',

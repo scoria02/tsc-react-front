@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { useStylesFM } from '../styles';
+import { recaudo } from '../../utilis/recaudos';
 
 export const Step2: React.FC<any> = ({
 	listIdentType,
@@ -141,7 +142,7 @@ export const Step2: React.FC<any> = ({
 							type='file'
 							hidden
 							name='rc_rif'
-							accept='image/png, image/jpeg, image/jpg'
+							accept={recaudo.acc}
 							onChange={handleChangeImages}
 						/>
 					</Button>
@@ -206,7 +207,7 @@ export const Step2: React.FC<any> = ({
 									type='file'
 									hidden
 									name='rc_constitutive_act'
-									accept='image/png, image/jpeg, image/jpg'
+									accept={recaudo.acc}
 									onChange={handleChangeImages}
 								/>
 							</Button>
@@ -264,69 +265,11 @@ export const Step2: React.FC<any> = ({
 							type='file'
 							hidden
 							name='rc_special_contributor'
-							accept='image/png, image/jpeg, image/jpg'
+							accept={recaudo.acc}
 							onChange={handleChangeImages}
 						/>
 					</Button>
 				</div>
-				{/* <div className={classes.input} >
-					<b className={classes.inputText}>Documento de Propiedad</b>
-					<Button
-						className={classes.imgStep1}
-						variant='contained'
-						//color="secondary"
-						component='label'>
-						{imagesForm.rc_property_document !== null ? (
-							<>
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-								<p className='nameImg'>{namesImages.rc_property_document.slice(0, 10)}...</p>
-							</>
-						) : (
-							<>
-								<b>Subir</b>
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-							</>
-						)}
-						<input
-							type='file'
-							hidden
-							name='rc_property_document'
-							accept='image/png, image/jpeg, image/jpg'
-							onChange={handleChangeImages}
-						/>
-					</Button>
-				</div> */}
-				{/* <div className={classes.input} >
-					<b className={classes.inputText}>Servicios</b>
-					<Button className={classes.imgStep1} variant='contained' component='label'>
-						{imagesForm.rc_service_document !== null ? (
-							<>
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-								<p className='nameImg'>{namesImages.rc_service_document.slice(0, 10)}...</p>
-							</>
-						) : (
-							<>
-								<b>Subir</b>
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-							</>
-						)}
-						<input
-							type='file'
-							hidden
-							name='rc_service_document'
-							accept='image/png, image/jpeg, image/jpg'
-							onChange={handleChangeImages}
-						/>
-					</Button>
-				</div> */}
 			</div>
 		</>
 	);

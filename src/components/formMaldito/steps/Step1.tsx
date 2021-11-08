@@ -15,6 +15,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../store/store';
 //sytles
 import {useStylesFM} from '../styles';
+import { recaudo } from '../../utilis/recaudos';
 
 export const Step1: React.FC<any> = ({
 	namesImages,
@@ -142,7 +143,7 @@ export const Step1: React.FC<any> = ({
 							type='file'
 							hidden
 							name='rc_ident_card'
-							accept='image/png, image/jpeg, image/jpg, .pdf'
+							accept={recaudo.acc}
 							onChange={handleChangeImages}
 						/>
 					</Button>

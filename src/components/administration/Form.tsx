@@ -1,4 +1,4 @@
-import React, { useState, useEffect }  from 'react';
+import React, { useEffect } from 'react';
 import { Button, makeStyles, TextField, Theme } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -11,7 +11,8 @@ import { useDispatch } from 'react-redux';
 //Url
 import './styles/index.scss';
 import { updateStatusFMAdministration } from '../../store/actions/administration';
-import { sendImages } from '../../store/actions/fm';
+
+import { recaudo } from '../utilis/recaudos';
 
 const useStyles = makeStyles((theme: Theme) => ({
 	administracion: {
@@ -157,10 +158,10 @@ export const Form: React.FC<any> = ({
 	const dispatch = useDispatch();
 
 	const handleChangeImages = (event: any) => {
-		const path = URL.createObjectURL(event.target.files[0]);
 		if (event.target.files[0]) {
 			let file = event.target.files[0];
 			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: 'image/jpeg' });
+			const path = URL.createObjectURL(newFile);
 			//Save img
 			setUploadImg(newFile); 
 			setNameImage(event.target.files[0].name);
@@ -172,9 +173,9 @@ export const Form: React.FC<any> = ({
 	};
 
 	const props = {
-		zoomPosition: 'original',
-		height: 350,
-		width: 500,
+		zoomPosition: recaudo.position,
+		height: recaudo.h,
+		width: recaudo.w,
 		img: fm.urlImgCompDep 
 	};
 
@@ -221,6 +222,25 @@ export const Form: React.FC<any> = ({
 			setTypePay(null);
 		}
 	};
+
+	const disButton = () => {
+		if(fm.urlImgCompDep || (payment && (payment.id === 2))){
+			return false;
+		}else {
+			return true;
+		}
+	}
+
+	useEffect(() => {
+		if(payment && payment.id === 2){
+			setUploadImg(null); 
+			setNameImage('');
+			setFm({
+				...fm,
+				urlImgCompDep: '' 
+			});
+		}
+	}, [payment])
 
 	return (
 		<>
@@ -292,33 +312,36 @@ export const Form: React.FC<any> = ({
 							<ReactImageZoom className={classes.img_zoom} {...props} />
 						</div>
 					}
-					<Button
-						className={classes.uploadImg}
-						variant='contained'
-						component='label'>
-						{uploadImg !== null ? (
-							<IconButton aria-label='upload picture' component='span'>
-								<p className={classes.nameImg}>{nameImg.slice(0, 10)} ...</p>
-							</IconButton>
-						):(
-							<IconButton aria-label='upload picture' component='span'>
-								<CloudUploadIcon className={classes.iconUpload}/>
-							</IconButton>
-						)}
-						<input
-							type='file'
-							hidden
-							name='rc_comp_dep'
-							accept='image/png, image/jpeg, image/jpg'
-							onChange={handleChangeImages}
-						/>
-					</Button>
+					{(payment && payment.id !== 2) &&
+						<Button
+							className={classes.uploadImg}
+							variant='contained'
+							component='label'>
+							{uploadImg !== null ? (
+								<IconButton aria-label='upload picture' component='span'>
+									<p className={classes.nameImg}>{nameImg.slice(0, 10)} ...</p>
+								</IconButton>
+							):(
+								<IconButton aria-label='upload picture' component='span'>
+									<CloudUploadIcon className={classes.iconUpload}/>
+								</IconButton>
+							)}
+							<input
+								type='file'
+								hidden
+								name='rc_comp_dep'
+								accept={recaudo.acc}
+								onChange={handleChangeImages}
+							/>
+						</Button>
+						}
 				</>
 					}
 				<Button
 					className={classes.buttonV}
 					onClick={handleVerificated}
 					variant='contained'
+					disabled={disButton()}
 					color='primary'>	
 					Verificar
 				</Button>

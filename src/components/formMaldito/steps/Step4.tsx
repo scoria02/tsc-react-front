@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { useStylesFM } from '../styles';
+import { recaudo } from '../../utilis/recaudos';
 
 //Pedido
 export const Step4: React.FC<any> = ({
@@ -253,7 +254,7 @@ export const Step4: React.FC<any> = ({
 							type='file'
 							hidden
 							name='rc_ref_bank'
-							accept='image/png, image/jpeg, image/jpg, .pdf'
+							accept={recaudo.acc}
 							onChange={handleChangeImages}
 						/>
 					</Button>
@@ -421,7 +422,7 @@ export const Step4: React.FC<any> = ({
 								type='file'
 								hidden
 								name='rc_comp_dep'
-								accept='image/png, image/jpeg, image/jpg, .pdf'
+								accept={recaudo.acc}
 								disabled={deleted}
 								onChange={handleChangeImages}
 							/>

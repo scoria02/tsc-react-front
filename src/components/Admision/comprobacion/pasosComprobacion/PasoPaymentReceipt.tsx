@@ -14,6 +14,8 @@ import { useStyles } from './styles/styles';
 
 import { ModalAlert }from '../ModalAlert';
 
+import { recaudo } from '../../../utilis/recaudos';
+
 export default function PasoPaymentReceipt() {
 	//falta
 	const rc_comp_dep: any = useSelector((state: RootState) => state.acceptance.validado.rc_comp_dep);
@@ -69,9 +71,9 @@ export default function PasoPaymentReceipt() {
 	};
 
 	const props = {
-		zoomPosition: 'original',
-		height: 350,
-		width: 500,
+		zoomPosition: recaudo.position,
+		height: recaudo.h,
+		width: recaudo.w,
 		img: `${URL}:${PortFiles}/${fm.rc_comp_dep.path}`,
 	};
 

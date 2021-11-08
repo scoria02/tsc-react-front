@@ -12,6 +12,7 @@ import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 import { ModalAlert }from '../ModalAlert';
+import { recaudo } from '../../../utilis/recaudos';
 
 export default function PasoCommerce2() {
 	const classes = useStyles();
@@ -65,9 +66,9 @@ export default function PasoCommerce2() {
 	};
 
 	const props = {
-		zoomPosition: 'original',
-		height: 350,
-		width: 450,
+		zoomPosition: recaudo.position,
+		height: recaudo.h,
+		width: recaudo.w,
 		img: `${URL}:${PortFiles}/${fm.rc_rif.path}`,
 	};
 

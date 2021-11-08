@@ -10,7 +10,9 @@ import { PortFiles, URL } from '../../../../config';
 import { Valid } from '../../../../store/actions/accept';
 import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
-import { useStyles, imgStyle } from './styles/styles';
+import { useStyles } from './styles/styles';
+
+import { recaudo } from '../../../utilis/recaudos';
 
 import { ModalAlert }from '../ModalAlert';
 
@@ -72,7 +74,9 @@ export default function PasoClient() {
 	};
 
 	const props = {
-		...imgStyle,
+		zoomPosition: recaudo.position,
+		height: recaudo.h,
+		width: recaudo.w,
 		img: `${URL}:${PortFiles}/${fm.rc_ident_card.path}`,
 	};
 

@@ -1,20 +1,16 @@
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { Button, makeStyles, TextField, Theme } from '@material-ui/core';
-import Switch from '@material-ui/core/Switch';
-import React, { useEffect, useState } from 'react';
+import { Button } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 // @ts-expect-error
 import ReactImageZoom from 'react-image-zoom';
-import { useDispatch, useSelector } from 'react-redux';
 //Url
 import { PortFiles, URL as urlBack} from '../../../config';
-import { Valid } from '../../../store/actions/accept';
-import { RootState } from '../../../store/store';
 import '../comprobacion/pasosComprobacion/styles/pasos.scss';
 import { useStyles } from './styles';
+import './index.scss';
+import { recaudo } from '../../utilis/recaudos';
 
-import luffy from '../../../img/obama.jpg';
 
 const StepDiferido: React.FC<any> = ({
 	name,
@@ -22,52 +18,21 @@ const StepDiferido: React.FC<any> = ({
 	path,
 	handleChangeImages,
 	uploadImg,
-	readyStep,
 	ready,
 }) => {
-	const dispatch = useDispatch();
 	const classes = useStyles();
 	const [ flag, setFlag ] = useState<boolean>(false); //Flag for loading
-	const [state, setState] = React.useState({
-		status: false
-	});
-	const [openModal, setOpenModal] = React.useState<boolean>(false);
-
-	const [nameImg, setNameImage] = useState<string>('');
-
-	const handleOpenModal = () => {
-		handleCancel()
-		setOpenModal(true);
-	};
-	const handleCloseModal = (cancel: boolean) => {
-		/*
-		if(cancel){
-			setState({ 
-				...state, 
-				status: !state.status,
-			});
-		}
-		 */
-		setOpenModal(false);
-	};
-
-	setTimeout(() => {
-		setFlag(true);
-	}, 150)
 
 	useEffect(() => {
-		//dispatch(Valid({ rc_ident_card: state }));
-		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state]);
-
-	const handleCancel = () => {
-		handleCloseModal(true);
-	};
+		setTimeout(() => {
+			setFlag(true);
+		}, 150);
+	}, [])
 
 	const props = {
-		zoomPosition: 'original',
-		height: 350,
-		width: 500,
+		zoomPosition: recaudo.position,
+		height: recaudo.h,
+		width: recaudo.w,
 		img: uploadImg ? path : `${urlBack}:${PortFiles}/${fm.path}`,
 	};
 
@@ -92,14 +57,14 @@ const StepDiferido: React.FC<any> = ({
 						type='file'
 						hidden
 						name={name}
-						accept='image/png, image/jpeg, image/jpg'
+						accept={recaudo.acc}
 						onChange={handleChangeImages}
 					/>
 				</Button>
 				</div>
 			</form>
 			{flag &&
-				<div className='img_container'>
+				<div className='img_container_center'>
 					<ReactImageZoom className={classes.img_zoom} {...props} />
 				</div>
 			}

@@ -28,7 +28,7 @@ const Admision: React.FC = () => {
 		dispatch(OpenModal());
 
 		socket.emit('Trabanjando_Solic', user, (solic: any) => {
-			console.log(solic);
+			console.log('solic', solic);
 		});
 
 		console.log('Aqui ta el beta');

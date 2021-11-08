@@ -15,6 +15,8 @@ import { useStyles } from './styles/styles';
 
 import { ModalAlert }from '../ModalAlert';
 
+import { recaudo } from '../../../utilis/recaudos';
+
 export default function PasoAccountNumber() {
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 
@@ -70,9 +72,9 @@ export default function PasoAccountNumber() {
 	};
 
 	const props = {
-		zoomPosition: 'original',
-		height: 350,
-		width: 500,
+		zoomPosition: recaudo.position,
+		height: recaudo.h,
+		width: recaudo.w,
 		img: `${URL}:${PortFiles}/${fm.rc_ref_bank.path}`,
 	};
 

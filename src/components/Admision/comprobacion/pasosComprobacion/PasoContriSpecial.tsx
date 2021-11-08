@@ -11,8 +11,9 @@ import { Valid } from '../../../../store/actions/accept';
 import { PortFiles, URL } from '../../../../config';
 import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
-import { useStyles, imgStyle } from './styles/styles';
+import { useStyles } from './styles/styles';
 import { ModalAlert } from '../ModalAlert';
+import { recaudo } from '../../../utilis/recaudos';
 
 interface Prop {
 	positionImg: string
@@ -71,7 +72,9 @@ const PasoContriSpecial: React.FC<Prop> = ({ positionImg }) => {
 	};
 
 	const props = {
-		...imgStyle,
+		zoomPosition: recaudo.position,
+		height: recaudo.h,
+		width: recaudo.w,
 		img: `${URL}:${PortFiles}/${fm.rc_special_contributor.path}`,
 	};
 

@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Slide from '@material-ui/core/Slide';
 import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -187,13 +186,14 @@ const Comprobacion: React.FC<any> = () => {
 	const { socket } = useContext(SocketContext);
 
 	useEffect(() => {
-		if (id_statusFM !== 0) {
+		if (id_statusFM !== 0 && updatedStatus) {
 			const idStatus = id_statusFM;
 			Swal.fire({
 				title: `${idStatus === 3 ? 'Formulario Verificado' : 'Formulario Diferido'}`,
 				icon: `${idStatus === 3 ? 'success' : 'warning'}`,
 				customClass: { container: 'swal2-validated' },
 			});
+			console.log('Clean data FM')
 			dispatch(cleanAdmisionFM());
 			socket.emit('cliente:loadDiferidos');
 		}

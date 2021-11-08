@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useStyles } from './styles';
 
 import { RootState } from '../../../store/store';
-import { getDataFMAdministration } from '../../../store/actions/administration';
 
 import { OpenModalDiferido } from '../../../store/actions/ui';
 
@@ -67,28 +66,13 @@ const columns: GridColDef[] = [
 
 const Diferidos: React.FC = () => {
 	const classes = useStyles();
+	const dispatch = useDispatch();
 
-	const administration: any = useSelector((state: RootState) => state.administration);
 	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
+	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
 
 	const [rowSelected, setRowSelect] = useState(null);
 
-	const [rowsAd, setRowsAd] = useState([]);
-
-	const [uploadImg, setUploadImg] = useState<any>(null);
-	const [nameImg, setNameImage] = useState<string>('');
-	const [selected, setSelected] = useState(false);
-
-	const [select, setSelect] = useState({});
-
-	const dispatch = useDispatch();
-	useEffect(() => {
-		dispatch(getDataFMAdministration());
-	}, []);
-
-	useEffect(() => {
-		setRowsAd(administration.fmAd);
-	}, [administration]);
 
 	const customToolbar: () => JSX.Element = () => {
 		return (
@@ -106,7 +90,7 @@ const Diferidos: React.FC = () => {
 	useEffect(() => {
 		socket.emit('prueba');
 		socket.emit('cliente:loadDiferidos');
-	}, [socket]);
+	}, [socket, updatedStatus]);
 
 	useEffect(() => {
 		// getDiferidos();
@@ -115,7 +99,8 @@ const Diferidos: React.FC = () => {
 		socket.on('server:loadDiferidos', (data: any) => {
 			setDiferidos(data);
 		});
-	}, [modalOpenDiferido]);
+	}, [socket]);
+	//updatedStatus
 
 	const handleRow = (event: any) => {
 		setRowSelect(null);
@@ -126,11 +111,6 @@ const Diferidos: React.FC = () => {
 			})
 		})
 		dispatch(OpenModalDiferido());
-		setSelected(true);
-	};
-
-	const handleCloseRow = (event: any) => {
-		setSelected(false);
 	};
 
 	return (
@@ -143,7 +123,7 @@ const Diferidos: React.FC = () => {
 				columns={columns}
 				pageSize={5}
 				onCellClick={handleRow}
-				rowsPerPageOptions={[25]}
+				rowsPerPageOptions={[5]}
 				disableColumnMenu
 				getRowId={(row) => row.id}
 			/>
