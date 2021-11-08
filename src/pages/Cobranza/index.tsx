@@ -33,7 +33,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
 		flexGrow: 1,
 	},
 	tabPanel: {
-		padding: 16,
+		padding: '16px 16px 0',
 	},
 	tabLabel: {
 		fontWeight: 'bold',
