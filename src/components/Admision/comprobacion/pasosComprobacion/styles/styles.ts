@@ -18,7 +18,20 @@ export const useStyles = makeStyles((styles) => ({
 		marginRight: styles.spacing(1),
 	},
 	img_zoom: {
-		position: 'fixed',
+		width: '40vw',
+	},
+	container_zoom: {
+		border: 'solid 1.5px rgba(0, 0, 0, 0.3)',
+		padding: '.5rem',
+		boxSizing: 'border-box',
+		boxShadow: '0px 4px 10px -8px #000000',
+		borderRadius: '20px',
+	},
+	container_img: {
+		marginTop: '-1rem',
+		width: '100%',
+		display: 'flex',
+		justifyContent: 'center',
 	},
 	check: {
 		marginBottom: '2%',

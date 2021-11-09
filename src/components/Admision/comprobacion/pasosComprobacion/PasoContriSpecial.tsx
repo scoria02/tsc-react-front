@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
-// @ts-expect-error
-import ReactImageZoom from 'react-image-zoom';
+//import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { Valid } from '../../../../store/actions/accept';
@@ -13,7 +12,8 @@ import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 import { ModalAlert } from '../ModalAlert';
-import { recaudo } from '../../../utilis/recaudos';
+
+import Rec from '../../../utilis/images/Rec';
 
 interface Prop {
 	positionImg: string
@@ -24,8 +24,9 @@ const PasoContriSpecial: React.FC<Prop> = ({ positionImg }) => {
 	const dispatch = useDispatch();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 	const rc_special_contributor: any = useSelector((state: RootState) => state.acceptance.validado.rc_special_contributor);
-	const [state, setState] = React.useState(rc_special_contributor);
-	const [openModal, setOpenModal] = React.useState<boolean>(false);
+	const [state, setState] = useState(rc_special_contributor);
+	const [openModal, setOpenModal] = useState<boolean>(false);
+  const [load, setLoad] = useState(false)
 
 	const handleOpenModal = () => {
 		handleCancel()
@@ -71,12 +72,7 @@ const PasoContriSpecial: React.FC<Prop> = ({ positionImg }) => {
 			handleOpenModal();
 	};
 
-	const props = {
-		zoomPosition: recaudo.position,
-		height: recaudo.h,
-		width: recaudo.w,
-		img: `${URL}:${PortFiles}/${fm.rc_special_contributor.path}`,
-	};
+	const imagen:string= `${URL}:${PortFiles}/${fm.rc_special_contributor.path}`;
 
 	return (
 		<>
@@ -97,9 +93,11 @@ const PasoContriSpecial: React.FC<Prop> = ({ positionImg }) => {
 					/>
 				</div>
 			</form>
-			<div className={positionImg}>
-				<ReactImageZoom {...props} />
-			</div>
+			<Rec 
+				load={load}
+				setLoad={setLoad}
+				imagen={imagen}
+			/>
 			<ModalAlert 
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}

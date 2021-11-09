@@ -2,28 +2,27 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import React, { useEffect, useState } from 'react';
-// @ts-expect-error
-import ReactImageZoom from 'react-image-zoom';
 import { useDispatch, useSelector } from 'react-redux';
 //Url
 import { PortFiles, URL } from '../../../../config';
 import { Valid } from '../../../../store/actions/accept';
 import { RootState } from '../../../../store/store';
-import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
-
-import { recaudo } from '../../../utilis/recaudos';
+import './styles/pasos.scss';
 
 import { ModalAlert }from '../ModalAlert';
+
+import Rec from '../../../utilis/images/Rec';
 
 export default function PasoClient() {
 	const rc_ident_card: any = useSelector((state: RootState) => state.acceptance.validado.rc_ident_card);
 	const dispatch = useDispatch();
 	const classes = useStyles();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const [ flag, setFlag ] = useState<boolean>(false); //Flag for loading
 	const [state, setState] = React.useState(rc_ident_card);
 	const [openModal, setOpenModal] = React.useState<boolean>(false);
+
+  const [load, setLoad] = useState(false)
 
 	const handleOpenModal = () => {
 		handleCancel()
@@ -38,10 +37,6 @@ export default function PasoClient() {
 		}
 		setOpenModal(false);
 	};
-
-	setTimeout(() => {
-		setFlag(true);
-	}, 150)
 
 	useEffect(() => {
 		dispatch(Valid({ rc_ident_card: state }));
@@ -73,12 +68,17 @@ export default function PasoClient() {
 			handleOpenModal();
 	};
 
+	const imagen = `${URL}:${PortFiles}/${fm.rc_ident_card.path}`;
+
+	/*
 	const props = {
 		zoomPosition: recaudo.position,
 		height: recaudo.h,
 		width: recaudo.w,
 		img: `${URL}:${PortFiles}/${fm.rc_ident_card.path}`,
 	};
+	 */
+
 
 	return (
 		<>
@@ -117,11 +117,11 @@ export default function PasoClient() {
 				/>
 				</div>
 			</form>
-			{flag &&
-				<div className='img_container'>
-					<ReactImageZoom className={classes.img_zoom} {...props} />
-				</div>
-			}
+			<Rec 
+				load={load}
+				setLoad={setLoad}
+				imagen={imagen}
+			/>
 			<ModalAlert 
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}

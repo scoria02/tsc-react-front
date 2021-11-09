@@ -60,19 +60,17 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		}
 	};
 
+	const [nameStep, setNameStep] = useState<string>('');
 
 	useEffect(() => {
 		const validStep = () => {
-			let index = 0;
-			for (const item of Object.entries(uploadImgs)) {
-				if(item[1]){
-					index++;
-				}
-			}
-			return (index === activeStep+1) ? true : false
+			if(uploadImgs[nameStep]){
+				return true;
+			}else
+				return false;
 		}
 		setReadyStep(!validStep())
-	}, [activeStep, uploadImgs])
+	}, [nameStep, uploadImgs])
 
 
 	useEffect(() => {
@@ -123,6 +121,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 			const element:any = item[1];
 			if(step === index) {
 				const ready = completed.has(activeStep);
+				setNameStep(element.descript);
 				return (
 					<StepDiferido 
 						key={index}

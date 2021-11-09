@@ -1,9 +1,8 @@
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import React, { useState, useEffect } from 'react';
 import Switch from '@material-ui/core/Switch';
-import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
-// @ts-expect-error
-import ReactImageZoom from 'react-image-zoom';
+//import ReactImageZoom from 'react-image-zoom';
 import { useDispatch, useSelector } from 'react-redux';
 //Url
 import { PortFiles, URL } from '../../../../config';
@@ -14,7 +13,7 @@ import { useStyles } from './styles/styles';
 
 import { ModalAlert }from '../ModalAlert';
 
-import { recaudo } from '../../../utilis/recaudos';
+import Rec from '../../../utilis/images/Rec';
 
 export default function PasoPaymentReceipt() {
 	//falta
@@ -25,6 +24,7 @@ export default function PasoPaymentReceipt() {
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 	const [state, setState] = useState(rc_comp_dep);//falta
 	const [openModal, setOpenModal] = useState<boolean>(false);
+  const [load, setLoad] = useState(false)
 
 	const handleOpenModal = () => {
 		handleCancel()
@@ -70,12 +70,8 @@ export default function PasoPaymentReceipt() {
 			handleOpenModal();
 	};
 
-	const props = {
-		zoomPosition: recaudo.position,
-		height: recaudo.h,
-		width: recaudo.w,
-		img: `${URL}:${PortFiles}/${fm.rc_comp_dep.path}`,
-	};
+
+	const imagen:string= `${URL}:${PortFiles}/${fm.rc_comp_dep.path}`;
 
 	return (
 		<>
@@ -96,9 +92,11 @@ export default function PasoPaymentReceipt() {
 					/>
 				</div>
 			</form>
-			<div className='img_container'>
-				<ReactImageZoom className={classes.img_zoom} {...props} />
-			</div>
+			<Rec 
+				load={load}
+				setLoad={setLoad}
+				imagen={imagen}
+			/>
 			<ModalAlert 
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}

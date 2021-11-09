@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
-// @ts-expect-error
-import ReactImageZoom from 'react-image-zoom';
+//import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { Valid } from '../../../../store/actions/accept';
@@ -15,7 +14,7 @@ import { useStyles } from './styles/styles';
 
 import { ModalAlert }from '../ModalAlert';
 
-import { recaudo } from '../../../utilis/recaudos';
+import Rec from '../../../utilis/images/Rec';
 
 export default function PasoAccountNumber() {
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
@@ -23,8 +22,9 @@ export default function PasoAccountNumber() {
 	const rc_ref_bank: any = useSelector((state: RootState) => state.acceptance.validado.rc_ref_bank);
 	const dispatch = useDispatch();
 	const classes = useStyles();
-	const [state, setState] = React.useState(rc_ref_bank);
-	const [openModal, setOpenModal] = React.useState<boolean>(false);
+	const [state, setState] = useState(rc_ref_bank);
+	const [openModal, setOpenModal] = useState<boolean>(false);
+  const [load, setLoad] = useState(false)
 
 	const handleOpenModal = () => {
 		handleCancel()
@@ -71,12 +71,16 @@ export default function PasoAccountNumber() {
 			handleOpenModal();
 	};
 
+	const imagen = `${URL}:${PortFiles}/${fm.rc_ref_bank.path}`;
+
+	/*
 	const props = {
 		zoomPosition: recaudo.position,
 		height: recaudo.h,
 		width: recaudo.w,
-		img: `${URL}:${PortFiles}/${fm.rc_ref_bank.path}`,
+		img: ,
 	};
+	 */
 
 	return (
 		<>
@@ -95,9 +99,11 @@ export default function PasoAccountNumber() {
 					/>
 				</div>
 			</form>
-			<div className='img_container'>
-				<ReactImageZoom {...props} />
-			</div>
+			<Rec 
+				load={load}
+				setLoad={setLoad}
+				imagen={imagen}
+			/>
 			<ModalAlert 
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}

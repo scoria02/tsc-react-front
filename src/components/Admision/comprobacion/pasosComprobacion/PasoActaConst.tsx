@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
-// @ts-expect-error
-import ReactImageZoom from 'react-image-zoom';
+//import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { Valid } from '../../../../store/actions/accept';
@@ -15,7 +14,7 @@ import { useStyles } from './styles/styles';
 
 import { ModalAlert }from '../ModalAlert';
 
-import { recaudo } from '../../../utilis/recaudos';
+import Rec from '../../../utilis/images/Rec';
 
 interface Prop {
 	positionImg: string
@@ -28,6 +27,7 @@ const PasoActaConst: React.FC<Prop> = ({ positionImg }) => {
 	const rc_constitutive_act: any = useSelector((state: RootState) => state.acceptance.validado.rc_constitutive_act);
 	const [state, setState] = React.useState(rc_constitutive_act);
 	const [openModal, setOpenModal] = React.useState<boolean>(false);
+  const [load, setLoad] = useState(false)
 
 	const handleOpenModal = () => {
 		handleCancel()
@@ -73,12 +73,7 @@ const PasoActaConst: React.FC<Prop> = ({ positionImg }) => {
 			handleOpenModal();
 	};
 
-	const props = {
-		zoomPosition: recaudo.position,
-		height: recaudo.h,
-		width: recaudo.w,
-		img: `${URL}:${PortFiles}/${fm.rc_constitutive_act.path}`,
-	};
+	const imagen:string = `${URL}:${PortFiles}/${fm.rc_constitutive_act.path}`;
 
 	return (
 		<>
@@ -99,9 +94,11 @@ const PasoActaConst: React.FC<Prop> = ({ positionImg }) => {
 					/>
 				</div>
 			</form>
-			<div className={positionImg}>
-				<ReactImageZoom {...props} />
-			</div>
+			<Rec 
+				load={load}
+				setLoad={setLoad}
+				imagen={imagen}
+			/>
 			<ModalAlert 
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}

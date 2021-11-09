@@ -10,9 +10,12 @@ interface ModalProps {
 	handleCloseModal: () => void;
 }
 
-const AnimatedModal: React.FC<ModalProps> = ({ openModal, handleCloseModal, children }) => {
+const AnimatedModal: React.FC<ModalProps> = ({
+	openModal,
+	handleCloseModal,
+	children
+}) => {
 	const classes = useStylesModal();
-
 	return (
 		<>
 			<Modal

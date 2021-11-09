@@ -2,8 +2,6 @@ import { Button } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-// @ts-expect-error
-import ReactImageZoom from 'react-image-zoom';
 //Url
 import { PortFiles, URL as urlBack} from '../../../config';
 import '../comprobacion/pasosComprobacion/styles/pasos.scss';
@@ -11,6 +9,7 @@ import { useStyles } from './styles';
 import './index.scss';
 import { recaudo } from '../../utilis/recaudos';
 
+import Rec from '../../utilis/images/Rec';
 
 const StepDiferido: React.FC<any> = ({
 	name,
@@ -21,20 +20,9 @@ const StepDiferido: React.FC<any> = ({
 	ready,
 }) => {
 	const classes = useStyles();
-	const [ flag, setFlag ] = useState<boolean>(false); //Flag for loading
+  const [load, setLoad] = useState(false)
 
-	useEffect(() => {
-		setTimeout(() => {
-			setFlag(true);
-		}, 150);
-	}, [])
-
-	const props = {
-		zoomPosition: recaudo.position,
-		height: recaudo.h,
-		width: recaudo.w,
-		img: uploadImg ? path : `${urlBack}:${PortFiles}/${fm.path}`,
-	};
+	const	imagen:string= uploadImg ? path : `${urlBack}:${PortFiles}/${fm.path}`;
 
 	return (
 		<>
@@ -63,11 +51,11 @@ const StepDiferido: React.FC<any> = ({
 				</Button>
 				</div>
 			</form>
-			{flag &&
-				<div className='img_container_center'>
-					<ReactImageZoom className={classes.img_zoom} {...props} />
-				</div>
-			}
+			<Rec 
+				load={load}
+				setLoad={setLoad}
+				imagen={imagen}
+			/>
 		</>
 	);
 }
