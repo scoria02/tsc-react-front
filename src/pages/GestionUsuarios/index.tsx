@@ -10,7 +10,13 @@ import {
 	Paper,
 	TextField,
 } from '@material-ui/core';
-import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarFilterButton } from '@material-ui/data-grid';
+import {
+	DataGrid,
+	GridColDef,
+	GridToolbarContainer,
+	GridToolbarFilterButton,
+	GridValueGetterParams,
+} from '@material-ui/data-grid';
 import CloseIcon from '@material-ui/icons/Close';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import classnames from 'classnames';
@@ -36,32 +42,30 @@ const columns: GridColDef[] = [
 		sortable: false,
 		disableColumnMenu: true,
 	},
-	{
-		field: 'name',
-		width: 120,
-		headerName: 'Nombre',
-		sortable: false,
-		disableColumnMenu: true,
-	},
-	{
-		field: 'last_name',
-		width: 120,
-		headerName: 'Apellido',
-		sortable: false,
-		disableColumnMenu: true,
-	},
 	// {
-	// 	field: 'fullName',
+	// 	field: 'name',
+	// 	width: 120,
 	// 	headerName: 'Nombre',
-	// 	description: 'This column has a value getter and is not sortable.',
 	// 	sortable: false,
-	// 	width: 160,
-	// 	valueGetter: (params: GridValueGetterParams) => {
-	// 		console.log('name de params', params);
-
-	// 		return `${params.getValue(params.id, 'name') || ''} ${params.getValue(params.id, 'last_name') || ''}`;
-	// 	},
+	// 	disableColumnMenu: true,
 	// },
+	// {
+	// 	field: 'last_name',
+	// 	width: 120,
+	// 	headerName: 'Apellido',
+	// 	sortable: false,
+	// 	disableColumnMenu: true,
+	// },
+	{
+		field: 'fullName',
+		headerName: 'Nombre Completo',
+		// description: 'This column has a value getter and is not sortable.',
+		sortable: false,
+		width: 160,
+		valueGetter: (params: GridValueGetterParams) => {
+			return `${params.getValue(params.id, 'name') || ''} ${params.getValue(params.id, 'last_name') || ''}`;
+		},
+	},
 ];
 
 const useStyles = makeStyles((styles) => ({
@@ -88,7 +92,7 @@ const useStyles = makeStyles((styles) => ({
 		height: 40,
 		position: 'absolute',
 		top: 0,
-		right: 8,
+		right: 0,
 		padding: 0,
 		minWidth: 'unset',
 		borderRadius: '50%',
@@ -115,7 +119,7 @@ const useStyles = makeStyles((styles) => ({
 		},
 	},
 	form: {
-		padding: '1rem 0',
+		padding: 0,
 		display: 'flex',
 		flexDirection: 'column',
 		marginBottom: 0,
@@ -139,7 +143,7 @@ const useStyles = makeStyles((styles) => ({
 	},
 	card: {
 		alignItems: 'center',
-		padding: '1rem',
+		padding: '2rem',
 		position: 'relative',
 	},
 	inputText: {
@@ -159,7 +163,6 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 
 	const [allUserRoles, setAllUserRoles] = useState<any[]>([]);
 	const [openUserView, setUserView] = useState<boolean>();
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [department, setDepartment] = useState<any[]>([
 		{ id: 0, name: 'Admision' },
 		{ id: 1, name: 'Administracion' },
@@ -187,6 +190,9 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 			setLoading(false);
 			axios.get('/roles/all').then(async (data: any) => {
 				await setAllUserRoles(data.data.info);
+			});
+			axios.get('/department/all').then(async (data: any) => {
+				await setDepartment(data.data.info);
 			});
 			axios.get('worker/all').then(async (data: any) => {
 				await setUsers(data.data.info);
