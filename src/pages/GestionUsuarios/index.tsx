@@ -159,6 +159,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 
 	const [allUserRoles, setAllUserRoles] = useState<any[]>([]);
 	const [openUserView, setUserView] = useState<boolean>();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [department, setDepartment] = useState<any[]>([
 		{ id: 0, name: 'Admision' },
 		{ id: 1, name: 'Administracion' },

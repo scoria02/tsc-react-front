@@ -1,4 +1,3 @@
-import React from 'react';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import './diagramas.scss';
 
@@ -33,7 +32,7 @@ const state = {
 	],
 };
 
-export const ChartConfig = () => {
+export const ChartBarra = () => {
 	return (
 		<Bar
 			data={state}
@@ -50,11 +49,8 @@ export const ChartConfig = () => {
 					position: 'right',
 				},
 			}}
-			style={{
-				display: 'flex',
-				height: '100px',
-				width: '100px',
-			}}
+			width={700}
+			height={300}
 		/>
 	);
 };
@@ -71,7 +67,8 @@ export const ChartTorta = () => {
 					fontSize: 2,
 				},
 			}}
-			style={{ display: 'flex' }}
+			height={230}
+			width={230}
 		/>
 	);
 };

@@ -1,57 +1,23 @@
-import React, { useEffect } from 'react';
 import { Button, makeStyles, TextField, Theme } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import Swal from 'sweetalert2';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import React, { useEffect } from 'react';
 // @ts-expect-error
 import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
+import { updateStatusFMAdministration } from '../../store/actions/administration';
+import { recaudo } from '../utilis/recaudos';
 //Url
 import './styles/index.scss';
-import { updateStatusFMAdministration } from '../../store/actions/administration';
-
-import { recaudo } from '../utilis/recaudos';
 
 const useStyles = makeStyles((theme: Theme) => ({
-	administracion: {
-		flexGrow: 1,
-		display: 'grid',
-		gridColumnGap: '2rem',
-		gridTemplateColumns: '1fr 1fr',
-	},
-	button: {
-		width: 200,
-		height: 70,
-		background: theme.palette.primary.main,
-		color: theme.palette.primary.contrastText,
-	},
-	dataGrid: {
-		width: '100%',
-		height: '75vh',
-	},
 	tableTitle: {
 		fontSize: 20,
 		fontWeight: 'bold',
 		padding: '0 8px',
-	},
-	view: {
-		width: '100%',
-		padding: '1rem',
-		display: 'flex',
-		flexDirection: 'column',
-		position: 'relative',
-	},
-	closeBtn: {
-		width: 40,
-		height: 40,
-		position: 'absolute',
-		top: 16,
-		right: 16,
-		padding: 0,
-		minWidth: 'unset',
-		borderRadius: 20,
 	},
 	red: {
 		backgroundColor: theme.palette.error.main,
@@ -111,11 +77,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 		marginRight: 8,
 		width: '100%',
 	},
-	switchControl: {
-		position: 'absolute',
-		bottom: 0,
-		left: '35%',
-	},
 	codeFm: {
 		color: theme.palette.primary.main,
 	},
@@ -136,7 +97,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 	nameImg: {
 		fontSize: '1rem',
 		marginBottom: '-3px',
-	}
+	},
 }));
 
 export const Form: React.FC<any> = ({
@@ -163,11 +124,11 @@ export const Form: React.FC<any> = ({
 			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: 'image/jpeg' });
 			const path = URL.createObjectURL(newFile);
 			//Save img
-			setUploadImg(newFile); 
+			setUploadImg(newFile);
 			setNameImage(event.target.files[0].name);
 			setFm({
 				...fm,
-				urlImgCompDep: path
+				urlImgCompDep: path,
 			});
 		}
 	};
@@ -176,7 +137,7 @@ export const Form: React.FC<any> = ({
 		zoomPosition: recaudo.position,
 		height: recaudo.h,
 		width: recaudo.w,
-		img: fm.urlImgCompDep 
+		img: fm.urlImgCompDep,
 	};
 
 	const handleVerificated = () => {
@@ -192,20 +153,19 @@ export const Form: React.FC<any> = ({
 			customClass: { container: 'swal2-validated' },
 		}).then((result) => {
 			if (result.isConfirmed) {
-				console.log(payment, typePay)
-				const data:any = !fm.pagadero ? 
-					{} 
-					:
-					{
-						id_payment_method: payment.id,
-						id_type_payment: typePay.id,
-					}
-				console.log(data)
+				console.log(payment, typePay);
+				const data: any = !fm.pagadero
+					? {}
+					: {
+							id_payment_method: payment.id,
+							id_type_payment: typePay.id,
+					  };
+				console.log(data);
 				//dispatch() //images
-				dispatch(updateStatusFMAdministration(fm.id, 3, null))
+				dispatch(updateStatusFMAdministration(fm.id, 3, null));
 			}
 		});
-	}
+	};
 
 	const handleSelectPayment = (event: any, value: any, item: string) => {
 		if (value) {
@@ -224,67 +184,77 @@ export const Form: React.FC<any> = ({
 	};
 
 	const disButton = () => {
-		if(fm.urlImgCompDep || (payment && (payment.id === 2))){
+		if (fm.urlImgCompDep || (payment && payment.id === 2)) {
 			return false;
-		}else {
+		} else {
 			return true;
 		}
-	}
+	};
 
 	useEffect(() => {
-		if(payment && payment.id === 2){
-			setUploadImg(null); 
+		if (payment && payment.id === 2) {
+			setUploadImg(null);
 			setNameImage('');
 			setFm({
 				...fm,
-				urlImgCompDep: '' 
+				urlImgCompDep: '',
 			});
 		}
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [payment])
+	}, [payment]);
 
 	return (
 		<>
-			<h2 className={classes.tableTitle}>Formulario: <span className={classes.codeFm}>{fm.code}</span></h2>
+			<h2 className={classes.tableTitle}>
+				Formulario: <span className={classes.codeFm}>{fm.code}</span>
+			</h2>
 			<div className={classes.wrapper}>
-					<div className={classes.content}>
-						<div className={classes.row}>
-							{fm.pagadero ?
-								<Autocomplete
-									className={classes.textAutoCompleteLeft}
-									onChange={(event, value) => handleSelectPayment(event, value, 'payment_method')}
-									options={listPayment}
-									value={payment || null}
-									getOptionLabel={(option: any) => (option.name ? option.name : '')}
-									renderInput={(params: any) => (
-										<TextField {...params} name='payment_method' label='Modalidad de Pago' variant='outlined' 
+				<div className={classes.content}>
+					<div className={classes.row}>
+						{fm.pagadero ? (
+							<Autocomplete
+								className={classes.textAutoCompleteLeft}
+								onChange={(event, value) => handleSelectPayment(event, value, 'payment_method')}
+								options={listPayment}
+								value={payment || null}
+								getOptionLabel={(option: any) => (option.name ? option.name : '')}
+								renderInput={(params: any) => (
+									<TextField
+										{...params}
+										name='payment_method'
+										label='Modalidad de Pago'
+										variant='outlined'
 										className={classes.textfieldLeft}
-										/>
-									)}
-								/>
-								:
-								<TextField
-									className={classes.textfieldLeft}
-									id='outlined-basic'
-									label='Metodo de Pago'
-									variant='outlined'
-									value={fm.paymentmethod.name}
-								/>
-							} 
-							{fm.pagadero ?
-								<Autocomplete
-									className={classes.textAutoCompleteLeft}
-									onChange={(event, value) => handleSelectTypePay(event, value, 'payment_method')}
-									options={listTypePay}
-									value={typePay|| null}
-									getOptionLabel={(option: any) => (option.name ? option.name : '')}
-									renderInput={(params: any) => (
-										<TextField {...params} name='typePay' label='Tipo de Pago' variant='outlined' 
+									/>
+								)}
+							/>
+						) : (
+							<TextField
+								className={classes.textfieldLeft}
+								id='outlined-basic'
+								label='Metodo de Pago'
+								variant='outlined'
+								value={fm.paymentmethod.name}
+							/>
+						)}
+						{fm.pagadero ? (
+							<Autocomplete
+								className={classes.textAutoCompleteLeft}
+								onChange={(event, value) => handleSelectTypePay(event, value, 'payment_method')}
+								options={listTypePay}
+								value={typePay || null}
+								getOptionLabel={(option: any) => (option.name ? option.name : '')}
+								renderInput={(params: any) => (
+									<TextField
+										{...params}
+										name='typePay'
+										label='Tipo de Pago'
+										variant='outlined'
 										className={classes.textfieldLeft}
-										/>
-									)}
-								/>
-								:
+									/>
+								)}
+							/>
+						) : (
 							<TextField
 								className={classes.textfieldLeft}
 								id='outlined-basic'
@@ -292,62 +262,54 @@ export const Form: React.FC<any> = ({
 								variant='outlined'
 								value={fm.type_payment.name}
 							/>
-						}
-							{(fm.urlImgCompDep && !fm.pagadero) &&
-								<TextField
-									id='outlined-basic'
-									label='Referencia'
-									variant='outlined'
-									value={fm.nro_comp_dep}
-								/>
-							}
-						</div>
-					{(fm.urlImgCompDep && !fm.pagadero) ?
+						)}
+						{fm.urlImgCompDep && !fm.pagadero && (
+							<TextField id='outlined-basic' label='Referencia' variant='outlined' value={fm.nro_comp_dep} />
+						)}
+					</div>
+					{fm.urlImgCompDep && !fm.pagadero ? (
 						<div className={classes.containerImg}>
 							<ReactImageZoom className={classes.img_zoom} {...props} />
 						</div>
-					:
-					<>
-					{uploadImg &&
-						<div className={classes.containerImg}>
-							<ReactImageZoom className={classes.img_zoom} {...props} />
-						</div>
-					}
-					{(payment && payment.id !== 2) &&
-						<Button
-							className={classes.uploadImg}
-							variant='contained'
-							component='label'>
-							{uploadImg !== null ? (
-								<IconButton aria-label='upload picture' component='span'>
-									<p className={classes.nameImg}>{nameImg.slice(0, 10)} ...</p>
-								</IconButton>
-							):(
-								<IconButton aria-label='upload picture' component='span'>
-									<CloudUploadIcon className={classes.iconUpload}/>
-								</IconButton>
+					) : (
+						<>
+							{uploadImg && (
+								<div className={classes.containerImg}>
+									<ReactImageZoom className={classes.img_zoom} {...props} />
+								</div>
 							)}
-							<input
-								type='file'
-								hidden
-								name='rc_comp_dep'
-								accept={recaudo.acc}
-								onChange={handleChangeImages}
-							/>
-						</Button>
-						}
-				</>
-					}
-				<Button
-					className={classes.buttonV}
-					onClick={handleVerificated}
-					variant='contained'
-					disabled={disButton()}
-					color='primary'>	
-					Verificar
-				</Button>
+							{payment && payment.id !== 2 && (
+								<Button className={classes.uploadImg} variant='contained' component='label'>
+									{uploadImg !== null ? (
+										<IconButton aria-label='upload picture' component='span'>
+											<p className={classes.nameImg}>{nameImg.slice(0, 10)} ...</p>
+										</IconButton>
+									) : (
+										<IconButton aria-label='upload picture' component='span'>
+											<CloudUploadIcon className={classes.iconUpload} />
+										</IconButton>
+									)}
+									<input
+										type='file'
+										hidden
+										name='rc_comp_dep'
+										accept={recaudo.acc}
+										onChange={handleChangeImages}
+									/>
+								</Button>
+							)}
+						</>
+					)}
+					<Button
+						className={classes.buttonV}
+						onClick={handleVerificated}
+						variant='contained'
+						disabled={disButton()}
+						color='primary'>
+						Verificar
+					</Button>
+				</div>
 			</div>
-		</div>
 		</>
 	);
-}
+};

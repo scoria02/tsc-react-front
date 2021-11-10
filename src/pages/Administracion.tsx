@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Button, FormControlLabel, makeStyles, Paper, Switch, TextField, Theme } from '@material-ui/core';
+import { Button, makeStyles, Paper, Theme } from '@material-ui/core';
 import {
 	DataGrid,
 	GridColDef,
@@ -13,15 +13,11 @@ import CloseIcon from '@material-ui/icons/Close';
 import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Form } from '../components/administration/Form';
+import { getPayMent } from '../components/formMaldito/getData';
+import { PortFiles, URL } from '../config';
 import { getDataFMAdministration } from '../store/actions/administration';
 import { RootState } from '../store/store';
-import { PortFiles, URL } from '../config';
-
-import {
-	getPayMent,
-} from '../components/formMaldito/getData';
-
-import { Form } from '../components/administration/Form'
 
 interface AdministracionProp {}
 
@@ -58,8 +54,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 		width: 40,
 		height: 40,
 		position: 'absolute',
-		top: 16,
-		right: 16,
+		top: 8,
+		right: 8,
 		padding: 0,
 		minWidth: 'unset',
 		borderRadius: 20,
@@ -181,8 +177,8 @@ const Administracion: FC<AdministracionProp> = () => {
 
 	const [selected, setSelected] = useState(false);
 	const [pagadero, setPagadero] = useState(false);
-	const [rowSelected, setRowSelect] = useState({ 
-		id: null ,
+	const [rowSelected, setRowSelect] = useState({
+		id: null,
 		code: '',
 		pagadero: false,
 		paymentmethod: {
@@ -247,7 +243,7 @@ const Administracion: FC<AdministracionProp> = () => {
 
 	const handleRow = (event: any) => {
 		console.log('viene pagadero', event.row?.id_request.pagadero);
-		setUploadImg(null); 
+		setUploadImg(null);
 		setNameImage('');
 		setPagadero(event.row?.id_request.pagadero || false);
 		setPayment(event.row.id_request.id_payment_method);
@@ -258,11 +254,9 @@ const Administracion: FC<AdministracionProp> = () => {
 			paymentmethod: event.row.id_request.id_payment_method,
 			type_payment: event.row.id_request.id_type_payment,
 			nro_comp_dep: event.row.id_request.nro_comp_dep,
-			urlImgCompDep: 
-			event.row.id_request.rc_comp_dep ? 
-				`${URL}:${PortFiles}/${event.row.id_request.rc_comp_dep.path}`
-			:
-				'',
+			urlImgCompDep: event.row.id_request.rc_comp_dep
+				? `${URL}:${PortFiles}/${event.row.id_request.rc_comp_dep.path}`
+				: '',
 			code: event.row.id_request.code,
 			id_commerce: event.row.id_request.id_commerce.id,
 			id_client: event.row.id_request.id_client.id,
@@ -286,7 +280,7 @@ const Administracion: FC<AdministracionProp> = () => {
 			// 	);
 
 			default:
-			break;
+				break;
 			//				return ();
 		}
 	};
@@ -321,7 +315,7 @@ const Administracion: FC<AdministracionProp> = () => {
 							<Button className={classes.closeBtn} onClick={handleCloseRow}>
 								<CloseIcon />
 							</Button>
-							<Form 
+							<Form
 								fm={rowSelected}
 								setFm={setRowSelect}
 								handleChange={handleChange}
