@@ -1,21 +1,22 @@
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
 // import CardActionArea from '@material-ui/core/CardActionArea';
 // import { useForm, SubmitHandler } from 'react-hook-form';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 //import luffy from '../../../img/itachi2.png';
-import luffy from '../../../img/user.png';
 import { startLogin } from '../../../store/actions/auth';
+
+import InputAdornment from '@material-ui/core/InputAdornment';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Visibility from '@material-ui/icons/Visibility';
+import IconButton from '@material-ui/core/IconButton';
 // import { useForm } from '../../../hooks/useForm';
 import { useStylesModalUser } from '../styles';
 import './index.scss';
+
+import AuthModal from '../AuthModal';
 
 const useStylesButton = makeStyles((theme: Theme) =>
 	createStyles({
@@ -32,19 +33,12 @@ const Login: React.FC = () => {
 	const classesbutton = useStylesButton();
 	const classes = useStylesModalUser();
 
-	// const { register, handleSubmit, control } = useForm();
-
-	const history = useHistory();
-
 	const dispatch = useDispatch();
-
-	// const [formValues, handleInputChange] = useForm({
-	// 	email: '',
-	// 	password: '',
-	// });
 
 	const [email, setEmail] = useState<string>('');
 	const [password, setPass] = useState<string>('');
+
+	const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
 	// const { email, password }: any = formValues;
 
@@ -63,62 +57,65 @@ const Login: React.FC = () => {
 	const handleLogin = (e: any): void => {
 		e.preventDefault();
 		dispatch(startLogin(email, password));
-		//console.log(email, password);
 	};
 
 	return (
-		<Card className={classes.root}>
-			<CardContent>
-				<div className='ed-grid s-grid-1 m-grid-2 '>
-					<div className={classes.containerLeft}>
-						<CardMedia className={classes.media} image={luffy} title='Logo Mil Pagos' />
+		<AuthModal
+			register={false}
+			name='Ingresar'
+		>
+			<div className={classes.containerRight} >
+				<form onSubmit={handleLogin} className={classesbutton.root} autoComplete='off'>
+						<div className="ed-container">
+						<TextField
+							className={classes.input}
+							id='email'
+							name='email'
+							label='Email'
+							variant='outlined'
+							type='email'
+							onChange={handleUsernameChange}
+						/>
+						<TextField
+							id='password'
+							className={classes.input}
+							name='password'
+							onChange={handlePasswordChange}
+							label='Contraseña'
+							type={showPassword ? "text" : "password"}
+							autoComplete='current-password'
+							variant='outlined'
+							InputProps={{ 
+								endAdornment: (
+									<InputAdornment position="end">
+										<IconButton
+											aria-label="toggle password visibility"
+											onMouseDown={() => setShowPassword(!showPassword)}
+											onMouseUp={() => setShowPassword(!showPassword)}
+											edge="end"
+										>
+											{showPassword ? <Visibility /> : <VisibilityOff />}
+										</IconButton>
+									</InputAdornment>
+								)
+							}}
+						/>
+						<div
+							className={classes.inputButton}
+						>
+							<Button 
+								className={classes.buttonLogin}
+								type='submit'
+								variant='outlined'
+								color='primary'
+							>
+								Entrar
+							</Button>
+						</div>
 					</div>
-					<CardContent>
-						<div className='s-py-4'>
-							<Typography gutterBottom variant='h5' component='h2' align='center'>
-								Ingresar
-							</Typography>
-						</div>
-						<div>
-							<form onSubmit={handleLogin} className={classesbutton.root} autoComplete='off'>
-								<TextField
-									id='email'
-									name='email'
-									label='Email'
-									variant='outlined'
-									type='email'
-									// value={'leomerida15@gmail.com'}
-									onChange={handleUsernameChange}
-								/>
-								<TextField
-									id='password'
-									name='password'
-									label='Password'
-									variant='outlined'
-									type='password'
-									// value={'Test123.'}
-									onChange={handlePasswordChange}
-								/>
-								<Button type='submit' variant='outlined' color='primary'>
-									Entrar
-								</Button>
-								<div className='ed-grid s-grid-2'>
-									<Button
-										size='small'
-										color='primary'
-										variant='contained'
-										onClick={() => history.push('/auth/register')}>
-										<div className='ed-container'>
-											<div className='s-to-center button-login'>Registrarte</div>
-										</div>
-									</Button>
-								</div>
-							</form>
-						</div>
-					</CardContent>
-				</div>
-			</CardContent>
-		</Card>
+				</form>
+			</div>
+		</AuthModal>
 	);
 };
 

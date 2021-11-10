@@ -3,7 +3,6 @@ import axios from '../../config';
 export const getIdentTypes = async () => {
 	try{
 		const resp: string [] = await axios.get('/ident_type').then((res) => {
-		localStorage.setItem('token', res.data.token);
 		return res.data.info 
 		});
 		return resp;
@@ -95,6 +94,18 @@ export const getProducts = async () => {
 	try{
 		const resp: string [] = await axios.get('/products').then((res) => {
 		localStorage.setItem('token', res.data.token);
+			return res.data.info 
+		});
+		return resp;
+	}catch(e){
+		console.log(e);
+		return [];
+	}
+}
+
+export const getCompany = async () => {
+	try{
+		const resp: string [] = await axios.get('/company').then((res) => {
 			return res.data.info 
 		});
 		return resp;

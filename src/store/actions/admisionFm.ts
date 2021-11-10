@@ -16,7 +16,7 @@ export const getDataFM = () => {
 			updateToken(res);
 			dispatch(requestSuccess(res.data.info));
 		} catch (error) {
-			console.log(error.response)
+			//console.log(error.response)
 			dispatch(CloseModal());
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
@@ -57,7 +57,7 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
 			updateToken(res);
 			dispatch(requestSuccess(status));
 		} catch (error) {
-			console.log(error.response)
+			//console.log(error.response)
 			dispatch(CloseModal());
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
@@ -78,7 +78,7 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
 
 export const cleanAdmisionFM = () => {
 	return async (dispatch: any) => {
-		console.log('Clean data FM & accept')
+		//console.log('Clean data FM & accept')
 		dispatch(cleanRec());
 		dispatch(CloseModal());
 		dispatch(request());
@@ -92,13 +92,12 @@ export const cleanAdmisionFM = () => {
 
 export const updateStatusFMDiferido = (id_fm: number, formData: any) => {
 	return async (dispatch: any) => {
-		console.log('fm',id_fm)
 		try {
-			const res:any = await axiosFiles.put(`/1000pagosRC/RC/admition/${id_fm}/diferidos`, formData);
-			console.log('updateimg', res)
+			await axiosFiles.put(`/1000pagosRC/RC/admition/${id_fm}/diferidos`, formData);
+			//console.log('updateimg', res)
 			dispatch(requestSuccess());
 		} catch (error) {
-			console.log(error.response)
+			//console.log(error.response)
 			dispatch(CloseModalDiferido());
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
@@ -118,7 +117,7 @@ export const updateStatusFMDiferido = (id_fm: number, formData: any) => {
 
 export const cleanDataFmDiferido = () => {
 	return async (dispatch: any) => {
-		console.log('Clean data Diferido')
+	//	console.log('Clean data Diferido')
 		dispatch(CloseModalDiferido());
 		dispatch(request());
 	};

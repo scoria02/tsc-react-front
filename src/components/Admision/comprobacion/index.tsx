@@ -184,9 +184,11 @@ const Comprobacion: React.FC<any> = () => {
 		if (id_statusFM !== 0 && updatedStatus) {
 			const idStatus = id_statusFM;
 			Swal.fire({
-				title: `${idStatus === 3 ? 'Formulario Verificado' : 'Formulario Diferido'}`,
 				icon: `${idStatus === 3 ? 'success' : 'warning'}`,
+				title: `${idStatus === 3 ? 'Formulario Verificado' : 'Formulario Diferido'}`,
 				customClass: { container: 'swal2-validated' },
+				showConfirmButton: false,
+				timer: 1500,
 			});
 			dispatch(cleanAdmisionFM());
 			socket.emit('cliente:loadDiferidos');
@@ -201,6 +203,18 @@ const Comprobacion: React.FC<any> = () => {
 		const newActiveStep =
 			isLastStep() && !allStepsCompleted() ? steps.findIndex((step:any, i:any) => !completed.has(i)) : activeStep + 1;
 		setActiveStep(newActiveStep);
+	};
+
+	const handleLoading = () => {
+		Swal.fire({
+			icon: 'info',
+			title: 'Enviando Solicitud...',
+			showConfirmButton: false,
+			customClass: { container: 'swal2-validated' },
+			didOpen: () => {
+				Swal.showLoading();
+			},
+		});
 	};
 
 	const handleComplete = async () => { const newCompleted = new Set(completed);
@@ -219,8 +233,11 @@ const Comprobacion: React.FC<any> = () => {
 				newCompleted.add(activeStep);
 				dispatch(stepComplete(newCompleted));
 				setCompleted(newCompleted);
-				if (completed.size !== totalSteps()) {
+				console.log('revisar fin', completed.size+1, totalSteps())
+				if (completed.size+1 !== totalSteps()) {
 					handleNext();
+				}else{
+					handleLoading()
 				}
 			}
 		});

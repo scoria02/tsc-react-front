@@ -10,7 +10,7 @@ const Rec: React.FC<any> = ({ load, setLoad, imagen }) => {
 	const classes = useStyles();
 
 	const [modal, setModal] = React.useState(false);
-	const [size, setSize] = React.useState(700);
+	//const [size, setSize] = React.useState(0);
 
 	const handleOpenModal = () => {
 		setModal(true);
@@ -39,7 +39,7 @@ const Rec: React.FC<any> = ({ load, setLoad, imagen }) => {
 							className={classes.img_zoom}
 							style={load ? {} : { display: '' }}
 							onLoad={() => {
-								console.log('Imagen Cargada', imagen)
+								//console.log('Imagen Cargada', imagen)
 								setLoad(true)
 							}}
 							src={imagen}
@@ -62,22 +62,24 @@ const Rec: React.FC<any> = ({ load, setLoad, imagen }) => {
 					<TransformComponent>
 						<img 
 							style={{
-								width: size,
+								width: '700px',
 								display: load ? 'flex' : 'none'
 							}}
 							onLoad={(event) => {
-								console.log('Imagen Cargada Full Scream', imagen)
+								//console.log('Imagen Cargada Full Scream', imagen)
+								/*
 								setLoad(true)
 								let width= event.currentTarget.width;
 								let height= event.currentTarget.height;
 								let res = 0;
-								console.log(width,height)
+								console.log(width, height)
 								if (width >= height){
-									res = width >= window.innerWidth ? window.innerWidth-200 : width;
+									res = width >= window.innerWidth ? window.innerWidth-100 : width;
 								}else {
 									res = height >= window.innerHeight ? window.innerHeight-200 : height;
 								}
 								setSize(res); 
+								 */
 							}}
 							src={imagen}
 							alt="test"

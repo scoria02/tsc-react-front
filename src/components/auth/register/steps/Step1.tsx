@@ -131,6 +131,8 @@ export const Step1: React.FC<Props> = ({userForm, userFormError, errorPassword, 
 				id='confirmPassword'
 				className={classes.input}
 				value={userForm.confirmPassword}
+				onFocus={() => setOpen(true)}
+				onBlur={() => setOpen(false)}
 				name='confirmPassword'
 				onChange={handleChange}
 				label='Comfirmar Contraseña'

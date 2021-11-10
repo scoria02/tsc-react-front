@@ -15,9 +15,11 @@ import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form } from '../components/administration/Form';
 import { getPayMent } from '../components/formMaldito/getData';
-import { PortFiles, URL } from '../config';
+
 import { getDataFMAdministration } from '../store/actions/administration';
 import { RootState } from '../store/store';
+import { PortFiles, URL } from '../config';
+import LoaderPrimary from '../components/loaders/LoaderPrimary';
 
 interface AdministracionProp {}
 
@@ -289,7 +291,7 @@ const Administracion: FC<AdministracionProp> = () => {
 		<>
 			<div className={classes.administracion}>
 				{!rowsAd.length ? (
-					<h1>loading...</h1>
+					<LoaderPrimary />
 				) : (
 					<DataGrid
 						onCellClick={handleRow}
