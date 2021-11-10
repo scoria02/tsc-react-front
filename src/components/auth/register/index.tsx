@@ -298,7 +298,7 @@ const Register: React.FC = () => {
 									<Button
 										className={classes.buttonStep}
 										onClick={handleNext}
-										//disabled={!readyStep}
+										disabled={!readyStep}
 										variant='contained'>
 										{isMediumScreen ? null : <span>Siguiente</span>}
 										<ArrowForwardIosIcon />
