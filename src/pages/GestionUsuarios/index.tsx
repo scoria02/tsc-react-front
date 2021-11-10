@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import { DataGrid, GridColDef, GridToolbarContainer, GridToolbarFilterButton } from '@material-ui/data-grid';
 import CloseIcon from '@material-ui/icons/Close';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
@@ -67,12 +68,11 @@ const useStyles = makeStyles((styles) => ({
 	layout: {
 		padding: '0 1rem',
 	},
-	card: {
+	grid: {
 		display: 'grid',
 		gridTemplateColumns: '1fr 4fr',
-		alignItems: 'center',
-		padding: '1rem',
-		position: 'relative',
+		gridColumnGap: '1rem',
+		marginBottom: '1rem',
 	},
 	tableTitle: {
 		fontSize: 32,
@@ -87,15 +87,16 @@ const useStyles = makeStyles((styles) => ({
 		width: 40,
 		height: 40,
 		position: 'absolute',
-		top: 4,
-		right: 16,
+		top: 0,
+		right: 8,
 		padding: 0,
 		minWidth: 'unset',
-		borderRadius: 20,
+		borderRadius: '50%',
 	},
 	img: {
 		width: 170,
 		height: 170,
+		alignSelf: 'center',
 		'& div': {
 			width: '100%',
 			height: '100%',
@@ -114,12 +115,15 @@ const useStyles = makeStyles((styles) => ({
 		},
 	},
 	form: {
-		padding: '1rem',
+		padding: '1rem 0',
+		display: 'flex',
+		flexDirection: 'column',
+		marginBottom: 0,
 	},
 	row: {
 		display: 'flex',
 		justifyContent: 'space-between',
-		marginTop: 16,
+		margin: '16px 0',
 	},
 	column: {
 		flexDirection: 'column',
@@ -133,6 +137,21 @@ const useStyles = makeStyles((styles) => ({
 		backgroundColor: styles.palette.primary.light,
 		fontSize: 56,
 	},
+	card: {
+		alignItems: 'center',
+		padding: '1rem',
+		position: 'relative',
+	},
+	inputText: {
+		width: '100%',
+	},
+	textFields: {
+		width: '100%',
+		display: 'grid',
+		gridTemplateColumns: '1fr 1fr',
+		gridRowGap: 8,
+		gridColumnGap: 8,
+	},
 }));
 
 const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
@@ -140,6 +159,11 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 
 	const [allUserRoles, setAllUserRoles] = useState<any[]>([]);
 	const [openUserView, setUserView] = useState<boolean>();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [department, setDepartment] = useState<any[]>([
+		{ id: 0, name: 'Admision' },
+		{ id: 1, name: 'Administracion' },
+	]);
 	const [checkbox, setCheckbox] = useState<boolean>(true);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [userRol, setUserRol] = useState<any[]>([]);
@@ -233,6 +257,12 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 		}
 	};
 
+	const handleSelect = (event: any, value: any, item: string) => {
+		if (value) {
+		} else {
+		}
+	};
+
 	const handleCheckbox = async (event: React.ChangeEvent<HTMLInputElement>) => {
 		setCheckbox(false);
 		const id = parseInt(event.target.id, 10);
@@ -307,67 +337,78 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 								<Button className={classes.closeBtn} onClick={handleCloseRow}>
 									<CloseIcon />
 								</Button>
-								<div className={classes.img}>
-									<Avatar className={classes.avatarLetter}>{`${name.slice(0, 1)}${lname.slice(0, 1)}`}</Avatar>
-								</div>
 								<form className={classes.form}>
-									<div className={classes.row}>
-										<TextField
-											disabled
-											id='email'
-											name='email'
-											label='Correo'
-											variant='outlined'
-											type='email'
-											value={email}
-											// onChange={handleInputChanges}
-											style={{ marginRight: 8 }}
-											key={0}
-										/>
-										<TextField
-											disabled
-											key={1}
-											id='name'
-											name='name'
-											label='Nombre Completo'
-											variant='outlined'
-											type='text'
-											value={name + ' ' + lname}
-											// onChange={handleInputChanges}
-										/>
-									</div>
-									<div className={classnames(classes.row, classes.column)}>
-										<div className={classes.cardTitles}>Permisos</div>
-										<FormGroup>
-											<Grid container>
-												{checkbox &&
-													allUserRoles.map((rol, i) => {
-														return (
-															<Grid item xs={3} key={i}>
-																<FormControlLabel
-																	label={rol.name}
-																	control={
-																		<Checkbox
-																			id={rol.id}
-																			checked={isInUserRol(rol.id)}
-																			onChange={handleCheckbox}
-																			name={rol.name}
-																			color={'primary'}
-																			inputProps={{ 'aria-label': 'primary checkbox' }}
+									<div className={classes.grid}>
+										<div className={classes.img}>
+											<Avatar className={classes.avatarLetter}>{`${name.slice(0, 1)}${lname.slice(0, 1)}`}</Avatar>
+										</div>
+										<div>
+											<div className={classes.textFields}>
+												<TextField
+													disabled
+													id='email'
+													name='email'
+													label='Correo'
+													variant='outlined'
+													type='email'
+													value={email}
+													// onChange={handleInputChanges}
+													key={0}
+												/>
+												<TextField
+													disabled
+													key={1}
+													id='name'
+													name='name'
+													label='Nombre Completo'
+													variant='outlined'
+													type='text'
+													value={name + ' ' + lname}
+													// onChange={handleInputChanges}
+												/>
+												<Autocomplete
+													className={classes.inputText}
+													onChange={(event, value) => handleSelect(event, value, 'department')}
+													value={department[0]}
+													options={department}
+													getOptionLabel={(option: any) => (option.name ? option.name : '')}
+													renderInput={(params: any) => (
+														<TextField {...params} name='department' label='Departamento' variant='outlined' />
+													)}
+												/>
+											</div>
+											<div className={classnames(classes.row, classes.column)}>
+												<div className={classes.cardTitles}>Permisos</div>
+												<FormGroup>
+													<Grid container>
+														{checkbox &&
+															allUserRoles.map((rol, i) => {
+																return (
+																	<Grid item xs={3} key={i}>
+																		<FormControlLabel
+																			label={rol.name}
+																			control={
+																				<Checkbox
+																					id={rol.id}
+																					checked={isInUserRol(rol.id)}
+																					onChange={handleCheckbox}
+																					name={rol.name}
+																					color={'primary'}
+																					inputProps={{ 'aria-label': 'primary checkbox' }}
+																				/>
+																			}
 																		/>
-																	}
-																/>
-															</Grid>
-														);
-													})}
-											</Grid>
-										</FormGroup>
+																	</Grid>
+																);
+															})}
+													</Grid>
+												</FormGroup>
+											</div>
+										</div>
 									</div>
-									<div>
-										<Button className={classes.buttonSave} onClick={handleSaveData}>
-											Guardar
-										</Button>
-									</div>
+									<Button className={classes.buttonSave} onClick={handleSaveData}>
+										Guardar
+									</Button>
 								</form>
 							</div>
 						</Paper>

@@ -93,7 +93,7 @@ export const cleanAdmisionFM = () => {
 export const updateStatusFMDiferido = (id_fm: number, formData: any) => {
 	return async (dispatch: any) => {
 		try {
-			const res:any = await axiosFiles.put(`/1000pagosRC/RC/admition/${id_fm}/diferidos`, formData);
+			await axiosFiles.put(`/1000pagosRC/RC/admition/${id_fm}/diferidos`, formData);
 			//console.log('updateimg', res)
 			dispatch(requestSuccess());
 		} catch (error) {
