@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Button, FormControlLabel, makeStyles, Paper, Switch, TextField, Theme } from '@material-ui/core';
+import { Button, makeStyles, Paper, Theme } from '@material-ui/core';
 import {
 	DataGrid,
 	GridColDef,
@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getDataFMAdministration } from '../store/actions/administration';
 import { RootState } from '../store/store';
 import { PortFiles, URL } from '../config';
+import LoaderPrimary from '../components/loaders/LoaderPrimary';
 
 import {
 	getPayMent,
@@ -295,7 +296,7 @@ const Administracion: FC<AdministracionProp> = () => {
 		<>
 			<div className={classes.administracion}>
 				{!rowsAd.length ? (
-					<h1>loading...</h1>
+					<LoaderPrimary />
 				) : (
 					<DataGrid
 						onCellClick={handleRow}

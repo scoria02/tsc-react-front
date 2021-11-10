@@ -39,6 +39,7 @@ export const refreshLogin = () => {
 			dispatch(StartLoading());
 			dispatch(requestSuccess(res.data.info));
 		} catch (error: any) {
+			console.log('borrar')
 			localStorage.clear();
 			Swal.fire('Error', 'Sesión expirada, vuelva a iniciar sesión', 'error');
 		}

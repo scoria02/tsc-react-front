@@ -31,6 +31,7 @@ interface Props {
 	handleSelect: (event: any) => void;
 	codePhone: string;
 	company: any;
+	listIdentType: any[];
 }
 
 
@@ -41,6 +42,7 @@ export const Step2: React.FC<Props> = ({
 	handleSelect,
 	codePhone,
 	company,
+	listIdentType,
 }) => {
 	const dispatch = useDispatch();
 	const classes = useStylesModalUser();
@@ -109,11 +111,11 @@ export const Step2: React.FC<Props> = ({
 						name='id_ident_type'
 						label='Tipo'
 						placeholder=''>
-						<MenuItem value='1'>V</MenuItem>
-						<MenuItem value='2'>E</MenuItem>
-						<MenuItem value='3'>J</MenuItem>
-						<MenuItem value='4'>R</MenuItem>
-						<MenuItem value='5'>P</MenuItem>
+						{listIdentType.map((item: any) => (
+							<MenuItem key={item.id} value={item.id}>
+								{item.name}
+							</MenuItem>
+						))}
 					</Select>
 				</FormControl>
 				<TextField
@@ -126,6 +128,9 @@ export const Step2: React.FC<Props> = ({
 					onChange={handleChange}
 					label='Documento de identidad'
 					variant='outlined'
+					inputProps={{
+						maxLength: userForm.id_ident_type === 5 ? 20 : 9 
+					}}
 					error={userFormError.ident_num || checkErrorInput('ident', auth.error)}
 				/>
 			</div>
@@ -143,6 +148,7 @@ export const Step2: React.FC<Props> = ({
 					autoComplete="telefono1"
 					onChange={handleChangePhone}
 					error={userFormError.phone}
+					inputProps={{ maxLength: 10 }}
 					InputProps={{
 						startAdornment: (
 							<InputAdornment position="start">

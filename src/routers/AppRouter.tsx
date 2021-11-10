@@ -10,6 +10,8 @@ import {useEffect, useState} from 'react';
 import {refreshLogin} from '../store/actions/auth';
 import {FinishLoading} from '../store/actions/ui';
 
+import LoaderPrimary from '../components/loaders/LoaderPrimary';
+
 export const AppRouter = () => {
 	const dispatch = useDispatch();
 
@@ -27,7 +29,9 @@ export const AppRouter = () => {
 
 	// const setChecking = false;
 	if (checking) {
-		return <h1>Wait...</h1>;
+		return (
+			<LoaderPrimary />
+		);
 	}
 	// const isLoggedIn = false;
 

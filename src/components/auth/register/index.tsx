@@ -4,6 +4,11 @@ import React, {useState, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 
+import {
+	getIdentTypes,
+	getCompany,
+} from '../../formMaldito/getData';
+
 //icons
 import SendIcon from '@material-ui/icons/Send';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -31,6 +36,8 @@ import Typography from '@material-ui/core/Typography';
 
 //import luffy from '../../../img/itachi2.png';
 import luffy from '../../../img/user.png';
+
+import AuthModal from '../AuthModal';
 
 import {
 	Interface_RegisterUser,
@@ -61,20 +68,7 @@ const Register: React.FC = () => {
 
 	const codePhone = '+58';
 
-	const [company, setListCompany] = useState<any>([
-		{
-			id: 1,
-			name: 'Tranred',
-		},
-		{
-			id: 2,
-			name: '1000pagos',
-		},
-		{
-			id: 3,
-			name: 'Digo',
-		},
-	]);
+	const [listCompany, setListCompany] = useState<any>([]);
 
 	const [userForm, setUserForm] = useState<Interface_RegisterUser>({
 		email: '',
@@ -169,6 +163,50 @@ const Register: React.FC = () => {
 		});
 	};
 
+	const [listIdentType, setListIdentType] = useState<any[]>([]);
+	const [getDataControl, setGetDataControl] = useState<number>(0);
+
+	useEffect(() => {
+		if (getDataControl === 0) {
+			if (listIdentType.length === 0) {
+				setListIdentType([
+					{id: 1, name: 'V'},
+					{id: 2, name: 'E'},
+					{id: 3, name: 'J'},
+					{id: 4, name: 'R'},
+					{id: 5, name: 'P'},
+				])
+				setGetDataControl(1);
+				/*
+				getIdentTypes().then((res) => {
+					res.forEach((item, indice) => {
+						console.log('res')
+						setListIdentType((prevState: any) => [...prevState, item]);
+						if (indice === res.length - 1) {
+							setGetDataControl(1);
+						}
+					});
+				});
+				 */
+			}
+		} else if (getDataControl === 1) {
+			console.log('entre')
+			if (listCompany.length === 0) {
+				getCompany().then((res) => {
+					res.forEach((item, indice) => {
+						setListCompany((prevState: any) => [...prevState, item]);
+						if (indice === res.length - 1) {
+							setGetDataControl(2);
+						}
+					});
+				});
+			}
+		} else if (getDataControl === 2) {
+			console.log('Todo correcto');
+		}	
+		
+	}, [getDataControl]);
+
 	//useEffects
 	//Check No error & No Input null
 	useEffect(() => {
@@ -226,86 +264,67 @@ const Register: React.FC = () => {
 			handleSelect={handleSelect}
 			handleChange={handleChangeForm}
 			codePhone={codePhone}
-			company={company}
+			listIdentType={listIdentType}
+			company={listCompany}
 		/>,
 	];
 
 	return (
-		<Card className={classes.root}>
-			<CardContent>
-				<div className='ed-grid s-grid-1 m-grid-2 '>
-					<div className='ed-container'>
-						<div className='s-to-center'>
-							<CardMedia className={classes.media} image={luffy} title='Rey de los Piratas' />
-						</div>
-					</div>
-					<CardContent>
-						<div className='s-py-4'>
-							<Typography gutterBottom variant='h5' component='h2' align='center'>
-								Registrarme
-							</Typography>
-						</div>
-						<div className={classes.containerRight} >
-							<form autoComplete='off'>
-								<div className="ed-container">
-									{getStep[activeStep]}
-									<MobileStepper
-										variant='dots'
-										steps={2}
-										position='static'
-										style={{background: 'none'}}
-										activeStep={activeStep}
-										className={classes.step}
-										nextButton={
-											activeStep === 1 ? (
-												<Button
-													className={classes.buttonSend}
-													onClick={handleSubmit}
-													disabled={!readyStep}
-													variant='contained'>
-													{isMediumScreen ? <SendIcon /> : <span style={{color: '#fff'}}>Registrarme</span>}
-												</Button>
-											) : (
-												<Button
-													className={classes.buttonStep}
-													onClick={handleNext}
-													disabled={!readyStep}
-													variant='contained'>
-													{isMediumScreen ? null : <span>Siguiente</span>}
-													<ArrowForwardIosIcon />
-												</Button>
-											)
-										}
-										backButton={
-											activeStep === 0 ? (
-												<Button className={classes.buttonBack}>
-												</Button>
-											) : (
-												<Button
-													className={classes.buttonStep}
-													onClick={handleBack}
-													disabled={activeStep === 0}
-													variant='contained'>
-													<ArrowBackIosIcon />
-													{isMediumScreen ? null : <span>Anterior</span>}
-												</Button>
-											)
-										}
-									/>
-								</div>
-								<div className='ed-grid s-grid-2 containerButton-login'>
-									<Button size='small' color='primary' variant='contained' onClick={() => history.push('/auth/login')}>
-										<div className='ed-container'>
-											<div className='s-to-center button-login'>Volver a Inicio</div>
-										</div>
+		<AuthModal
+			register={true}
+			name='Registro'
+		>
+			<div className={classes.containerRight} >
+				<form autoComplete='off'>
+					<div className="ed-container">
+						{getStep[activeStep]}
+						<MobileStepper
+							variant='dots'
+							steps={2}
+							position='static'
+							style={{background: 'none'}}
+							activeStep={activeStep}
+							className={classes.step}
+							nextButton={
+								activeStep === 1 ? (
+									<Button
+										className={classes.buttonSend}
+										onClick={handleSubmit}
+										disabled={!readyStep}
+										variant='contained'>
+										{isMediumScreen ? <SendIcon /> : <span style={{color: '#fff'}}>Registrarme</span>}
 									</Button>
-								</div>
-							</form>
-						</div>
-					</CardContent>
-				</div>
-			</CardContent>
-		</Card>
+								) : (
+									<Button
+										className={classes.buttonStep}
+										onClick={handleNext}
+										//disabled={!readyStep}
+										variant='contained'>
+										{isMediumScreen ? null : <span>Siguiente</span>}
+										<ArrowForwardIosIcon />
+									</Button>
+								)
+							}
+							backButton={
+								activeStep === 0 ? (
+									<Button className={classes.buttonBack}>
+									</Button>
+								) : (
+									<Button
+										className={classes.buttonStep}
+										onClick={handleBack}
+										disabled={activeStep === 0}
+										variant='contained'>
+										<ArrowBackIosIcon />
+										{isMediumScreen ? null : <span>Anterior</span>}
+									</Button>
+								)
+							}
+						/>
+					</div>
+				</form>
+			</div>
+		</AuthModal>
 	);
 };
 

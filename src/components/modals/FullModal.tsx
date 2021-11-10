@@ -96,10 +96,6 @@ const FullModal: React.FC<any> = ({
 		return completed.size;
 	};
 
-	const allStepsCompleted = () => {
-		return completedSteps() === totalSteps();
-	};
-
 	const handleBack = () => {
 		setActiveStep((prevActiveStep:any) => prevActiveStep - 1);
 	};
@@ -151,38 +147,32 @@ const FullModal: React.FC<any> = ({
 								})}
 							</Stepper>
 							<div className={classes.containerStep}>
-								{allStepsCompleted() ? (
+								<div>
+									<Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
 									<div className='btn-divfloat'>
-										<Typography className={classes.instructions}>Todos los campos fueron Validados</Typography>
+										<Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+											Volver
+										</Button>
+										<Button variant='contained' color='primary' onClick={handleNext} className={classes.button}>
+											Siguiente
+										</Button>
+										{activeStep !== steps.length &&
+											(completed.has(activeStep) ? (
+												<Typography variant='caption' className={classes.completed}>
+													Verificado
+												</Typography>
+											) : (
+												<Button
+													className={classes.buttonS}
+													variant='contained'
+													color='primary'
+													disabled={readyStep}
+													onClick={handleComplete}>
+													{completedSteps() === totalSteps() - 1 ? 'Solicitud Revisada' : 'Verificar'}
+												</Button>
+											))}
 									</div>
-								) : (
-									<div>
-										<Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
-										<div className='btn-divfloat'>
-											<Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-												Volver
-											</Button>
-											<Button variant='contained' color='primary' onClick={handleNext} className={classes.button}>
-												Siguiente
-											</Button>
-											{activeStep !== steps.length &&
-												(completed.has(activeStep) ? (
-													<Typography variant='caption' className={classes.completed}>
-														Verificado
-													</Typography>
-												) : (
-													<Button
-														className={classes.buttonS}
-														variant='contained'
-														color='primary'
-														disabled={readyStep}
-														onClick={handleComplete}>
-														{completedSteps() === totalSteps() - 1 ? 'Solicitud Revisada' : 'Verificar'}
-													</Button>
-												))}
-										</div>
-									</div>
-								)}
+								</div>
 							</div>
 						</div>
 					</>

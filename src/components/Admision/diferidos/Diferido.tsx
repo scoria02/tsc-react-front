@@ -192,12 +192,14 @@ const Diferido: React.FC<any> = ({ fm }) => {
 
 	useEffect(() => {
 		if (updatedStatus) {
-			Swal.fire({
-				title: 'Formulario Verificado',
-				icon: 'success',
-				customClass: { container: 'swal2-validated' },
-			});
 			dispatch(cleanDataFmDiferido());
+			setTimeout(() => {
+				Swal.fire({
+					title: 'Formulario Verificado',
+					icon: 'success',
+					customClass: { container: 'swal2-validated' },
+				});
+			}, 10)
 		}
 	}, [updatedStatus]);
 
