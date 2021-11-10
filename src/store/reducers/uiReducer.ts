@@ -28,7 +28,6 @@ export const uiReducer = (state = initialState, action: Action) => {
 				...state,
 				loading: true,
 			};
-
 		case ActionType.uiFinishLoading:
 			return {
 				...state,
@@ -39,7 +38,6 @@ export const uiReducer = (state = initialState, action: Action) => {
 				...state,
 				modalOpenDiferido: true,
 			};
-
 		case ActionType.uiCloseModalDiferido:
 			return {
 				...state,

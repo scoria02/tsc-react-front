@@ -21,7 +21,6 @@ export const ModalAlert: React.FC<any> = ({
 					<div className='container-item'>
 						<div className='container-top'>
 							<ErrorOutlineIcon className='icons-alert' />
-							{/* <h2>Alerta:</h2> */}
 							<p className='container-text'>
 								Indique claramente las razones por la cual el recaudo NO se validó, este mensaje sera enviado por
 								correo al cliente.

@@ -302,9 +302,10 @@ export const Step4: React.FC<any> = ({
 					label='Numero de Cédula'
 					name='reqSource_docnum'
 					onChange={handleChange}
-					// onBlur={handleBlurNumBank}
+					inputProps={{
+						maxLength: 9 
+					}}
 					value={cursedForm.reqSource_docnum}
-					//error={erorr.reqSource_docnum}
 				/>
 			</div>
 			<div className={classes.input}>

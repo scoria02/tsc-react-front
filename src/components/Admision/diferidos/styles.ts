@@ -128,10 +128,8 @@ export const useStyles = makeStyles((styles: Theme) => ({
 
 	//aparte
 	uploadImg: {
-		position: 'absolute',
-		left: '75%',
-		top: '50%',
 		padding: '.5rem',
+		marginTop: '1rem',
 		fontSize: '.7rem',
 		textTransform: 'none',
 		width: 'auto',

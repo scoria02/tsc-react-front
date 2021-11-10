@@ -119,6 +119,9 @@ export const Step1: React.FC<any> = ({
 						onBlur={handleBlurEmailIdent}
 						value={cursedForm.ident_num}
 						error={error.ident_num || validEmailIdent}
+						inputProps={{
+							maxLength: cursedForm.id_ident_type === 5 ? 20 : 9 
+						}}
 					/>
 					<Button
 						className={classes.imgIdent}
@@ -186,6 +189,7 @@ export const Step1: React.FC<any> = ({
 						error={error.phone1}
 						disabled={fm.mashClient}
 						value={cursedForm.phone1}
+						inputProps={{ maxLength: 10 }}
 						InputProps={{
 							startAdornment: (
 								fm.mashClient ? 
@@ -210,6 +214,7 @@ export const Step1: React.FC<any> = ({
 						error={error.phone2}
 						disabled={fm.mashClient}
 						value={cursedForm.phone2}
+						inputProps={{ maxLength: 10 }}
 						InputProps={{
 							startAdornment: (
 								fm.mashClient ? 

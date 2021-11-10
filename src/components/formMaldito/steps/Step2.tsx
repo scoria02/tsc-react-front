@@ -118,6 +118,9 @@ export const Step2: React.FC<any> = ({
 						onBlur={handleBlurCommerce}
 						value={cursedForm.ident_num_commerce}
 						error={fm.errorCommerce}
+						inputProps={{
+							maxLength: cursedForm.id_ident_type_commerce === 5 ? 20 : 9 
+						}}
 					/>
 					<Button
 						className={classes.imgIdent}

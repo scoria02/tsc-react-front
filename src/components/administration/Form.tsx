@@ -240,6 +240,7 @@ export const Form: React.FC<any> = ({
 				urlImgCompDep: '' 
 			});
 		}
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [payment])
 
 	return (

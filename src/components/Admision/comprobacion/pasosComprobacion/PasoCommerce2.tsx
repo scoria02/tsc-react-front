@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-// @ts-expect-error
-import ReactImageZoom from 'react-image-zoom';
+//import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { Valid } from '../../../../store/actions/accept';
@@ -12,7 +11,8 @@ import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 import { ModalAlert }from '../ModalAlert';
-import { recaudo } from '../../../utilis/recaudos';
+
+import Rec from '../../../utilis/images/Rec';
 
 export default function PasoCommerce2() {
 	const classes = useStyles();
@@ -21,6 +21,8 @@ export default function PasoCommerce2() {
 	const rc_rif: any = useSelector((state: RootState) => state.acceptance.validado.rc_rif);
 	const [state, setState] = useState(rc_rif);
 	const [openModal, setOpenModal] = useState<boolean>(false);
+
+  const [load, setLoad] = useState(false)
 
 	const handleOpenModal = () => {
 		handleCancel()
@@ -65,12 +67,7 @@ export default function PasoCommerce2() {
 			handleOpenModal();
 	};
 
-	const props = {
-		zoomPosition: recaudo.position,
-		height: recaudo.h,
-		width: recaudo.w,
-		img: `${URL}:${PortFiles}/${fm.rc_rif.path}`,
-	};
+	const imagen:string = `${URL}:${PortFiles}/${fm.rc_rif.path}`;
 
 	return (
 		<>
@@ -81,9 +78,11 @@ export default function PasoCommerce2() {
 					label={state.status ? 'Correcto' : 'Incorrecto'}
 				/>
 			</div>
-			<div className='img_container_2'>
-				<ReactImageZoom {...props} />
-			</div>
+			<Rec 
+				load={load}
+				setLoad={setLoad}
+				imagen={imagen}
+			/>
 			<ModalAlert 
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
