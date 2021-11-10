@@ -192,6 +192,12 @@ const Register: React.FC = () => {
 		} else if (getDataControl === 1) {
 			console.log('entre')
 			if (listCompany.length === 0) {
+				setListCompany([
+					{id: 1, name: 'Tranred'},
+					{id: 2, name: '1000Pagos'},
+					{id: 3, name: 'Digo'},
+				])
+				/*
 				getCompany().then((res) => {
 					res.forEach((item, indice) => {
 						setListCompany((prevState: any) => [...prevState, item]);
@@ -200,6 +206,7 @@ const Register: React.FC = () => {
 						}
 					});
 				});
+				 */
 			}
 		} else if (getDataControl === 2) {
 			console.log('Todo correcto');
@@ -272,7 +279,7 @@ const Register: React.FC = () => {
 	return (
 		<AuthModal
 			register={true}
-			name='Registro'
+			name='Registrarme'
 		>
 			<div className={classes.containerRight} >
 				<form autoComplete='off'>
