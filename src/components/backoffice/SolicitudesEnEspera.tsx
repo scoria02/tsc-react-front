@@ -7,7 +7,7 @@ export const SolicitudesEnEspera = () => {
 		<div className={classes.status}>
 			<div className={classes.statusTitle}>En Espera:</div>
 
-			<div className={classes.statusDesc}> 251 </div>
+			<div className={classes.statusDesc}> 10 </div>
 		</div>
 	);
 };

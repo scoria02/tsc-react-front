@@ -93,7 +93,7 @@ const Admision: React.FC = () => {
 						<SolicitudesTerminadas />
 					</div>
 
-					<div className={''}>
+					<div className={''} style={{ width: '40%' }}>
 						<ChartTorta />
 					</div>
 				</div>

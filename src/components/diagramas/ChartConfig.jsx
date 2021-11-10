@@ -49,8 +49,8 @@ export const ChartBarra = () => {
 					position: 'right',
 				},
 			}}
-			width={700}
-			height={300}
+			width={'100%'}
+			height={'35vh'}
 		/>
 	);
 };
