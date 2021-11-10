@@ -96,6 +96,7 @@ const useStyles = makeStyles((styles) => ({
 	img: {
 		width: 170,
 		height: 170,
+		alignSelf: 'center',
 		'& div': {
 			width: '100%',
 			height: '100%',
@@ -122,7 +123,7 @@ const useStyles = makeStyles((styles) => ({
 	row: {
 		display: 'flex',
 		justifyContent: 'space-between',
-		marginBottom: 16,
+		margin: '16px 0',
 	},
 	column: {
 		flexDirection: 'column',
@@ -143,6 +144,13 @@ const useStyles = makeStyles((styles) => ({
 	},
 	inputText: {
 		width: '100%',
+	},
+	textFields: {
+		width: '100%',
+		display: 'grid',
+		gridTemplateColumns: '1fr 1fr',
+		gridRowGap: 8,
+		gridColumnGap: 8,
 	},
 }));
 
@@ -334,29 +342,40 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 											<Avatar className={classes.avatarLetter}>{`${name.slice(0, 1)}${lname.slice(0, 1)}`}</Avatar>
 										</div>
 										<div>
-											<TextField
-												disabled
-												id='email'
-												name='email'
-												label='Correo'
-												variant='outlined'
-												type='email'
-												value={email}
-												// onChange={handleInputChanges}
-												style={{ marginRight: 8 }}
-												key={0}
-											/>
-											<TextField
-												disabled
-												key={1}
-												id='name'
-												name='name'
-												label='Nombre Completo'
-												variant='outlined'
-												type='text'
-												value={name + ' ' + lname}
-												// onChange={handleInputChanges}
-											/>
+											<div className={classes.textFields}>
+												<TextField
+													disabled
+													id='email'
+													name='email'
+													label='Correo'
+													variant='outlined'
+													type='email'
+													value={email}
+													// onChange={handleInputChanges}
+													key={0}
+												/>
+												<TextField
+													disabled
+													key={1}
+													id='name'
+													name='name'
+													label='Nombre Completo'
+													variant='outlined'
+													type='text'
+													value={name + ' ' + lname}
+													// onChange={handleInputChanges}
+												/>
+												<Autocomplete
+													className={classes.inputText}
+													onChange={(event, value) => handleSelect(event, value, 'department')}
+													value={department[0]}
+													options={department}
+													getOptionLabel={(option: any) => (option.name ? option.name : '')}
+													renderInput={(params: any) => (
+														<TextField {...params} name='department' label='Departamento' variant='outlined' />
+													)}
+												/>
+											</div>
 											<div className={classnames(classes.row, classes.column)}>
 												<div className={classes.cardTitles}>Permisos</div>
 												<FormGroup>
@@ -385,18 +404,6 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 												</FormGroup>
 											</div>
 										</div>
-									</div>
-									<div className={classes.row}>
-										<Autocomplete
-											className={classes.inputText}
-											onChange={(event, value) => handleSelect(event, value, 'department')}
-											value={department[0]}
-											options={department}
-											getOptionLabel={(option: any) => (option.name ? option.name : '')}
-											renderInput={(params: any) => (
-												<TextField {...params} name='department' label='Departamento' variant='outlined' />
-											)}
-										/>
 									</div>
 									<Button className={classes.buttonSave} onClick={handleSaveData}>
 										Guardar
