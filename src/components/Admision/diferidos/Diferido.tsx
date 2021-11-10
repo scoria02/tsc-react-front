@@ -107,7 +107,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 
 	function getSteps() {
 		let list: string[] = [];
-
 		for (const item of Object.entries(recaudos).reverse()) {
 			const ob:any = item[1];
 			list.push(nameSteps(ob.descript));
