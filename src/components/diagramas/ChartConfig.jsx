@@ -2,32 +2,32 @@ import { Bar, Doughnut } from 'react-chartjs-2';
 import './diagramas.scss';
 
 const state = {
-	labels: ['Espera', 'Proceso', 'Aprobadas'],
+	labels: ['Espera', 'Proceso', 'Terminadas'],
 	datasets: [
 		{
 			label: 'Barra',
 			axis: 'x',
 
 			backgroundColor: [
-				'rgba(255, 99, 132, 0.2)',
-				'rgba(255, 159, 64, 0.2)',
-				'rgba(255, 205, 86, 0.2)',
-				'rgba(75, 192, 192, 0.2)',
-				'rgba(54, 162, 235, 0.2)',
-				'rgba(153, 102, 255, 0.2)',
-				'rgba(201, 203, 207, 0.2)',
+				'rgba(20, 17, 152, 0.4)',
+				'rgba(238, 99, 82, 0.4)',
+				'rgba(63, 167, 214, 0.4)',
+				'rgba(248, 249, 72, 0.4)',
+				'rgba(95, 72, 66, 0.4)',
+				'rgba(240, 162, 2, 0.4)',
+				'rgba(247, 157, 132, 0.4)',
 			],
 			borderColor: [
-				'rgb(255, 99, 132)',
-				'rgb(255, 159, 64)',
-				'rgb(255, 205, 86)',
-				'rgb(75, 192, 192)',
-				'rgb(54, 162, 235)',
+				'rgb(20, 17, 152)',
+				'rgb(238, 99, 82)',
+				'rgb(63, 167, 214)',
+				'rgb(248, 249, 72)',
+				'rgb(95, 72, 66)',
 				'rgb(153, 102, 255)',
-				'rgb(201, 203, 207)',
+				'rgb(247, 157, 132)',
 			],
 			borderWidth: 1,
-			data: [10, 5, 289],
+			data: [10, 3, 32],
 		},
 	],
 };
