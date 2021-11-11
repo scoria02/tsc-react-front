@@ -1,6 +1,7 @@
 import { Fab, makeStyles, Theme } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import React, { useContext, useEffect, useState } from 'react';
+import { Bar } from 'react-chartjs-2';
 import { useDispatch, useSelector } from 'react-redux';
 import { SocketContext } from '../../context/SocketContext';
 // import { SocketContext } from '../../helpers/SocketContext';
@@ -10,7 +11,7 @@ import { SolicitudesDiferidos } from '../backoffice/SolicitudesDiferidos';
 import { SolicitudesEnEspera } from '../backoffice/SolicitudesEnEspera';
 import { SolicitudesEnProceso } from '../backoffice/SolicitudesEnProceso';
 import { SolicitudesTerminadas } from '../backoffice/SolicitudesTerminadas';
-import { ChartBarra, ChartTorta } from '../diagramas/ChartConfig';
+import { ChartTorta } from '../diagramas/ChartConfig';
 import Comprobacion from './comprobacion';
 import Diferidos from './diferidos/Diferidos';
 import './index.scss';
@@ -59,19 +60,63 @@ export const useStyles = makeStyles((theme: Theme) => ({
 	},
 }));
 
+const state = {
+	labels: ['Espera', 'Proceso', 'Terminadas'],
+	datasets: [
+		{
+			label: 'Barra',
+			axis: 'x',
+
+			backgroundColor: [
+				'rgba(20, 17, 152, 0.4)',
+				'rgba(238, 99, 82, 0.4)',
+				'rgba(63, 167, 214, 0.4)',
+				'rgba(248, 249, 72, 0.4)',
+				'rgba(95, 72, 66, 0.4)',
+				'rgba(240, 162, 2, 0.4)',
+				'rgba(247, 157, 132, 0.4)',
+			],
+			borderColor: [
+				'rgb(20, 17, 152)',
+				'rgb(238, 99, 82)',
+				'rgb(63, 167, 214)',
+				'rgb(248, 249, 72)',
+				'rgb(95, 72, 66)',
+				'rgb(153, 102, 255)',
+				'rgb(247, 157, 132)',
+			],
+			borderWidth: 1,
+			data: [10, 3, 32],
+		},
+	],
+};
+
 const Admision: React.FC = () => {
-	const classes = useStyles();
 	const dispatch = useDispatch();
+	const classes = useStyles();
 
 	const { modalOpen } = useSelector((state: any) => state.ui);
 	const { user } = useSelector((state: any) => state.auth);
-
 	const { socket } = useContext(SocketContext);
+
+	const [columns, setColumns] = useState<any[]>(['Espera', 'Proceso', 'Terminadas']);
+	const [dataNew, setdataNew] = useState<number>(10);
 
 	useEffect(() => {
 		socket.emit('cliente:dashdata', user, (data: any) => {
 			console.log(data);
+			// let cols: any[] = [];
+			// let dataD: any[] = [];
+			// Object.entries(data).forEach(([key, valor], i) => {
+			// 	cols[i] = key;
+			// 	dataD[i] = valor;
+			// });
+			// setColumns(cols);
+			// setdataNew(dataD);
+			// console.log('columns', columns);
+			// console.log('dataNew', dataNew);
 		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [socket, user]);
 
 	const handleClick = () => {
@@ -84,37 +129,6 @@ const Admision: React.FC = () => {
 
 		console.log('Aqui ta el beta');
 	};
-
-	const [chartData, setChartData] = useState({
-		labels: ['Espera', 'Proceso', 'Terminadas'],
-		datasets: [
-			{
-				label: 'Barra',
-				axis: 'x',
-
-				backgroundColor: [
-					'rgba(20, 17, 152, 0.4)',
-					'rgba(238, 99, 82, 0.4)',
-					'rgba(63, 167, 214, 0.4)',
-					'rgba(248, 249, 72, 0.4)',
-					'rgba(95, 72, 66, 0.4)',
-					'rgba(240, 162, 2, 0.4)',
-					'rgba(247, 157, 132, 0.4)',
-				],
-				borderColor: [
-					'rgb(20, 17, 152)',
-					'rgb(238, 99, 82)',
-					'rgb(63, 167, 214)',
-					'rgb(248, 249, 72)',
-					'rgb(95, 72, 66)',
-					'rgb(153, 102, 255)',
-					'rgb(247, 157, 132)',
-				],
-				borderWidth: 1,
-				data: [10, 3, 32],
-			},
-		],
-	});
 
 	return (
 		<div className={classes.admision}>
@@ -131,11 +145,35 @@ const Admision: React.FC = () => {
 					</div>
 
 					<div style={{ width: '40%' }}>
-						<ChartTorta data={chartData} />
+						<ChartTorta />
 					</div>
 				</div>
 				<div className={classes.row}>
-					<ChartBarra data={chartData} />
+					<div
+						onClick={() => {
+							setdataNew(dataNew + 1);
+						}}>
+						Aumentar
+					</div>
+					<div style={{ width: 560, height: 200 }}>
+						<Bar
+							data={state}
+							className='canvas_prueba'
+							options={{
+								indexAxis: 'y',
+								title: {
+									display: true,
+									text: '',
+									fontSize: 2,
+								},
+								legend: {
+									display: true,
+									position: 'right',
+								},
+								responsive: true,
+							}}
+						/>
+					</div>
 				</div>
 			</div>
 			<div className='cmn-divfloat'>

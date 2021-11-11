@@ -1,4 +1,6 @@
-import { Bar, Doughnut } from 'react-chartjs-2';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Doughnut } from 'react-chartjs-2';
 import './diagramas.scss';
 
 const state = {
@@ -32,43 +34,20 @@ const state = {
 	],
 };
 
-export const ChartBarra = (data) => {
-	return (
-		<Bar
-			data={data ? data : state}
-			className='canvas_prueba'
-			options={{
-				indexAxis: 'y',
-				title: {
-					display: true,
-					text: 'Average Solic',
-					fontSize: 2,
-				},
-				legend: {
-					display: true,
-					position: 'right',
-				},
-			}}
-			width={'100%'}
-			height={'35vh'}
-		/>
-	);
-};
-
-export const ChartTorta = (data) => {
+export const ChartTorta = (col?: any, data?: any) => {
+	// let val = UpdateChartData(col, data);
 	return (
 		<Doughnut
-			data={data ? data : state}
+			data={state}
 			className='canvas_prueba'
 			options={{
 				title: {
 					display: true,
-					text: 'Average Rainfall per month',
+					text: '',
 					fontSize: 2,
 				},
+				responsive: true,
 			}}
-			height={230}
-			width={230}
 		/>
 	);
 };
