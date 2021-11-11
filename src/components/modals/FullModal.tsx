@@ -15,6 +15,8 @@ import Typography from '@material-ui/core/Typography';
 import LoaderPrimary from '../loaders/LoaderPrimary';
 
 import './scss/fullmodal.scss';
+import { useContext } from 'react';
+import { SocketContext } from '../../context/SocketContext';
 
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & { children?: React.ReactElement },
@@ -65,7 +67,6 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-
 const FullModal: React.FC<any> = ({
 	stepComplete,
 	clean,
@@ -77,9 +78,9 @@ const FullModal: React.FC<any> = ({
 	updatedStatus,
 	id_status,
 	getSteps,
-	activeStep, 
+	activeStep,
 	setActiveStep,
-	completed, 
+	completed,
 	readyStep,
 	handleNext,
 	handleComplete,
@@ -97,7 +98,7 @@ const FullModal: React.FC<any> = ({
 	};
 
 	const handleBack = () => {
-		setActiveStep((prevActiveStep:any) => prevActiveStep - 1);
+		setActiveStep((prevActiveStep: any) => prevActiveStep - 1);
 	};
 
 	const handleStep = (step: number) => () => {
@@ -108,41 +109,43 @@ const FullModal: React.FC<any> = ({
 		return completed.has(step);
 	}
 
+	const { socket } = useContext(SocketContext);
+
 	const handleClose = () => {
-		console.log('clean for close')
+		socket.emit('cliente:disconnect');
+		socket.emit('cliente:dashdatasiempre');
+		console.log('clean for close');
 		dispatch(CloseModal());
-		dispatch(clean())
+		dispatch(clean());
 	};
 
 	return (
 		<div>
 			<Dialog fullScreen open={modalOpen} onClose={handleClose} TransitionComponent={Transition}>
-				{Object.keys(fm).length ? 
+				{Object.keys(fm).length ? (
 					<>
-						<div className="button-close" >
-							<div className="close-container" onClick={handleClose}>
-								<div className="leftright"></div>
-								<div className="rightleft"></div>
-								<label className="closee">Cerrar</label>
+						<div className='button-close'>
+							<div className='close-container' onClick={handleClose}>
+								<div className='leftright'></div>
+								<div className='rightleft'></div>
+								<label className='closee'>Cerrar</label>
 							</div>
 						</div>
 						<div className={classes.root}>
 							<Stepper alternativeLabel nonLinear activeStep={activeStep}>
-								{steps.map((label:any, index:number) => {
+								{steps.map((label: any, index: number) => {
 									const stepProps: { completed?: boolean } = {};
 									const buttonProps: { optional?: React.ReactNode } = {};
-									return (
-											totalSteps() > 1 ? (
-												<Step key={label} {...stepProps}>
-													<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
-														<b>{label}</b>
-													</StepButton>
-												</Step>
-											):(
-												<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
-													<b style={{ fontSize: "1.2rem" }}>{label}</b>
-												</StepButton>
-											)
+									return totalSteps() > 1 ? (
+										<Step key={label} {...stepProps}>
+											<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
+												<b>{label}</b>
+											</StepButton>
+										</Step>
+									) : (
+										<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
+											<b style={{ fontSize: '1.2rem' }}>{label}</b>
+										</StepButton>
 									);
 								})}
 							</Stepper>
@@ -176,9 +179,9 @@ const FullModal: React.FC<any> = ({
 							</div>
 						</div>
 					</>
-					:
-						<LoaderPrimary />
-				}
+				) : (
+					<LoaderPrimary />
+				)}
 			</Dialog>
 		</div>
 	);

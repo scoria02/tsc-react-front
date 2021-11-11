@@ -116,7 +116,7 @@ const Admision: React.FC = () => {
 			// console.log('columns', columns);
 			// console.log('dataNew', dataNew);
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// socket.emit('cliente:dashdatasiempre');
 	}, [socket, user]);
 
 	const handleClick = () => {
@@ -127,6 +127,7 @@ const Admision: React.FC = () => {
 			console.log('solic', solic);
 		});
 
+		socket.emit('cliente:dashdatasiempre');
 		console.log('Aqui ta el beta');
 	};
 

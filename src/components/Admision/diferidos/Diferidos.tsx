@@ -20,16 +20,16 @@ import { OpenModalDiferido } from '../../../store/actions/ui';
 import Diferido from './Diferido';
 
 const columns: GridColDef[] = [
-	{ 
+	{
 		field: 'code',
 		headerName: 'Cod.',
 		width: 80,
 		editable: false,
 		sortable: false,
 	},
-	{ 
-		field: 'nameComer', 
-		headerName: 'Nombre Comercio', 
+	{
+		field: 'nameComer',
+		headerName: 'Nombre Comercio',
 		width: 150,
 		editable: false,
 		sortable: false,
@@ -73,7 +73,6 @@ const Diferidos: React.FC = () => {
 
 	const [rowSelected, setRowSelect] = useState(null);
 
-
 	const customToolbar: () => JSX.Element = () => {
 		return (
 			<GridToolbarContainer className='m-main-justify m-px-2' style={{ minHeight: '4rem' }}>
@@ -96,20 +95,26 @@ const Diferidos: React.FC = () => {
 		// getDiferidos();
 		socket.emit('cliente:loadDiferidos');
 
+		socket.emit('cliente:dashdatasiempre');
+
 		socket.on('server:loadDiferidos', (data: any) => {
 			setDiferidos(data);
+		});
+
+		socket.on('server:dashdata', (data: any) => {
+			console.log('MENOL EMITE AQUI ', data);
 		});
 	}, [socket]);
 	//updatedStatus
 
 	const handleRow = (event: any) => {
 		setRowSelect(null);
-		socket.emit('Editar_diferido', event.row?.id, (res:any) => {
+		socket.emit('Editar_diferido', event.row?.id, (res: any) => {
 			setRowSelect({
 				...res,
 				id: event.row?.id,
-			})
-		})
+			});
+		});
 		dispatch(OpenModalDiferido());
 	};
 
@@ -127,11 +132,7 @@ const Diferidos: React.FC = () => {
 				disableColumnMenu
 				getRowId={(row) => row.id}
 			/>
-			{(modalOpenDiferido && rowSelected) && 
-			<Diferido
-				fm={rowSelected}
-			/>
-			}
+			{modalOpenDiferido && rowSelected && <Diferido fm={rowSelected} />}
 		</div>
 	);
 };
