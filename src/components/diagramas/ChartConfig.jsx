@@ -32,10 +32,10 @@ const state = {
 	],
 };
 
-export const ChartBarra = () => {
+export const ChartBarra = (data) => {
 	return (
 		<Bar
-			data={state}
+			data={data ? data : state}
 			className='canvas_prueba'
 			options={{
 				indexAxis: 'y',
@@ -55,10 +55,10 @@ export const ChartBarra = () => {
 	);
 };
 
-export const ChartTorta = () => {
+export const ChartTorta = (data) => {
 	return (
 		<Doughnut
-			data={state}
+			data={data ? data : state}
 			className='canvas_prueba'
 			options={{
 				title: {

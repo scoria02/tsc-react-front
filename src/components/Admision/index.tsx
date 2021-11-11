@@ -1,6 +1,6 @@
 import { Fab, makeStyles, Theme } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SocketContext } from '../../context/SocketContext';
 // import { SocketContext } from '../../helpers/SocketContext';
@@ -79,6 +79,37 @@ const Admision: React.FC = () => {
 		console.log('Aqui ta el beta');
 	};
 
+	const [chartData, setChartData] = useState({
+		labels: ['Espera', 'Proceso', 'Terminadas'],
+		datasets: [
+			{
+				label: 'Barra',
+				axis: 'x',
+
+				backgroundColor: [
+					'rgba(20, 17, 152, 0.4)',
+					'rgba(238, 99, 82, 0.4)',
+					'rgba(63, 167, 214, 0.4)',
+					'rgba(248, 249, 72, 0.4)',
+					'rgba(95, 72, 66, 0.4)',
+					'rgba(240, 162, 2, 0.4)',
+					'rgba(247, 157, 132, 0.4)',
+				],
+				borderColor: [
+					'rgb(20, 17, 152)',
+					'rgb(238, 99, 82)',
+					'rgb(63, 167, 214)',
+					'rgb(248, 249, 72)',
+					'rgb(95, 72, 66)',
+					'rgb(153, 102, 255)',
+					'rgb(247, 157, 132)',
+				],
+				borderWidth: 1,
+				data: [10, 3, 32],
+			},
+		],
+	});
+
 	return (
 		<div className={classes.admision}>
 			<div className={classes.dataGrid}>
@@ -93,12 +124,12 @@ const Admision: React.FC = () => {
 						<SolicitudesTerminadas />
 					</div>
 
-					<div className={''} style={{ width: '40%' }}>
-						<ChartTorta />
+					<div style={{ width: '40%' }}>
+						<ChartTorta data={chartData} />
 					</div>
 				</div>
 				<div className={classes.row}>
-					<ChartBarra />
+					<ChartBarra data={chartData} />
 				</div>
 			</div>
 			<div className='cmn-divfloat'>
