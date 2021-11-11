@@ -1,6 +1,7 @@
 import { Fab, makeStyles, Theme } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import React, { useContext } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SocketContext } from '../../context/SocketContext';
 // import { SocketContext } from '../../helpers/SocketContext';
@@ -67,6 +68,12 @@ const Admision: React.FC = () => {
 	const { user } = useSelector((state: any) => state.auth);
 
 	const { socket } = useContext(SocketContext);
+
+	useEffect(() => {
+		socket.emit('cliente:dashdata', user, (data: any) => {
+			console.log(data);
+		});
+	}, [socket, user]);
 
 	const handleClick = () => {
 		dispatch(getDataFM());
