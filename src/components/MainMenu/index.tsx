@@ -28,7 +28,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import PeopleIcon from '@material-ui/icons/PeopleAlt';
 import WorkIcon from '@material-ui/icons/Work';
 import classNames from 'classnames';
-import React, { useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import TranredLogo from '../../img/tranred-logo.png';
@@ -143,18 +143,18 @@ const useStyles = makeStyles((theme: Theme) => ({
 	},
 }));
 
-const MainMenu: React.FC = () => {
-	const classes = useStyles();
-	const theme = useTheme();
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const MainMenu: FC = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
+	const classes = useStyles();
+	const theme = useTheme();
 
-	const [open, setOpen] = React.useState(false); //Nav Left
-	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>();
-	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
+	const [section, setSection] = useState<string>('');
+	const [open, setOpen] = useState(false); //Nav Left
 
-	const [user, setUser] = React.useState({
+	const [user, setUser] = useState({
 		name: '',
 		last_name: '',
 	});
@@ -189,29 +189,34 @@ const MainMenu: React.FC = () => {
 			case 1:
 				history.push(urlAdministracion);
 				localStorage.setItem('path', urlAdministracion);
-
+				setSection('Administracion');
 				break;
 			case 3:
 				history.push(urlAdmision);
 				localStorage.setItem('path', urlAdmision);
+				setSection('Admision');
 				// socket.emit('prueba');
 				break;
 			case 4:
 				history.push(userAdmin);
 				localStorage.setItem('path', userAdmin);
+				setSection('Gestion de Usuarios');
 				break;
 			case 5:
 				history.push(urlFM);
 				localStorage.setItem('path', urlFM);
+				setSection('Formulario de Activación');
 				break;
 			case 6:
 				history.push(urlCobr);
 				localStorage.setItem('path', urlCobr);
+				setSection('Cobranza');
 				break;
 
 			default:
 				history.push(baseUrl);
 				localStorage.setItem('path', baseUrl);
+				setSection('1000Pagos C.A.');
 				break;
 		}
 		handleDrawerClose();
@@ -324,7 +329,7 @@ const MainMenu: React.FC = () => {
 						<MenuIcon />
 					</IconButton>
 					<Typography className={classes.title} variant='h6' noWrap>
-						1000Pagos C.A.
+						{section ? section : '1000Pagos C.A.'}
 					</Typography>
 
 					<div className={classes.grow} />
