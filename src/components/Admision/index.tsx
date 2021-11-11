@@ -1,6 +1,6 @@
 import { Fab, makeStyles, Theme } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useDispatch, useSelector } from 'react-redux';
 import { SocketContext } from '../../context/SocketContext';
@@ -99,9 +99,6 @@ const Admision: React.FC = () => {
 	const { user } = useSelector((state: any) => state.auth);
 	const { socket } = useContext(SocketContext);
 
-	const [columns, setColumns] = useState<any[]>(['Espera', 'Proceso', 'Terminadas']);
-	const [dataNew, setdataNew] = useState<number>(10);
-
 	useEffect(() => {
 		socket.emit('cliente:dashdata', user, (data: any) => {
 			console.log(data);
@@ -150,12 +147,6 @@ const Admision: React.FC = () => {
 					</div>
 				</div>
 				<div className={classes.row}>
-					<div
-						onClick={() => {
-							setdataNew(dataNew + 1);
-						}}>
-						Aumentar
-					</div>
 					<div style={{ width: 560, height: 200 }}>
 						<Bar
 							data={state}
