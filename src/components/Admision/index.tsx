@@ -1,17 +1,17 @@
-import { Fab, makeStyles, Theme } from '@material-ui/core';
+import {Fab, makeStyles, Theme} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import React, { useContext, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
-import { useDispatch, useSelector } from 'react-redux';
-import { SocketContext } from '../../context/SocketContext';
+import React, {useContext, useEffect} from 'react';
+import {Bar} from 'react-chartjs-2';
+import {useDispatch, useSelector} from 'react-redux';
+import {SocketContext} from '../../context/SocketContext';
 // import { SocketContext } from '../../helpers/SocketContext';
-import { getDataFM } from '../../store/actions/admisionFm';
-import { OpenModal } from '../../store/actions/ui';
-import { SolicitudesDiferidos } from '../backoffice/SolicitudesDiferidos';
-import { SolicitudesEnEspera } from '../backoffice/SolicitudesEnEspera';
-import { SolicitudesEnProceso } from '../backoffice/SolicitudesEnProceso';
-import { SolicitudesTerminadas } from '../backoffice/SolicitudesTerminadas';
-import { ChartTorta } from '../diagramas/ChartConfig';
+import {getDataFM} from '../../store/actions/admisionFm';
+import {OpenModal} from '../../store/actions/ui';
+import {SolicitudesDiferidos} from '../backoffice/SolicitudesDiferidos';
+import {SolicitudesEnEspera} from '../backoffice/SolicitudesEnEspera';
+import {SolicitudesEnProceso} from '../backoffice/SolicitudesEnProceso';
+import {SolicitudesTerminadas} from '../backoffice/SolicitudesTerminadas';
+import {ChartTorta} from '../diagramas/ChartConfig';
 import Comprobacion from './comprobacion';
 import Diferidos from './diferidos/Diferidos';
 import './index.scss';
@@ -95,9 +95,9 @@ const Admision: React.FC = () => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 
-	const { modalOpen } = useSelector((state: any) => state.ui);
-	const { user } = useSelector((state: any) => state.auth);
-	const { socket } = useContext(SocketContext);
+	const {modalOpen} = useSelector((state: any) => state.ui);
+	const {user} = useSelector((state: any) => state.auth);
+	const {socket} = useContext(SocketContext);
 
 	useEffect(() => {
 		socket.emit('cliente:dashdata', user, (data: any) => {
@@ -117,11 +117,10 @@ const Admision: React.FC = () => {
 	}, [socket, user]);
 
 	const handleClick = () => {
-		dispatch(getDataFM());
 		dispatch(OpenModal());
 
 		socket.emit('Trabanjando_Solic', user, (solic: any) => {
-			console.log('solic', solic);
+			dispatch(getDataFM(solic));
 		});
 
 		socket.emit('cliente:dashdatasiempre');
@@ -142,12 +141,12 @@ const Admision: React.FC = () => {
 						<SolicitudesTerminadas />
 					</div>
 
-					<div style={{ width: '40%' }}>
+					<div style={{width: '40%'}}>
 						<ChartTorta />
 					</div>
 				</div>
 				<div className={classes.row}>
-					<div style={{ width: 560, height: 200 }}>
+					<div style={{width: 560, height: 200}}>
 						<Bar
 							data={state}
 							className='canvas_prueba'
