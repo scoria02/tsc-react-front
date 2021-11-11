@@ -13,8 +13,8 @@ export const HtmlTooltip = withStyles(() => ({
 
 export const useStylesModalUser = makeStyles((styles) => ({
 	root: {
-		maxWidth: '70vw',
-		maxHeight: '70vh',
+		maxWidth: '80vw',
+		// maxHeight: '70vh',
 	},
 	containerRight: {
 		margin: 0,

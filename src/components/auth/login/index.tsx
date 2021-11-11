@@ -1,22 +1,20 @@
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
 // import CardActionArea from '@material-ui/core/CardActionArea';
 // import { useForm, SubmitHandler } from 'react-hook-form';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 //import luffy from '../../../img/itachi2.png';
 import { startLogin } from '../../../store/actions/auth';
-
-import InputAdornment from '@material-ui/core/InputAdornment';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import Visibility from '@material-ui/icons/Visibility';
-import IconButton from '@material-ui/core/IconButton';
+import AuthModal from '../AuthModal';
 // import { useForm } from '../../../hooks/useForm';
 import { useStylesModalUser } from '../styles';
 import './index.scss';
-
-import AuthModal from '../AuthModal';
 
 const useStylesButton = makeStyles((theme: Theme) =>
 	createStyles({
@@ -60,13 +58,10 @@ const Login: React.FC = () => {
 	};
 
 	return (
-		<AuthModal
-			register={false}
-			name='Ingresar'
-		>
-			<div className={classes.containerRight} >
+		<AuthModal register={false} name='Ingresar al BackOffice'>
+			<div className={classes.containerRight}>
 				<form onSubmit={handleLogin} className={classesbutton.root} autoComplete='off'>
-						<div className="ed-container">
+					<div className='ed-container'>
 						<TextField
 							className={classes.input}
 							id='email'
@@ -82,33 +77,25 @@ const Login: React.FC = () => {
 							name='password'
 							onChange={handlePasswordChange}
 							label='Contraseña'
-							type={showPassword ? "text" : "password"}
+							type={showPassword ? 'text' : 'password'}
 							autoComplete='current-password'
 							variant='outlined'
-							InputProps={{ 
+							InputProps={{
 								endAdornment: (
-									<InputAdornment position="end">
+									<InputAdornment position='end'>
 										<IconButton
-											aria-label="toggle password visibility"
+											aria-label='toggle password visibility'
 											onMouseDown={() => setShowPassword(!showPassword)}
 											onMouseUp={() => setShowPassword(!showPassword)}
-											edge="end"
-										>
+											edge='end'>
 											{showPassword ? <Visibility /> : <VisibilityOff />}
 										</IconButton>
 									</InputAdornment>
-								)
+								),
 							}}
 						/>
-						<div
-							className={classes.inputButton}
-						>
-							<Button 
-								className={classes.buttonLogin}
-								type='submit'
-								variant='outlined'
-								color='primary'
-							>
+						<div className={classes.inputButton}>
+							<Button className={classes.buttonLogin} type='submit' variant='outlined' color='primary'>
 								Entrar
 							</Button>
 						</div>
