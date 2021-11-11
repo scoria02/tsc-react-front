@@ -73,6 +73,7 @@ const Admision: React.FC = () => {
 		socket.emit('cliente:dashdata', user, (data: any) => {
 			console.log(data);
 		});
+		// socket.emit('cliente:dashdatasiempre');
 	}, [socket, user]);
 
 	const handleClick = () => {
@@ -83,6 +84,7 @@ const Admision: React.FC = () => {
 			console.log('solic', solic);
 		});
 
+		socket.emit('cliente:dashdatasiempre');
 		console.log('Aqui ta el beta');
 	};
 
