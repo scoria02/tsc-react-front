@@ -101,9 +101,9 @@ const Diferidos: React.FC = () => {
 			setDiferidos(data);
 		});
 
-		socket.on('server:dashdata', (data: any) => {
+		/*socket.on('server:dashdata', (data: any) => {
 			console.log('MENOL EMITE AQUI ', data);
-		});
+		});*/
 	}, [socket]);
 	//updatedStatus
 

@@ -6,10 +6,6 @@ import { SocketContext } from '../../context/SocketContext';
 // import { SocketContext } from '../../helpers/SocketContext';
 import { getDataFM } from '../../store/actions/admisionFm';
 import { OpenModal } from '../../store/actions/ui';
-import { SolicitudesDiferidos } from '../backoffice/SolicitudesDiferidos';
-import { SolicitudesEnEspera } from '../backoffice/SolicitudesEnEspera';
-import { SolicitudesEnProceso } from '../backoffice/SolicitudesEnProceso';
-import { SolicitudesTerminadas } from '../backoffice/SolicitudesTerminadas';
 import Barra from '../diagramas/Barra';
 import { ChartTorta } from '../diagramas/ChartConfig';
 import Comprobacion from './comprobacion';
@@ -74,10 +70,19 @@ const Admision: React.FC = () => {
 
 	useEffect(() => {
 		socket.emit('cliente:dashdata', user, (data: any) => {
-			// console.log('data', data);
-			setChartData(data);
+			if(data){
+				console.log('save 1', data)
+				setChartData(data);
+			}
 		});
-		// socket.emit('cliente:dashdatasiempre');
+		
+		socket.on('server:dashdata', (data: any) => {
+			console.log('Resive AQUI ', data);
+			if(data){
+				console.log('save 2', data)
+				setChartData(data);
+			}
+		});
 	}, [socket, user]);
 
 	const handleClick = () => {
@@ -105,6 +110,8 @@ const Admision: React.FC = () => {
 		handleUpdateChart(chartData);
 	}, [chartData]);
 
+	console.log('data',chartData)
+
 	return (
 		<div className={classes.admision}>
 			<div className={classes.dataGrid}>
@@ -113,10 +120,28 @@ const Admision: React.FC = () => {
 			<div className={classes.rightContainer}>
 				<div className={classes.row}>
 					<div className={classes.counters}>
-						<SolicitudesEnEspera />
-						<SolicitudesEnProceso />
-						<SolicitudesDiferidos />
-						<SolicitudesTerminadas />
+					<div className={classes.status}>
+						<div className={classes.statusTitle}>En Espera:</div>
+
+						<div className={classes.statusDesc}>10</div>
+					</div>
+					<div className={classes.status} style={{ borderLeft: '1px solid rgba(0,0,0,0.4)' }}>
+						<div className={classes.statusTitle}>En Proceso:</div>
+
+						<div className={classes.statusDesc}>3</div>
+					</div>
+					<div className={classes.status} style={{ borderTop: '1px solid  rgba(0,0,0,0.4)' }}>
+						<div className={classes.statusTitle}>Diferidos:</div>
+
+						<div className={classes.statusDesc}>5</div>
+					</div>
+					<div
+						className={classes.status}
+						style={{ borderTop: '1px solid rgba(0,0,0,0.4)', borderLeft: '1px solid rgba(0,0,0,0.4)' }}>
+						<div className={classes.statusTitle}>Terminadas:</div>
+
+						<div className={classes.statusDesc}>32</div>
+					</div>
 					</div>
 
 					<div style={{ width: '40%' }}>
