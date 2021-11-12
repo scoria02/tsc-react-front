@@ -75,7 +75,9 @@ const Admision: React.FC = () => {
 	useEffect(() => {
 		socket.emit('cliente:dashdata', user, (data: any) => {
 			// console.log('data', data);
-			setChartData(data);
+			if (Object.keys(data).length) {
+				setChartData(data);
+			}
 		});
 		// socket.emit('cliente:dashdatasiempre');
 	}, [socket, user]);
@@ -102,7 +104,10 @@ const Admision: React.FC = () => {
 	};
 
 	useEffect(() => {
-		handleUpdateChart(chartData);
+		console.log('A C T U A L I Z Ó', !Object.keys(chartData).length, chartData);
+		if (Object.keys(chartData).length) {
+			handleUpdateChart(chartData);
+		}
 	}, [chartData]);
 
 	return (
@@ -121,7 +126,7 @@ const Admision: React.FC = () => {
 
 					<div style={{ width: '40%' }}>
 						<ChartTorta />
-						{/* <Dona chartData={valuesChart} colsData={keyChart}/> */}
+						{/* <Dona chartData={valuesChart} colsData={keyChart} /> */}
 					</div>
 				</div>
 				<div className={classes.row}>
