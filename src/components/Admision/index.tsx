@@ -81,11 +81,10 @@ const Admision: React.FC = () => {
 	}, [socket, user]);
 
 	const handleClick = () => {
-		dispatch(getDataFM());
 		dispatch(OpenModal());
 
 		socket.emit('Trabanjando_Solic', user, (solic: any) => {
-			console.log('solic', solic);
+			dispatch(getDataFM(solic));
 		});
 
 		socket.emit('cliente:dashdatasiempre');
