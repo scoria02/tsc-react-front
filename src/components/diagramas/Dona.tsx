@@ -46,7 +46,7 @@ const Dona: FC<Props> = ({ chartData, colsData }) => {
 		if (ctx) {
 			chartRef.current?.destroy();
 			chartRef.current = new Chart(ctx, {
-				type: 'doughnut',
+				type: 'pie',
 				data: formatData(chartData, colsData),
 				options: {
 					// animation: false,
