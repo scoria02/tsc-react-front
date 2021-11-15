@@ -11,7 +11,7 @@ import { SolicitudesEnEspera } from '../backoffice/SolicitudesEnEspera';
 import { SolicitudesEnProceso } from '../backoffice/SolicitudesEnProceso';
 import { SolicitudesTerminadas } from '../backoffice/SolicitudesTerminadas';
 import Barra from '../diagramas/Barra';
-import Dona from '../diagramas/Dona';
+import { ChartTorta } from '../diagramas/ChartConfig';
 import Comprobacion from './comprobacion';
 import Diferidos from './diferidos/Diferidos';
 import './index.scss';
@@ -125,8 +125,8 @@ const Admision: React.FC = () => {
 					</div>
 
 					<div style={{ width: '40%' }}>
-						{/* <ChartTorta /> */}
-						<Dona chartData={valuesChart} colsData={keyChart} />
+						<ChartTorta />
+						{/* <Dona chartData={valuesChart} colsData={keyChart} /> */}
 					</div>
 				</div>
 				<div className={classes.row}>
