@@ -1,43 +1,6 @@
 import { Chart } from 'chart.js';
 import { FC, useEffect, useRef } from 'react';
 
-const state = {
-	type: 'bar',
-	data: {
-		labels: ['Data'],
-		datasets: [
-			{
-				label: 'Estado de Admision',
-				data: [1],
-				backgroundColor: [
-					'rgba(20, 17, 152, 0.4)',
-					'rgba(238, 99, 82, 0.4)',
-					'rgba(63, 167, 214, 0.4)',
-					'rgba(248, 249, 72, 0.4)',
-					'rgba(95, 72, 66, 0.4)',
-					'rgba(240, 162, 2, 0.4)',
-					'rgba(247, 157, 132, 0.4)',
-				],
-				borderColor: [
-					'rgb(20, 17, 152)',
-					'rgb(238, 99, 82)',
-					'rgb(63, 167, 214)',
-					'rgb(248, 249, 72)',
-					'rgb(95, 72, 66)',
-					'rgb(153, 102, 255)',
-					'rgb(247, 157, 132)',
-				],
-				borderWidth: 1,
-			},
-		],
-	},
-	options: {
-		indexAxis: 'y',
-		animation: false,
-		responsive: true,
-	},
-};
-
 interface Props {
 	chartData: number[];
 	colsData: string[];
@@ -87,7 +50,7 @@ const Barra: FC<Props> = ({ chartData, colsData }) => {
 				data: formatData(chartData, colsData),
 				options: {
 					indexAxis: 'y',
-					animation: false,
+					// animation: false,
 					responsive: true,
 				},
 			});
