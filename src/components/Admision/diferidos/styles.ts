@@ -136,6 +136,14 @@ export const useStyles = makeStyles((styles: Theme) => ({
 		height: '50px',
 		alignSelf: 'center',
 	},
+	uploadPdf: {
+		padding: '2rem',
+		marginTop: '1rem',
+		textTransform: 'none',
+		width: 'auto',
+		height: '40px',
+		alignSelf: 'center',
+	},
 	iconUpload: {
 		fontSize: '2.5rem',
 	},

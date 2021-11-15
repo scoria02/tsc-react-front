@@ -45,7 +45,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 	const handleChangeImages = (event: any) => {
 		if (event.target.files[0]) {
 			let file = event.target.files[0];
-			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: 'image/jpeg' });
+			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: file.type });
 		const path = URL.createObjectURL(newFile);
 			//Save img
 			setUploadImgs({

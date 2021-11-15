@@ -1,6 +1,9 @@
 import { Button } from '@material-ui/core';
 import React, { useState } from 'react';
 import IconButton from '@material-ui/core/IconButton';
+
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 //Url
 import { PortFiles, URL as urlBack} from '../../../config';
@@ -24,6 +27,13 @@ const StepDiferido: React.FC<any> = ({
 
 	const	imagen:string= uploadImg ? path : `${urlBack}:${PortFiles}/${fm.path}`;
 
+	const [numPages, setNumPages] = useState<any>(null);
+	const [pageNumber, setPageNumber] = useState<number>(1);
+
+	const onDocumentLoadSuccess = () => {
+    setNumPages(numPages);
+  }
+
 	return (
 		<>
 			<form className="container-step" noValidate autoComplete='off'>
@@ -42,6 +52,7 @@ const StepDiferido: React.FC<any> = ({
 						<CloudUploadIcon className={classes.iconUpload}/>
 					</IconButton>
 					<input
+						id='img'
 						type='file'
 						hidden
 						name={name}
@@ -51,11 +62,39 @@ const StepDiferido: React.FC<any> = ({
 				</Button>
 				</div>
 			</form>
-			<Rec 
-				load={load}
-				setLoad={setLoad}
-				imagen={imagen}
-			/>
+			{uploadImg &&  uploadImg.name.split('.')[uploadImg.name.split('.').length-1] === 'pdf' ?
+				<>
+					<div className={classes.btn_stepM}>
+						<h1>Aqui ta tu PDF</h1>
+					</div>
+					<div className={classes.btn_stepM}>
+						<a 
+							target="_blank"
+							href={path}>
+							<Button
+								className={classes.uploadPdf}
+								variant='contained'
+								component='label'
+								color='primary'
+								disabled={ready}
+							>
+								<IconButton aria-label='upload picture' component='span'>
+									<PictureAsPdfIcon className={classes.iconUpload}/>
+								</IconButton>
+							</Button>
+						</a>
+					</div>
+					<div className={classes.btn_stepM}>
+						<h2>Solo se guardara la primera pagina</h2>
+					</div>
+				</>
+			:
+				<Rec 
+					load={load}
+					setLoad={setLoad}
+					imagen={imagen}
+				/>
+			}
 		</>
 	);
 }
