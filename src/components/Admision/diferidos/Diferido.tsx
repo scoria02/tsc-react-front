@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import { stepComplete } from '../../../store/actions/accept';
 import { updateStatusFMDiferido, cleanDataFmDiferido } from '../../../store/actions/admisionFm';
 import { CloseModalDiferido } from '../../../store/actions/ui';
-import FullModal from '../../modals/FullModal';
+import ModalSteps from '../../modals/ModalSteps';
 
 import StepDiferido from './StepDiferido';
 import { RootState } from '../../../store/store';
@@ -227,7 +227,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 	};
 
 	return (
-		<FullModal 
+		<ModalSteps
 			stepComplete={stepComplete}
 			clean={cleanDataFmDiferido}
 			updatedStatus={updatedStatus}

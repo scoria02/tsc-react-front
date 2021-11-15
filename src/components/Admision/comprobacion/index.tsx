@@ -16,7 +16,7 @@ import PasoCommerce from './pasosComprobacion/PasoCommerce';
 import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
 import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
-import FullModal from '../../modals/FullModal';
+import ModalSteps from '../../modals/ModalSteps';
 
 const Comprobacion: React.FC<any> = () => {
 
@@ -244,7 +244,7 @@ const Comprobacion: React.FC<any> = () => {
 	};
 
 	return (
-		<FullModal
+		<ModalSteps
 			stepComplete={stepComplete}
 			clean={cleanAdmisionFM}
 			updatedStatus={updateStatusFM}
