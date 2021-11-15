@@ -7,8 +7,8 @@ import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 //Url
 import { PortFiles, URL as urlBack} from '../../../config';
-import '../comprobacion/pasosComprobacion/styles/pasos.scss';
 import { useStyles } from './styles';
+import '../comprobacion/pasosComprobacion/styles/pasos.scss';
 import './index.scss';
 import { recaudo } from '../../utilis/recaudos';
 
@@ -27,12 +27,11 @@ const StepDiferido: React.FC<any> = ({
 
 	const	imagen:string= uploadImg ? path : `${urlBack}:${PortFiles}/${fm.path}`;
 
-	const [numPages, setNumPages] = useState<any>(null);
-	const [pageNumber, setPageNumber] = useState<number>(1);
+	const [size, setSize] = useState<any>({
+		file: 700 //widthFullScrean
+	})
 
-	const onDocumentLoadSuccess = () => {
-    setNumPages(numPages);
-  }
+	//console.log(size)
 
 	return (
 		<>
@@ -70,6 +69,7 @@ const StepDiferido: React.FC<any> = ({
 					<div className={classes.btn_stepM}>
 						<a 
 							target="_blank"
+							rel="noreferrer"
 							href={path}>
 							<Button
 								className={classes.uploadPdf}
@@ -93,6 +93,8 @@ const StepDiferido: React.FC<any> = ({
 					load={load}
 					setLoad={setLoad}
 					imagen={imagen}
+					wi={size.file}
+					setSize={setSize}
 				/>
 			}
 		</>

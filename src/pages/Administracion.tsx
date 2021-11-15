@@ -20,6 +20,7 @@ import { getDataFMAdministration } from '../store/actions/administration';
 import { RootState } from '../store/store';
 import { PortFiles, URL } from '../config';
 import LoaderPrimary from '../components/loaders/LoaderPrimary';
+import '../components/administration/styles/index.scss';
 
 interface AdministracionProp {}
 
@@ -117,7 +118,7 @@ const columns: GridColDef[] = [
 	{
 		field: 'id_request',
 		headerName: 'Cod.',
-		width: 120,
+		width: 150,//120,
 		editable: false,
 		sortable: false,
 		valueFormatter: (value: GridValueGetterParams) => {
@@ -143,9 +144,9 @@ const columns: GridColDef[] = [
 		sortable: false,
 	},
 	{
-		field: 'id_type_payment',
+		field: 'pagadero',
 		headerName: 'Paga Despues',
-		width: 200,
+		width: 150,
 		editable: false,
 		sortable: false,
 		valueFormatter: (value: GridValueGetterParams) => {

@@ -2,9 +2,7 @@ import { Button, makeStyles, TextField, Theme } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import React, { useEffect } from 'react';
-// @ts-expect-error
-import ReactImageZoom from 'react-image-zoom';
+import React, { useState, useEffect } from 'react';
 //Redux
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -12,6 +10,8 @@ import { updateStatusFMAdministration } from '../../store/actions/administration
 import { recaudo } from '../utilis/recaudos';
 //Url
 import './styles/index.scss';
+
+import Rec from '../utilis/images/Rec';
 
 const useStyles = makeStyles((theme: Theme) => ({
 	tableTitle: {
@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 	},
 	containerImg: {
 		alignSelf: 'center',
+		marginTop: '1rem',
 	},
 	content: {
 		display: 'flex',
@@ -133,12 +134,7 @@ export const Form: React.FC<any> = ({
 		}
 	};
 
-	const props = {
-		zoomPosition: recaudo.position,
-		height: recaudo.h,
-		width: recaudo.w,
-		img: fm.urlImgCompDep,
-	};
+	const	imagen:string= fm.urlImgCompDep;
 
 	const handleVerificated = () => {
 		Swal.fire({
@@ -202,6 +198,8 @@ export const Form: React.FC<any> = ({
 		}
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [payment]);
+
+	const [load, setLoad] = useState<boolean>(false)
 
 	return (
 		<>
@@ -269,13 +267,21 @@ export const Form: React.FC<any> = ({
 					</div>
 					{fm.urlImgCompDep && !fm.pagadero ? (
 						<div className={classes.containerImg}>
-							<ReactImageZoom className={classes.img_zoom} {...props} />
+							<Rec 
+								load={load}
+								setLoad={setLoad}
+								imagen={imagen}
+							/>
 						</div>
 					) : (
 						<>
 							{uploadImg && (
 								<div className={classes.containerImg}>
-									<ReactImageZoom className={classes.img_zoom} {...props} />
+									<Rec 
+										load={load}
+										setLoad={setLoad}
+										imagen={imagen}
+									/>
 								</div>
 							)}
 							{payment && payment.id !== 2 && (
