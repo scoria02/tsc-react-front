@@ -119,13 +119,13 @@ const ModalSteps: React.FC<any> = ({
 					const stepProps: { completed?: boolean } = {};
 					const buttonProps: { optional?: React.ReactNode } = {};
 					return totalSteps() > 1 ? (
-						<Step key={label} {...stepProps}>
+						<Step key={index} {...stepProps}>
 							<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
 								<b>{label}</b>
 							</StepButton>
 						</Step>
 					) : (
-						<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
+						<StepButton key={index} onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
 							<b style={{ fontSize: '1.2rem' }}>{label}</b>
 						</StepButton>
 					);

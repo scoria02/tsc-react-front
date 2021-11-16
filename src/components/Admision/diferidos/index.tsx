@@ -11,7 +11,7 @@ import { DateTime } from 'luxon';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useStyles } from './styles';
+import { useStyles } from '../styles/styles';
 
 import { RootState } from '../../../store/store';
 

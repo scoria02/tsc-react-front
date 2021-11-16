@@ -1,9 +1,9 @@
 //modal
 import Button from '@material-ui/core/Button';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutlineSharp';
-import AnimationModal from '../../modals/AnimationModal';
-import './modal.scss';
-import { useStyles } from './pasosComprobacion/styles/styles';
+import AnimationModal from './AnimationModal';
+import './scss/modalAlert.scss';
+import { useStylesModalAlert } from './styles';
 
 export const ModalAlert: React.FC<any> = ({
 	openModal,
@@ -13,7 +13,8 @@ export const ModalAlert: React.FC<any> = ({
 	handleIncorret,
 	handleCancel,
 }) => {
-	const classes = useStyles();
+	const classes = useStylesModalAlert();
+
 	return (
 		<AnimationModal openModal={openModal} handleCloseModal={handleCloseModal}>
 			<div className='paperUser'>

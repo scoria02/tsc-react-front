@@ -278,7 +278,11 @@ export const Step4: React.FC<any> = ({
 					value={typePay || null}
 					getOptionLabel={(option: any) => (option.name ? option.name : '')}
 					renderInput={(params: any) => (
-						<TextField {...params} name='type_pay' label='Tipo de Pago' variant='outlined' />
+						<TextField {...params}
+							name='type_pay'
+							label='Tipo de Pago'
+							variant='outlined'
+						/>
 					)}
 				/>
 			</div>
@@ -311,16 +315,6 @@ export const Step4: React.FC<any> = ({
 			<div className={classes.input}>
 				{fraccion && (
 					<>
-						{/* <Autocomplete
-							className={classes.inputTextLeft}
-							onChange={(event, value) => handleSelectPayment(event, value, 'inicial')}
-							options={listPayment}
-							value={payment || null}
-							getOptionLabel={(option: any) => (option.name ? option.name : '')}
-							renderInput={(params: any) => (
-								<TextField {...params} type='number' name='payment_method' label='Inicial' variant='outlined' />
-							)}
-						/> */}
 						<TextField
 							id='initial'
 							label='Inicial'

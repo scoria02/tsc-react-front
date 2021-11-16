@@ -7,9 +7,9 @@ import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 //Url
 import { PortFiles, URL as urlBack} from '../../../config';
-import { useStyles } from './styles';
+import { useStyles } from '../styles/styles';
 import '../comprobacion/pasosComprobacion/styles/pasos.scss';
-import './index.scss';
+import '../scss/index.scss';
 import { recaudo } from '../../utilis/recaudos';
 
 import Rec from '../../utilis/images/Rec';

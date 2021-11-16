@@ -9,7 +9,7 @@ import ModalSteps from '../../modals/ModalSteps';
 
 import StepDiferido from './StepDiferido';
 import { RootState } from '../../../store/store';
-import './index.scss';
+import '../scss/index.scss';
 
 const Diferido: React.FC<any> = ({ fm }) => {
 	const dispatch = useDispatch();

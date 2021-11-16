@@ -1,60 +1,16 @@
-import { Fab, makeStyles, Theme } from '@material-ui/core';
+import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SocketContext } from '../../context/SocketContext';
-// import { SocketContext } from '../../helpers/SocketContext';
 import { getDataFM } from '../../store/actions/admisionFm';
 import { OpenModal } from '../../store/actions/ui';
 import Barra from '../diagramas/Barra';
 import { ChartTorta } from '../diagramas/ChartConfig';
 import Comprobacion from './comprobacion';
-import Diferidos from './diferidos/Diferidos';
-import './index.scss';
-
-export const useStyles = makeStyles((theme: Theme) => ({
-	admision: {
-		flexGrow: 1,
-		display: 'grid',
-		gridColumnGap: '2rem',
-		gridTemplateColumns: '1fr 1fr',
-	},
-	dataGrid: {
-		width: '100%',
-		height: '75vh',
-	},
-	rightContainer: {
-		display: 'flex',
-		flexDirection: 'column',
-	},
-	row: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		marginBottom: 16,
-	},
-	counters: {
-		display: 'grid',
-		gridTemplateColumns: '1fr 1fr',
-		flexDirection: 'column',
-		alignItems: 'center',
-		justifyContent: 'center',
-		width: '100%',
-	},
-	status: {
-		display: 'flex',
-		flexDirection: 'column',
-		width: '100%',
-		height: '100%',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	statusTitle: {
-		fontSize: 28,
-	},
-	statusDesc: {
-		fontSize: 38,
-	},
-}));
+import Diferidos from './diferidos';
+import './scss/index.scss';
+import { useStyles } from './styles/styles';
 
 const Admision: React.FC = () => {
 	const dispatch = useDispatch();
