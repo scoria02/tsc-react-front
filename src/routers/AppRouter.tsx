@@ -1,4 +1,4 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { makeStyles, Theme } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
@@ -13,21 +13,25 @@ import Private from './routes/private';
 import Public from './routes/public';
 import { urlLogin } from './url';
 
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		root: {
-			display: 'flex',
-			// '& > *': {
-			// 	margin: theme.spacing(1),
-			// },
-		},
-		content: {
-			flexGrow: 1,
-			padding: theme.spacing(3),
-			marginTop: 64,
-		},
-	})
-);
+const useStyles = makeStyles((theme: Theme) => ({
+	root: {
+		display: 'flex',
+	},
+	content: {
+		flexGrow: 1,
+		padding: theme.spacing(3),
+		marginTop: 64,
+	},
+	auth: {
+		alignItems: 'center',
+		backgroundColor: '#5c62c5',
+		display: 'flex',
+		justifyContent: 'center',
+		margin: 0,
+		height: '100vh',
+		width: '100vw',
+	},
+}));
 
 export const AppRouter = () => {
 	const dispatch = useDispatch();
@@ -53,7 +57,7 @@ export const AppRouter = () => {
 			<GuardProvider guards={[Auth]}>
 				<Switch>
 					{!loading && (
-						<div className='auth__main'>
+						<div className={classes.auth}>
 							<div>
 								{Public.map(({ component, meta, path }, i) => {
 									return <GuardedRoute key={i} exact path={path} component={component} meta={meta} />;
