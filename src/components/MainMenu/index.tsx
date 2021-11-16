@@ -231,7 +231,6 @@ const MainMenu: FC = () => {
 		handleMobileMenuClose();
 	};
 	const handleLogoClick = () => {
-		localStorage.setItem('path', baseUrl);
 		handleDrawerClose();
 	};
 
