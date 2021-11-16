@@ -67,25 +67,42 @@ const Admision: React.FC = () => {
 	const [valuesChart, setvaluesChart] = useState<number[]>([]);
 	const [keyChart, setkeyChart] = useState<string[]>([]);
 	const [chartData, setChartData] = useState({});
+	const [todos, setTodo] = useState<any>([]);
+	const [todostodos, setTodoTodos] = useState<any>([]);
+	const { solictudesTrabajando } = todos;
+	const { allSolic, allTerm, diferidos } = todostodos;
+	console.log('MENOL DIMAS AQUI', allSolic);
 
 	useEffect(() => {
+		socket.emit('cliente:Todos', user, (todo: any) => {
+			console.log('Aqui mmg devuelve', todo);
+			setTodoTodos(todo);
+		});
+
 		socket.emit('cliente:dashdata', user, (data: any) => {
 			if (Object.keys(data).length) {
-				console.log('save 1', data)
+				console.log('save 1', data);
 				setChartData(data);
+				setTodo(data);
 			}
 		});
-		
+
 		socket.on('server:dashdata', (data: any) => {
 			console.log('Resive AQUI ', data);
 			if (Object.keys(data).length) {
-			console.log('save 2', data)
+				console.log('save 2', data);
 				setChartData(data);
+				setTodo(data);
 			}
 		});
 	}, [socket, user]);
 
 	const handleClick = () => {
+		socket.emit('cliente:Todos', user, (todo: any) => {
+			console.log('Aqui mmg devuelve', todo);
+			setTodoTodos(todo);
+		});
+
 		dispatch(OpenModal());
 
 		socket.emit('Trabanjando_Solic', user, (solic: any) => {
@@ -113,7 +130,7 @@ const Admision: React.FC = () => {
 		}
 	}, [chartData]);
 
-	console.log('data',chartData)
+	console.log('data', chartData);
 
 	return (
 		<div className={classes.admision}>
@@ -123,28 +140,28 @@ const Admision: React.FC = () => {
 			<div className={classes.rightContainer}>
 				<div className={classes.row}>
 					<div className={classes.counters}>
-					<div className={classes.status}>
-						<div className={classes.statusTitle}>En Espera:</div>
+						<div className={classes.status}>
+							<div className={classes.statusTitle}>En Espera:</div>
 
-						<div className={classes.statusDesc}>10</div>
-					</div>
-					<div className={classes.status} style={{ borderLeft: '1px solid rgba(0,0,0,0.4)' }}>
-						<div className={classes.statusTitle}>En Proceso:</div>
+							<div className={classes.statusDesc}> {allSolic} </div>
+						</div>
+						<div className={classes.status} style={{ borderLeft: '1px solid rgba(0,0,0,0.4)' }}>
+							<div className={classes.statusTitle}>En Proceso:</div>
 
-						<div className={classes.statusDesc}>3</div>
-					</div>
-					<div className={classes.status} style={{ borderTop: '1px solid  rgba(0,0,0,0.4)' }}>
-						<div className={classes.statusTitle}>Diferidos:</div>
+							<div className={classes.statusDesc}>{solictudesTrabajando}</div>
+						</div>
+						<div className={classes.status} style={{ borderTop: '1px solid  rgba(0,0,0,0.4)' }}>
+							<div className={classes.statusTitle}>Diferidos:</div>
 
-						<div className={classes.statusDesc}>5</div>
-					</div>
-					<div
-						className={classes.status}
-						style={{ borderTop: '1px solid rgba(0,0,0,0.4)', borderLeft: '1px solid rgba(0,0,0,0.4)' }}>
-						<div className={classes.statusTitle}>Terminadas:</div>
+							<div className={classes.statusDesc}>{allTerm}</div>
+						</div>
+						<div
+							className={classes.status}
+							style={{ borderTop: '1px solid rgba(0,0,0,0.4)', borderLeft: '1px solid rgba(0,0,0,0.4)' }}>
+							<div className={classes.statusTitle}>Terminadas:</div>
 
-						<div className={classes.statusDesc}>32</div>
-					</div>
+							<div className={classes.statusDesc}>{allTerm}</div>
+						</div>
 					</div>
 
 					<div style={{ width: '40%' }}>
