@@ -15,7 +15,6 @@ import Rec from '../utilis/images/Rec';
 
 import { useStyles } from './styles/styles';
 
-
 export const Form: React.FC<any> = ({
 	fm,
 	setFm,
@@ -181,7 +180,7 @@ export const Form: React.FC<any> = ({
 						{fm.pagadero ? (
 							<Autocomplete
 								className={classes.textAutoCompleteLeft}
-								onChange={(event, value) => handleSelectPayment(event, value, 'payment_method')}
+								onChange={(event, value) => handleSelectPayment(event, value)}
 								options={listPayment}
 								value={payment}
 								getOptionLabel={(option: any) => (option.name ? option.name : '')}
@@ -208,7 +207,7 @@ export const Form: React.FC<any> = ({
 						{fm?.pagadero ? (
 							<Autocomplete
 								className={classes.textAutoCompleteLeft}
-								onChange={(event, value) => handleSelectTypePay(event, value, 'payment_method')}
+								onChange={(event, value) => handleSelectTypePay(event, value)}
 								options={listTypePay}
 								value={typePay || null}
 								getOptionLabel={(option: any) => (option.name ? option.name : '')}
