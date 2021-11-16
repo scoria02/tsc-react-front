@@ -41,7 +41,6 @@ export const validationCommerce = (id_client: number, commerce: any) => {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce/valid`, commerce);
 			if (res.data.info) {
 				updateToken(res);
-				console.log(res.data.info);
 				dispatch(requestSuccess(res.data.info));
 			} else {
 				dispatch(requestSuccessOk());
@@ -163,7 +162,6 @@ export const sendCommerce = (id_client: number, cursedForm: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce`, commerce);
 			updateToken(res);
-			console.log(res.data.info);
 			dispatch(requestSuccess(res.data.info.id_commerce));
 		} catch (error) {
 			console.log(error.reponse);
@@ -211,7 +209,7 @@ export const sendImages = (formData: any) => {
 };
 
 export const sendFM = (cursedForm: any, fm: any) => {
-	console.log(fm.id_images);
+	//console.log(fm.id_images);
 	const form = {
 		//Data FM
 		number_post: cursedForm.number_post,
