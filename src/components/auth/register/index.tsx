@@ -1,52 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, {useState, useEffect} from 'react';
-import {useHistory} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
-
-import {
-	getIdentTypes,
-	getCompany,
-} from '../../formMaldito/getData';
-
-//icons
-import SendIcon from '@material-ui/icons/Send';
+//Material UI
+import { useMediaQuery } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import MobileStepper from '@material-ui/core/MobileStepper';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-
+//icons
+import SendIcon from '@material-ui/icons/Send';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { baseUrl } from '../../../routers/url';
+import { registerUser } from '../../../store/actions/auth';
+//Redux
+import { RootState } from '../../../store/store';
+import { getCompany } from '../../formMaldito/getData';
+import AuthModal from '../AuthModal';
+import { Interface_ErrorPass, Interface_RegisterUser, Interface_RegisterUserError } from '../interfaceAuth';
 //styles
-import {useStylesModalUser} from '../styles';
+import { useStylesModalUser } from '../styles';
 import './index.scss';
-
+import { Step1 } from './steps/Step1';
+import { Step2 } from './steps/Step2';
 //valids
 import * as valids from './validationForm';
-
-//Redux
-import {RootState} from '../../../store/store';
-import {registerUser} from '../../../store/actions/auth';
-
-//Material UI
-import {useMediaQuery} from '@material-ui/core';
-import MobileStepper from '@material-ui/core/MobileStepper';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-
-//import luffy from '../../../img/itachi2.png';
-import luffy from '../../../img/user.png';
-
-import AuthModal from '../AuthModal';
-
-import {
-	Interface_RegisterUser,
-	Interface_RegisterUserError,
-	Interface_ErrorPass,
-} from '../interfaceAuth';
-
-import {Step1} from './steps/Step1';
-import {Step2} from './steps/Step2';
 
 const Register: React.FC = () => {
 	const history = useHistory();
@@ -57,6 +35,7 @@ const Register: React.FC = () => {
 	const auth: any = useSelector((state: RootState) => state.auth);
 	const registrationUser = (user: Interface_RegisterUser) => {
 		dispatch(registerUser(user));
+		history.push(baseUrl);
 	};
 
 	const isMediumScreen: boolean = useMediaQuery('(max-width:800px)');
@@ -105,23 +84,23 @@ const Register: React.FC = () => {
 
 	//Validations
 	const validateForm = (name: string, value: any) => {
-		let temp: Interface_RegisterUserError = {...userFormError};
+		let temp: Interface_RegisterUserError = { ...userFormError };
 		switch (name) {
 			//step1
 			case 'email':
 				temp.email = valids.validEmail(value);
 				break;
 			case 'password':
-				let temPass: Interface_ErrorPass = {...errorPassword};
+				let temPass: Interface_ErrorPass = { ...errorPassword };
 				//Rango Password
 				if (value.length < 8 || value.length > 12) temPass.rango = true;
 				else temPass.rango = false;
 
-				//Tenga 1 Mayuscula 
+				//Tenga 1 Mayuscula
 				if (!/([A-Z]+)/g.test(value)) temPass.mayus = true;
 				else temPass.mayus = false;
 
-				//Al menos una minuscula 
+				//Al menos una minuscula
 				if (!/([a-z]+)/g.test(value)) temPass.minus = true;
 				else temPass.minus = false;
 
@@ -170,12 +149,12 @@ const Register: React.FC = () => {
 		if (getDataControl === 0) {
 			if (listIdentType.length === 0) {
 				setListIdentType([
-					{id: 1, name: 'V'},
-					{id: 2, name: 'E'},
-					{id: 3, name: 'J'},
-					{id: 4, name: 'R'},
-					{id: 5, name: 'P'},
-				])
+					{ id: 1, name: 'V' },
+					{ id: 2, name: 'E' },
+					{ id: 3, name: 'J' },
+					{ id: 4, name: 'R' },
+					{ id: 5, name: 'P' },
+				]);
 				setGetDataControl(1);
 				/*
 				getIdentTypes().then((res) => {
@@ -190,7 +169,7 @@ const Register: React.FC = () => {
 				 */
 			}
 		} else if (getDataControl === 1) {
-			console.log('entre')
+			console.log('entre');
 			if (listCompany.length === 0) {
 				getCompany().then((res) => {
 					res.forEach((item, indice) => {
@@ -203,14 +182,17 @@ const Register: React.FC = () => {
 			}
 		} else if (getDataControl === 2) {
 			console.log('Todo correcto');
-		}	
-		
+		}
 	}, [getDataControl]);
 
 	//useEffects
 	//Check No error & No Input null
 	useEffect(() => {
-		if (!valids.allInputNotNUll(activeStep, userForm) && !valids.checkErrorAllInput(activeStep, userFormError) && (auth.error.length === 0)) {
+		if (
+			!valids.allInputNotNUll(activeStep, userForm) &&
+			!valids.checkErrorAllInput(activeStep, userFormError) &&
+			auth.error.length === 0
+		) {
 			setReadyStep(true);
 		} else {
 			setReadyStep(false);
@@ -237,14 +219,15 @@ const Register: React.FC = () => {
 	const handleSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setUserForm({
 			...userForm,
-			[event.target.name]: event.target.name === 'id_company' ? event.target.value : parseInt(event.target.value, 10),
+			[event.target.name]:
+				event.target.name === 'id_company' ? event.target.value : parseInt(event.target.value, 10),
 		});
 		validateForm(event.target.name, event.target.value);
 	};
 
 	const handleSubmit = () => {
 		if (valids.allInputNotNUll(activeStep, userForm) || valids.checkErrorAllInput(activeStep, userFormError)) {
-			console.log('Debe llenear todos los campos')
+			console.log('Debe llenear todos los campos');
 			return;
 		}
 		registrationUser(userForm);
@@ -270,19 +253,16 @@ const Register: React.FC = () => {
 	];
 
 	return (
-		<AuthModal
-			register={true}
-			name='Registro'
-		>
-			<div className={classes.containerRight} >
+		<AuthModal register={true} name='Registro'>
+			<div className={classes.containerRight}>
 				<form autoComplete='off'>
-					<div className="ed-container">
+					<div className='ed-container'>
 						{getStep[activeStep]}
 						<MobileStepper
 							variant='dots'
 							steps={2}
 							position='static'
-							style={{background: 'none'}}
+							style={{ background: 'none' }}
 							activeStep={activeStep}
 							className={classes.step}
 							nextButton={
@@ -292,7 +272,7 @@ const Register: React.FC = () => {
 										onClick={handleSubmit}
 										disabled={!readyStep}
 										variant='contained'>
-										{isMediumScreen ? <SendIcon /> : <span style={{color: '#fff'}}>Registrarme</span>}
+										{isMediumScreen ? <SendIcon /> : <span style={{ color: '#fff' }}>Registrarme</span>}
 									</Button>
 								) : (
 									<Button
@@ -307,8 +287,7 @@ const Register: React.FC = () => {
 							}
 							backButton={
 								activeStep === 0 ? (
-									<Button className={classes.buttonBack}>
-									</Button>
+									<Button className={classes.buttonBack}></Button>
 								) : (
 									<Button
 										className={classes.buttonStep}

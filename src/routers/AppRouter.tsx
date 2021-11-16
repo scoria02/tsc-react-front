@@ -1,23 +1,40 @@
-import {BrowserRouter as Router, Redirect, Switch} from 'react-router-dom';
-import {AuthRouter} from './AuthRouter';
-import Home from '../pages/Home2';
-import {PublicRoute} from './PublicRoute';
-import {PrivateRoute} from './PrivateRoute';
-import {useDispatch, useSelector} from 'react-redux';
-import {useEffect, useState} from 'react';
-
-//Redux
-import {refreshLogin} from '../store/actions/auth';
-import {FinishLoading} from '../store/actions/ui';
-
+import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
+import { GuardedRoute, GuardProvider } from 'react-router-guards';
 import LoaderPrimary from '../components/loaders/LoaderPrimary';
+import MainMenu from '../components/MainMenu';
+//Redux
+import { refreshLogin } from '../store/actions/auth';
+import { FinishLoading } from '../store/actions/ui';
+import { Auth } from './guards';
+import Private from './routes/private';
+import Public from './routes/public';
+import { urlLogin } from './url';
+
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		root: {
+			display: 'flex',
+			// '& > *': {
+			// 	margin: theme.spacing(1),
+			// },
+		},
+		content: {
+			flexGrow: 1,
+			padding: theme.spacing(3),
+			marginTop: 64,
+		},
+	})
+);
 
 export const AppRouter = () => {
 	const dispatch = useDispatch();
+	const classes = useStyles();
 
 	const [checking, setChecking] = useState<boolean>(true);
-	// const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-	const {loading} = useSelector((state: any) => state.ui);
+	const { loading } = useSelector((state: any) => state.ui);
 
 	useEffect(() => {
 		dispatch(FinishLoading());
@@ -27,25 +44,36 @@ export const AppRouter = () => {
 		setChecking(false);
 	}, [dispatch]);
 
-	// const setChecking = false;
 	if (checking) {
-		return (
-			<LoaderPrimary />
-		);
+		return <LoaderPrimary />;
 	}
-	// const isLoggedIn = false;
 
 	return (
-		<Router>
-			<div>
+		<BrowserRouter>
+			<GuardProvider guards={[Auth]}>
 				<Switch>
-					<PublicRoute path='/auth' component={AuthRouter} isAuthenticated={loading} />
-
-					<PrivateRoute isAuthenticated={loading} path='/' component={Home} />
-
-					<Redirect to='/auth/login' />
+					{!loading && (
+						<div className='auth__main'>
+							<div>
+								{Public.map(({ component, meta, path }, i) => {
+									return <GuardedRoute key={i} exact path={path} component={component} meta={meta} />;
+								})}
+							</div>
+						</div>
+					)}
+					{loading && (
+						<div className={classes.root}>
+							<MainMenu />
+							<main className={classes.content}>
+								{Private.map(({ path, component, meta }, i) => {
+									return <GuardedRoute key={i} exact path={path} component={component} meta={meta} />;
+								})}
+							</main>
+						</div>
+					)}
+					<Redirect to={urlLogin} />
 				</Switch>
-			</div>
-		</Router>
+			</GuardProvider>
+		</BrowserRouter>
 	);
 };
