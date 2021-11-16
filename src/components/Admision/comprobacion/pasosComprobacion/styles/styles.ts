@@ -45,12 +45,4 @@ export const useStyles = makeStyles((styles) => ({
 		marginLeft: '1rem',
 		width: '100px'
 	},
-	containerBtn: {
-		display: 'flex',
-		justifyContent: 'center',
-	},
-	btnSend: {
-		margin: '1rem',
-		textTransform: 'none',
-	},
 }));

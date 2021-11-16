@@ -12,7 +12,7 @@ import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 
-import { ModalAlert }from '../ModalAlert';
+import { ModalAlert }from '../../../modals/ModalAlert';
 
 import Rec from '../../../utilis/images/Rec';
 

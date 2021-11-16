@@ -1,10 +1,8 @@
-import { Button, makeStyles, TextField, Theme } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import React, { useEffect } from 'react';
-// @ts-expect-error
-import ReactImageZoom from 'react-image-zoom';
+import React, { useState, useEffect } from 'react';
 //Redux
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -13,97 +11,14 @@ import { recaudo } from '../utilis/recaudos';
 //Url
 import './styles/index.scss';
 
-const useStyles = makeStyles((theme: Theme) => ({
-	tableTitle: {
-		fontSize: 20,
-		fontWeight: 'bold',
-		padding: '0 8px',
-	},
-	red: {
-		backgroundColor: theme.palette.error.main,
-		color: theme.palette.secondary.contrastText,
-		'&:hover': {
-			backgroundColor: `${theme.palette.error.light} !important`,
-		},
-	},
-	buttonV: {
-		textTransform: 'none',
-		marginRight: theme.spacing(1),
-		width: 115,
-		alignSelf: 'center',
-	},
-	yellow: {
-		backgroundColor: theme.palette.warning.main,
-		color: theme.palette.secondary.contrastText,
-		'&:hover': {
-			backgroundColor: `${theme.palette.warning.light} !important`,
-		},
-	},
-	green: {
-		backgroundColor: theme.palette.success.main,
-		color: theme.palette.secondary.contrastText,
-		'&:hover': {
-			backgroundColor: `${theme.palette.success.light} !important`,
-		},
-	},
-	wrapper: {
-		justifyContent: 'center',
-		padding: '2px 0',
-		height: '100%',
-	},
-	img_zoom: {
-		position: 'fixed',
-		display: 'flex',
-		justifyContent: 'center',
-	},
-	containerImg: {
-		alignSelf: 'center',
-	},
-	content: {
-		display: 'flex',
-		height: '100%',
-		flexDirection: 'column',
-	},
-	row: {
-		display: 'flex',
-		width: '100%',
-		marginBottom: 8,
-		justifyContent: 'space-around',
-	},
-	textfieldLeft: {
-		marginRight: 8,
-	},
-	textAutoCompleteLeft: {
-		marginRight: 8,
-		width: '100%',
-	},
-	codeFm: {
-		color: theme.palette.primary.main,
-	},
-	uploadImg: {
-		margin: '1rem',
-		padding: '0',
-		fontSize: '.7rem',
-		textTransform: 'none',
-		minWidth: 200,
-		width: '100px',
-		minHeight: 50,
-		height: '500x',
-		alignSelf: 'center',
-	},
-	iconUpload: {
-		fontSize: '4rem',
-	},
-	nameImg: {
-		fontSize: '1rem',
-		marginBottom: '-3px',
-	},
-}));
+import Rec from '../utilis/images/Rec';
+
+import { useStyles } from './styles/styles';
+
 
 export const Form: React.FC<any> = ({
 	fm,
 	setFm,
-	handleChange,
 	uploadImg,
 	nameImg,
 	setUploadImg,
@@ -114,9 +29,69 @@ export const Form: React.FC<any> = ({
 	typePay,
 	setTypePay,
 	listTypePay,
+	path,
+	setPath,
 }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
+
+	const [load, setLoad] = useState<boolean>(false)
+	const [cuotasTexto, setCuotasTexto] = useState('');
+	const [fraccion, setFraccion] = useState<any>({
+		state: false,
+		coutas: 0,
+		initial: 100,
+	});
+
+	useEffect(() => {
+		if (typePay) {
+			//console.log('type', typePay.id)
+			if (typePay.id === 2) {
+				setFraccion({
+					...fraccion,
+					state: true,
+				});
+			} else {
+				setFraccion({
+					...fraccion,
+					state: false,
+				});
+			}
+		} else {
+			setFraccion({
+				...fraccion,
+				state: false,
+			});
+		}
+	/*
+		if (initial && modelPos) {
+			let valor = cursedForm.number_post * (modelPos.price - cursedForm.initial);
+			let cuotas = valor / (cursedForm.number_post * 50);
+
+			setCursedForm({
+				...cursedForm,
+				cuotas: valor / (cursedForm.number_post * 50),
+			});
+
+			if (valor < 0) {
+				setCursedForm({
+					...cursedForm,
+					initial: 100,
+				});
+			}
+			if (cuotas % 1 === 0 && cuotas > 0 && cuotas) {
+				setCuotasTexto(`${cuotas} cuota/s de 50$`);
+			} else {
+				setCursedForm({
+					...cursedForm,
+					initial: 100,
+				});
+			}
+		}
+	*/
+		/* eslint-disable react-hooks/exhaustive-deps */
+	}, [fraccion.initial, typePay]);
+
 
 	const handleChangeImages = (event: any) => {
 		if (event.target.files[0]) {
@@ -126,19 +101,11 @@ export const Form: React.FC<any> = ({
 			//Save img
 			setUploadImg(newFile);
 			setNameImage(event.target.files[0].name);
-			setFm({
-				...fm,
-				urlImgCompDep: path,
-			});
+			setPath(path);
 		}
 	};
 
-	const props = {
-		zoomPosition: recaudo.position,
-		height: recaudo.h,
-		width: recaudo.w,
-		img: fm.urlImgCompDep,
-	};
+	const	imagen:string= path;
 
 	const handleVerificated = () => {
 		Swal.fire({
@@ -167,7 +134,7 @@ export const Form: React.FC<any> = ({
 		});
 	};
 
-	const handleSelectPayment = (event: any, value: any, item: string) => {
+	const handleSelectPayment = (event: any, value: any) => {
 		if (value) {
 			setPayment(value);
 		} else {
@@ -175,7 +142,7 @@ export const Form: React.FC<any> = ({
 		}
 	};
 
-	const handleSelectTypePay = (event: any, value: any, item: string) => {
+	const handleSelectTypePay = (event: any, value: any) => {
 		if (value) {
 			setTypePay(value);
 		} else {
@@ -184,7 +151,7 @@ export const Form: React.FC<any> = ({
 	};
 
 	const disButton = () => {
-		if (fm.urlImgCompDep || (payment && payment.id === 2)) {
+		if (path || (payment && payment.id === 2)) {
 			return false;
 		} else {
 			return true;
@@ -216,8 +183,9 @@ export const Form: React.FC<any> = ({
 								className={classes.textAutoCompleteLeft}
 								onChange={(event, value) => handleSelectPayment(event, value, 'payment_method')}
 								options={listPayment}
-								value={payment || null}
+								value={payment}
 								getOptionLabel={(option: any) => (option.name ? option.name : '')}
+								getOptionSelected={(option: any, value: any) => option.id === value.id}
 								renderInput={(params: any) => (
 									<TextField
 										{...params}
@@ -234,16 +202,17 @@ export const Form: React.FC<any> = ({
 								id='outlined-basic'
 								label='Metodo de Pago'
 								variant='outlined'
-								value={fm.paymentmethod.name}
+								value={fm?.id_payment_method.name}
 							/>
 						)}
-						{fm.pagadero ? (
+						{fm?.pagadero ? (
 							<Autocomplete
 								className={classes.textAutoCompleteLeft}
 								onChange={(event, value) => handleSelectTypePay(event, value, 'payment_method')}
 								options={listTypePay}
 								value={typePay || null}
 								getOptionLabel={(option: any) => (option.name ? option.name : '')}
+								getOptionSelected={(option: any, value: any) => option.id === value.id}
 								renderInput={(params: any) => (
 									<TextField
 										{...params}
@@ -260,22 +229,68 @@ export const Form: React.FC<any> = ({
 								id='outlined-basic'
 								label='Tipo de Pago'
 								variant='outlined'
-								value={fm.type_payment.name}
+								value={fm?.id_type_payment.name}
 							/>
 						)}
-						{fm.urlImgCompDep && !fm.pagadero && (
-							<TextField id='outlined-basic' label='Referencia' variant='outlined' value={fm.nro_comp_dep} />
+						{fm?.ci_referred && !fm.pagadero && (
+							<TextField
+								id='outlined-basic'
+								label='Referencia'
+								variant='outlined'
+								value={fm?.ci_referred}
+							/>
 						)}
 					</div>
-					{fm.urlImgCompDep && !fm.pagadero ? (
+					<div className={classes.row}>
+						{fraccion.state && (
+							<>
+								<TextField
+									id='initial'
+									label='Inicial'
+									//className={classes.inputTextLeft}
+									type='number'
+									name='initial'
+									variant='outlined'
+									value={fraccion.initial}
+									onKeyDown={(e) => {
+										e.preventDefault();
+									}}
+									inputProps={{
+										maxLength: 5,
+										step: '50',
+										min: '100',
+									}}
+									//onChange={handleChange}
+								/>
+								<TextField
+									disabled
+									id='initial'
+									label='Cantidad de cuotas'
+									//className={classes.inputText}
+									type='text'
+									variant='outlined'
+									value={cuotasTexto}
+								/>
+							</>
+						)}
+					</div>
+					{path && !fm.pagadero ? (
 						<div className={classes.containerImg}>
-							<ReactImageZoom className={classes.img_zoom} {...props} />
+							<Rec 
+								load={load}
+								setLoad={setLoad}
+								imagen={imagen}
+							/>
 						</div>
 					) : (
 						<>
 							{uploadImg && (
 								<div className={classes.containerImg}>
-									<ReactImageZoom className={classes.img_zoom} {...props} />
+									<Rec 
+										load={load}
+										setLoad={setLoad}
+										imagen={imagen}
+									/>
 								</div>
 							)}
 							{payment && payment.id !== 2 && (
