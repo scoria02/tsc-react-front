@@ -239,23 +239,6 @@ const Administracion: FC<AdministracionProp> = () => {
 		setSelected(false);
 	};
 
-	const getModalContent = () => {
-		switch (pagadero) {
-			// case true:
-			// 	return (
-			// 		<div
-			// 		// className={ }
-			// 		>
-			// 			true
-			// 		</div>
-			// 	);
-
-			default:
-				break;
-			//				return ();
-		}
-	};
-
 	return (
 		<>
 			<div className={classes.administracion}>
