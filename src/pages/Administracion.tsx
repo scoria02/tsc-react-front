@@ -18,7 +18,6 @@ import { getPayMent } from '../components/formMaldito/getData';
 
 import { getDataFMAdministration } from '../store/actions/administration';
 import { RootState } from '../store/store';
-import { PortFiles, URL } from '../config';
 import LoaderPrimary from '../components/loaders/LoaderPrimary';
 import '../components/administration/styles/index.scss';
 
@@ -175,28 +174,12 @@ const Administracion: FC<AdministracionProp> = () => {
 	//POS
 	const [listPayment, setListPayment] = useState<any[]>([]);
 	const [payment, setPayment] = useState<any>(null);
+	const [path, setPath] = useState<string>('');
 
 	const administration: any = useSelector((state: RootState) => state.administration);
 
 	const [selected, setSelected] = useState(false);
-	const [pagadero, setPagadero] = useState(false);
-	const [rowSelected, setRowSelect] = useState({
-		id: null,
-		code: '',
-		pagadero: false,
-		paymentmethod: {
-			name: '',
-			id: null,
-		},
-		type_payment: {
-			name: '',
-			id: null,
-		},
-		nro_comp_dep: '',
-		urlImgCompDep: '',
-		id_commerce: 0,
-		id_client: 0,
-	});
+	const [rowSelected, setRowSelect] = useState(null);
 
 	const [rowsAd, setRowsAd] = useState([]);
 
@@ -242,50 +225,18 @@ const Administracion: FC<AdministracionProp> = () => {
 		);
 	};
 
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {};
-
 	const handleRow = (event: any) => {
-		console.log('viene pagadero', event.row?.id_request.pagadero);
 		setUploadImg(null);
 		setNameImage('');
-		setPagadero(event.row?.id_request.pagadero || false);
-		setPayment(event.row.id_request.id_payment_method);
-		setTypePay(event.row.id_request.id_type_payment);
-		setRowSelect({
-			id: event.row.id_request.id,
-			pagadero: event.row.id_request.pagadero,
-			paymentmethod: event.row.id_request.id_payment_method,
-			type_payment: event.row.id_request.id_type_payment,
-			nro_comp_dep: event.row.id_request.nro_comp_dep,
-			urlImgCompDep: event.row.id_request.rc_comp_dep
-				? `${URL}:${PortFiles}/${event.row.id_request.rc_comp_dep.path}`
-				: '',
-			code: event.row.id_request.code,
-			id_commerce: event.row.id_request.id_commerce.id,
-			id_client: event.row.id_request.id_client.id,
-		});
+		setPayment(event.row?.id_request.id_payment_method);
+		setTypePay(event.row?.id_request.id_type_payment);
+		setRowSelect(event.row?.id_request);
+		setPath(event.row?.id_request?.rc_comp_dep ? event.row?.id_request?.rc_comp_dep.path : '');
 		setSelected(true);
 	};
 
 	const handleCloseRow = (event: any) => {
 		setSelected(false);
-	};
-
-	const getModalContent = () => {
-		switch (pagadero) {
-			// case true:
-			// 	return (
-			// 		<div
-			// 		// className={ }
-			// 		>
-			// 			true
-			// 		</div>
-			// 	);
-
-			default:
-				break;
-			//				return ();
-		}
 	};
 
 	return (
@@ -318,10 +269,10 @@ const Administracion: FC<AdministracionProp> = () => {
 							<Button className={classes.closeBtn} onClick={handleCloseRow}>
 								<CloseIcon />
 							</Button>
+					{getDataControl === 1 &&
 							<Form
 								fm={rowSelected}
 								setFm={setRowSelect}
-								handleChange={handleChange}
 								uploadImg={uploadImg}
 								nameImg={nameImg}
 								setUploadImg={setUploadImg}
@@ -332,7 +283,10 @@ const Administracion: FC<AdministracionProp> = () => {
 								typePay={typePay}
 								setTypePay={setTypePay}
 								listTypePay={listTypePay}
+								path={path}
+								setPath={setPath}
 							/>
+					}
 						</Paper>
 					</>
 				)}

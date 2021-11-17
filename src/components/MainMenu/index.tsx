@@ -33,7 +33,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import TranredLogo from '../../img/tranred-logo.png';
 //Redux
-import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, userAdmin } from '../../routers/url';
+import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, urlLogin, userAdmin } from '../../routers/url';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
 import './index.scss';
@@ -182,40 +182,35 @@ const MainMenu: FC = () => {
 	const handleMenuLogout = () => {
 		localStorage.removeItem('token');
 		dispatch(FinishLoading());
+		history.push(urlLogin);
 	};
 
 	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
 		switch (index) {
 			case 1:
 				history.push(urlAdministracion);
-				localStorage.setItem('path', urlAdministracion);
 				setSection('Administracion');
 				break;
 			case 3:
 				history.push(urlAdmision);
-				localStorage.setItem('path', urlAdmision);
 				setSection('Admision');
 				// socket.emit('prueba');
 				break;
 			case 4:
 				history.push(userAdmin);
-				localStorage.setItem('path', userAdmin);
 				setSection('Gestion de Usuarios');
 				break;
 			case 5:
 				history.push(urlFM);
-				localStorage.setItem('path', urlFM);
 				setSection('Formulario de Activación');
 				break;
 			case 6:
 				history.push(urlCobr);
-				localStorage.setItem('path', urlCobr);
 				setSection('Cobranza');
 				break;
 
 			default:
 				history.push(baseUrl);
-				localStorage.setItem('path', baseUrl);
 				setSection('1000Pagos C.A.');
 				break;
 		}
@@ -236,7 +231,6 @@ const MainMenu: FC = () => {
 		handleMobileMenuClose();
 	};
 	const handleLogoClick = () => {
-		localStorage.setItem('path', baseUrl);
 		handleDrawerClose();
 	};
 

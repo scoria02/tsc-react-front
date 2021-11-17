@@ -11,7 +11,7 @@ import { DateTime } from 'luxon';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useStyles } from './styles';
+import { useStyles } from '../styles/styles';
 
 import { RootState } from '../../../store/store';
 
@@ -70,6 +70,7 @@ const Diferidos: React.FC = () => {
 
 	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
 	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
+	const { user } = useSelector((state: any) => state.auth);
 
 	const [rowSelected, setRowSelect] = useState(null);
 
@@ -93,8 +94,8 @@ const Diferidos: React.FC = () => {
 
 	useEffect(() => {
 		// getDiferidos();
-		socket.emit('cliente:loadDiferidos');
 
+		socket.emit('cliente:loadDiferidos');
 		socket.emit('cliente:dashdatasiempre');
 
 		socket.on('server:loadDiferidos', (data: any) => {
@@ -109,7 +110,7 @@ const Diferidos: React.FC = () => {
 
 	const handleRow = (event: any) => {
 		setRowSelect(null);
-		socket.emit('Editar_diferido', event.row?.id, (res: any) => {
+		socket.emit('Editar_diferido', event.row?.id, user, (res: any) => {
 			setRowSelect({
 				...res,
 				id: event.row?.id,

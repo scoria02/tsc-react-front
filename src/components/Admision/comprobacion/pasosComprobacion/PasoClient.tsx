@@ -10,7 +10,7 @@ import { RootState } from '../../../../store/store';
 import { useStyles } from './styles/styles';
 import './styles/pasos.scss';
 
-import { ModalAlert }from '../ModalAlert';
+import { ModalAlert } from '../../../modals/ModalAlert';
 
 import Rec from '../../../utilis/images/Rec';
 
@@ -81,8 +81,8 @@ export default function PasoClient() {
 
 
 	return (
-		<>
-			<form className="container-step" noValidate autoComplete='off'>
+		<form className="container-step" noValidate autoComplete='off'
+		>
 				<div className={classes.btn_stepM}>
 					<TextField
 						className={classes.btn_stepT}
@@ -116,7 +116,6 @@ export default function PasoClient() {
 					label={state.status ? 'Correcto' : 'Incorrecto'}
 				/>
 				</div>
-			</form>
 			<Rec 
 				load={load}
 				setLoad={setLoad}
@@ -130,7 +129,7 @@ export default function PasoClient() {
 				handleIncorret={handleIncorret}
 				handleCancel={handleCancel}
 			/>
-		</>
+		</form>
 	);
 }
 

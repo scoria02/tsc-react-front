@@ -1,6 +1,42 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
 export const useStyles = makeStyles((styles: Theme) => ({
+	admision: {
+		flexGrow: 1,
+		display: 'grid',
+		gridColumnGap: '2rem',
+		gridTemplateColumns: '1fr 1fr',
+	},
+	dataGrid: {
+		width: '100%',
+		height: '75vh',
+	},
+	rightContainer: {
+		display: 'flex',
+		flexDirection: 'column',
+	},
+	counters: {
+		display: 'grid',
+		gridTemplateColumns: '1fr 1fr',
+		flexDirection: 'column',
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: '100%',
+	},
+	status: {
+		display: 'flex',
+		flexDirection: 'column',
+		width: '100%',
+		height: '100%',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	statusTitle: {
+		fontSize: 28,
+	},
+	statusDesc: {
+		fontSize: 38,
+	},
 	administracion: {
 		flexGrow: 1,
 		display: 'grid',
@@ -12,10 +48,6 @@ export const useStyles = makeStyles((styles: Theme) => ({
 		height: 70,
 		background: styles.palette.primary.main,
 		color: styles.palette.primary.contrastText,
-	},
-	dataGrid: {
-		width: '100%',
-		height: '75vh',
 	},
 	tableTitle: {
 		fontSize: 32,
@@ -73,6 +105,11 @@ export const useStyles = makeStyles((styles: Theme) => ({
 		display: 'flex',
 		height: '100%',
 		flexDirection: 'column',
+	},
+	row2: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		marginBottom: 16,
 	},
 	row: {
 		display: 'flex',

@@ -7,7 +7,7 @@ import { stepComplete } from '../../../store/actions/accept';
 import { cleanAdmisionFM, updateStatusFM } from '../../../store/actions/admisionFm';
 import { CloseModal } from '../../../store/actions/ui';
 import { RootState } from '../../../store/store';
-import './index.scss';
+import '../scss/index.scss';
 import PasoAccountNumber from './pasosComprobacion/PasoAccountNumber';
 import PasoActaConst from './pasosComprobacion/PasoActaConst';
 //import CancelIcon from '@material-ui/icons/Cancel';
