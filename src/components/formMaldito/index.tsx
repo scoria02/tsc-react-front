@@ -5,10 +5,11 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 //Material
 import Stepper from '@material-ui/core/Stepper';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { SocketContext } from '../../context/SocketContext';
 import { baseUrl } from '../../routers/url';
 import {
 	cleanFM,
@@ -129,7 +130,6 @@ export const FormMaldito: React.FC<Props> = () => {
 		rc_comp_dep: null,
 	});
 
-
 	const [validEmailIdent, setValidEmailIdent] = useState<boolean>(false);
 	const [activeStep, setActiveStep] = useState<number>(0);
 	const [readyStep, setReadyStep] = React.useState<boolean>(false);
@@ -236,6 +236,8 @@ export const FormMaldito: React.FC<Props> = () => {
 	const [listModelPos, setListModelPos] = useState<any[]>([]);
 	const [modelPos, setModelPost] = useState<any>(null);
 
+	const { socket } = useContext(SocketContext);
+
 	//name images
 	const [namesImages, setNamesImages] = useState<any>({
 		//step1
@@ -306,6 +308,7 @@ export const FormMaldito: React.FC<Props> = () => {
 			setSendForm(4);
 		} else if (sendForm === 4 && fm.loadedFM) {
 			console.log('Ready All FM');
+			socket.emit('cliente:Todos');
 			setSendForm(5);
 			handleSendForm();
 			dispatch(cleanFM());
@@ -667,11 +670,11 @@ export const FormMaldito: React.FC<Props> = () => {
 	const validEndPointFM = () => {
 		if (fm.errorClient) {
 			return false;
-		}else if(fm.errorCommerce && activeStep > 0){
+		} else if (fm.errorCommerce && activeStep > 0) {
 			return false;
-		}else if(fm.errorNumBank && activeStep > 2){
+		} else if (fm.errorNumBank && activeStep > 2) {
 			return false;
-		}else {
+		} else {
 			return true;
 		}
 	};
@@ -687,7 +690,7 @@ export const FormMaldito: React.FC<Props> = () => {
 				cursedForm.special_contributor,
 				fm.imagesClient,
 				fm.imagesCommerce,
-				cursedForm.id_ident_type_commerce,
+				cursedForm.id_ident_type_commerce
 			) &&
 			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) &&
 			validEndPointFM()
@@ -915,7 +918,7 @@ export const FormMaldito: React.FC<Props> = () => {
 		if (event.target.files[0]) {
 			let file = event.target.files[0];
 			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: file.type });
-			console.log(newFile)
+			console.log(newFile);
 			//Save img
 			setImagesForm({
 				...imagesForm,
@@ -1061,16 +1064,18 @@ export const FormMaldito: React.FC<Props> = () => {
 	];
 
 	const stepError = (key: number) => {
-		if(key === 0 && fm.errorClient){ //Cliente
-			return true
-		}else if (key === 1 && fm.errorCommerce){ //comercio
-			return true
-		} 	
-		else if (key === 3 && fm.errorNumBank){ //comercio
-			return true
-		} 	
-		return false 
-	}
+		if (key === 0 && fm.errorClient) {
+			//Cliente
+			return true;
+		} else if (key === 1 && fm.errorCommerce) {
+			//comercio
+			return true;
+		} else if (key === 3 && fm.errorNumBank) {
+			//comercio
+			return true;
+		}
+		return false;
+	};
 
 	return (
 		<div className='ed-container container-formMaldito'>

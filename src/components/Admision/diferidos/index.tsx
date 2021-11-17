@@ -105,17 +105,19 @@ const Diferidos: React.FC = () => {
 		/*socket.on('server:dashdata', (data: any) => {
 			console.log('MENOL EMITE AQUI ', data);
 		});*/
-	}, [socket]);
+	}, [socket, modalOpenDiferido]);
 	//updatedStatus
 
 	const handleRow = (event: any) => {
 		setRowSelect(null);
-		socket.emit('Editar_diferido', event.row?.id, user, (res: any) => {
+		socket.emit('Editar_diferido', event.row?.id, (res: any) => {
 			setRowSelect({
 				...res,
 				id: event.row?.id,
 			});
 		});
+
+		socket.emit('cliente:trabanjandoDiferido', user, event.row?.id);
 		dispatch(OpenModalDiferido());
 	};
 
