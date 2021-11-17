@@ -25,7 +25,7 @@ const Admision: React.FC = () => {
 	const [chartData, setChartData] = useState({});
 	const [todos, setTodo] = useState<any>([]);
 	const [todostodos, setTodoTodos] = useState<any>([]);
-	const { solictudesTrabajando } = todos;
+	const { solictudesTrabajando, diferidosTranbajando } = todos;
 	const { allSolic, allTerm, diferidos } = todostodos;
 	console.log('MENOL DIMAS AQUI', allSolic);
 
@@ -104,12 +104,12 @@ const Admision: React.FC = () => {
 						<div className={classes.status} style={{ borderLeft: '1px solid rgba(0,0,0,0.4)' }}>
 							<div className={classes.statusTitle}>En Proceso:</div>
 
-							<div className={classes.statusDesc}>{solictudesTrabajando}</div>
+							<div className={classes.statusDesc}>{solictudesTrabajando + diferidosTranbajando}</div>
 						</div>
 						<div className={classes.status} style={{ borderTop: '1px solid  rgba(0,0,0,0.4)' }}>
 							<div className={classes.statusTitle}>Diferidos:</div>
 
-							<div className={classes.statusDesc}>{allTerm}</div>
+							<div className={classes.statusDesc}>{diferidos}</div>
 						</div>
 						<div
 							className={classes.status}

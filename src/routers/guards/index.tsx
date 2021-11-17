@@ -1,9 +1,14 @@
 import { GuardFunction } from 'react-router-guards';
+import axios from '../../config';
 import { baseUrl, urlLogin } from '../url';
 
 export const Auth: GuardFunction = (to, from, next) => {
 	if (to.meta.auth) {
-		localStorage.getItem('token') !== null ? next() : next.redirect(urlLogin);
+		if (localStorage.getItem('token') !== null) {
+			next();
+		} else {
+			next.redirect(urlLogin);
+		}
 	} else {
 		if (localStorage.getItem('token') !== null) {
 			next.redirect(baseUrl);
@@ -14,12 +19,14 @@ export const Auth: GuardFunction = (to, from, next) => {
 	}
 };
 
-export const PrivGuard: GuardFunction = (to, from, next) => {
-	if (to.meta.dep && localStorage.getItem('token')) {
-		console.log('entre a priv true');
-		next();
-	} else {
-		console.log('entre a priv false');
-		next();
-	}
+export const PrivGuard: GuardFunction = async (to, from, next) => {
+	const resp = await axios.get('/worker');
+	const userRol = resp.data.info.roles;
+	console.clear();
+	// console.log('worker', resp);
+	// console.log('entre a privGuard');
+	// console.log('userData', resp.data.info);
+	// console.log('to', to);
+	// console.log('from', from?.match.path);
+	next();
 };

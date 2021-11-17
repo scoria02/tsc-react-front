@@ -8,10 +8,10 @@ import MainMenu from '../components/MainMenu';
 //Redux
 import { refreshLogin } from '../store/actions/auth';
 import { FinishLoading } from '../store/actions/ui';
-import { Auth } from './guards';
+import { Auth, PrivGuard } from './guards';
 import Private from './routes/private';
 import Public from './routes/public';
-import { urlLogin } from './url';
+import { urlLogin, urlPrivate } from './url';
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
@@ -42,11 +42,22 @@ export const AppRouter = () => {
 
 	useEffect(() => {
 		dispatch(FinishLoading());
-		// setIsLoggedIn(false);
 		let token = localStorage.getItem('token');
-		if (token) dispatch(refreshLogin());
+		if (token !== null) dispatch(refreshLogin());
 		setChecking(false);
 	}, [dispatch]);
+
+	const isPrivate = () => {
+		const is = urlPrivate.findIndex((val) => {
+			return val === window.location.pathname;
+		});
+		return is !== -1;
+	};
+	useEffect(() => {
+		if (localStorage.getItem('token') === null && isPrivate()) {
+			window.location.replace(urlLogin);
+		}
+	}, []);
 
 	if (checking) {
 		return <LoaderPrimary />;
@@ -58,20 +69,20 @@ export const AppRouter = () => {
 				<Switch>
 					{!loading && (
 						<div className={classes.auth}>
-							<div>
-								{Public.map(({ component, meta, path }, i) => {
-									return <GuardedRoute key={i} exact path={path} component={component} meta={meta} />;
-								})}
-							</div>
+							{Public.map(({ component, meta, path }, i) => {
+								return <GuardedRoute key={i} exact path={path} component={component} meta={meta} />;
+							})}
 						</div>
 					)}
 					{loading && (
 						<div className={classes.root}>
 							<MainMenu />
 							<main className={classes.content}>
-								{Private.map(({ path, component, meta }, i) => {
-									return <GuardedRoute key={i} exact path={path} component={component} meta={meta} />;
-								})}
+								<GuardProvider guards={[PrivGuard]}>
+									{Private.map(({ path, component, meta }, i) => {
+										return <GuardedRoute key={i} exact path={path} component={component} meta={meta} />;
+									})}
+								</GuardProvider>
 							</main>
 						</div>
 					)}
