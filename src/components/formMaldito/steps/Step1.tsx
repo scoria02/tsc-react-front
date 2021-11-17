@@ -237,6 +237,7 @@ export const Step1: React.FC<any> = ({
 						value={location.estado || null}
 						options={listLocation.estado}
 						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
+						getOptionSelected={(option: any, value: any) => option.id === value.id}
 						renderInput={(params: any) => (
 							<TextField {...params} name='estado' label='Estado' inputProps={{...params.inputProps, autoComplete: 'estado', }} variant='outlined' />
 						)}

@@ -78,6 +78,7 @@ export const Step3: React.FC<any> = ({
 						disabled={fm.mashCommerce}
 						options={listLocation.estado}
 						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
+						getOptionSelected={(option: any, value: any) => option.id === value.id}
 						renderInput={(params: any) => (
 							<TextField {...params} name='estado' label='Estado' inputProps={{ ...params.inputProps, autoComplete: 'estado', }} variant='outlined' />
 						)}
@@ -178,6 +179,7 @@ export const Step3: React.FC<any> = ({
 						options={listLocationPos.estado}
 						value={locationPos.estado || null}
 						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
+						getOptionSelected={(option: any, value: any) => option.id === value.id}
 						renderInput={(params: any) => (
 							<TextField {...params} name='estado' label='Estado' inputProps={{ ...params.inputProps, autoComplete: 'estado', }} variant='outlined' />
 						)}
