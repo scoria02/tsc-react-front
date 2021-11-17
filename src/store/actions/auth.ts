@@ -1,8 +1,9 @@
-import {AxiosResponse} from 'axios';
+import { AxiosResponse } from 'axios';
 import Swal from 'sweetalert2';
 import useAxios from '../../config';
-import {ActionType} from '../types/types';
-import {StartLoading} from './ui';
+import { urlLogin } from '../../routers/url';
+import { ActionType } from '../types/types';
+import { StartLoading } from './ui';
 
 export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
@@ -15,7 +16,7 @@ export const startLogin = (email: any, password: any) => {
 				email,
 				password,
 			});
-			updateToken(res)
+			updateToken(res);
 			Swal.fire('Success', res.data.message, 'success');
 			dispatch(StartLoading());
 			dispatch(requestSuccess(res.data.info.data));
@@ -39,9 +40,14 @@ export const refreshLogin = () => {
 			dispatch(StartLoading());
 			dispatch(requestSuccess(res.data.info));
 		} catch (error: any) {
-			console.log('borrar')
+			console.log('borrar');
 			localStorage.clear();
-			Swal.fire('Error', 'Sesión expirada, vuelva a iniciar sesión', 'error');
+			Swal.fire('Error', 'Sesión expirada, vuelva a iniciar sesión', 'error').then((result) => {
+				if (result.isConfirmed) {
+					window.location.replace(urlLogin);
+				} else window.location.replace(urlLogin);
+			});
+			window.location.replace(urlLogin);
 		}
 	};
 	function requestSuccess(state: any) {
@@ -65,13 +71,13 @@ export const registerUser = (user: any) => {
 			phone: user.code + user.phone,
 			id_company: user.id_company,
 			id_department: user.id_department,
-		}
+		};
 		try {
 			const res = await useAxios.post('/auth/register', newUser);
-			updateToken(res)
+			updateToken(res);
 			Swal.fire('Success', res.data.message, 'success');
 			dispatch(requestSuccess(res));
-			const {email, password} = user;
+			const { email, password } = user;
 			dispatch(startLogin(email, password));
 		} catch (error: any) {
 			console.log(error);
@@ -95,8 +101,8 @@ export const registerUser = (user: any) => {
 export const validationEmail = (email: string) => {
 	return async (dispatch: any) => {
 		try {
-			const res = await useAxios.post('/auth/register/valid/1', {email});
-			updateToken(res)
+			const res = await useAxios.post('/auth/register/valid/1', { email });
+			updateToken(res);
 			dispatch(validationEmailSuccess());
 		} catch (error: any) {
 			console.log(error);

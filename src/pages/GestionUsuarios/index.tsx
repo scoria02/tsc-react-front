@@ -63,7 +63,7 @@ const columns: GridColDef[] = [
 		sortable: false,
 		width: 160,
 		valueGetter: (params: GridValueGetterParams) => {
-			return `${params.getValue(params.id, 'name') || ''} ${params.getValue(params.id, 'last_name') || ''}`;
+			return `${params.row.name || ''} ${params.row.last_name || ''}`;
 		},
 	},
 ];
@@ -171,6 +171,10 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [userRol, setUserRol] = useState<any[]>([]);
 	const [allUser, setUsers] = useState<any[]>([]);
+	const [userDep, setUserDep] = useState<any>({
+		id: 1,
+		name: 'administracion',
+	});
 	const [userID, setUserID] = useState<number>(0);
 	const [email, setEmail] = useState<string>('');
 	const [lname, setLName] = useState<string>('');
@@ -188,14 +192,14 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	useEffect(() => {
 		try {
 			setLoading(false);
-			axios.get('/roles/all').then(async (data: any) => {
-				await setAllUserRoles(data.data.info);
+			axios.get('/roles/all').then((data: any) => {
+				setAllUserRoles(data.data.info);
 			});
-			axios.get('/department/all').then(async (data: any) => {
-				await setDepartment(data.data.info);
+			axios.get('/department/all').then((data: any) => {
+				setDepartment(data.data.info);
 			});
-			axios.get('worker/all').then(async (data: any) => {
-				await setUsers(data.data.info);
+			axios.get('worker/all').then((data: any) => {
+				setUsers(data.data.info);
 			});
 			setLoading(true);
 		} catch (error) {
@@ -256,6 +260,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 			setLName(data.last_name);
 			setUserRol(data.roles);
 			setEmail(data.email);
+			setUserDep(data.department ? data.department : null);
 			setUserID(data.id);
 			setName(data.name);
 		} catch (error) {
@@ -264,8 +269,16 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	};
 
 	const handleSelect = (event: any, value: any, item: string) => {
-		if (value) {
-		} else {
+		console.log('event', event);
+		console.log('value', value);
+		console.log('item', item);
+		switch (item) {
+			case 'department':
+				setUserDep(value);
+				break;
+
+			default:
+				break;
 		}
 	};
 
@@ -308,7 +321,10 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 			if (result.isConfirmed) {
 				try {
 					// Aca envio los datos al endpoint de dimas
-					await axios.put(`/roles/worker/${userID}`, { roles: userRol });
+					await axios.put(`/roles/worker/${userID}`, {
+						roles: userRol,
+						departamento: userDep,
+					});
 					Swal.fire('Cambios Guardados', '', 'success');
 				} catch (error) {
 					Swal.fire('Hubo un error guardando sus cambios', '', 'info');
@@ -375,7 +391,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 												<Autocomplete
 													className={classes.inputText}
 													onChange={(event, value) => handleSelect(event, value, 'department')}
-													value={department[0]}
+													value={userDep}
 													options={department}
 													getOptionLabel={(option: any) => (option.name ? option.name : '')}
 													renderInput={(params: any) => (

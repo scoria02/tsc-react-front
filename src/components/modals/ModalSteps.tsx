@@ -91,7 +91,7 @@ const ModalSteps: React.FC<any> = ({
 				})}
 			</Stepper>
 			<div className={classes.containerStep}>
-					<Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+					<div className={classes.instructions}>{getStepContent(activeStep)}</div>
 					<div className='btn-divfloat'>
 						<Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
 							Volver
