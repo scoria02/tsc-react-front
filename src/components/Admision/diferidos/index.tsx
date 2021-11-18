@@ -1,22 +1,19 @@
 import {
 	DataGrid,
 	GridColDef,
+	GridSortDirection,
+	GridSortModel,
 	GridToolbarContainer,
 	GridToolbarFilterButton,
 	GridValueGetterParams,
 } from '@material-ui/data-grid';
-import React, { useContext, useEffect, useState } from 'react';
-import { SocketContext } from '../../../context/SocketContext';
 import { DateTime } from 'luxon';
-
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { useStyles } from '../styles/styles';
-
-import { RootState } from '../../../store/store';
-
+import { SocketContext } from '../../../context/SocketContext';
 import { OpenModalDiferido } from '../../../store/actions/ui';
-
+import { RootState } from '../../../store/store';
+import { useStyles } from '../styles/styles';
 import Diferido from './Diferido';
 
 const columns: GridColDef[] = [
@@ -57,8 +54,7 @@ const columns: GridColDef[] = [
 		headerName: 'Fecha',
 		width: 120,
 		valueFormatter: (value: GridValueGetterParams) => {
-			const fechaFormateada = DateTime.fromISO(value.row?.updatedAt).toFormat('dd/LL/yyyy').toLocaleString();
-			return `${fechaFormateada}`;
+			return DateTime.fromISO(value.row?.updatedAt.toString()).toFormat('dd/LL/yyyy').toLocaleString();
 		},
 		sortable: false,
 	},
@@ -82,6 +78,13 @@ const Diferidos: React.FC = () => {
 			</GridToolbarContainer>
 		);
 	};
+
+	const [sortModel, setSortModel] = useState<GridSortModel>([
+		{
+			field: 'updatedAt',
+			sort: 'asc' as GridSortDirection,
+		},
+	]);
 
 	const { socket } = useContext(SocketContext);
 
@@ -127,6 +130,9 @@ const Diferidos: React.FC = () => {
 				components={{
 					Toolbar: customToolbar,
 				}}
+				sortingOrder={['desc', 'asc']}
+				sortModel={sortModel}
+				onSortModelChange={(model) => setSortModel(model)}
 				rows={diferidos}
 				columns={columns}
 				pageSize={5}
