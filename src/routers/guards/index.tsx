@@ -24,7 +24,7 @@ export const PrivGuard: GuardFunction = async (to, from, next) => {
 		const resp = await axios.get('/worker');
 		const userRol = resp.data.info.roles;
 		// console.clear();
-		console.log('userRol', userRol);
+		// console.log('userRol', userRol);
 		// console.log('worker', resp);
 		// console.log('entre a privGuard');
 		// console.log('userData', resp.data.info);
