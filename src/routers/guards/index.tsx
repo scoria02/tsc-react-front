@@ -1,5 +1,5 @@
 import { GuardFunction } from 'react-router-guards';
-import axios from '../../config';
+import { GuardFunctionRouteProps, GuardToRoute, Next } from 'react-router-guards/dist/types';
 import { baseUrl, urlLogin } from '../url';
 
 export const Auth: GuardFunction = (to, from, next) => {
@@ -19,19 +19,17 @@ export const Auth: GuardFunction = (to, from, next) => {
 	}
 };
 
-export const PrivGuard: GuardFunction = async (to, from, next) => {
-	try {
-		const resp = await axios.get('/worker');
-		const userRol = resp.data.info.roles;
-		// console.clear();
-		// console.log('userRol', userRol);
-		// console.log('worker', resp);
-		// console.log('entre a privGuard');
-		// console.log('userData', resp.data.info);
-		// console.log('to', to);
-		// console.log('from', from?.match.path);
-		next();
-	} catch (error) {
-		next.redirect(urlLogin);
-	}
+export const PrivGuard: any = (to: GuardToRoute, from: GuardFunctionRouteProps | null, next: Next, user: any) => {
+	next();
+	// try {
+	// 	console.clear();
+	// 	console.log('userRol', userRol);
+	// 	console.log('worker', resp);
+	// 	console.log('entre a privGuard');
+	// 	console.log('userData', resp.data.info);
+	// 	console.log('to', to);
+	// 	console.log('from', from?.match.path);
+	// } catch (error) {
+	// 	next.redirect(urlLogin);
+	// }
 };

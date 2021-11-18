@@ -39,6 +39,7 @@ export const AppRouter = () => {
 
 	const [checking, setChecking] = useState<boolean>(true);
 	const { loading } = useSelector((state: any) => state.ui);
+	const { user } = useSelector((state: any) => state.auth);
 
 	useEffect(() => {
 		dispatch(FinishLoading());
@@ -78,7 +79,7 @@ export const AppRouter = () => {
 						<div className={classes.root}>
 							<MainMenu />
 							<main className={classes.content}>
-								<GuardProvider guards={[PrivGuard]}>
+								<GuardProvider guards={[(to, from, next): void => PrivGuard(to, from, next, user)]}>
 									{Private.map(({ path, component, meta }, i) => {
 										return <GuardedRoute key={i} exact path={path} component={component} meta={meta} />;
 									})}
