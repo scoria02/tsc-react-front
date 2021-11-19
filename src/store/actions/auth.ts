@@ -47,7 +47,6 @@ export const refreshLogin = () => {
 					window.location.replace(urlLogin);
 				} else window.location.replace(urlLogin);
 			});
-			window.location.replace(urlLogin);
 		}
 	};
 	function requestSuccess(state: any) {

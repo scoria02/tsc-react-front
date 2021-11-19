@@ -85,9 +85,10 @@ export const validNumBank = (value: string):boolean => {
 
 
 const step1 = 15;
-const step2 = 5;
-const step3 = 17;
-const step4 = 10;
+const step2 = 8;
+const step3 = 5;
+const step4 = 17;
+const step5 = 10;
 
 //Extras
 export const sizeStep = (active: number): number => {
@@ -100,15 +101,18 @@ export const sizeStep = (active: number): number => {
 			return step1 + step2 + step3; 
 		case 3:
 			return step1 + step2 + step3 + step4; 
+		case 4:
+			return step1 + step2 + step3 + step4 + step5; 
 		default:
 			return 0;
 	}
 }
 
 const step1Imagen = 1;
-const step2Imagen = 3;
-const step3Imagen = 0;
-const step4Imagen = 2;
+const step2Imagen = 0;
+const step3Imagen = 3;
+const step4Imagen = 0;
+const step5Imagen = 2;
 
 export const sizeImagesStep = (active: number): number => {
 	switch (active) {
@@ -120,6 +124,8 @@ export const sizeImagesStep = (active: number): number => {
 			return step1Imagen + step2Imagen + step3Imagen; 
 		case 3:
 			return step1Imagen + step2Imagen + step3Imagen + step4Imagen; //6 con rc_comp_dep
+		case 4:
+			return step1Imagen + step2Imagen + step3Imagen + step4Imagen + step5Imagen
 		default:
 			return 0;
 	}
@@ -129,7 +135,6 @@ export const allInputNotNUll = (last: number, form: any, mashClient: boolean, ma
 	let indice = 0;
 	for (const item of Object.entries(form)) {
 		if (indice === last-1) {
-			console.log(item)
 			return false;
 		}
 		indice++;
@@ -199,10 +204,8 @@ export const allImgNotNUll = (form: any, last: number, images: any, special_cont
 
 export const checkErrorAllInput = (last: number, errors: any): boolean => {
 	let indice = 0;
-	console.log(last)
 	for (const item of Object.entries(errors)) {
 		if (indice === last-1) {
-			console.log(item, 'Error')
 			return false;
 		}
 		indice++;
@@ -216,9 +219,9 @@ export const checkErrorAllInput = (last: number, errors: any): boolean => {
 export const validEndPoint = (activeStep: number, fm: any): boolean => {
 	if(fm.errorClient){
 		return true;
-	}else if(activeStep > 0 && fm.errorCommerce){
+	}else if(activeStep > 1 && fm.errorCommerce){
 		return true;
-	}else if(activeStep > 2 && fm.errorNumBank){
+	}else if(activeStep > 3 && fm.errorNumBank){
 		return true;
 	}else {
 		return false 

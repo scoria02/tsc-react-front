@@ -27,26 +27,23 @@ const Admision: React.FC = () => {
 	const [todostodos, setTodoTodos] = useState<any>({});
 	const { solictudesTrabajando, diferidosTranbajando } = todos;
 	const { allSolic, allTerm, diferidos } = todostodos;
-	console.log('MENOL DIMAS AQUI', allSolic);
 
 	useEffect(() => {
 		socket.emit('cliente:Todos', user, (todo: any) => {
-			console.log('Aqui mmg devuelve', todo);
 			setTodoTodos(todo);
 		});
 
 		socket.emit('cliente:dashdata', user, (data: any) => {
 			if (Object.keys(data).length) {
-				console.log('save 1', data);
+				// console.log('save 1', data);
 				setChartData(data);
 				setTodo(data);
 			}
 		});
 
 		socket.on('server:dashdata', (data: any) => {
-			console.log('Resive AQUI ', data);
 			if (Object.keys(data).length) {
-				console.log('save 2', data);
+				// console.log('save 2', data);
 				setChartData(data);
 				setTodo(data);
 			}
@@ -55,7 +52,6 @@ const Admision: React.FC = () => {
 
 	const handleClick = () => {
 		socket.emit('cliente:Todos', user, (todo: any) => {
-			console.log('Aqui mmg devuelve', todo);
 			setTodoTodos(todo);
 		});
 
@@ -67,7 +63,6 @@ const Admision: React.FC = () => {
 		});
 
 		socket.emit('cliente:dashdatasiempre');
-		console.log('Aqui ta el beta');
 	};
 
 	const handleUpdateChart = (chartData: any) => {
@@ -81,13 +76,10 @@ const Admision: React.FC = () => {
 	};
 
 	useEffect(() => {
-		console.log('A C T U A L I Z Ó', !Object.keys(chartData).length, chartData);
 		if (Object.keys(chartData).length) {
 			handleUpdateChart(chartData);
 		}
 	}, [chartData]);
-
-	console.log('data', chartData);
 
 	return (
 		<div className={classes.admision}>

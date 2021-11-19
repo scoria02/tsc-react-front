@@ -69,23 +69,21 @@ export const validationCommerce = (id_client: number, commerce: any) => {
 };
 
 export const validationNumBank = (clientBank: any) => {
-	//console.log(clientBank)
 	return async (dispatch: any) => {
 		try {
-			console.log(clientBank)
 			const res = await useAxios.post(`/FM/bank/valid`, clientBank);
-			console.log(res.data.info)
 			updateToken(res);
-			dispatch(requestSuccess());
+			dispatch(requestSuccess(res.data.info.name));
 		} catch (error) {
 			//console.log(error.response);
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
 	};
-	function requestSuccess() {
+	function requestSuccess(state: any) {
 		return {
 			type: ActionType.validNumBank,
+			payload: state
 		};
 	}
 	function requestError() {
@@ -114,6 +112,12 @@ export const sendClient = (cursedForm: any, codePhone: string) => {
 			calle: cursedForm.calle_client,
 			local: cursedForm.local_client,
 		},
+		name_ref1: cursedForm.name_ref1,
+		doc_ident_ref1: cursedForm.doc_ident_type_ref1 + cursedForm.doc_ident_ref1,
+		phone_ref1: codePhone + cursedForm.phone_ref1,
+		name_ref2: cursedForm.name_ref1,
+		doc_ident_ref2: cursedForm.doc_ident_type_ref2 + cursedForm.doc_ident_ref2,
+		phone_ref2: codePhone + cursedForm.phone_ref2,
 	};
 
 	return async (dispatch: any) => {

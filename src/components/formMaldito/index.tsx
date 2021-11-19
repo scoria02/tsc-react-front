@@ -40,21 +40,21 @@ import { Step1 } from './steps/Step1';
 import { Step2 } from './steps/Step2';
 import { Step3 } from './steps/Step3';
 import { Step4 } from './steps/Step4';
+import { Step5 } from './steps/Step5';
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
 
 function getSteps() {
 	return [
 		'Información Personal del Cliente',
+		'Referencias Personales del Cliente',
 		'Información del Comercio',
 		'Dirección del Comercio/POS',
 		'Solicitud de POS',
 	];
 }
 
-interface Props {}
-
-export const FormMaldito: React.FC<Props> = () => {
+export const FormMaldito: React.FC = () => {
 	const history = useHistory();
 	const classes = useStylesFM();
 	const dispatch = useDispatch();
@@ -76,13 +76,22 @@ export const FormMaldito: React.FC<Props> = () => {
 		sector_client: '',
 		calle_client: '',
 		local_client: '',
-		//step2 Comercio
+		//Step2 Referencias Personales
+		name_ref1:  '',
+		doc_ident_type_ref1: 'V',
+		doc_ident_ref1: '',
+		phone_ref1: '',
+		name_ref2: '',
+		doc_ident_type_ref2: 'V',
+		doc_ident_ref2: '',
+		phone_ref2: '',
+		//step3 Comercio
 		id_ident_type_commerce: 3,
 		ident_num_commerce: '',
 		name_commerce: '',
 		id_activity: 0,
 		special_contributor: 0,
-		//Step3 Location
+		//Step4 Location
 		//Commerce
 		id_estado: 0,
 		id_ciudad: 0,
@@ -101,7 +110,7 @@ export const FormMaldito: React.FC<Props> = () => {
 		sector_pos: '',
 		calle_pos: '',
 		local_pos: '',
-		//Step4 Post
+		//Step5 Post
 		number_post: 1,
 		id_model_post: 0,
 		text_account_number: '',
@@ -134,13 +143,22 @@ export const FormMaldito: React.FC<Props> = () => {
 		sector_client: false,
 		calle_client: false,
 		local_client: false,
-		//step2 Comercio
+		//Step2 Referencias Personales
+		name_ref1:  false,
+		doc_ident_type_ref1: false,
+		doc_ident_ref1: false,
+		phone_ref1: false,
+		name_ref2: false,
+		doc_ident_type_ref2: false,
+		doc_ident_ref2: false,
+		phone_ref2: false,
+		//step3 Comercio
 		id_ident_type_commerce: false,
 		ident_num_commerce: false,
 		name_commerce: false,
 		id_activity: false,
 		special_contributor: false,
-		//Step3 Location
+		//Step4 Location
 		//Commerce
 		id_estado: false,
 		id_ciudad: false,
@@ -159,7 +177,7 @@ export const FormMaldito: React.FC<Props> = () => {
 		sector_pos: false,
 		calle_pos: false,
 		local_pos: false,
-		//Step4 Post
+		//Step5 Post
 		number_post: false,
 		id_model_post: false,
 		text_account_number: false,
@@ -754,6 +772,12 @@ export const FormMaldito: React.FC<Props> = () => {
 			case 'phone2':
 				temp.phone2 = valids.validPhone2(value, cursedForm.phone1);
 				break;
+			case 'phone_ref1':
+				temp.phone_ref1 = valids.validPhone(value);
+				break;
+			case 'phone_ref2':
+				temp.phone_ref2 = valids.validPhone(value);
+				break;
 			case 'name_commerce':
 				temp.name_commerce = valids.validNameCommere(value);
 				break;
@@ -769,13 +793,12 @@ export const FormMaldito: React.FC<Props> = () => {
 						bank_account_num: value,
 					})
 				);
-				console.log(value)
 			}
 				break;
 			default:
 				break;
 		}
-		setCursedFormError({
+					setCursedFormError({
 			...temp,
 		});
 	};
@@ -799,7 +822,7 @@ export const FormMaldito: React.FC<Props> = () => {
 	};
 
 	const handleBlurCommerce = () => {
-		if (activeStep === 1 && cursedForm.id_ident_type_commerce !== '' && cursedForm.ident_num_commerce !== '') {
+		if (activeStep === 2 && cursedForm.id_ident_type_commerce !== '' && cursedForm.ident_num_commerce !== '') {
 			dispatch(
 				validationCommerce(fm.id_client, {
 					id_ident_type: cursedForm.id_ident_type_commerce,
@@ -925,7 +948,7 @@ export const FormMaldito: React.FC<Props> = () => {
 	}, [fm.mashCommerce, fm.commerceMash]);
 
 	const handleBlurNumBank = () => {
-		if (activeStep === 3 && cursedForm.email !== '' && cursedForm.text_account_number !== '') {
+		if (activeStep === 4 && cursedForm.email !== '' && cursedForm.text_account_number !== '') {
 			dispatch(
 				validationNumBank({
 					email: cursedForm.email,
@@ -979,7 +1002,8 @@ export const FormMaldito: React.FC<Props> = () => {
 				fm.imagesCommerce,
 				cursedForm.id_ident_type_commerce
 			) ||
-			valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) 
+			valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) ||
+			valids.validEndPoint(activeStep, fm)
 		)
 			return;
 		//Send FM
@@ -1044,6 +1068,12 @@ export const FormMaldito: React.FC<Props> = () => {
 			codePhone={codePhone}
 		/>,
 		<Step2
+			cursedForm={cursedForm}
+			handleChange={handleChange}
+			codePhone={codePhone}
+			error={cursedFormError}
+		/>,
+		<Step3
 			listIdentType={listIdentType}
 			listActivity={listActivity}
 			activity={activity}
@@ -1058,7 +1088,7 @@ export const FormMaldito: React.FC<Props> = () => {
 			handleChangeImages={handleChangeImages}
 			deleteImgContributor={deleteImgContributor}
 		/>,
-		<Step3
+		<Step4
 			setAutoCompleteCommerce={setAutoCompleteCommerce}
 			setAutoCompletePos={setAutoCompletePos}
 			listLocation={listLocationCommerce}
@@ -1073,7 +1103,7 @@ export const FormMaldito: React.FC<Props> = () => {
 			handleUpdateLocationCommerce={handleUpdateLocationCommerce}
 			handleUpdateLocationPos={handleUpdateLocationPos}
 		/>,
-		<Step4
+		<Step5
 			listTypePay={listTypePay}
 			setTypePay={setTypePay}
 			typePay={typePay}
@@ -1102,10 +1132,10 @@ export const FormMaldito: React.FC<Props> = () => {
 		if (key === 0 && fm.errorClient) {
 			//Cliente
 			return true;
-		} else if (key === 1 && fm.errorCommerce) {
+		} else if (key === 2 && fm.errorCommerce) {
 			//comercio
 			return true;
-		} else if (key === 3 && fm.errorNumBank) {
+		} else if (key === 4 && fm.errorNumBank) {
 			//comercio
 			return true;
 		}
@@ -1152,7 +1182,7 @@ export const FormMaldito: React.FC<Props> = () => {
 									Volver
 								</Button>
 								<Button
-									//disabled={!readyStep}
+									disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'

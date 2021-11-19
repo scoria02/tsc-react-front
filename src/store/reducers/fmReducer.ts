@@ -17,6 +17,7 @@ interface inState {
 	errorClient: boolean;
 	errorCommerce: boolean;
 	errorNumBank: boolean;
+	nameBank: string;
 }
 
 const initialState: inState = {
@@ -40,6 +41,7 @@ const initialState: inState = {
 	errorClient: false,
 	errorCommerce: false,
 	errorNumBank: false,
+	nameBank: '',
 };
 
 export const fmReducer = (state = initialState, action: any) => {
@@ -93,6 +95,7 @@ export const fmReducer = (state = initialState, action: any) => {
 			return {
 				...state,
 				errorNumBank: false,
+				nameBank: action.payload,
 			};
 		case ActionType.validNumBankError:
 			return {
