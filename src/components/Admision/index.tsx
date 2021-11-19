@@ -25,7 +25,7 @@ const Admision: React.FC = () => {
 	const [keyChart, setkeyChart] = useState<string[]>([]);
 	const [chartData, setChartData] = useState({});
 	const [todos, setTodo] = useState<any>([]);
-	const [todostodos, setTodoTodos] = useState<any>([]);
+	const [todostodos, setTodoTodos] = useState<any>({});
 	const { solictudesTrabajando, diferidosTranbajando } = todos;
 	const { allSolic, allTerm, diferidos } = todostodos;
 
@@ -59,6 +59,7 @@ const Admision: React.FC = () => {
 		dispatch(OpenModal());
 
 		socket.emit('Trabanjando_Solic', user, (solic: any) => {
+			console.log('solic', solic);
 			dispatch(getDataFM(solic));
 		});
 
@@ -106,7 +107,6 @@ const Admision: React.FC = () => {
 							<div className={classes.statusDesc}>{allTerm || 0}</div>
 						</div>
 					</div>
-
 					<div style={{ width: '40%' }}>
 						<ChartTorta />
 						{/* <Dona chartData={valuesChart} colsData={keyChart} /> */}

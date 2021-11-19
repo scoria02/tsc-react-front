@@ -185,6 +185,7 @@ export const Step1: React.FC<any> = ({
 						label='Telefono'
 						name='phone1'
 						autoComplete="telefono1"
+						placeholder= "Ej: 4121234567"
 						onChange={handleChangePhone}
 						error={error.phone1}
 						disabled={fm.mashClient}
@@ -214,6 +215,7 @@ export const Step1: React.FC<any> = ({
 						error={error.phone2}
 						disabled={fm.mashClient}
 						value={cursedForm.phone2}
+						placeholder= "Ej: 4127654321"
 						inputProps={{ maxLength: 10 }}
 						InputProps={{
 							startAdornment: (
