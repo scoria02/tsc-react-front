@@ -1,5 +1,6 @@
 import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SocketContext } from '../../context/SocketContext';
@@ -90,24 +91,18 @@ const Admision: React.FC = () => {
 					<div className={classes.counters}>
 						<div className={classes.status}>
 							<div className={classes.statusTitle}>En Espera:</div>
-
 							<div className={classes.statusDesc}> {allSolic || 0} </div>
 						</div>
-						<div className={classes.status} style={{ borderLeft: '1px solid rgba(0,0,0,0.4)' }}>
+						<div className={classNames(classes.status, classes.borderLeft)}>
 							<div className={classes.statusTitle}>En Proceso:</div>
-
 							<div className={classes.statusDesc}>{solictudesTrabajando + diferidosTranbajando || 0}</div>
 						</div>
-						<div className={classes.status} style={{ borderTop: '1px solid  rgba(0,0,0,0.4)' }}>
+						<div className={classNames(classes.status, classes.borderTop)}>
 							<div className={classes.statusTitle}>Diferidos:</div>
-
 							<div className={classes.statusDesc}>{diferidos || 0}</div>
 						</div>
-						<div
-							className={classes.status}
-							style={{ borderTop: '1px solid rgba(0,0,0,0.4)', borderLeft: '1px solid rgba(0,0,0,0.4)' }}>
+						<div className={classNames(classes.status, classes.borderTop, classes.borderLeft)}>
 							<div className={classes.statusTitle}>Terminadas:</div>
-
 							<div className={classes.statusDesc}>{allTerm || 0}</div>
 						</div>
 					</div>
