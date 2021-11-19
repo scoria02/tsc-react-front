@@ -72,7 +72,9 @@ export const validationNumBank = (clientBank: any) => {
 	//console.log(clientBank)
 	return async (dispatch: any) => {
 		try {
+			console.log(clientBank)
 			const res = await useAxios.post(`/FM/bank/valid`, clientBank);
+			console.log(res.data.info)
 			updateToken(res);
 			dispatch(requestSuccess());
 		} catch (error) {

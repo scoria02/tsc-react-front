@@ -127,6 +127,12 @@ export const Step4: React.FC<any> = ({
 		}
 	};
 
+	const handleChangeBank = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if(/^[0-9]+$/.test(event.target.value) || event.target.value === ''){
+			handleChange(event);
+		}	
+	}
+
 	useEffect(() => {
 		if (typePay) {
 			if (typePay.id === 2) {
@@ -223,8 +229,8 @@ export const Step4: React.FC<any> = ({
 					id='standard-required'
 					label='Numero de Cuenta'
 					name='text_account_number'
-					onChange={handleChange}
-					onBlur={handleBlurNumBank}
+					onChange={handleChangeBank}
+					//onBlur={handleBlurNumBank}
 					value={cursedForm.text_account_number}
 					error={error.text_account_number || fm.errorNumBank}
 					inputProps={{ maxLength: 20 }}

@@ -209,6 +209,7 @@ export const Step2: React.FC<any> = ({
 								<input
 									type='file'
 									hidden
+									//multiple
 									name='rc_constitutive_act'
 									accept={recaudo.acc}
 									onChange={handleChangeImages}

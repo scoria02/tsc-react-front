@@ -14,7 +14,6 @@ export const getDataFM = (fm: any) => {
 		try {
 			//const res: AxiosResponse<any> = await useAxios.get(`/FM`);
 			//updateToken(res);
-			console.log('fm del socket', fm);
 			dispatch(requestSuccess(fm));
 		} catch (error) {
 			//console.log(error.response)

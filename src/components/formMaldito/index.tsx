@@ -116,6 +116,64 @@ export const FormMaldito: React.FC<Props> = () => {
 		pagadero: 0,
 	});
 
+
+	const [cursedFormError, setCursedFormError] = useState<any>({
+		//step1 Cliente
+		email: false,
+		name: false,
+		last_name: false,
+		id_ident_type: false,
+		ident_num: false,
+		phone1: false,
+		phone2: false,
+		id_estado_client: false,
+		id_ciudad_client: false,
+		id_municipio_client: false,
+		id_parroquia_client: false,
+		codigo_postal_client: false,
+		sector_client: false,
+		calle_client: false,
+		local_client: false,
+		//step2 Comercio
+		id_ident_type_commerce: false,
+		ident_num_commerce: false,
+		name_commerce: false,
+		id_activity: false,
+		special_contributor: false,
+		//Step3 Location
+		//Commerce
+		id_estado: false,
+		id_ciudad: false,
+		id_municipio: false,
+		id_parroquia: false,
+		codigo_postal: false,
+		sector: false,
+		calle: false,
+		local: false,
+		//Pos
+		id_estado_pos: false,
+		id_ciudad_pos: false,
+		id_municipio_pos: false,
+		id_parroquia_pos: false,
+		codigo_postal_pos: false,
+		sector_pos: false,
+		calle_pos: false,
+		local_pos: false,
+		//Step4 Post
+		number_post: false,
+		id_model_post: false,
+		text_account_number: false,
+		id_payment_method: false,
+		id_type_pay: false,
+		id_request_origin: false,
+		reqSource_docnum: false,
+		initial: false,
+		cuotas: false, //Si es inical coutas cambia
+		nro_comp_dep: false,
+		discount: false,
+		pagadero: false,
+	});
+
 	//images
 	const [imagesForm, setImagesForm] = useState({
 		//Step1
@@ -252,24 +310,6 @@ export const FormMaldito: React.FC<Props> = () => {
 		rc_comp_dep: '',
 	});
 
-	const [cursedFormError, setCursedFormError] = useState<any>({
-		//step1 Cliente
-		email: false,
-		name: false,
-		last_name: false,
-		ident_num: false,
-		phone1: false,
-		phone2: false,
-		//step2 Comercio
-		ident_num_commerce: false,
-		id_activity: false,
-		name_commerce: false,
-		//step4 Pedido
-		text_account_number: false,
-		number_post: false,
-		id_payment_method: false,
-	});
-
 	useEffect(() => {
 		if (fm.errorClient) {
 			setValidEmailIdent(true);
@@ -404,7 +444,7 @@ export const FormMaldito: React.FC<Props> = () => {
 		if (activeStep === 1 && autoCompleteCommerce && !fm.mashCommerce) {
 			setLocationCommerce(locationClient);
 			setListLocationCommerce(listLocationClient);
-			setLocationPos(locationClient);
+			setLocationPos(autoCompletePos ? locationClient : locationPos);
 			setListLocationPos(listLocationClient);
 			setCursedForm({
 				...cursedForm,
@@ -416,14 +456,14 @@ export const FormMaldito: React.FC<Props> = () => {
 				calle: cursedForm.calle_client,
 				local: cursedForm.local_client,
 				codigo_postal: cursedForm.codigo_postal_client,
-				id_estado_pos: cursedForm.id_estado_client,
-				id_ciudad_pos: cursedForm.id_ciudad_client,
-				id_municipio_pos: cursedForm.id_municipio_client,
-				id_parroquia_pos: cursedForm.id_parroquia_client,
-				sector_pos: cursedForm.sector_client,
-				calle_pos: cursedForm.calle_client,
-				local_pos: cursedForm.local_client,
-				codigo_postal_pos: cursedForm.codigo_postal_client,
+				id_estado_pos: autoCompletePos ? cursedForm.id_estado_client : cursedForm.id_estado_pos,
+				id_ciudad_pos: autoCompletePos ? cursedForm.id_ciudad_client : cursedForm.id_ciudad_pos,
+				id_municipio_pos: autoCompletePos ? cursedForm.id_municipio_client : cursedForm.id_municipio_pos,
+				id_parroquia_pos: autoCompletePos ? cursedForm.id_parroquia_client : cursedForm.id_parroquia_pos,
+				sector_pos: autoCompletePos ? cursedForm.sector_client : cursedForm.sector_pos,
+				calle_pos: autoCompletePos ? cursedForm.calle_client : cursedForm.calle_pos,
+				local_pos: autoCompletePos ? cursedForm.local_client : cursedForm.local_pos,
+				codigo_postal_pos: autoCompletePos ? cursedForm.codigo_postal_client : cursedForm.codigo_postal_pos,
 			});
 		}
 	}, [activeStep, fm.commerceMash]);
@@ -667,18 +707,6 @@ export const FormMaldito: React.FC<Props> = () => {
 		}
 	};
 
-	const validEndPointFM = () => {
-		if (fm.errorClient) {
-			return false;
-		} else if (fm.errorCommerce && activeStep > 0) {
-			return false;
-		} else if (fm.errorNumBank && activeStep > 2) {
-			return false;
-		} else {
-			return true;
-		}
-	};
-
 	//CheckStepAcual
 	useEffect(() => {
 		if (
@@ -692,8 +720,8 @@ export const FormMaldito: React.FC<Props> = () => {
 				fm.imagesCommerce,
 				cursedForm.id_ident_type_commerce
 			) &&
-			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) &&
-			validEndPointFM()
+			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) && 
+			!valids.validEndPoint(activeStep, fm)
 		) {
 			setReadyStep(true);
 		} else {
@@ -734,6 +762,15 @@ export const FormMaldito: React.FC<Props> = () => {
 				break;
 			case 'text_account_number':
 				temp.text_account_number = valids.validNumBank(value);
+			if(!temp.text_account_number && value.length === 20 && cursedForm.email !== '' && cursedForm.text_account_number !== ''){
+				dispatch(
+					validationNumBank({
+						email: cursedForm.email,
+						bank_account_num: value,
+					})
+				);
+				console.log(value)
+			}
 				break;
 			default:
 				break;
@@ -942,8 +979,7 @@ export const FormMaldito: React.FC<Props> = () => {
 				fm.imagesCommerce,
 				cursedForm.id_ident_type_commerce
 			) ||
-			valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) ||
-			!validEndPointFM()
+			valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) 
 		)
 			return;
 		//Send FM
@@ -1116,7 +1152,7 @@ export const FormMaldito: React.FC<Props> = () => {
 									Volver
 								</Button>
 								<Button
-									disabled={!readyStep}
+									//disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'
