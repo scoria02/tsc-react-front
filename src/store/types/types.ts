@@ -1,6 +1,7 @@
 export enum ActionType {
 	//Auth
 	login = '[Auth] Login',
+	loginError = '[Auth] Login Error',
 	logout = '[Auth] Logout',
 	signup = '[Auth] Login',
 	refreshUser = '[Auth] Refresh Login',
@@ -15,18 +16,18 @@ export enum ActionType {
 	//FM Solicitud
 	validClient = '[FM] validation Client',
 	validClientError = '[FM] validation Client Error',
-	validCommerce= '[FM] validation Commerce',
-	validCommerceOk= '[FM] validation Commerce No existe',
+	validCommerce = '[FM] validation Commerce',
+	validCommerceOk = '[FM] validation Commerce No existe',
 	validCommerceError = '[FM] validation Commerce Error',
 	sendClient = '[FM] send Client',
 	sendClientError = '[FM] send Client Error',
-	validNumBank= '[FM] validation Number Bank',
+	validNumBank = '[FM] validation Number Bank',
 	validNumBankError = '[FM] validation Number Bank Error',
 	sendCommerce = '[FM] send Commerce',
 	sendCommerceError = '[FM] send Commerce Error',
 	sendImages = '[FM] send Images',
 	sendImagesError = '[FM] send Images Error',
-	sendFM= '[FM] send FM',
+	sendFM = '[FM] send FM',
 	sendFMError = '[FM] send FM Error',
 	cleanFm = '[FM] clear FM',
 
@@ -35,12 +36,12 @@ export enum ActionType {
 	getDataFMError = '[FM] Get FM Error',
 	updateStatusFM = '[FM] update Status FM',
 	updateStatusFMError = '[FM] update Status FM Error',
-	cleanDataFM= '[FM] CleanDataFM',
+	cleanDataFM = '[FM] CleanDataFM',
 
 	//Admision Diferdio
-	updatedStatusDiferido= '[FM] update Status FM Diferido',
+	updatedStatusDiferido = '[FM] update Status FM Diferido',
 	updateStatusErrorDiferido = '[FM] update Status FM Error Diferido',
-	cleanDataDiferido= '[FM] CleanDataFM Diferido',
+	cleanDataDiferido = '[FM] CleanDataFM Diferido',
 
 	//Administracion FM
 	getDataFMAdministration = '[FM] Get FM Administration',
@@ -71,5 +72,5 @@ export enum ActionType {
 	//Acceptance
 	acceptRec = '[Accept] Valid Collection',
 	stepComplete = '[Accept] Step Completed',
-	cleanAcceptRec= '[Accept] Clean Accept Rec',
+	cleanAcceptRec = '[Accept] Clean Accept Rec',
 }

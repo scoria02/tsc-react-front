@@ -126,7 +126,7 @@ export const useStyles = makeStyles((styles: Theme) => ({
 		left: '35%',
 	},
 
-	btn_stepM:{
+	btn_stepM: {
 		width: '100%',
 		display: 'flex',
 		justifyContent: 'center',
@@ -152,7 +152,7 @@ export const useStyles = makeStyles((styles: Theme) => ({
 	},
 	checkText: {
 		marginLeft: '1rem',
-		width: '100px'
+		width: '100px',
 	},
 	containerBtn: {
 		display: 'flex',
@@ -186,5 +186,11 @@ export const useStyles = makeStyles((styles: Theme) => ({
 	},
 	nameImg: {
 		fontSize: '.9rem',
-	}
+	},
+	borderLeft: {
+		borderLeft: '1px solid rgba(0,0,0,0.4)',
+	},
+	borderTop: {
+		borderTop: '1px solid rgba(0,0,0,0.4)',
+	},
 }));

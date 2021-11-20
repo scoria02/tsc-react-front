@@ -84,32 +84,48 @@ export const validNumBank = (value: string):boolean => {
 }
 
 
+const step1 = 15;
+const step2 = 8;
+const step3 = 5;
+const step4 = 17;
+const step5 = 10;
+
 //Extras
 export const sizeStep = (active: number): number => {
 	switch (active) {
 		case 0:
-			return 15;
+			return step1;
 		case 1:
-			return 20; 
+			return step1 + step2; 
 		case 2:
-			return 36; 
+			return step1 + step2 + step3; 
 		case 3:
-			return 46; 
+			return step1 + step2 + step3 + step4; 
+		case 4:
+			return step1 + step2 + step3 + step4 + step5; 
 		default:
 			return 0;
 	}
 }
 
+const step1Imagen = 1;
+const step2Imagen = 0;
+const step3Imagen = 3;
+const step4Imagen = 0;
+const step5Imagen = 2;
+
 export const sizeImagesStep = (active: number): number => {
 	switch (active) {
 		case 0:
-			return 1;
+			return step1Imagen;
 		case 1:
-			return 4; 
+			return step1Imagen + step2Imagen; 
 		case 2:
-			return 4; 
+			return step1Imagen + step2Imagen + step3Imagen; 
 		case 3:
-			return 6; //6 con rc_comp_dep
+			return step1Imagen + step2Imagen + step3Imagen + step4Imagen; //6 con rc_comp_dep
+		case 4:
+			return step1Imagen + step2Imagen + step3Imagen + step4Imagen + step5Imagen
 		default:
 			return 0;
 	}
@@ -118,7 +134,7 @@ export const sizeImagesStep = (active: number): number => {
 export const allInputNotNUll = (last: number, form: any, mashClient: boolean, mashCommerce: boolean): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(form)) {
-		if (indice === last) {
+		if (indice === last-1) {
 			return false;
 		}
 		indice++;
@@ -189,7 +205,7 @@ export const allImgNotNUll = (form: any, last: number, images: any, special_cont
 export const checkErrorAllInput = (last: number, errors: any): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(errors)) {
-		if (indice > last) {
+		if (indice === last-1) {
 			return false;
 		}
 		indice++;
@@ -198,4 +214,16 @@ export const checkErrorAllInput = (last: number, errors: any): boolean => {
 		}
 	}
 	return false;
+}
+
+export const validEndPoint = (activeStep: number, fm: any): boolean => {
+	if(fm.errorClient){
+		return true;
+	}else if(activeStep > 1 && fm.errorCommerce){
+		return true;
+	}else if(activeStep > 3 && fm.errorNumBank){
+		return true;
+	}else {
+		return false 
+	}
 }
