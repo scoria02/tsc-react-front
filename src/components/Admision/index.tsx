@@ -7,7 +7,7 @@ import { SocketContext } from '../../context/SocketContext';
 import { getDataFM } from '../../store/actions/admisionFm';
 import { OpenModal } from '../../store/actions/ui';
 import Barra from '../diagramas/Barra';
-import { ChartTorta } from '../diagramas/ChartConfig';
+import Dona from '../diagramas/Dona';
 import Comprobacion from './comprobacion';
 import Diferidos from './diferidos';
 import './scss/index.scss';
@@ -107,9 +107,9 @@ const Admision: React.FC = () => {
 							<div className={classes.statusDesc}>{allTerm || 0}</div>
 						</div>
 					</div>
-					<div style={{ width: '40%' }}>
-						<ChartTorta />
-						{/* <Dona chartData={valuesChart} colsData={keyChart} /> */}
+					<div style={{ width: '45%' }}>
+						{/* <ChartTorta /> */}
+						<Dona chartData={valuesChart} colsData={keyChart} />
 					</div>
 				</div>
 				<div className={classes.row}>
