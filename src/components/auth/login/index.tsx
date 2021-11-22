@@ -9,8 +9,6 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { baseUrl } from '../../../routers/url';
 //import luffy from '../../../img/itachi2.png';
 import { startLogin } from '../../../store/actions/auth';
 import AuthModal from '../AuthModal';
@@ -33,7 +31,7 @@ const Login: React.FC = () => {
 	const classesbutton = useStylesButton();
 	const classes = useStylesModalUser();
 	const dispatch = useDispatch();
-	const history = useHistory();
+	// const history = useHistory();
 
 	const [showPassword, setShowPassword] = React.useState<boolean>(false);
 	const [password, setPass] = useState<string>('');
@@ -44,7 +42,6 @@ const Login: React.FC = () => {
 	const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
 		e.preventDefault();
 		setEmail(e.target.value);
-		//console.log(e.target.value);
 	};
 
 	const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -56,7 +53,7 @@ const Login: React.FC = () => {
 	const handleLogin = (e: any) => {
 		e.preventDefault();
 		dispatch(startLogin(email, password));
-		history.push(baseUrl);
+		// history.push(baseUrl);
 	};
 
 	return (

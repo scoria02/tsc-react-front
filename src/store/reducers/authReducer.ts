@@ -5,12 +5,14 @@ interface inState {
 	user: any;
 	error: any[];
 	registered: boolean;
+	loginError: boolean;
 }
 
 const initialState: inState = {
 	user: {},
 	error: [],
 	registered: false,
+	loginError: false,
 };
 
 export const authReducer = (state = initialState, action: any) => {
@@ -19,6 +21,12 @@ export const authReducer = (state = initialState, action: any) => {
 			return {
 				...state,
 				user: action.payload,
+				loginError: false,
+			};
+		case ActionType.loginError:
+			return {
+				...state,
+				loginError: true,
 			};
 		case ActionType.refreshUser:
 			return {

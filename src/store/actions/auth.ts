@@ -22,12 +22,18 @@ export const startLogin = (email: any, password: any) => {
 			dispatch(requestSuccess(res.data.info.data));
 		} catch (error) {
 			Swal.fire('Error', error.response.data.message, 'error');
+			dispatch(requestError());
 		}
 	};
 	function requestSuccess(state: any) {
 		return {
 			type: ActionType.login,
 			payload: state,
+		};
+	}
+	function requestError() {
+		return {
+			type: ActionType.loginError,
 		};
 	}
 };
@@ -47,7 +53,6 @@ export const refreshLogin = () => {
 					window.location.replace(urlLogin);
 				} else window.location.replace(urlLogin);
 			});
-			window.location.replace(urlLogin);
 		}
 	};
 	function requestSuccess(state: any) {

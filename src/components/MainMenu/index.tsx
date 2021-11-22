@@ -34,6 +34,7 @@ import { Link, useHistory } from 'react-router-dom';
 import TranredLogo from '../../img/tranred-logo.png';
 //Redux
 import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, urlLogin, userAdmin } from '../../routers/url';
+import { refreshLogin } from '../../store/actions/auth';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
 import './index.scss';
@@ -186,6 +187,7 @@ const MainMenu: FC = () => {
 	};
 
 	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
+		dispatch(refreshLogin());
 		switch (index) {
 			case 1:
 				history.push(urlAdministracion);
