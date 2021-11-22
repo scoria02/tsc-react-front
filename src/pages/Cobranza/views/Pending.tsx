@@ -30,7 +30,7 @@ export const columns: GridColDef[] = [
 		width: 90,
 		disableColumnMenu: true,
 		valueGetter: (params: GridValueGetterParams) => {
-			const celda = params.getValue(params.id, 'fecha')!.toString();
+			const celda = params.row.fecha!.toString();
 			// obtengo la fecha de la celta
 			const tope = DateTime.fromISO(celda);
 			// obtengo la fecha de hoy
@@ -47,7 +47,7 @@ export const columns: GridColDef[] = [
 		width: 180,
 		disableColumnMenu: true,
 		valueGetter: (params: GridValueGetterParams) => {
-			const fecha = params.getValue(params.id, 'fecha')!.toString();
+			const fecha = params.row.fecha!.toString();
 			const fechaFormateada = DateTime.fromISO(fecha).toFormat('dd/LL/yyyy').toLocaleString();
 			return fechaFormateada;
 		},
@@ -58,8 +58,7 @@ export const columns: GridColDef[] = [
 		// sortable: true,
 		width: 160,
 		disableColumnMenu: true,
-		valueGetter: (params: GridValueGetterParams) =>
-			`${params.getValue(params.id, 'name') || ''} ${params.getValue(params.id, 'last_name') || ''}`,
+		valueGetter: (params: GridValueGetterParams) => `${params.row.name || ''} ${params.row.last_name || ''}`,
 	},
 ];
 
@@ -191,8 +190,8 @@ const Pending: FC = () => {
 	};
 
 	return (
-		<Grid xs={12} justifyContent='center'>
-			<Grid item spacing={4}>
+		<Grid>
+			<Grid xs={12} item>
 				<div style={{ height: '70vh', width: '100%' }}>
 					<DataGrid
 						components={{
