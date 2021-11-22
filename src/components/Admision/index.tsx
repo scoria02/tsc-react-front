@@ -26,17 +26,18 @@ const Admision: React.FC = () => {
 	const [chartData, setChartData] = useState({});
 	const [todos, setTodo] = useState<any>([]);
 	const [todostodos, setTodoTodos] = useState<any>({});
-	const { solictudesTrabajando, diferidosTranbajando } = todos;
-	const { allSolic, allTerm, diferidos } = todostodos;
+	const { solictudesTrabajando, diferidosTranbajando, diferidos } = todos;
+	const { allSolic, allTerm } = todostodos;
 
 	useEffect(() => {
 		socket.emit('cliente:Todos', user, (todo: any) => {
 			setTodoTodos(todo);
+			console.log('save 0', todo);
 		});
 
 		socket.emit('cliente:dashdata', user, (data: any) => {
 			if (Object.keys(data).length) {
-				// console.log('save 1', data);
+				console.log('save 1', data);
 				setChartData(data);
 				setTodo(data);
 			}
@@ -44,7 +45,7 @@ const Admision: React.FC = () => {
 
 		socket.on('server:dashdata', (data: any) => {
 			if (Object.keys(data).length) {
-				// console.log('save 2', data);
+				console.log('save 2', data);
 				setChartData(data);
 				setTodo(data);
 			}
@@ -62,6 +63,8 @@ const Admision: React.FC = () => {
 			console.log('solic', solic);
 			dispatch(getDataFM(solic));
 		});
+
+		//FALTA RESTAR CUANDO ESPERA CUANDO AGARREN
 
 		socket.emit('cliente:dashdatasiempre');
 	};
