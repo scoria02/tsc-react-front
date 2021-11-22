@@ -36,8 +36,8 @@ const Completed: FC = () => {
 		console.log('row', event.row);
 	};
 	return (
-		<Grid xs={12} justifyContent='center'>
-			<Grid item spacing={4}>
+		<Grid>
+			<Grid item xs={12}>
 				<div style={{ height: '65vh', width: '100%' }}>
 					<DataGrid
 						// components={{
