@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import Swal from 'sweetalert2';
 import useAxios from '../../config';
-import { urlLogin } from '../../routers/url';
+import { baseUrl, urlLogin } from '../../routers/url';
 import { ActionType } from '../types/types';
 import { StartLoading } from './ui';
 
@@ -9,7 +9,7 @@ export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
 };
 
-export const startLogin = (email: any, password: any) => {
+export const startLogin = (email: any, password: any, history?: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/auth/login`, {
@@ -17,7 +17,8 @@ export const startLogin = (email: any, password: any) => {
 				password,
 			});
 			updateToken(res);
-			Swal.fire('Success', res.data.message, 'success');
+			Swal.fire('¡Éxito!', res.data.message, 'success');
+			history.push(baseUrl);
 			dispatch(StartLoading());
 			dispatch(requestSuccess(res.data.info.data));
 		} catch (error) {
