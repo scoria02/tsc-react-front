@@ -11,7 +11,7 @@ import { FinishLoading } from '../store/actions/ui';
 import { Auth, PrivGuard } from './guards';
 import Private from './routes/private';
 import Public from './routes/public';
-import { baseUrl, urlLogin, urlPrivate } from './url';
+import { urlLogin, urlPrivate } from './url';
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
@@ -83,7 +83,6 @@ export const AppRouter = () => {
 									{Private.map(({ path, component, meta }, i) => {
 										return <GuardedRoute key={i} exact path={path} component={component} meta={meta} />;
 									})}
-									<Redirect to={baseUrl} />
 								</GuardProvider>
 							</main>
 						</div>
