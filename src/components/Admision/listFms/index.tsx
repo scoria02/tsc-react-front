@@ -15,15 +15,13 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
-
-import luffy from '../../../img/itachi2.png'
 
 const ListFms: React.FC = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
 	const [search, setSearch] = useState<string>('');
+	const [searching, setSearching] = useState<boolean>(false);
 
 	const { modalOpenListSolic } = useSelector((state: any) => state.ui);
 	const { user } = useSelector((state: any) => state.auth);
@@ -35,6 +33,11 @@ const ListFms: React.FC = () => {
 		//dispatch(clean());
 	};
 
+	const handleSearching = (e:any) => {
+		e.preventDefault();
+		setSearching(true);
+	}
+
 	return (
 		<AnimationModal 
 			openModal={modalOpenListSolic}
@@ -44,6 +47,7 @@ const ListFms: React.FC = () => {
 					<Paper
 						component="form"
 						style={{ width: '100%' }}
+						onSubmit={handleSearching}
 					>
 						<InputBase
 							style={{
@@ -57,43 +61,49 @@ const ListFms: React.FC = () => {
 							inputProps={{ 'aria-label': '' }}
 						/>
 						<IconButton 
+							onClick={handleSearching}
 							aria-label="search">
 							<SearchIcon />
 						</IconButton>
 				</Paper>
-				<Paper>
-					<Grid container spacing={4}>
-						<Grid item>
-							<ButtonBase style={{ width: 128, height: 128 }}>
-								<img alt="complex" src={luffy} />
-							</ButtonBase>
-						</Grid>
-						<Grid item xs={12} sm container>
-							<Grid item xs container direction="column" spacing={2}>
-								<Grid item xs>
-									<Typography gutterBottom variant="subtitle1" component="div">
-										Standard license
-									</Typography>
-									<Typography variant="body2" gutterBottom>
-										Full resolution 1920x1080 • JPEG
-									</Typography>
-									<Typography variant="body2" color="secondary">
-										Code: S42II4
-									</Typography>
-								</Grid>
-								<Grid item>
-									<Typography style={{ cursor: 'pointer' }} variant="body2">
-										Remove
-									</Typography>
+				<Paper
+				>
+					{searching &&
+						<>
+							<Grid container spacing={4}
+								style={{
+									padding: '.5rem 1rem',
+								}}
+							>
+								<Grid item xs={12} sm container
+									style={{
+										cursor: 'pointer'
+									}}
+								>
+									<Grid item xs container direction="column" spacing={2}>
+										<Grid item xs>
+											<Typography gutterBottom variant="subtitle1" component="div">
+												<b>
+													{'Nombre Comercio: '}
+												</b>
+												1000pagos
+											</Typography>
+											<Typography gutterBottom variant="subtitle1" component="div">
+												<b>
+													{'Nombre Cliente: '}
+												</b>
+													Armando No Rivas
+											</Typography>
+											<Typography variant="body2" color="secondary">
+												<b>{'Code: '}</b> 
+												{search}
+											</Typography>
+										</Grid>
+									</Grid>
 								</Grid>
 							</Grid>
-							<Grid item>
-								<Typography variant="subtitle1" component="div">
-									$19.00
-								</Typography>
-							</Grid>
-						</Grid>
-					</Grid>
+						</>
+					}
 				</Paper>
 			</div>
 		</AnimationModal>
