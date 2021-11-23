@@ -12,14 +12,12 @@ import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
-	/*
-import Paper from '@mui/material/Paper';
-import InputBase from '@mui/material/InputBase';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-	 */
+
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import ButtonBase from '@material-ui/core/ButtonBase';
+
+import luffy from '../../../img/itachi2.png'
 
 const ListFms: React.FC = () => {
 	const classes = useStyles();
@@ -45,10 +43,12 @@ const ListFms: React.FC = () => {
 				<div className={classes.root}>
 					<Paper
 						component="form"
+						style={{ width: '100%' }}
 					>
 						<InputBase
 							style={{
-								padding: '10px'
+								padding: '10px',
+								width: '80%'
 							}}
 							placeholder="Buscar FM"
 							name='search'
@@ -60,6 +60,40 @@ const ListFms: React.FC = () => {
 							aria-label="search">
 							<SearchIcon />
 						</IconButton>
+				</Paper>
+				<Paper>
+					<Grid container spacing={4}>
+						<Grid item>
+							<ButtonBase style={{ width: 128, height: 128 }}>
+								<img alt="complex" src={luffy} />
+							</ButtonBase>
+						</Grid>
+						<Grid item xs={12} sm container>
+							<Grid item xs container direction="column" spacing={2}>
+								<Grid item xs>
+									<Typography gutterBottom variant="subtitle1" component="div">
+										Standard license
+									</Typography>
+									<Typography variant="body2" gutterBottom>
+										Full resolution 1920x1080 • JPEG
+									</Typography>
+									<Typography variant="body2" color="secondary">
+										Code: S42II4
+									</Typography>
+								</Grid>
+								<Grid item>
+									<Typography style={{ cursor: 'pointer' }} variant="body2">
+										Remove
+									</Typography>
+								</Grid>
+							</Grid>
+							<Grid item>
+								<Typography variant="subtitle1" component="div">
+									$19.00
+								</Typography>
+							</Grid>
+						</Grid>
+					</Grid>
 				</Paper>
 			</div>
 		</AnimationModal>

@@ -4,8 +4,7 @@ export const useStyles = makeStyles((styles: Theme) =>
 	createStyles({
 		root: {
 			width: '100%',
-			height: '5rem',
-			padding: '1rem 5rem 10rem',
+			padding: '1rem 2rem 2rem',
 			background: styles.palette.primary.main,
 		},
 		containerStep: {
