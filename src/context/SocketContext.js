@@ -1,5 +1,5 @@
-import React, { createContext } from 'react';
-import { PortSocket, URL } from '../config';
+/* eslint-disable no-unused-vars */
+import { createContext } from 'react';
 import { useSocket } from '../hooks/useSocket';
 
 export const SocketContext = createContext();

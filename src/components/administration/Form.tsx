@@ -1,18 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button, TextField } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 //Redux
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import { updateStatusFMAdministration } from '../../store/actions/administration';
+import Rec from '../utilis/images/Rec';
 import { recaudo } from '../utilis/recaudos';
 //Url
 import './styles/index.scss';
-
-import Rec from '../utilis/images/Rec';
-
 import { useStyles } from './styles/styles';
 
 export const Form: React.FC<any> = ({
@@ -34,7 +34,7 @@ export const Form: React.FC<any> = ({
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
-	const [load, setLoad] = useState<boolean>(false)
+	const [load, setLoad] = useState<boolean>(false);
 	const [cuotasTexto, setCuotasTexto] = useState('');
 	const [fraccion, setFraccion] = useState<any>({
 		state: false,
@@ -62,7 +62,7 @@ export const Form: React.FC<any> = ({
 				state: false,
 			});
 		}
-	/*
+		/*
 		if (initial && modelPos) {
 			let valor = cursedForm.number_post * (modelPos.price - cursedForm.initial);
 			let cuotas = valor / (cursedForm.number_post * 50);
@@ -88,7 +88,6 @@ export const Form: React.FC<any> = ({
 			}
 		}
 	*/
-		/* eslint-disable react-hooks/exhaustive-deps */
 	}, [fraccion.initial, typePay]);
 
 	const handleChangeImages = (event: any) => {
@@ -103,7 +102,7 @@ export const Form: React.FC<any> = ({
 		}
 	};
 
-	const	imagen:string= path;
+	const imagen: string = path;
 
 	const handleVerificated = () => {
 		Swal.fire({
@@ -165,7 +164,6 @@ export const Form: React.FC<any> = ({
 				urlImgCompDep: '',
 			});
 		}
-		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [payment]);
 
 	return (
@@ -231,12 +229,7 @@ export const Form: React.FC<any> = ({
 							/>
 						)}
 						{fm?.ci_referred && !fm.pagadero && (
-							<TextField
-								id='outlined-basic'
-								label='Referencia'
-								variant='outlined'
-								value={fm?.ci_referred}
-							/>
+							<TextField id='outlined-basic' label='Referencia' variant='outlined' value={fm?.ci_referred} />
 						)}
 					</div>
 					<div className={classes.row}>
@@ -274,21 +267,13 @@ export const Form: React.FC<any> = ({
 					</div>
 					{path && !fm.pagadero ? (
 						<div className={classes.containerImg}>
-							<Rec 
-								load={load}
-								setLoad={setLoad}
-								imagen={imagen}
-							/>
+							<Rec load={load} setLoad={setLoad} imagen={imagen} />
 						</div>
 					) : (
 						<>
 							{uploadImg && (
 								<div className={classes.containerImg}>
-									<Rec 
-										load={load}
-										setLoad={setLoad}
-										imagen={imagen}
-									/>
+									<Rec load={load} setLoad={setLoad} imagen={imagen} />
 								</div>
 							)}
 							{payment && payment.id !== 2 && (

@@ -1,20 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import { SocketContext } from '../../../context/SocketContext';
 import { stepComplete } from '../../../store/actions/accept';
-import { updateStatusFMDiferido, cleanDataFmDiferido } from '../../../store/actions/admisionFm';
+import { cleanDataFmDiferido, updateStatusFMDiferido } from '../../../store/actions/admisionFm';
 import { CloseModalDiferido } from '../../../store/actions/ui';
-import ModalSteps from '../../modals/ModalSteps';
-
-import StepDiferido from './StepDiferido';
 import { RootState } from '../../../store/store';
+import ModalSteps from '../../modals/ModalSteps';
 import '../scss/index.scss';
+import StepDiferido from './StepDiferido';
 
 const Diferido: React.FC<any> = ({ fm }) => {
 	const dispatch = useDispatch();
 
-	const {id, id_valid_request, ...recaudos } = fm;
+	const { id, id_valid_request, ...recaudos } = fm;
 
 	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
 
@@ -24,21 +24,21 @@ const Diferido: React.FC<any> = ({ fm }) => {
 	const [completed, setCompleted] = React.useState(new Set<number>());
 	const [readyStep, setReadyStep] = useState<boolean>(true);
 
-	const [uploadImgs, setUploadImgs ] = useState<any>({
+	const [uploadImgs, setUploadImgs] = useState<any>({
 		rc_ident_card: null,
 		rc_rif: null,
 		rc_constitutive_act: null,
 		rc_special_contributor: null,
-		rc_ref_bank: null,	
+		rc_ref_bank: null,
 		rc_comp_dep: null,
 	});
 
 	const [paths, setPaths] = useState<any>({
-		rc_ident_card: '', 
-		rc_rif: '', 
+		rc_ident_card: '',
+		rc_rif: '',
 		rc_constitutive_act: '',
-		rc_special_contributor: '', 
-		rc_ref_bank: '', 
+		rc_special_contributor: '',
+		rc_ref_bank: '',
 		rc_comp_dep: '',
 	});
 
@@ -46,17 +46,17 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		if (event.target.files[0]) {
 			let file = event.target.files[0];
 			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: file.type });
-		const path = URL.createObjectURL(newFile);
+			const path = URL.createObjectURL(newFile);
 			//Save img
 			setUploadImgs({
 				...uploadImgs,
 				[event.target.name]: newFile,
-			}); 
+			});
 			//prueba
 			setPaths({
 				...paths,
 				[event.target.name]: path,
-			})
+			});
 		}
 	};
 
@@ -64,14 +64,12 @@ const Diferido: React.FC<any> = ({ fm }) => {
 
 	useEffect(() => {
 		const validStep = () => {
-			if(uploadImgs[nameStep]){
+			if (uploadImgs[nameStep]) {
 				return true;
-			}else
-				return false;
-		}
-		setReadyStep(!validStep())
-	}, [nameStep, uploadImgs])
-
+			} else return false;
+		};
+		setReadyStep(!validStep());
+	}, [nameStep, uploadImgs]);
 
 	useEffect(() => {
 		if (updatedStatus) {
@@ -86,44 +84,44 @@ const Diferido: React.FC<any> = ({ fm }) => {
 
 	const steps = getSteps();
 
-	function nameSteps (name:any) {
-			switch (name) {
-				case 'rc_ident_card':
-					return('Documento de identidad del Cliente')
-				case 'rc_rif':
-					return('Documento de identidad del Comercio')
-				case 'rc_constitutive_act':
-					return('Acta Constitutiva')
-				case 'rc_special_contributor':
-					return('Contribuyente Especial')
-				case 'rc_ref_bank':
-					return('Referencia Bancaria')
-				case 'rc_comp_dep':
-					return('Comprobante de Pago')
-				default:
-					return('Otros')
-		}		
+	function nameSteps(name: any) {
+		switch (name) {
+			case 'rc_ident_card':
+				return 'Documento de identidad del Cliente';
+			case 'rc_rif':
+				return 'Documento de identidad del Comercio';
+			case 'rc_constitutive_act':
+				return 'Acta Constitutiva';
+			case 'rc_special_contributor':
+				return 'Contribuyente Especial';
+			case 'rc_ref_bank':
+				return 'Referencia Bancaria';
+			case 'rc_comp_dep':
+				return 'Comprobante de Pago';
+			default:
+				return 'Otros';
+		}
 	}
 
 	function getSteps() {
 		let list: string[] = [];
 
 		for (const item of Object.entries(recaudos).reverse()) {
-			const ob:any = item[1];
+			const ob: any = item[1];
 			list.push(nameSteps(ob.descript));
 		}
-		return list ;
+		return list;
 	}
 
 	function getStepContent(step: number) {
 		let index = 0;
 		for (const item of Object.entries(recaudos).reverse()) {
-			const element:any = item[1];
-			if(step === index) {
+			const element: any = item[1];
+			if (step === index) {
 				const ready = completed.has(activeStep);
 				setNameStep(element.descript);
 				return (
-					<StepDiferido 
+					<StepDiferido
 						key={index}
 						name={element.descript}
 						fm={element}
@@ -133,9 +131,9 @@ const Diferido: React.FC<any> = ({ fm }) => {
 						readyStep={readyStep}
 						ready={ready}
 					/>
-				)
+				);
 			}
-				index++;
+			index++;
 		}
 	}
 
@@ -162,23 +160,23 @@ const Diferido: React.FC<any> = ({ fm }) => {
 	};
 
 	const validStatusFm = (): boolean => {
-		let index:number = 0;
+		let index: number = 0;
 		for (const item of Object.entries(uploadImgs)) {
-			if(item[1]){
+			if (item[1]) {
 				index++;
 			}
 		}
-		return (index === Object.keys(recaudos).length) ? true : false
+		return index === Object.keys(recaudos).length ? true : false;
 	};
 
 	useEffect(() => {
 		if (allStepsCompleted() && !updatedStatus) {
 			if (validStatusFm()) {
-				console.log('todo listo')
+				console.log('todo listo');
 				const formData: any = new FormData();
 				for (const item of Object.entries(uploadImgs)) {
 					if (item[1] !== null) {
-						console.log(item[0], 'tiene data')
+						console.log(item[0], 'tiene data');
 						formData.append('images', item[1]);
 					}
 				}
@@ -186,24 +184,30 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				console.log('imagen updateada');
 			}
 		}
-		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activeStep, allStepsCompleted]);
 
+	const { socket } = useContext(SocketContext);
 
 	useEffect(() => {
 		if (updatedStatus) {
 			dispatch(cleanDataFmDiferido());
+
+			socket.emit('cliente:disconnect');
+			socket.emit('cliente:loadDiferidos');
+			socket.emit('cliente:dashdatasiempre');
+
 			setTimeout(() => {
 				Swal.fire({
 					title: 'Formulario Verificado',
 					icon: 'success',
 					customClass: { container: 'swal2-validated' },
 				});
-			}, 10)
+			}, 10);
 		}
 	}, [updatedStatus]);
 
-	const handleComplete = async () => { const newCompleted = new Set(completed);
+	const handleComplete = async () => {
+		const newCompleted = new Set(completed);
 		Swal.fire({
 			title: 'Confirmar verificación',
 			icon: 'warning',
@@ -246,7 +250,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 			handleNext={handleNext}
 			handleComplete={handleComplete}
 		/>
-	)
+	);
 };
 
 export default Diferido;

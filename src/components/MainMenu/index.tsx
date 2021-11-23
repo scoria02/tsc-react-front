@@ -26,7 +26,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import PeopleIcon from '@material-ui/icons/PeopleAlt';
-import WorkIcon from '@material-ui/icons/Work';
+import PersonAdd from '@material-ui/icons/PersonAdd';
+// import WorkIcon from '@material-ui/icons/Work';
 import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -420,7 +421,7 @@ const MainMenu: FC = () => {
 					<ListItem button onClick={(event) => handleListItemClick(event, 3)}>
 						<Link to={urlAdmision}>
 							<ListItemIcon classes={{ root: classes.icon }}>
-								<WorkIcon />
+								<PersonAdd />
 							</ListItemIcon>
 						</Link>
 						<ListItemText primary='Admision' />

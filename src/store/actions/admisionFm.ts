@@ -1,9 +1,9 @@
-import {AxiosResponse} from 'axios';
+import { AxiosResponse } from 'axios';
 import Swal from 'sweetalert2';
-import useAxios, {axiosFiles} from '../../config/index';
-import {ActionType} from '../types/types';
-import {CloseModal, CloseModalDiferido} from './ui';
-import {cleanRec} from './accept';
+import useAxios, { axiosFiles } from '../../config/index';
+import { ActionType } from '../types/types';
+import { CloseModal, CloseModalDiferido } from './ui';
+import { cleanRec } from './accept';
 
 export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
@@ -37,7 +37,7 @@ export const getDataFM = (fm: any) => {
 
 export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
 	const id_status: any = {
-		'id_status_request': status,
+		id_status_request: status,
 		valids: {
 			//step1
 			valid_ident_card: accept.rc_ident_card.msg,
@@ -48,9 +48,9 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
 			//step4
 			valid_constitutive_act: accept.rc_constitutive_act.msg,
 			valid_special_contributor: accept.rc_special_contributor.msg,
-			valid_comp_dep: accept.rc_comp_dep.msg
-		}
-	}
+			valid_comp_dep: accept.rc_comp_dep.msg,
+		},
+	};
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.put(`/FM/admision/${id_fm}/status`, id_status);
@@ -66,7 +66,7 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
 	function requestSuccess(status: number) {
 		return {
 			type: ActionType.updateStatusFM,
-			payload: status
+			payload: status,
 		};
 	}
 	function requestError() {
@@ -78,7 +78,7 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
 
 export const cleanAdmisionFM = () => {
 	return async (dispatch: any) => {
-		//console.log('Clean data FM & accept')
+		console.log('Clean data FM & accept');
 		dispatch(cleanRec());
 		dispatch(CloseModal());
 		dispatch(request());
@@ -127,4 +127,3 @@ export const cleanDataFmDiferido = () => {
 		};
 	}
 };
-
