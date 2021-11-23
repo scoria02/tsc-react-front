@@ -3,7 +3,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { CobranzaContext } from '../../context/CobranzaContext';
 import Completed from './views/Completed';
 import Pending from './views/Pending';
@@ -30,6 +30,13 @@ export const useStyles = makeStyles((theme: Theme) => ({
 			backgroundColor: `${theme.palette.success.light} !important`,
 		},
 	},
+	selected: {
+		backgroundColor: `${theme.palette.info.main} !important`,
+		color: theme.palette.info.contrastText,
+		'&:hover': {
+			backgroundColor: `${theme.palette.info.light} !important`,
+		},
+	},
 	wrapper: {
 		flexGrow: 1,
 	},
@@ -52,9 +59,9 @@ const Cobranza: FC = () => {
 		setTab(newValue);
 	};
 
-	useEffect(() => {
-		console.log('rowSelected 1', rowSelected);
-	}, [rowSelected]);
+	// useEffect(() => {
+	// 	console.log('rowSelected 1', rowSelected);
+	// }, [rowSelected]);
 
 	return (
 		<CobranzaContext.Provider value={{ rowSelected, setRow }}>

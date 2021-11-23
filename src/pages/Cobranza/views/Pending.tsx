@@ -65,6 +65,7 @@ export const columns: GridColDef[] = [
 
 const Pending: FC = () => {
 	const classes = useStyles();
+	const [selected, setselected] = useState(0);
 	const [sortModel, setSortModel] = useState<GridSortModel>([
 		{
 			field: 'sinceToday',
@@ -190,6 +191,7 @@ const Pending: FC = () => {
 
 	const handleRow = (event: any) => {
 		setRow(event.row);
+		setselected(event.row.id);
 	};
 
 	return (
@@ -207,13 +209,18 @@ const Pending: FC = () => {
 						columns={columns}
 						rowsPerPageOptions={[25, 50, 100]}
 						onCellClick={handleRow}
+						onSelectionModelChange={(item) => {
+							console.log('item', item[0]);
+						}}
 						getRowClassName={(params: GridRowParams) => {
+							const id = parseInt(params.id.toString(), 10);
 							// obtengo los dias y le hago parse de RowCell a string
 							const fechaRow = params.getValue(params.id, 'sinceToday')!.toString();
 							// transformo el string a number y lo redondeo
 							const number = Math.round(parseInt(fechaRow, 10));
 							// si el number esta entre los siguientes valores debera elegir la clase correspondiente
 							return classNames({
+								[classes.selected]: selected === id,
 								[classes.green]: number <= 20,
 								[classes.yellow]: number <= 30 && number > 20,
 								[classes.red]: number > 30,
