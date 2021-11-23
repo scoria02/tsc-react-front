@@ -13,7 +13,7 @@ export const useStyles = makeStyles(() => ({
 		borderRadius: '20px',
 	},
 	container_img: {
-		marginTop: '-1rem',
+		marginTop: '1rem',
 		width: '100%',
 		display: 'flex',
 		justifyContent: 'center',

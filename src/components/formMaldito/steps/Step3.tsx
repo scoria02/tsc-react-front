@@ -16,6 +16,7 @@ import { useStylesFM } from '../styles';
 import { recaudo } from '../../utilis/recaudos';
 
 export const Step3: React.FC<any> = ({
+	imagesActa,
 	listIdentType,
 	listActivity,
 	activity,
@@ -28,6 +29,7 @@ export const Step3: React.FC<any> = ({
 	handleBlurCommerce,
 	handleChange,
 	handleChangeImages,
+	handleChangeImagesMulti,
 	deleteImgContributor,
 }) => {
 	const classes = useStylesFM();
@@ -191,16 +193,15 @@ export const Step3: React.FC<any> = ({
 								disabled={fm.imagesCommerce}
 								style={{ 
 									opacity: fm.imagesCommerce ? 0 : 1,
-									background: imagesForm.rc_constitutive_act ? '#5c62c5' : '#f44336' 
+									background: imagesActa.length ? '#5c62c5' : '#f44336' 
 								}}
 								component='label'>
-								{imagesForm.rc_constitutive_act !== null ? (
+								{imagesActa.length !== 0 ? (
 									<>
-										<p className='nameImg'>{namesImages.rc_constitutive_act.slice(0, 7)}...</p>
+										<p className='nameImg'>{imagesActa.length} Archivos</p>
 									</>
 								) : (
 									<>
-										{/*<b>Subir</b>*/}
 										<IconButton aria-label='upload picture' component='span'>
 											<PhotoCamera />
 										</IconButton>
@@ -209,10 +210,10 @@ export const Step3: React.FC<any> = ({
 								<input
 									type='file'
 									hidden
-									//multiple
+									multiple
 									name='rc_constitutive_act'
 									accept={recaudo.acc}
-									onChange={handleChangeImages}
+									onChange={handleChangeImagesMulti}
 								/>
 							</Button>
 						</>

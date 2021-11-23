@@ -6,8 +6,6 @@ import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
 
-import LoaderPrimary from '../loaders/LoaderPrimary';
-
 import './scss/fullmodal.scss';
 
 const Transition = React.forwardRef(function Transition(
@@ -30,32 +28,23 @@ const useStyles = makeStyles((theme: Theme) =>
 const FullModal: React.FC<any> = ({
 	modalOpen,
 	handleClose,
-	valuesObj,
 	children,
 }) => {
 	const classes = useStyles();
 
 	return (
-		<div>
-			<Dialog fullScreen open={modalOpen} onClose={handleClose} TransitionComponent={Transition}>
-				{Object.keys(valuesObj).length ? (
-					<>
-						<div className='button-close'>
-							<div className='close-container' onClick={handleClose}>
-								<div className='leftright'></div>
-								<div className='rightleft'></div>
-								<label className='closee'>Cerrar</label>
-							</div>
-						</div>
-						<div className={classes.root}>
-							{children}
-						</div>
-				</>
-				):(
-					<LoaderPrimary />
-				)}
-			</Dialog>
-		</div>
+		<Dialog fullScreen open={modalOpen} onClose={handleClose} TransitionComponent={Transition}>
+			<div className='button-close'>
+				<div className='close-container' onClick={handleClose}>
+					<div className='leftright'></div>
+					<div className='rightleft'></div>
+					<label className='closee'>Cerrar</label>
+				</div>
+			</div>
+			<div className={classes.root}>
+				{children}
+			</div>
+		</Dialog>
 	);
 };
 

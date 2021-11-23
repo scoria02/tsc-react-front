@@ -21,12 +21,21 @@ interface uiCloseModalDiferido {
 	type: ActionType.uiCloseModalDiferido;
 }
 
+interface uiOpenModalListSolic {
+	type: ActionType.uiOpenModalListSolic;
+}
+interface uiCloseModalListSolic{
+	type: ActionType.uiCloseModalListSolic;
+}
+
 export type Action =  uiCloseModal | 
 											uiOpenModal | 
 											startLoading |
 											finishLoading |
 											uiOpenModalDiferido |
-											uiCloseModalDiferido;
+											uiCloseModalDiferido |
+											uiOpenModalListSolic |
+											uiCloseModalListSolic;
 
 //Action
 export const OpenModal = () => ({ type: ActionType.uiOpenModal });
@@ -37,3 +46,7 @@ export const StartLoading = () => ({ type: ActionType.uiStartLoading });
 //diferido
 export const OpenModalDiferido = () => ({ type: ActionType.uiOpenModalDiferido });
 export const CloseModalDiferido = () => ({ type: ActionType.uiCloseModalDiferido });
+
+//List Solic
+export const OpenModalListSolic= () => ({ type: ActionType.uiOpenModalListSolic});
+export const CloseModalListSolic= () => ({ type: ActionType.uiCloseModalListSolic});

@@ -110,7 +110,7 @@ export const sizeStep = (active: number): number => {
 
 const step1Imagen = 1;
 const step2Imagen = 0;
-const step3Imagen = 3;
+const step3Imagen = 2; //2 images and 1 file
 const step4Imagen = 0;
 const step5Imagen = 2;
 
@@ -226,4 +226,11 @@ export const validEndPoint = (activeStep: number, fm: any): boolean => {
 	}else {
 		return false 
 	}
+}
+
+export const notNullImagenActa = (activeStep: number, imagesActa: any, isActa: number) => {
+	if(activeStep >= 2 && isActa == 3 && imagesActa.length === 0)
+		return true
+	else
+		return false
 }

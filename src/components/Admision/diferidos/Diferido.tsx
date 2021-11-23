@@ -2,16 +2,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-import { stepComplete } from '../../../store/actions/accept';
-import { updateStatusFMDiferido, cleanDataFmDiferido } from '../../../store/actions/admisionFm';
-import { CloseModalDiferido } from '../../../store/actions/ui';
-import ModalSteps from '../../modals/ModalSteps';
-
-import StepDiferido from './StepDiferido';
-import { RootState } from '../../../store/store';
-import '../scss/index.scss';
-import { emit } from 'process';
 import { SocketContext } from '../../../context/SocketContext';
+import { stepComplete } from '../../../store/actions/accept';
+import { cleanDataFmDiferido, updateStatusFMDiferido } from '../../../store/actions/admisionFm';
+import { CloseModalDiferido } from '../../../store/actions/ui';
+import { RootState } from '../../../store/store';
+import ModalSteps from '../../modals/ModalSteps';
+import '../scss/index.scss';
+import StepDiferido from './StepDiferido';
 
 const Diferido: React.FC<any> = ({ fm }) => {
 	const dispatch = useDispatch();
@@ -186,7 +184,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				console.log('imagen updateada');
 			}
 		}
-		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activeStep, allStepsCompleted]);
 
 	const { socket } = useContext(SocketContext);

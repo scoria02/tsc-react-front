@@ -112,12 +112,16 @@ export const sendClient = (cursedForm: any, codePhone: string) => {
 			calle: cursedForm.calle_client,
 			local: cursedForm.local_client,
 		},
-		name_ref1: cursedForm.name_ref1,
-		doc_ident_ref1: cursedForm.doc_ident_type_ref1 + cursedForm.doc_ident_ref1,
-		phone_ref1: codePhone + cursedForm.phone_ref1,
-		name_ref2: cursedForm.name_ref1,
-		doc_ident_ref2: cursedForm.doc_ident_type_ref2 + cursedForm.doc_ident_ref2,
-		phone_ref2: codePhone + cursedForm.phone_ref2,
+		ref_person_1 : {
+			fullName: cursedForm.name_ref1,
+			document: cursedForm.doc_ident_type_ref1 + cursedForm.doc_ident_ref1,
+			phone: codePhone + cursedForm.phone_ref1,
+		},
+		ref_person_2 : {
+			fullName: cursedForm.name_ref1,
+			document: cursedForm.doc_ident_type_ref2 + cursedForm.doc_ident_ref2,
+			phone: codePhone + cursedForm.phone_ref2,
+		}
 	};
 
 	return async (dispatch: any) => {
@@ -193,8 +197,7 @@ export const sendImages = (formData: any) => {
 		try {
 			const res: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, formData);
 			updateToken(res);
-			const images: any = res.data.info;
-			dispatch(requestSuccess(images));
+			dispatch(requestSuccess(res.data.info));
 		} catch (error) {
 			console.log(error.reponse);
 			dispatch(requestError());
