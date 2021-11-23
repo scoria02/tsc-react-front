@@ -19,7 +19,6 @@ import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
 import ModalSteps from '../../modals/ModalSteps';
 
 const Comprobacion: React.FC<any> = () => {
-
 	function getStepContent(step: number) {
 		switch (step) {
 			case 0:
@@ -88,7 +87,7 @@ const Comprobacion: React.FC<any> = () => {
 	}
 
 	const dispatch = useDispatch();
-
+	const { socket } = useContext(SocketContext);
 	//selectores
 	const { modalOpen } = useSelector((state: any) => state.ui);
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
@@ -178,11 +177,13 @@ const Comprobacion: React.FC<any> = () => {
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activeStep, dispatch, allStepsCompleted]);
 
-	const { socket } = useContext(SocketContext);
-
 	useEffect(() => {
 		if (id_statusFM !== 0 && updatedStatus) {
 			const idStatus = id_statusFM;
+
+			socket.emit('cliente:cleansolic');
+			socket.emit('cliente:loadDiferidos');
+			socket.emit('cliente:dashdatasiempre');
 			Swal.fire({
 				icon: `${idStatus === 3 ? 'success' : 'warning'}`,
 				title: `${idStatus === 3 ? 'Formulario Verificado' : 'Formulario Diferido'}`,
@@ -191,7 +192,6 @@ const Comprobacion: React.FC<any> = () => {
 				timer: 1500,
 			});
 			dispatch(cleanAdmisionFM());
-			socket.emit('cliente:loadDiferidos');
 		}
 	}, [id_statusFM, updatedStatus]);
 
@@ -201,7 +201,9 @@ const Comprobacion: React.FC<any> = () => {
 
 	const handleNext = () => {
 		const newActiveStep =
-			isLastStep() && !allStepsCompleted() ? steps.findIndex((step:any, i:any) => !completed.has(i)) : activeStep + 1;
+			isLastStep() && !allStepsCompleted()
+				? steps.findIndex((step: any, i: any) => !completed.has(i))
+				: activeStep + 1;
 		setActiveStep(newActiveStep);
 	};
 
@@ -217,7 +219,8 @@ const Comprobacion: React.FC<any> = () => {
 		});
 	};
 
-	const handleComplete = async () => { const newCompleted = new Set(completed);
+	const handleComplete = async () => {
+		const newCompleted = new Set(completed);
 		Swal.fire({
 			title: 'Confirmar verificación',
 			icon: 'warning',
@@ -233,11 +236,11 @@ const Comprobacion: React.FC<any> = () => {
 				newCompleted.add(activeStep);
 				dispatch(stepComplete(newCompleted));
 				setCompleted(newCompleted);
-				console.log('revisar fin', completed.size+1, totalSteps())
-				if (completed.size+1 !== totalSteps()) {
+				console.log('revisar fin', completed.size + 1, totalSteps());
+				if (completed.size + 1 !== totalSteps()) {
 					handleNext();
-				}else{
-					handleLoading()
+				} else {
+					handleLoading();
 				}
 			}
 		});

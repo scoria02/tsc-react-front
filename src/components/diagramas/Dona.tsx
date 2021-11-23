@@ -1,4 +1,4 @@
-import { Chart } from 'chart.js';
+import Chart from 'chart.js/auto';
 import { FC, useEffect, useRef } from 'react';
 
 interface Props {
@@ -34,6 +34,7 @@ const Dona: FC<Props> = ({ chartData, colsData }) => {
 					'rgb(153, 102, 255)',
 					'rgb(247, 157, 132)',
 				],
+
 				borderWidth: 1,
 			},
 		],
@@ -46,10 +47,10 @@ const Dona: FC<Props> = ({ chartData, colsData }) => {
 		if (ctx) {
 			chartRef.current?.destroy();
 			chartRef.current = new Chart(ctx, {
-				type: 'pie',
+				type: 'doughnut',
 				data: formatData(chartData, colsData),
 				options: {
-					// animation: false,
+					animation: false,
 					responsive: true,
 				},
 			});

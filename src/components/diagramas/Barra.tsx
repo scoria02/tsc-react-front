@@ -1,4 +1,4 @@
-import { Chart } from 'chart.js';
+import Chart from 'chart.js/auto';
 import { FC, useEffect, useRef } from 'react';
 
 interface Props {
@@ -50,7 +50,7 @@ const Barra: FC<Props> = ({ chartData, colsData }) => {
 				data: formatData(chartData, colsData),
 				options: {
 					indexAxis: 'y',
-					// animation: false,
+					animation: false,
 					responsive: true,
 				},
 			});
