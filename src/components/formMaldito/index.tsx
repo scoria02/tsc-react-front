@@ -77,7 +77,7 @@ export const FormMaldito: React.FC = () => {
 		calle_client: '',
 		local_client: '',
 		//Step2 Referencias Personales
-		name_ref1:  '',
+		name_ref1: '',
 		doc_ident_type_ref1: 'V',
 		doc_ident_ref1: '',
 		phone_ref1: '',
@@ -125,7 +125,6 @@ export const FormMaldito: React.FC = () => {
 		pagadero: 0,
 	});
 
-
 	const [cursedFormError, setCursedFormError] = useState<any>({
 		//step1 Cliente
 		email: false,
@@ -144,7 +143,7 @@ export const FormMaldito: React.FC = () => {
 		calle_client: false,
 		local_client: false,
 		//Step2 Referencias Personales
-		name_ref1:  false,
+		name_ref1: false,
 		doc_ident_type_ref1: false,
 		doc_ident_ref1: false,
 		phone_ref1: false,
@@ -369,6 +368,7 @@ export const FormMaldito: React.FC = () => {
 			socket.emit('cliente:Todos');
 			setSendForm(5);
 			handleSendForm();
+			socket.emit('cliente:disconnect');
 			dispatch(cleanFM());
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -738,7 +738,7 @@ export const FormMaldito: React.FC = () => {
 				fm.imagesCommerce,
 				cursedForm.id_ident_type_commerce
 			) &&
-			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) && 
+			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) &&
 			!valids.validEndPoint(activeStep, fm)
 		) {
 			setReadyStep(true);
@@ -786,19 +786,24 @@ export const FormMaldito: React.FC = () => {
 				break;
 			case 'text_account_number':
 				temp.text_account_number = valids.validNumBank(value);
-			if(!temp.text_account_number && value.length === 20 && cursedForm.email !== '' && cursedForm.text_account_number !== ''){
-				dispatch(
-					validationNumBank({
-						email: cursedForm.email,
-						bank_account_num: value,
-					})
-				);
-			}
+				if (
+					!temp.text_account_number &&
+					value.length === 20 &&
+					cursedForm.email !== '' &&
+					cursedForm.text_account_number !== ''
+				) {
+					dispatch(
+						validationNumBank({
+							email: cursedForm.email,
+							bank_account_num: value,
+						})
+					);
+				}
 				break;
 			default:
 				break;
 		}
-					setCursedFormError({
+		setCursedFormError({
 			...temp,
 		});
 	};
@@ -1067,12 +1072,7 @@ export const FormMaldito: React.FC = () => {
 			handleUpdateLocation={handleUpdateLocationClient}
 			codePhone={codePhone}
 		/>,
-		<Step2
-			cursedForm={cursedForm}
-			handleChange={handleChange}
-			codePhone={codePhone}
-			error={cursedFormError}
-		/>,
+		<Step2 cursedForm={cursedForm} handleChange={handleChange} codePhone={codePhone} error={cursedFormError} />,
 		<Step3
 			listIdentType={listIdentType}
 			listActivity={listActivity}
