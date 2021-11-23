@@ -12,8 +12,9 @@ import {
 } from '@material-ui/data-grid';
 import classNames from 'classnames';
 import { DateTime } from 'luxon';
-import { FC, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import { useStyles } from '..';
+import { CobranzaContext } from '../../../context/CobranzaContext';
 
 export const columns: GridColDef[] = [
 	// {
@@ -185,8 +186,10 @@ const Pending: FC = () => {
 		},
 	]);
 
+	const { setRow } = useContext(CobranzaContext);
+
 	const handleRow = (event: any) => {
-		console.log('row', event.row);
+		setRow(event.row);
 	};
 
 	return (
