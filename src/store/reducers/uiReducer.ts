@@ -8,6 +8,10 @@ const initialState = {
 	loadingDiferido: false,
 	modalOpenDiferido: false,
 	msgErrorDiferido: null,
+
+	loadingListSolic: false,
+	modalOpenListSolic: false,
+	msgErrorListSolic: null,
 };
 
 export const uiReducer = (state = initialState, action: Action) => {
@@ -42,6 +46,16 @@ export const uiReducer = (state = initialState, action: Action) => {
 			return {
 				...state,
 				modalOpenDiferido: false,
+			};
+		case ActionType.uiOpenModalListSolic:
+			return {
+				...state,
+				modalOpenListSolic: true,
+			};
+		case ActionType.uiCloseModalListSolic:
+			return {
+				...state,
+				modalOpenListSolic: false,
 			};
 		default:
 			return state;

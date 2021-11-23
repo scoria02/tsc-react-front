@@ -1,11 +1,12 @@
 import { Fab } from '@material-ui/core';
+import LowPriority from '@material-ui/icons/LowPrioritySharp';
 import AddIcon from '@material-ui/icons/Add';
 import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SocketContext } from '../../context/SocketContext';
 import { getDataFM } from '../../store/actions/admisionFm';
-import { OpenModal } from '../../store/actions/ui';
+import { OpenModal, OpenModalListSolic } from '../../store/actions/ui';
 import Barra from '../diagramas/Barra';
 import Dona from '../diagramas/Dona';
 import Comprobacion from './comprobacion';
@@ -13,11 +14,14 @@ import Diferidos from './diferidos';
 import './scss/index.scss';
 import { useStyles } from './styles/styles';
 
+import ListFms from './listFms';
+
 const Admision: React.FC = () => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 
 	const { modalOpen } = useSelector((state: any) => state.ui);
+	const { modalOpenListSolic } = useSelector((state: any) => state.ui);
 	const { user } = useSelector((state: any) => state.auth);
 	const { socket } = useContext(SocketContext);
 
@@ -67,6 +71,10 @@ const Admision: React.FC = () => {
 		//FALTA RESTAR CUANDO ESPERA CUANDO AGARREN
 
 		socket.emit('cliente:dashdatasiempre');
+	};
+
+	const handleClickList = () => {
+		dispatch(OpenModalListSolic());
 	};
 
 	const handleUpdateChart = (chartData: any) => {
@@ -125,6 +133,12 @@ const Admision: React.FC = () => {
 					<AddIcon />
 				</Fab>
 				{modalOpen && <Comprobacion />}
+			</div>
+			<div className='cmn2-divfloat'>
+				<Fab color='secondary' aria-label='add' size='large' variant='extended' onClick={handleClickList}>
+					<LowPriority />
+				</Fab>
+				{modalOpenListSolic && <ListFms/>}
 			</div>
 		</div>
 	);

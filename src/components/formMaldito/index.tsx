@@ -195,15 +195,16 @@ export const FormMaldito: React.FC = () => {
 	const [imagesForm, setImagesForm] = useState({
 		//Step1
 		rc_ident_card: null, //11
-		//rc_ref_perso: null, //6
 		//Step2
 		rc_rif: null, //10
-		rc_constitutive_act: null, //1
 		rc_special_contributor: null, //4
 		//Step4
 		rc_ref_bank: null, //5
 		rc_comp_dep: null,
 	});
+
+	//images Acta
+	const [imagesActa, setImagesActa] = useState<any>([]);
 
 	const [validEmailIdent, setValidEmailIdent] = useState<boolean>(false);
 	const [activeStep, setActiveStep] = useState<number>(0);
@@ -229,7 +230,7 @@ export const FormMaldito: React.FC = () => {
 		parroquia: null,
 	});
 
-	//Location Commerce
+	//Locatio  Commerce
 	const [listLocationCommerce, setListLocationCommerce] = useState<any>({
 		estado: [],
 		ciudad: [],
@@ -317,10 +318,8 @@ export const FormMaldito: React.FC = () => {
 	const [namesImages, setNamesImages] = useState<any>({
 		//step1
 		rc_ident_card: '', //11
-		//rc_ref_perso: '', //6
 		//step2
 		rc_rif: '', //10
-		rc_constitutive_act: '', //1
 		rc_special_contributor: '', //4
 		//step4
 		rc_ref_bank: '', //5
@@ -352,6 +351,9 @@ export const FormMaldito: React.FC = () => {
 				if (item[1] !== null) {
 					formData.append('images', item[1]);
 				}
+			}
+			for (const item of imagesActa){
+				formData.append('constitutive_act', item);
 			}
 			formData.append('id_client', fm.id_client);
 			formData.append('id_commerce', fm.id_commerce);
@@ -738,8 +740,9 @@ export const FormMaldito: React.FC = () => {
 				fm.imagesCommerce,
 				cursedForm.id_ident_type_commerce
 			) &&
-			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) &&
-			!valids.validEndPoint(activeStep, fm)
+			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) && 
+			!valids.validEndPoint(activeStep, fm) &&
+			!valids.notNullImagenActa(activeStep, imagesActa, cursedForm.id_ident_type_commerce)
 		) {
 			setReadyStep(true);
 		} else {
@@ -995,6 +998,13 @@ export const FormMaldito: React.FC = () => {
 		}
 	};
 
+	const handleChangeImagesMulti = (event: any) => {
+		if (event.target.files[0]) {
+			let files = event.target.files;
+			setImagesActa(files);
+		}
+	};
+
 	const handleSubmit = () => {
 		if (
 			valids.allInputNotNUll(valids.sizeStep(activeStep), cursedForm, fm.mashClient, fm.mashCommerce) ||
@@ -1008,7 +1018,8 @@ export const FormMaldito: React.FC = () => {
 				cursedForm.id_ident_type_commerce
 			) ||
 			valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) ||
-			valids.validEndPoint(activeStep, fm)
+			valids.validEndPoint(activeStep, fm) ||
+			valids.notNullImagenActa(activeStep, imagesActa, cursedForm.id_ident_type_commerce)
 		)
 			return;
 		//Send FM
@@ -1074,6 +1085,7 @@ export const FormMaldito: React.FC = () => {
 		/>,
 		<Step2 cursedForm={cursedForm} handleChange={handleChange} codePhone={codePhone} error={cursedFormError} />,
 		<Step3
+			imagesActa={imagesActa}
 			listIdentType={listIdentType}
 			listActivity={listActivity}
 			activity={activity}
@@ -1086,6 +1098,7 @@ export const FormMaldito: React.FC = () => {
 			handleBlurCommerce={handleBlurCommerce}
 			handleChange={handleChange}
 			handleChangeImages={handleChangeImages}
+			handleChangeImagesMulti={handleChangeImagesMulti}
 			deleteImgContributor={deleteImgContributor}
 		/>,
 		<Step4

@@ -12,6 +12,7 @@ import { useContext } from 'react';
 import { SocketContext } from '../../context/SocketContext';
 
 import FullModal from './FullModal';
+import LoaderPrimary from '../loaders/LoaderPrimary';
 
 import { useStyles } from './styles/modalStep';
 
@@ -69,50 +70,59 @@ const ModalSteps: React.FC<any> = ({
 	};
 
 	return (
-		<FullModal modalOpen={modalOpen} handleClose={handleClose} valuesObj={fm}>
-			<Stepper alternativeLabel nonLinear activeStep={activeStep}>
-				{steps.map((label: any, index: number) => {
-					const stepProps: { completed?: boolean } = {};
-					const buttonProps: { optional?: React.ReactNode } = {};
-					return totalSteps() > 1 ? (
-						<Step key={index} {...stepProps}>
-							<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
-								<b>{label}</b>
-							</StepButton>
-						</Step>
-					) : (
-						<StepButton key={index} onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
-							<b style={{ fontSize: '1.2rem' }}>{label}</b>
-						</StepButton>
-					);
-				})}
-			</Stepper>
-			<div className={classes.containerStep}>
-				<div className={classes.instructions}>{getStepContent(activeStep)}</div>
-				<div className='btn-divfloat'>
-					<Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-						Volver
-					</Button>
-					<Button variant='contained' color='primary' onClick={handleNext} className={classes.button}>
-						Siguiente
-					</Button>
-					{activeStep !== steps.length &&
-						(completed.has(activeStep) ? (
-							<Typography variant='caption' className={classes.completed}>
-								Verificado
-							</Typography>
-						) : (
-							<Button
-								className={classes.buttonS}
-								variant='contained'
-								color='primary'
-								disabled={readyStep}
-								onClick={handleComplete}>
-								{completedSteps() === totalSteps() - 1 ? 'Solicitud Revisada' : 'Verificar'}
-							</Button>
-						))}
-				</div>
-			</div>
+		<FullModal
+			modalOpen={modalOpen}
+			handleClose={handleClose}
+		>
+			{Object.keys(fm).length ? (
+				<>
+					<Stepper alternativeLabel nonLinear activeStep={activeStep}>
+						{steps.map((label: any, index: number) => {
+							const stepProps: { completed?: boolean } = {};
+							const buttonProps: { optional?: React.ReactNode } = {};
+							return totalSteps() > 1 ? (
+								<Step key={index} {...stepProps}>
+									<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
+										<b>{label}</b>
+									</StepButton>
+								</Step>
+							) : (
+								<StepButton key={index} onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
+									<b style={{ fontSize: '1.2rem' }}>{label}</b>
+								</StepButton>
+							);
+						})}
+					</Stepper>
+					<div className={classes.containerStep}>
+							<div className={classes.instructions}>{getStepContent(activeStep)}</div>
+							<div className='btn-divfloat'>
+								<Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+									Volver
+								</Button>
+								<Button variant='contained' color='primary' onClick={handleNext} className={classes.button}>
+									Siguiente
+								</Button>
+								{activeStep !== steps.length &&
+									(completed.has(activeStep) ? (
+										<Typography variant='caption' className={classes.completed}>
+											Verificado
+										</Typography>
+									) : (
+										<Button
+											className={classes.buttonS}
+											variant='contained'
+											color='primary'
+											disabled={readyStep}
+											onClick={handleComplete}>
+											{completedSteps() === totalSteps() - 1 ? 'Solicitud Revisada' : 'Verificar'}
+										</Button>
+									))}
+								</div>
+						</div>
+					</>
+				):(
+				<LoaderPrimary/>
+			)}
 		</FullModal>
 	);
 };
