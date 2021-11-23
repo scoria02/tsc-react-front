@@ -91,7 +91,6 @@ export const Form: React.FC<any> = ({
 		/* eslint-disable react-hooks/exhaustive-deps */
 	}, [fraccion.initial, typePay]);
 
-
 	const handleChangeImages = (event: any) => {
 		if (event.target.files[0]) {
 			let file = event.target.files[0];

@@ -91,7 +91,7 @@ export const Step2: React.FC<any> = ({
 										value={cursedForm.doc_ident_type_ref1}
 										label='Tipo'>
 											<MenuItem value="V">V</MenuItem>
-											<MenuItem value="J">J</MenuItem>
+											<MenuItem value="E">E</MenuItem>
 											<MenuItem value="P">P</MenuItem>
 									</Select>
 								</InputAdornment>
@@ -165,7 +165,7 @@ export const Step2: React.FC<any> = ({
 										value={cursedForm.doc_ident_type_ref2}
 										label='Tipo'>
 											<MenuItem value="V">V</MenuItem>
-											<MenuItem value="J">J</MenuItem>
+											<MenuItem value="E">E</MenuItem>
 											<MenuItem value="P">P</MenuItem>
 									</Select>
 								</InputAdornment>

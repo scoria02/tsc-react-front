@@ -58,6 +58,10 @@ export enum ActionType {
 	uiOpenModalDiferido = '[ui] Open modal Diferido',
 	uiCloseModalDiferido = '[ui] Close modal Diferido',
 
+	//Modals Solic 
+	uiOpenModalListSolic = '[ui] Open modal List Solic',
+	uiCloseModalListSolic = '[ui] Close modal List Solic',
+
 	uiSetError = '[UI] Set Error',
 	uiRemoveError = '[UI] Remove Error',
 
