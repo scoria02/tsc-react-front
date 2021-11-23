@@ -207,7 +207,7 @@ export const Form: React.FC<any> = ({
 						{fm?.pagadero ? (
 							<Autocomplete
 								className={classes.textAutoCompleteLeft}
-								onChange={(event, value) => handleSelectTypePay(event, value)}
+								onChange={(event, value) => handleSelectTypePay(event, value)} //arreglar (es nesario usar event y value??)
 								options={listTypePay}
 								value={typePay || null}
 								getOptionLabel={(option: any) => (option.name ? option.name : '')}
