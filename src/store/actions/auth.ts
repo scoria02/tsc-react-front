@@ -17,11 +17,12 @@ export const startLogin = (email: any, password: any, history?: any) => {
 				password,
 			});
 			updateToken(res);
-			Swal.fire('¡Éxito!', res.data.message, 'success');
-			history.push(baseUrl);
-			dispatch(StartLoading());
 			dispatch(requestSuccess(res.data.info.data));
+			history?.push(baseUrl);
+			dispatch(StartLoading());
+			Swal.fire('¡Éxito!', res.data.message, 'success');
 		} catch (error) {
+			console.log('startlogin', error.reponse)
 			Swal.fire('Error', error.response.data.message, 'error');
 			dispatch(requestError());
 		}
@@ -107,8 +108,7 @@ export const registerUser = (user: any) => {
 export const validationEmail = (email: string) => {
 	return async (dispatch: any) => {
 		try {
-			const res = await useAxios.post('/auth/register/valid/1', { email });
-			updateToken(res);
+			await useAxios.post('/auth/register/valid/1', { email });
 			dispatch(validationEmailSuccess());
 		} catch (error: any) {
 			console.log(error);
