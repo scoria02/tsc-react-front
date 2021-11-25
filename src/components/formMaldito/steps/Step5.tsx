@@ -227,7 +227,7 @@ export const Step5: React.FC<any> = ({
 					variant='outlined'
 					required
 					id='standard-required'
-					label='Numero de Cuenta'
+					label={fm.nameBank === '' ? 'Numero de Cuenta' : fm.nameBank}
 					name='text_account_number'
 					onChange={handleChangeBank}
 					//onBlur={handleBlurNumBank}

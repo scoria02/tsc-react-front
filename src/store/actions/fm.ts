@@ -14,12 +14,12 @@ export const validationClient = (client: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
 			updateToken(res);
+			console.log('-->', res.data.info.client.ref_person_1);
 			dispatch(requestSuccess(res.data.info));
 			return res.data.info;
 		} catch (error) {
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
-			console.log(error.response.data.message);
 		}
 	};
 	function requestSuccess(state: boolean) {
