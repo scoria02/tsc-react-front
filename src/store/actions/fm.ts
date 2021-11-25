@@ -199,7 +199,7 @@ export const sendImages = (formData: any) => {
 			updateToken(res);
 			dispatch(requestSuccess(res.data.info));
 		} catch (error) {
-			console.log(error.reponse);
+			console.log('error images', error.reponse);
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
