@@ -42,7 +42,7 @@ export const Step3: React.FC<any> = ({
 		Jueves: true,
 		Viernes: true,
 		Sabado: true,
-		Domingo: false,
+		Domingo: true,
 	});
 
 	const fm: any = useSelector((state: RootState) => state.fm);
@@ -281,7 +281,10 @@ export const Step3: React.FC<any> = ({
 						/>
 					</Button>
 				</div>
-				<FormGroup row style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr' }}>
+			</div>
+			<div className={classes.daysCB}>
+				Días laborales
+				<FormGroup row style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr ' }}>
 					{Object.keys(days).map((key: any) => {
 						return (
 							<FormControlLabel
