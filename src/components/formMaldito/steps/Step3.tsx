@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
 import IconButton from '@material-ui/core/IconButton';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -12,8 +13,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
-import { useStylesFM } from '../styles';
 import { recaudo } from '../../utilis/recaudos';
+import { useStylesFM } from '../styles';
 
 export const Step3: React.FC<any> = ({
 	imagesActa,
@@ -34,6 +35,15 @@ export const Step3: React.FC<any> = ({
 }) => {
 	const classes = useStylesFM();
 	const [actaFlag, setActaFlag] = useState(false);
+	const [days, setdays] = useState<any>({
+		Lunes: true,
+		Martes: true,
+		Miercoles: true,
+		Jueves: true,
+		Viernes: true,
+		Sabado: true,
+		Domingo: true,
+	});
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
@@ -71,10 +81,16 @@ export const Step3: React.FC<any> = ({
 	};
 
 	const handleIdentNum = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if(/^[0-9]+$/.test(event.target.value) || event.target.value === ''){
+		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
 			handleChange(event);
 		}
-	}
+	};
+
+	const handleChangeCB = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.name !== 'TERMINAL') {
+			setdays({ ...days, [event.target.name]: event.target.checked });
+		}
+	};
 
 	useEffect(() => {
 		setActaFlag(false);
@@ -121,16 +137,16 @@ export const Step3: React.FC<any> = ({
 						value={cursedForm.ident_num_commerce}
 						error={fm.errorCommerce}
 						inputProps={{
-							maxLength: cursedForm.id_ident_type_commerce === 5 ? 20 : 9 
+							maxLength: cursedForm.id_ident_type_commerce === 5 ? 20 : 9,
 						}}
 					/>
 					<Button
 						className={classes.imgIdent}
 						disabled={fm.imagesCommerce}
 						variant='contained'
-						style={{ 
+						style={{
 							opacity: fm.imagesCommerce ? 0 : 1,
-							background: imagesForm.rc_rif ? '#5c62c5' : '#f44336' 
+							background: imagesForm.rc_rif ? '#5c62c5' : '#f44336',
 						}}
 						component='label'>
 						{imagesForm.rc_rif !== null ? (
@@ -143,13 +159,7 @@ export const Step3: React.FC<any> = ({
 								</IconButton>
 							</>
 						)}
-						<input
-							type='file'
-							hidden
-							name='rc_rif'
-							accept={recaudo.acc}
-							onChange={handleChangeImages}
-						/>
+						<input type='file' hidden name='rc_rif' accept={recaudo.acc} onChange={handleChangeImages} />
 					</Button>
 				</div>
 				<div className={classes.input}>
@@ -182,18 +192,14 @@ export const Step3: React.FC<any> = ({
 				<div className={classes.input}>
 					{actaFlag && (
 						<>
-							<b className={classes.inputText}>
-								{!fm.imagesCommerce &&
-									'Acta Constitutiva'
-								}
-							</b>
+							<b className={classes.inputText}>{!fm.imagesCommerce && 'Acta Constitutiva'}</b>
 							<Button
 								className={classes.imgIdent}
 								variant='contained'
 								disabled={fm.imagesCommerce}
-								style={{ 
+								style={{
 									opacity: fm.imagesCommerce ? 0 : 1,
-									background: imagesActa.length ? '#5c62c5' : '#f44336' 
+									background: imagesActa.length ? '#5c62c5' : '#f44336',
 								}}
 								component='label'>
 								{imagesActa.length !== 0 ? (
@@ -275,6 +281,20 @@ export const Step3: React.FC<any> = ({
 						/>
 					</Button>
 				</div>
+			</div>
+			<div className={classes.daysCB}>
+				Días laborales
+				<FormGroup row style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr ' }}>
+					{Object.keys(days).map((key: any) => {
+						return (
+							<FormControlLabel
+								control={<Checkbox checked={days[key]} onChange={handleChangeCB} name={key} color='primary' />}
+								label={key.replaceAll('_', ' ')}
+								key={key}
+							/>
+						);
+					})}
+				</FormGroup>
 			</div>
 		</>
 	);

@@ -67,7 +67,7 @@ export default function PasoCommerce2() {
 			handleOpenModal();
 	};
 
-	const imagen:string = `${URL}:${PortFiles}/${fm.rc_rif.path}`;
+	const imagen:string = `${URL}:${PortFiles}/${fm.id_commerce.rc_rif.path}`;
 
 	return (
 		<>

@@ -173,7 +173,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	const [allUser, setUsers] = useState<any[]>([]);
 	const [userDep, setUserDep] = useState<any>({
 		id: 1,
-		name: 'administracion',
+		name: 'Administracion',
 	});
 	const [userID, setUserID] = useState<number>(0);
 	const [email, setEmail] = useState<string>('');
@@ -323,7 +323,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 					// Aca envio los datos al endpoint de dimas
 					await axios.put(`/roles/worker/${userID}`, {
 						roles: userRol,
-						departamento: userDep,
+						id_department: userDep.id,
 					});
 					Swal.fire('Cambios Guardados', '', 'success');
 				} catch (error) {

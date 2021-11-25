@@ -5,7 +5,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 //Material
 import Stepper from '@material-ui/core/Stepper';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext,useState , useEffect, useLayoutEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -325,6 +325,10 @@ export const FormMaldito: React.FC = () => {
 		rc_ref_bank: '', //5
 		rc_comp_dep: '',
 	});
+
+	useLayoutEffect(() => {
+		dispatch(cleanFM())
+	}, []);
 
 	useEffect(() => {
 		if (fm.errorClient) {
@@ -742,7 +746,7 @@ export const FormMaldito: React.FC = () => {
 			) &&
 			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) && 
 			!valids.validEndPoint(activeStep, fm) &&
-			!valids.notNullImagenActa(activeStep, imagesActa, cursedForm.id_ident_type_commerce)
+			!valids.notNullImagenActa(activeStep, imagesActa, cursedForm.id_ident_type_commerce, fm.imagesCommerce)
 		) {
 			setReadyStep(true);
 		} else {
@@ -789,12 +793,7 @@ export const FormMaldito: React.FC = () => {
 				break;
 			case 'text_account_number':
 				temp.text_account_number = valids.validNumBank(value);
-				if (
-					!temp.text_account_number &&
-					value.length === 20 &&
-					cursedForm.email !== '' &&
-					cursedForm.text_account_number !== ''
-				) {
+				if (value.length === 20 && cursedForm.email !== '') {
 					dispatch(
 						validationNumBank({
 							email: cursedForm.email,
@@ -877,7 +876,7 @@ export const FormMaldito: React.FC = () => {
 				phone1: false,
 				phone2: false,
 			});
-		} else if (!fm.mashClient && oldClientMatsh) {
+		} else if (!fm.mashClient && oldClientMatsh && !Object.keys(fm.clientMash).length) {
 			setOldClientMatsh(false);
 			console.log('vaciar client');
 			setCursedForm({
@@ -1019,7 +1018,7 @@ export const FormMaldito: React.FC = () => {
 			) ||
 			valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) ||
 			valids.validEndPoint(activeStep, fm) ||
-			valids.notNullImagenActa(activeStep, imagesActa, cursedForm.id_ident_type_commerce)
+			valids.notNullImagenActa(activeStep, imagesActa, cursedForm.id_ident_type_commerce, fm.imagesCommerce)
 		)
 			return;
 		//Send FM

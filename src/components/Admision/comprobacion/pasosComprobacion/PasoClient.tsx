@@ -68,7 +68,7 @@ export default function PasoClient() {
 			handleOpenModal();
 	};
 
-	const imagen = `${URL}:${PortFiles}/${fm.rc_ident_card.path}`;
+	const imagen = `${URL}:${PortFiles}/${fm.id_client.rc_ident_card.path}`;
 
 	/*
 	const props = {
