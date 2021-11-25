@@ -22,7 +22,6 @@ export const startLogin = (email: any, password: any, history?: any) => {
 			dispatch(StartLoading());
 			Swal.fire('¡Éxito!', res.data.message, 'success');
 		} catch (error) {
-			console.log('startlogin', error.reponse)
 			Swal.fire('Error', error.response.data.message, 'error');
 			dispatch(requestError());
 		}
@@ -82,7 +81,7 @@ export const registerUser = (user: any) => {
 		try {
 			const res = await useAxios.post('/auth/register', newUser);
 			updateToken(res);
-			Swal.fire('Success', res.data.message, 'success');
+			//Swal.fire('Success', res.data.message, 'success');
 			dispatch(requestSuccess(res));
 			const { email, password } = user;
 			dispatch(startLogin(email, password));

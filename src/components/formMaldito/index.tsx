@@ -749,7 +749,7 @@ export const FormMaldito: React.FC = () => {
 			setReadyStep(false);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [cursedForm, imagesForm, activeStep, fm]);
+	}, [cursedForm, imagesForm, activeStep, fm, imagesActa]);
 
 	const validateForm = (name: string, value: any) => {
 		let temp: any = { ...cursedFormError };
