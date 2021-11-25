@@ -48,16 +48,16 @@ export const useStylesFM = makeStyles((styles) => ({
 		width: '100%',
 		marginRight: '2%',
 	},
-  noBorder: {
-    border: "none"
-  },
+	noBorder: {
+		border: 'none',
+	},
 	imgIdent: {
 		padding: '0',
 		fontSize: '.7rem',
 		textTransform: 'none',
 		width: '100%',
 		maxWidth: 100,
-		minHeight: 56,
+		maxHeight: 56,
 		height: '100%',
 	},
 	buttonFixed: {
@@ -79,5 +79,12 @@ export const useStylesFM = makeStyles((styles) => ({
 	containerCheckBox: {
 		display: 'flex',
 		justifyContent: 'start',
+	},
+	daysCB: {
+		width: '100%',
+		display: 'flex',
+		flexDirection: 'column',
+		margin: '10px 0',
+		fontWeight: 'bold',
 	},
 }));
