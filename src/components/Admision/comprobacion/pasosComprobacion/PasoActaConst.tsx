@@ -73,7 +73,7 @@ const PasoActaConst: React.FC<Prop> = ({ positionImg }) => {
 			handleOpenModal();
 	};
 
-	const imagen:string = `${URL}:${PortFiles}/${fm.rc_constitutive_act.path}`;
+	//	const imagen:string = `${URL}:${PortFiles}/${fm.rc_constitutive_act.path}`;
 
 	return (
 		<>
@@ -87,18 +87,22 @@ const PasoActaConst: React.FC<Prop> = ({ positionImg }) => {
 						value='Foto de Acta Constitutiva'
 						disabled
 					/>
+					{/*
 					<FormControlLabel
 						className={classes.checkText}
 						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
 						label='Correcto'
 					/>
+						*/}
 				</div>
 			</form>
+			{/*
 			<Rec 
 				load={load}
 				setLoad={setLoad}
 				imagen={imagen}
 			/>
+				*/}
 			<ModalAlert 
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}

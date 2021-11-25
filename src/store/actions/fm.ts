@@ -197,6 +197,7 @@ export const sendImages = (formData: any) => {
 		try {
 			const res: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, formData);
 			updateToken(res);
+			console.log('dimas res', res.data)
 			dispatch(requestSuccess(res.data.info));
 		} catch (error) {
 			console.log('error images', error.reponse);
@@ -218,7 +219,6 @@ export const sendImages = (formData: any) => {
 };
 
 export const sendFM = (cursedForm: any, fm: any) => {
-	//console.log(fm.id_images);
 	const form = {
 		//Data FM
 		number_post: cursedForm.number_post,
@@ -240,13 +240,14 @@ export const sendFM = (cursedForm: any, fm: any) => {
 		id_type_payment: cursedForm.id_type_pay,
 		ci_referred: cursedForm.reqSource_docnum,
 		id_product: cursedForm.id_model_post,
-		requestSource_docnum: cursedForm.id_requestSource,
+		requestSource_docnum: cursedForm.id_request_origin,
 		discount: !!cursedForm.discount,
 		nro_comp_dep: cursedForm.nro_comp_dep,
 		pagadero: !!cursedForm.pagadero,
 		coutas: cursedForm.cuotas,
 		initial: cursedForm.initial,
 	};
+	console.log('mandar', form)
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM`, form);
