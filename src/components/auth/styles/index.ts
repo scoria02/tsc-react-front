@@ -14,7 +14,8 @@ export const HtmlTooltip = withStyles(() => ({
 export const useStylesModalUser = makeStyles((styles) => ({
 	root: {
 		maxWidth: '80vw',
-		// maxHeight: '70vh',
+		opacity: '0.95',
+		borderRadius: '2rem',
 	},
 	containerRight: {
 		margin: 0,
@@ -88,7 +89,7 @@ export const useStylesModalUser = makeStyles((styles) => ({
 	buttonLeft: {
 		marginTop: '-2.5rem',
 		textTransform: 'none',
-		padding: '.5rem',
+		padding: '.5rem 1rem',
 	},
 	inputButton: {
 		display: 'flex',
@@ -101,7 +102,14 @@ export const useStylesModalUser = makeStyles((styles) => ({
 	},
 	buttonLogin: {
 		textTransform: 'none',
-		padding: '.6rem 2rem',
+		fontSize: '1rem',
+		color: '#ffffff',
+		padding: '.6rem 4rem',
+		borderRadius: '1.5rem',
+		backgroundColor: styles.palette.success.main,
+		'&:hover': {
+			backgroundColor: styles.palette.success.light,
+		},
 	},
 	buttonRes: {
 		textTransform: 'none',
@@ -155,4 +163,7 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		justifyContent: 'center',
 		flexDirection: 'column',
 	},
+	titleRight: {
+		fontSize: '2.5rem',
+	}
 }));

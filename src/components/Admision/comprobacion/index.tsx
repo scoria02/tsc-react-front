@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { SocketContext } from '../../../context/SocketContext';
@@ -16,18 +16,19 @@ import PasoCommerce from './pasosComprobacion/PasoCommerce';
 import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
 import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
+import PasoSelectAci from './pasosComprobacion/PasoSelectAci';
 import ModalSteps from '../../modals/ModalSteps';
 
 const Comprobacion: React.FC<any> = () => {
-	function getStepContent(step: number) {
-		switch (step) {
-			case 0:
+	function getStepContent(step: number, steps: string[]) {
+		switch (steps[step]) {
+			case 'Cliente':
 				return (
 					<div>
 						<PasoClient />
 					</div>
 				);
-			case 1:
+			case 'Comercio':
 				return (
 					<div className='comprobar_container_2'>
 						<div>
@@ -38,47 +39,34 @@ const Comprobacion: React.FC<any> = () => {
 						</div>
 					</div>
 				);
-			case 2:
+			case 'Referencia Bancaria':
 				return (
 					<div>
 						<PasoAccountNumber />
 					</div>
 				);
-			case 3:
-				if (fm.id_commerce.rc_constitutive_act.length || fm.rc_special_contributor) {
-					return (
-						<div className={fm.id_commerce.rc_constitutive_act.length && fm.rc_special_contributor && 'comprobar_container_2'}>
-							<div>
-								{fm.id_commerce.rc_constitutive_act.length && (
-									<PasoActaConst
-										positionImg={
-											fm.rc_constitutive_act && fm.rc_special_contributor ? 'img_container_1' : 'img_container'
-										}
-									/>
-								)}
-							</div>
-							<div>
-								{fm.rc_special_contributor && (
-									<PasoContriSpecial
-										positionImg={
-											fm.rc_constitutive_act && fm.rc_special_contributor ? 'img_container_2' : 'img_container'
-										}
-									/>
-								)}
-							</div>
+			case 'Acta Const.':
+				return (
+					<div>
+						<PasoActaConst />
 						</div>
 					);
-				} else if (fm.rc_comp_dep) {
-					return (
-						<div>
-							<PasoPaymentReceipt />
-						</div>
-					);
-				} else return;
-			case 4:
+			case 'Cont. Especial':
+				return (
+					<div>
+						<PasoContriSpecial />
+					</div>
+				);
+			case 'Comprobante de Pago':
 				return (
 					<div>
 						<PasoPaymentReceipt />
+					</div>
+				);
+			case 'Asignación ACI':
+				return (
+					<div>
+						<PasoSelectAci/>
 					</div>
 				);
 			default:
@@ -96,49 +84,28 @@ const Comprobacion: React.FC<any> = () => {
 	const id_statusFM: any = useSelector((state: RootState) => state.fmAdmision.id_statusFM);
 
 	//states
-	const [activeStep, setActiveStep] = React.useState(0);
-	const [completed, setCompleted] = React.useState(new Set<number>());
+	const [activeStep, setActiveStep] = useState(0);
+	const [completed, setCompleted] = useState(new Set<number>());
 
 	const steps = getSteps(fm);
+
 	function getSteps(form: any) {
-		if (form.id_commerce.rc_constitutive_act.length || form.rc_special_contributor) {
-			if (form.rc_comp_dep) {
-				//existe deposito
-				return [
-					'Validacion (Cliente)',
-					'Validacion (Comercio)',
-					'Validacion (Referencia Bancaria)',
-					`
-					Validacion (
-					${form.id_commerce.rc_constitutive_act.length ? `Acta Const. ${form.rc_special_contributor ? '/' : ''}` : ''}
-					${form.id_commerce.rc_constitutive_act.length ? 'Con. Especial' : ''}
-					)`,
-					'Validacion (Comprobante de Pago)',
-				];
-			} else {
-				return [
-					'Validacion (Cliente)',
-					'Validacion (Comercio)',
-					'Validacion (Referencia Bancaria)',
-					`
-					Validacion (
-					${form.id_commerce.rc_constitutive_act.length ? `Acta Const. ${form.rc_special_contributor ? '/' : ''}` : ''}
-					${form.rc_special_contributor ? 'Con. Especial' : ''}
-					)`,
-				];
-			}
-		} else {
-			if (form.rc_comp_dep) {
-				return [
-					'Validacion (Cliente)',
-					'Validacion (Comercio)',
-					'Validacion (Referencia Bancaria)',
-					'Validacion (Comprobante de Pago)',
-				];
-			} else {
-				return ['Validacion (Cliente)', 'Validacion (Comercio)', 'Validacion (Referencia Bancaria)'];
-			}
+		const list: string[] = [
+			'Cliente',
+			'Comercio',
+			'Referencia Bancaria',
+		];
+		if(form.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')){
+			list.push('Acta Const.')
 		}
+		if(form.id_commerce.rc_special_contributor && !list.includes('Cont. Especial')){
+			list.push('Cont. Especial');
+		}
+		if (form.rc_comp_dep && !list.includes('Comprobante de Pago')) {
+			list.push('Comprobante de Pago');
+		}
+		list.push('Asignación ACI')
+		return list;
 	}
 
 	const totalSteps = () => {

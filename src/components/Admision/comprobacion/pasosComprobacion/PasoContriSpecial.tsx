@@ -15,11 +15,7 @@ import { ModalAlert } from '../../../modals/ModalAlert';
 
 import Rec from '../../../utilis/images/Rec';
 
-interface Prop {
-	positionImg: string
-}
-
-const PasoContriSpecial: React.FC<Prop> = ({ positionImg }) => {
+const PasoContriSpecial: React.FC = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
@@ -72,7 +68,7 @@ const PasoContriSpecial: React.FC<Prop> = ({ positionImg }) => {
 			handleOpenModal();
 	};
 
-	const imagen:string= `${URL}:${PortFiles}/${fm.rc_special_contributor.path}`;
+	const imagen:string= `${URL}:${PortFiles}/${fm.id_commerce.rc_special_contributor.path}`;
 
 	return (
 		<>

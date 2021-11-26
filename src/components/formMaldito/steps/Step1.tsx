@@ -50,6 +50,7 @@ export const Step1: React.FC<any> = ({
 			setCursedForm({
 				...cursedForm,
 				[`id_${item}_client`]: value.id,
+				[`codigo_postal_client`]: item === 'ciudad' ? value.postal_code : cursedForm.codigo_postal_client,
 			});
 		} else {
 			setCursedForm({
@@ -247,12 +248,12 @@ export const Step1: React.FC<any> = ({
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classes.inputText}
-						onChange={(event, value) => handleSelectClient(event, value, 'ciudad')}
-						value={location.ciudad || null}
-						options={listLocation.ciudad}
-						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
+						onChange={(event, value) => handleSelectClient(event, value, 'municipio')}
+						value={location.municipio || null}
+						options={listLocation.municipio}
+						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='ciudad' label='Ciudad' variant='outlined' inputProps={{...params.inputProps, autoComplete: 'ciudad', }} />
+							<TextField {...params} name='municipio' label='Municipio' variant='outlined' inputProps={{...params.inputProps, autoComplete: 'municipio', }} />
 						)}
 					/>
 				</div>
@@ -260,12 +261,12 @@ export const Step1: React.FC<any> = ({
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
-						onChange={(event, value) => handleSelectClient(event, value, 'municipio')}
-						value={location.municipio || null}
-						options={listLocation.municipio}
-						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
+						onChange={(event, value) => handleSelectClient(event, value, 'ciudad')}
+						value={location.ciudad || null}
+						options={listLocation.ciudad}
+						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='municipio' label='Municipio' variant='outlined' inputProps={{...params.inputProps, autoComplete: 'municipio', }} />
+							<TextField {...params} name='ciudad' label='Ciudad' variant='outlined' inputProps={{...params.inputProps, autoComplete: 'ciudad', }} />
 						)}
 					/>
 					<Autocomplete
@@ -282,14 +283,13 @@ export const Step1: React.FC<any> = ({
 				</div>
 				<div className={classes.input}>
 					<TextField
-						disabled={fm.mashClient}
+						disabled
 						className={classNames(classes.inputText, classes.inputTextLeft)}
 						variant='outlined'
 						required
 						id='standard-required'
 						label='Cod. Postal'
 						name='codigo_postal_client'
-						onChange={handleChange}
 						value={cursedForm.codigo_postal_client}
 					/>
 					<TextField

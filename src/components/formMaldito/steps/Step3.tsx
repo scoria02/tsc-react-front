@@ -17,6 +17,8 @@ import { recaudo } from '../../utilis/recaudos';
 import { useStylesFM } from '../styles';
 
 export const Step3: React.FC<any> = ({
+	days,
+	setDays,
 	imagesActa,
 	listIdentType,
 	listActivity,
@@ -35,15 +37,6 @@ export const Step3: React.FC<any> = ({
 }) => {
 	const classes = useStylesFM();
 	const [actaFlag, setActaFlag] = useState(false);
-	const [days, setdays] = useState<any>({
-		Lunes: true,
-		Martes: true,
-		Miercoles: true,
-		Jueves: true,
-		Viernes: true,
-		Sabado: true,
-		Domingo: true,
-	});
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
@@ -88,7 +81,7 @@ export const Step3: React.FC<any> = ({
 
 	const handleChangeCB = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.name !== 'TERMINAL') {
-			setdays({ ...days, [event.target.name]: event.target.checked });
+			setDays({ ...days, [event.target.name]: event.target.checked });
 		}
 	};
 

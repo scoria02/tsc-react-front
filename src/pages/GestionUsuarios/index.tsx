@@ -20,7 +20,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import classnames from 'classnames';
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import axios from '../../config';
 import './scss/index.scss';
@@ -156,25 +156,39 @@ const useStyles = makeStyles((styles) => ({
 		gridRowGap: 8,
 		gridColumnGap: 8,
 	},
+	blockedButton: {
+		fontWeight: 'bold',
+	},
+	blockedButtonOn: {
+		backgroundColor: styles.palette.success.main,
+		color: styles.palette.secondary.contrastText,
+		'&:hover': {
+			backgroundColor: `${styles.palette.success.light} !important`,
+		},
+	},
+	blockedButtonOff: {
+		backgroundColor: styles.palette.error.main,
+		color: styles.palette.secondary.contrastText,
+		'&:hover': {
+			backgroundColor: `${styles.palette.error.light} !important`,
+		},
+	},
 }));
 
 const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	const classes = useStyles();
 
 	const [allUserRoles, setAllUserRoles] = useState<any[]>([]);
+	const [userBlocked, setUserBlocked] = useState<boolean>(false);
 	const [openUserView, setUserView] = useState<boolean>();
 	const [department, setDepartment] = useState<any[]>([
 		{ id: 0, name: 'Admision' },
 		{ id: 1, name: 'Administracion' },
 	]);
-	const [checkbox, setCheckbox] = useState<boolean>(true);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [userRol, setUserRol] = useState<any[]>([]);
 	const [allUser, setUsers] = useState<any[]>([]);
-	const [userDep, setUserDep] = useState<any>({
-		id: 1,
-		name: 'Administracion',
-	});
+	const [userDep, setUserDep] = useState<any>(null);
 	const [userID, setUserID] = useState<number>(0);
 	const [email, setEmail] = useState<string>('');
 	const [lname, setLName] = useState<string>('');
@@ -189,7 +203,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 		);
 	};
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		try {
 			setLoading(false);
 			axios.get('/roles/all').then((data: any) => {
@@ -204,7 +218,6 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 			setLoading(true);
 		} catch (error) {
 			setLoading(true);
-			console.log('error', error);
 		}
 	}, []);
 
@@ -246,7 +259,6 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 		const index: number = array.findIndex((i: any) => i.name === item);
 		if (index !== -1) {
 			array[index].valid = value;
-			setCheckbox(true);
 			return array;
 		} else {
 			return array;
@@ -257,10 +269,11 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 		try {
 			const resp = await axios.get(`/worker/${id}`);
 			const data = resp.data.info;
+			setUserBlocked(data.block === 0 ? false : true);
 			setLName(data.last_name);
 			setUserRol(data.roles);
 			setEmail(data.email);
-			setUserDep(data.department ? data.department : null);
+			setUserDep(data.id_department);
 			setUserID(data.id);
 			setName(data.name);
 		} catch (error) {
@@ -269,21 +282,16 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	};
 
 	const handleSelect = (event: any, value: any, item: string) => {
-		console.log('event', event);
-		console.log('value', value);
-		console.log('item', item);
 		switch (item) {
 			case 'department':
 				setUserDep(value);
 				break;
-
 			default:
 				break;
 		}
 	};
 
 	const handleCheckbox = async (event: React.ChangeEvent<HTMLInputElement>) => {
-		setCheckbox(false);
 		const id = parseInt(event.target.id, 10);
 		setAllUserRoles((prev) => {
 			return updateCB(prev, event.target.name, event.target.checked);
@@ -320,10 +328,10 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 		}).then(async (result) => {
 			if (result.isConfirmed) {
 				try {
-					// Aca envio los datos al endpoint de dimas
-					await axios.put(`/roles/worker/${userID}`, {
+					await axios.put(`/worker/${userID}`, {
 						roles: userRol,
-						id_department: userDep.id,
+						id_department: userDep?.id,
+						block: userBlocked ? 1 : 0,
 					});
 					Swal.fire('Cambios Guardados', '', 'success');
 				} catch (error) {
@@ -394,35 +402,45 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 													value={userDep}
 													options={department}
 													getOptionLabel={(option: any) => (option.name ? option.name : '')}
+													getOptionSelected={(option, value) => {
+														return value.id === option.id;
+													}}
 													renderInput={(params: any) => (
 														<TextField {...params} name='department' label='Departamento' variant='outlined' />
 													)}
 												/>
+												<Button
+													onClick={() => setUserBlocked(!userBlocked)}
+													className={classnames(classes.blockedButton, {
+														[classes.blockedButtonOff]: !userBlocked,
+														[classes.blockedButtonOn]: userBlocked,
+													})}>
+													{userBlocked ? `Desbloquear` : `Bloquear`}
+												</Button>
 											</div>
 											<div className={classnames(classes.row, classes.column)}>
 												<div className={classes.cardTitles}>Permisos</div>
 												<FormGroup>
 													<Grid container>
-														{checkbox &&
-															allUserRoles.map((rol, i) => {
-																return (
-																	<Grid item xs={3} key={i}>
-																		<FormControlLabel
-																			label={rol.name}
-																			control={
-																				<Checkbox
-																					id={rol.id}
-																					checked={isInUserRol(rol.id)}
-																					onChange={handleCheckbox}
-																					name={rol.name}
-																					color={'primary'}
-																					inputProps={{ 'aria-label': 'primary checkbox' }}
-																				/>
-																			}
-																		/>
-																	</Grid>
-																);
-															})}
+														{allUserRoles.map((rol, i) => {
+															return (
+																<Grid item xs={3} key={`${i}`}>
+																	<FormControlLabel
+																		label={rol.name}
+																		control={
+																			<Checkbox
+																				id={`${rol.id}`}
+																				checked={isInUserRol(rol.id)}
+																				onChange={handleCheckbox}
+																				name={rol.name}
+																				color={'primary'}
+																				inputProps={{ 'aria-label': 'primary checkbox' }}
+																			/>
+																		}
+																	/>
+																</Grid>
+															);
+														})}
 													</Grid>
 												</FormGroup>
 											</div>

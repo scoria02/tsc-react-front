@@ -59,6 +59,16 @@ export const FormMaldito: React.FC = () => {
 	const classes = useStylesFM();
 	const dispatch = useDispatch();
 
+	const [days, setDays] = useState<any>({
+		Lunes: true,
+		Martes: true,
+		Miercoles: true,
+		Jueves: true,
+		Viernes: true,
+		Sabado: true,
+		Domingo: true,
+	});
+
 	const [cursedForm, setCursedForm] = useState<any>({
 		//step1 Cliente
 		email: '',
@@ -344,7 +354,7 @@ export const FormMaldito: React.FC = () => {
 		if (sendForm === 1 && fm.id_client !== 0) {
 			console.log('Listo Cliente');
 			if (!fm.mashCommerce) {
-				dispatch(sendCommerce(fm.id_client, cursedForm));
+				dispatch(sendCommerce(fm.id_client, cursedForm, valids.daysToString(days)));
 			}
 			setSendForm(2);
 			//Fin comerce
@@ -371,10 +381,8 @@ export const FormMaldito: React.FC = () => {
 			setSendForm(4);
 		} else if (sendForm === 4 && fm.loadedFM) {
 			console.log('Ready All FM');
-			socket.emit('cliente:Todos');
 			setSendForm(5);
 			handleSendForm();
-			socket.emit('cliente:disconnect');
 			dispatch(cleanFM());
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -522,33 +530,16 @@ export const FormMaldito: React.FC = () => {
 	//Client Location handle
 	const handleUpdateLocationClient = (op: any, value: any) => {
 		if (op === 'estado') {
-			//Select estado and Update List Ciudades
+			//Select ciudad and Update List municipio
 			setLocationClient({
 				estado: value,
 				ciudad: null,
 				municipio: null,
 				parroquia: null,
 			});
-			setListLocationClient((prevState: any) => ({ ...prevState, ciudad: [], municipio: [], parroquia: [] }));
+			setListLocationClient((prevState: any) => ({ ...prevState, municipio: [], ciudad: [], parroquia: [] }));
 			if (value) {
-				getCiudad(value.id).then((res) => {
-					setListLocationClient({
-						...listLocationClient,
-						ciudad: res,
-					});
-				});
-			}
-		} else if (op === 'ciudad') {
-			//Select ciudad and Update List municipio
-			setLocationClient({
-				...locationClient,
-				ciudad: value,
-				municipio: null,
-				parroquia: null,
-			});
-			setListLocationClient((prevState: any) => ({ ...prevState, municipio: [], parroquia: [] }));
-			if (value) {
-				getMunicipio(cursedForm.id_estado_client).then((res) => {
+				getMunicipio(value.id).then((res) => {
 					setListLocationClient({
 						...listLocationClient,
 						municipio: res,
@@ -556,15 +547,32 @@ export const FormMaldito: React.FC = () => {
 				});
 			}
 		} else if (op === 'municipio') {
-			//Select municipio and Update List parroquia
+			//Select estado and Update List Ciudades
 			setLocationClient({
 				...locationClient,
 				municipio: value,
+				ciudad: null,
+				parroquia: null,
+			});
+			setListLocationClient((prevState: any) => ({ ...prevState, parroquia: [], ciudad: [] }));
+			if (value) {
+				getCiudad(cursedForm.id_estado_client).then((res) => {
+					setListLocationClient({
+						...listLocationClient,
+						ciudad: res,
+					});
+				});
+			}
+		} else if (op === 'ciudad') {
+			//Select municipio and Update List parroquia
+			setLocationClient({
+				...locationClient,
+				ciudad: value,
 				parroquia: null,
 			});
 			setListLocationClient((prevState: any) => ({ ...prevState, parroquia: [] }));
 			if (value) {
-				getParroquia(value.id).then((res) => {
+				getParroquia(cursedForm.id_municipio_client).then((res) => {
 					setListLocationClient({
 						...listLocationClient,
 						parroquia: res,
@@ -856,7 +864,7 @@ export const FormMaldito: React.FC = () => {
 				id_ciudad_client: fm.clientMash.id_location.id_ciudad.id,
 				id_municipio_client: fm.clientMash.id_location.id_municipio.id,
 				id_parroquia_client: fm.clientMash.id_location.id_parroquia.id,
-				codigo_postal_client: 'falta codigo postal',
+				codigo_postal_client: fm.clientMash.id_location.id_ciudad.postal_code,
 				sector_client: fm.clientMash.id_location.sector,
 				calle_client: fm.clientMash.id_location.calle,
 				local_client: fm.clientMash.id_location.local,
@@ -921,7 +929,7 @@ export const FormMaldito: React.FC = () => {
 				id_ciudad: fm.clientMash.id_location.id_ciudad.id,
 				id_municipio: fm.clientMash.id_location.id_municipio.id,
 				id_parroquia: fm.clientMash.id_location.id_parroquia.id,
-				codigo_postal: 'falta codigo postal',
+				codigo_postal: fm.clientMash.id_location.id_ciudad.postal_code,
 				sector: fm.commerceMash.id_location.sector,
 				calle: fm.commerceMash.id_location.calle,
 				local: fm.commerceMash.id_location.local,
@@ -1048,6 +1056,8 @@ export const FormMaldito: React.FC = () => {
 			timer: 1500,
 		});
 		//Redirect home
+		socket.emit('cliente:Todos');
+		socket.emit('cliente:disconnect');
 		history.push(baseUrl);
 	};
 
@@ -1084,6 +1094,8 @@ export const FormMaldito: React.FC = () => {
 		/>,
 		<Step2 cursedForm={cursedForm} handleChange={handleChange} codePhone={codePhone} error={cursedFormError} />,
 		<Step3
+			days={days}
+			setDays={setDays}
 			imagesActa={imagesActa}
 			listIdentType={listIdentType}
 			listActivity={listActivity}
