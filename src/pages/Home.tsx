@@ -1,9 +1,11 @@
 import { Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React from 'react';
-import TranredLogo from '../img/tranred-logo.png';
+import Milpago from '../img/1000pagos_LogoBlue.png';
 
-interface HomeInt {}
+interface HomeInt {
+	prueba?: any;
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
 	base: {
@@ -29,7 +31,7 @@ const Inicio: React.FC<HomeInt> = () => {
 		<>
 			<div className='ed-container'>
 				<div className={classes.base}>
-					<img src={TranredLogo} style={{ width: '30%', marginLeft: '-10%' }} alt='logo tranred' />
+					<img src={Milpago} style={{ width: '50%' }} alt='logo milpagos' />
 					<div className={classes.title}>Bienvenido al BackOffice</div>
 					<div className={classes.subtitle}>Haga click en el menu superior izquierdo para navegar</div>
 				</div>

@@ -32,7 +32,7 @@ import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import TranredLogo from '../../img/tranred-logo.png';
+import Milpago from '../../img/1000pagos_LogoBlue.png';
 //Redux
 import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, urlLogin, userAdmin } from '../../routers/url';
 import { refreshLogin } from '../../store/actions/auth';
@@ -386,10 +386,10 @@ const MainMenu: FC = () => {
 				<div className={classes.toolbar}>
 					<div className={classes.img}>
 						<Link to={baseUrl} onClick={handleLogoClick}>
-							<img className='logo-nav-tranred' src={TranredLogo} alt='logo tranred' />
+							<img className='logo-nav-milpagos' src={Milpago} alt='logo tranred' />
 						</Link>
 					</div>
-					<IconButton onClick={handleDrawerClose}>
+					<IconButton onClick={handleDrawerClose} style={{ padding: 0 }}>
 						{theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
 					</IconButton>
 				</div>
