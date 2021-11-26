@@ -45,11 +45,11 @@ const Comprobacion: React.FC<any> = () => {
 					</div>
 				);
 			case 3:
-				if (fm.rc_constitutive_act || fm.rc_special_contributor) {
+				if (fm.id_commerce.rc_constitutive_act.length || fm.rc_special_contributor) {
 					return (
-						<div className={fm.rc_constitutive_act && fm.rc_special_contributor && 'comprobar_container_2'}>
+						<div className={fm.id_commerce.rc_constitutive_act.length && fm.rc_special_contributor && 'comprobar_container_2'}>
 							<div>
-								{fm.rc_constitutive_act && (
+								{fm.id_commerce.rc_constitutive_act.length && (
 									<PasoActaConst
 										positionImg={
 											fm.rc_constitutive_act && fm.rc_special_contributor ? 'img_container_1' : 'img_container'
@@ -101,7 +101,7 @@ const Comprobacion: React.FC<any> = () => {
 
 	const steps = getSteps(fm);
 	function getSteps(form: any) {
-		if (form.rc_constitutive_act || form.rc_special_contributor) {
+		if (form.id_commerce.rc_constitutive_act.length || form.rc_special_contributor) {
 			if (form.rc_comp_dep) {
 				//existe deposito
 				return [
@@ -110,8 +110,8 @@ const Comprobacion: React.FC<any> = () => {
 					'Validacion (Referencia Bancaria)',
 					`
 					Validacion (
-					${form.rc_constitutive_act ? `Acta Const. ${form.rc_special_contributor ? '/' : ''}` : ''}
-					${form.rc_special_contributor ? 'Con. Especial' : ''}
+					${form.id_commerce.rc_constitutive_act.length ? `Acta Const. ${form.rc_special_contributor ? '/' : ''}` : ''}
+					${form.id_commerce.rc_constitutive_act.length ? 'Con. Especial' : ''}
 					)`,
 					'Validacion (Comprobante de Pago)',
 				];
@@ -122,7 +122,7 @@ const Comprobacion: React.FC<any> = () => {
 					'Validacion (Referencia Bancaria)',
 					`
 					Validacion (
-					${form.rc_constitutive_act ? `Acta Const. ${form.rc_special_contributor ? '/' : ''}` : ''}
+					${form.id_commerce.rc_constitutive_act.length ? `Acta Const. ${form.rc_special_contributor ? '/' : ''}` : ''}
 					${form.rc_special_contributor ? 'Con. Especial' : ''}
 					)`,
 				];

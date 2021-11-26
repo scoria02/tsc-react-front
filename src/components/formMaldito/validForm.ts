@@ -134,37 +134,44 @@ export const sizeImagesStep = (active: number): number => {
 export const allInputNotNUll = (last: number, form: any, mashClient: boolean, mashCommerce: boolean): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(form)) {
-		if (indice === last-1) {
+		if (indice === last) {
 			return false;
 		}
 		indice++;
 		//No Check when item[0] === 'IdentType'
 		if (typeof item[1] === 'string') {
-			if(mashClient && indice < 16) {
+			if(mashClient && indice < 24) {
 				//no hago nada
-			}else if(mashCommerce && 15 < indice && indice < 21){
+			}else if( mashCommerce && 24 <= indice && indice < 29){
 				//no hago nada
-			}else if(
-				item[0] === 'reqSource_docnum' && 
-				form.id_request_origin !== 1 &&
-				form.id_request_origin !== 2 
-			){
+			}else if( item[0] === 'reqSource_docnum' && form.id_request_origin !== 1 && form.id_request_origin !== 2 ){
 				//no hago nada
 			}else if((form.pagadero || form.id_payment_method === 2) && item[0] === 'nro_comp_dep'){
 				//no hago nada
 			} else{
-				if (item[1].trim() === '') {
+				if (item[1].trim() === '') 
 					return true;
-				}
 			}
 		}else if (typeof item[1] === 'number' && item[0] !== 'special_contributor') {
-			if(mashClient && indice < 15) {
+			if(mashClient && indice < 24) {
+				//no hago nada
+			}else if(mashCommerce && 24 <= indice && indice < 29){
+				//no hago nada
+			}else if(item[0] === 'discount' || item[0] === 'pagadero'){
 				//no hago nada
 			}else{
 				if(item[1] === 0){
 					return true;
 				}
 			}	
+		}else if (typeof item[1] === 'number' && item[0] === 'special_contributor') {
+			if(mashClient && indice < 24) {
+				//no hago nada
+			}else if(mashCommerce && 24 <= indice && indice < 29){
+				//no hago nada
+			}else {
+				// nada
+			}
 		}	
 	}
 	return false;
@@ -228,8 +235,8 @@ export const validEndPoint = (activeStep: number, fm: any): boolean => {
 	}
 }
 
-export const notNullImagenActa = (activeStep: number, imagesActa: any, isActa: number) => {
-	if(activeStep >= 2 && isActa == 3 && imagesActa.length === 0)
+export const notNullImagenActa = (activeStep: number, imagesActa: any, isActa: number, mashCommerce: boolean) => {
+	if(activeStep >= 2 && isActa == 3 && imagesActa.length === 0 && !mashCommerce)
 		return true
 	else
 		return false

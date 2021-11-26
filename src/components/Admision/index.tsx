@@ -1,6 +1,7 @@
 import { Fab } from '@material-ui/core';
 import LowPriority from '@material-ui/icons/LowPrioritySharp';
 import AddIcon from '@material-ui/icons/Add';
+import { RootState } from '../../store/store';
 import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +22,8 @@ const Admision: React.FC = () => {
 	const classes = useStyles();
 
 	const { modalOpen } = useSelector((state: any) => state.ui);
+
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 	const { modalOpenListSolic } = useSelector((state: any) => state.ui);
 	const { user } = useSelector((state: any) => state.auth);
 	const { socket } = useContext(SocketContext);
@@ -132,7 +135,7 @@ const Admision: React.FC = () => {
 					Validar Planilla
 					<AddIcon />
 				</Fab>
-				{modalOpen && <Comprobacion />}
+				{(modalOpen && Object.keys(fm).length) && <Comprobacion />}
 			</div>
 			<div className='cmn2-divfloat'>
 				<Fab color='secondary' aria-label='add' size='large' variant='extended' onClick={handleClickList}>
