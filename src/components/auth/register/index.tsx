@@ -253,7 +253,7 @@ const Register: React.FC = () => {
 	];
 
 	return (
-		<AuthModal register={true} name='Registro'>
+		<AuthModal register={true} name='Registrarme'>
 			<div className={classes.containerRight}>
 				<form autoComplete='off'>
 					<div className='ed-container'>

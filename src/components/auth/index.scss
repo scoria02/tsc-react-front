@@ -1,0 +1,8 @@
+@keyframes rotatee {
+  from{transform:rotateY(90deg)}
+  to {transform:rotateY(-90deg)}
+}
+
+.toto {
+  animation: rotatee 7s linear infinite;
+}

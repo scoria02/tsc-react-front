@@ -12,6 +12,8 @@ import luffy from '../../img/user.png';
 import { useStylesModalUser } from './styles';
 import './login/index.scss';
 
+import './index.scss'
+
 const AuthModal: React.FC<any> = ({children, name, register}) => {
 	const classes = useStylesModalUser();
 
@@ -36,8 +38,8 @@ const AuthModal: React.FC<any> = ({children, name, register}) => {
 					</div>
 					<CardContent>
 						<div className='s-py-4'>
-							<Typography gutterBottom variant='h5' component='h2' align='center'>
-								{name}
+							<Typography gutterBottom variant='h5' component='h2' align='center' className={register ? '' : "toto"}>
+								<b className={classes.titleRight}>{name}</b>
 							</Typography>
 						</div>
 						<div>

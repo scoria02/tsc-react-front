@@ -66,7 +66,8 @@ export const Step1: React.FC<Props> = ({userForm, userFormError, errorPassword, 
 				onChange={handleChange}
 				onBlur={() => handleBlurEmail(userForm.email)}
 				type='email'
-				label='correo@correo'
+				label='Correo'
+				placeholder='correo@correo.com'
 				value={userForm.email}
 				variant='outlined'
 				autoComplete='email'
@@ -81,6 +82,7 @@ export const Step1: React.FC<Props> = ({userForm, userFormError, errorPassword, 
 				onChange={handleChange}
 				value={userForm.password}
 				label='Contraseña'
+				placeholder='*********'
 				type={showPassword ? "text" : "password"}
 				autoComplete='current-password'
 				variant='outlined'
@@ -135,6 +137,7 @@ export const Step1: React.FC<Props> = ({userForm, userFormError, errorPassword, 
 				onBlur={() => setOpen(false)}
 				name='confirmPassword'
 				onChange={handleChange}
+				placeholder='*********'
 				label='Comfirmar Contraseña'
 				type='password'
 				autoComplete='current-password'

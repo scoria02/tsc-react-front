@@ -39,12 +39,12 @@ const Admision: React.FC = () => {
 	useEffect(() => {
 		socket.emit('cliente:Todos', user, (todo: any) => {
 			setTodoTodos(todo);
-			console.log('save 0', todo);
+			//console.log('save 0', todo);
 		});
 
 		socket.emit('cliente:dashdata', user, (data: any) => {
 			if (Object.keys(data).length) {
-				console.log('save 1', data);
+				//console.log('save 1', data);
 				setChartData(data);
 				setTodo(data);
 			}
@@ -52,7 +52,7 @@ const Admision: React.FC = () => {
 
 		socket.on('server:dashdata', (data: any) => {
 			if (Object.keys(data).length) {
-				console.log('save 2', data);
+				//console.log('save 2', data);
 				setChartData(data);
 				setTodo(data);
 			}
@@ -130,13 +130,15 @@ const Admision: React.FC = () => {
 					<Barra chartData={valuesChart} colsData={keyChart} />
 				</div>
 			</div>
-			<div className='cmn-divfloat'>
-				<Fab color='primary' aria-label='add' size='medium' variant='extended' onClick={handleClick}>
-					Validar Planilla
-					<AddIcon />
-				</Fab>
-				{(modalOpen && Object.keys(fm).length) && <Comprobacion />}
-			</div>
+			{allSolic &&
+				<div className='cmn-divfloat'>
+					<Fab color='primary' aria-label='add' size='medium' variant='extended' onClick={handleClick}>
+						Validar Planilla
+						<AddIcon />
+					</Fab>
+					{(modalOpen && Object.keys(fm).length) && <Comprobacion />}
+				</div>
+			}
 			<div className='cmn2-divfloat'>
 				<Fab color='secondary' aria-label='add' size='large' variant='extended' onClick={handleClickList}>
 					<LowPriority />

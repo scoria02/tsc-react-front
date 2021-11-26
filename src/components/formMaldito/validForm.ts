@@ -236,8 +236,18 @@ export const validEndPoint = (activeStep: number, fm: any): boolean => {
 }
 
 export const notNullImagenActa = (activeStep: number, imagesActa: any, isActa: number, mashCommerce: boolean) => {
-	if(activeStep >= 2 && isActa == 3 && imagesActa.length === 0 && !mashCommerce)
+	if(activeStep >= 2 && isActa === 3 && imagesActa.length === 0 && !mashCommerce)
 		return true
 	else
 		return false
+}
+
+export const daysToString = (value: any)  => {
+	let text: string = '';
+	for (const item of Object.entries(value)) {
+		if(item[1]){
+			text = text + (text.length ? '/' : '') + item[0].slice(0,3)
+		}
+	}
+	return text
 }
