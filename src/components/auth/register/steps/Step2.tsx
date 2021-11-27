@@ -67,9 +67,16 @@ export const Step2: React.FC<Props> = ({
 
 	const handleChangePhone = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.value !== '0') {
-			handleChange(event);
+			if(/^[0-9]+$/.test(event.target.value) || event.target.value === '')
+				handleChange(event);
 		}
 	}
+
+	const handleIdentNum = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
+			handleChange(event);
+		}
+	};
 
 	return (
 		<>
@@ -125,7 +132,7 @@ export const Step2: React.FC<Props> = ({
 					name='ident_num'
 					className={classes.inputNro}
 					value={userForm.ident_num}
-					onChange={handleChange}
+					onChange={handleIdentNum}
 					label='Documento de identidad'
 					variant='outlined'
 					inputProps={{
