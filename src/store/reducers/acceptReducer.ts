@@ -35,6 +35,7 @@ interface inState {
 		localFrente: boolean;
 		localDentro: boolean;
 	};
+	aci: boolean,
 }
 
 const initialState: inState = {
@@ -72,6 +73,7 @@ const initialState: inState = {
 		localFrente: false,
 		localDentro: false,
 	},
+	aci: false,
 };
 
 export const acceptReducer = (state = initialState, action: any) => {
@@ -90,6 +92,12 @@ export const acceptReducer = (state = initialState, action: any) => {
 					...action.payload
 				}
 			};
+		case ActionType.acceptAci: {
+			return {
+				...state,
+					aci: action.payload,
+			}
+		}
 		//Register User
 		case ActionType.registerUser:
 			return {

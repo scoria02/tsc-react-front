@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { eventNames } from 'process';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -48,7 +47,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 	const handleChangeImages = (event: any) => {
 		if (event.target.files[0]) {
 			let file = event.target.files[0];
-			console.log(URL.createObjectURL(file))
 			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: file.type });
 			const path = URL.createObjectURL(newFile);
 			//Save img
@@ -82,10 +80,16 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		const validStep = () => {
 			if (uploadImgs[nameStep]) {
 				return true;
-			} else return false;
+			}else if(nameStep === 'rc_constitutive_act') {
+				if(Object.keys(actaImages).length)
+					return true
+				else
+					return false
+			}
+			else return false;
 		};
 		setReadyStep(!validStep());
-	}, [nameStep, uploadImgs]);
+	}, [nameStep, uploadImgs, actaImages]);
 
 	useEffect(() => {
 		if (updatedStatus) {
@@ -94,7 +98,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				icon: 'success',
 				customClass: { container: 'swal2-validated' },
 			});
-			//dispatch(cleanDataFmDiferido()); //hoy
+			dispatch(cleanDataFmDiferido()); //hoy
 		}
 	}, [updatedStatus]);
 
@@ -127,7 +131,15 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		return list;
 	}
 
-	console.log('ddd', uploadImgs)
+	const validStep = (item:any, list:any) => {
+		for (const element of Object.entries(list)) {
+			if(item.slice(3, item.length) === element[0].slice(6, element[0].length)){
+
+				return element[1];
+			}
+		}	
+		return ''
+	}
 
 	function getStepContent(step: number) {
 		let index = 0;
@@ -155,6 +167,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 							key={index}
 							name={item[0]}
 							fm={item[1]}
+							valid={(validStep(item[0], fm.id_valid_request))}
 							path={paths[item[0]]}
 							handleChangeImages={handleChangeImages}
 							uploadImg={uploadImgs[item[0]]}
@@ -207,12 +220,14 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				const formData: any = new FormData();
 				for (const item of Object.entries(uploadImgs)) {
 					if (item[1] !== null) {
-						console.log(item[0], 'tiene data');
 						formData.append('images', item[1]);
 						console.log('imagen updateada', item[0]);
 					}
 				}
-				//dispatch(updateStatusFMDiferido(fm.id, formData));
+				for (const item of actaImages){
+					formData.append('constitutive_act', item);
+				}
+				dispatch(updateStatusFMDiferido(fm.id, formData));
 			}
 		}
 	}, [activeStep, allStepsCompleted]);

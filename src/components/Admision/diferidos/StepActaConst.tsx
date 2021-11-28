@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import React, { useState } from 'react';
+import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
@@ -19,8 +19,6 @@ import Avatar from '@material-ui/core/Avatar';
 import ImageIcon from '@material-ui/icons/Image';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 
-import Rec from '../../utilis/images/Rec';
-
 const StepActaConst: React.FC<any> = ({
 	name,
 	acta,
@@ -30,8 +28,7 @@ const StepActaConst: React.FC<any> = ({
 	ready,
 }) => {
 	const classes = useStyles();
-  const [load, setLoad] = useState(false)
-  
+
   const url:string = URL + ':' + PortFiles + '/';
 
 	return (
@@ -44,7 +41,7 @@ const StepActaConst: React.FC<any> = ({
 						component='label'
 						disabled={ready}
 						style={{ 
-							background: uploadImg ? '#00c853' : '#f44336' ,
+							background: Object.keys(uploadImg).length ? '#00c853' : '#f44336' ,
 							opacity: !ready ? 1 : 0,
 						}}
 					>

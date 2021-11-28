@@ -114,3 +114,15 @@ export const getCompany = async () => {
 		return [];
 	}
 }
+
+export const getAci = async () => {
+	try{
+		const resp: string [] = await axios.get('/aci').then((res) => {
+			return res.data.info 
+		});
+		return resp;
+	}catch(e){
+		console.log(e);
+		return [];
+	}
+}
