@@ -23,24 +23,24 @@ import Rec from '../../utilis/images/Rec';
 
 const StepActaConst: React.FC<any> = ({
 	name,
-	fm,
+	acta,
 	handleChangeImages,
 	uploadImg,
 	ready,
 }) => {
 	const classes = useStyles();
     const [load, setLoad] = useState(false)
-
-    console.log(fm)
-    
+  
     const url:string = URL + ':' + PortFiles + '/';
+
+    console.log('acta', acta)
 
 	return (
 		<>
 			<form className="container-step" noValidate autoComplete='off'>
             <List
 					className={classes.container_ListActa} >
-					{fm.rc_contitutive_acta.map((item: any, index: number) => (
+					{acta.map((item: any, index: number) => (
 						<ListItem key={item.id} value={item.id}>
 							<Button
 								className={classes.link}

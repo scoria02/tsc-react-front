@@ -117,28 +117,29 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		let index = 0;
 		for (const item of Object.entries(recaudos).reverse()) {
 			const element: any = item[1];
+			console.log('a',item[0])
 			if (step === index) {
 				const ready = completed.has(activeStep);
 				setNameStep(element[0]);
-				if(element[0] === 'rc_constitutive_act'){
+				if(item[0] === 'rc_constitutive_act'){
 					return (
-						<StepDiferido
+						<StepActaConst
 							key={index}
-							name={element[0]}
-							fm={element}
-							path={paths[element.descript]}
+							name={item[0]}
+							acta={item[1]}
 							handleChangeImages={handleChangeImages}
-							uploadImg={uploadImgs[element.descript]}
+							uploadImg={uploadImgs[item[0]]}
 							readyStep={readyStep}
 							ready={ready}
 						/>
 					);
 				}else{
 					return (
-						<StepActaConst
+						<StepDiferido
 							key={index}
 							name={element[0]}
 							fm={element}
+							path={paths[element.descript]}
 							handleChangeImages={handleChangeImages}
 							uploadImg={uploadImgs[element.descript]}
 							readyStep={readyStep}
