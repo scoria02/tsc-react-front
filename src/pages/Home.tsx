@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 		padding: '1rem',
 	},
 }));
-const Inicio: React.FC<HomeInt> = () => {
+const Inicio: React.FC<HomeInt> = ({ prueba }) => {
 	const classes = useStyles();
 
 	return (

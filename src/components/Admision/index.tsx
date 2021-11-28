@@ -1,23 +1,26 @@
 import { Fab } from '@material-ui/core';
-import LowPriority from '@material-ui/icons/LowPrioritySharp';
 import AddIcon from '@material-ui/icons/Add';
-import { RootState } from '../../store/store';
+import LowPriority from '@material-ui/icons/LowPrioritySharp';
 import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SocketContext } from '../../context/SocketContext';
 import { getDataFM } from '../../store/actions/admisionFm';
 import { OpenModal, OpenModalListSolic } from '../../store/actions/ui';
+import { RootState } from '../../store/store';
 import Barra from '../diagramas/Barra';
 import Dona from '../diagramas/Dona';
 import Comprobacion from './comprobacion';
 import Diferidos from './diferidos';
+import ListFms from './listFms';
 import './scss/index.scss';
 import { useStyles } from './styles/styles';
 
-import ListFms from './listFms';
+interface AdmisionInt {
+	isWorker: boolean;
+}
 
-const Admision: React.FC = () => {
+const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 
@@ -130,21 +133,23 @@ const Admision: React.FC = () => {
 					<Barra chartData={valuesChart} colsData={keyChart} />
 				</div>
 			</div>
-			{allSolic &&
+			{allSolic && (
 				<div className='cmn-divfloat'>
 					<Fab color='primary' aria-label='add' size='medium' variant='extended' onClick={handleClick}>
 						Validar Planilla
 						<AddIcon />
 					</Fab>
-					{(modalOpen && Object.keys(fm).length) && <Comprobacion />}
+					{modalOpen && Object.keys(fm).length && <Comprobacion />}
 				</div>
-			}
-			<div className='cmn2-divfloat'>
-				<Fab color='secondary' aria-label='add' size='large' variant='extended' onClick={handleClickList}>
-					<LowPriority />
-				</Fab>
-				{modalOpenListSolic && <ListFms/>}
-			</div>
+			)}
+			{!isWorker && (
+				<div className='cmn2-divfloat'>
+					<Fab color='secondary' aria-label='add' size='large' variant='extended' onClick={handleClickList}>
+						<LowPriority />
+					</Fab>
+					{modalOpenListSolic && <ListFms />}
+				</div>
+			)}
 		</div>
 	);
 };

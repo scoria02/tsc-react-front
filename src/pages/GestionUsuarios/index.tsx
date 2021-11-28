@@ -185,10 +185,10 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 		{ id: 0, name: 'Admision' },
 		{ id: 1, name: 'Administracion' },
 	]);
-	const [loading, setLoading] = useState<boolean>(true);
+	// const [loading, setLoading] = useState<boolean>(true);
 	const [userRol, setUserRol] = useState<any[]>([]);
-	const [allUser, setUsers] = useState<any[]>([]);
 	const [userDep, setUserDep] = useState<any>(null);
+	const [allUser, setUsers] = useState<any[]>([]);
 	const [userID, setUserID] = useState<number>(0);
 	const [email, setEmail] = useState<string>('');
 	const [lname, setLName] = useState<string>('');
@@ -204,21 +204,21 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	};
 
 	useLayoutEffect(() => {
-		try {
-			setLoading(false);
-			axios.get('/roles/all').then((data: any) => {
-				setAllUserRoles(data.data.info);
-			});
-			axios.get('/department/all').then((data: any) => {
-				setDepartment(data.data.info);
-			});
-			axios.get('worker/all').then((data: any) => {
-				setUsers(data.data.info);
-			});
-			setLoading(true);
-		} catch (error) {
-			setLoading(true);
-		}
+		const getData = async () => {
+			try {
+				await axios.get('/roles/all').then((data: any) => {
+					setAllUserRoles(data.data.info);
+				});
+				await axios.get('/department/all').then((data: any) => {
+					setDepartment(data.data.info);
+				});
+				await axios.get('worker/all').then((data: any) => {
+					setUsers(data.data.info);
+				});
+			} catch (error) {}
+		};
+
+		getData();
 	}, []);
 
 	const handleCloseRow = (event: any) => {
@@ -346,8 +346,9 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 		<>
 			<Grid container spacing={4} className={classes.layout}>
 				<Grid item xs={5}>
-					<div style={{ height: '75vh', width: '100%' }}>
-						{loading && (
+					<div style={{ height: '80vh', width: '100%' }}>
+						{
+							// loading &&
 							<DataGrid
 								components={{
 									Toolbar: customToolbar,
@@ -357,7 +358,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 								rowsPerPageOptions={[25, 100]}
 								onCellClick={handleRow}
 							/>
-						)}
+						}
 					</div>
 				</Grid>
 				<Grid item xs={7}>

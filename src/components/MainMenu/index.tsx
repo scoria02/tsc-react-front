@@ -29,13 +29,14 @@ import PeopleIcon from '@material-ui/icons/PeopleAlt';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 // import WorkIcon from '@material-ui/icons/Work';
 import classNames from 'classnames';
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import Milpago from '../../img/1000pagos_LogoBlue.png';
+import { ApprouterContext } from '../../routers/AppRouter';
 //Redux
 import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, urlLogin, userAdmin } from '../../routers/url';
-import { refreshLogin } from '../../store/actions/auth';
+import { refreshLogin, startLogout } from '../../store/actions/auth';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
 import './index.scss';
@@ -154,7 +155,12 @@ const MainMenu: FC = () => {
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
 	const [section, setSection] = useState<string>('');
+	const { menu } = useContext(ApprouterContext);
 	const [open, setOpen] = useState(false); //Nav Left
+	const [admision, setAdmision] = useState(false);
+	const [cobranza, setCobranza] = useState(false);
+	const [administracion, setAdministracion] = useState(false);
+	const [seguridad, setSeguridad] = useState(false);
 
 	const [user, setUser] = useState({
 		name: '',
@@ -167,7 +173,61 @@ const MainMenu: FC = () => {
 		if (userDB) {
 			setUser(userDB);
 		}
-	}, [userDB]);
+		if (menu) {
+			console.log('menu', menu);
+
+			switch (menu) {
+				case 'God':
+					setAdmision(true);
+					setCobranza(true);
+					setAdministracion(true);
+					setSeguridad(true);
+					break;
+				case 'Presidencia':
+					setAdmision(true);
+					setCobranza(true);
+					setAdministracion(true);
+					setSeguridad(true);
+					break;
+
+				case 'Admision':
+					setAdmision(true);
+					setCobranza(false);
+					setAdministracion(false);
+					setSeguridad(false);
+					break;
+
+				case 'Administracion':
+					setAdmision(false);
+					setCobranza(false);
+					setAdministracion(true);
+					setSeguridad(false);
+					break;
+
+				case 'Cobranza':
+					setAdmision(false);
+					setCobranza(true);
+					setAdministracion(false);
+					setSeguridad(false);
+					break;
+
+				case 'Seguridad':
+					setAdmision(false);
+					setCobranza(false);
+					setAdministracion(false);
+					setSeguridad(true);
+					break;
+
+				default:
+					setAdmision(false);
+					setCobranza(false);
+					setAdministracion(false);
+					setSeguridad(false);
+					break;
+			}
+			console.log('menu', menu);
+		}
+	}, [userDB, menu]);
 
 	const menuId = 'primary-search-account-menu';
 	const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -183,6 +243,7 @@ const MainMenu: FC = () => {
 	};
 	const handleMenuLogout = () => {
 		localStorage.removeItem('token');
+		dispatch(startLogout());
 		dispatch(FinishLoading());
 		history.push(urlLogin);
 	};
@@ -401,60 +462,60 @@ const MainMenu: FC = () => {
 						</ListItemIcon>
 						<ListItemText primary='Inicio' />
 					</ListItem>
-					{/*
-					{open2 && (
-						<ListItem button onClick={(event) => handleListItemClick(event, 2)}>
-							<ListItemIcon>
-								<InboxIcon />
+					{menu !== 'Base' && (
+						<ListItem button onClick={(event) => handleListItemClick(event, 5)}>
+							<ListItemIcon classes={{ root: classes.icon }}>
+								<AssignmentIcon />
 							</ListItemIcon>
-							<ListItemText primary='Prueba' />
+							<ListItemText primary='Formulario de Act.' />
 						</ListItem>
 					)}
-					*/}
-
-					<ListItem button onClick={(event) => handleListItemClick(event, 5)}>
-						<ListItemIcon classes={{ root: classes.icon }}>
-							<AssignmentIcon />
-						</ListItemIcon>
-						<ListItemText primary='Formulario de Act.' />
-					</ListItem>
-					<ListItem button onClick={(event) => handleListItemClick(event, 3)}>
-						<Link to={urlAdmision}>
-							<ListItemIcon classes={{ root: classes.icon }}>
-								<PersonAdd />
-							</ListItemIcon>
-						</Link>
-						<ListItemText primary='Admision' />
-					</ListItem>
-					<ListItem button onClick={(event) => handleListItemClick(event, 1)}>
-						<Link to={urlAdministracion}>
-							<ListItemIcon classes={{ root: classes.icon }}>
-								<FolderIcon />
-							</ListItemIcon>
-						</Link>
-						<ListItemText primary='Administracion' />
-					</ListItem>
-					<ListItem button onClick={(event) => handleListItemClick(event, 6)}>
-						<Link to={urlCobr}>
-							<ListItemIcon classes={{ root: classes.icon }}>
-								<CreditCardIcon />
-							</ListItemIcon>
-						</Link>
-						<ListItemText primary='Cobranza' />
-					</ListItem>
+					{admision && (
+						<ListItem button onClick={(event) => handleListItemClick(event, 3)}>
+							<Link to={urlAdmision}>
+								<ListItemIcon classes={{ root: classes.icon }}>
+									<PersonAdd />
+								</ListItemIcon>
+							</Link>
+							<ListItemText primary='Admision' />
+						</ListItem>
+					)}
+					{administracion && (
+						<ListItem button onClick={(event) => handleListItemClick(event, 1)}>
+							<Link to={urlAdministracion}>
+								<ListItemIcon classes={{ root: classes.icon }}>
+									<FolderIcon />
+								</ListItemIcon>
+							</Link>
+							<ListItemText primary='Administracion' />
+						</ListItem>
+					)}
+					{cobranza && (
+						<ListItem button onClick={(event) => handleListItemClick(event, 6)}>
+							<Link to={urlCobr}>
+								<ListItemIcon classes={{ root: classes.icon }}>
+									<CreditCardIcon />
+								</ListItemIcon>
+							</Link>
+							<ListItemText primary='Cobranza' />
+						</ListItem>
+					)}
 				</List>
 				<Divider />
-
-				<List>
-					<ListItem button key={'Gestion de Usuarios'} onClick={(event) => handleListItemClick(event, 4)}>
-						<Link to={urlAdmision}>
-							<ListItemIcon classes={{ root: classes.icon }}>
-								<PeopleIcon />
-							</ListItemIcon>
-						</Link>
-						<ListItemText primary={'Gestion de Usuarios'} />
-					</ListItem>
-				</List>
+				{seguridad && (
+					<>
+						<List>
+							<ListItem button key={'Gestion de Usuarios'} onClick={(event) => handleListItemClick(event, 4)}>
+								<Link to={urlAdmision}>
+									<ListItemIcon classes={{ root: classes.icon }}>
+										<PeopleIcon />
+									</ListItemIcon>
+								</Link>
+								<ListItemText primary={'Gestion de Usuarios'} />
+							</ListItem>
+						</List>
+					</>
+				)}
 			</Drawer>
 		</div>
 	);
