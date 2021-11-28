@@ -14,7 +14,6 @@ export const validationClient = (client: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
 			updateToken(res);
-			console.log('-->', res.data.info.client.ref_person_1);
 			dispatch(requestSuccess(res.data.info));
 			return res.data.info;
 		} catch (error) {
@@ -41,7 +40,7 @@ export const validationCommerce = (id_client: number, commerce: any) => {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce/valid`, commerce);
 			if (res.data.info) {
 				updateToken(res);
-				dispatch(requestSuccess(res.data.info));
+				dispatch(requestSuccess(res.data.info.matsh));
 			} else {
 				dispatch(requestSuccessOk());
 			}
@@ -148,7 +147,7 @@ export const sendClient = (cursedForm: any, codePhone: string) => {
 	}
 };
 
-export const sendCommerce = (id_client: number, cursedForm: any) => {
+export const sendCommerce = (id_client: number, cursedForm: any, days: string) => {
 	//console.log('Client', id_client, 'Comercio', commerce);
 	const commerce = {
 		id_ident_type: cursedForm.id_ident_type_commerce,
@@ -166,6 +165,7 @@ export const sendCommerce = (id_client: number, cursedForm: any) => {
 			calle: cursedForm.calle,
 			local: cursedForm.local,
 		},
+		days: days,
 	};
 
 	return async (dispatch: any) => {

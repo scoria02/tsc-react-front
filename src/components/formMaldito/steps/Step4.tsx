@@ -29,6 +29,7 @@ export const Step4: React.FC<any> = ({
 			setCursedForm({
 				...cursedForm,
 				[`id_${item}_pos`]: value.id,
+				[`codigo_postal_pos`]: item === 'ciudad' ? value.postal_code : cursedForm.codigo_postal_pos,
 			});
 		} else {
 			setCursedForm({
@@ -44,6 +45,7 @@ export const Step4: React.FC<any> = ({
 			setCursedForm({
 				...cursedForm,
 				[`id_${item}`]: value.id,
+				[`codigo_postal`]: item === 'ciudad' ? value.postal_code : cursedForm.codigo_postal,
 			});
 		} else {
 			setCursedForm({
@@ -85,19 +87,6 @@ export const Step4: React.FC<any> = ({
 					/>
 					<Autocomplete
 						className={classes.inputText}
-						onChange={(event, value) => handleSelect(event, value, 'ciudad')}
-						value={location.ciudad || null}
-						disabled={fm.mashCommerce}
-						options={listLocation.ciudad}
-						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
-						renderInput={(params: any) => (
-							<TextField {...params} name='ciudad' label='Ciudad' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'ciudad', }}/>
-						)}
-					/>
-				</div>
-				<div className={classnames(classes.row, classes.input)}>
-					<Autocomplete
-						className={classes.inputTextLeft}
 						onChange={(event, value) => handleSelect(event, value, 'municipio')}
 						value={location.municipio || null}
 						disabled={fm.mashCommerce}
@@ -105,6 +94,19 @@ export const Step4: React.FC<any> = ({
 						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
 						renderInput={(params: any) => (
 							<TextField {...params} name='municipio' label='Municipio' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'municipio', }}/>
+						)}
+					/>
+				</div>
+				<div className={classnames(classes.row, classes.input)}>
+					<Autocomplete
+						onChange={(event, value) => handleSelect(event, value, 'ciudad')}
+						className={classes.inputTextLeft}
+						value={location.ciudad || null}
+						disabled={fm.mashCommerce}
+						options={listLocation.ciudad}
+						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
+						renderInput={(params: any) => (
+							<TextField {...params} name='ciudad' label='Ciudad' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'ciudad', }}/>
 						)}
 					/>
 					<Autocomplete
@@ -126,10 +128,9 @@ export const Step4: React.FC<any> = ({
 						required
 						id='standard-required'
 						label='Codigo Postal'
-						disabled={fm.mashCommerce}
 						name='codigo_postal'
-						onChange={handleChangeCommerce}
 						value={cursedForm.codigo_postal}
+						disabled
 					/>
 					<TextField
 						className={classes.inputText}
@@ -186,24 +187,24 @@ export const Step4: React.FC<any> = ({
 					/>
 					<Autocomplete
 						className={classes.inputText}
-						onChange={(event, value) => handleSelectPos(event, value, 'ciudad')}
-						options={listLocationPos.ciudad}
-						value={locationPos.ciudad || null}
-						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
-						renderInput={(params: any) => (
-							<TextField {...params} name='ciudad' label='Ciudad' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'ciudad', }}/>
-						)}
-					/>
-				</div>
-				<div className={classnames(classes.row, classes.input)}>
-					<Autocomplete
-						className={classes.inputTextLeft}
 						onChange={(event, value) => handleSelectPos(event, value, 'municipio')}
 						value={locationPos.municipio || null}
 						options={listLocationPos.municipio}
 						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
 						renderInput={(params: any) => (
 							<TextField {...params} name='municipio' label='Municipio' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'municipio', }}/>
+						)}
+					/>
+				</div>
+				<div className={classnames(classes.row, classes.input)}>
+					<Autocomplete
+						className={classes.inputTextLeft}
+						onChange={(event, value) => handleSelectPos(event, value, 'ciudad')}
+						options={listLocationPos.ciudad}
+						value={locationPos.ciudad || null}
+						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
+						renderInput={(params: any) => (
+							<TextField {...params} name='ciudad' label='Ciudad' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'ciudad', }}/>
 						)}
 					/>
 					<Autocomplete
@@ -225,8 +226,8 @@ export const Step4: React.FC<any> = ({
 						id='standard-required'
 						label='Codigo Postal'
 						name='codigo_postal_pos'
-						onChange={handleChangePos}
 						value={cursedForm.codigo_postal_pos}
+						disabled
 					/>
 					<TextField
 						className={classes.inputText}

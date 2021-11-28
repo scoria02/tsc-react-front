@@ -64,15 +64,15 @@ export default function PasoUno() {
 				<TextField
 					className={classes.btn_stepT}
 					id='outlined-basic'
-					label='Sector'
-					value={fm.id_commerce.id_location.sector}
+					label='Cod. Postal'
+					value={fm.id_commerce.id_location.id_ciudad.postal_code}
 					variant='outlined'
 				/>
 				<TextField
 					className={classes.btn_stepT}
 					id='outlined-basic'
-					label='Calle'
-					value={fm.id_commerce.id_location.calle}
+					label='Sector'
+					value={fm.id_commerce.id_location.sector}
 					variant='outlined'
 				/>
 			</div>
@@ -80,15 +80,15 @@ export default function PasoUno() {
 				<TextField
 					className={classes.btn_stepT}
 					id='outlined-basic'
-					label='Local'
-					value={fm.id_commerce.id_location.local}
+					label='Calle'
+					value={fm.id_commerce.id_location.calle}
 					variant='outlined'
 				/>
 				<TextField
 					className={classes.btn_stepT}
 					id='outlined-basic'
-					label='Cod. Postal'
-					value={'codigo postal'}
+					label='Local'
+					value={fm.id_commerce.id_location.local}
 					variant='outlined'
 				/>
 			</div>

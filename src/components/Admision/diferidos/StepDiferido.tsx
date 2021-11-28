@@ -61,7 +61,7 @@ const StepDiferido: React.FC<any> = ({
 				</Button>
 				</div>
 			</form>
-			{uploadImg &&  uploadImg.name.split('.')[uploadImg.name.split('.').length-1] === 'pdf' ?
+			{uploadImg && uploadImg.name.split('.')[uploadImg.name.split('.').length-1] === 'pdf' ?
 				<>
 					<div className={classes.btn_stepM}>
 						<h1>Aqui ta tu PDF</h1>

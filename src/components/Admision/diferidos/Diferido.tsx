@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { eventNames } from 'process';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -10,6 +11,7 @@ import { RootState } from '../../../store/store';
 import ModalSteps from '../../modals/ModalSteps';
 import '../scss/index.scss';
 import StepDiferido from './StepDiferido';
+import StepActaConst from './StepActaConst';
 
 const Diferido: React.FC<any> = ({ fm }) => {
 	const dispatch = useDispatch();
@@ -78,7 +80,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				icon: 'success',
 				customClass: { container: 'swal2-validated' },
 			});
-			dispatch(cleanDataFmDiferido());
+			//dispatch(cleanDataFmDiferido()); //hoy
 		}
 	}, [updatedStatus]);
 
@@ -105,10 +107,8 @@ const Diferido: React.FC<any> = ({ fm }) => {
 
 	function getSteps() {
 		let list: string[] = [];
-
 		for (const item of Object.entries(recaudos).reverse()) {
-			const ob: any = item[1];
-			list.push(nameSteps(ob.descript));
+			list.push(nameSteps(item[0]));
 		}
 		return list;
 	}
@@ -117,21 +117,36 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		let index = 0;
 		for (const item of Object.entries(recaudos).reverse()) {
 			const element: any = item[1];
+			console.log('a',item[0])
 			if (step === index) {
 				const ready = completed.has(activeStep);
-				setNameStep(element.descript);
-				return (
-					<StepDiferido
-						key={index}
-						name={element.descript}
-						fm={element}
-						path={paths[element.descript]}
-						handleChangeImages={handleChangeImages}
-						uploadImg={uploadImgs[element.descript]}
-						readyStep={readyStep}
-						ready={ready}
-					/>
-				);
+				setNameStep(element[0]);
+				if(item[0] === 'rc_constitutive_act'){
+					return (
+						<StepActaConst
+							key={index}
+							name={item[0]}
+							acta={item[1]}
+							handleChangeImages={handleChangeImages}
+							uploadImg={uploadImgs[item[0]]}
+							readyStep={readyStep}
+							ready={ready}
+						/>
+					);
+				}else{
+					return (
+						<StepDiferido
+							key={index}
+							name={element[0]}
+							fm={element}
+							path={paths[element.descript]}
+							handleChangeImages={handleChangeImages}
+							uploadImg={uploadImgs[element.descript]}
+							readyStep={readyStep}
+							ready={ready}
+						/>
+					);
+				}
 			}
 			index++;
 		}
@@ -178,10 +193,10 @@ const Diferido: React.FC<any> = ({ fm }) => {
 					if (item[1] !== null) {
 						console.log(item[0], 'tiene data');
 						formData.append('images', item[1]);
+						console.log('imagen updateada', item[0]);
 					}
 				}
-				dispatch(updateStatusFMDiferido(fm.id, formData));
-				console.log('imagen updateada');
+				//dispatch(updateStatusFMDiferido(fm.id, formData));
 			}
 		}
 	}, [activeStep, allStepsCompleted]);
@@ -229,6 +244,8 @@ const Diferido: React.FC<any> = ({ fm }) => {
 			}
 		});
 	};
+
+	console.log('fm', fm)
 
 	return (
 		<ModalSteps

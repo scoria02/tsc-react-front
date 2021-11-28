@@ -59,7 +59,7 @@ const Login: React.FC = () => {
 	};
 
 	return (
-		<AuthModal register={false} name='Ingresar al BackOffice'>
+		<AuthModal register={false} name='BackOffice'>
 			<div className={classes.containerRight}>
 				<form onSubmit={handleLogin} className={classesbutton.root} autoComplete='off'>
 					<div className='ed-container'>
@@ -67,7 +67,7 @@ const Login: React.FC = () => {
 							className={classes.input}
 							id='email'
 							name='email'
-							label='Email'
+							label='Correo'
 							variant='outlined'
 							type='email'
 							onChange={handleUsernameChange}
@@ -96,8 +96,8 @@ const Login: React.FC = () => {
 							}}
 						/>
 						<div className={classes.inputButton}>
-							<Button className={classes.buttonLogin} type='submit' variant='outlined' color='primary'>
-								Entrar
+							<Button className={classes.buttonLogin} type='submit' variant='contained'>
+								Ingresar
 							</Button>
 						</div>
 					</div>

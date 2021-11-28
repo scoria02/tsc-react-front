@@ -45,4 +45,18 @@ export const useStyles = makeStyles((styles) => ({
 		marginLeft: '1rem',
 		width: '100px'
 	},
+	container_ListActa: {
+		marginTop: '1rem',
+		width: '100%',
+		display: 'grid',
+		gridColumnGap: '1%',
+		gridTemplateColumns: '1fr 1fr',
+	},
+	link: {
+		textDecoration: 'none',
+		textTransform: 'none',
+	},
+	itemLink: {
+		paddingLeft: '.5rem'
+	}
 }));

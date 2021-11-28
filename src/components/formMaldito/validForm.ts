@@ -69,6 +69,17 @@ export const validPhone2 = (value: string, value2: string):boolean => {
 	return true;
 }
 
+export const validIdentRef = (value: string, value2: string):boolean => {
+	if(value.length >= 9) {
+		if(value === value2)
+			return true;
+		else
+			return false;
+	}else {
+		return true;
+	}
+}
+
 export const validNum_post= (value: number):boolean => {
 	if(value < 1) // || value  > numero de puntos disponibles en la BD
 		return true;
@@ -212,7 +223,7 @@ export const allImgNotNUll = (form: any, last: number, images: any, special_cont
 export const checkErrorAllInput = (last: number, errors: any): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(errors)) {
-		if (indice === last-1) {
+		if (indice === last) {
 			return false;
 		}
 		indice++;
@@ -236,8 +247,18 @@ export const validEndPoint = (activeStep: number, fm: any): boolean => {
 }
 
 export const notNullImagenActa = (activeStep: number, imagesActa: any, isActa: number, mashCommerce: boolean) => {
-	if(activeStep >= 2 && isActa == 3 && imagesActa.length === 0 && !mashCommerce)
+	if(activeStep >= 2 && isActa === 3 && imagesActa.length === 0 && !mashCommerce)
 		return true
 	else
 		return false
+}
+
+export const daysToString = (value: any)  => {
+	let text: string = '';
+	for (const item of Object.entries(value)) {
+		if(item[1]){
+			text = text + (text.length ? '/' : '') + item[0].slice(0,3)
+		}
+	}
+	return text
 }
