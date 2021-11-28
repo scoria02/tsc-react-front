@@ -24,49 +24,99 @@ import Rec from '../../utilis/images/Rec';
 const StepActaConst: React.FC<any> = ({
 	name,
 	acta,
+	paths,
 	handleChangeImages,
 	uploadImg,
 	ready,
 }) => {
 	const classes = useStyles();
-    const [load, setLoad] = useState(false)
+  const [load, setLoad] = useState(false)
   
-    const url:string = URL + ':' + PortFiles + '/';
-
-    console.log('acta', acta)
+  const url:string = URL + ':' + PortFiles + '/';
 
 	return (
 		<>
 			<form className="container-step" noValidate autoComplete='off'>
-            <List
-					className={classes.container_ListActa} >
-					{acta.map((item: any, index: number) => (
-						<ListItem key={item.id} value={item.id}>
-							<Button
-								className={classes.link}
-								href={url + item.id_photo.path}
-								target="_blank"
-								rel="noreferrer"
-								key={item.id}
-							>
-								<Avatar>
-									{item.id_photo.name.split('.')[item.id_photo.name.split('.').length-1] === 'pdf' ?
-										<PictureAsPdfIcon />
-									:
-										<ImageIcon />
-									}
-								</Avatar>
-								<ListItemText 
-									className={classes.itemLink}
-									primary={
-										item.id_photo.name.split('@')[item.id_photo.name.split('.').length-1]
-									} 
-									secondary={index+1}
-								/>
-							</Button>
-						</ListItem>
-					))}
-					</List>
+				<div className={classes.btn_stepM}>
+					<Button
+						className={classes.uploadImg}
+						variant='contained'
+						component='label'
+						disabled={ready}
+						style={{ 
+							background: uploadImg ? '#00c853' : '#f44336' ,
+							opacity: !ready ? 1 : 0,
+						}}
+					>
+						<IconButton aria-label='upload picture' component='span'>
+							<CloudUploadIcon className={classes.iconUpload}/>
+						</IconButton>
+						<input
+							id='img'
+							type='file'
+							hidden
+							multiple
+							name={name}
+							accept={recaudo.acc}
+							onChange={handleChangeImages}
+						/>
+					</Button>
+				</div>
+
+				<List className={classes.container_ListActa}>
+					{uploadImg.length ?
+						(Object.keys(uploadImg).map((item: any, index: number) => (
+							<ListItem key={item}>
+								<Button
+									className={classes.link}
+									href={paths[item]}
+									target="_blank"
+									rel="noreferrer"
+								>
+									<Avatar>
+										{uploadImg[item].name.split('.')[uploadImg[item].name.split('.').length-1] === 'pdf' ?
+											<PictureAsPdfIcon />
+										:
+											<ImageIcon />
+										}
+									</Avatar>
+									<ListItemText 
+										className={classes.itemLink}
+										primary={uploadImg[item].name} 
+										secondary={index+1}
+									/>
+								</Button>
+							</ListItem>
+						)))
+						:
+						(acta.map((item: any, index: number) => (
+							<ListItem key={item.id} value={item.id}>
+								<Button
+									className={classes.link}
+									href={url + item.id_photo.path}
+									target="_blank"
+									rel="noreferrer"
+									key={item.id}
+								>
+									<Avatar>
+										{item.id_photo.name.split('.')[item.id_photo.name.split('.').length-1] === 'pdf' ?
+											<PictureAsPdfIcon />
+										:
+											<ImageIcon />
+										}
+									</Avatar>
+									<ListItemText 
+										className={classes.itemLink}
+										primary={
+											item.id_photo.name.split('@')[item.id_photo.name.split('.').length-1]
+										} 
+										secondary={index+1}
+									/>
+								</Button>
+							</ListItem>
+						)))
+					}
+				</List>
 			</form>
 		</>
 	);
