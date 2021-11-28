@@ -5,7 +5,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 //Material
 import Stepper from '@material-ui/core/Stepper';
-import React, { useContext,useState , useEffect, useLayoutEffect} from 'react';
+import React, { useContext, useState, useEffect, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -337,7 +337,7 @@ export const FormMaldito: React.FC = () => {
 	});
 
 	useLayoutEffect(() => {
-		dispatch(cleanFM())
+		dispatch(cleanFM());
 	}, []);
 
 	useEffect(() => {
@@ -366,7 +366,7 @@ export const FormMaldito: React.FC = () => {
 					formData.append('images', item[1]);
 				}
 			}
-			for (const item of imagesActa){
+			for (const item of imagesActa) {
 				formData.append('constitutive_act', item);
 			}
 			formData.append('id_client', fm.id_client);
@@ -752,7 +752,7 @@ export const FormMaldito: React.FC = () => {
 				fm.imagesCommerce,
 				cursedForm.id_ident_type_commerce
 			) &&
-			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) && 
+			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) &&
 			!valids.validEndPoint(activeStep, fm) &&
 			!valids.notNullImagenActa(activeStep, imagesActa, cursedForm.id_ident_type_commerce, fm.imagesCommerce)
 		) {
@@ -1056,7 +1056,9 @@ export const FormMaldito: React.FC = () => {
 			timer: 1500,
 		});
 		//Redirect home
-		socket.emit('cliente:Todos');
+		// socket.emit('cliente:Todos');  //Dispara accion
+		socket.emit('cliente:loadDiferidos');
+		socket.emit('cliente:dashdatasiempre');
 		socket.emit('cliente:disconnect');
 		history.push(baseUrl);
 	};
