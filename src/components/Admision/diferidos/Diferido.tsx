@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { eventNames } from 'process';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -29,16 +28,17 @@ const Diferido: React.FC<any> = ({ fm }) => {
 	const [uploadImgs, setUploadImgs] = useState<any>({
 		rc_ident_card: null,
 		rc_rif: null,
-		rc_constitutive_act: null,
 		rc_special_contributor: null,
 		rc_ref_bank: null,
 		rc_comp_dep: null,
 	});
 
+	const [actaImages, setActaImages]  = useState<any>([]);
+	const [actaPaths, setActaPaths] = useState<any>([]);
+
 	const [paths, setPaths] = useState<any>({
 		rc_ident_card: '',
 		rc_rif: '',
-		rc_constitutive_act: '',
 		rc_special_contributor: '',
 		rc_ref_bank: '',
 		rc_comp_dep: '',
@@ -62,16 +62,34 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		}
 	};
 
+	const handleChangeImagesActa = (event: any) => {
+		if (event.target.files[0]) {
+			let files = event.target.files
+			let path: string[] = []
+			Object.keys(files).map((item: any, index: number) => {
+				path.push(URL.createObjectURL(files[index]));
+			})
+			setActaImages(files);
+			setActaPaths(path);
+		}
+	};
+
 	const [nameStep, setNameStep] = useState<string>('');
 
 	useEffect(() => {
 		const validStep = () => {
 			if (uploadImgs[nameStep]) {
 				return true;
-			} else return false;
+			}else if(nameStep === 'rc_constitutive_act') {
+				if(Object.keys(actaImages).length)
+					return true
+				else
+					return false
+			}
+			else return false;
 		};
 		setReadyStep(!validStep());
-	}, [nameStep, uploadImgs]);
+	}, [nameStep, uploadImgs, actaImages]);
 
 	useEffect(() => {
 		if (updatedStatus) {
@@ -80,7 +98,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				icon: 'success',
 				customClass: { container: 'swal2-validated' },
 			});
-			//dispatch(cleanDataFmDiferido()); //hoy
+			dispatch(cleanDataFmDiferido()); //hoy
 		}
 	}, [updatedStatus]);
 
@@ -113,22 +131,32 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		return list;
 	}
 
+	const validStep = (item:any, list:any) => {
+		for (const element of Object.entries(list)) {
+			if(item.slice(3, item.length) === element[0].slice(6, element[0].length)){
+
+				return element[1];
+			}
+		}	
+		return ''
+	}
+
 	function getStepContent(step: number) {
 		let index = 0;
 		for (const item of Object.entries(recaudos).reverse()) {
-			const element: any = item[1];
-			console.log('a',item[0])
+			//const element: any = item[1];
 			if (step === index) {
 				const ready = completed.has(activeStep);
-				setNameStep(element[0]);
+				setNameStep(item[0]);
 				if(item[0] === 'rc_constitutive_act'){
 					return (
 						<StepActaConst
 							key={index}
 							name={item[0]}
 							acta={item[1]}
-							handleChangeImages={handleChangeImages}
-							uploadImg={uploadImgs[item[0]]}
+							paths={actaPaths}
+							handleChangeImages={handleChangeImagesActa}
+							uploadImg={actaImages}
 							readyStep={readyStep}
 							ready={ready}
 						/>
@@ -137,11 +165,12 @@ const Diferido: React.FC<any> = ({ fm }) => {
 					return (
 						<StepDiferido
 							key={index}
-							name={element[0]}
-							fm={element}
-							path={paths[element.descript]}
+							name={item[0]}
+							fm={item[1]}
+							valid={(validStep(item[0], fm.id_valid_request))}
+							path={paths[item[0]]}
 							handleChangeImages={handleChangeImages}
-							uploadImg={uploadImgs[element.descript]}
+							uploadImg={uploadImgs[item[0]]}
 							readyStep={readyStep}
 							ready={ready}
 						/>
@@ -191,12 +220,14 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				const formData: any = new FormData();
 				for (const item of Object.entries(uploadImgs)) {
 					if (item[1] !== null) {
-						console.log(item[0], 'tiene data');
 						formData.append('images', item[1]);
 						console.log('imagen updateada', item[0]);
 					}
 				}
-				//dispatch(updateStatusFMDiferido(fm.id, formData));
+				for (const item of actaImages){
+					formData.append('constitutive_act', item);
+				}
+				dispatch(updateStatusFMDiferido(fm.id, formData));
 			}
 		}
 	}, [activeStep, allStepsCompleted]);
@@ -244,8 +275,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 			}
 		});
 	};
-
-	console.log('fm', fm)
 
 	return (
 		<ModalSteps

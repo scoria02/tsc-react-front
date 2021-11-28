@@ -2,6 +2,7 @@ import { Button } from '@material-ui/core';
 import React, { useState } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutlineSharp';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
@@ -14,9 +15,12 @@ import { recaudo } from '../../utilis/recaudos';
 
 import Rec from '../../utilis/images/Rec';
 
+import './index.scss';
+
 const StepDiferido: React.FC<any> = ({
 	name,
 	fm,
+	valid,
 	path,
 	handleChangeImages,
 	uploadImg,
@@ -31,40 +35,38 @@ const StepDiferido: React.FC<any> = ({
 		file: 700 //widthFullScrean
 	})
 
-	//console.log(size)
-
 	return (
 		<>
 			<form className="container-step" noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-				<Button
-					className={classes.uploadImg}
-					variant='contained'
-					component='label'
-					disabled={ready}
-					style={{ 
-						background: uploadImg ? '#00c853' : '#f44336' ,
-						opacity: !ready ? 1 : 0,
-					}}
-				>
-					<IconButton aria-label='upload picture' component='span'>
-						<CloudUploadIcon className={classes.iconUpload}/>
-					</IconButton>
-					<input
-						id='img'
-						type='file'
-						hidden
-						name={name}
-						accept={recaudo.acc}
-						onChange={handleChangeImages}
-					/>
-				</Button>
+					<Button
+						className={classes.uploadImg}
+						variant='contained'
+						component='label'
+						disabled={ready}
+						style={{ 
+							background: uploadImg ? '#00c853' : '#f44336' ,
+							opacity: !ready ? 1 : 0,
+						}}
+					>
+						<IconButton aria-label='upload picture' component='span'>
+							<CloudUploadIcon className={classes.iconUpload}/>
+						</IconButton>
+						<input
+							id='img'
+							type='file'
+							hidden
+							name={name}
+							accept={recaudo.acc}
+							onChange={handleChangeImages}
+						/>
+					</Button>
 				</div>
 			</form>
 			{uploadImg && uploadImg.name.split('.')[uploadImg.name.split('.').length-1] === 'pdf' ?
 				<>
 					<div className={classes.btn_stepM}>
-						<h1>Aqui ta tu PDF</h1>
+						<h1>PDF</h1>
 					</div>
 					<div className={classes.btn_stepM}>
 						<a 
@@ -97,6 +99,14 @@ const StepDiferido: React.FC<any> = ({
 					setSize={setSize}
 				/>
 			}
+			<div className='containerItem'>
+				<div className='containerTop'>
+					<p className='textareaAlert'>
+						<ErrorOutlineIcon className='icon-alert' />
+						{valid}
+					</p>
+				</div>
+			</div>
 		</>
 	);
 }

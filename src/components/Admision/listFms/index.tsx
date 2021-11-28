@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SocketContext } from '../../../context/SocketContext';
+//import { SocketContext } from '../../../context/SocketContext';
 import { CloseModalListSolic } from '../../../store/actions/ui';
 import { useStyles } from './styles';
 
@@ -9,7 +9,6 @@ import AnimationModal from '../../modals/AnimationModal';
 //Material ui
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -24,9 +23,9 @@ const ListFms: React.FC = () => {
 	const [searching, setSearching] = useState<boolean>(false);
 
 	const { modalOpenListSolic } = useSelector((state: any) => state.ui);
-	const { user } = useSelector((state: any) => state.auth);
+	//const { user } = useSelector((state: any) => state.auth);
 
-	const { socket } = useContext(SocketContext);
+	//const { socket } = useContext(SocketContext);
 
 	const handleClose = () => {
 		dispatch(CloseModalListSolic());

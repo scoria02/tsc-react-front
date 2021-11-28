@@ -1,71 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
+import React from 'react';
 import TextField from '@material-ui/core/TextField';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { Valid } from '../../../../store/actions/accept';
 //Url
-import { PortFiles, URL } from '../../../../config';
 import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
-import { ModalAlert } from '../../../modals/ModalAlert';
 
-import Rec from '../../../utilis/images/Rec';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
-const PasoSelectAci: React.FC = () => {
+import { selectAci } from '../../../../store/actions/accept';
+
+const PasoSelectAci: React.FC<any> = ({
+	aci,
+	setAci,
+	listAci,
+}) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const rc_special_contributor: any = useSelector((state: RootState) => state.acceptance.validado.rc_special_contributor);
-	const [state, setState] = useState(rc_special_contributor);
-	const [openModal, setOpenModal] = useState<boolean>(false);
-  const [load, setLoad] = useState(false)
 
-	const handleOpenModal = () => {
-		handleCancel()
-		setOpenModal(true);
-	};
-	const handleCloseModal = (cancel: boolean) => {
-		if(cancel){
-			setState({ 
-				...state, 
-				status: !state.status,
-			});
-		}
-		setOpenModal(false);
-	};
-
-	useEffect(() => {
-		dispatch(Valid({rc_special_contributor:state}));
-		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state.status]);
-
-	const handleIncorret = () => {
-		dispatch(Valid({ rc_special_contributor: state }));
-		handleCloseModal(false);
-	};
-
-	const handleCancel = () => {
-		handleCloseModal(true);
-	};
-
-	const handleChangeI = (event:any) => {
-		setState({ 
-			...state, 
-			[event.target.name]: event.target.value,
-		});
+	const handleSelectAci = (event: any, value: any) => {
+		dispatch(selectAci(value ? true : false));
+		setAci(value);
 	}
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({ 
-			...state, 
-			[event.target.name]: event.target.checked,
-		});
-		if(!event.target.checked)
-			handleOpenModal();
-	};
 
 	return (
 		<>
@@ -141,38 +99,35 @@ const PasoSelectAci: React.FC = () => {
 									className={classes.btn_stepT}
 									id='outlined-basic'
 									label='Local'
-									value={fm.id_commerce.id_location.local}
+									value={fm.dir_pos[0].id_location.local}
 									variant='outlined'
 								/>
 							</div>
 						</div>
 						<div>
-						<div className={classes.btn_stepM}>
-							<TextField
+							<div className={classes.btn_stepM}>
+							<Autocomplete
 								className='btn_step btn_medio'
-								id='outlined-basic '
-								label='Aci'
-								variant='outlined'
-								value='Aci'
-								disabled
-							/>
-							<FormControlLabel
-								className={classes.checkText}
-								control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
-								label='Correcto'
+								//disabled={} //si el comercio tiene aci traelo
+								onChange={(event, value) => {
+									handleSelectAci(event, value);
+								}}
+								options={listAci}
+								value={aci|| null}
+								getOptionLabel={
+									(option: any) => (
+									option.aliNombres || option.aliIdentificacion ? 
+									option.aliTipoIdentificacion + option.aliIdentificacion + ' | ' + option.aliNombres : ''
+									)
+								}
+								renderInput={(params: any) => (
+									<TextField {...params} name='aci' label={`Buscar Aci`} variant='outlined' />
+								)}
 							/>
 						</div>
 					</div>
 				</div>
 			</form>
-			<ModalAlert 
-				openModal={openModal}
-				handleCloseModal={handleCloseModal}
-				state={state}
-				handleChangeI={handleChangeI}
-				handleIncorret={handleIncorret}
-				handleCancel={handleCancel}
-			/>
 		</>
 	);
 }

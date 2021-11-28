@@ -19,6 +19,9 @@ import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
 import PasoSelectAci from './pasosComprobacion/PasoSelectAci';
 import ModalSteps from '../../modals/ModalSteps';
 
+import { getAci } from '../../formMaldito/getData';
+
+
 const Comprobacion: React.FC<any> = () => {
 	function getStepContent(step: number, steps: string[]) {
 		switch (steps[step]) {
@@ -66,7 +69,11 @@ const Comprobacion: React.FC<any> = () => {
 			case 'Asignación ACI':
 				return (
 					<div>
-						<PasoSelectAci/>
+						<PasoSelectAci
+							aci={aci}
+							setAci={setAci}
+							listAci={listAci}
+						/>
 					</div>
 				);
 			default:
@@ -86,6 +93,27 @@ const Comprobacion: React.FC<any> = () => {
 	//states
 	const [activeStep, setActiveStep] = useState(0);
 	const [completed, setCompleted] = useState(new Set<number>());
+
+	const [aci, setAci] = useState<any>(null);
+	const [listAci, setListAci] = useState<any>([]);
+
+	const [getDataControl, setGetDataControl] = useState<number>(0);
+
+	useEffect(() => {
+		if (getDataControl === 0) {
+			getAci().then((res:any) => {
+				res.forEach((item:any, indice:number) => {
+					setListAci((prevState: any) => [...prevState, item]);
+					if (indice === res.length - 1) {
+						setGetDataControl(1);
+					}
+				});
+			});
+		} else if (getDataControl=== 1) {
+			console.log('Get list Acis')
+			setGetDataControl(2);
+		}
+	}, [getDataControl])
 
 	const steps = getSteps(fm);
 
@@ -134,10 +162,10 @@ const Comprobacion: React.FC<any> = () => {
 	useEffect(() => {
 		if (allStepsCompleted() && !updatedStatus) {
 			if (validStatusFm()) {
-				dispatch(updateStatusFM(fm.id, 4, validated));
+				dispatch(updateStatusFM(fm.id, 4, validated, aci.id));
 				console.log('mandado diferido');
 			} else {
-				dispatch(updateStatusFM(fm.id, 3, validated));
+				dispatch(updateStatusFM(fm.id, 3, validated, aci.id));
 				console.log('fin validacion');
 			}
 		}
@@ -213,6 +241,18 @@ const Comprobacion: React.FC<any> = () => {
 		});
 	};
 
+	const [readyStep, setReadyStep] = useState<boolean>(false);
+
+	useEffect(() => {
+		if(activeStep === steps.length-1){
+			if(aci)
+				setReadyStep(false);
+			else 
+				setReadyStep(true);
+		}else
+			setReadyStep(false);
+	}, [activeStep, aci])
+
 	return (
 		<ModalSteps
 			stepComplete={stepComplete}
@@ -229,7 +269,7 @@ const Comprobacion: React.FC<any> = () => {
 			setActiveStep={setActiveStep}
 			completed={completed}
 			setCompleted={setCompleted}
-			readyStep={false}
+			readyStep={readyStep}
 			handleNext={handleNext}
 			handleComplete={handleComplete}
 		/>
