@@ -29,16 +29,17 @@ const Diferido: React.FC<any> = ({ fm }) => {
 	const [uploadImgs, setUploadImgs] = useState<any>({
 		rc_ident_card: null,
 		rc_rif: null,
-		rc_constitutive_act: null,
 		rc_special_contributor: null,
 		rc_ref_bank: null,
 		rc_comp_dep: null,
 	});
 
+	const [actaImages, setActaImages]  = useState<any>([]);
+	const [actaPaths, setActaPaths] = useState<any>([]);
+
 	const [paths, setPaths] = useState<any>({
 		rc_ident_card: '',
 		rc_rif: '',
-		rc_constitutive_act: '',
 		rc_special_contributor: '',
 		rc_ref_bank: '',
 		rc_comp_dep: '',
@@ -47,6 +48,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 	const handleChangeImages = (event: any) => {
 		if (event.target.files[0]) {
 			let file = event.target.files[0];
+			console.log(URL.createObjectURL(file))
 			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: file.type });
 			const path = URL.createObjectURL(newFile);
 			//Save img
@@ -59,6 +61,18 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				...paths,
 				[event.target.name]: path,
 			});
+		}
+	};
+
+	const handleChangeImagesActa = (event: any) => {
+		if (event.target.files[0]) {
+			let files = event.target.files
+			let path: string[] = []
+			Object.keys(files).map((item: any, index: number) => {
+				path.push(URL.createObjectURL(files[index]));
+			})
+			setActaImages(files);
+			setActaPaths(path);
 		}
 	};
 
@@ -113,22 +127,24 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		return list;
 	}
 
+	console.log('ddd', uploadImgs)
+
 	function getStepContent(step: number) {
 		let index = 0;
 		for (const item of Object.entries(recaudos).reverse()) {
-			const element: any = item[1];
-			console.log('a',item[0])
+			//const element: any = item[1];
 			if (step === index) {
 				const ready = completed.has(activeStep);
-				setNameStep(element[0]);
+				setNameStep(item[0]);
 				if(item[0] === 'rc_constitutive_act'){
 					return (
 						<StepActaConst
 							key={index}
 							name={item[0]}
 							acta={item[1]}
-							handleChangeImages={handleChangeImages}
-							uploadImg={uploadImgs[item[0]]}
+							paths={actaPaths}
+							handleChangeImages={handleChangeImagesActa}
+							uploadImg={actaImages}
 							readyStep={readyStep}
 							ready={ready}
 						/>
@@ -137,11 +153,11 @@ const Diferido: React.FC<any> = ({ fm }) => {
 					return (
 						<StepDiferido
 							key={index}
-							name={element[0]}
-							fm={element}
-							path={paths[element.descript]}
+							name={item[0]}
+							fm={item[1]}
+							path={paths[item[0]]}
 							handleChangeImages={handleChangeImages}
-							uploadImg={uploadImgs[element.descript]}
+							uploadImg={uploadImgs[item[0]]}
 							readyStep={readyStep}
 							ready={ready}
 						/>
@@ -244,8 +260,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 			}
 		});
 	};
-
-	console.log('fm', fm)
 
 	return (
 		<ModalSteps
