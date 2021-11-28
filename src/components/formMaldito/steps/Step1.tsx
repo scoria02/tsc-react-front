@@ -45,26 +45,10 @@ export const Step1: React.FC<any> = ({
 		validateForm(event.target.name, event.target.value);
 	};
 
-	const handleSelectClient = (event: any, value: any, item: string) => {
-		if (value) {
-			setCursedForm({
-				...cursedForm,
-				[`id_${item}_client`]: value.id,
-				[`codigo_postal_client`]: item === 'ciudad' ? value.postal_code : cursedForm.codigo_postal_client,
-			});
-		} else {
-			setCursedForm({
-				...cursedForm,
-				[`id_${item}_client`]: 0,
-			});
-		}
-		handleUpdateLocation(item, value);
-	};
-
-
 	const handleChangePhone = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.value !== '0') {
-			handleChange(event);
+			if(/^[0-9]+$/.test(event.target.value) || event.target.value === '')
+				handleChange(event);
 		}
 	}
 
@@ -236,7 +220,7 @@ export const Step1: React.FC<any> = ({
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
-						onChange={(event, value) => handleSelectClient(event, value, 'estado')}
+						onChange={(event, value) => handleUpdateLocation('estado', value)}
 						value={location.estado || null}
 						options={listLocation.estado}
 						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
@@ -248,7 +232,7 @@ export const Step1: React.FC<any> = ({
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classes.inputText}
-						onChange={(event, value) => handleSelectClient(event, value, 'municipio')}
+						onChange={(event, value) => handleUpdateLocation('municipio', value)}
 						value={location.municipio || null}
 						options={listLocation.municipio}
 						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
@@ -261,7 +245,7 @@ export const Step1: React.FC<any> = ({
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
-						onChange={(event, value) => handleSelectClient(event, value, 'ciudad')}
+						onChange={(event, value) => handleUpdateLocation('ciudad', value)}
 						value={location.ciudad || null}
 						options={listLocation.ciudad}
 						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
@@ -272,7 +256,7 @@ export const Step1: React.FC<any> = ({
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classes.inputText}
-						onChange={(event, value) => handleSelectClient(event, value, 'parroquia')}
+						onChange={(event, value) => handleUpdateLocation('parroquia', value)}
 						value={location.parroquia || null}
 						options={listLocation.parroquia}
 						getOptionLabel={(option: any) => (option.parroquia ? option.parroquia : '')}

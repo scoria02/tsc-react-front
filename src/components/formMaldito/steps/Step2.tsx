@@ -16,7 +16,8 @@ export const Step2: React.FC<any> = ({ cursedForm, handleChange, codePhone, erro
 
 	const handleChangePhone = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.value !== '0') {
-			handleChange(event);
+			if(/^[0-9]+$/.test(event.target.value) || event.target.value === '')
+				handleChange(event);
 		}
 	};
 
@@ -25,17 +26,6 @@ export const Step2: React.FC<any> = ({ cursedForm, handleChange, codePhone, erro
 			handleChange(event);
 		}
 	};
-
-	/*
-	const handleSelect = (event: any) => {
-		setCursedForm({
-			...cursedForm,
-			[event.target.name]: event.target.value,
-		});
-		validateForm(event.target.name, event.target.value);
-	};
-
-	*/
 
 	return (
 		<>
@@ -62,6 +52,7 @@ export const Step2: React.FC<any> = ({ cursedForm, handleChange, codePhone, erro
 					name='doc_ident_ref1'
 					onChange={handleIdentNum}
 					value={cursedForm.doc_ident_ref1}
+					error={error.doc_ident_ref1}
 					inputProps={{
 						maxLength: cursedForm.doc_ident_type_ref1 === 'P' ? 20 : 9,
 					}}
@@ -122,6 +113,7 @@ export const Step2: React.FC<any> = ({ cursedForm, handleChange, codePhone, erro
 					name='doc_ident_ref2'
 					onChange={handleIdentNum}
 					value={cursedForm.doc_ident_ref2}
+					error={error.doc_ident_ref2}
 					inputProps={{
 						maxLength: cursedForm.doc_ident_type_ref2 === 'P' ? 20 : 9,
 					}}
