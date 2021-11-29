@@ -52,31 +52,34 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 				setTodo(data);
 			}
 		});
+		socket.emit('cliente:loadDiferidos');
+		socket.emit('cliente:dashdatasiempre');
 
-		socket.on('server:dashdata', (data: any) => {
-			if (Object.keys(data).length) {
-				//console.log('save 2', data);
-				setChartData(data);
-				setTodo(data);
-			}
-		});
-	}, [socket, user]);
+		// socket.on('server:dashdata', (data: any) => {
+		// 	if (Object.keys(data).length) {
+		// 		//console.log('save 2', data);
+		// 		setChartData(data);
+		// 		setTodo(data);
+		// 	}
+		// });
+	}, [socket, user, modalOpen]);
 
 	const handleClick = () => {
-		socket.emit('cliente:Todos', user, (todo: any) => {
-			setTodoTodos(todo);
-		});
-
-		dispatch(OpenModal());
-
 		socket.emit('Trabanjando_Solic', user, (solic: any) => {
 			console.log('solic', solic);
 			dispatch(getDataFM(solic));
 		});
 
+		dispatch(OpenModal());
+
+		socket.emit('cliente:Todos', user, (todo: any) => {
+			setTodoTodos(todo);
+		});
 		//FALTA RESTAR CUANDO ESPERA CUANDO AGARREN
 
-		socket.emit('cliente:dashdatasiempre');
+		// socket.emit('cliente:loadDiferidos');
+		// socket.emit('cliente:dashdatasiempre');
+		// socket.emit('cliente:dashdatasiempre');
 	};
 
 	const handleClickList = () => {
