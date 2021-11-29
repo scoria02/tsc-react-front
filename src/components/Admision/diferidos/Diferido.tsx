@@ -206,6 +206,9 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				index++;
 			}
 		}
+		if(Object.keys(actaImages).length){
+			index++;
+		}
 		return index === Object.keys(recaudos).length ? true : false;
 	};
 
@@ -232,11 +235,10 @@ const Diferido: React.FC<any> = ({ fm }) => {
 
 	useEffect(() => {
 		if (updatedStatus) {
-			dispatch(cleanDataFmDiferido());
+			console.log('Clean fm from diferdio');
 
-			socket.emit('cliente:disconnect');
-			socket.emit('cliente:loadDiferidos');
-			socket.emit('cliente:dashdatasiempre');
+			dispatch(cleanDataFmDiferido());
+			socket.emit('cliente:cleansolic');
 
 			setTimeout(() => {
 				Swal.fire({

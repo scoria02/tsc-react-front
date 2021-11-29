@@ -8,7 +8,7 @@ import {
 	GridValueGetterParams,
 } from '@material-ui/data-grid';
 import { DateTime } from 'luxon';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SocketContext } from '../../../context/SocketContext';
 import { OpenModalDiferido } from '../../../store/actions/ui';
@@ -90,40 +90,31 @@ const Diferidos: React.FC = () => {
 
 	const [diferidos, setDiferidos] = useState([]);
 
-	useEffect(() => {
-		socket.emit('prueba');
+	useLayoutEffect(() => {
+		//console.log('(L1)')
 		socket.emit('cliente:loadDiferidos');
-	}, [socket, updatedStatus]);
+	}, [])
 
+	//socket io (todos)
 	useEffect(() => {
-		// getDiferidos();
-
-		// socket.emit('cliente:loadDiferidos');
-		// socket.emit('cliente:dashdatasiempre');
-
+		//console.log('ED1')
 		socket.on('server:loadDiferidos', (data: any) => {
+			//console.log('diferidos', data)
 			setDiferidos(data);
 		});
-
-		socket.emit('cliente:loadDiferidos');
-		socket.emit('cliente:dashdatasiempre');
-
-		/*socket.on('server:dashdata', (data: any) => {
-			console.log('MENOL EMITE AQUI ', data);
-		});*/
 	}, [socket, modalOpenDiferido]);
-	//updatedStatus
 
 	const handleRow = (event: any) => {
-		setRowSelect(null);
-		socket.emit('Editar_diferido', event.row?.id, (res: any) => {
+		//setRowSelect(null);
+		socket.emit('Editar_diferido', event.row.id, (res:any) => {
+			console.log('editar este',res)
 			setRowSelect({
 				...res,
-				id: event.row?.id,
-			});
+				id: event.row.id,
+			})
 		});
 
-		socket.emit('cliente:trabanjandoDiferido', user, event.row?.id);
+		socket.emit('cliente:trabanjandoDiferido', user, event.row.id);
 		dispatch(OpenModalDiferido());
 	};
 

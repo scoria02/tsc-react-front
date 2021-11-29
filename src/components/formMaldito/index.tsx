@@ -381,9 +381,7 @@ export const FormMaldito: React.FC = () => {
 			setSendForm(4);
 		} else if (sendForm === 4 && fm.loadedFM) {
 			console.log('Ready All FM');
-			// socket.emit('client:getAll');
-			socket.emit('cliente:loadDiferidos');
-			socket.emit('cliente:dashdatasiempre');
+			//socket.emit('client:getAll');
 			socket.emit('cliente:disconnect');
 			setSendForm(5);
 			handleSendForm();
@@ -1214,9 +1212,6 @@ export const FormMaldito: React.FC = () => {
 			showConfirmButton: false,
 			timer: 1500,
 		});
-		//Redirect home
-		// socket.emit('cliente:Todos'); //Dispara accion
-		// socket.emit('client:getAll');
 		history.push(baseUrl);
 	};
 

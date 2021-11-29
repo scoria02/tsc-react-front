@@ -2,7 +2,7 @@ import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import LowPriority from '@material-ui/icons/LowPrioritySharp';
 import classNames from 'classnames';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useLayoutEffect, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SocketContext } from '../../context/SocketContext';
 import { getDataFM } from '../../store/actions/admisionFm';
@@ -39,24 +39,49 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 	const { solictudesTrabajando, diferidosTranbajando, diferidos } = todos;
 	const { allSolic, allTerm } = todostodos;
 
-	useEffect(() => {
-		socket.emit('cliente:Todos', user, (todo: any) => {
+	//socket 1 a 1
+	useLayoutEffect(() => {
+		//Este solo se debe ejecutar para obtener la data tras ver el fm
+		//console.log('(L1)')
+		socket.emit('cliente:dashdata', (data: any) => {
+			//console.log('L2',data)
+			setChartData(data);
+			setTodo(data);
+		});
+		socket.emit('cliente:todo', (todo: any) => {
+			//console.log('L3', todo)
 			setTodoTodos(todo);
-			//console.log('save 0', todo);
+		});
+	}, [])
+
+	//socket io (todos)
+	useEffect(() => {
+		//console.log('(E1)')
+
+		socket.on('server:dashdata', (data: any) => {
+			//console.log('E2',data)
+			setChartData(data);
+			setTodo(data);
 		});
 
+		socket.on('server:todos', (todo: any) => {
+			//console.log('E3', todo)
+			setTodoTodos(todo);
+		});
+
+		/*
+		socket.emit('cliente:Todos', user, (todo: any) => {
+			//console.log('save 0', todo);
+		});
 		socket.emit('cliente:dashdata', user, (data: any) => {
 			if (Object.keys(data).length) {
 				//console.log('save 1', data);
 				setChartData(data);
 				setTodo(data);
 			}
-		});
-		socket.emit('cliente:loadDiferidos');
-		socket.emit('cliente:dashdatasiempre');
-
-		console.log('bug', todostodos)
-
+		}); */
+		// socket.emit('cliente:loadDiferidos');
+		// socket.emit('cliente:dashdatasiempre');
 		// socket.on('server:dashdata', (data: any) => {
 		// 	if (Object.keys(data).length) {
 		// 		//console.log('save 2', data);
@@ -64,13 +89,22 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 		// 		setTodo(data);
 		// 	}
 		// });
-	}, [socket, user, modalOpen]);
+		/*
+		socket.on('server:prueba', (data: any) => {
+			console.log('aldrin res', data)
+		})
+		 */
+
+
+	}, [socket, user]);
 
 	const handleClick = () => {
-		socket.emit('Trabanjando_Solic', user, (solic: any) => {
-			console.log('solic', solic);
-			dispatch(getDataFM(solic));
-		});
+		socket.emit('Trabanjando_Solic', user);
+
+		socket.on('server:Trabanjando_Solic', (data: any) => {
+			console.log('solic', data);
+			dispatch(getDataFM(data));
+		})
 
 		//dispatch(OpenModal());
 
@@ -80,9 +114,8 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 		});
 		 */
 
-		//FALTA RESTAR CUANDO ESPERA CUANDO AGARREN
-		// socket.emit('cliente:loadDiferidos');
-		// socket.emit('cliente:dashdatasiempre');
+		//socket.emit('cliente:loadDiferidos');
+		//	socket.emit('cliente:dashdatasiempre');
 		// socket.emit('cliente:dashdatasiempre');
 	};
 
@@ -153,7 +186,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 						Validar Planilla
 						<AddIcon />
 					</Fab>
-					{(modalOpen) ? <Comprobacion /> : null} 
+					{modalOpen && Object.keys(fm).length ? <Comprobacion /> : null}
 				</div>
 			)}
 			{!isWorker && (

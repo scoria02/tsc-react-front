@@ -11,10 +11,12 @@ import {
 } from '@material-ui/data-grid';
 import CloseIcon from '@material-ui/icons/Close';
 import classNames from 'classnames';
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form } from '../components/administration/Form';
 import { getPayMent } from '../components/formMaldito/getData';
+
+import { SocketContext } from '../context/SocketContext';
 
 import { getDataFMAdministration } from '../store/actions/administration';
 import { RootState } from '../store/store';
@@ -188,6 +190,22 @@ const Administracion: FC<AdministracionProp> = () => {
 
 	const [getDataControl, setGetDataControl] = useState<number>(0);
 
+	const { socket } = useContext(SocketContext);
+
+	useLayoutEffect(() => {
+		console.log('LA1')
+		socket.emit('cliente:loadAdministracion');
+	}, [])
+
+	//socket io (todos)
+	useEffect(() => {
+		console.log('EA1')
+		socket.on('server:loadAdministracion', (data: any) => {
+			console.log('list adminis', data)
+			setDiferidos(data);
+		});
+	}, [socket]);
+
 	useEffect(() => {
 		//Get Type Doc Ident
 		if (getDataControl === 0) {
@@ -208,7 +226,7 @@ const Administracion: FC<AdministracionProp> = () => {
 	}, [getDataControl]);
 
 	useEffect(() => {
-		dispatch(getDataFMAdministration());
+		//dispatch(getDataFMAdministration());
 		// console.log('rowSelected', rowSelected);
 	}, []);
 
