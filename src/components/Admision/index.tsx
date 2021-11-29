@@ -52,8 +52,9 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 				setTodo(data);
 			}
 		});
-		socket.emit('cliente:loadDiferidos');
-		socket.emit('cliente:dashdatasiempre');
+
+		// socket.emit('cliente:loadDiferidos');
+		// socket.emit('cliente:dashdatasiempre');
 
 		// socket.on('server:dashdata', (data: any) => {
 		// 	if (Object.keys(data).length) {
@@ -62,7 +63,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 		// 		setTodo(data);
 		// 	}
 		// });
-	}, [socket, user, modalOpen]);
+	}, [socket, user]);
 
 	const handleClick = () => {
 		socket.emit('Trabanjando_Solic', user, (solic: any) => {
@@ -77,8 +78,8 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 		});
 		//FALTA RESTAR CUANDO ESPERA CUANDO AGARREN
 
-		// socket.emit('cliente:loadDiferidos');
-		// socket.emit('cliente:dashdatasiempre');
+		socket.emit('cliente:loadDiferidos');
+		socket.emit('cliente:dashdatasiempre');
 		// socket.emit('cliente:dashdatasiempre');
 	};
 
@@ -142,7 +143,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 						Validar Planilla
 						<AddIcon />
 					</Fab>
-					{(modalOpen && Object.keys(fm).length) ? <Comprobacion /> : null} 
+					{modalOpen && Object.keys(fm).length ? <Comprobacion /> : null}
 				</div>
 			)}
 			{!isWorker && (

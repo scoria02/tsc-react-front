@@ -62,18 +62,15 @@ const ModalSteps: React.FC<any> = ({
 
 	const handleClose = () => {
 		socket.emit('cliente:disconnect');
-		socket.emit('cliente:dashdatasiempre');
-		socket.emit('cliente:loadDiferidos');
+		// socket.emit('cliente:dashdatasiempre');
+		// socket.emit('cliente:loadDiferidos');
 		console.log('clean for close');
 		dispatch(CloseModal());
 		dispatch(clean());
 	};
 
 	return (
-		<FullModal
-			modalOpen={modalOpen}
-			handleClose={handleClose}
-		>
+		<FullModal modalOpen={modalOpen} handleClose={handleClose}>
 			{Object.keys(fm).length ? (
 				<>
 					<Stepper alternativeLabel nonLinear activeStep={activeStep}>
@@ -87,41 +84,45 @@ const ModalSteps: React.FC<any> = ({
 									</StepButton>
 								</Step>
 							) : (
-								<StepButton key={index} onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
+								<StepButton
+									key={index}
+									onClick={handleStep(index)}
+									completed={isStepComplete(index)}
+									{...buttonProps}>
 									<b style={{ fontSize: '1.2rem' }}>{label}</b>
 								</StepButton>
 							);
 						})}
 					</Stepper>
 					<div className={classes.containerStep}>
-							<div className={classes.instructions}>{getStepContent(activeStep, steps)}</div>
-							<div className='btn-divfloat'>
-								<Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-									Volver
-								</Button>
-								<Button variant='contained' color='primary' onClick={handleNext} className={classes.button}>
-									Siguiente
-								</Button>
-								{activeStep !== steps.length &&
-									(completed.has(activeStep) ? (
-										<Typography variant='caption' className={classes.completed}>
-											Verificado
-										</Typography>
-									) : (
-										<Button
-											className={classes.buttonS}
-											variant='contained'
-											color='primary'
-											disabled={readyStep}
-											onClick={handleComplete}>
-											{completedSteps() === totalSteps() - 1 ? 'Solicitud Revisada' : 'Verificar'}
-										</Button>
-									))}
-								</div>
+						<div className={classes.instructions}>{getStepContent(activeStep, steps)}</div>
+						<div className='btn-divfloat'>
+							<Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+								Volver
+							</Button>
+							<Button variant='contained' color='primary' onClick={handleNext} className={classes.button}>
+								Siguiente
+							</Button>
+							{activeStep !== steps.length &&
+								(completed.has(activeStep) ? (
+									<Typography variant='caption' className={classes.completed}>
+										Verificado
+									</Typography>
+								) : (
+									<Button
+										className={classes.buttonS}
+										variant='contained'
+										color='primary'
+										disabled={readyStep}
+										onClick={handleComplete}>
+										{completedSteps() === totalSteps() - 1 ? 'Solicitud Revisada' : 'Verificar'}
+									</Button>
+								))}
 						</div>
-					</>
-				):(
-				<LoaderPrimary/>
+					</div>
+				</>
+			) : (
+				<LoaderPrimary />
 			)}
 		</FullModal>
 	);
