@@ -34,7 +34,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		rc_comp_dep: null,
 	});
 
-	const [actaImages, setActaImages]  = useState<any>([]);
+	const [actaImages, setActaImages] = useState<any>([]);
 	const [actaPaths, setActaPaths] = useState<any>([]);
 
 	const [paths, setPaths] = useState<any>({
@@ -48,7 +48,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 	const handleChangeImages = (event: any) => {
 		if (event.target.files[0]) {
 			let file = event.target.files[0];
-			console.log(URL.createObjectURL(file))
+			console.log(URL.createObjectURL(file));
 			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: file.type });
 			const path = URL.createObjectURL(newFile);
 			//Save img
@@ -66,11 +66,11 @@ const Diferido: React.FC<any> = ({ fm }) => {
 
 	const handleChangeImagesActa = (event: any) => {
 		if (event.target.files[0]) {
-			let files = event.target.files
-			let path: string[] = []
+			let files = event.target.files;
+			let path: string[] = [];
 			Object.keys(files).map((item: any, index: number) => {
 				path.push(URL.createObjectURL(files[index]));
-			})
+			});
 			setActaImages(files);
 			setActaPaths(path);
 		}
@@ -127,7 +127,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		return list;
 	}
 
-	console.log('ddd', uploadImgs)
+	console.log('ddd', uploadImgs);
 
 	function getStepContent(step: number) {
 		let index = 0;
@@ -136,7 +136,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 			if (step === index) {
 				const ready = completed.has(activeStep);
 				setNameStep(item[0]);
-				if(item[0] === 'rc_constitutive_act'){
+				if (item[0] === 'rc_constitutive_act') {
 					return (
 						<StepActaConst
 							key={index}
@@ -149,7 +149,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 							ready={ready}
 						/>
 					);
-				}else{
+				} else {
 					return (
 						<StepDiferido
 							key={index}
@@ -224,8 +224,9 @@ const Diferido: React.FC<any> = ({ fm }) => {
 			dispatch(cleanDataFmDiferido());
 
 			socket.emit('cliente:disconnect');
-			socket.emit('cliente:loadDiferidos');
-			socket.emit('cliente:dashdatasiempre');
+			socket.emit('client:getAll');
+			// socket.emit('cliente:loadDiferidos');
+			// socket.emit('cliente:dashdatasiempre');
 
 			setTimeout(() => {
 				Swal.fire({

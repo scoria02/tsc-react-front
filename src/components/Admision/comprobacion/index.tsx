@@ -49,8 +49,8 @@ const Comprobacion: React.FC<any> = () => {
 				return (
 					<div>
 						<PasoActaConst />
-						</div>
-					);
+					</div>
+				);
 			case 'Cont. Especial':
 				return (
 					<div>
@@ -66,7 +66,7 @@ const Comprobacion: React.FC<any> = () => {
 			case 'Asignación ACI':
 				return (
 					<div>
-						<PasoSelectAci/>
+						<PasoSelectAci />
 					</div>
 				);
 			default:
@@ -90,21 +90,17 @@ const Comprobacion: React.FC<any> = () => {
 	const steps = getSteps(fm);
 
 	function getSteps(form: any) {
-		const list: string[] = [
-			'Cliente',
-			'Comercio',
-			'Referencia Bancaria',
-		];
-		if(form.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')){
-			list.push('Acta Const.')
+		const list: string[] = ['Cliente', 'Comercio', 'Referencia Bancaria'];
+		if (form.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')) {
+			list.push('Acta Const.');
 		}
-		if(form.id_commerce.rc_special_contributor && !list.includes('Cont. Especial')){
+		if (form.id_commerce.rc_special_contributor && !list.includes('Cont. Especial')) {
 			list.push('Cont. Especial');
 		}
 		if (form.rc_comp_dep && !list.includes('Comprobante de Pago')) {
 			list.push('Comprobante de Pago');
 		}
-		list.push('Asignación ACI')
+		list.push('Asignación ACI');
 		return list;
 	}
 
@@ -135,6 +131,7 @@ const Comprobacion: React.FC<any> = () => {
 		if (allStepsCompleted() && !updatedStatus) {
 			if (validStatusFm()) {
 				dispatch(updateStatusFM(fm.id, 4, validated));
+				socket.emit('client:getAll');
 				console.log('mandado diferido');
 			} else {
 				dispatch(updateStatusFM(fm.id, 3, validated));
@@ -149,8 +146,11 @@ const Comprobacion: React.FC<any> = () => {
 			const idStatus = id_statusFM;
 
 			socket.emit('cliente:cleansolic');
-			socket.emit('cliente:loadDiferidos');
-			socket.emit('cliente:dashdatasiempre');
+			socket.emit('client:getAll');
+
+			// socket.emit('cliente:loadDiferidos');
+			// socket.emit('cliente:dashdatasiempre');
+
 			Swal.fire({
 				icon: `${idStatus === 3 ? 'success' : 'warning'}`,
 				title: `${idStatus === 3 ? 'Formulario Verificado' : 'Formulario Diferido'}`,

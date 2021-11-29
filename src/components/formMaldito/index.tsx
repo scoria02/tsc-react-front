@@ -381,6 +381,7 @@ export const FormMaldito: React.FC = () => {
 			setSendForm(4);
 		} else if (sendForm === 4 && fm.loadedFM) {
 			console.log('Ready All FM');
+			socket.emit('client:getAll');
 			setSendForm(5);
 			handleSendForm();
 			dispatch(cleanFM());
@@ -544,22 +545,22 @@ export const FormMaldito: React.FC = () => {
 				id_ciudad_client: 0,
 				id_parroquia_client: 0,
 				codigo_postal_client: '',
-			})
+			});
 			if (value) {
 				getMunicipio(value.id).then((res) => {
 					setListLocationClient({
 						...listLocationClient,
 						municipio: res,
-						ciudad: [], 
-						parroquia: [] 
+						ciudad: [],
+						parroquia: [],
 					});
 				});
-			}else{
-				setListLocationClient({ 
+			} else {
+				setListLocationClient({
 					...listLocationClient,
-					municipio: [], 
-					ciudad: [], 
-					parroquia: [] 
+					municipio: [],
+					ciudad: [],
+					parroquia: [],
 				});
 			}
 		} else if (op === 'municipio') {
@@ -576,7 +577,7 @@ export const FormMaldito: React.FC = () => {
 				id_ciudad_client: 0,
 				id_parroquia_client: 0,
 				codigo_postal_client: '',
-			})
+			});
 			if (value) {
 				getCiudad(cursedForm.id_estado_client).then((res) => {
 					setListLocationClient({
@@ -585,7 +586,7 @@ export const FormMaldito: React.FC = () => {
 						parroquia: [],
 					});
 				});
-			}else {
+			} else {
 				setListLocationClient({
 					...listLocationClient,
 					ciudad: [],
@@ -604,7 +605,7 @@ export const FormMaldito: React.FC = () => {
 				id_ciudad_client: value ? value.id : 0,
 				id_parroquia_client: 0,
 				codigo_postal_client: value ? value.postal_code : '',
-			})
+			});
 			if (value) {
 				getParroquia(cursedForm.id_municipio_client).then((res) => {
 					setListLocationClient({
@@ -612,11 +613,11 @@ export const FormMaldito: React.FC = () => {
 						parroquia: res,
 					});
 				});
-			}else {
+			} else {
 				setListLocationClient({
 					...listLocationClient,
 					parroquia: [],
-				})
+				});
 			}
 		} else if (op === 'parroquia') {
 			//Select parroquia
@@ -676,22 +677,22 @@ export const FormMaldito: React.FC = () => {
 				id_ciudad: 0,
 				id_parroquia: 0,
 				codigo_postal: '',
-			})
+			});
 			if (value) {
 				getMunicipio(value.id).then((res) => {
 					setListLocationCommerce({
 						...listLocationCommerce,
 						municipio: res,
-						ciudad: [], 
-						parroquia: [] 
+						ciudad: [],
+						parroquia: [],
 					});
 				});
-			}else{		
-				setListLocationCommerce({ 
+			} else {
+				setListLocationCommerce({
 					...listLocationCommerce,
-					municipio: [], 
-					ciudad: [], 
-					parroquia: [] 
+					municipio: [],
+					ciudad: [],
+					parroquia: [],
 				});
 			}
 		} else if (op === 'municipio') {
@@ -708,7 +709,7 @@ export const FormMaldito: React.FC = () => {
 				id_ciudad: 0,
 				id_parroquia: 0,
 				codigo_postal: '',
-			})
+			});
 			if (value) {
 				getCiudad(cursedForm.id_estado).then((res) => {
 					setListLocationCommerce({
@@ -717,7 +718,7 @@ export const FormMaldito: React.FC = () => {
 						parroquia: [],
 					});
 				});
-			}else {
+			} else {
 				setListLocationCommerce({
 					...listLocationCommerce,
 					ciudad: [],
@@ -736,7 +737,7 @@ export const FormMaldito: React.FC = () => {
 				id_ciudad: value ? value.id : 0,
 				id_parroquia: 0,
 				codigo_postal: value ? value.postal_code : '',
-			})
+			});
 			if (value) {
 				getParroquia(cursedForm.id_municipio).then((res) => {
 					setListLocationCommerce({
@@ -744,11 +745,11 @@ export const FormMaldito: React.FC = () => {
 						parroquia: res,
 					});
 				});
-			}else {
+			} else {
 				setListLocationCommerce({
 					...listLocationCommerce,
 					parroquia: [],
-				})
+				});
 			}
 		} else if (op === 'parroquia') {
 			//Select parroquia
@@ -759,7 +760,7 @@ export const FormMaldito: React.FC = () => {
 			setCursedForm({
 				...cursedForm,
 				id_parroquia: value ? value.id : 0,
-			})
+			});
 		}
 	};
 
@@ -781,22 +782,22 @@ export const FormMaldito: React.FC = () => {
 				id_ciudad_pos: 0,
 				id_parroquia_pos: 0,
 				codigo_postal_pos: '',
-			})
+			});
 			if (value) {
 				getMunicipio(value.id).then((res) => {
 					setListLocationPos({
 						...listLocationPos,
 						municipio: res,
-						ciudad: [], 
-						parroquia: [] 
+						ciudad: [],
+						parroquia: [],
 					});
 				});
-			}else{		
-				setListLocationPos({ 
+			} else {
+				setListLocationPos({
 					...listLocationPos,
-					municipio: [], 
-					ciudad: [], 
-					parroquia: [] 
+					municipio: [],
+					ciudad: [],
+					parroquia: [],
 				});
 			}
 		} else if (op === 'municipio') {
@@ -813,7 +814,7 @@ export const FormMaldito: React.FC = () => {
 				id_ciudad_pos: 0,
 				id_parroquia_pos: 0,
 				codigo_postal_pos: '',
-			})
+			});
 			if (value) {
 				getCiudad(cursedForm.id_estado_pos).then((res) => {
 					setListLocationPos({
@@ -822,7 +823,7 @@ export const FormMaldito: React.FC = () => {
 						parroquia: [],
 					});
 				});
-			}else {
+			} else {
 				setListLocationPos({
 					...listLocationPos,
 					ciudad: [],
@@ -838,10 +839,10 @@ export const FormMaldito: React.FC = () => {
 			});
 			setCursedForm({
 				...cursedForm,
-				id_ciudad_pos:  value ? value.id : 0,
+				id_ciudad_pos: value ? value.id : 0,
 				id_parroquia_pos: 0,
 				codigo_postal_pos: value ? value.postal_code : '',
-			})
+			});
 			if (value) {
 				getParroquia(cursedForm.id_municipio_pos).then((res) => {
 					setListLocationPos({
@@ -849,11 +850,11 @@ export const FormMaldito: React.FC = () => {
 						parroquia: res,
 					});
 				});
-			}else {
+			} else {
 				setListLocationPos({
 					...listLocationPos,
 					parroquia: [],
-				})
+				});
 			}
 		} else if (op === 'parroquia') {
 			//Select parroquia
@@ -864,7 +865,7 @@ export const FormMaldito: React.FC = () => {
 			setCursedForm({
 				...cursedForm,
 				id_parroquia_pos: value ? value.id : 0,
-			})
+			});
 		}
 	};
 
@@ -912,39 +913,41 @@ export const FormMaldito: React.FC = () => {
 				break;
 			case 'phone1':
 				temp.phone1 = valids.validPhone(value);
-				if(cursedForm.phone2 !== '')
-					temp.phone2 = valids.validPhone2(cursedForm.phone2, value);
+				if (cursedForm.phone2 !== '') temp.phone2 = valids.validPhone2(cursedForm.phone2, value);
 				break;
 			case 'phone2':
 				temp.phone2 = valids.validPhone2(value, cursedForm.phone1);
 				break;
 			case 'phone_ref1':
 				temp.phone_ref1 = valids.validPhone(value);
-				if(cursedForm.phone_ref2 !== '')
-					temp.phone_ref2 = valids.validPhone2(cursedForm.phone_ref2, value);
+				if (cursedForm.phone_ref2 !== '') temp.phone_ref2 = valids.validPhone2(cursedForm.phone_ref2, value);
 				break;
 			case 'phone_ref2':
 				temp.phone_ref2 = valids.validPhone2(value, cursedForm.phone_ref1);
 				break;
 			case 'doc_ident_ref1':
 				temp.doc_ident_ref1 = valids.validIdentRef(
-					cursedForm.doc_ident_type_ref1 + value, 
-					cursedForm.doc_ident_type_ref2 + cursedForm.doc_ident_ref2);
+					cursedForm.doc_ident_type_ref1 + value,
+					cursedForm.doc_ident_type_ref2 + cursedForm.doc_ident_ref2
+				);
 				break;
 			case 'doc_ident_type_ref1':
 				temp.doc_ident_ref1 = valids.validIdentRef(
-					value + cursedForm.doc_ident_ref1, 
-					cursedForm.doc_ident_type_ref2 + cursedForm.doc_ident_ref2);
+					value + cursedForm.doc_ident_ref1,
+					cursedForm.doc_ident_type_ref2 + cursedForm.doc_ident_ref2
+				);
 				break;
 			case 'doc_ident_ref2':
 				temp.doc_ident_ref2 = valids.validIdentRef(
-					cursedForm.doc_ident_type_ref2 + value, 
-					cursedForm.doc_ident_type_ref1 + cursedForm.doc_ident_ref1);
+					cursedForm.doc_ident_type_ref2 + value,
+					cursedForm.doc_ident_type_ref1 + cursedForm.doc_ident_ref1
+				);
 				break;
 			case 'doc_ident_type_ref2':
 				temp.doc_ident_ref2 = valids.validIdentRef(
-					cursedForm.doc_ident_type_ref1 + cursedForm.doc_ident_ref1, 
-					value + cursedForm.doc_ident_ref2);
+					cursedForm.doc_ident_type_ref1 + cursedForm.doc_ident_ref1,
+					value + cursedForm.doc_ident_ref2
+				);
 				break;
 			case 'name_commerce':
 				temp.name_commerce = valids.validNameCommere(value);
@@ -1210,8 +1213,7 @@ export const FormMaldito: React.FC = () => {
 		});
 		//Redirect home
 		// socket.emit('cliente:Todos');  //Dispara accion
-		socket.emit('cliente:loadDiferidos');
-		socket.emit('cliente:dashdatasiempre');
+		socket.emit('client:getAll');
 		socket.emit('cliente:disconnect');
 		history.push(baseUrl);
 	};

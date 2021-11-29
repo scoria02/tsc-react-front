@@ -130,20 +130,20 @@ const Admision: React.FC = () => {
 					<Barra chartData={valuesChart} colsData={keyChart} />
 				</div>
 			</div>
-			{allSolic &&
+			{allSolic && (
 				<div className='cmn-divfloat'>
 					<Fab color='primary' aria-label='add' size='medium' variant='extended' onClick={handleClick}>
 						Validar Planilla
 						<AddIcon />
 					</Fab>
-					{(modalOpen && Object.keys(fm).length) && <Comprobacion />}
+					{modalOpen && Object.keys(fm).length && <Comprobacion />}
 				</div>
-			}
+			)}
 			<div className='cmn2-divfloat'>
 				<Fab color='secondary' aria-label='add' size='large' variant='extended' onClick={handleClickList}>
 					<LowPriority />
 				</Fab>
-				{modalOpenListSolic && <ListFms/>}
+				{modalOpenListSolic && <ListFms />}
 			</div>
 		</div>
 	);
