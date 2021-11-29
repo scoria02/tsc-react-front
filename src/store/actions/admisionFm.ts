@@ -35,9 +35,10 @@ export const getDataFM = (fm: any) => {
 	}
 };
 
-export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
+export const updateStatusFM = (id_fm: number, status: any, accept: any, aci: number) => {
 	const id_status: any = {
 		id_status_request: status,
+		id_aci: aci,
 		valids: {
 			//step1
 			valid_ident_card: accept.rc_ident_card.msg,
@@ -51,6 +52,7 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any) => {
 			valid_comp_dep: accept.rc_comp_dep.msg,
 		},
 	};
+	console.log('mandar', id_status)
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.put(`/FM/admision/${id_fm}/status`, id_status);

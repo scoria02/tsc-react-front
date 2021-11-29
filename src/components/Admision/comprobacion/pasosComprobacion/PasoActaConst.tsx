@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect} from 'react';
 import { Button } from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
@@ -15,15 +15,9 @@ import { useStyles } from './styles/styles';
 
 import { ModalAlert }from '../../../modals/ModalAlert';
 
-import Rec from '../../../utilis/images/Rec';
-
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-
-import MenuItem from '@material-ui/core/MenuItem';
-
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
 import Avatar from '@material-ui/core/Avatar';
 
@@ -41,7 +35,6 @@ const PasoActaConst: React.FC = () => {
 	const rc_constitutive_act: any = useSelector((state: RootState) => state.acceptance.validado.rc_constitutive_act);
 	const [state, setState] = React.useState(rc_constitutive_act);
 	const [openModal, setOpenModal] = React.useState<boolean>(false);
-  const [load, setLoad] = useState(false)
 
 	const handleOpenModal = () => {
 		handleCancel()
@@ -99,7 +92,7 @@ const PasoActaConst: React.FC = () => {
 						id='outlined-basic '
 						label='Acta Constitutiva'
 						variant='outlined'
-						value='Foto de Acta Constitutiva'
+						value={`Archivo${imagenes.length ? 's' : '' } de Acta Constitutiva`}
 						disabled
 					/>
 					<FormControlLabel

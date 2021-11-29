@@ -13,3 +13,8 @@ export const Valid = (valid: any) => ({
 export const cleanRec = () => ({
 	type: ActionType.cleanAcceptRec,
 })
+
+export const selectAci = (state: boolean) => ({
+	type: ActionType.acceptAci,
+	payload: state
+})

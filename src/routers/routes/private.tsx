@@ -13,39 +13,8 @@ const Private: Route[] = [
 		component: Inicio,
 		meta: {
 			auth: true,
-			dep: 'all',
-		},
-	},
-	{
-		path: urlCobr,
-		component: Cobranza,
-		meta: {
-			auth: true,
-			dep: 'admin',
-		},
-	},
-	{
-		path: urlAdministracion,
-		component: Administracion,
-		meta: {
-			auth: true,
-			dep: 'admin',
-		},
-	},
-	{
-		path: urlAdmision,
-		component: Admision,
-		meta: {
-			auth: true,
-			dep: 'adm',
-		},
-	},
-	{
-		path: urlFM,
-		component: FormMaldito,
-		meta: {
-			auth: true,
-			dep: 'adm',
+			dep: ['Free'],
+			rol: [1, 2, 3, 4],
 		},
 	},
 	{
@@ -53,7 +22,44 @@ const Private: Route[] = [
 		component: GestionUsuarios,
 		meta: {
 			auth: true,
-			dep: 'sec',
+			dep: ['Seguridad'],
+			rol: [4],
+		},
+	},
+	{
+		path: urlFM,
+		component: FormMaldito,
+		meta: {
+			auth: true,
+			dep: ['Admision', 'Canales', 'Fuerza de Venta'],
+			rol: [1, 2, 3, 4],
+		},
+	},
+	{
+		path: urlAdmision,
+		component: Admision,
+		meta: {
+			auth: true,
+			dep: ['Admision'],
+			rol: [1, 2, 3, 4],
+		},
+	},
+	{
+		path: urlCobr,
+		component: Cobranza,
+		meta: {
+			auth: true,
+			dep: ['Cobranza'],
+			rol: [1, 2, 3, 4],
+		},
+	},
+	{
+		path: urlAdministracion,
+		component: Administracion,
+		meta: {
+			auth: true,
+			dep: ['Administracion'],
+			rol: [1, 2, 3, 4],
 		},
 	},
 ];
