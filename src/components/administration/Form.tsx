@@ -238,7 +238,7 @@ export const Form: React.FC<any> = ({
 								<TextField
 									id='initial'
 									label='Inicial'
-									//className={classes.inputTextLeft}
+									className={classes.textAutoCompleteLeft}
 									type='number'
 									name='initial'
 									variant='outlined'
@@ -248,7 +248,7 @@ export const Form: React.FC<any> = ({
 									}}
 									inputProps={{
 										maxLength: 5,
-										step: '50',
+										step: '10',
 										min: '100',
 									}}
 									//onChange={handleChange}
@@ -257,7 +257,8 @@ export const Form: React.FC<any> = ({
 									disabled
 									id='initial'
 									label='Cantidad de cuotas'
-									//className={classes.inputText}
+									className={classes.textAutoCompleteLeft}
+									// className={classes.inputText}
 									type='text'
 									variant='outlined'
 									value={cuotasTexto}

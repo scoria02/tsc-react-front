@@ -5,6 +5,7 @@ export const useStyles = makeStyles((styles) => ({
 		width: '100%',
 		display: 'flex',
 		justifyContent: 'center',
+		margin: '8px 0',
 	},
 	btn_step: {
 		width: '49%',
