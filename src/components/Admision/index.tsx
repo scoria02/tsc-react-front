@@ -52,34 +52,46 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 				setTodo(data);
 			}
 		});
+		socket.emit('cliente:loadDiferidos');
+		socket.emit('cliente:dashdatasiempre');
 
-		/*
-		socket.on('server:dashdata', (data: any) => {
-			if (Object.keys(data).length) {
-				//console.log('save 2', data);
-				setChartData(data);
-				setTodo(data);
-			}
-		});
-		 */
-	}, [socket, user]);
+		console.log('bug', todostodos)
+
+		// socket.on('server:dashdata', (data: any) => {
+		// 	if (Object.keys(data).length) {
+		// 		//console.log('save 2', data);
+		// 		setChartData(data);
+		// 		setTodo(data);
+		// 	}
+		// });
+	}, [socket, user, modalOpen]);
 
 	const handleClick = () => {
-		socket.emit('cliente:Todos', user, (todo: any) => {
-			setTodoTodos(todo);
-		});
-
-		dispatch(OpenModal());
-
 		socket.emit('Trabanjando_Solic', user, (solic: any) => {
 			console.log('solic', solic);
 			dispatch(getDataFM(solic));
 		});
 
-		//FALTA RESTAR CUANDO ESPERA CUANDO AGARREN
+		//dispatch(OpenModal());
 
-		socket.emit('cliente:dashdatasiempre');
+		/*
+		socket.emit('cliente:Todos', user, (todo: any) => {
+			setTodoTodos(todo);
+		});
+		 */
+
+		//FALTA RESTAR CUANDO ESPERA CUANDO AGARREN
+		// socket.emit('cliente:loadDiferidos');
+		// socket.emit('cliente:dashdatasiempre');
+		// socket.emit('cliente:dashdatasiempre');
 	};
+
+	useEffect(() => {
+		if(Object.keys(fm).length){
+			console.log('Abrir modal')
+			dispatch(OpenModal());
+		}
+	}, [fm])
 
 	const handleClickList = () => {
 		dispatch(OpenModalListSolic());
@@ -141,7 +153,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 						Validar Planilla
 						<AddIcon />
 					</Fab>
-					{(modalOpen && Object.keys(fm).length) ? <Comprobacion /> : null} 
+					{(modalOpen) ? <Comprobacion /> : null} 
 				</div>
 			)}
 			{!isWorker && (
