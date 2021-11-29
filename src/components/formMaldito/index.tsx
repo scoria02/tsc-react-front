@@ -384,6 +384,7 @@ export const FormMaldito: React.FC = () => {
 			// socket.emit('client:getAll');
 			socket.emit('cliente:loadDiferidos');
 			socket.emit('cliente:dashdatasiempre');
+			socket.emit('cliente:disconnect');
 			setSendForm(5);
 			handleSendForm();
 			dispatch(cleanFM());
@@ -1216,9 +1217,6 @@ export const FormMaldito: React.FC = () => {
 		//Redirect home
 		// socket.emit('cliente:Todos'); //Dispara accion
 		// socket.emit('client:getAll');
-		socket.emit('cliente:loadDiferidos');
-		socket.emit('cliente:dashdatasiempre');
-		socket.emit('cliente:disconnect');
 		history.push(baseUrl);
 	};
 

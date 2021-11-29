@@ -53,6 +53,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 			}
 		});
 
+		/*
 		socket.on('server:dashdata', (data: any) => {
 			if (Object.keys(data).length) {
 				//console.log('save 2', data);
@@ -60,6 +61,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 				setTodo(data);
 			}
 		});
+		 */
 	}, [socket, user]);
 
 	const handleClick = () => {
@@ -147,7 +149,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 					<Fab color='secondary' aria-label='add' size='large' variant='extended' onClick={handleClickList}>
 						<LowPriority />
 					</Fab>
-					{modalOpenListSolic && <ListFms />}
+					{modalOpenListSolic ? <ListFms /> : null}
 				</div>
 			)}
 		</div>
