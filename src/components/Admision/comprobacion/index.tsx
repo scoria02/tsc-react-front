@@ -7,6 +7,8 @@ import { stepComplete } from '../../../store/actions/accept';
 import { cleanAdmisionFM, updateStatusFM } from '../../../store/actions/admisionFm';
 import { CloseModal } from '../../../store/actions/ui';
 import { RootState } from '../../../store/store';
+import { getAci } from '../../formMaldito/getData';
+import ModalSteps from '../../modals/ModalSteps';
 import '../scss/index.scss';
 import PasoAccountNumber from './pasosComprobacion/PasoAccountNumber';
 import PasoActaConst from './pasosComprobacion/PasoActaConst';
@@ -17,10 +19,6 @@ import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
 import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
 import PasoSelectAci from './pasosComprobacion/PasoSelectAci';
-import ModalSteps from '../../modals/ModalSteps';
-
-import { getAci } from '../../formMaldito/getData';
-
 
 const Comprobacion: React.FC<any> = () => {
 	function getStepContent(step: number, steps: string[]) {
@@ -52,8 +50,8 @@ const Comprobacion: React.FC<any> = () => {
 				return (
 					<div>
 						<PasoActaConst />
-						</div>
-					);
+					</div>
+				);
 			case 'Cont. Especial':
 				return (
 					<div>
@@ -69,11 +67,7 @@ const Comprobacion: React.FC<any> = () => {
 			case 'Asignación ACI':
 				return (
 					<div>
-						<PasoSelectAci
-							aci={aci}
-							setAci={setAci}
-							listAci={listAci}
-						/>
+						<PasoSelectAci aci={aci} setAci={setAci} listAci={listAci} />
 					</div>
 				);
 			default:
@@ -101,38 +95,34 @@ const Comprobacion: React.FC<any> = () => {
 
 	useEffect(() => {
 		if (getDataControl === 0) {
-			getAci().then((res:any) => {
-				res.forEach((item:any, indice:number) => {
+			getAci().then((res: any) => {
+				res.forEach((item: any, indice: number) => {
 					setListAci((prevState: any) => [...prevState, item]);
 					if (indice === res.length - 1) {
 						setGetDataControl(1);
 					}
 				});
 			});
-		} else if (getDataControl=== 1) {
-			console.log('Get list Acis')
+		} else if (getDataControl === 1) {
+			console.log('Get list Acis');
 			setGetDataControl(2);
 		}
-	}, [getDataControl])
+	}, [getDataControl]);
 
 	const steps = getSteps(fm);
 
 	function getSteps(form: any) {
-		const list: string[] = [
-			'Cliente',
-			'Comercio',
-			'Referencia Bancaria',
-		];
-		if(form.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')){
-			list.push('Acta Const.')
+		const list: string[] = ['Cliente', 'Comercio', 'Referencia Bancaria'];
+		if (form.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')) {
+			list.push('Acta Const.');
 		}
-		if(form.id_commerce.rc_special_contributor && !list.includes('Cont. Especial')){
+		if (form.id_commerce.rc_special_contributor && !list.includes('Cont. Especial')) {
 			list.push('Cont. Especial');
 		}
 		if (form.rc_comp_dep && !list.includes('Comprobante de Pago')) {
 			list.push('Comprobante de Pago');
 		}
-		list.push('Asignación ACI')
+		list.push('Asignación ACI');
 		return list;
 	}
 
@@ -244,14 +234,11 @@ const Comprobacion: React.FC<any> = () => {
 	const [readyStep, setReadyStep] = useState<boolean>(false);
 
 	useEffect(() => {
-		if(activeStep === steps.length-1){
-			if(aci)
-				setReadyStep(false);
-			else 
-				setReadyStep(true);
-		}else
-			setReadyStep(false);
-	}, [activeStep, aci])
+		if (activeStep === steps.length - 1) {
+			if (aci) setReadyStep(false);
+			else setReadyStep(true);
+		} else setReadyStep(false);
+	}, [activeStep, aci]);
 
 	return (
 		<ModalSteps
