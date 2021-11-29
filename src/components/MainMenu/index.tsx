@@ -174,8 +174,6 @@ const MainMenu: FC = () => {
 			setUser(userDB);
 		}
 		if (menu) {
-			console.log('menu', menu);
-
 			switch (menu) {
 				case 'God':
 					setAdmision(true);
@@ -232,7 +230,6 @@ const MainMenu: FC = () => {
 					setSeguridad(false);
 					break;
 			}
-			console.log('menu', menu);
 		}
 	}, [userDB, menu]);
 
