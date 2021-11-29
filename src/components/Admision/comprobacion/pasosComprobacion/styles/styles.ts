@@ -1,11 +1,10 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((styles) => ({
-	btn_stepM:{
+	btn_stepM: {
 		width: '100%',
 		display: 'flex',
 		justifyContent: 'center',
-		marginBottom: '1rem',
 	},
 	btn_step: {
 		width: '49%',
@@ -43,7 +42,7 @@ export const useStyles = makeStyles((styles) => ({
 	},
 	checkText: {
 		marginLeft: '1rem',
-		width: '100px'
+		width: '100px',
 	},
 	container_ListActa: {
 		marginTop: '1rem',
@@ -57,6 +56,6 @@ export const useStyles = makeStyles((styles) => ({
 		textTransform: 'none',
 	},
 	itemLink: {
-		paddingLeft: '.5rem'
-	}
+		paddingLeft: '.5rem',
+	},
 }));

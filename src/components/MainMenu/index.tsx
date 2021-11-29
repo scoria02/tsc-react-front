@@ -154,14 +154,14 @@ const MainMenu: FC = () => {
 
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
+	const [administracion, setAdministracion] = useState(false);
 	const [section, setSection] = useState<string>('');
-	const { menu } = useContext(ApprouterContext);
-	const [open, setOpen] = useState(false); //Nav Left
+	const [seguridad, setSeguridad] = useState(false);
 	const [admision, setAdmision] = useState(false);
 	const [cobranza, setCobranza] = useState(false);
-	const [administracion, setAdministracion] = useState(false);
-	const [seguridad, setSeguridad] = useState(false);
-
+	const { menu } = useContext(ApprouterContext);
+	const [open, setOpen] = useState(false); //Nav Left
+	const [fm, setFm] = useState(false);
 	const [user, setUser] = useState({
 		name: '',
 		last_name: '',
@@ -182,8 +182,10 @@ const MainMenu: FC = () => {
 					setCobranza(true);
 					setAdministracion(true);
 					setSeguridad(true);
+					setFm(true);
 					break;
 				case 'Presidencia':
+					setFm(true);
 					setAdmision(true);
 					setCobranza(true);
 					setAdministracion(true);
@@ -191,6 +193,7 @@ const MainMenu: FC = () => {
 					break;
 
 				case 'Admision':
+					setFm(true);
 					setAdmision(true);
 					setCobranza(false);
 					setAdministracion(false);
@@ -198,6 +201,7 @@ const MainMenu: FC = () => {
 					break;
 
 				case 'Administracion':
+					setFm(false);
 					setAdmision(false);
 					setCobranza(false);
 					setAdministracion(true);
@@ -205,6 +209,7 @@ const MainMenu: FC = () => {
 					break;
 
 				case 'Cobranza':
+					setFm(false);
 					setAdmision(false);
 					setCobranza(true);
 					setAdministracion(false);
@@ -212,6 +217,7 @@ const MainMenu: FC = () => {
 					break;
 
 				case 'Seguridad':
+					setFm(false);
 					setAdmision(false);
 					setCobranza(false);
 					setAdministracion(false);
@@ -219,6 +225,7 @@ const MainMenu: FC = () => {
 					break;
 
 				default:
+					setFm(false);
 					setAdmision(false);
 					setCobranza(false);
 					setAdministracion(false);
@@ -241,6 +248,7 @@ const MainMenu: FC = () => {
 	const handleDrawerClose = () => {
 		setOpen(false);
 	};
+
 	const handleMenuLogout = () => {
 		localStorage.removeItem('token');
 		dispatch(startLogout());
@@ -294,6 +302,7 @@ const MainMenu: FC = () => {
 		setAnchorEl(null);
 		handleMobileMenuClose();
 	};
+
 	const handleLogoClick = () => {
 		handleDrawerClose();
 	};
@@ -462,7 +471,7 @@ const MainMenu: FC = () => {
 						</ListItemIcon>
 						<ListItemText primary='Inicio' />
 					</ListItem>
-					{menu !== 'Base' && (
+					{fm && (
 						<ListItem button onClick={(event) => handleListItemClick(event, 5)}>
 							<ListItemIcon classes={{ root: classes.icon }}>
 								<AssignmentIcon />

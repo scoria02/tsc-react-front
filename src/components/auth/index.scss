@@ -1,6 +1,12 @@
 @keyframes rotatee {
-  from{transform:rotateY(90deg)}
-  to {transform:rotateY(-90deg)}
+  from{
+    text-shadow: 0 20px 20px #2c482e, 0 -2px 1px #aeffb4;
+    transform:rotateY(90deg);
+  }
+  to {
+    text-shadow: 0 14px 9px #2c482e, 0 -2px 1px #aeffb4;
+    transform:rotateY(-90deg);
+  }
 }
 
 .toto {

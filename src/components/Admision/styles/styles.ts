@@ -131,6 +131,8 @@ export const useStyles = makeStyles((styles: Theme) => ({
 		display: 'flex',
 		justifyContent: 'center',
 		marginBottom: '1rem',
+		// flexDirection: 'column',
+		alignItems: 'center',
 	},
 	btn_step: {
 		width: '49%',
@@ -206,6 +208,6 @@ export const useStyles = makeStyles((styles: Theme) => ({
 		textTransform: 'none',
 	},
 	itemLink: {
-		paddingLeft: '.5rem'
-	}
+		paddingLeft: '.5rem',
+	},
 }));
