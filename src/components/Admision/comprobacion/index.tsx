@@ -159,6 +159,8 @@ const Comprobacion: React.FC<any> = () => {
 				console.log('fin validacion');
 			}
 		}
+		socket.emit('cliente:loadDiferidos');
+		socket.emit('cliente:dashdatasiempre');
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activeStep, dispatch, allStepsCompleted]);
 
@@ -167,7 +169,7 @@ const Comprobacion: React.FC<any> = () => {
 			const idStatus = id_statusFM;
 
 			socket.emit('cliente:cleansolic');
-			socket.emit('client:getAll');
+			// socket.emit('client:getAll');
 
 			socket.emit('cliente:loadDiferidos');
 			socket.emit('cliente:dashdatasiempre');

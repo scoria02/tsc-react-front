@@ -35,6 +35,8 @@ export const useStyles = makeStyles((theme: Theme) =>
 		},
 		containerStep: {
 			marginTop: theme.spacing(2),
+			display: 'flex',
+			flexDirection: 'column',
 		},
 		buttonS: {
 			textTransform: 'none',
