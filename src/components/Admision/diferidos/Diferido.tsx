@@ -235,9 +235,8 @@ const Diferido: React.FC<any> = ({ fm }) => {
 			dispatch(cleanDataFmDiferido());
 
 			socket.emit('cliente:disconnect');
-			socket.emit('client:getAll');
-			// socket.emit('cliente:loadDiferidos');
-			// socket.emit('cliente:dashdatasiempre');
+			socket.emit('cliente:loadDiferidos');
+			socket.emit('cliente:dashdatasiempre');
 
 			setTimeout(() => {
 				Swal.fire({
