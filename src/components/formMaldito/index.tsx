@@ -1138,6 +1138,13 @@ export const FormMaldito: React.FC = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
 	};
 
+
+	const handleChangeNames = (event: React.ChangeEvent<HTMLInputElement>) => {
+		//if(!/^[0-9]+$/.test(event.target.value) || event.target.value === '')
+		//falta no dejar escribir signos ni numeros
+			handleChange(event)
+	}
+
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setCursedForm({
 			...cursedForm,
@@ -1246,7 +1253,13 @@ export const FormMaldito: React.FC = () => {
 			handleUpdateLocation={handleUpdateLocationClient}
 			codePhone={codePhone}
 		/>,
-		<Step2 cursedForm={cursedForm} handleChange={handleChange} codePhone={codePhone} error={cursedFormError} />,
+	<Step2 
+		cursedForm={cursedForm}
+		handleChangeNames={handleChangeNames}
+		handleChange={handleChange}
+		codePhone={codePhone}
+		error={cursedFormError}
+		/>,
 		<Step3
 			days={days}
 			setDays={setDays}
@@ -1360,7 +1373,7 @@ export const FormMaldito: React.FC = () => {
 									Volver
 								</Button>
 								<Button
-									disabled={!readyStep}
+									//								disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'

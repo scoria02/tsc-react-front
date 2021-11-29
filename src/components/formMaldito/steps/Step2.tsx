@@ -10,7 +10,7 @@ import { RootState } from '../../../store/store';
 //sytles
 import { useStylesFM } from '../styles';
 
-export const Step2: React.FC<any> = ({ cursedForm, handleChange, codePhone, error }) => {
+export const Step2: React.FC<any> = ({ cursedForm, handleChangeNames,handleChange, codePhone, error }) => {
 	const classes = useStylesFM();
 	const fm: any = useSelector((state: RootState) => state.fm);
 
@@ -38,7 +38,7 @@ export const Step2: React.FC<any> = ({ cursedForm, handleChange, codePhone, erro
 					id='standard-required'
 					label='Nombre Completo'
 					name='name_ref1'
-					onChange={handleChange}
+					onChange={handleChangeNames}
 					value={cursedForm.name_ref1}
 				/>
 				<TextField
@@ -99,7 +99,7 @@ export const Step2: React.FC<any> = ({ cursedForm, handleChange, codePhone, erro
 					id='standard-required'
 					label='Nombre Completo'
 					name='name_ref2'
-					onChange={handleChange}
+					onChange={handleChangeNames}
 					value={cursedForm.name_ref2}
 				/>
 				<TextField
