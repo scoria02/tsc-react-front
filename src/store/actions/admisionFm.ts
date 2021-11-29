@@ -52,7 +52,7 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any, aci: num
 			valid_comp_dep: accept.rc_comp_dep.msg,
 		},
 	};
-	console.log(id_status)
+	console.log('mandar', id_status)
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.put(`/FM/admision/${id_fm}/status`, id_status);

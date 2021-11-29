@@ -167,8 +167,11 @@ const Comprobacion: React.FC<any> = () => {
 			const idStatus = id_statusFM;
 
 			socket.emit('cliente:cleansolic');
-			socket.emit('cliente:loadDiferidos');
-			socket.emit('cliente:dashdatasiempre');
+			socket.emit('client:getAll');
+
+			// socket.emit('cliente:loadDiferidos');
+			// socket.emit('cliente:dashdatasiempre');
+
 			Swal.fire({
 				icon: `${idStatus === 3 ? 'success' : 'warning'}`,
 				title: `${idStatus === 3 ? 'Formulario Verificado' : 'Formulario Diferido'}`,

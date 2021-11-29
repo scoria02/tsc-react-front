@@ -91,15 +91,17 @@ const Diferidos: React.FC = () => {
 	const [diferidos, setDiferidos] = useState([]);
 
 	useEffect(() => {
-		socket.emit('prueba');
-		socket.emit('cliente:loadDiferidos');
+		// socket.emit('prueba');
+		// socket.emit('cliente:loadDiferidos');
+		socket.emit('client:getAll');
 	}, [socket, updatedStatus]);
 
 	useEffect(() => {
 		// getDiferidos();
 
-		socket.emit('cliente:loadDiferidos');
-		socket.emit('cliente:dashdatasiempre');
+		// socket.emit('cliente:loadDiferidos');
+		// socket.emit('cliente:dashdatasiempre');
+		socket.emit('client:getAll');
 
 		socket.on('server:loadDiferidos', (data: any) => {
 			setDiferidos(data);
@@ -122,6 +124,7 @@ const Diferidos: React.FC = () => {
 
 		socket.emit('cliente:trabanjandoDiferido', user, event.row?.id);
 		dispatch(OpenModalDiferido());
+		socket.emit('client:getAll');
 	};
 
 	return (
