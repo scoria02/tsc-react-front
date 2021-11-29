@@ -139,7 +139,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 						Validar Planilla
 						<AddIcon />
 					</Fab>
-					{modalOpen && Object.keys(fm).length && <Comprobacion />}
+					{(modalOpen && Object.keys(fm).length) ? <Comprobacion /> : null} 
 				</div>
 			)}
 			{!isWorker && (

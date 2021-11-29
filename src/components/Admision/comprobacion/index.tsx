@@ -169,8 +169,8 @@ const Comprobacion: React.FC<any> = () => {
 			socket.emit('cliente:cleansolic');
 			socket.emit('client:getAll');
 
-			// socket.emit('cliente:loadDiferidos');
-			// socket.emit('cliente:dashdatasiempre');
+			socket.emit('cliente:loadDiferidos');
+			socket.emit('cliente:dashdatasiempre');
 
 			Swal.fire({
 				icon: `${idStatus === 3 ? 'success' : 'warning'}`,
