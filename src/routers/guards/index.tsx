@@ -33,7 +33,11 @@ export const PrivGuard: any = (to: GuardToRoute, from: GuardFunctionRouteProps, 
 			next();
 			break;
 		case urlFM:
-			next();
+			if (userDep) {
+				next.props({ isWorker });
+			} else {
+				next.redirect(from.match.path);
+			}
 			break;
 		case urlAdmision:
 			if (userDep) {
