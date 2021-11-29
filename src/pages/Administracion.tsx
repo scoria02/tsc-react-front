@@ -259,6 +259,8 @@ const Administracion: FC<AdministracionProp> = () => {
 	};
 
 	const handleCloseRow = (event: any) => {
+		console.log('cerrar modal' )
+		socket.emit('cliente:disconnect');
 		setSelected(false);
 	};
 

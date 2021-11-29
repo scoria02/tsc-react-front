@@ -6,6 +6,7 @@ import React, { useContext, useLayoutEffect, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SocketContext } from '../../context/SocketContext';
 import { getDataFM } from '../../store/actions/admisionFm';
+import Swal from 'sweetalert2';
 import { OpenModal, OpenModalListSolic } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
 import Barra from '../diagramas/Barra';
@@ -104,6 +105,15 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 		socket.on('server:Trabanjando_Solic', (data: any) => {
 			console.log('solic', data);
 			dispatch(getDataFM(data));
+			if(data.length === 0) {
+				Swal.fire({
+					icon: 'warning',
+					title: 'No hay Formularios en espera',
+					customClass: { container: 'swal2-validated' },
+					showConfirmButton: false,
+					timer: 2500,
+				});
+			}
 		})
 
 		//dispatch(OpenModal());

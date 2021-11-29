@@ -167,8 +167,8 @@ const Comprobacion: React.FC<any> = () => {
 	useEffect(() => {
 		if (id_statusFM !== 0 && updatedStatus) {
 			const idStatus = id_statusFM;
+			socket.emit('cliente:cleansolic');
 
-			// socket.emit('cliente:cleansolic');
 			// // socket.emit('client:getAll');
 
 			// socket.emit('cliente:loadDiferidos');
