@@ -87,4 +87,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
 		fontSize: '1rem',
 		marginBottom: '-3px',
 	},
+	buttonPdf: {
+		borderRadius: '2rem',
+	}
 }));

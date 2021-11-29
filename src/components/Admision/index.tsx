@@ -120,7 +120,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 	};
 
 	useEffect(() => {
-		if(Object.keys(fm).length){
+		if(Object.keys(fm).length && !modalOpen){
 			console.log('Abrir modal')
 			dispatch(OpenModal());
 		}
@@ -186,7 +186,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 						Validar Planilla
 						<AddIcon />
 					</Fab>
-					{modalOpen && Object.keys(fm).length ? <Comprobacion /> : null}
+					{(modalOpen) ? <Comprobacion /> : null}
 				</div>
 			)}
 			{!isWorker && (

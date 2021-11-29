@@ -4,6 +4,7 @@ import { Button, TextField } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import React, { useEffect, useState } from 'react';
 //Redux
 import { useDispatch } from 'react-redux';
@@ -94,7 +95,7 @@ export const Form: React.FC<any> = ({
 		if (event.target.files[0]) {
 			let file = event.target.files[0];
 			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: 'image/jpeg' });
-			const path = URL.createObjectURL(newFile);
+			const path = URL.createObjectURL(file);
 			//Save img
 			setUploadImg(newFile);
 			setNameImage(event.target.files[0].name);
@@ -117,14 +118,14 @@ export const Form: React.FC<any> = ({
 			customClass: { container: 'swal2-validated' },
 		}).then((result) => {
 			if (result.isConfirmed) {
-				console.log(payment, typePay);
+				//console.log(payment, typePay);
 				const data: any = !fm.pagadero
 					? {}
 					: {
 							id_payment_method: payment.id,
 							id_type_payment: typePay.id,
 					  };
-				console.log(data);
+				//console.log(data);
 				//dispatch() //images
 				dispatch(updateStatusFMAdministration(fm.id, 3, null));
 			}
@@ -274,7 +275,31 @@ export const Form: React.FC<any> = ({
 						<>
 							{uploadImg && (
 								<div className={classes.containerImg}>
-									<Rec load={load} setLoad={setLoad} imagen={imagen} />
+									{uploadImg && uploadImg.name.split('.')[uploadImg.name.split('.').length - 1] === 'pdf' ? (
+										<div 
+											//	className={classes.btn_stepM}
+										>
+											<a target='_blank' rel='noreferrer' href={path}>
+												<Button
+													className={classes.buttonPdf}
+													variant='contained'
+													component='label'
+													//disabled={ready}
+													>
+													<IconButton aria-label='upload picture' component='span'>
+														<PictureAsPdfIcon 
+															//className={classes.iconUpload}
+														/>
+													</IconButton>
+												</Button>
+											</a>
+											<div>
+												<h2>Solo se guardara la primera pagina</h2>
+										</div>
+									</div>
+									):(
+										<Rec load={load} setLoad={setLoad} imagen={imagen} />
+									)}
 								</div>
 							)}
 							{payment && payment.id !== 2 && (

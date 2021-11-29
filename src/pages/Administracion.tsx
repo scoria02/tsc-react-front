@@ -11,10 +11,12 @@ import {
 } from '@material-ui/data-grid';
 import CloseIcon from '@material-ui/icons/Close';
 import classNames from 'classnames';
-import React, { FC, useContext, useEffect, useState, useLayoutEffect } from 'react';
+import { FC, useContext, useEffect, useState, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form } from '../components/administration/Form';
 import { getPayMent } from '../components/formMaldito/getData';
+
+import { PortFiles, URL } from '../config';
 
 import { SocketContext } from '../context/SocketContext';
 
@@ -178,6 +180,7 @@ const Administracion: FC<AdministracionProp> = () => {
 	const [payment, setPayment] = useState<any>(null);
 	const [path, setPath] = useState<string>('');
 
+	const { user } = useSelector((state: any) => state.auth);
 	const administration: any = useSelector((state: RootState) => state.administration);
 
 	const [selected, setSelected] = useState(false);
@@ -202,7 +205,7 @@ const Administracion: FC<AdministracionProp> = () => {
 		console.log('EA1')
 		socket.on('server:loadAdministracion', (data: any) => {
 			console.log('list adminis', data)
-			setDiferidos(data);
+			setRowsAd(data);
 		});
 	}, [socket]);
 
@@ -231,7 +234,7 @@ const Administracion: FC<AdministracionProp> = () => {
 	}, []);
 
 	useEffect(() => {
-		setRowsAd(administration.fmAd);
+		//setRowsAd(administration.fmAd);
 	}, [administration]);
 
 	const customToolbar: () => JSX.Element = () => {
@@ -246,11 +249,13 @@ const Administracion: FC<AdministracionProp> = () => {
 	const handleRow = (event: any) => {
 		setUploadImg(null);
 		setNameImage('');
-		setPayment(event.row?.id_request.id_payment_method);
-		setTypePay(event.row?.id_request.id_type_payment);
-		setRowSelect(event.row?.id_request);
-		setPath(event.row?.id_request?.rc_comp_dep ? event.row?.id_request?.rc_comp_dep.path : '');
+		setPayment(event.row.id_request.id_payment_method);
+		setTypePay(event.row.id_request.id_type_payment);
+		setRowSelect(event.row.id_request);
+		setPath(event.row.id_request.rc_comp_dep ? URL +':'+ PortFiles + '/' + event.row?.id_request?.rc_comp_dep.path : '');
 		setSelected(true);
+		console.log(user, event.row.id)
+		socket.emit('cliente:trabajandoAdministra', user , event.row.id);
 	};
 
 	const handleCloseRow = (event: any) => {

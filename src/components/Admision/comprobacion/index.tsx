@@ -245,8 +245,6 @@ const Comprobacion: React.FC<any> = () => {
 		} else setReadyStep(false);
 	}, [activeStep, aci]);
 
-	console.log('comprobacion', fm)
-
 	return (
 		<ModalSteps
 			stepComplete={stepComplete}
