@@ -29,13 +29,14 @@ import PeopleIcon from '@material-ui/icons/PeopleAlt';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 // import WorkIcon from '@material-ui/icons/Work';
 import classNames from 'classnames';
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import TranredLogo from '../../img/tranred-logo.png';
+import Milpago from '../../img/1000pagos_LogoBlue.png';
+import { ApprouterContext } from '../../routers/AppRouter';
 //Redux
 import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, urlLogin, userAdmin } from '../../routers/url';
-import { refreshLogin } from '../../store/actions/auth';
+import { refreshLogin, startLogout } from '../../store/actions/auth';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
 import './index.scss';
@@ -153,9 +154,14 @@ const MainMenu: FC = () => {
 
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
+	const [administracion, setAdministracion] = useState(false);
 	const [section, setSection] = useState<string>('');
+	const [seguridad, setSeguridad] = useState(false);
+	const [admision, setAdmision] = useState(false);
+	const [cobranza, setCobranza] = useState(false);
+	const { menu } = useContext(ApprouterContext);
 	const [open, setOpen] = useState(false); //Nav Left
-
+	const [fm, setFm] = useState(false);
 	const [user, setUser] = useState({
 		name: '',
 		last_name: '',
@@ -167,7 +173,65 @@ const MainMenu: FC = () => {
 		if (userDB) {
 			setUser(userDB);
 		}
-	}, [userDB]);
+		if (menu) {
+			switch (menu) {
+				case 'God':
+					setAdmision(true);
+					setCobranza(true);
+					setAdministracion(true);
+					setSeguridad(true);
+					setFm(true);
+					break;
+				case 'Presidencia':
+					setFm(true);
+					setAdmision(true);
+					setCobranza(true);
+					setAdministracion(true);
+					setSeguridad(true);
+					break;
+
+				case 'Admision':
+					setFm(true);
+					setAdmision(true);
+					setCobranza(false);
+					setAdministracion(false);
+					setSeguridad(false);
+					break;
+
+				case 'Administracion':
+					setFm(false);
+					setAdmision(false);
+					setCobranza(false);
+					setAdministracion(true);
+					setSeguridad(false);
+					break;
+
+				case 'Cobranza':
+					setFm(false);
+					setAdmision(false);
+					setCobranza(true);
+					setAdministracion(false);
+					setSeguridad(false);
+					break;
+
+				case 'Seguridad':
+					setFm(false);
+					setAdmision(false);
+					setCobranza(false);
+					setAdministracion(false);
+					setSeguridad(true);
+					break;
+
+				default:
+					setFm(false);
+					setAdmision(false);
+					setCobranza(false);
+					setAdministracion(false);
+					setSeguridad(false);
+					break;
+			}
+		}
+	}, [userDB, menu]);
 
 	const menuId = 'primary-search-account-menu';
 	const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -181,8 +245,10 @@ const MainMenu: FC = () => {
 	const handleDrawerClose = () => {
 		setOpen(false);
 	};
+
 	const handleMenuLogout = () => {
 		localStorage.removeItem('token');
+		dispatch(startLogout());
 		dispatch(FinishLoading());
 		history.push(urlLogin);
 	};
@@ -233,6 +299,7 @@ const MainMenu: FC = () => {
 		setAnchorEl(null);
 		handleMobileMenuClose();
 	};
+
 	const handleLogoClick = () => {
 		handleDrawerClose();
 	};
@@ -386,10 +453,10 @@ const MainMenu: FC = () => {
 				<div className={classes.toolbar}>
 					<div className={classes.img}>
 						<Link to={baseUrl} onClick={handleLogoClick}>
-							<img className='logo-nav-tranred' src={TranredLogo} alt='logo tranred' />
+							<img className='logo-nav-milpagos' src={Milpago} alt='logo tranred' />
 						</Link>
 					</div>
-					<IconButton onClick={handleDrawerClose}>
+					<IconButton onClick={handleDrawerClose} style={{ padding: 0 }}>
 						{theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
 					</IconButton>
 				</div>
@@ -401,60 +468,60 @@ const MainMenu: FC = () => {
 						</ListItemIcon>
 						<ListItemText primary='Inicio' />
 					</ListItem>
-					{/*
-					{open2 && (
-						<ListItem button onClick={(event) => handleListItemClick(event, 2)}>
-							<ListItemIcon>
-								<InboxIcon />
+					{fm && (
+						<ListItem button onClick={(event) => handleListItemClick(event, 5)}>
+							<ListItemIcon classes={{ root: classes.icon }}>
+								<AssignmentIcon />
 							</ListItemIcon>
-							<ListItemText primary='Prueba' />
+							<ListItemText primary='Formulario de Act.' />
 						</ListItem>
 					)}
-					*/}
-
-					<ListItem button onClick={(event) => handleListItemClick(event, 5)}>
-						<ListItemIcon classes={{ root: classes.icon }}>
-							<AssignmentIcon />
-						</ListItemIcon>
-						<ListItemText primary='Formulario de Act.' />
-					</ListItem>
-					<ListItem button onClick={(event) => handleListItemClick(event, 3)}>
-						<Link to={urlAdmision}>
-							<ListItemIcon classes={{ root: classes.icon }}>
-								<PersonAdd />
-							</ListItemIcon>
-						</Link>
-						<ListItemText primary='Admision' />
-					</ListItem>
-					<ListItem button onClick={(event) => handleListItemClick(event, 1)}>
-						<Link to={urlAdministracion}>
-							<ListItemIcon classes={{ root: classes.icon }}>
-								<FolderIcon />
-							</ListItemIcon>
-						</Link>
-						<ListItemText primary='Administracion' />
-					</ListItem>
-					<ListItem button onClick={(event) => handleListItemClick(event, 6)}>
-						<Link to={urlCobr}>
-							<ListItemIcon classes={{ root: classes.icon }}>
-								<CreditCardIcon />
-							</ListItemIcon>
-						</Link>
-						<ListItemText primary='Cobranza' />
-					</ListItem>
+					{admision && (
+						<ListItem button onClick={(event) => handleListItemClick(event, 3)}>
+							<Link to={urlAdmision}>
+								<ListItemIcon classes={{ root: classes.icon }}>
+									<PersonAdd />
+								</ListItemIcon>
+							</Link>
+							<ListItemText primary='Admision' />
+						</ListItem>
+					)}
+					{administracion && (
+						<ListItem button onClick={(event) => handleListItemClick(event, 1)}>
+							<Link to={urlAdministracion}>
+								<ListItemIcon classes={{ root: classes.icon }}>
+									<FolderIcon />
+								</ListItemIcon>
+							</Link>
+							<ListItemText primary='Administracion' />
+						</ListItem>
+					)}
+					{cobranza && (
+						<ListItem button onClick={(event) => handleListItemClick(event, 6)}>
+							<Link to={urlCobr}>
+								<ListItemIcon classes={{ root: classes.icon }}>
+									<CreditCardIcon />
+								</ListItemIcon>
+							</Link>
+							<ListItemText primary='Cobranza' />
+						</ListItem>
+					)}
 				</List>
 				<Divider />
-
-				<List>
-					<ListItem button key={'Gestion de Usuarios'} onClick={(event) => handleListItemClick(event, 4)}>
-						<Link to={urlAdmision}>
-							<ListItemIcon classes={{ root: classes.icon }}>
-								<PeopleIcon />
-							</ListItemIcon>
-						</Link>
-						<ListItemText primary={'Gestion de Usuarios'} />
-					</ListItem>
-				</List>
+				{seguridad && (
+					<>
+						<List>
+							<ListItem button key={'Gestion de Usuarios'} onClick={(event) => handleListItemClick(event, 4)}>
+								<Link to={urlAdmision}>
+									<ListItemIcon classes={{ root: classes.icon }}>
+										<PeopleIcon />
+									</ListItemIcon>
+								</Link>
+								<ListItemText primary={'Gestion de Usuarios'} />
+							</ListItem>
+						</List>
+					</>
+				)}
 			</Drawer>
 		</div>
 	);

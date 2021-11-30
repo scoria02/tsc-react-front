@@ -131,6 +131,8 @@ export const useStyles = makeStyles((styles: Theme) => ({
 		display: 'flex',
 		justifyContent: 'center',
 		marginBottom: '1rem',
+		// flexDirection: 'column',
+		alignItems: 'center',
 	},
 	btn_step: {
 		width: '49%',
@@ -192,5 +194,20 @@ export const useStyles = makeStyles((styles: Theme) => ({
 	},
 	borderTop: {
 		borderTop: '1px solid rgba(0,0,0,0.4)',
+	},
+	//Unir en un styles/////*** */
+	container_ListActa: {
+		marginTop: '1rem',
+		width: '100%',
+		display: 'grid',
+		gridColumnGap: '1%',
+		gridTemplateColumns: '1fr 1fr',
+	},
+	link: {
+		textDecoration: 'none',
+		textTransform: 'none',
+	},
+	itemLink: {
+		paddingLeft: '.5rem',
 	},
 }));

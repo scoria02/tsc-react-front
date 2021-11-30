@@ -9,6 +9,10 @@ export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
 };
 
+export const startLogout = () => ({
+	type: ActionType.logout,
+});
+
 export const startLogin = (email: any, password: any, history?: any) => {
 	return async (dispatch: any) => {
 		try {
@@ -51,6 +55,7 @@ export const refreshLogin = () => {
 			localStorage.clear();
 			Swal.fire('Error', 'Sesión expirada, vuelva a iniciar sesión', 'error').then((result) => {
 				if (result.isConfirmed) {
+					dispatch(startLogout());
 					window.location.replace(urlLogin);
 				} else window.location.replace(urlLogin);
 			});

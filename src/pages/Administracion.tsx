@@ -11,10 +11,14 @@ import {
 } from '@material-ui/data-grid';
 import CloseIcon from '@material-ui/icons/Close';
 import classNames from 'classnames';
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form } from '../components/administration/Form';
 import { getPayMent } from '../components/formMaldito/getData';
+
+import { PortFiles, URL } from '../config';
+
+import { SocketContext } from '../context/SocketContext';
 
 import { getDataFMAdministration } from '../store/actions/administration';
 import { RootState } from '../store/store';
@@ -176,6 +180,7 @@ const Administracion: FC<AdministracionProp> = () => {
 	const [payment, setPayment] = useState<any>(null);
 	const [path, setPath] = useState<string>('');
 
+	const { user } = useSelector((state: any) => state.auth);
 	const administration: any = useSelector((state: RootState) => state.administration);
 
 	const [selected, setSelected] = useState(false);
@@ -187,6 +192,22 @@ const Administracion: FC<AdministracionProp> = () => {
 	const [nameImg, setNameImage] = useState<string>('');
 
 	const [getDataControl, setGetDataControl] = useState<number>(0);
+
+	const { socket } = useContext(SocketContext);
+
+	useLayoutEffect(() => {
+		console.log('LA1')
+		socket.emit('cliente:loadAdministracion');
+	}, [])
+
+	//socket io (todos)
+	useEffect(() => {
+		console.log('EA1')
+		socket.on('server:loadAdministracion', (data: any) => {
+			console.log('list adminis', data)
+			setRowsAd(data);
+		});
+	}, [socket]);
 
 	useEffect(() => {
 		//Get Type Doc Ident
@@ -208,12 +229,12 @@ const Administracion: FC<AdministracionProp> = () => {
 	}, [getDataControl]);
 
 	useEffect(() => {
-		dispatch(getDataFMAdministration());
+		//dispatch(getDataFMAdministration());
 		// console.log('rowSelected', rowSelected);
 	}, []);
 
 	useEffect(() => {
-		setRowsAd(administration.fmAd);
+		//setRowsAd(administration.fmAd);
 	}, [administration]);
 
 	const customToolbar: () => JSX.Element = () => {
@@ -228,14 +249,18 @@ const Administracion: FC<AdministracionProp> = () => {
 	const handleRow = (event: any) => {
 		setUploadImg(null);
 		setNameImage('');
-		setPayment(event.row?.id_request.id_payment_method);
-		setTypePay(event.row?.id_request.id_type_payment);
-		setRowSelect(event.row?.id_request);
-		setPath(event.row?.id_request?.rc_comp_dep ? event.row?.id_request?.rc_comp_dep.path : '');
+		setPayment(event.row.id_request.id_payment_method);
+		setTypePay(event.row.id_request.id_type_payment);
+		setRowSelect(event.row.id_request);
+		setPath(event.row.id_request.rc_comp_dep ? URL +':'+ PortFiles + '/' + event.row?.id_request?.rc_comp_dep.path : '');
 		setSelected(true);
+		console.log(user, event.row.id)
+		socket.emit('cliente:trabajandoAdministra', user , event.row.id);
 	};
 
 	const handleCloseRow = (event: any) => {
+		console.log('cerrar modal' )
+		socket.emit('cliente:disconnect');
 		setSelected(false);
 	};
 

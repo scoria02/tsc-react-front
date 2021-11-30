@@ -7,6 +7,8 @@ import { stepComplete } from '../../../store/actions/accept';
 import { cleanAdmisionFM, updateStatusFM } from '../../../store/actions/admisionFm';
 import { CloseModal } from '../../../store/actions/ui';
 import { RootState } from '../../../store/store';
+import { getAci } from '../../formMaldito/getData';
+import ModalSteps from '../../modals/ModalSteps';
 import '../scss/index.scss';
 import PasoAccountNumber from './pasosComprobacion/PasoAccountNumber';
 import PasoActaConst from './pasosComprobacion/PasoActaConst';
@@ -17,7 +19,6 @@ import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
 import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
 import PasoSelectAci from './pasosComprobacion/PasoSelectAci';
-import ModalSteps from '../../modals/ModalSteps';
 
 const Comprobacion: React.FC<any> = () => {
 	function getStepContent(step: number, steps: string[]) {
@@ -49,8 +50,8 @@ const Comprobacion: React.FC<any> = () => {
 				return (
 					<div>
 						<PasoActaConst />
-						</div>
-					);
+					</div>
+				);
 			case 'Cont. Especial':
 				return (
 					<div>
@@ -66,7 +67,7 @@ const Comprobacion: React.FC<any> = () => {
 			case 'Asignación ACI':
 				return (
 					<div>
-						<PasoSelectAci/>
+						<PasoSelectAci aci={aci} setAci={setAci} listAci={listAci} />
 					</div>
 				);
 			default:
@@ -87,24 +88,41 @@ const Comprobacion: React.FC<any> = () => {
 	const [activeStep, setActiveStep] = useState(0);
 	const [completed, setCompleted] = useState(new Set<number>());
 
+	const [aci, setAci] = useState<any>(null);
+	const [listAci, setListAci] = useState<any>([]);
+
+	const [getDataControl, setGetDataControl] = useState<number>(0);
+
+	useEffect(() => {
+		if (getDataControl === 0) {
+			getAci().then((res: any) => {
+				res.forEach((item: any, indice: number) => {
+					setListAci((prevState: any) => [...prevState, item]);
+					if (indice === res.length - 1) {
+						setGetDataControl(1);
+					}
+				});
+			});
+		} else if (getDataControl === 1) {
+			console.log('Get list Acis');
+			setGetDataControl(2);
+		}
+	}, [getDataControl]);
+
 	const steps = getSteps(fm);
 
 	function getSteps(form: any) {
-		const list: string[] = [
-			'Cliente',
-			'Comercio',
-			'Referencia Bancaria',
-		];
-		if(form.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')){
-			list.push('Acta Const.')
+		const list: string[] = ['Cliente', 'Comercio', 'Referencia Bancaria'];
+		if (form.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')) {
+			list.push('Acta Const.');
 		}
-		if(form.id_commerce.rc_special_contributor && !list.includes('Cont. Especial')){
+		if (form.id_commerce.rc_special_contributor && !list.includes('Cont. Especial')) {
 			list.push('Cont. Especial');
 		}
 		if (form.rc_comp_dep && !list.includes('Comprobante de Pago')) {
 			list.push('Comprobante de Pago');
 		}
-		list.push('Asignación ACI')
+		list.push('Asignación ACI');
 		return list;
 	}
 
@@ -134,23 +152,28 @@ const Comprobacion: React.FC<any> = () => {
 	useEffect(() => {
 		if (allStepsCompleted() && !updatedStatus) {
 			if (validStatusFm()) {
-				dispatch(updateStatusFM(fm.id, 4, validated));
+				dispatch(updateStatusFM(fm.id, 4, validated, aci.id));
 				console.log('mandado diferido');
 			} else {
-				dispatch(updateStatusFM(fm.id, 3, validated));
+				dispatch(updateStatusFM(fm.id, 3, validated, aci.id));
 				console.log('fin validacion');
 			}
 		}
+		// socket.emit('cliente:loadDiferidos');
+		// socket.emit('cliente:dashdatasiempre');
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activeStep, dispatch, allStepsCompleted]);
 
 	useEffect(() => {
 		if (id_statusFM !== 0 && updatedStatus) {
 			const idStatus = id_statusFM;
-
 			socket.emit('cliente:cleansolic');
-			socket.emit('cliente:loadDiferidos');
-			socket.emit('cliente:dashdatasiempre');
+
+			// // socket.emit('client:getAll');
+
+			// socket.emit('cliente:loadDiferidos');
+			// socket.emit('cliente:dashdatasiempre');
+
 			Swal.fire({
 				icon: `${idStatus === 3 ? 'success' : 'warning'}`,
 				title: `${idStatus === 3 ? 'Formulario Verificado' : 'Formulario Diferido'}`,
@@ -213,6 +236,15 @@ const Comprobacion: React.FC<any> = () => {
 		});
 	};
 
+	const [readyStep, setReadyStep] = useState<boolean>(false);
+
+	useEffect(() => {
+		if (activeStep === steps.length - 1) {
+			if (aci) setReadyStep(false);
+			else setReadyStep(true);
+		} else setReadyStep(false);
+	}, [activeStep, aci]);
+
 	return (
 		<ModalSteps
 			stepComplete={stepComplete}
@@ -229,7 +261,7 @@ const Comprobacion: React.FC<any> = () => {
 			setActiveStep={setActiveStep}
 			completed={completed}
 			setCompleted={setCompleted}
-			readyStep={false}
+			readyStep={readyStep}
 			handleNext={handleNext}
 			handleComplete={handleComplete}
 		/>

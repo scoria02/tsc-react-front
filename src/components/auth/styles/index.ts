@@ -165,5 +165,6 @@ export const useStylesModalUser = makeStyles((styles) => ({
 	},
 	titleRight: {
 		fontSize: '2.5rem',
+		letterSpacing: '1px',
 	}
 }));
