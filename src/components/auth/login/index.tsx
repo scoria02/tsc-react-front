@@ -3,7 +3,7 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 // import CardActionArea from '@material-ui/core/CardActionArea';
 // import { useForm, SubmitHandler } from 'react-hook-form';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -17,16 +17,14 @@ import AuthModal from '../AuthModal';
 import { useStylesModalUser } from '../styles';
 import './index.scss';
 
-const useStylesButton = makeStyles((theme: Theme) =>
-	createStyles({
-		root: {
-			'& > *': {
-				margin: theme.spacing(1),
-				width: '95%',
-			},
+const useStylesButton = makeStyles((theme: Theme) => ({
+	root: {
+		'& > *': {
+			// margin: theme.spacing(1),
+			// width: '95%',
 		},
-	})
-);
+	},
+}));
 
 const Login: React.FC = () => {
 	const classesbutton = useStylesButton();
