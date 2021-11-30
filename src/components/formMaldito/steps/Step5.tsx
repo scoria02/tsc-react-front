@@ -30,7 +30,6 @@ export const Step5: React.FC<any> = ({
 	setCursedForm,
 	handleChange,
 	handleChangeImages,
-	handleBlurNumBank,
 	listRequestSource,
 	requestSource,
 	setRequestSource,
@@ -230,7 +229,6 @@ export const Step5: React.FC<any> = ({
 					label={fm.nameBank === '' ? 'Numero de Cuenta' : fm.nameBank}
 					name='text_account_number'
 					onChange={handleChangeBank}
-					//onBlur={handleBlurNumBank}
 					value={cursedForm.text_account_number}
 					error={error.text_account_number || fm.errorNumBank}
 					inputProps={{ maxLength: 20 }}

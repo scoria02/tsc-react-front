@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { SocketContext } from '../../context/SocketContext';
-import { baseUrl } from '../../routers/url';
 import {
 	cleanFM,
 	sendClient,
@@ -25,14 +24,9 @@ import {
 import { RootState } from '../../store/store';
 import LoaderPrimary from '../loaders/LoaderPrimary';
 import {
-	getActivity,
-	getCiudad,
-	getEstados,
-	getIdentTypes,
 	getMunicipio,
+	getCiudad,
 	getParroquia,
-	getPayMent,
-	getProducts,
 } from './getData';
 import './index.scss';
 //steps
@@ -43,6 +37,11 @@ import { Step4 } from './steps/Step4';
 import { Step5 } from './steps/Step5';
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
+
+import { URL, Port, configAxios, PortFiles } from '../../config';
+
+import axios, {AxiosResponse}  from 'axios';
+import { baseUrl } from '../../routers/url';
 
 function getSteps() {
 	return [
@@ -337,7 +336,6 @@ export const FormMaldito: React.FC = () => {
 	});
 
 	useLayoutEffect(() => {
-		dispatch(cleanFM());
 	}, []);
 
 	useEffect(() => {
@@ -381,7 +379,6 @@ export const FormMaldito: React.FC = () => {
 			setSendForm(4);
 		} else if (sendForm === 4 && fm.loadedFM) {
 			console.log('Ready All FM');
-			//socket.emit('client:getAll');
 			socket.emit('cliente:disconnect');
 			setSendForm(5);
 			handleSendForm();
@@ -390,42 +387,65 @@ export const FormMaldito: React.FC = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [sendForm, fm]);
 
-	const [getDataControl, setGetDataControl] = useState<number>(0);
+	const [getDataLock, setGetDataLock] = useState<number>(0);
 
-	//Note:
-	//https://www.storyblok.com/tp/how-to-send-multiple-requests-using-axios
-	//Modificar e intentar mutli axios;
-	useEffect(() => {
+	const getters = async (routes: any[]) => {
+		try {
+			const stop = routes.map(async(route: any)=> {
+				return await axios.get(route, {
+						baseURL: `${URL}:${Port}`,
+						headers: { common: { token: localStorage.getItem('token') } 
+					},
+				})
+
+			})
+
+			const resps = await Promise.all(stop);
+
+			return resps;
+		} catch (err) {
+			console.error('en getters', err);
+
+			return []
+		}
+	}
+
+	useLayoutEffect(() => {
+		dispatch(cleanFM());
 		//Get Type Doc Ident
-		if (getDataControl === 0) {
-			if (listIdentType.length === 0) {
-				getIdentTypes().then((res) => {
-					res.forEach((item, indice) => {
-						setListIdentType((prevState: any) => [...prevState, item]);
-						if (indice === res.length - 1) {
-							setGetDataControl(1);
-						}
-					});
+		if(
+			getDataLock === 0 && (
+				!listIdentType.length ||
+				!listActivity.length ||
+				!listPayment.length ||
+				!listModelPos.length ||
+				!listLocationClient.length ||
+				!listLocationCommerce.length ||
+				!listLocationPos.length
+			)
+		) {
+			const routes = [	
+				`/ident_type`,
+				,`/activity`,
+				,`/payment/all`,
+				,`/products`,
+				,`/Location/estado`
+			];
+			getters(routes).then((responses) => {
+				responses[0].data.info.forEach((item:any) => {
+					setListIdentType((prevState: any) => [...prevState, item]);
 				});
-			}
-			//Get List Activity
-		} else if (getDataControl === 1) {
-			if (listActivity.length === 0) {
-				getActivity().then((res) => {
-					res.forEach((item, indice) => {
-						setListActivity((prevState: any) => [...prevState, item]);
-						if (indice === res.length - 1) {
-							setGetDataControl(2);
-						}
-					});
+				responses[2].data.info.forEach((item:any) => {
+					setListActivity((prevState: any) => [...prevState, item]);
 				});
-			}
-			//Get Estados
-		} else if (getDataControl === 2) {
-			if (listLocationCommerce.estado.length === 0) {
-				getEstados().then((res) => {
-					res.forEach((item, indice) => {
-						setListLocationCommerce((prevState: any) => ({
+				responses[4].data.info.forEach((item:any) => {
+					setListPayment((prevState: any) => [...prevState, item]);
+				});
+				responses[6].data.info.forEach((item:any) => {
+					setListModelPos((prevState: any) => [...prevState, item]);
+				});
+				responses[8].data.info.forEach((item:any) => {
+					setListLocationCommerce((prevState: any) => ({
 							...prevState,
 							estado: [...prevState.estado, item],
 						}));
@@ -437,40 +457,17 @@ export const FormMaldito: React.FC = () => {
 							...prevState,
 							estado: [...prevState.estado, item],
 						}));
-						if (indice === res.length - 1) {
-							setGetDataControl(3);
-						}
 					});
-				});
-			}
-			//Get Payment
-		} else if (getDataControl === 3) {
-			if (listPayment.length === 0) {
-				getPayMent().then((res) => {
-					res.forEach((item, indice) => {
-						setListPayment((prevState: any) => [...prevState, item]);
-						if (indice === res.length - 1) {
-							setGetDataControl(4);
-						}
-					});
-				});
-			}
-		} else if (getDataControl === 4) {
-			if (listModelPos.length === 0) {
-				getProducts().then((res) => {
-					res.forEach((item, indice) => {
-						setListModelPos((prevState: any) => [...prevState, item]);
-						if (indice === res.length - 1) {
-							setGetDataControl(5);
-						}
-					});
-				});
-			}
-		} else if (getDataControl === 5) {
-			console.log('Todo correcto');
+				setGetDataLock(1);
+			}).catch(errors => {
+				console.log('error multi axios', errors)
+			});
+		} else if (getDataLock === 1){
+			console.log('Si la vida te da limones')
+			setGetDataLock(2);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [getDataControl]);
+	}, [getDataLock]);
 
 	//Autocomplete location
 	const [autoCompleteCommerce, setAutoCompleteCommerce] = useState<boolean>(true);
@@ -532,113 +529,6 @@ export const FormMaldito: React.FC = () => {
 		fm.commerceMash,
 	]);
 
-	//Client Location handle
-	//Note:
-	//Probar pasar el setLocation*** (pasar setState como props) segun el que estoy , 
-	//y pasar '_client', '', '_pos'
-	const handleUpdateLocationClient = (op: any, value: any) => {
-		if (op === 'estado') {
-			//Select ciudad and Update List municipi
-			setLocationClient({
-				estado: value,
-				ciudad: null,
-				municipio: null,
-				parroquia: null,
-			});
-			setCursedForm({
-				...cursedForm,
-				id_estado_client: value ? value.id : 0,
-				id_municipio_client: 0,
-				id_ciudad_client: 0,
-				id_parroquia_client: 0,
-				codigo_postal_client: '',
-			});
-			if (value) {
-				getMunicipio(value.id).then((res) => {
-					setListLocationClient({
-						...listLocationClient,
-						municipio: res,
-						ciudad: [],
-						parroquia: [],
-					});
-				});
-			} else {
-				setListLocationClient({
-					...listLocationClient,
-					municipio: [],
-					ciudad: [],
-					parroquia: [],
-				});
-			}
-		} else if (op === 'municipio') {
-			//Select estado and Update List Ciudades
-			setLocationClient({
-				...locationClient,
-				municipio: value,
-				ciudad: null,
-				parroquia: null,
-			});
-			setCursedForm({
-				...cursedForm,
-				id_municipio_client: value ? value.id : 0,
-				id_ciudad_client: 0,
-				id_parroquia_client: 0,
-				codigo_postal_client: '',
-			});
-			if (value) {
-				getCiudad(cursedForm.id_estado_client).then((res) => {
-					setListLocationClient({
-						...listLocationClient,
-						ciudad: res,
-						parroquia: [],
-					});
-				});
-			} else {
-				setListLocationClient({
-					...listLocationClient,
-					ciudad: [],
-					parroquia: [],
-				});
-			}
-		} else if (op === 'ciudad') {
-			//Select municipio and Update List parroquia
-			setLocationClient({
-				...locationClient,
-				ciudad: value,
-				parroquia: null,
-			});
-			setCursedForm({
-				...cursedForm,
-				id_ciudad_client: value ? value.id : 0,
-				id_parroquia_client: 0,
-				codigo_postal_client: value ? value.postal_code : '',
-			});
-			if (value) {
-				getParroquia(cursedForm.id_municipio_client).then((res) => {
-					setListLocationClient({
-						...listLocationClient,
-						parroquia: res,
-					});
-				});
-			} else {
-				setListLocationClient({
-					...listLocationClient,
-					parroquia: [],
-				});
-			}
-		} else if (op === 'parroquia') {
-			//Select parroquia
-			setLocationClient({
-				...locationClient,
-				parroquia: value,
-			});
-			setCursedForm({
-				...cursedForm,
-				id_parroquia_client: value ? value.id : 0,
-			});
-		}
-	};
-
 	useEffect(() => {
 		if (
 			locationCommerce.estado === null &&
@@ -666,117 +556,16 @@ export const FormMaldito: React.FC = () => {
 		}
 	}, [cursedForm, locationCommerce, locationPos]);
 
-	//Commerce Location handle
-	const handleUpdateLocationCommerce = (op: any, value: any) => {
-		setAutoCompleteCommerce(false);
-		if (op === 'estado') {
-			//Select ciudad and Update List municipi
-			setLocationCommerce({
-				estado: value,
-				ciudad: null,
-				municipio: null,
-				parroquia: null,
-			});
-			setCursedForm({
-				...cursedForm,
-				id_estado: value ? value.id : 0,
-				id_municipio: 0,
-				id_ciudad: 0,
-				id_parroquia: 0,
-				codigo_postal: '',
-			});
-			if (value) {
-				getMunicipio(value.id).then((res) => {
-					setListLocationCommerce({
-						...listLocationCommerce,
-						municipio: res,
-						ciudad: [],
-						parroquia: [],
-					});
-				});
-			} else {
-				setListLocationCommerce({
-					...listLocationCommerce,
-					municipio: [],
-					ciudad: [],
-					parroquia: [],
-				});
-			}
-		} else if (op === 'municipio') {
-			//Select estado and Update List Ciudades
-			setLocationCommerce({
-				...locationCommerce,
-				municipio: value,
-				ciudad: null,
-				parroquia: null,
-			});
-			setCursedForm({
-				...cursedForm,
-				id_municipio: value ? value.id : 0,
-				id_ciudad: 0,
-				id_parroquia: 0,
-				codigo_postal: '',
-			});
-			if (value) {
-				getCiudad(cursedForm.id_estado).then((res) => {
-					setListLocationCommerce({
-						...listLocationCommerce,
-						ciudad: res,
-						parroquia: [],
-					});
-				});
-			} else {
-				setListLocationCommerce({
-					...listLocationCommerce,
-					ciudad: [],
-					parroquia: [],
-				});
-			}
-		} else if (op === 'ciudad') {
-			//Select municipio and Update List parroquia
-			setLocationCommerce({
-				...locationCommerce,
-				ciudad: value,
-				parroquia: null,
-			});
-			setCursedForm({
-				...cursedForm,
-				id_ciudad: value ? value.id : 0,
-				id_parroquia: 0,
-				codigo_postal: value ? value.postal_code : '',
-			});
-			if (value) {
-				getParroquia(cursedForm.id_municipio).then((res) => {
-					setListLocationCommerce({
-						...listLocationCommerce,
-						parroquia: res,
-					});
-				});
-			} else {
-				setListLocationCommerce({
-					...listLocationCommerce,
-					parroquia: [],
-				});
-			}
-		} else if (op === 'parroquia') {
-			//Select parroquia
-			setLocationCommerce({
-				...locationCommerce,
-				parroquia: value,
-			});
-			setCursedForm({
-				...cursedForm,
-				id_parroquia: value ? value.id : 0,
-			});
+	//Location handle
+	const handleUpdateLocation = (op: any, item: string, value: any,list:any, setList: any, location: any, setLocation:any) => {
+		if(item === '') {
+			setAutoCompleteCommerce(false);
+		}else if(item === '_pos') {
+			setAutoCompletePos(false);
 		}
-	};
-
-	//POS Location handle
-	const handleUpdateLocationPos = (op: any, value: any) => {
-		setAutoCompletePos(false);
 		if (op === 'estado') {
 			//Select ciudad and Update List municipi
-			setLocationPos({
+			setLocation({
 				estado: value,
 				ciudad: null,
 				municipio: null,
@@ -784,24 +573,24 @@ export const FormMaldito: React.FC = () => {
 			});
 			setCursedForm({
 				...cursedForm,
-				id_estado_pos: value ? value.id : 0,
-				id_municipio_pos: 0,
-				id_ciudad_pos: 0,
-				id_parroquia_pos: 0,
-				codigo_postal_pos: '',
+				[`id_estado${item}`]: value ? value.id : 0,
+				[`id_municipio${item}`]: 0,
+				[`id_ciudad${item}`]: 0,
+				[`id_parroquia${item}`]: 0,
+				[`codigo_postal${item}`]: '',
 			});
 			if (value) {
 				getMunicipio(value.id).then((res) => {
-					setListLocationPos({
-						...listLocationPos,
+					setList({
+						...list,
 						municipio: res,
 						ciudad: [],
 						parroquia: [],
 					});
 				});
 			} else {
-				setListLocationPos({
-					...listLocationPos,
+				setList({
+					...list,
 					municipio: [],
 					ciudad: [],
 					parroquia: [],
@@ -809,69 +598,69 @@ export const FormMaldito: React.FC = () => {
 			}
 		} else if (op === 'municipio') {
 			//Select estado and Update List Ciudades
-			setLocationPos({
-				...locationPos,
+			setLocation({
+				...location,
 				municipio: value,
 				ciudad: null,
 				parroquia: null,
 			});
 			setCursedForm({
 				...cursedForm,
-				id_municipio_pos: value ? value.id : 0,
-				id_ciudad_pos: 0,
-				id_parroquia_pos: 0,
-				codigo_postal_pos: '',
+				[`id_municipio${item}`]: value ? value.id : 0,
+				[`id_ciudad${item}`]: 0,
+				[`id_parroquia${item}`]: 0,
+				[`codigo_postal${item}`]: '',
 			});
 			if (value) {
-				getCiudad(cursedForm.id_estado_pos).then((res) => {
-					setListLocationPos({
-						...listLocationPos,
+				getCiudad(cursedForm[`id_estado${item}`]).then((res) => {
+					setList({
+						...list,
 						ciudad: res,
 						parroquia: [],
 					});
 				});
 			} else {
-				setListLocationPos({
-					...listLocationPos,
+				setList({
+					...list,
 					ciudad: [],
 					parroquia: [],
 				});
 			}
 		} else if (op === 'ciudad') {
 			//Select municipio and Update List parroquia
-			setLocationPos({
-				...locationPos,
+			setLocation({
+				...location,
 				ciudad: value,
 				parroquia: null,
 			});
 			setCursedForm({
 				...cursedForm,
-				id_ciudad_pos: value ? value.id : 0,
-				id_parroquia_pos: 0,
-				codigo_postal_pos: value ? value.postal_code : '',
+				[`id_ciudad${item}`]: value ? value.id : 0,
+				[`id_parroquia${item}`]: 0,
+				[`codigo_postal${item}`]: value ? value.postal_code : '',
 			});
 			if (value) {
-				getParroquia(cursedForm.id_municipio_pos).then((res) => {
-					setListLocationPos({
-						...listLocationPos,
+				getParroquia(cursedForm[`id_municipio${item}`]).then((res) => {
+					setList({
+						...list,
 						parroquia: res,
 					});
 				});
 			} else {
-				setListLocationPos({
-					...listLocationPos,
+				setList({
+					...list,
 					parroquia: [],
 				});
 			}
 		} else if (op === 'parroquia') {
 			//Select parroquia
-			setLocationPos({
-				...locationPos,
+			setLocation({
+				...location,
 				parroquia: value,
 			});
 			setCursedForm({
 				...cursedForm,
-				id_parroquia_pos: value ? value.id : 0,
+				[`id_parroquia${item}`]: value ? value.id : 0,
 			});
 		}
 	};
@@ -1021,6 +810,8 @@ export const FormMaldito: React.FC = () => {
 	//MashClient
 	useEffect(() => {
 		if (fm.mashClient && fm.id_client) {
+			const ref1 = JSON.parse(fm.clientMash.ref_person_1)
+			const ref2 = JSON.parse(fm.clientMash.ref_person_2)
 			setOldClientMatsh(true);
 			setCursedForm({
 				...cursedForm,
@@ -1037,6 +828,14 @@ export const FormMaldito: React.FC = () => {
 				sector_client: fm.clientMash.id_location.sector,
 				calle_client: fm.clientMash.id_location.calle,
 				local_client: fm.clientMash.id_location.local,
+				name_ref1: ref1.fullName,
+				doc_ident_type_ref1: ref1.document[0],
+				doc_ident_ref1: ref1.document,
+				phone_ref1: ref1.phone,
+				name_ref2: ref2.fullName,
+				doc_ident_type_ref2: ref2.document[0],
+				doc_ident_ref2: ref2.document,
+				phone_ref2: ref2.phone,
 				//Note:
 				//falta agregar el json.parse  para referencias
 			});
@@ -1173,19 +972,6 @@ export const FormMaldito: React.FC = () => {
 		}
 	}, [fm.mashCommerce, fm.commerceMash]);
 
-	//Note
-	//Eliminar esta funcion
-	const handleBlurNumBank = () => {
-		if (activeStep === 4 && cursedForm.email !== '' && cursedForm.text_account_number !== '') {
-			dispatch(
-				validationNumBank({
-					email: cursedForm.email,
-					bank_account_num: cursedForm.text_account_number,
-				})
-			);
-		}
-	};
-
 	const handleNext = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
 	};
@@ -1196,10 +982,15 @@ export const FormMaldito: React.FC = () => {
 
 
 	const handleChangeNames = (event: React.ChangeEvent<HTMLInputElement>) => {
-		//if(!/^[0-9]+$/.test(event.target.value) || event.target.value === '')
 		//Note:
 		//falta no dejar escribir signos ni numeros
+		if (
+			event.target.value.trim() !== '' &&
+			/^[(a-zA-Z) ]+$/.test(event.target.value) ||
+			event.target.value === ''
+		){
 			handleChange(event)
+		}
 	}
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -1302,12 +1093,15 @@ export const FormMaldito: React.FC = () => {
 			imagesForm={imagesForm}
 			setCursedForm={setCursedForm}
 			handleChange={handleChange}
+			handleChangeNames={handleChangeNames}
 			handleChangeImages={handleChangeImages}
 			handleBlurEmailIdent={handleBlurEmailIdent}
 			validateForm={validateForm}
+			handleUpdateLocation={handleUpdateLocation}
 			listLocation={listLocationClient}
+			setStateList={setListLocationClient}
 			location={locationClient}
-			handleUpdateLocation={handleUpdateLocationClient}
+			setStateLocation={setLocationClient}
 			codePhone={codePhone}
 		/>,
 	<Step2 
@@ -1339,17 +1133,19 @@ export const FormMaldito: React.FC = () => {
 		<Step4
 			setAutoCompleteCommerce={setAutoCompleteCommerce}
 			setAutoCompletePos={setAutoCompletePos}
+			//comerce
 			listLocation={listLocationCommerce}
+			setListCommerce={setListLocationCommerce}
 			location={locationCommerce}
 			setLocation={setLocationCommerce}
+			//pos
 			listLocationPos={listLocationPos}
+			setListPos={setListLocationPos}
 			locationPos={locationPos}
 			setLocationPos={setLocationPos}
 			cursedForm={cursedForm}
-			setCursedForm={setCursedForm}
 			handleChange={handleChange}
-			handleUpdateLocationCommerce={handleUpdateLocationCommerce}
-			handleUpdateLocationPos={handleUpdateLocationPos}
+			handleUpdateLocation={handleUpdateLocation}
 		/>,
 		<Step5
 			listTypePay={listTypePay}
@@ -1368,7 +1164,6 @@ export const FormMaldito: React.FC = () => {
 			setCursedForm={setCursedForm}
 			handleChange={handleChange}
 			handleChangeImages={handleChangeImages}
-			handleBlurNumBank={handleBlurNumBank}
 			listRequestSource={listRequestSource}
 			requestSource={requestSource}
 			setRequestSource={setRequestSource}
@@ -1430,7 +1225,7 @@ export const FormMaldito: React.FC = () => {
 									Volver
 								</Button>
 								<Button
-									//								disabled={!readyStep}
+									disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'

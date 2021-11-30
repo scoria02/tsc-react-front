@@ -10,51 +10,24 @@ import { RootState } from '../../../store/store';
 export const Step4: React.FC<any> = ({
 	setAutoCompleteCommerce,
 	setAutoCompletePos,
+	//Commerce
 	listLocation,
+	setListCommerce,
 	location,
+	setLocation,
+	//Pos
 	listLocationPos,
+	setListPos,
 	locationPos,
+	setLocationPos,
+
 	cursedForm,
-	setCursedForm,
 	handleChange,
-	handleUpdateLocationCommerce,
-	handleUpdateLocationPos,
+	handleUpdateLocation,
 }) => {
 	const classes = useStylesFM();
 
 	const fm: any = useSelector((state: RootState) => state.fm);
-
-	const handleSelectPos = (event: any, value: any, item: string) => {
-		if (value) {
-			setCursedForm({
-				...cursedForm,
-				[`id_${item}_pos`]: value.id,
-				[`codigo_postal_pos`]: item === 'ciudad' ? value.postal_code : cursedForm.codigo_postal_pos,
-			});
-		} else {
-			setCursedForm({
-				...cursedForm,
-				[`id_${item}_pos`]: 0,
-			});
-		}
-		handleUpdateLocationPos(item, value);
-	};
-
-	const handleSelect = (event: any, value: any, item: string) => {
-		if (value) {
-			setCursedForm({
-				...cursedForm,
-				[`id_${item}`]: value.id,
-				[`codigo_postal`]: item === 'ciudad' ? value.postal_code : cursedForm.codigo_postal,
-			});
-		} else {
-			setCursedForm({
-				...cursedForm,
-				[`id_${item}`]: 0,
-			});
-		}
-		handleUpdateLocationCommerce(item, value);
-	};
 
 	const handleChangeCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setAutoCompleteCommerce(false);
@@ -73,9 +46,17 @@ export const Step4: React.FC<any> = ({
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
 						className={classes.inputTextLeft}
-						onChange={(event, value) => {
-							handleSelect(event, value, 'estado');
-						}}
+						onChange={(event, value) => 
+							handleUpdateLocation(
+								'estado',
+								'',
+								value, 
+								listLocation,
+								setListCommerce,
+								location,
+								setLocation,
+							)
+						}
 						value={location.estado || null}
 						disabled={fm.mashCommerce}
 						options={listLocation.estado}
@@ -87,7 +68,17 @@ export const Step4: React.FC<any> = ({
 					/>
 					<Autocomplete
 						className={classes.inputText}
-						onChange={(event, value) => handleSelect(event, value, 'municipio')}
+						onChange={(event, value) => 
+							handleUpdateLocation(
+								'municipio',
+								'',
+								value, 
+								listLocation,
+								setListCommerce,
+								location,
+								setLocation,
+							)
+						}
 						value={location.municipio || null}
 						disabled={fm.mashCommerce}
 						options={listLocation.municipio}
@@ -99,7 +90,17 @@ export const Step4: React.FC<any> = ({
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
-						onChange={(event, value) => handleSelect(event, value, 'ciudad')}
+						onChange={(event, value) => 
+							handleUpdateLocation(
+								'ciudad',
+								'',
+								value, 
+								listLocation,
+								setListCommerce,
+								location,
+								setLocation,
+							)
+						}
 						className={classes.inputTextLeft}
 						value={location.ciudad || null}
 						disabled={fm.mashCommerce}
@@ -111,7 +112,17 @@ export const Step4: React.FC<any> = ({
 					/>
 					<Autocomplete
 						className={classes.inputText}
-						onChange={(event, value) => handleSelect(event, value, 'parroquia')}
+						onChange={(event, value) => 
+							handleUpdateLocation(
+								'parroquia',
+								'',
+								value, 
+								listLocation,
+								setListCommerce,
+								location,
+								setLocation,
+							)
+						}
 						value={location.parroquia || null}
 						disabled={fm.mashCommerce}
 						options={listLocation.parroquia}
@@ -174,9 +185,17 @@ export const Step4: React.FC<any> = ({
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
 						className={classes.inputTextLeft}
-						onChange={(event, value) => {
-							handleSelectPos(event, value, 'estado');
-						}}
+						onChange={(event, value) => 
+							handleUpdateLocation(
+								'estado',
+								'_pos',
+								value, 
+								listLocationPos,
+								setListPos,
+								locationPos,
+								setLocationPos,
+							)
+						}
 						options={listLocationPos.estado}
 						value={locationPos.estado || null}
 						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
@@ -187,7 +206,17 @@ export const Step4: React.FC<any> = ({
 					/>
 					<Autocomplete
 						className={classes.inputText}
-						onChange={(event, value) => handleSelectPos(event, value, 'municipio')}
+						onChange={(event, value) => 
+							handleUpdateLocation(
+								'municipio',
+								'_pos',
+								value, 
+								listLocationPos,
+								setListPos,
+								locationPos,
+								setLocationPos,
+							)
+						}
 						value={locationPos.municipio || null}
 						options={listLocationPos.municipio}
 						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
@@ -199,7 +228,17 @@ export const Step4: React.FC<any> = ({
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
 						className={classes.inputTextLeft}
-						onChange={(event, value) => handleSelectPos(event, value, 'ciudad')}
+						onChange={(event, value) => 
+							handleUpdateLocation(
+								'ciudad',
+								'_pos',
+								value, 
+								listLocationPos,
+								setListPos,
+								locationPos,
+								setLocationPos,
+							)
+						}
 						options={listLocationPos.ciudad}
 						value={locationPos.ciudad || null}
 						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
@@ -209,7 +248,17 @@ export const Step4: React.FC<any> = ({
 					/>
 					<Autocomplete
 						className={classes.inputText}
-						onChange={(event, value) => handleSelectPos(event, value, 'parroquia')}
+						onChange={(event, value) => 
+							handleUpdateLocation(
+								'parroquia',
+								'_pos',
+								value, 
+								listLocationPos,
+								setListPos,
+								locationPos,
+								setLocationPos,
+							)
+						}
 						options={listLocationPos.parroquia}
 						value={locationPos.parroquia || null}
 						getOptionLabel={(option: any) => (option.parroquia ? option.parroquia : '')}

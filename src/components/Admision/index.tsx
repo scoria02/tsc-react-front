@@ -99,34 +99,30 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 
 	}, [socket, user]);
 
+	const [selectModal, setSelectModal] = useState<boolean>(false);
+
 	const handleClick = () => {
-		socket.emit('Trabanjando_Solic', user);
-
-		socket.on('server:Trabanjando_Solic', (data: any) => {
-			console.log('solic', data);
-			dispatch(getDataFM(data));
-			if(data.length === 0) {
-				Swal.fire({
-					icon: 'warning',
-					title: 'No hay Formularios en espera',
-					customClass: { container: 'swal2-validated' },
-					showConfirmButton: false,
-					timer: 2500,
-				});
-			}
-		})
-
-		//dispatch(OpenModal());
-
-		/*
-		socket.emit('cliente:Todos', user, (todo: any) => {
-			setTodoTodos(todo);
-		});
-		 */
-
-		//socket.emit('cliente:loadDiferidos');
-		//	socket.emit('cliente:dashdatasiempre');
-		// socket.emit('cliente:dashdatasiempre');
+		console.log('cliick')
+		if(!selectModal){
+			setSelectModal(true);
+			socket.emit('Trabanjando_Solic', user);
+			let index = 0;
+			socket.on('server:Trabanjando_Solic', (data: any) => {
+				index++;
+				console.log('solic', index, data);
+				dispatch(getDataFM(data));
+				if(data.length === 0) {
+					setSelectModal(false);
+					Swal.fire({
+						icon: 'warning',
+						title: 'No hay Formularios en espera',
+						customClass: { container: 'swal2-validated' },
+						showConfirmButton: false,
+						timer: 2500,
+					});
+				}
+			})
+		}
 	};
 
 	useEffect(() => {
@@ -134,7 +130,10 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 			console.log('Abrir modal')
 			dispatch(OpenModal());
 		}
-	}, [fm])
+		if(!modalOpen){
+			setSelectModal(false);
+		}
+	}, [fm, modalOpen])
 
 	const handleClickList = () => {
 		dispatch(OpenModalListSolic());
@@ -192,7 +191,13 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 			</div>
 			{allSolic && (
 				<div className='cmn-divfloat'>
-					<Fab color='primary' aria-label='add' size='medium' variant='extended' onClick={handleClick}>
+					<Fab 
+						color='primary'
+						aria-label='add'
+						size='medium'
+						variant='extended'
+						onClick={handleClick}
+					>
 						Validar Planilla
 						<AddIcon />
 					</Fab>

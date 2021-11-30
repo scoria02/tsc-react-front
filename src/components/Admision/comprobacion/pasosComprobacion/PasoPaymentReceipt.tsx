@@ -82,7 +82,6 @@ export default function PasoPaymentReceipt() {
 						id='outlined-basic '
 						label='Comprobantede pago'
 						variant='outlined'
-						value={fm.nro_comp_dep}
 						disabled
 					/>
 					<FormControlLabel
