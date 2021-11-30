@@ -392,6 +392,9 @@ export const FormMaldito: React.FC = () => {
 
 	const [getDataControl, setGetDataControl] = useState<number>(0);
 
+	//Note:
+	//https://www.storyblok.com/tp/how-to-send-multiple-requests-using-axios
+	//Modificar e intentar mutli axios;
 	useEffect(() => {
 		//Get Type Doc Ident
 		if (getDataControl === 0) {
@@ -504,7 +507,7 @@ export const FormMaldito: React.FC = () => {
 
 	//Copyrighter Commerce to pos
 	useEffect(() => {
-		if (activeStep === 2 && autoCompletePos) {
+		if (activeStep === 3 && autoCompletePos) {
 			setLocationPos(locationCommerce);
 			setListLocationPos(listLocationCommerce);
 			setCursedForm({
@@ -530,6 +533,9 @@ export const FormMaldito: React.FC = () => {
 	]);
 
 	//Client Location handle
+	//Note:
+	//Probar pasar el setLocation*** (pasar setState como props) segun el que estoy , 
+	//y pasar '_client', '', '_pos'
 	const handleUpdateLocationClient = (op: any, value: any) => {
 		if (op === 'estado') {
 			//Select ciudad and Update List municipi
@@ -658,7 +664,7 @@ export const FormMaldito: React.FC = () => {
 		) {
 			setAutoCompletePos(true);
 		}
-	}, [cursedForm, locationCommerce]);
+	}, [cursedForm, locationCommerce, locationPos]);
 
 	//Commerce Location handle
 	const handleUpdateLocationCommerce = (op: any, value: any) => {
@@ -975,10 +981,13 @@ export const FormMaldito: React.FC = () => {
 		});
 	};
 
+	//Note: 
+	//probar en el colocar onchange de email y de ident_type,identnum 
+	//cuando pasa cierto parameto de valid
 	//handle
 	const handleBlurEmailIdent = () => {
 		if (
-			activeStep === 0 &&
+			activeStep === 0 && //eliminar esta linea
 			cursedForm.email !== '' &&
 			cursedForm.id_ident_type !== '' &&
 			cursedForm.ident_num !== ''
@@ -993,6 +1002,9 @@ export const FormMaldito: React.FC = () => {
 		}
 	};
 
+	//Note: 
+	//probar en el colocar onchange de  ident_type and identnum commerce
+	//cuando pasa cierto parameto de valid
 	const handleBlurCommerce = () => {
 		if (activeStep === 2 && cursedForm.id_ident_type_commerce !== '' && cursedForm.ident_num_commerce !== '') {
 			dispatch(
@@ -1025,6 +1037,8 @@ export const FormMaldito: React.FC = () => {
 				sector_client: fm.clientMash.id_location.sector,
 				calle_client: fm.clientMash.id_location.calle,
 				local_client: fm.clientMash.id_location.local,
+				//Note:
+				//falta agregar el json.parse  para referencias
 			});
 			setLocationClient({
 				estado: fm.clientMash.id_location.id_estado,
@@ -1034,18 +1048,38 @@ export const FormMaldito: React.FC = () => {
 			});
 			setCursedFormError({
 				...cursedFormError,
+				//step 1 
 				email: false,
 				name: false,
 				last_name: false,
+				id_ident_type: false,
 				ident_num: false,
 				phone1: false,
 				phone2: false,
+				id_estado_client: false,
+				id_ciudad_client: false,
+				id_municipio_client: false,
+				id_parroquia_client: false,
+				codigo_postal_client: false,
+				sector_client: false,
+				calle_client: false,
+				local_client: false,
+				//Step2 Referencias Personales
+				name_ref1: false,
+				doc_ident_type_ref1: false,
+				doc_ident_ref1: false,
+				phone_ref1: false,
+				name_ref2: false,
+				doc_ident_type_ref2: false,
+				doc_ident_ref2: false,
+				phone_ref2: false,
 			});
 		} else if (!fm.mashClient && oldClientMatsh && !Object.keys(fm.clientMash).length) {
 			setOldClientMatsh(false);
 			console.log('vaciar client');
 			setCursedForm({
 				...cursedForm,
+				//Step1
 				name: '',
 				last_name: '',
 				phone1: '',
@@ -1058,6 +1092,15 @@ export const FormMaldito: React.FC = () => {
 				sector_client: '',
 				calle_client: '',
 				local_client: '',
+				//Step2 Referencias Personales
+				name_ref1: '',
+				doc_ident_type_ref1: 'V',
+				doc_ident_ref1: '',
+				phone_ref1: '',
+				name_ref2: '',
+				doc_ident_type_ref2: 'V',
+				doc_ident_ref2: '',
+				phone_ref2: '',
 			});
 			setLocationClient({
 				estado: null,
@@ -1090,6 +1133,8 @@ export const FormMaldito: React.FC = () => {
 				sector: fm.commerceMash.id_location.sector,
 				calle: fm.commerceMash.id_location.calle,
 				local: fm.commerceMash.id_location.local,
+				//Note
+				//update days work commerce
 			});
 			setLocationCommerce({
 				estado: fm.commerceMash.id_location.id_estado,
@@ -1115,10 +1160,21 @@ export const FormMaldito: React.FC = () => {
 				//Step3 Location
 				//Location se carga del cliente
 			});
+			setDays({
+				Lunes: true,
+				Martes: true,
+				Miercoles: true,
+				Jueves: true,
+				Viernes: true,
+				Sabado: true,
+				Domingo: true,
+			})
 			setActivity(null);
 		}
 	}, [fm.mashCommerce, fm.commerceMash]);
 
+	//Note
+	//Eliminar esta funcion
 	const handleBlurNumBank = () => {
 		if (activeStep === 4 && cursedForm.email !== '' && cursedForm.text_account_number !== '') {
 			dispatch(
@@ -1141,6 +1197,7 @@ export const FormMaldito: React.FC = () => {
 
 	const handleChangeNames = (event: React.ChangeEvent<HTMLInputElement>) => {
 		//if(!/^[0-9]+$/.test(event.target.value) || event.target.value === '')
+		//Note:
 		//falta no dejar escribir signos ni numeros
 			handleChange(event)
 	}
