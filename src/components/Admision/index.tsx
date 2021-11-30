@@ -1,12 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import LowPriority from '@material-ui/icons/LowPrioritySharp';
 import classNames from 'classnames';
-import React, { useContext, useLayoutEffect, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 import { SocketContext } from '../../context/SocketContext';
 import { getDataFM } from '../../store/actions/admisionFm';
-import Swal from 'sweetalert2';
 import { OpenModal, OpenModalListSolic } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
 import Barra from '../diagramas/Barra';
@@ -53,7 +54,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 			//console.log('L3', todo)
 			setTodoTodos(todo);
 		});
-	}, [])
+	}, []);
 
 	//socket io (todos)
 	useEffect(() => {
@@ -95,8 +96,6 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 			console.log('aldrin res', data)
 		})
 		 */
-
-
 	}, [socket, user]);
 
 	const handleClick = () => {
@@ -105,7 +104,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 		socket.on('server:Trabanjando_Solic', (data: any) => {
 			console.log('solic', data);
 			dispatch(getDataFM(data));
-			if(data.length === 0) {
+			if (data.length === 0) {
 				Swal.fire({
 					icon: 'warning',
 					title: 'No hay Formularios en espera',
@@ -114,7 +113,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 					timer: 2500,
 				});
 			}
-		})
+		});
 
 		//dispatch(OpenModal());
 
@@ -130,11 +129,10 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 	};
 
 	useEffect(() => {
-		if(Object.keys(fm).length && !modalOpen){
-			console.log('Abrir modal')
+		if (Object.keys(fm).length && !modalOpen) {
 			dispatch(OpenModal());
 		}
-	}, [fm])
+	}, [fm]);
 
 	const handleClickList = () => {
 		dispatch(OpenModalListSolic());
@@ -196,7 +194,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 						Validar Planilla
 						<AddIcon />
 					</Fab>
-					{(modalOpen) ? <Comprobacion /> : null}
+					{modalOpen ? <Comprobacion /> : null}
 				</div>
 			)}
 			{!isWorker && (
