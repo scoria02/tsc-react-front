@@ -21,6 +21,8 @@ import { PortFiles, URL } from '../config';
 import { SocketContext } from '../context/SocketContext';
 import { RootState } from '../store/store';
 
+import { cleanAdmisionFMAdministration } from '../store/actions/administration';
+
 interface AdministracionProp {}
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -246,10 +248,19 @@ const Administracion: FC<AdministracionProp> = () => {
 		socket.emit('cliente:trabajandoAdministra', user, event.row.id);
 	};
 
-	const handleCloseRow = (event: any) => {
+	const handleCloseRow = () => {
 		socket.emit('cliente:disconnect');
 		setSelected(false);
+		dispatch(cleanAdmisionFMAdministration())
 	};
+
+	useEffect(() => {
+		if(administration.updatedStatusAd){
+			handleCloseRow()
+		}
+	}, [administration.updatedStatusAd])
+
+	console.log(selected)
 
 	return (
 		<>
@@ -281,7 +292,7 @@ const Administracion: FC<AdministracionProp> = () => {
 							<Button className={classes.closeBtn} onClick={handleCloseRow}>
 								<CloseIcon />
 							</Button>
-							{getDataControl === 1 && (
+							{selected && getDataControl === 1 && (
 								<Form
 									fm={rowSelected}
 									setFm={setRowSelect}
