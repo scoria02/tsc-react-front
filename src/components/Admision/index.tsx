@@ -104,21 +104,32 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 		console.log('cliick')
 		if(!selectModal){
 			setSelectModal(true);
-			socket.emit('Trabanjando_Solic', user);
+			socket.emit('Trabanjando_Solic', user)
 			let index = 0;
 			socket.on('server:Trabanjando_Solic', (data: any) => {
 				index++;
 				console.log('solic', index, data);
-				dispatch(getDataFM(data));
-				if(data.length === 0) {
-					setSelectModal(false);
+				if(data?.status === true) {
 					Swal.fire({
 						icon: 'warning',
-						title: 'No hay Formularios en espera',
+						title: 'Ya tienes una Solicitud',
 						customClass: { container: 'swal2-validated' },
 						showConfirmButton: false,
-						timer: 2500,
+						timer: 3500,
 					});
+					setSelectModal(false);
+				}else {
+					dispatch(getDataFM(data));
+					if(data.length === 0) {
+						setSelectModal(false);
+						Swal.fire({
+							icon: 'warning',
+							title: 'No hay Formularios en espera',
+							customClass: { container: 'swal2-validated' },
+							showConfirmButton: false,
+							timer: 2500,
+						});
+					}
 				}
 			})
 		}

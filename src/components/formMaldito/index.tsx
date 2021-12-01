@@ -665,6 +665,15 @@ export const FormMaldito: React.FC = () => {
 		}
 	};
 
+	useEffect(() => {
+		if(fm.errorClient)
+			setActiveStep(0);
+		else if(activeStep > 1 && fm.errorCommerce)
+			setActiveStep(2);
+		else if(activeStep > 3 && fm.errorNumBank)
+			setActiveStep(4);
+	}, [activeStep, fm.errorClient, fm.errorCommerce, fm.errorNumBank])
+
 	//CheckStepAcual
 	useEffect(() => {
 		if (
@@ -680,7 +689,8 @@ export const FormMaldito: React.FC = () => {
 			) &&
 			!valids.checkErrorAllInput(valids.sizeStep(activeStep), cursedFormError) &&
 			!valids.validEndPoint(activeStep, fm) &&
-			!valids.notNullImagenActa(activeStep, imagesActa, cursedForm.id_ident_type_commerce, fm.imagesCommerce)
+			!valids.notNullImagenActa(activeStep, imagesActa, cursedForm.id_ident_type_commerce, fm.imagesCommerce) &&
+			valids.validMashes(activeStep, fm.validMashClient, fm.validMashCommerce)
 		) {
 			setReadyStep(true);
 		} else {

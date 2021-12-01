@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { SocketContext } from '../../../context/SocketContext';
@@ -21,6 +21,15 @@ const Diferido: React.FC<any> = ({ fm }) => {
 
 	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
 
+
+	const [deleteActa, setDeleteActa] = useState<any>([]);
+
+	useLayoutEffect(() => {
+	}, [])
+
+	const [actaImages, setActaImages] = useState<any>([]);
+	const [actaPaths, setActaPaths] = useState<any>([]);
+
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [completed, setCompleted] = React.useState(new Set<number>());
 	const [readyStep, setReadyStep] = useState<boolean>(true);
@@ -32,9 +41,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		rc_ref_bank: null,
 		rc_comp_dep: null,
 	});
-
-	const [actaImages, setActaImages] = useState<any>([]);
-	const [actaPaths, setActaPaths] = useState<any>([]);
 
 	const [paths, setPaths] = useState<any>({
 		rc_ident_card: '',
@@ -156,6 +162,8 @@ const Diferido: React.FC<any> = ({ fm }) => {
 							uploadImg={actaImages}
 							readyStep={readyStep}
 							ready={ready}
+							deleteActa={deleteActa}
+							setDeleteActa={setDeleteActa}
 						/>
 					);
 				} else {
@@ -227,6 +235,13 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				for (const item of actaImages) {
 					formData.append('constitutive_act', item);
 				}
+				let text: string= '';
+				for (const item of deleteActa) {
+					if(item){
+						text = text + (text.length ? ',' : '') + item;
+					}
+				}
+				formData.append('constitutive_act_ids', text);
 				dispatch(updateStatusFMDiferido(fm.id, formData));
 			}
 		}

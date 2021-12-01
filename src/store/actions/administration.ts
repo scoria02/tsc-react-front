@@ -7,6 +7,7 @@ export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
 };
 
+/*
 export const getDataFMAdministration = () => {
 	return async (dispatch: any) => {
 		try {
@@ -30,6 +31,7 @@ export const getDataFMAdministration = () => {
 		};
 	}
 };
+*/
 
 export const updateStatusFMAdministration = (id_fm: number, id_statusFMAd: number, newP: any) => {
 	const data = {
@@ -40,7 +42,7 @@ export const updateStatusFMAdministration = (id_fm: number, id_statusFMAd: numbe
 		try {
 			const res: AxiosResponse<any> = await useAxios.put(`/FM/administration/${id_fm}/status`, data);
 			console.log(res)
-			//updateToken(res);
+			updateToken(res);
 			dispatch(requestSuccess(id_statusFMAd));
 		} catch (error) {
 			console.log(error.response)
