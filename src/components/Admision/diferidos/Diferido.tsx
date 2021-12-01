@@ -9,8 +9,8 @@ import { CloseModalDiferido } from '../../../store/actions/ui';
 import { RootState } from '../../../store/store';
 import ModalSteps from '../../modals/ModalSteps';
 import '../scss/index.scss';
-import StepDiferido from './StepDiferido';
 import StepActaConst from './StepActaConst';
+import StepDiferido from './StepDiferido';
 
 const Diferido: React.FC<any> = ({ fm }) => {
 	const dispatch = useDispatch();
@@ -68,6 +68,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 			let path: string[] = [];
 			Object.keys(files).map((item: any, index: number) => {
 				path.push(URL.createObjectURL(files[index]));
+				return item;
 			});
 			setActaImages(files);
 			setActaPaths(path);
@@ -206,7 +207,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				index++;
 			}
 		}
-		if(Object.keys(actaImages).length){
+		if (Object.keys(actaImages).length) {
 			index++;
 		}
 		return index === Object.keys(recaudos).length ? true : false;

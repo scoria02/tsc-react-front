@@ -23,6 +23,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 		fontSize: 24,
 		padding: '1rem',
 	},
+	logo: {
+		width: '50%',
+		margin: '2rem 0',
+	},
 }));
 const Inicio: React.FC<HomeInt> = ({ prueba }) => {
 	const classes = useStyles();
@@ -31,7 +35,7 @@ const Inicio: React.FC<HomeInt> = ({ prueba }) => {
 		<>
 			<div className='ed-container'>
 				<div className={classes.base}>
-					<img src={Milpago} style={{ width: '50%' }} alt='logo milpagos' />
+					<img src={Milpago} className={classes.logo} alt='logo milpagos' />
 					<div className={classes.title}>Bienvenido al BackOffice</div>
 					<div className={classes.subtitle}>Haga click en el menu superior izquierdo para navegar</div>
 				</div>

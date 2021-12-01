@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
 	DataGrid,
 	GridColDef,
@@ -8,11 +9,10 @@ import {
 	GridValueGetterParams,
 } from '@material-ui/data-grid';
 import { DateTime } from 'luxon';
-import React, { useContext, useEffect, useState, useLayoutEffect } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SocketContext } from '../../../context/SocketContext';
 import { OpenModalDiferido } from '../../../store/actions/ui';
-import { RootState } from '../../../store/store';
 import { useStyles } from '../styles/styles';
 import Diferido from './Diferido';
 
@@ -65,7 +65,7 @@ const Diferidos: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
-	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
+	// const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
 	const { user } = useSelector((state: any) => state.auth);
 
 	const [rowSelected, setRowSelect] = useState(null);
@@ -93,7 +93,7 @@ const Diferidos: React.FC = () => {
 	useLayoutEffect(() => {
 		//console.log('(L1)')
 		socket.emit('cliente:loadDiferidos');
-	}, [])
+	}, []);
 
 	//socket io (todos)
 	useEffect(() => {
@@ -106,12 +106,12 @@ const Diferidos: React.FC = () => {
 
 	const handleRow = (event: any) => {
 		//setRowSelect(null);
-		socket.emit('Editar_diferido', event.row.id, (res:any) => {
-			console.log('editar este',res)
+		socket.emit('Editar_diferido', event.row.id, (res: any) => {
+			console.log('editar este', res);
 			setRowSelect({
 				...res,
 				id: event.row.id,
-			})
+			});
 		});
 
 		socket.emit('cliente:trabanjandoDiferido', user, event.row.id);

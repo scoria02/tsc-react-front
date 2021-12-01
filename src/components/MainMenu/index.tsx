@@ -231,7 +231,29 @@ const MainMenu: FC = () => {
 					break;
 			}
 		}
-	}, [userDB, menu]);
+		if (history) {
+			switch (history.location.pathname) {
+				case urlAdministracion:
+					setSection('Administración');
+					break;
+				case urlAdmision:
+					setSection('Admisión');
+					break;
+				case userAdmin:
+					setSection('Gestión de Usuarios');
+					break;
+				case urlFM:
+					setSection('Formulario de Activación');
+					break;
+				case urlCobr:
+					setSection('Cobranza');
+					break;
+				default:
+					setSection('1000Pagos C.A.');
+					break;
+			}
+		}
+	}, [userDB, menu, history]);
 
 	const menuId = 'primary-search-account-menu';
 	const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -253,36 +275,9 @@ const MainMenu: FC = () => {
 		history.push(urlLogin);
 	};
 
-	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
+	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, url: string) => {
 		dispatch(refreshLogin());
-		switch (index) {
-			case 1:
-				history.push(urlAdministracion);
-				setSection('Administracion');
-				break;
-			case 3:
-				history.push(urlAdmision);
-				setSection('Admision');
-				// socket.emit('prueba');
-				break;
-			case 4:
-				history.push(userAdmin);
-				setSection('Gestion de Usuarios');
-				break;
-			case 5:
-				history.push(urlFM);
-				setSection('Formulario de Activación');
-				break;
-			case 6:
-				history.push(urlCobr);
-				setSection('Cobranza');
-				break;
-
-			default:
-				history.push(baseUrl);
-				setSection('1000Pagos C.A.');
-				break;
-		}
+		history.push(url);
 		handleDrawerClose();
 	};
 
@@ -462,14 +457,14 @@ const MainMenu: FC = () => {
 				</div>
 				<Divider />
 				<List>
-					<ListItem button onClick={(event) => handleListItemClick(event, 0)}>
+					<ListItem button onClick={(event) => handleListItemClick(event, baseUrl)}>
 						<ListItemIcon classes={{ root: classes.icon }}>
 							<HomeIcon />
 						</ListItemIcon>
 						<ListItemText primary='Inicio' />
 					</ListItem>
 					{fm && (
-						<ListItem button onClick={(event) => handleListItemClick(event, 5)}>
+						<ListItem button onClick={(event) => handleListItemClick(event, urlFM)}>
 							<ListItemIcon classes={{ root: classes.icon }}>
 								<AssignmentIcon />
 							</ListItemIcon>
@@ -477,51 +472,44 @@ const MainMenu: FC = () => {
 						</ListItem>
 					)}
 					{admision && (
-						<ListItem button onClick={(event) => handleListItemClick(event, 3)}>
-							<Link to={urlAdmision}>
-								<ListItemIcon classes={{ root: classes.icon }}>
-									<PersonAdd />
-								</ListItemIcon>
-							</Link>
+						<ListItem button onClick={(event) => handleListItemClick(event, urlAdmision)}>
+							<ListItemIcon classes={{ root: classes.icon }}>
+								<PersonAdd />
+							</ListItemIcon>
 							<ListItemText primary='Admision' />
 						</ListItem>
 					)}
 					{administracion && (
-						<ListItem button onClick={(event) => handleListItemClick(event, 1)}>
-							<Link to={urlAdministracion}>
-								<ListItemIcon classes={{ root: classes.icon }}>
-									<FolderIcon />
-								</ListItemIcon>
-							</Link>
+						<ListItem button onClick={(event) => handleListItemClick(event, urlAdministracion)}>
+							<ListItemIcon classes={{ root: classes.icon }}>
+								<FolderIcon />
+							</ListItemIcon>
 							<ListItemText primary='Administracion' />
 						</ListItem>
 					)}
 					{cobranza && (
-						<ListItem button onClick={(event) => handleListItemClick(event, 6)}>
-							<Link to={urlCobr}>
-								<ListItemIcon classes={{ root: classes.icon }}>
-									<CreditCardIcon />
-								</ListItemIcon>
-							</Link>
+						<ListItem button onClick={(event) => handleListItemClick(event, urlCobr)}>
+							<ListItemIcon classes={{ root: classes.icon }}>
+								<CreditCardIcon />
+							</ListItemIcon>
 							<ListItemText primary='Cobranza' />
 						</ListItem>
 					)}
 				</List>
 				<Divider />
-				{seguridad && (
-					<>
-						<List>
-							<ListItem button key={'Gestion de Usuarios'} onClick={(event) => handleListItemClick(event, 4)}>
-								<Link to={urlAdmision}>
-									<ListItemIcon classes={{ root: classes.icon }}>
-										<PeopleIcon />
-									</ListItemIcon>
-								</Link>
-								<ListItemText primary={'Gestion de Usuarios'} />
-							</ListItem>
-						</List>
-					</>
-				)}
+				<List>
+					{seguridad && (
+						<ListItem
+							button
+							key={'Gestion de Usuarios'}
+							onClick={(event) => handleListItemClick(event, userAdmin)}>
+							<ListItemIcon classes={{ root: classes.icon }}>
+								<PeopleIcon />
+							</ListItemIcon>
+							<ListItemText primary={'Gestion de Usuarios'} />
+						</ListItem>
+					)}
+				</List>
 			</Drawer>
 		</div>
 	);

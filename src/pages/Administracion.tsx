@@ -11,19 +11,15 @@ import {
 } from '@material-ui/data-grid';
 import CloseIcon from '@material-ui/icons/Close';
 import classNames from 'classnames';
-import { FC, useContext, useEffect, useState, useLayoutEffect } from 'react';
+import { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form } from '../components/administration/Form';
-import { getPayMent } from '../components/formMaldito/getData';
-
-import { PortFiles, URL } from '../config';
-
-import { SocketContext } from '../context/SocketContext';
-
-import { getDataFMAdministration } from '../store/actions/administration';
-import { RootState } from '../store/store';
-import LoaderPrimary from '../components/loaders/LoaderPrimary';
 import '../components/administration/styles/index.scss';
+import { getPayMent } from '../components/formMaldito/getData';
+import LoaderPrimary from '../components/loaders/LoaderPrimary';
+import { PortFiles, URL } from '../config';
+import { SocketContext } from '../context/SocketContext';
+import { RootState } from '../store/store';
 
 interface AdministracionProp {}
 
@@ -121,7 +117,7 @@ const columns: GridColDef[] = [
 	{
 		field: 'id_request',
 		headerName: 'Cod.',
-		width: 150,//120,
+		width: 150, //120,
 		editable: false,
 		sortable: false,
 		valueFormatter: (value: GridValueGetterParams) => {
@@ -196,15 +192,13 @@ const Administracion: FC<AdministracionProp> = () => {
 	const { socket } = useContext(SocketContext);
 
 	useLayoutEffect(() => {
-		console.log('LA1')
+		//dispatch(getDataFMAdministration());
 		socket.emit('cliente:loadAdministracion');
-	}, [])
+	}, []);
 
 	//socket io (todos)
 	useEffect(() => {
-		console.log('EA1')
 		socket.on('server:loadAdministracion', (data: any) => {
-			console.log('list adminis', data)
 			setRowsAd(data);
 		});
 	}, [socket]);
@@ -223,15 +217,8 @@ const Administracion: FC<AdministracionProp> = () => {
 				});
 			}
 		} else if (getDataControl === 1) {
-			console.log('Todo correcto');
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [getDataControl]);
-
-	useEffect(() => {
-		//dispatch(getDataFMAdministration());
-		// console.log('rowSelected', rowSelected);
-	}, []);
 
 	useEffect(() => {
 		//setRowsAd(administration.fmAd);
@@ -252,14 +239,14 @@ const Administracion: FC<AdministracionProp> = () => {
 		setPayment(event.row.id_request.id_payment_method);
 		setTypePay(event.row.id_request.id_type_payment);
 		setRowSelect(event.row.id_request);
-		setPath(event.row.id_request.rc_comp_dep ? URL +':'+ PortFiles + '/' + event.row?.id_request?.rc_comp_dep.path : '');
+		setPath(
+			event.row.id_request.rc_comp_dep ? URL + ':' + PortFiles + '/' + event.row?.id_request?.rc_comp_dep.path : ''
+		);
 		setSelected(true);
-		console.log(user, event.row.id)
-		socket.emit('cliente:trabajandoAdministra', user , event.row.id);
+		socket.emit('cliente:trabajandoAdministra', user, event.row.id);
 	};
 
 	const handleCloseRow = (event: any) => {
-		console.log('cerrar modal' )
 		socket.emit('cliente:disconnect');
 		setSelected(false);
 	};
@@ -294,24 +281,24 @@ const Administracion: FC<AdministracionProp> = () => {
 							<Button className={classes.closeBtn} onClick={handleCloseRow}>
 								<CloseIcon />
 							</Button>
-					{getDataControl === 1 &&
-							<Form
-								fm={rowSelected}
-								setFm={setRowSelect}
-								uploadImg={uploadImg}
-								nameImg={nameImg}
-								setUploadImg={setUploadImg}
-								setNameImage={setNameImage}
-								payment={payment}
-								setPayment={setPayment}
-								listPayment={listPayment}
-								typePay={typePay}
-								setTypePay={setTypePay}
-								listTypePay={listTypePay}
-								path={path}
-								setPath={setPath}
-							/>
-					}
+							{getDataControl === 1 && (
+								<Form
+									fm={rowSelected}
+									setFm={setRowSelect}
+									uploadImg={uploadImg}
+									nameImg={nameImg}
+									setUploadImg={setUploadImg}
+									setNameImage={setNameImage}
+									payment={payment}
+									setPayment={setPayment}
+									listPayment={listPayment}
+									typePay={typePay}
+									setTypePay={setTypePay}
+									listTypePay={listTypePay}
+									path={path}
+									setPath={setPath}
+								/>
+							)}
 						</Paper>
 					</>
 				)}
