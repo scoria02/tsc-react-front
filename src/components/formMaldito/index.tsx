@@ -420,16 +420,16 @@ export const FormMaldito: React.FC = () => {
 					responses[0].data.info.forEach((item: any) => {
 						setListIdentType((prevState: any) => [...prevState, item]);
 					});
-					responses[2].data.info.forEach((item: any) => {
+					responses[1].data.info.forEach((item: any) => {
 						setListActivity((prevState: any) => [...prevState, item]);
 					});
-					responses[4].data.info.forEach((item: any) => {
+					responses[2].data.info.forEach((item: any) => {
 						setListPayment((prevState: any) => [...prevState, item]);
 					});
-					responses[6].data.info.forEach((item: any) => {
+					responses[3].data.info.forEach((item: any) => {
 						setListModelPos((prevState: any) => [...prevState, item]);
 					});
-					responses[8].data.info.forEach((item: any) => {
+					responses[4].data.info.forEach((item: any) => {
 						setListLocationCommerce((prevState: any) => ({
 							...prevState,
 							estado: [...prevState.estado, item],
