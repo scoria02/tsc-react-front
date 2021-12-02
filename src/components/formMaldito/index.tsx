@@ -5,11 +5,14 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 //Material
 import Stepper from '@material-ui/core/Stepper';
-import React, { useContext, useState, useEffect, useLayoutEffect } from 'react';
+import axios from 'axios';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { Port, URL } from '../../config';
 import { SocketContext } from '../../context/SocketContext';
+import { baseUrl } from '../../routers/url';
 import {
 	cleanFM,
 	sendClient,
@@ -23,11 +26,7 @@ import {
 //Redux
 import { RootState } from '../../store/store';
 import LoaderPrimary from '../loaders/LoaderPrimary';
-import {
-	getMunicipio,
-	getCiudad,
-	getParroquia,
-} from './getData';
+import { getCiudad, getMunicipio, getParroquia } from './getData';
 import './index.scss';
 //steps
 import { Step1 } from './steps/Step1';
@@ -37,11 +36,6 @@ import { Step4 } from './steps/Step4';
 import { Step5 } from './steps/Step5';
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
-
-import { URL, Port, configAxios, PortFiles } from '../../config';
-
-import axios, {AxiosResponse}  from 'axios';
-import { baseUrl } from '../../routers/url';
 
 function getSteps() {
 	return [
@@ -335,8 +329,7 @@ export const FormMaldito: React.FC = () => {
 		rc_comp_dep: '',
 	});
 
-	useLayoutEffect(() => {
-	}, []);
+	useLayoutEffect(() => {}, []);
 
 	useEffect(() => {
 		if (fm.errorClient) {
@@ -391,14 +384,12 @@ export const FormMaldito: React.FC = () => {
 
 	const getters = async (routes: any[]) => {
 		try {
-			const stop = routes.map(async(route: any)=> {
+			const stop = routes.map(async (route: any) => {
 				return await axios.get(route, {
-						baseURL: `${URL}:${Port}`,
-						headers: { common: { token: localStorage.getItem('token') } 
-					},
-				})
-
-			})
+					baseURL: `${URL}:${Port}`,
+					headers: { common: { token: localStorage.getItem('token') } },
+				});
+			});
 
 			const resps = await Promise.all(stop);
 
@@ -406,46 +397,40 @@ export const FormMaldito: React.FC = () => {
 		} catch (err) {
 			console.error('en getters', err);
 
-			return []
+			return [];
 		}
-	}
+	};
 
 	useLayoutEffect(() => {
 		dispatch(cleanFM());
 		//Get Type Doc Ident
-		if(
-			getDataLock === 0 && (
-				!listIdentType.length ||
+		if (
+			getDataLock === 0 &&
+			(!listIdentType.length ||
 				!listActivity.length ||
 				!listPayment.length ||
 				!listModelPos.length ||
 				!listLocationClient.length ||
 				!listLocationCommerce.length ||
-				!listLocationPos.length
-			)
+				!listLocationPos.length)
 		) {
-			const routes = [	
-				`/ident_type`,
-				,`/activity`,
-				,`/payment/all`,
-				,`/products`,
-				,`/Location/estado`
-			];
-			getters(routes).then((responses) => {
-				responses[0].data.info.forEach((item:any) => {
-					setListIdentType((prevState: any) => [...prevState, item]);
-				});
-				responses[2].data.info.forEach((item:any) => {
-					setListActivity((prevState: any) => [...prevState, item]);
-				});
-				responses[4].data.info.forEach((item:any) => {
-					setListPayment((prevState: any) => [...prevState, item]);
-				});
-				responses[6].data.info.forEach((item:any) => {
-					setListModelPos((prevState: any) => [...prevState, item]);
-				});
-				responses[8].data.info.forEach((item:any) => {
-					setListLocationCommerce((prevState: any) => ({
+			const routes = [`/ident_type`, `/activity`, `/payment/all`, `/products`, `/Location/estado`];
+			getters(routes)
+				.then((responses) => {
+					responses[0].data.info.forEach((item: any) => {
+						setListIdentType((prevState: any) => [...prevState, item]);
+					});
+					responses[2].data.info.forEach((item: any) => {
+						setListActivity((prevState: any) => [...prevState, item]);
+					});
+					responses[4].data.info.forEach((item: any) => {
+						setListPayment((prevState: any) => [...prevState, item]);
+					});
+					responses[6].data.info.forEach((item: any) => {
+						setListModelPos((prevState: any) => [...prevState, item]);
+					});
+					responses[8].data.info.forEach((item: any) => {
+						setListLocationCommerce((prevState: any) => ({
 							...prevState,
 							estado: [...prevState.estado, item],
 						}));
@@ -458,12 +443,13 @@ export const FormMaldito: React.FC = () => {
 							estado: [...prevState.estado, item],
 						}));
 					});
-				setGetDataLock(1);
-			}).catch(errors => {
-				console.log('error multi axios', errors)
-			});
-		} else if (getDataLock === 1){
-			console.log('Si la vida te da limones')
+					setGetDataLock(1);
+				})
+				.catch((errors) => {
+					console.log('error multi axios', errors);
+				});
+		} else if (getDataLock === 1) {
+			console.log('Si la vida te da limones');
 			setGetDataLock(2);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -557,10 +543,18 @@ export const FormMaldito: React.FC = () => {
 	}, [cursedForm, locationCommerce, locationPos]);
 
 	//Location handle
-	const handleUpdateLocation = (op: any, item: string, value: any,list:any, setList: any, location: any, setLocation:any) => {
-		if(item === '') {
+	const handleUpdateLocation = (
+		op: any,
+		item: string,
+		value: any,
+		list: any,
+		setList: any,
+		location: any,
+		setLocation: any
+	) => {
+		if (item === '') {
 			setAutoCompleteCommerce(false);
-		}else if(item === '_pos') {
+		} else if (item === '_pos') {
 			setAutoCompletePos(false);
 		}
 		if (op === 'estado') {
@@ -666,13 +660,10 @@ export const FormMaldito: React.FC = () => {
 	};
 
 	useEffect(() => {
-		if(fm.errorClient)
-			setActiveStep(0);
-		else if(activeStep > 1 && fm.errorCommerce)
-			setActiveStep(2);
-		else if(activeStep > 3 && fm.errorNumBank)
-			setActiveStep(4);
-	}, [activeStep, fm.errorClient, fm.errorCommerce, fm.errorNumBank])
+		if (fm.errorClient) setActiveStep(0);
+		else if (activeStep > 1 && fm.errorCommerce) setActiveStep(2);
+		else if (activeStep > 3 && fm.errorNumBank) setActiveStep(4);
+	}, [activeStep, fm.errorClient, fm.errorCommerce, fm.errorNumBank]);
 
 	//CheckStepAcual
 	useEffect(() => {
@@ -780,8 +771,8 @@ export const FormMaldito: React.FC = () => {
 		});
 	};
 
-	//Note: 
-	//probar en el colocar onchange de email y de ident_type,identnum 
+	//Note:
+	//probar en el colocar onchange de email y de ident_type,identnum
 	//cuando pasa cierto parameto de valid
 	//handle
 	const handleBlurEmailIdent = () => {
@@ -801,7 +792,7 @@ export const FormMaldito: React.FC = () => {
 		}
 	};
 
-	//Note: 
+	//Note:
 	//probar en el colocar onchange de  ident_type and identnum commerce
 	//cuando pasa cierto parameto de valid
 	const handleBlurCommerce = () => {
@@ -820,8 +811,8 @@ export const FormMaldito: React.FC = () => {
 	//MashClient
 	useEffect(() => {
 		if (fm.mashClient && fm.id_client) {
-			const ref1 = JSON.parse(fm.clientMash.ref_person_1)
-			const ref2 = JSON.parse(fm.clientMash.ref_person_2)
+			const ref1 = JSON.parse(fm.clientMash.ref_person_1);
+			const ref2 = JSON.parse(fm.clientMash.ref_person_2);
 			setOldClientMatsh(true);
 			setCursedForm({
 				...cursedForm,
@@ -857,7 +848,7 @@ export const FormMaldito: React.FC = () => {
 			});
 			setCursedFormError({
 				...cursedFormError,
-				//step 1 
+				//step 1
 				email: false,
 				name: false,
 				last_name: false,
@@ -977,7 +968,7 @@ export const FormMaldito: React.FC = () => {
 				Viernes: true,
 				Sabado: true,
 				Domingo: true,
-			})
+			});
 			setActivity(null);
 		}
 	}, [fm.mashCommerce, fm.commerceMash]);
@@ -990,18 +981,16 @@ export const FormMaldito: React.FC = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
 	};
 
-
 	const handleChangeNames = (event: React.ChangeEvent<HTMLInputElement>) => {
 		//Note:
 		//falta no dejar escribir signos ni numeros
 		if (
-			event.target.value.trim() !== '' &&
-			/^[(a-zA-Z) ]+$/.test(event.target.value) ||
+			(event.target.value.trim() !== '' && /^[(a-zA-Z) ]+$/.test(event.target.value)) ||
 			event.target.value === ''
-		){
-			handleChange(event)
+		) {
+			handleChange(event);
 		}
-	}
+	};
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setCursedForm({
@@ -1114,12 +1103,12 @@ export const FormMaldito: React.FC = () => {
 			setStateLocation={setLocationClient}
 			codePhone={codePhone}
 		/>,
-	<Step2 
-		cursedForm={cursedForm}
-		handleChangeNames={handleChangeNames}
-		handleChange={handleChange}
-		codePhone={codePhone}
-		error={cursedFormError}
+		<Step2
+			cursedForm={cursedForm}
+			handleChangeNames={handleChangeNames}
+			handleChange={handleChange}
+			codePhone={codePhone}
+			error={cursedFormError}
 		/>,
 		<Step3
 			days={days}
