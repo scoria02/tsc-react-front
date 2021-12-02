@@ -198,7 +198,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 					<Barra chartData={valuesChart} colsData={keyChart} />
 				</div>
 			</div>
-			{allSolic && (
+			{allSolic ? (
 				<div className='cmn-divfloat'>
 					<Fab 
 						color='primary'
@@ -212,15 +212,15 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 					</Fab>
 					{modalOpen ? <Comprobacion /> : null}
 				</div>
-			)}
-			{!isWorker && (
+			):null}
+			{!isWorker ? (
 				<div className='cmn2-divfloat'>
 					<Fab color='secondary' aria-label='add' size='large' variant='extended' onClick={handleClickList}>
 						<LowPriority />
 					</Fab>
 					{modalOpenListSolic ? <ListFms /> : null}
 				</div>
-			)}
+			):null}
 		</div>
 	);
 };

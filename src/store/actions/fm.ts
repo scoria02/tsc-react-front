@@ -43,7 +43,7 @@ export const validationCommerce = (id_client: number, commerce: any) => {
 			if (res.data.info) {
 				updateToken(res);
 				console.log(res.data)
-				dispatch(requestSuccess(res.data.info.matsh));
+				dispatch(requestSuccess(res.data.info));
 			} else {
 				dispatch(requestSuccessOk());
 			}
@@ -53,7 +53,7 @@ export const validationCommerce = (id_client: number, commerce: any) => {
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
 	};
-	function requestSuccess(state: boolean) {
+	function requestSuccess(state: any) {
 		return {
 			type: ActionType.validCommerce,
 			payload: state,

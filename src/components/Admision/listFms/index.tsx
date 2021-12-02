@@ -104,6 +104,13 @@ const ListFms: React.FC = () => {
 						</>
 					}
 				</Paper>
+				<p
+					style={{
+						marginTop: '1.5rem',
+						marginBottom: 0,
+						padding: '.2rem'
+					}}
+				>Puede Buscar por: Correo, Cedula, Rif, Codigo FM</p>
 			</div>
 		</AnimationModal>
 	);
