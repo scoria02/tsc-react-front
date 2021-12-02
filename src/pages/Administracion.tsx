@@ -256,6 +256,7 @@ const Administracion: FC<AdministracionProp> = () => {
 
 	useEffect(() => {
 		if(administration.updatedStatusAd){
+			socket.emit('cliente:cleansolicadminis');
 			handleCloseRow()
 		}
 	}, [administration.updatedStatusAd])

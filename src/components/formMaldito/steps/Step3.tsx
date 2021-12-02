@@ -43,7 +43,7 @@ export const Step3: React.FC<any> = ({
 	const handleSelect = (event: any) => {
 		setCursedForm({
 			...cursedForm,
-			[event.target.name]: parseInt(event.target.value, 10),
+			[event.target.name]: parseInt(event.target.value, 9),
 		});
 	};
 

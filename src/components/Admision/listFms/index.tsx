@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 //import { SocketContext } from '../../../context/SocketContext';
 import { CloseModalListSolic } from '../../../store/actions/ui';
 import { useStyles } from './styles';
+import { SocketContext } from '../../../context/SocketContext';
 
 import AnimationModal from '../../modals/AnimationModal';
 
@@ -18,9 +19,19 @@ import Typography from '@material-ui/core/Typography';
 const ListFms: React.FC = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
+	const { socket } = useContext(SocketContext);
+
 
 	const [search, setSearch] = useState<string>('');
 	const [searching, setSearching] = useState<boolean>(false);
+
+	const [fm, setFm] = useState<any>({
+		email: '',
+		name: '', 
+		last: '',
+		ci: '',
+		code: ''
+	});
 
 	const { modalOpenListSolic } = useSelector((state: any) => state.ui);
 	//const { user } = useSelector((state: any) => state.auth);
@@ -34,7 +45,22 @@ const ListFms: React.FC = () => {
 
 	const handleSearching = (e:any) => {
 		e.preventDefault();
+		console.log(search);
+		socket.emit('cliente:coleado',search, (data:any) => {
+			console.log('data del boton',data);
+			setFm({
+				email: data.email,
+				name: data.name,
+				last: data.last_name,
+				ci: data.ident_num,
+				code: data.requests[0].code,
+			});
+		});
 		setSearching(true);
+	}
+
+	const handleSelect = () => {
+		//socket.emit('cliente:coleado',search)
 	}
 
 	return (
@@ -70,6 +96,7 @@ const ListFms: React.FC = () => {
 					{searching &&
 						<>
 							<Grid container spacing={4}
+								onClick={handleSelect}
 								style={{
 									padding: '.5rem 1rem',
 								}}
@@ -83,19 +110,19 @@ const ListFms: React.FC = () => {
 										<Grid item xs>
 											<Typography gutterBottom variant="subtitle1" component="div">
 												<b>
-													{'Nombre Comercio: '}
+													{'Correo: '}
 												</b>
-												1000pagos
+												{fm.email}
 											</Typography>
 											<Typography gutterBottom variant="subtitle1" component="div">
 												<b>
 													{'Nombre Cliente: '}
 												</b>
-													Armando No Rivas
+												{`${fm.name} ${fm.last}`}
 											</Typography>
 											<Typography variant="body2" color="secondary">
 												<b>{'Code: '}</b> 
-												{search}
+												{fm.code}
 											</Typography>
 										</Grid>
 									</Grid>

@@ -167,6 +167,8 @@ export const Form: React.FC<any> = ({
 		}
 	}, [payment]);
 
+	console.log(fm)
+
 	return (
 		<>
 			<h2 className={classes.tableTitle}>
