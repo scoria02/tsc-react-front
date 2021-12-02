@@ -15,7 +15,6 @@ import { baseUrl } from '../../../routers/url';
 import { registerUser } from '../../../store/actions/auth';
 //Redux
 import { RootState } from '../../../store/store';
-import { getCompany } from '../../formMaldito/getData';
 import AuthModal from '../AuthModal';
 import { Interface_ErrorPass, Interface_RegisterUser, Interface_RegisterUserError } from '../interfaceAuth';
 //styles
@@ -171,6 +170,12 @@ const Register: React.FC = () => {
 		} else if (getDataControl === 1) {
 			console.log('entre');
 			if (listCompany.length === 0) {
+				setListCompany([
+					{ id: 1, name: 'Tranred' },
+					{ id: 2, name: '1000Pagos' },
+					{ id: 3, name: 'Digo' },
+				]);
+				/*
 				getCompany().then((res) => {
 					res.forEach((item, indice) => {
 						setListCompany((prevState: any) => [...prevState, item]);
@@ -179,6 +184,7 @@ const Register: React.FC = () => {
 						}
 					});
 				});
+				 */
 			}
 		} else if (getDataControl === 2) {
 			console.log('Todo correcto');
