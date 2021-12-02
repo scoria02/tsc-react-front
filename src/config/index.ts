@@ -1,4 +1,4 @@
-import Axios, { AxiosRequestConfig, AxiosResponse, AxiosInstance } from 'axios';
+import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { configure } from 'axios-hooks';
 import LRU from 'lru-cache';
 
@@ -28,7 +28,6 @@ const configAxiosFiles: AxiosRequestConfig = {
 	baseURL: `${URL}:${PortFiles}`,
 	headers: { common: { token: localStorage.getItem('token') } },
 };
-
 
 Axios.defaults.headers['Common-Type'] = 'application/json';
 
