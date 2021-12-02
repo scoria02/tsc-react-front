@@ -226,7 +226,6 @@ const Comprobacion: React.FC<any> = () => {
 				newCompleted.add(activeStep);
 				dispatch(stepComplete(newCompleted));
 				setCompleted(newCompleted);
-				console.log('revisar fin', completed.size + 1, totalSteps());
 				if (completed.size + 1 !== totalSteps()) {
 					handleNext();
 				} else {

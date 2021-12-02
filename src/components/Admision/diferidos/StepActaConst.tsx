@@ -2,7 +2,10 @@ import { Button } from '@material-ui/core';
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 
+import Swal from 'sweetalert2';
+
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import DeleteIcon from '@material-ui/icons/Delete';
 //Url
 import { PortFiles, URL } from '../../../config';
 import { useStyles } from '../styles/styles';
@@ -26,10 +29,38 @@ const StepActaConst: React.FC<any> = ({
 	handleChangeImages,
 	uploadImg,
 	ready,
+	deleteActa,
+	setDeleteActa,
 }) => {
 	const classes = useStyles();
 
   const url:string = URL + ':' + PortFiles + '/';
+
+	const handleAddDelete = (id: number) => {
+		Swal.fire({
+			title: 'Eliminar Imagen',
+			icon: 'error',
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Aceptar',
+			showCancelButton: true,
+			cancelButtonText: 'Atras',
+			showCloseButton: true,
+			customClass: { container: 'swal2-validated' },
+		}).then((result) => {
+			if (result.isConfirmed) {
+				setDeleteActa([...deleteActa, id])
+			}
+		});
+	}
+
+	const validDelete = (id: number) => {
+		for (const item of deleteActa) {
+			if(id === item)
+				return true;
+		}
+		return false;
+	}
 
 	return (
 		<>
@@ -84,9 +115,13 @@ const StepActaConst: React.FC<any> = ({
 									/>
 								</Button>
 							</ListItem>
-						)))
-						:
-						(acta.map((item: any, index: number) => (
+						))):null
+					}
+						{acta.map((item: any, index: number) => {
+							if(validDelete(item.id)){
+								return null;
+							}else {
+							return (
 							<ListItem key={item.id} value={item.id}>
 								<Button
 									className={classes.link}
@@ -109,9 +144,19 @@ const StepActaConst: React.FC<any> = ({
 										} 
 										secondary={index+1}
 									/>
+
+								</Button>
+								<Button
+									size='small'
+									variant='contained'
+									color='secondary'
+									onClick={() => handleAddDelete(item.id)}
+								>
+									<DeleteIcon />
 								</Button>
 							</ListItem>
-						)))
+							)
+						}})
 					}
 				</List>
 			</form>

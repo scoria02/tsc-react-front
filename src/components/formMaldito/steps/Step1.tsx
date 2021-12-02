@@ -26,12 +26,15 @@ export const Step1: React.FC<any> = ({
 	imagesForm,
 	setCursedForm,
 	handleChange,
+	handleChangeNames,
 	handleChangeImages,
 	handleBlurEmailIdent,
 	validateForm,
-	listLocation,
-	location,
 	handleUpdateLocation,
+	listLocation,
+	setStateList,
+	location,
+	setStateLocation,
 	codePhone,
 }) => {
 	const classes = useStylesFM();
@@ -144,7 +147,7 @@ export const Step1: React.FC<any> = ({
 						label='Nombre'
 						autoComplete="nombre"
 						name='name'
-						onChange={handleChange}
+						onChange={handleChangeNames}
 						value={cursedForm.name}
 						error={error.name}
 						disabled={fm.mashClient}
@@ -156,7 +159,7 @@ export const Step1: React.FC<any> = ({
 						label='Apellido'
 						autoComplete="last_name"
 						name='last_name'
-						onChange={handleChange}
+						onChange={handleChangeNames}
 						value={cursedForm.last_name}
 						error={error.last_name}
 						disabled={fm.mashClient}
@@ -220,7 +223,17 @@ export const Step1: React.FC<any> = ({
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
-						onChange={(event, value) => handleUpdateLocation('estado', value)}
+						onChange={(event, value) => 
+							handleUpdateLocation(
+								'estado',
+								'_client',
+								value, 
+								listLocation,
+								setStateList,
+								location,
+								setStateLocation,
+							)
+						}
 						value={location.estado || null}
 						options={listLocation.estado}
 						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
@@ -232,7 +245,17 @@ export const Step1: React.FC<any> = ({
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classes.inputText}
-						onChange={(event, value) => handleUpdateLocation('municipio', value)}
+						onChange={(event, value) => 
+							handleUpdateLocation(
+								'municipio',
+								'_client',
+								value, 
+								listLocation,
+								setStateList,
+								location,
+								setStateLocation,
+							)
+						}
 						value={location.municipio || null}
 						options={listLocation.municipio}
 						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
@@ -245,7 +268,17 @@ export const Step1: React.FC<any> = ({
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
-						onChange={(event, value) => handleUpdateLocation('ciudad', value)}
+						onChange={(event, value) => 
+							handleUpdateLocation(
+								'ciudad',
+								'_client',
+								value, 
+								listLocation,
+								setStateList,
+								location,
+								setStateLocation,
+							)
+						}
 						value={location.ciudad || null}
 						options={listLocation.ciudad}
 						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
@@ -256,7 +289,17 @@ export const Step1: React.FC<any> = ({
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classes.inputText}
-						onChange={(event, value) => handleUpdateLocation('parroquia', value)}
+						onChange={(event, value) => 
+							handleUpdateLocation(
+								'parroquia',
+								'_client',
+								value, 
+								listLocation,
+								setStateList,
+								location,
+								setStateLocation,
+							)
+						}
 						value={location.parroquia || null}
 						options={listLocation.parroquia}
 						getOptionLabel={(option: any) => (option.parroquia ? option.parroquia : '')}

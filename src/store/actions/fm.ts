@@ -9,14 +9,16 @@ export const updateToken = (token: any) => {
 };
 
 export const validationClient = (client: any) => {
-	//console.log(client)
+	console.log(client)
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
 			updateToken(res);
+			console.log(res)
 			dispatch(requestSuccess(res.data.info));
 			return res.data.info;
 		} catch (error) {
+			console.log(error.response)
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
@@ -40,16 +42,18 @@ export const validationCommerce = (id_client: number, commerce: any) => {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce/valid`, commerce);
 			if (res.data.info) {
 				updateToken(res);
-				dispatch(requestSuccess(res.data.info.matsh));
+				console.log(res.data)
+				dispatch(requestSuccess(res.data.info));
 			} else {
 				dispatch(requestSuccessOk());
 			}
 		} catch (error) {
+			console.log('valid comerce', error)
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
 	};
-	function requestSuccess(state: boolean) {
+	function requestSuccess(state: any) {
 		return {
 			type: ActionType.validCommerce,
 			payload: state,

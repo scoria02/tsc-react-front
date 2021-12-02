@@ -5,9 +5,11 @@ interface inState {
 	clientMash: any;
 	mashClient: boolean;
 	imagesClient: boolean;
+	validMashClient: boolean,
 	id_commerce: number;
 	commerceMash: any;
 	mashCommerce: boolean,
+	validMashCommerce: boolean,
 	imagesCommerce: boolean;
 	id_images: any;
 	loadedClient: boolean;
@@ -25,11 +27,13 @@ const initialState: inState = {
 	id_client: 0,
 	clientMash: {},
 	mashClient: false,
+	validMashClient: false,
 	imagesClient: false,
 
 	id_commerce: 0,
 	commerceMash: {},
 	mashCommerce: false,
+	validMashCommerce: false,
 	imagesCommerce: false,
 
 	id_images: null,
@@ -55,6 +59,7 @@ export const fmReducer = (state = initialState, action: any) => {
 				mashClient: action.payload.matsh,
 				imagesClient: action.payload.matshImg,
 				clientMash: action.payload.client,
+				validMashClient: true,
 			};
 		case ActionType.validClientError:
 			return {
@@ -64,6 +69,7 @@ export const fmReducer = (state = initialState, action: any) => {
 				mashClient: false,
 				imagesClient: false,
 				errorClient: true,
+				validMashClient: false,
 			};
 		case ActionType.validCommerce:
 			return {
@@ -73,6 +79,7 @@ export const fmReducer = (state = initialState, action: any) => {
 				mashCommerce: true,
 				imagesCommerce: action.payload.matchImg,
 				errorCommerce: false,
+				validMashCommerce: true,
 			};
 		case ActionType.validCommerceOk: //reset commerce
 			return {
@@ -81,6 +88,7 @@ export const fmReducer = (state = initialState, action: any) => {
 				mashCommerce: false,
 				imagesCommerce: false,
 				errorCommerce: false,
+				validMashCommerce: true,
 			};
 		case ActionType.validCommerceError:
 			return {
@@ -89,6 +97,7 @@ export const fmReducer = (state = initialState, action: any) => {
 				mashCommerce: false,
 				imagesCommerce: false,
 				errorCommerce: true,
+				validMashCommerce: false,
 			};
 		//Number Bank
 		case ActionType.validNumBank:

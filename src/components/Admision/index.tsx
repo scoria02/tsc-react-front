@@ -98,41 +98,51 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 		 */
 	}, [socket, user]);
 
+	const [selectModal, setSelectModal] = useState<boolean>(false);
+
 	const handleClick = () => {
-		socket.emit('Trabanjando_Solic', user);
-
-		socket.on('server:Trabanjando_Solic', (data: any) => {
-			console.log('solic', data);
-			dispatch(getDataFM(data));
-			if (data.length === 0) {
-				Swal.fire({
-					icon: 'warning',
-					title: 'No hay Formularios en espera',
-					customClass: { container: 'swal2-validated' },
-					showConfirmButton: false,
-					timer: 2500,
-				});
-			}
-		});
-
-		//dispatch(OpenModal());
-
-		/*
-		socket.emit('cliente:Todos', user, (todo: any) => {
-			setTodoTodos(todo);
-		});
-		 */
-
-		//socket.emit('cliente:loadDiferidos');
-		//	socket.emit('cliente:dashdatasiempre');
-		// socket.emit('cliente:dashdatasiempre');
+		console.log('cliick')
+		if(!selectModal){
+			setSelectModal(true);
+			socket.emit('Trabanjando_Solic', user)
+			let index = 0;
+			socket.on('server:Trabanjando_Solic', (data: any) => {
+				index++;
+				console.log('solic', index, data);
+				if(data?.status === true) {
+					Swal.fire({
+						icon: 'warning',
+						title: 'Ya tienes una Solicitud',
+						customClass: { container: 'swal2-validated' },
+						showConfirmButton: false,
+						timer: 3500,
+					});
+					setSelectModal(false);
+				}else {
+					dispatch(getDataFM(data));
+					if(data.length === 0) {
+						setSelectModal(false);
+						Swal.fire({
+							icon: 'warning',
+							title: 'No hay Formularios en espera',
+							customClass: { container: 'swal2-validated' },
+							showConfirmButton: false,
+							timer: 2500,
+						});
+					}
+				}
+			})
+		}
 	};
 
 	useEffect(() => {
 		if (Object.keys(fm).length && !modalOpen) {
 			dispatch(OpenModal());
 		}
-	}, [fm]);
+		if(!modalOpen){
+			setSelectModal(false);
+		}
+	}, [fm, modalOpen])
 
 	const handleClickList = () => {
 		dispatch(OpenModalListSolic());
@@ -188,23 +198,29 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 					<Barra chartData={valuesChart} colsData={keyChart} />
 				</div>
 			</div>
-			{allSolic && (
+			{allSolic ? (
 				<div className='cmn-divfloat'>
-					<Fab color='primary' aria-label='add' size='medium' variant='extended' onClick={handleClick}>
+					<Fab 
+						color='primary'
+						aria-label='add'
+						size='medium'
+						variant='extended'
+						onClick={handleClick}
+					>
 						Validar Planilla
 						<AddIcon />
 					</Fab>
 					{modalOpen ? <Comprobacion /> : null}
 				</div>
-			)}
-			{!isWorker && (
+			):null}
+			{!isWorker ? (
 				<div className='cmn2-divfloat'>
 					<Fab color='secondary' aria-label='add' size='large' variant='extended' onClick={handleClickList}>
 						<LowPriority />
 					</Fab>
 					{modalOpenListSolic ? <ListFms /> : null}
 				</div>
-			)}
+			):null}
 		</div>
 	);
 };
