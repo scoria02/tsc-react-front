@@ -168,12 +168,9 @@ const Comprobacion: React.FC<any> = () => {
 		if (id_statusFM !== 0 && updatedStatus) {
 			const idStatus = id_statusFM;
 			socket.emit('cliente:cleansolic');
-
-			// // socket.emit('client:getAll');
-
-			// socket.emit('cliente:loadDiferidos');
-			// socket.emit('cliente:dashdatasiempre');
-
+			if(idStatus === 3){
+				socket.emit('cliente:loadAdministracionTodos');
+			}
 			Swal.fire({
 				icon: `${idStatus === 3 ? 'success' : 'warning'}`,
 				title: `${idStatus === 3 ? 'Formulario Verificado' : 'Formulario Diferido'}`,
