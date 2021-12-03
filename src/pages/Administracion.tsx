@@ -236,6 +236,7 @@ const Administracion: FC<AdministracionProp> = () => {
 	};
 
 	const handleRow = (event: any) => {
+		socket.emit('cliente:disconnect');
 		setUploadImg(null);
 		setNameImage('');
 		setPayment(event.row.id_request.id_payment_method);
