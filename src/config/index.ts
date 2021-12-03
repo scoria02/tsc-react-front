@@ -4,13 +4,13 @@ import LRU from 'lru-cache';
 
 // Set config defaults when creating the instance
 
-//QA
+// QA
 //export const URL = `http://10.198.73.15`;
 
-//Aldrin
+// Aldrin
 export const URL = 'http://10.198.68.21';
 
-//Dimas
+// Dimas
 //export const URL = 'http://192.168.253.27';
 
 //export const URL = 'http://localhost';
