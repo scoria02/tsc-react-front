@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import React, { Dispatch } from 'react';
 
 export interface Days {
 	Lunes: boolean;
@@ -11,12 +11,13 @@ export interface Days {
 }
 
 export interface FMContextProp {
+	days: Days;
+	setDays: (data: Days) => void;
+};
+
+/*
+export interface FMContextProp {
 	days: Days | any;
 	setDays: React.Dispatch<React.SetStateAction<Days>>;
 }
-export const FMContext = createContext<FMContextProp>({
-	days: { Lunes: true, Martes: true, Miercoles: true, Jueves: true, Viernes: true, Sabado: true, Domingo: true },
-	setDays: () => {},
-});
-
-export default FMContext;
+*/

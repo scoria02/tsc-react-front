@@ -11,9 +11,9 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 //import luffy from '../../../img/itachi2.png';
+// import { useForm } from '../../../hooks/useForm';
 import { startLogin } from '../../../store/actions/auth';
 import AuthModal from '../AuthModal';
-// import { useForm } from '../../../hooks/useForm';
 import { useStylesModalUser } from '../styles';
 import './index.scss';
 
@@ -31,7 +31,6 @@ const Login: React.FC = () => {
 	const classes = useStylesModalUser();
 	const dispatch = useDispatch();
 	const history = useHistory();
-	// const history = useHistory();
 
 	const [showPassword, setShowPassword] = React.useState<boolean>(false);
 	const [password, setPass] = useState<string>('');

@@ -6,15 +6,15 @@ import TextField from '@material-ui/core/TextField';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { useStylesFM } from '../styles';
 import { recaudo } from '../../utilis/recaudos';
+import { FMContext } from '../../../context/FM/FMContext';
 
 //Pedido
 export const Step5: React.FC<any> = ({
-	cursedForm,
 	listTypePay,
 	setTypePay,
 	typePay,
@@ -26,9 +26,6 @@ export const Step5: React.FC<any> = ({
 	listPayment,
 	setPayment,
 	payment,
-	error,
-	setCursedForm,
-	handleChange,
 	handleChangeImages,
 	listRequestSource,
 	requestSource,
@@ -44,82 +41,69 @@ export const Step5: React.FC<any> = ({
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
+	const { 
+		fmData,
+		fmDataError,
+		setFmData,
+		changeFmParms,
+		changeFmData,
+	}:any = useContext(FMContext);
+
 	const handleSelectPayment = (event: any, value: any, item: string) => {
 		if (value) {
-			setCursedForm({
-				...cursedForm,
-				[`id_${item}`]: value.id,
-			});
+			changeFmParms(`id_${item}`, value.id);
 			setPayment(value);
 		} else {
-			setCursedForm({
-				...cursedForm,
-				[`id_${item}`]: 0,
-			});
+			changeFmParms(`id_${item}`, 0);
 			setPayment(null);
 		}
 	};
 
 	const handleSelectTypePay = (event: any, value: any, item: string) => {
 		if (value) {
-			setCursedForm({
-				...cursedForm,
-				[`id_${item}`]: value.id,
-			});
+			changeFmParms(`id_${item}`, value.id);
 			setTypePay(value);
 		} else {
-			setCursedForm({
-				...cursedForm,
-				[`id_${item}`]: 0,
-			});
+			changeFmParms(`id_${item}`, 0);
 			setTypePay(null);
 		}
 	};
 
 	const handleSelectPos = (event: any, value: any, item: string) => {
 		if (value) {
-			setCursedForm({
-				...cursedForm,
-				[`id_${item}`]: value.id,
-			});
+			changeFmParms(`id_${item}`, value.id);
 			setModelPost(value);
 		} else {
-			setCursedForm({
-				...cursedForm,
-				[`id_${item}`]: 0,
-			});
+			changeFmParms(`id_${item}`, 0);
 			setModelPost(null);
 		}
 	};
 
 	const handleChecked = (e: any) => {
-		setCursedForm({
-			...cursedForm,
-			[e.target.name]: !cursedForm[`${e.target.name}`] ? 1 : 0,
-		});
+		changeFmParms(e.target.name, !fmData[`${e.target.name}`] ? 1 : 0);
 	};
 
 	const handleCheckedPagadero = (e: any) => {
-		if (!cursedForm[`${e.target.name}`]) {
+		if (!fmData[`${e.target.name}`]) {
 			deleteImgContributor('comp_dep');
 		}
-		setCursedForm({
-			...cursedForm,
-			[e.target.name]: !cursedForm[`${e.target.name}`] ? 1 : 0,
+		setFmData({
+			...fmData,
+			[e.target.name]: !fmData[`${e.target.name}`] ? 1 : 0,
 			nro_comp_dep: '',
 		});
 	};
 
 	const handleSelectOrigin = (event: any, value: any, item: string) => {
 		if (value) {
-			setCursedForm({
-				...cursedForm,
+			setFmData({
+				...fmData,
 				[`id_${item}`]: value.id,
 			});
 			setRequestSource(value);
 		} else {
-			setCursedForm({
-				...cursedForm,
+			setFmData({
+				...fmData,
 				[`id_${item}`]: 0,
 			});
 			setRequestSource(null);
@@ -128,7 +112,7 @@ export const Step5: React.FC<any> = ({
 
 	const handleChangeBank = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if(/^[0-9]+$/.test(event.target.value) || event.target.value === ''){
-			handleChange(event);
+			changeFmData(event);
 		}	
 	}
 
@@ -156,33 +140,33 @@ export const Step5: React.FC<any> = ({
 		} else {
 			setReferido(false);
 		}
-		if (cursedForm.initial && modelPos) {
+		if (fmData.initial && modelPos) {
 			// cable pelado para el monto del precio del modelo seleccionado para calcular las cuotas
-			let valor = cursedForm.number_post * (modelPos.price - cursedForm.initial);
-			let cuotas = valor / (cursedForm.number_post * 50);
+			let valor = fmData.number_post * (modelPos.price - fmData.initial);
+			let cuotas = valor / (fmData.number_post * 50);
 
-			setCursedForm({
-				...cursedForm,
-				cuotas: valor / (cursedForm.number_post * 50),
+			setFmData({
+				...fmData,
+				cuotas: valor / (fmData.number_post * 50),
 			});
 
 			if (valor < 0) {
-				setCursedForm({
-					...cursedForm,
+				setFmData({
+					...fmData,
 					initial: 100,
 				});
 			}
 			if (cuotas % 1 === 0 && cuotas > 0 && cuotas) {
 				setCuotasTexto(`${cuotas} cuota/s de 50$`);
 			} else {
-				setCursedForm({
-					...cursedForm,
+				setFmData({
+					...fmData,
 					initial: 100,
 				});
 			}
 		}
 		/* eslint-disable react-hooks/exhaustive-deps */
-	}, [cursedForm.number_post, cursedForm.initial, requestSource, typePay, modelPos]);
+	}, [fmData.number_post, fmData.initial, requestSource, typePay, modelPos]);
 
 	useEffect(() => {
 		if (imagesForm.rc_comp_dep) {
@@ -205,9 +189,9 @@ export const Step5: React.FC<any> = ({
 					label='Numero de Puntos'
 					type='number'
 					name='number_post'
-					onChange={handleChange}
-					error={error.number_post}
-					value={cursedForm.number_post}
+					onChange={changeFmData}
+					error={fmDataError.number_post}
+					value={fmData.number_post}
 				/>
 				<Autocomplete
 					className={classes.inputText}
@@ -229,8 +213,8 @@ export const Step5: React.FC<any> = ({
 					label={fm.nameBank === '' ? 'Numero de Cuenta' : fm.nameBank}
 					name='text_account_number'
 					onChange={handleChangeBank}
-					value={cursedForm.text_account_number}
-					error={error.text_account_number || fm.errorNumBank}
+					value={fmData.text_account_number}
+					error={fmDataError.text_account_number || fm.errorNumBank}
 					inputProps={{ maxLength: 20 }}
 				/>
 				<div className={classes.row}>
@@ -312,11 +296,11 @@ export const Step5: React.FC<any> = ({
 					id='standard-required'
 					label='Numero de Cédula'
 					name='reqSource_docnum'
-					onChange={handleChange}
+					onChange={changeFmData}
 					inputProps={{
 						maxLength: 9 
 					}}
-					value={cursedForm.reqSource_docnum}
+					value={fmData.reqSource_docnum}
 				/>
 			</div>
 			<div className={classes.input}>
@@ -329,7 +313,7 @@ export const Step5: React.FC<any> = ({
 							type='number'
 							name='initial'
 							variant='outlined'
-							value={cursedForm.initial}
+							value={fmData.initial}
 							onKeyDown={(e) => {
 								e.preventDefault();
 							}}
@@ -338,7 +322,7 @@ export const Step5: React.FC<any> = ({
 								step: '50',
 								min: '100',
 							}}
-							onChange={handleChange}
+							onChange={changeFmData}
 						/>
 						<TextField
 							disabled
@@ -360,7 +344,7 @@ export const Step5: React.FC<any> = ({
 						<>
 							<Checkbox
 								name='discount'
-								checked={cursedForm.discount === 1 ? true : false}
+								checked={fmData.discount === 1 ? true : false}
 								onChange={handleChecked}
 								color='primary'
 								inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -381,7 +365,7 @@ export const Step5: React.FC<any> = ({
 						<>
 							<Checkbox
 								name='pagadero'
-								checked={cursedForm.pagadero === 1 ? true : false}
+								checked={fmData.pagadero === 1 ? true : false}
 								onChange={handleCheckedPagadero}
 								color='primary'
 								inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -396,7 +380,7 @@ export const Step5: React.FC<any> = ({
 					}
 				/>
 			</div>
-			{cursedForm.pagadero || cursedForm.id_payment_method === 2 ? null : (
+			{fmData.pagadero || fmData.id_payment_method === 2 ? null : (
 				<div className={classes.input}>
 					<div className={classNames(classes.row, classes.inputTextLeft)}>
 						<b className={classes.labels}>Comprobante de pago</b>
@@ -441,8 +425,8 @@ export const Step5: React.FC<any> = ({
 							label='Referencia'
 							placeholder='Numero de comprobante'
 							name='nro_comp_dep'
-							onChange={handleChange}
-							value={cursedForm.nro_comp_dep}
+							onChange={changeFmData}
+							value={fmData.nro_comp_dep}
 							//error={erorr.reqSource_docnum}
 						/>
 					</div>

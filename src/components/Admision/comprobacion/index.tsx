@@ -168,7 +168,7 @@ const Comprobacion: React.FC<any> = () => {
 		if (id_statusFM !== 0 && updatedStatus) {
 			const idStatus = id_statusFM;
 			socket.emit('cliente:cleansolic');
-			if(idStatus === 3){
+			if (idStatus === 3) {
 				socket.emit('cliente:loadAdministracionTodos');
 			}
 			Swal.fire({

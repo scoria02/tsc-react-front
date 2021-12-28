@@ -156,5 +156,4 @@ const PasoActaConst: React.FC = () => {
 	);
 }
 
-
 export default PasoActaConst;

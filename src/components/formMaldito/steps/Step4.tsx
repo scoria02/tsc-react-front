@@ -2,41 +2,60 @@
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import classnames from 'classnames';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useStylesFM } from '../styles';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 
+import { FMContext } from '../../../context/FM/FMContext';
+import { LocationsContext } from '../../../context/Location/LocationsContext';
+
 export const Step4: React.FC<any> = ({
 	setAutoCompleteCommerce,
 	setAutoCompletePos,
-	//Commerce
-	listLocation,
-	setListCommerce,
-	location,
-	setLocation,
-	//Pos
-	listLocationPos,
-	setListPos,
-	locationPos,
-	setLocationPos,
-
-	cursedForm,
-	handleChange,
-	handleUpdateLocation,
 }) => {
 	const classes = useStylesFM();
 
+	const { 
+		listLocationCommerce,
+		setListEstadoCommerce,
+		setListMunicipioCommerce,
+		setListCiudadCommerce,
+		setListParroquiaCommerce,
+		listLocationPos,
+		setListEstadoPos,
+		setListMunicipioPos,
+		setListCiudadPos,
+		setListParroquiaPos,
+	}:any = useContext(LocationsContext);
+
 	const fm: any = useSelector((state: RootState) => state.fm);
+
+	const { 
+		fmData,
+		changeFmData,
+		locationCommerce,
+		locationPos,
+
+		setEstadoCommerce,
+		setMunicipioCommerce,
+		setCiudadCommerce,
+		setParroquiaCommerce,
+
+		setEstadoPos,
+		setMunicipioPos,
+		setCiudadPos,
+		setParroquiaPos,
+	}:any = useContext(FMContext);
 
 	const handleChangeCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setAutoCompleteCommerce(false);
-		handleChange(event);
+		changeFmData(event);
 	};
 
 	const handleChangePos = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setAutoCompletePos(false);
-		handleChange(event);
+		changeFmData(event);
 	};
 
 	return (
@@ -46,20 +65,13 @@ export const Step4: React.FC<any> = ({
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
 						className={classes.inputTextLeft}
-						onChange={(event, value) => 
-							handleUpdateLocation(
-								'estado',
-								'',
-								value, 
-								listLocation,
-								setListCommerce,
-								location,
-								setLocation,
-							)
-						}
-						value={location.estado || null}
+						onChange={(event, value) => {
+							setEstadoCommerce(value);
+							setListMunicipioCommerce(value);
+						}}
+						value={locationCommerce.estado || null}
 						disabled={fm.mashCommerce}
-						options={listLocation.estado}
+						options={listLocationCommerce.estado}
 						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
 						getOptionSelected={(option: any, value: any) => option.id === value.id}
 						renderInput={(params: any) => (
@@ -68,20 +80,13 @@ export const Step4: React.FC<any> = ({
 					/>
 					<Autocomplete
 						className={classes.inputText}
-						onChange={(event, value) => 
-							handleUpdateLocation(
-								'municipio',
-								'',
-								value, 
-								listLocation,
-								setListCommerce,
-								location,
-								setLocation,
-							)
-						}
-						value={location.municipio || null}
+						onChange={(event, value) => {
+							setMunicipioCommerce(value);
+							setListCiudadCommerce(fmData.id_estado);
+						}}
+						value={locationCommerce.municipio || null}
 						disabled={fm.mashCommerce}
-						options={listLocation.municipio}
+						options={listLocationCommerce.municipio}
 						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
 						renderInput={(params: any) => (
 							<TextField {...params} name='municipio' label='Municipio' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'municipio', }}/>
@@ -90,21 +95,14 @@ export const Step4: React.FC<any> = ({
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
-						onChange={(event, value) => 
-							handleUpdateLocation(
-								'ciudad',
-								'',
-								value, 
-								listLocation,
-								setListCommerce,
-								location,
-								setLocation,
-							)
-						}
+						onChange={(event, value) => {
+							setCiudadCommerce(value);
+							setListParroquiaCommerce(fmData.id_municipio);
+						}}
 						className={classes.inputTextLeft}
-						value={location.ciudad || null}
+						value={locationCommerce.ciudad || null}
 						disabled={fm.mashCommerce}
-						options={listLocation.ciudad}
+						options={listLocationCommerce.ciudad}
 						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
 						renderInput={(params: any) => (
 							<TextField {...params} name='ciudad' label='Ciudad' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'ciudad', }}/>
@@ -112,20 +110,12 @@ export const Step4: React.FC<any> = ({
 					/>
 					<Autocomplete
 						className={classes.inputText}
-						onChange={(event, value) => 
-							handleUpdateLocation(
-								'parroquia',
-								'',
-								value, 
-								listLocation,
-								setListCommerce,
-								location,
-								setLocation,
-							)
-						}
-						value={location.parroquia || null}
+						onChange={(event, value) => {
+							setParroquiaCommerce(value);
+						}}
+						value={locationCommerce.parroquia || null}
 						disabled={fm.mashCommerce}
-						options={listLocation.parroquia}
+						options={listLocationCommerce.parroquia}
 						getOptionLabel={(option: any) => (option.parroquia ? option.parroquia : '')}
 						renderInput={(params: any) => (
 							<TextField {...params} name='parroquia' label='Parroquia' variant='outlined' />
@@ -140,7 +130,7 @@ export const Step4: React.FC<any> = ({
 						id='standard-required'
 						label='Codigo Postal'
 						name='codigo_postal'
-						value={cursedForm.codigo_postal}
+						value={fmData.codigo_postal}
 						disabled
 					/>
 					<TextField
@@ -152,7 +142,7 @@ export const Step4: React.FC<any> = ({
 						label='Sector'
 						name='sector'
 						onChange={handleChangeCommerce}
-						value={cursedForm.sector}
+						value={fmData.sector}
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
@@ -165,7 +155,7 @@ export const Step4: React.FC<any> = ({
 						label='Calle'
 						name='calle'
 						onChange={handleChangeCommerce}
-						value={cursedForm.calle}
+						value={fmData.calle}
 					/>
 					<TextField
 						className={classes.inputText}
@@ -176,7 +166,7 @@ export const Step4: React.FC<any> = ({
 						disabled={fm.mashCommerce}
 						name='local'
 						onChange={handleChangeCommerce}
-						value={cursedForm.local}
+						value={fmData.local}
 					/>
 				</div>
 			</div>
@@ -185,17 +175,10 @@ export const Step4: React.FC<any> = ({
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
 						className={classes.inputTextLeft}
-						onChange={(event, value) => 
-							handleUpdateLocation(
-								'estado',
-								'_pos',
-								value, 
-								listLocationPos,
-								setListPos,
-								locationPos,
-								setLocationPos,
-							)
-						}
+						onChange={(event, value) => {
+							setEstadoPos(value);
+							setListMunicipioPos(value);
+						}}
 						options={listLocationPos.estado}
 						value={locationPos.estado || null}
 						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
@@ -206,17 +189,10 @@ export const Step4: React.FC<any> = ({
 					/>
 					<Autocomplete
 						className={classes.inputText}
-						onChange={(event, value) => 
-							handleUpdateLocation(
-								'municipio',
-								'_pos',
-								value, 
-								listLocationPos,
-								setListPos,
-								locationPos,
-								setLocationPos,
-							)
-						}
+						onChange={(event, value) => {
+							setMunicipioPos(value);
+							setListCiudadPos(fmData.id_estado_pos);
+						}}
 						value={locationPos.municipio || null}
 						options={listLocationPos.municipio}
 						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
@@ -228,17 +204,10 @@ export const Step4: React.FC<any> = ({
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
 						className={classes.inputTextLeft}
-						onChange={(event, value) => 
-							handleUpdateLocation(
-								'ciudad',
-								'_pos',
-								value, 
-								listLocationPos,
-								setListPos,
-								locationPos,
-								setLocationPos,
-							)
-						}
+						onChange={(event, value) => {
+							setCiudadPos(value);
+							setListParroquiaPos(fmData.id_municipio_pos);
+						}}
 						options={listLocationPos.ciudad}
 						value={locationPos.ciudad || null}
 						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
@@ -248,17 +217,9 @@ export const Step4: React.FC<any> = ({
 					/>
 					<Autocomplete
 						className={classes.inputText}
-						onChange={(event, value) => 
-							handleUpdateLocation(
-								'parroquia',
-								'_pos',
-								value, 
-								listLocationPos,
-								setListPos,
-								locationPos,
-								setLocationPos,
-							)
-						}
+						onChange={(event, value) => {
+							setParroquiaPos(value);
+						}}
 						options={listLocationPos.parroquia}
 						value={locationPos.parroquia || null}
 						getOptionLabel={(option: any) => (option.parroquia ? option.parroquia : '')}
@@ -275,7 +236,7 @@ export const Step4: React.FC<any> = ({
 						id='standard-required'
 						label='Codigo Postal'
 						name='codigo_postal_pos'
-						value={cursedForm.codigo_postal_pos}
+						value={fmData.codigo_postal_pos}
 						disabled
 					/>
 					<TextField
@@ -286,7 +247,7 @@ export const Step4: React.FC<any> = ({
 						label='Sector'
 						name='sector_pos'
 						onChange={handleChangePos}
-						value={cursedForm.sector_pos}
+						value={fmData.sector_pos}
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
@@ -298,7 +259,7 @@ export const Step4: React.FC<any> = ({
 						label='Calle'
 						name='calle_pos'
 						onChange={handleChangePos}
-						value={cursedForm.calle_pos}
+						value={fmData.calle_pos}
 					/>
 					<TextField
 						className={classes.inputText}
@@ -308,7 +269,7 @@ export const Step4: React.FC<any> = ({
 						label='Local'
 						name='local_pos'
 						onChange={handleChangePos}
-						value={cursedForm.local_pos}
+						value={fmData.local_pos}
 					/>
 				</div>
 			</div>

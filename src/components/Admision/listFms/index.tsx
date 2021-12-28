@@ -18,7 +18,6 @@ const ListFms: React.FC = () => {
 	const dispatch = useDispatch();
 	const { socket } = useContext(SocketContext);
 
-
 	const [search, setSearch] = useState<string>('');
 	const [searching, setSearching] = useState<boolean>(false);
 

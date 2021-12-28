@@ -162,10 +162,4 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		justifyContent: 'center',
 		flexDirection: 'column',
 	},
-	titleRight: {
-		fontSize: '2.5rem',
-		letterSpacing: '1px',
-		margin: '2rem 0',
-		fontWeight: 'bold',
-	},
 }));

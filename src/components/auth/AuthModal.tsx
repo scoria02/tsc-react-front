@@ -12,9 +12,9 @@ import luffy from '../../img/user.png';
 import { useStylesModalUser } from './styles';
 import './login/index.scss';
 
-import './index.scss'
+import './index.scss';
 
-const AuthModal: React.FC<any> = ({children, name, register}) => {
+const AuthModal: React.FC<any> = ({ children, name, register }) => {
 	const classes = useStylesModalUser();
 
 	const history = useHistory();
@@ -22,7 +22,7 @@ const AuthModal: React.FC<any> = ({children, name, register}) => {
 	return (
 		<Card className={classes.root}>
 			<CardContent>
-				<div className='ed-grid s-grid-1 m-grid-2 '>
+				<div className='ed-grid s-grid-1 m-grid-2'>
 					<div className={classes.containerLeft}>
 						<CardMedia className={classes.media} image={luffy} title='Logo Mil Pagos' />
 						<Button
@@ -32,19 +32,22 @@ const AuthModal: React.FC<any> = ({children, name, register}) => {
 							variant='contained'
 							onClick={() => history.push(`/auth/${!register ? 'register' : 'login'}`)}>
 							<div className='ed-container'>
-								<div className='s-to-center button-login'>{!register ? 'Registrarme ': 'Volver al Inicio'}</div>
+								<div className='s-to-center button-login'>{!register ? 'Registrarme ' : 'Volver al Inicio'}</div>
 							</div>
 						</Button>
 					</div>
 					<CardContent>
 						<div className='s-py-4'>
-							<Typography gutterBottom variant='h5' component='h2' align='center' className={register ? '' : "toto"}>
-								<b className={classes.titleRight}>{name}</b>
+							<Typography
+								gutterBottom
+								variant='h5'
+								component='h2'
+								align='center'
+								className={register ? '' : 'toto'}>
+								<b>{name}</b>
 							</Typography>
 						</div>
-						<div>
-							{children}
-						</div>
+						<div>{children}</div>
 					</CardContent>
 				</div>
 			</CardContent>

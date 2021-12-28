@@ -22,16 +22,16 @@ export default function PasoClient() {
 	const [state, setState] = React.useState(rc_ident_card);
 	const [openModal, setOpenModal] = React.useState<boolean>(false);
 
-  const [load, setLoad] = useState(false)
+	const [load, setLoad] = useState(false);
 
 	const handleOpenModal = () => {
-		handleCancel()
+		handleCancel();
 		setOpenModal(true);
 	};
 	const handleCloseModal = (cancel: boolean) => {
-		if(cancel){
-			setState({ 
-				...state, 
+		if (cancel) {
+			setState({
+				...state,
 				status: !state.status,
 			});
 		}
@@ -52,20 +52,19 @@ export default function PasoClient() {
 		handleCloseModal(true);
 	};
 
-	const handleChangeI = (event:any) => {
-		setState({ 
-			...state, 
+	const handleChangeI = (event: any) => {
+		setState({
+			...state,
 			[event.target.name]: event.target.value,
 		});
-	}
+	};
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({ 
-			...state, 
+		setState({
+			...state,
 			[event.target.name]: event.target.checked,
 		});
-		if(!event.target.checked)
-			handleOpenModal();
+		if (!event.target.checked) handleOpenModal();
 	};
 
 	const imagen = `${URL}:${PortFiles}/${fm.id_client.rc_ident_card.path}`;
@@ -79,49 +78,38 @@ export default function PasoClient() {
 	};
 	 */
 
-
 	return (
-		<form className="container-step" noValidate autoComplete='off'
-		>
-				<div className={classes.btn_stepM}>
-					<TextField
-						className={classes.btn_stepT}
-						id='outlined-basic'
-						label='Nombre'
-						variant='outlined'
-						value={fm.id_client.name}
-					/>
-					<TextField
-						className={classes.btn_stepT}
-						id='outlined-basic'
-						label='Apellido'
-						variant='outlined'
-						value={fm.id_client.last_name}
-					/>
-					<TextField
-						className={classes.btn_stepT}
-						id='outlined-basic'
-						label='Numero ID'
-						variant='outlined'
-						value={`${fm.id_client.id_ident_type.name} ${fm.id_client.ident_num}`}
-					/>
+		<form className='container-step' noValidate autoComplete='off'>
+			<div className={classes.btn_stepM}>
+				<TextField
+					className={classes.btn_stepT}
+					id='outlined-basic'
+					label='Nombre'
+					variant='outlined'
+					value={fm.id_client.name}
+				/>
+				<TextField
+					className={classes.btn_stepT}
+					id='outlined-basic'
+					label='Apellido'
+					variant='outlined'
+					value={fm.id_client.last_name}
+				/>
+				<TextField
+					className={classes.btn_stepT}
+					id='outlined-basic'
+					label='Numero ID'
+					variant='outlined'
+					value={`${fm.id_client.id_ident_type.name} ${fm.id_client.ident_num}`}
+				/>
 				<FormControlLabel
-					control={<Switch
-						checked={state.status}
-						onChange={handleChange}
-						name='status'
-						color='primary'
-						/>}
+					control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
 					className={classes.checkText}
 					label={state.status ? 'Correcto' : 'Incorrecto'}
 				/>
-				</div>
-			<Rec 
-				load={load}
-				setLoad={setLoad}
-				imagen={imagen}
-			/>
-			<ModalAlert 
+			</div>
+			<Rec load={load} setLoad={setLoad} imagen={imagen} />
+			<ModalAlert
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
 				state={state}
@@ -132,4 +120,3 @@ export default function PasoClient() {
 		</form>
 	);
 }
-

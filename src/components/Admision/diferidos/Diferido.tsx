@@ -21,7 +21,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 
 	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
 
-
 	const [deleteActa, setDeleteActa] = useState<any>([]);
 
 	useLayoutEffect(() => {

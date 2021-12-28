@@ -10,27 +10,20 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { recaudo } from '../../utilis/recaudos';
 import { useStylesFM } from '../styles';
+import { FMContext } from '../../../context/FM/FMContext';
+
+import { DataListContext } from '../../../context/DataList/DataListContext';
 
 export const Step3: React.FC<any> = ({
-	days,
-	setDays,
 	imagesActa,
-	listIdentType,
-	listActivity,
-	activity,
-	setActivity,
 	namesImages,
-	cursedForm,
-	error,
 	imagesForm,
-	setCursedForm,
 	handleBlurCommerce,
-	handleChange,
 	handleChangeImages,
 	handleChangeImagesMulti,
 	deleteImgContributor,
@@ -40,54 +33,48 @@ export const Step3: React.FC<any> = ({
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
-	const handleSelect = (event: any) => {
-		setCursedForm({
-			...cursedForm,
-			[event.target.name]: parseInt(event.target.value, 9),
-		});
-	};
+	const { 
+		fmData,
+		fmDataError,
+		days,
+		activity,
+		setActivity,
+		changeFmData,
+		changeFmParms,
+		changeDays,
+	}:any = useContext(FMContext);
+
+	const {
+		listIdentType,
+		listActivity,
+	}: any = useContext(DataListContext);
 
 	const handleSelectActivity = (event: any, value: any, item: string) => {
 		if (value) {
-			setCursedForm({
-				...cursedForm,
-				[`id_${item}`]: value.id,
-			});
+			changeFmParms(`id_${item}`, value.id);
 			setActivity(value);
 		} else {
-			setCursedForm({
-				...cursedForm,
-				[`id_${item}`]: 0,
-			});
+			changeFmParms(`id_${item}`, 0);
 			setActivity(null);
 		}
 	};
 
 	const handleChecked = (e: any) => {
-		if (!!cursedForm.special_contributor) {
+		if (e.target.checked) {
 			deleteImgContributor(e.target.name);
 		}
-		setCursedForm({
-			...cursedForm,
-			[e.target.name]: !cursedForm.special_contributor ? 1 : 0,
-		});
+		changeFmParms(e.target.name, e.target.checked ? 1 : 0);
 	};
 
 	const handleIdentNum = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
-			handleChange(event);
-		}
-	};
-
-	const handleChangeCB = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (event.target.name !== 'TERMINAL') {
-			setDays({ ...days, [event.target.name]: event.target.checked });
+			changeFmData(event);
 		}
 	};
 
 	useEffect(() => {
 		setActaFlag(false);
-		if (cursedForm.id_ident_type_commerce === 3) {
+		if (fmData.id_ident_type_commerce === 3) {
 			setActaFlag(true);
 		} else {
 			if (imagesForm.rc_constitutive_act) {
@@ -95,7 +82,7 @@ export const Step3: React.FC<any> = ({
 			}
 		}
 		/* eslint-disable react-hooks/exhaustive-deps */
-	}, [cursedForm.id_ident_type_commerce]);
+	}, [fmData.id_ident_type_commerce]);
 
 	return (
 		<>
@@ -104,8 +91,8 @@ export const Step3: React.FC<any> = ({
 					<FormControl variant='outlined' className={classes.inputSelect}>
 						<InputLabel id='demo-simple-select-outlined-label'>Doc.</InputLabel>
 						<Select
-							value={cursedForm.id_ident_type_commerce}
-							onChange={handleSelect}
+							value={fmData.id_ident_type_commerce}
+							onChange={changeFmData}
 							name='id_ident_type_commerce'
 							label='Tipo'
 							onBlur={handleBlurCommerce}
@@ -123,14 +110,14 @@ export const Step3: React.FC<any> = ({
 						variant='outlined'
 						required
 						id='standard-required'
-						label={cursedForm.id_ident_type_commerce === 3 ? 'Numero de Rif' : 'C.I.'}
+						label={fmData.id_ident_type_commerce === 3 ? 'Numero de Rif' : 'C.I.'}
 						name='ident_num_commerce'
 						onChange={handleIdentNum}
 						onBlur={handleBlurCommerce}
-						value={cursedForm.ident_num_commerce}
+						value={fmData.ident_num_commerce}
 						error={fm.errorCommerce}
 						inputProps={{
-							maxLength: cursedForm.id_ident_type_commerce === 5 ? 20 : 9,
+							maxLength: fmData.id_ident_type_commerce === 5 ? 20 : 9,
 						}}
 					/>
 					<Button
@@ -163,9 +150,9 @@ export const Step3: React.FC<any> = ({
 						id='standard-required'
 						label='Nombre del Comercio'
 						name='name_commerce'
-						onChange={handleChange}
-						value={cursedForm.name_commerce}
-						error={error.name_commerce}
+						onChange={changeFmData}
+						value={fmData.name_commerce}
+						error={fmDataError.name_commerce}
 						disabled={fm.mashCommerce}
 					/>
 				</div>
@@ -227,7 +214,7 @@ export const Step3: React.FC<any> = ({
 								<>
 									<Checkbox
 										name='special_contributor'
-										checked={cursedForm.special_contributor ? true : false}
+										checked={fmData.special_contributor ? true : false}
 										onChange={handleChecked}
 										disabled={fm.imagesCommerce}
 										color='primary'
@@ -250,7 +237,7 @@ export const Step3: React.FC<any> = ({
 						style={{
 							opacity: fm.imagesCommerce ? 0 : 1,
 							background: imagesForm.rc_special_contributor ? '#5c62c5' : '#f44336',
-							visibility: cursedForm.special_contributor ? 'visible' : 'hidden',
+							visibility: fmData.special_contributor ? 'visible' : 'hidden',
 						}}
 						component='label'>
 						{imagesForm.rc_special_contributor !== null ? (
@@ -281,7 +268,7 @@ export const Step3: React.FC<any> = ({
 					{Object.keys(days).map((key: any) => {
 						return (
 							<FormControlLabel
-								control={<Checkbox checked={days[key]} onChange={handleChangeCB} name={key} color='primary' />}
+								control={<Checkbox checked={days[key]} onChange={changeDays} name={key} color='primary' />}
 								label={key.replaceAll('_', ' ')}
 								key={key}
 							/>
