@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
-import { 
-  CHANGE_FM,
+import { ReactChild, ReactChildren } from 'react';
+import {
+	CHANGE_FM,
 	SET_FM,
-  CHANGE_ErrorFM,
-  SET_ErrorFM,
-  CHANGE_DAYS,
-  SET_DAYS,
+	CHANGE_ErrorFM,
+	SET_ErrorFM,
+	CHANGE_DAYS,
+	SET_DAYS,
 	SET_ESTADO_S,
 	SET_MUNICIPIO_S,
 	SET_CIUDAD_S,
@@ -17,103 +18,92 @@ import {
 	COPY_LOCATION_CC_TO_P,
 	SET_LOCATION,
 } from './type';
-import {createContext, useReducer, useContext } from 'react';
+
+import { createContext, useReducer, useContext } from 'react';
 
 import FMReducer from './FMReducer';
-import FMLocationReducer from './FMLocationReducer';
-import FMErrorReducer from './FMErrorReducer';
+import FMLocationReducer from '../FMLocation/FMLocationReducer';
 
-import {
-	fm_Interface,
-	fmError_Interface,
-	Days,
-} 
-from './interfaces';
+import { fm_Interface, fmError_Interface, Days, fmState_Interface } from './interfaces';
+import { Activity } from '../DataList/interface';
+import { Estado, Municipio, Ciudad, Parroquia, Location } from '../Location/interfaces';
 
-import {
-	fmFormat,
-	fmErrorFormat,
-	daysWork,
-	location,
-} from './states';
+import { fmFormat, fmErrorFormat, daysWork, location } from './states';
 
 export const FMContext = createContext({});
 
-const FMProvider = (props:any) => {
+interface Props {
+	children: ReactChild | ReactChildren;
+}
 
-	const initialState = {
+const FMProvider = ({ children }: Props) => {
+	const initialState: fmState_Interface = {
 		fmData: fmFormat,
 		days: daysWork,
 		codePhone: '58',
 		activity: null,
-	}
-
-	const initialStateError = {
 		fmDataError: fmErrorFormat,
-	}
+	};
 
-	const [fmState, dispatch] = useReducer(FMReducer,initialState);
-
-	const { fmData } = fmState;
-
+	const [fmState, dispatch] = useReducer(FMReducer, initialState);
 	const [locationClient, dispatchC] = useReducer(FMLocationReducer, location);
 	const [locationCommerce, dispatchCC] = useReducer(FMLocationReducer, location);
 	const [locationPos, dispatchP] = useReducer(FMLocationReducer, location);
 
-	const [fmErrorState, dispatchError] = useReducer(FMErrorReducer, initialStateError);
+	const { fmData } = fmState;
 
 	const changeFmData = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const data:any = {
+		const data: { name: string; value: string | number } = {
 			name: event.target.name,
 			value: event.target.value,
-		}
+		};
 		dispatch({
 			type: CHANGE_FM,
 			payload: data,
 		});
-	}
+	};
 
 	const changeFmParms = (name: string, value: string | number) => {
 		dispatch({
 			type: CHANGE_FM,
-			payload: {name: name, value: value},
+			payload: { name: name, value: value },
 		});
-	}
+	};
 
 	const setFmData = (fm: fm_Interface) => {
 		dispatch({
 			type: SET_FM,
 			payload: fm,
 		});
-	}
+	};
 
 	const setFmError = (fmError: fmError_Interface) => {
-		dispatchError({
+		dispatch({
 			type: SET_ErrorFM,
 			payload: fmError,
 		});
-	}
+	};
 
 	const changeDays = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const data:any = {
+		const data: { name: string; value: boolean } = {
 			name: event.target.name,
 			value: event.target.checked,
-	}
+		};
 		dispatch({
 			type: CHANGE_DAYS,
 			payload: data,
 		});
-	}
+	};
 
 	const setDays = (days: Days) => {
 		dispatch({
 			type: SET_DAYS,
 			payload: days,
 		});
-	}
+	};
 
 	//Client location
-	const setEstadoClient = (data: any) => {
+	const setEstadoClient = (data: Estado) => {
 		dispatchC({
 			type: SET_ESTADO_S,
 			payload: data,
@@ -124,7 +114,7 @@ const FMProvider = (props:any) => {
 		changeFmParms('id_parroquia_client', 0);
 	};
 
-	const setMunicipioClient = (data: any) => {
+	const setMunicipioClient = (data: Municipio) => {
 		dispatchC({
 			type: SET_MUNICIPIO_S,
 			payload: data,
@@ -134,7 +124,7 @@ const FMProvider = (props:any) => {
 		changeFmParms('id_parroquia_client', 0);
 	};
 
-	const setCiudadClient = (data: any) => {
+	const setCiudadClient = (data: Ciudad) => {
 		dispatchC({
 			type: SET_CIUDAD_S,
 			payload: data,
@@ -144,7 +134,7 @@ const FMProvider = (props:any) => {
 		changeFmParms('codigo_postal_client', data ? data.postal_code : '');
 	};
 
-	const setParroquiaClient = (data: any) => {
+	const setParroquiaClient = (data: Parroquia) => {
 		dispatchC({
 			type: SET_PARROQUIA_S,
 			payload: data,
@@ -153,7 +143,7 @@ const FMProvider = (props:any) => {
 	};
 
 	//Comercio location
-	const setEstadoCommerce = (data: any) => {
+	const setEstadoCommerce = (data: Estado) => {
 		dispatchCC({
 			type: SET_ESTADO_S,
 			payload: data,
@@ -164,7 +154,7 @@ const FMProvider = (props:any) => {
 		changeFmParms('id_parroquia', 0);
 	};
 
-	const setMunicipioCommerce = (data: any) => {
+	const setMunicipioCommerce = (data: Municipio) => {
 		dispatchCC({
 			type: SET_MUNICIPIO_S,
 			payload: data,
@@ -174,7 +164,7 @@ const FMProvider = (props:any) => {
 		changeFmParms('id_parroquia', 0);
 	};
 
-	const setCiudadCommerce = (data: any) => {
+	const setCiudadCommerce = (data: Ciudad) => {
 		dispatchCC({
 			type: SET_CIUDAD_S,
 			payload: data,
@@ -184,7 +174,7 @@ const FMProvider = (props:any) => {
 		changeFmParms('codigo_postal', data ? data.postal_code : '');
 	};
 
-	const setParroquiaCommerce = (data: any) => {
+	const setParroquiaCommerce = (data: Parroquia) => {
 		dispatchCC({
 			type: SET_PARROQUIA_S,
 			payload: data,
@@ -193,7 +183,7 @@ const FMProvider = (props:any) => {
 	};
 
 	//Pos location
-	const setEstadoPos = (data: any) => {
+	const setEstadoPos = (data: Estado) => {
 		dispatchP({
 			type: SET_ESTADO_S,
 			payload: data,
@@ -204,7 +194,7 @@ const FMProvider = (props:any) => {
 		changeFmParms('id_parroquia_pos', 0);
 	};
 
-	const setMunicipioPos = (data: any) => {
+	const setMunicipioPos = (data: Municipio) => {
 		dispatchP({
 			type: SET_MUNICIPIO_S,
 			payload: data,
@@ -214,7 +204,7 @@ const FMProvider = (props:any) => {
 		changeFmParms('id_parroquia_pos', 0);
 	};
 
-	const setCiudadPos = (data: any) => {
+	const setCiudadPos = (data: Ciudad) => {
 		dispatchP({
 			type: SET_CIUDAD_S,
 			payload: data,
@@ -224,7 +214,7 @@ const FMProvider = (props:any) => {
 		changeFmParms('codigo_postal_pos', data ? data.postal_code : '');
 	};
 
-	const setParroquiaPos = (data: any) => {
+	const setParroquiaPos = (data: Parroquia) => {
 		dispatchP({
 			type: SET_PARROQUIA_S,
 			payload: data,
@@ -232,12 +222,12 @@ const FMProvider = (props:any) => {
 		changeFmParms('id_parroquia_pos', data ? data.id : 0);
 	};
 
-	const setActivity = (data: any) => {
+	const setActivity = (data: Activity) => {
 		dispatch({
 			type: SET_ACTIVITY,
 			payload: data,
 		});
-	}
+	};
 
 	const copyLocationCToCC = () => {
 		dispatchCC({
@@ -256,9 +246,9 @@ const FMProvider = (props:any) => {
 				calle: fmData.calle_client,
 				local: fmData.local_client,
 				codigo_postal: fmData.codigo_postal_client,
-			}
+			},
 		});
-	}
+	};
 
 	const copyLocationCToP = () => {
 		dispatchP({
@@ -277,16 +267,16 @@ const FMProvider = (props:any) => {
 				calle_pos: fmData.calle_client,
 				local_pos: fmData.local_client,
 				codigo_postal_pos: fmData.codigo_postal_client,
-			}
+			},
 		});
-	}
+	};
 
 	const copyLocationCCToP = () => {
 		dispatchP({
 			type: COPY_LOCATION,
 			payload: locationCommerce,
 		});
-		
+
 		dispatch({
 			type: SET_FM,
 			payload: {
@@ -299,23 +289,23 @@ const FMProvider = (props:any) => {
 				calle_pos: fmData.calle,
 				local_pos: fmData.local,
 				codigo_postal_pos: fmData.codigo_postal,
-			}
+			},
 		});
-	}
+	};
 
-	const setLocationClient = (location: any) => {
+	const setLocationClient = (location: Location) => {
 		dispatchC({
 			type: SET_LOCATION,
 			payload: location,
-		})
-	}
+		});
+	};
 
-	const setLocationCommerce = (location: any) => {
+	const setLocationCommerce = (location: Location) => {
 		dispatchCC({
 			type: SET_LOCATION,
 			payload: location,
-		})
-	}
+		});
+	};
 
 	return (
 		<FMContext.Provider
@@ -353,14 +343,11 @@ const FMProvider = (props:any) => {
 				copyLocationCToCC,
 				copyLocationCToP,
 				copyLocationCCToP,
-				//FMError
-				...fmErrorState,
 				setFmError,
-			}}
-		>
-			{props.children}
+			}}>
+			{children}
 		</FMContext.Provider>
-	)
-}
+	);
+};
 
 export default FMProvider;

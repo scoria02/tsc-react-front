@@ -5,28 +5,28 @@ export const validEmail = (value: string): boolean => {
 	} else {
 		return false;
 	}
-}
+};
 
 export const validSamePass = (password: string, password2: string): boolean => {
 	if (password === password2) {
 		return true;
 	}
 	return false;
-}
+};
 
 export const validFullName = (value: string): boolean => {
 	if (value.trim() !== '' && !/[^a-z0-9\x20]/i.test(value) && !/\d/.test(value)) {
 		return false;
 	}
 	return true;
-}
+};
 
-export  const rangeTypeIdent = (value: string, min: number, max: number): boolean => {
+export const rangeTypeIdent = (value: string, min: number, max: number): boolean => {
 	if (value.length >= min && value.length <= max) return true;
 	else return false;
 };
 
-export const validIdentNum = (value: string, op: number):boolean => {
+export const validIdentNum = (value: string, op: number): boolean => {
 	if (value.trim() !== '' && /^[0-9]+$/.test(value) && !/[^a-z0-9\x20]/i.test(value)) {
 		switch (op) {
 			case 1: //V*
@@ -44,28 +44,22 @@ export const validIdentNum = (value: string, op: number):boolean => {
 		}
 	}
 	return true;
-}
+};
 
-export const validPhone = (value: string):boolean => {
-	if (value.trim() !== '' && 
-		/^[0-9]+$/.test(value) && 
-		!/[^a-z0-9\x20]/i.test(value) &&
-		value.length >= 10) {
-			if(/^((4(1|2)4|4(1|2)6|412))([0-9]{7})$|^(2)(([0-9]){9})$/.test(value))
-				return false;
-			else
-				return true;
-		}
-		return true;
-}
-
+export const validPhone = (value: string): boolean => {
+	if (value.trim() !== '' && /^[0-9]+$/.test(value) && !/[^a-z0-9\x20]/i.test(value) && value.length >= 10) {
+		if (/^((4(1|2)4|4(1|2)6|412))([0-9]{7})$|^(2)(([0-9]){9})$/.test(value)) return false;
+		else return true;
+	}
+	return true;
+};
 
 //Error for EndPoint
-export const checkErrorInput = (name:string, array: any):boolean =>{
-	const names: string[] = array.map((e:any)=>e.name);
-	if(names.includes(name))return true;
+export const checkErrorInput = (name: string, array: any): boolean => {
+	const names: string[] = array.map((e: any) => e.name);
+	if (names.includes(name)) return true;
 	else return false;
-}
+};
 
 export const checkErrorAllInput = (active: number, errors: any): boolean => {
 	let indice = 0;
@@ -80,20 +74,19 @@ export const checkErrorAllInput = (active: number, errors: any): boolean => {
 		}
 	}
 	return false;
-}
+};
 
 export const checkErrorInputEndPoint = (errorEndPoint: any): boolean => {
-	if(errorEndPoint.length > 0){
+	if (errorEndPoint.length > 0) {
 		return true;
 	}
 	return false;
-}
+};
 
 export const phoneNotNull = (value: string): boolean => {
-	if(value.length > 0){
-		return false
-	}else
-		return true;
+	if (value.length > 0) {
+		return false;
+	} else return true;
 };
 
 export const allInputNotNUll = (active: number, user: any): boolean => {
@@ -106,11 +99,11 @@ export const allInputNotNUll = (active: number, user: any): boolean => {
 		indice++;
 		//No Check when item[0] === 'IdentType'
 		if (typeof item[1] === 'string') {
-			if((item[0] === 'phone')){
-				if(phoneNotNull(item[1])){
+			if (item[0] === 'phone') {
+				if (phoneNotNull(item[1])) {
 					return true;
 				}
-			}else{
+			} else {
 				if (item[1].trim() === '') {
 					return true;
 				}
@@ -119,4 +112,3 @@ export const allInputNotNUll = (active: number, user: any): boolean => {
 	}
 	return false;
 };
-

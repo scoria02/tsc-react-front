@@ -1,11 +1,6 @@
-import {
-	fm_Interface,
-	fmError_Interface,
-	Days,
-} 
-from './interfaces';
+import { fm_Interface, fmError_Interface, Days } from './interfaces';
 
-export const fmFormat:fm_Interface = {
+export const fmFormat: fm_Interface = {
 	//step1 Cliente
 	email: '',
 	name: '',
@@ -69,9 +64,9 @@ export const fmFormat:fm_Interface = {
 	nro_comp_dep: '',
 	discount: 0,
 	pagadero: 0,
-}
+};
 
-export const fmErrorFormat:fmError_Interface = {
+export const fmErrorFormat: fmError_Interface = {
 	//step1 Cliente
 	email: false,
 	name: false,
@@ -137,7 +132,7 @@ export const fmErrorFormat:fmError_Interface = {
 	pagadero: false,
 };
 
-export const daysWork:Days = {
+export const daysWork: Days = {
 	Lunes: true,
 	Martes: true,
 	Miercoles: true,
@@ -152,4 +147,4 @@ export const location: any = {
 	ciudad: null,
 	municipio: null,
 	parroquia: null,
-}
+};

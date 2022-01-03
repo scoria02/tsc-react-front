@@ -1,5 +1,5 @@
-import React from "react"
-import {useDispatch, useSelector} from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 //Material
 import TextField from '@material-ui/core/TextField';
@@ -14,21 +14,16 @@ import Typography from '@material-ui/core/Typography';
 import Alert from '../../../alert/Alert1';
 
 //validation
-import {checkErrorInput} from '../validationForm';
+import { checkErrorInput } from '../validationForm';
 
 //Styles
-import {useStylesModalUser} from '../../styles';
+import { useStylesModalUser } from '../../styles';
 
 //Redux
-import {RootState} from '../../../../store/store';
-import {validationEmail} from '../../../../store/actions/auth';
+import { RootState } from '../../../../store/store';
+import { validationEmail } from '../../../../store/actions/auth';
 
-import {
-	Interface_RegisterUser,
-	Interface_RegisterUserError,
-	Interface_ErrorPass
-} from '../../interfaceAuth';
-
+import { Interface_RegisterUser, Interface_RegisterUserError, Interface_ErrorPass } from '../../interfaceAuth';
 
 interface Props {
 	userForm: Interface_RegisterUser; //json
@@ -37,8 +32,7 @@ interface Props {
 	handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-
-export const Step1: React.FC<Props> = ({userForm, userFormError, errorPassword, handleChange}) => {
+export const Step1: React.FC<Props> = ({ userForm, userFormError, errorPassword, handleChange }) => {
 	const dispatch = useDispatch();
 
 	//selector
@@ -83,23 +77,23 @@ export const Step1: React.FC<Props> = ({userForm, userFormError, errorPassword, 
 				value={userForm.password}
 				label='Contraseña'
 				placeholder='*********'
-				type={showPassword ? "text" : "password"}
+				type={showPassword ? 'text' : 'password'}
 				autoComplete='current-password'
 				variant='outlined'
 				error={userFormError.password}
-				InputProps={{ // <-- This is where the toggle button is added.
+				InputProps={{
+					// <-- This is where the toggle button is added.
 					endAdornment: (
-						<InputAdornment position="end">
+						<InputAdornment position='end'>
 							<IconButton
-								aria-label="toggle password visibility"
+								aria-label='toggle password visibility'
 								onMouseDown={() => setShowPassword(!showPassword)}
 								onMouseUp={() => setShowPassword(!showPassword)}
-								edge="end"
-							>
+								edge='end'>
 								{showPassword ? <Visibility /> : <VisibilityOff />}
 							</IconButton>
 						</InputAdornment>
-					)
+					),
 				}}
 			/>
 			<Snackbar
@@ -107,22 +101,27 @@ export const Step1: React.FC<Props> = ({userForm, userFormError, errorPassword, 
 				anchorOrigin={{
 					vertical: 'top',
 					horizontal: 'right',
-				}}
-			>
+				}}>
 				<SnackbarContent
-					style={{padding: '0', margin: '0', height: 0}}
+					style={{ padding: '0', margin: '0', height: 0 }}
 					message={
 						<Alert>
-							<Typography className={classes.textM} style={{display: `${errorPassword.rango ? 'block' : 'none'}`}}>
+							<Typography
+								className={classes.textM}
+								style={{ display: `${errorPassword.rango ? 'block' : 'none'}` }}>
 								<span>&#8226;</span> Entre 8 a 12 carateres
 							</Typography>
-							<Typography className={classes.textM} style={{display: `${errorPassword.mayus ? 'block' : 'none'}`}}>
+							<Typography
+								className={classes.textM}
+								style={{ display: `${errorPassword.mayus ? 'block' : 'none'}` }}>
 								<span>&#8226;</span> Al menos una MAYUSCULA
 							</Typography>
-							<Typography className={classes.textM} style={{display: `${errorPassword.minus ? 'block' : 'none'}`}}>
+							<Typography
+								className={classes.textM}
+								style={{ display: `${errorPassword.minus ? 'block' : 'none'}` }}>
 								<span>&#8226;</span> Al menos 1 minuscula
 							</Typography>
-							<Typography className={classes.textM} style={{display: `${errorPassword.sig ? 'block' : 'none'}`}}>
+							<Typography className={classes.textM} style={{ display: `${errorPassword.sig ? 'block' : 'none'}` }}>
 								<span>&#8226;</span> Al menos 1 carater (#,$,*,@,!...)
 							</Typography>
 						</Alert>
@@ -145,6 +144,5 @@ export const Step1: React.FC<Props> = ({userForm, userFormError, errorPassword, 
 				error={userFormError.confirmPassword}
 			/>
 		</>
-	)
-}
-
+	);
+};

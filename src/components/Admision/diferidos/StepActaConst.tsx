@@ -34,7 +34,7 @@ const StepActaConst: React.FC<any> = ({
 }) => {
 	const classes = useStyles();
 
-  const url:string = URL + ':' + PortFiles + '/';
+	const url: string = URL + ':' + PortFiles + '/';
 
 	const handleAddDelete = (id: number) => {
 		Swal.fire({
@@ -49,35 +49,33 @@ const StepActaConst: React.FC<any> = ({
 			customClass: { container: 'swal2-validated' },
 		}).then((result) => {
 			if (result.isConfirmed) {
-				setDeleteActa([...deleteActa, id])
+				setDeleteActa([...deleteActa, id]);
 			}
 		});
-	}
+	};
 
 	const validDelete = (id: number) => {
 		for (const item of deleteActa) {
-			if(id === item)
-				return true;
+			if (id === item) return true;
 		}
 		return false;
-	}
+	};
 
 	return (
 		<>
-			<form className="container-step" noValidate autoComplete='off'>
+			<form className='container-step' noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
 					<Button
 						className={classes.uploadImg}
 						variant='contained'
 						component='label'
 						disabled={ready}
-						style={{ 
-							background: Object.keys(uploadImg).length ? '#00c853' : '#f44336' ,
+						style={{
+							background: Object.keys(uploadImg).length ? '#00c853' : '#f44336',
 							opacity: !ready ? 1 : 0,
-						}}
-					>
+						}}>
 						<IconButton aria-label='upload picture' component='span'>
-							<CloudUploadIcon className={classes.iconUpload}/>
+							<CloudUploadIcon className={classes.iconUpload} />
 						</IconButton>
 						<input
 							id='img'
@@ -92,76 +90,66 @@ const StepActaConst: React.FC<any> = ({
 				</div>
 
 				<List className={classes.container_ListActa}>
-					{uploadImg.length ?
-						(Object.keys(uploadImg).map((item: any, index: number) => (
-							<ListItem key={item}>
-								<Button
-									className={classes.link}
-									href={paths[item]}
-									target="_blank"
-									rel="noreferrer"
-								>
-									<Avatar>
-										{uploadImg[item].name.split('.')[uploadImg[item].name.split('.').length-1] === 'pdf' ?
-											<PictureAsPdfIcon />
-										:
-											<ImageIcon />
-										}
-									</Avatar>
-									<ListItemText 
-										className={classes.itemLink}
-										primary={uploadImg[item].name} 
-										secondary={index+1}
-									/>
-								</Button>
-							</ListItem>
-						))):null
-					}
-						{acta.map((item: any, index: number) => {
-							if(validDelete(item.id)){
-								return null;
-							}else {
+					{uploadImg.length
+						? Object.keys(uploadImg).map((item: any, index: number) => (
+								<ListItem key={item}>
+									<Button className={classes.link} href={paths[item]} target='_blank' rel='noreferrer'>
+										<Avatar>
+											{uploadImg[item].name.split('.')[uploadImg[item].name.split('.').length - 1] === 'pdf' ? (
+												<PictureAsPdfIcon />
+											) : (
+												<ImageIcon />
+											)}
+										</Avatar>
+										<ListItemText
+											className={classes.itemLink}
+											primary={uploadImg[item].name}
+											secondary={index + 1}
+										/>
+									</Button>
+								</ListItem>
+						  ))
+						: null}
+					{acta.map((item: any, index: number) => {
+						if (validDelete(item.id)) {
+							return null;
+						} else {
 							return (
-							<ListItem key={item.id} value={item.id}>
-								<Button
-									className={classes.link}
-									href={url + item.id_photo.path}
-									target="_blank"
-									rel="noreferrer"
-									key={item.id}
-								>
-									<Avatar>
-										{item.id_photo.name.split('.')[item.id_photo.name.split('.').length-1] === 'pdf' ?
-											<PictureAsPdfIcon />
-										:
-											<ImageIcon />
-										}
-									</Avatar>
-									<ListItemText 
-										className={classes.itemLink}
-										primary={
-											item.id_photo.name.split('@')[item.id_photo.name.split('.').length-1]
-										} 
-										secondary={index+1}
-									/>
-
-								</Button>
-								<Button
-									size='small'
-									variant='contained'
-									color='secondary'
-									onClick={() => handleAddDelete(item.id)}
-								>
-									<DeleteIcon />
-								</Button>
-							</ListItem>
-							)
-						}})
-					}
+								<ListItem key={item.id} value={item.id}>
+									<Button
+										className={classes.link}
+										href={url + item.id_photo.path}
+										target='_blank'
+										rel='noreferrer'
+										key={item.id}>
+										<Avatar>
+											{item.id_photo.name.split('.')[item.id_photo.name.split('.').length - 1] === 'pdf' ? (
+												<PictureAsPdfIcon />
+											) : (
+												<ImageIcon />
+											)}
+										</Avatar>
+										<ListItemText
+											className={classes.itemLink}
+											primary={item.id_photo.name.split('@')[item.id_photo.name.split('.').length - 1]}
+											secondary={index + 1}
+										/>
+									</Button>
+									<Button
+										size='small'
+										variant='contained'
+										color='secondary'
+										onClick={() => handleAddDelete(item.id)}>
+										<DeleteIcon />
+									</Button>
+								</ListItem>
+							);
+						}
+					})}
 				</List>
 			</form>
 		</>
 	);
-}
+};
 
 export default StepActaConst;

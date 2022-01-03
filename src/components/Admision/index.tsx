@@ -18,7 +18,6 @@ import ListFms from './listFms';
 import './scss/index.scss';
 import { useStyles } from './styles/styles';
 
-
 interface AdmisionInt {
 	isWorker: boolean;
 }
@@ -102,15 +101,15 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 	const [selectModal, setSelectModal] = useState<boolean>(false);
 
 	const handleClick = () => {
-		console.log('cliick')
-		if(!selectModal){
+		console.log('cliick');
+		if (!selectModal) {
 			setSelectModal(true);
-			socket.emit('Trabanjando_Solic', user)
+			socket.emit('Trabanjando_Solic', user);
 			let index = 0;
 			socket.on('server:Trabanjando_Solic', (data: any) => {
 				index++;
 				console.log('solic', index, data);
-				if(data?.status === true) {
+				if (data?.status === true) {
 					Swal.fire({
 						icon: 'warning',
 						title: 'Ya tienes una Solicitud',
@@ -119,9 +118,9 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 						timer: 3500,
 					});
 					setSelectModal(false);
-				}else {
+				} else {
 					dispatch(getDataFM(data));
-					if(data.length === 0) {
+					if (data.length === 0) {
 						setSelectModal(false);
 						Swal.fire({
 							icon: 'warning',
@@ -132,7 +131,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 						});
 					}
 				}
-			})
+			});
 		}
 	};
 
@@ -140,10 +139,10 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 		if (Object.keys(fm).length && !modalOpen) {
 			dispatch(OpenModal());
 		}
-		if(!modalOpen){
+		if (!modalOpen) {
 			setSelectModal(false);
 		}
-	}, [fm, modalOpen])
+	}, [fm, modalOpen]);
 
 	const handleClickList = () => {
 		dispatch(OpenModalListSolic());
@@ -201,19 +200,13 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 			</div>
 			{allSolic ? (
 				<div className='cmn-divfloat'>
-					<Fab 
-						color='primary'
-						aria-label='add'
-						size='medium'
-						variant='extended'
-						onClick={handleClick}
-					>
+					<Fab color='primary' aria-label='add' size='medium' variant='extended' onClick={handleClick}>
 						Validar Planilla
 						<AddIcon />
 					</Fab>
 					{modalOpen ? <Comprobacion /> : null}
 				</div>
-			):null}
+			) : null}
 			{!isWorker ? (
 				<div className='cmn2-divfloat'>
 					<Fab color='secondary' aria-label='add' size='large' variant='extended' onClick={handleClickList}>
@@ -221,7 +214,7 @@ const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
 					</Fab>
 					{modalOpenListSolic ? <ListFms /> : null}
 				</div>
-			):null}
+			) : null}
 		</div>
 	);
 };

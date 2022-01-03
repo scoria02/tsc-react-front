@@ -12,10 +12,10 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import classNames from 'classnames';
 import React from 'react';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../../store/store';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 //sytles
-import {useStylesFM} from '../styles';
+import { useStylesFM } from '../styles';
 import { recaudo } from '../../utilis/recaudos';
 import { FMContext } from '../../../context/FM/FMContext';
 
@@ -33,14 +33,10 @@ export const Step1: React.FC<any> = ({
 	const classes = useStylesFM();
 	const fm: any = useSelector((state: RootState) => state.fm);
 
-	const { 
-		listLocationClient,
-		setListMunicipioClient,
-		setListCiudadClient,
-		setListParroquiaClient,
-	}:any = useContext(LocationsContext);
+	const { listLocationClient, setListMunicipioClient, setListCiudadClient, setListParroquiaClient }: any =
+		useContext(LocationsContext);
 
-	const { 
+	const {
 		fmData,
 		fmDataError,
 		changeFmData,
@@ -50,25 +46,23 @@ export const Step1: React.FC<any> = ({
 		setMunicipioClient,
 		setCiudadClient,
 		setParroquiaClient,
-	}:any = useContext(FMContext);
+	}: any = useContext(FMContext);
 
-	const {
-		listIdentType
-	}: any = useContext(DataListContext);
+	const { listIdentType }: any = useContext(DataListContext);
 
 	const handleChangePhone = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.value !== '0') {
-			if(/^[0-9]+$/.test(event.target.value) || event.target.value === ''){
+			if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
 				changeFmData(event);
 			}
 		}
-	}
+	};
 
 	const handleIdentNum = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if(/^[0-9]+$/.test(event.target.value) || event.target.value === ''){
+		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
 			changeFmData(event);
 		}
-	}
+	};
 
 	return (
 		<>
@@ -80,7 +74,7 @@ export const Step1: React.FC<any> = ({
 						type='email'
 						variant='outlined'
 						label='Correo'
-						autoComplete="off"
+						autoComplete='off'
 						name='email'
 						onChange={changeFmData}
 						onBlur={handleBlurEmailIdent}
@@ -110,26 +104,25 @@ export const Step1: React.FC<any> = ({
 						variant='outlined'
 						required
 						label='C.I.'
-						autoComplete="off"
+						autoComplete='off'
 						name='ident_num'
 						onChange={handleIdentNum}
 						onBlur={handleBlurEmailIdent}
 						value={fmData.ident_num}
 						error={fmDataError.ident_num || validEmailIdent}
 						inputProps={{
-							maxLength: fmData.id_ident_type === 5 ? 20 : 9 
+							maxLength: fmData.id_ident_type === 5 ? 20 : 9,
 						}}
 					/>
 					<Button
 						className={classes.imgIdent}
 						variant='contained'
 						disabled={fm.imagesClient}
-						style={{ 
+						style={{
 							opacity: fm.imagesClient ? 0 : 1,
-							background: imagesForm.rc_ident_card ? '#5c62c5' : '#f44336' 
+							background: imagesForm.rc_ident_card ? '#5c62c5' : '#f44336',
 						}}
-						component='label'
-					>
+						component='label'>
 						{imagesForm.rc_ident_card !== null ? (
 							<p className='nameImg'>{namesImages.rc_ident_card.slice(0, 7)} ...</p>
 						) : (
@@ -139,13 +132,7 @@ export const Step1: React.FC<any> = ({
 								</IconButton>
 							</>
 						)}
-						<input
-							type='file'
-							hidden
-							name='rc_ident_card'
-							accept={recaudo.acc}
-							onChange={handleChangeImages}
-						/>
+						<input type='file' hidden name='rc_ident_card' accept={recaudo.acc} onChange={handleChangeImages} />
 					</Button>
 				</div>
 				<div className={classes.input}>
@@ -154,7 +141,7 @@ export const Step1: React.FC<any> = ({
 						variant='outlined'
 						required
 						label='Nombre'
-						autoComplete="nombre"
+						autoComplete='nombre'
 						name='name'
 						onChange={handleChangeNames}
 						value={fmData.name}
@@ -166,7 +153,7 @@ export const Step1: React.FC<any> = ({
 						variant='outlined'
 						required
 						label='Apellido'
-						autoComplete="last_name"
+						autoComplete='last_name'
 						name='last_name'
 						onChange={handleChangeNames}
 						value={fmData.last_name}
@@ -181,24 +168,15 @@ export const Step1: React.FC<any> = ({
 						required
 						label='Telefono'
 						name='phone1'
-						autoComplete="telefono1"
-						placeholder= "Ej: 4121234567"
+						autoComplete='telefono1'
+						placeholder='Ej: 4121234567'
 						onChange={handleChangePhone}
 						error={fmDataError.phone1}
 						disabled={fm.mashClient}
 						value={fmData.phone1}
 						inputProps={{ maxLength: 10 }}
 						InputProps={{
-							startAdornment: (
-								fm.mashClient ? 
-									null
-								:
-								(
-									<InputAdornment position="start">
-										{codePhone}
-									</InputAdornment>
-								)
-							)
+							startAdornment: fm.mashClient ? null : <InputAdornment position='start'>{codePhone}</InputAdornment>,
 						}}
 					/>
 					<TextField
@@ -208,23 +186,14 @@ export const Step1: React.FC<any> = ({
 						label='Telefono'
 						name='phone2'
 						onChange={handleChangePhone}
-						autoComplete="telefono2"
+						autoComplete='telefono2'
 						error={fmDataError.phone2}
 						disabled={fm.mashClient}
 						value={fmData.phone2}
-						placeholder= "Ej: 4127654321"
+						placeholder='Ej: 4127654321'
 						inputProps={{ maxLength: 10 }}
 						InputProps={{
-							startAdornment: (
-								fm.mashClient ? 
-									null
-								:
-								(
-									<InputAdornment position="start">
-										{codePhone}
-									</InputAdornment>
-								)
-							)
+							startAdornment: fm.mashClient ? null : <InputAdornment position='start'>{codePhone}</InputAdornment>,
 						}}
 					/>
 				</div>
@@ -236,13 +205,18 @@ export const Step1: React.FC<any> = ({
 							setEstadoClient(value);
 							setListMunicipioClient(value);
 						}}
-
 						value={locationClient.estado || null}
 						options={listLocationClient.estado}
 						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
 						getOptionSelected={(option: any, value: any) => option.id === value.id}
 						renderInput={(params: any) => (
-							<TextField {...params} name='estado' label='Estado' inputProps={{...params.inputProps, autoComplete: 'estado', }} variant='outlined' />
+							<TextField
+								{...params}
+								name='estado'
+								label='Estado'
+								inputProps={{ ...params.inputProps, autoComplete: 'estado' }}
+								variant='outlined'
+							/>
 						)}
 					/>
 					<Autocomplete
@@ -256,7 +230,13 @@ export const Step1: React.FC<any> = ({
 						options={listLocationClient.municipio}
 						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='municipio' label='Municipio' variant='outlined' inputProps={{...params.inputProps, autoComplete: 'municipio', }} />
+							<TextField
+								{...params}
+								name='municipio'
+								label='Municipio'
+								variant='outlined'
+								inputProps={{ ...params.inputProps, autoComplete: 'municipio' }}
+							/>
 						)}
 					/>
 				</div>
@@ -272,7 +252,13 @@ export const Step1: React.FC<any> = ({
 						options={listLocationClient.ciudad}
 						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='ciudad' label='Ciudad' variant='outlined' inputProps={{...params.inputProps, autoComplete: 'ciudad', }} />
+							<TextField
+								{...params}
+								name='ciudad'
+								label='Ciudad'
+								variant='outlined'
+								inputProps={{ ...params.inputProps, autoComplete: 'ciudad' }}
+							/>
 						)}
 					/>
 					<Autocomplete
@@ -285,7 +271,13 @@ export const Step1: React.FC<any> = ({
 						options={listLocationClient.parroquia}
 						getOptionLabel={(option: any) => (option.parroquia ? option.parroquia : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='parroquia' label='Parroquia' variant='outlined' inputProps={{...params.inputProps, autoComplete: 'parroquia', }} />
+							<TextField
+								{...params}
+								name='parroquia'
+								label='Parroquia'
+								variant='outlined'
+								inputProps={{ ...params.inputProps, autoComplete: 'parroquia' }}
+							/>
 						)}
 					/>
 				</div>
