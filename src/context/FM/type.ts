@@ -16,10 +16,4 @@ export const SET_ACTIVITY = 'SET_ACTIVITY';
 
 export const COPY_LOCATION = 'COPY_LOCATION';
 
-export const COPY_LOCATION_C_TO_CC = 'COPY_LOCATION_C_TO_CC';
-
-export const COPY_LOCATION_C_TO_P = 'COPY_LOCATION_C_TO_P';
-
-export const COPY_LOCATION_CC_TO_P = 'COPY_LOCATION_CC_TO_P';
-
 export const SET_LOCATION = 'SET_LOCATION';

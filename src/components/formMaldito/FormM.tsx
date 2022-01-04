@@ -39,6 +39,8 @@ import { FMContext } from '../../context/FM/FMContext';
 import { LocationsContext } from '../../context/Location/LocationsContext';
 
 import { DataListContext } from '../../context/DataList/DataListContext';
+import { FMint, ImagesInt, ListLocationInt, NamesImagesInt } from './interface';
+import { StateFMInt } from '../../store/reducers/fmReducer';
 
 function getSteps() {
 	return [
@@ -55,7 +57,9 @@ const FormM: React.FC = () => {
 	const classes = useStylesFM();
 	const dispatch = useDispatch();
 
-	const { 
+	const fm: StateFMInt = useSelector((state: RootState) => state.fm);
+
+	const {
 		fmData,
 		fmDataError,
 		days,
@@ -71,27 +75,21 @@ const FormM: React.FC = () => {
 		setActivity,
 		copyLocationCToCC,
 		copyLocationCCToP,
-	}:any = useContext(FMContext);
+	}: FMint = useContext(FMContext as any);
 
-	const { 
+	const {
 		listLocationClient,
 		listLocationCommerce,
 		listLocationPos,
 		copyListLocationCToCC,
 		copyListLocationCCToP,
-	}:any = useContext(LocationsContext);
+	}: ListLocationInt = useContext(LocationsContext as any);
 
-	const { 
-		listIdentType,
-		listActivity,
-		listPayment,
-		listModelPos,
-		listTypePay,
-		listRequestSource,
-	}:any = useContext(DataListContext);
+	const { listIdentType, listActivity, listPayment, listModelPos, listTypePay, listRequestSource }: any =
+		useContext(DataListContext);
 
 	//images
-	const [imagesForm, setImagesForm] = useState({
+	const [imagesForm, setImagesForm] = useState<ImagesInt>({
 		//Step1
 		rc_ident_card: null, //11
 		//Step2
@@ -109,7 +107,6 @@ const FormM: React.FC = () => {
 	const [activeStep, setActiveStep] = useState<number>(0);
 	const [readyStep, setReadyStep] = useState<boolean>(false);
 	const [sendForm, setSendForm] = useState<number>(0);
-	const fm: any = useSelector((state: RootState) => state.fm);
 
 	// Origen de solicitud
 	const [requestSource, setRequestSource] = useState<any[]>(listRequestSource[0]);
@@ -120,7 +117,7 @@ const FormM: React.FC = () => {
 	const { socket } = useContext(SocketContext);
 
 	//name images
-	const [namesImages, setNamesImages] = useState<any>({
+	const [namesImages, setNamesImages] = useState<NamesImagesInt>({
 		//step1
 		rc_ident_card: '', //11
 		//step2
@@ -148,7 +145,7 @@ const FormM: React.FC = () => {
 			//Fin comerce
 		} else if (sendForm === 2 && fm.id_commerce !== 0 && fm.id_client !== 0) {
 			console.log('Listo Comercio');
-			const formData: any = new FormData();
+			const formData: FormData = new FormData();
 			for (const item of Object.entries(imagesForm)) {
 				if (item[1] !== null) {
 					formData.append('images', item[1]);
@@ -157,8 +154,8 @@ const FormM: React.FC = () => {
 			for (const item of imagesActa) {
 				formData.append('constitutive_act', item);
 			}
-			formData.append('id_client', fm.id_client);
-			formData.append('id_commerce', fm.id_commerce);
+			formData.append('id_client', `${fm.id_client}`);
+			formData.append('id_commerce', `${fm.id_commerce}`);
 			formData.append('bank_account_num', fmData.text_account_number);
 			dispatch(sendImages(formData));
 			//update fm_imgaes
@@ -179,7 +176,7 @@ const FormM: React.FC = () => {
 
 	useEffect(() => {
 		dispatch(cleanFM());
-			console.log('Si la vida te da limones');
+		console.log('Si la vida te da limones');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -193,21 +190,47 @@ const FormM: React.FC = () => {
 			copyListLocationCToCC();
 			copyLocationCToCC();
 		}
-	}, [ activeStep, fm.commerceMash ]);
+	}, [activeStep, fm.commerceMash]);
 
 	//Copyrighter Commerce to pos
+	//note mover useE to step4
 	useEffect(() => {
 		if (activeStep === 3 && autoCompletePos) {
 			copyListLocationCCToP();
 			copyLocationCCToP();
 		}
-	}, [ activeStep, locationCommerce, fmData.sector, fmData.calle, fmData.local, fmData.codigo_postal, fm.commerceMash, ]);
+	}, [
+		activeStep,
+		locationCommerce,
+		fmData.sector,
+		fmData.calle,
+		fmData.local,
+		fmData.codigo_postal,
+		fm.commerceMash,
+	]);
 
 	useEffect(() => {
-		if (locationCommerce.estado === null && locationCommerce.ciudad === null && locationCommerce.municipio === null && locationCommerce.parroquia === null && fmData.sector === '' && fmData.calle === '' && fmData.local === '' && fmData.codigo_postal === '') {
+		if (
+			locationCommerce.estado === null &&
+			locationCommerce.ciudad === null &&
+			locationCommerce.municipio === null &&
+			locationCommerce.parroquia === null &&
+			fmData.sector === '' &&
+			fmData.calle === '' &&
+			fmData.local === '' &&
+			fmData.codigo_postal === ''
+		) {
 			setAutoCompleteCommerce(true);
 		}
-		if (locationPos.estado === null && locationPos.ciudad === null && locationPos.municipio === null && locationPos.parroquia === null && fmData.sector_pos === '' && fmData.calle_pos === '' && fmData.local_pos === '' && fmData.codigo_postal_pos === ''
+		if (
+			locationPos.estado === null &&
+			locationPos.ciudad === null &&
+			locationPos.municipio === null &&
+			locationPos.parroquia === null &&
+			fmData.sector_pos === '' &&
+			fmData.calle_pos === '' &&
+			fmData.local_pos === '' &&
+			fmData.codigo_postal_pos === ''
 		) {
 			setAutoCompletePos(true);
 		}
@@ -221,12 +244,22 @@ const FormM: React.FC = () => {
 
 	//CheckStepAcual
 	useEffect(() => {
-		if (!valids.allInputNotNUll(valids.sizeStep(activeStep), fmData, fm.mashClient, fm.mashCommerce) &&
-			!valids.allImgNotNUll( fmData, valids.sizeImagesStep(activeStep), imagesForm, fmData.special_contributor, fm.imagesClient, fm.imagesCommerce, fmData.id_ident_type_commerce) &&
+		if (
+			!valids.allInputNotNUll(valids.sizeStep(activeStep), fmData, fm.mashClient, fm.mashCommerce) &&
+			!valids.allImgNotNUll(
+				fmData,
+				valids.sizeImagesStep(activeStep),
+				imagesForm,
+				fmData.special_contributor,
+				fm.imagesClient,
+				fm.imagesCommerce,
+				fmData.id_ident_type_commerce
+			) &&
 			!valids.checkErrorAllInput(valids.sizeStep(activeStep), fmDataError) &&
 			!valids.validEndPoint(activeStep, fm) &&
 			!valids.notNullImagenActa(activeStep, imagesActa, fmData.id_ident_type_commerce, fm.imagesCommerce) &&
-			valids.validMashes(activeStep, fm.validMashClient, fm.validMashCommerce)) {
+			valids.validMashes(activeStep, fm.validMashClient, fm.validMashCommerce)
+		) {
 			setReadyStep(true);
 		} else {
 			setReadyStep(false);
@@ -234,7 +267,7 @@ const FormM: React.FC = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [fmData, imagesForm, activeStep, fm, imagesActa]);
 
-	const validateForm = (name: string, value: any) => {
+	const validateForm = (name: string, value: any): void => {
 		let temp: any = fmDataError;
 		switch (name) {
 			case 'email':
@@ -313,8 +346,8 @@ const FormM: React.FC = () => {
 		setFmError(temp);
 	};
 
-	const handleBlurEmailIdent = () => {
-		if (fmData.email !== '' && fmData.id_ident_type !== '' && fmData.ident_num !== '') {
+	const handleBlurEmailIdent = (): void => {
+		if (fmData.email !== '' && fmData.id_ident_type !== 0 && fmData.ident_num !== '') {
 			dispatch(
 				validationClient({
 					email: fmData.email,
@@ -325,8 +358,8 @@ const FormM: React.FC = () => {
 		}
 	};
 
-	const handleBlurCommerce = () => {
-		if (fmData.id_ident_type_commerce !== '' && fmData.ident_num_commerce !== '') {
+	const handleBlurCommerce = (): void => {
+		if (fmData.id_ident_type_commerce !== 0 && fmData.ident_num_commerce !== '') {
 			dispatch(
 				validationCommerce(fm.id_client, {
 					id_ident_type: fmData.id_ident_type_commerce,
@@ -510,13 +543,16 @@ const FormM: React.FC = () => {
 	};
 
 	const handleChangeNames = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if ((event.target.value.trim() !== '' && /^[a-zA-Z ]+$/.test(event.target.value)) || event.target.value === '') {
+		if (
+			(event.target.value.trim() !== '' && /^[a-zA-Z ]+$/.test(event.target.value)) ||
+			event.target.value === ''
+		) {
 			handleChange(event);
 		}
 	};
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		changeFmData(event);
+		if (changeFmData) changeFmData(event);
 		validateForm(event.target.name, event.target.value);
 	};
 
@@ -563,7 +599,7 @@ const FormM: React.FC = () => {
 		//Send FM
 		handleLoading();
 		setSendForm(1);
-		if (!fm.mashClient) {
+		if (!fm.mashClient && codePhone) {
 			dispatch(sendClient(fmData, codePhone));
 		}
 	};
@@ -611,9 +647,7 @@ const FormM: React.FC = () => {
 			handleChangeImages={handleChangeImages}
 			handleBlurEmailIdent={handleBlurEmailIdent}
 		/>,
-		<Step2
-			handleChangeNames={handleChangeNames}
-		/>,
+		<Step2 handleChangeNames={handleChangeNames} />,
 		<Step3
 			imagesActa={imagesActa}
 			namesImages={namesImages}
@@ -623,10 +657,7 @@ const FormM: React.FC = () => {
 			handleChangeImagesMulti={handleChangeImagesMulti}
 			deleteImgContributor={deleteImgContributor}
 		/>,
-		<Step4
-			setAutoCompleteCommerce={setAutoCompleteCommerce}
-			setAutoCompletePos={setAutoCompletePos}
-		/>,
+		<Step4 setAutoCompleteCommerce={setAutoCompleteCommerce} setAutoCompletePos={setAutoCompletePos} />,
 		<Step5
 			listTypePay={listTypePay}
 			setTypePay={setTypePay}
@@ -663,11 +694,15 @@ const FormM: React.FC = () => {
 
 	return (
 		<div className='ed-container container-formMaldito'>
-			{!listIdentType.length || !listActivity.length || !listPayment.length || !listLocationCommerce.estado.length || !listLocationClient.estado.length ||
+			{!listIdentType.length ||
+			!listActivity.length ||
+			!listPayment.length ||
+			!listLocationCommerce.estado.length ||
+			!listLocationClient.estado.length ||
 			!listLocationPos.estado.length ? (
 				<LoaderPrimary />
 			) : (
-				<form className='container-form' >
+				<form className='container-form'>
 					<div className='capitan-america'></div>
 					<Stepper alternativeLabel activeStep={activeStep} style={{ background: 'none', width: '100%' }}>
 						{steps.map((label, index) => {

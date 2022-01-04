@@ -21,6 +21,7 @@ import { FMContext } from '../../../context/FM/FMContext';
 
 import { LocationsContext } from '../../../context/Location/LocationsContext';
 import { DataListContext } from '../../../context/DataList/DataListContext';
+import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/Location/interfaces';
 
 export const Step1: React.FC<any> = ({
 	namesImages,
@@ -201,14 +202,14 @@ export const Step1: React.FC<any> = ({
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
-						onChange={(event, value) => {
+						onChange={(event, value: Estado | null) => {
 							setEstadoClient(value);
 							setListMunicipioClient(value);
 						}}
 						value={locationClient.estado || null}
 						options={listLocationClient.estado}
-						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
-						getOptionSelected={(option: any, value: any) => option.id === value.id}
+						getOptionLabel={(option: Estado) => (option.estado ? option.estado : '')}
+						getOptionSelected={(option: Estado, value: Estado) => option.id === value.id}
 						renderInput={(params: any) => (
 							<TextField
 								{...params}
@@ -222,13 +223,13 @@ export const Step1: React.FC<any> = ({
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classes.inputText}
-						onChange={(event, value) => {
+						onChange={(event, value: Municipio | null) => {
 							setMunicipioClient(value);
 							setListCiudadClient(fmData.id_estado_client);
 						}}
 						value={locationClient.municipio || null}
 						options={listLocationClient.municipio}
-						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
+						getOptionLabel={(option: Municipio) => (option.municipio ? option.municipio : '')}
 						renderInput={(params: any) => (
 							<TextField
 								{...params}
@@ -244,13 +245,13 @@ export const Step1: React.FC<any> = ({
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
-						onChange={(event, value) => {
+						onChange={(event, value: Ciudad | null) => {
 							setCiudadClient(value);
 							setListParroquiaClient(fmData.id_municipio_client);
 						}}
 						value={locationClient.ciudad || null}
 						options={listLocationClient.ciudad}
-						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
+						getOptionLabel={(option: Ciudad) => (option.ciudad ? option.ciudad : '')}
 						renderInput={(params: any) => (
 							<TextField
 								{...params}
@@ -264,12 +265,12 @@ export const Step1: React.FC<any> = ({
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classes.inputText}
-						onChange={(event, value) => {
+						onChange={(event, value: Parroquia | null) => {
 							setParroquiaClient(value);
 						}}
 						value={locationClient.parroquia || null}
 						options={listLocationClient.parroquia}
-						getOptionLabel={(option: any) => (option.parroquia ? option.parroquia : '')}
+						getOptionLabel={(option: Parroquia) => (option.parroquia ? option.parroquia : '')}
 						renderInput={(params: any) => (
 							<TextField
 								{...params}

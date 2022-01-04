@@ -1,15 +1,4 @@
-import {
-	CHANGE_FM,
-	SET_FM,
-	CHANGE_DAYS,
-	SET_DAYS,
-	SET_ACTIVITY,
-	CHANGE_ErrorFM,
-	SET_ErrorFM,
-	COPY_LOCATION_C_TO_CC,
-	COPY_LOCATION_C_TO_P,
-	COPY_LOCATION_CC_TO_P,
-} from './type';
+import { CHANGE_FM, SET_FM, CHANGE_DAYS, SET_DAYS, SET_ACTIVITY, CHANGE_ErrorFM, SET_ErrorFM } from './type';
 
 const FMReducer = (state: any, action: any) => {
 	const { payload, type } = action;
@@ -57,14 +46,6 @@ const FMReducer = (state: any, action: any) => {
 			return {
 				...state,
 				fmDataError: payload,
-			};
-		case COPY_LOCATION_C_TO_CC:
-			return {
-				...state,
-				fmData: {
-					...state.fmData,
-					['id_estado']: state.fmData.id_estado_client,
-				},
 			};
 		default:
 			return state;

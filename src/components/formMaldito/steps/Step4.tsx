@@ -10,28 +10,27 @@ import { RootState } from '../../../store/store';
 import { FMContext } from '../../../context/FM/FMContext';
 import { LocationsContext } from '../../../context/Location/LocationsContext';
 
-export const Step4: React.FC<any> = ({
-	setAutoCompleteCommerce,
-	setAutoCompletePos,
-}) => {
+import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/Location/interfaces';
+
+export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompletePos }) => {
 	const classes = useStylesFM();
 
-	const { 
+	const {
 		listLocationCommerce,
-		setListEstadoCommerce,
+		//setListEstadoCommerce,
 		setListMunicipioCommerce,
 		setListCiudadCommerce,
 		setListParroquiaCommerce,
 		listLocationPos,
-		setListEstadoPos,
+		//setListEstadoPos,
 		setListMunicipioPos,
 		setListCiudadPos,
 		setListParroquiaPos,
-	}:any = useContext(LocationsContext);
+	}: any = useContext(LocationsContext);
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
-	const { 
+	const {
 		fmData,
 		changeFmData,
 		locationCommerce,
@@ -46,7 +45,7 @@ export const Step4: React.FC<any> = ({
 		setMunicipioPos,
 		setCiudadPos,
 		setParroquiaPos,
-	}:any = useContext(FMContext);
+	}: any = useContext(FMContext);
 
 	const handleChangeCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setAutoCompleteCommerce(false);
@@ -65,37 +64,49 @@ export const Step4: React.FC<any> = ({
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
 						className={classes.inputTextLeft}
-						onChange={(event, value) => {
+						onChange={(event, value: Estado | null) => {
 							setEstadoCommerce(value);
 							setListMunicipioCommerce(value);
 						}}
 						value={locationCommerce.estado || null}
 						disabled={fm.mashCommerce}
 						options={listLocationCommerce.estado}
-						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
-						getOptionSelected={(option: any, value: any) => option.id === value.id}
+						getOptionLabel={(option: Estado) => (option.estado ? option.estado : '')}
+						getOptionSelected={(option: Estado, value: Estado) => option.id === value.id}
 						renderInput={(params: any) => (
-							<TextField {...params} name='estado' label='Estado' inputProps={{ ...params.inputProps, autoComplete: 'estado', }} variant='outlined' />
+							<TextField
+								{...params}
+								name='estado'
+								label='Estado'
+								inputProps={{ ...params.inputProps, autoComplete: 'estado' }}
+								variant='outlined'
+							/>
 						)}
 					/>
 					<Autocomplete
 						className={classes.inputText}
-						onChange={(event, value) => {
+						onChange={(event, value: Municipio | null) => {
 							setMunicipioCommerce(value);
 							setListCiudadCommerce(fmData.id_estado);
 						}}
 						value={locationCommerce.municipio || null}
 						disabled={fm.mashCommerce}
 						options={listLocationCommerce.municipio}
-						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
+						getOptionLabel={(option: Municipio) => (option.municipio ? option.municipio : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='municipio' label='Municipio' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'municipio', }}/>
+							<TextField
+								{...params}
+								name='municipio'
+								label='Municipio'
+								variant='outlined'
+								inputProps={{ ...params.inputProps, autoComplete: 'municipio' }}
+							/>
 						)}
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
-						onChange={(event, value) => {
+						onChange={(event, value: Ciudad | null) => {
 							setCiudadCommerce(value);
 							setListParroquiaCommerce(fmData.id_municipio);
 						}}
@@ -103,20 +114,26 @@ export const Step4: React.FC<any> = ({
 						value={locationCommerce.ciudad || null}
 						disabled={fm.mashCommerce}
 						options={listLocationCommerce.ciudad}
-						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
+						getOptionLabel={(option: Ciudad) => (option.ciudad ? option.ciudad : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='ciudad' label='Ciudad' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'ciudad', }}/>
+							<TextField
+								{...params}
+								name='ciudad'
+								label='Ciudad'
+								variant='outlined'
+								inputProps={{ ...params.inputProps, autoComplete: 'ciudad' }}
+							/>
 						)}
 					/>
 					<Autocomplete
 						className={classes.inputText}
-						onChange={(event, value) => {
+						onChange={(event, value: Parroquia | null) => {
 							setParroquiaCommerce(value);
 						}}
 						value={locationCommerce.parroquia || null}
 						disabled={fm.mashCommerce}
 						options={listLocationCommerce.parroquia}
-						getOptionLabel={(option: any) => (option.parroquia ? option.parroquia : '')}
+						getOptionLabel={(option: Parroquia) => (option.parroquia ? option.parroquia : '')}
 						renderInput={(params: any) => (
 							<TextField {...params} name='parroquia' label='Parroquia' variant='outlined' />
 						)}
@@ -175,56 +192,80 @@ export const Step4: React.FC<any> = ({
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
 						className={classes.inputTextLeft}
-						onChange={(event, value) => {
+						onChange={(event, value: Estado | null) => {
 							setEstadoPos(value);
 							setListMunicipioPos(value);
 						}}
 						options={listLocationPos.estado}
 						value={locationPos.estado || null}
-						getOptionLabel={(option: any) => (option.estado ? option.estado : '')}
-						getOptionSelected={(option: any, value: any) => option.id === value.id}
+						getOptionLabel={(option: Estado) => (option.estado ? option.estado : '')}
+						getOptionSelected={(option: Estado, value: Estado) => option.id === value.id}
 						renderInput={(params: any) => (
-							<TextField {...params} name='estado' label='Estado' inputProps={{ ...params.inputProps, autoComplete: 'estado', }} variant='outlined' />
+							<TextField
+								{...params}
+								name='estado'
+								label='Estado'
+								inputProps={{ ...params.inputProps, autoComplete: 'estado' }}
+								variant='outlined'
+							/>
 						)}
 					/>
 					<Autocomplete
 						className={classes.inputText}
-						onChange={(event, value) => {
+						onChange={(event, value: Municipio | null) => {
 							setMunicipioPos(value);
 							setListCiudadPos(fmData.id_estado_pos);
 						}}
 						value={locationPos.municipio || null}
 						options={listLocationPos.municipio}
-						getOptionLabel={(option: any) => (option.municipio ? option.municipio : '')}
+						getOptionLabel={(option: Municipio) => (option.municipio ? option.municipio : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='municipio' label='Municipio' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'municipio', }}/>
+							<TextField
+								{...params}
+								name='municipio'
+								label='Municipio'
+								variant='outlined'
+								inputProps={{ ...params.inputProps, autoComplete: 'municipio' }}
+							/>
 						)}
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
 						className={classes.inputTextLeft}
-						onChange={(event, value) => {
+						onChange={(event, value: Ciudad | null) => {
 							setCiudadPos(value);
 							setListParroquiaPos(fmData.id_municipio_pos);
 						}}
 						options={listLocationPos.ciudad}
 						value={locationPos.ciudad || null}
-						getOptionLabel={(option: any) => (option.ciudad ? option.ciudad : '')}
+						getOptionLabel={(option: Ciudad) => (option.ciudad ? option.ciudad : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='ciudad' label='Ciudad' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'ciudad', }}/>
+							<TextField
+								{...params}
+								name='ciudad'
+								label='Ciudad'
+								variant='outlined'
+								inputProps={{ ...params.inputProps, autoComplete: 'ciudad' }}
+							/>
 						)}
 					/>
 					<Autocomplete
 						className={classes.inputText}
-						onChange={(event, value) => {
+						onChange={(event, value: Parroquia | null) => {
 							setParroquiaPos(value);
 						}}
 						options={listLocationPos.parroquia}
 						value={locationPos.parroquia || null}
-						getOptionLabel={(option: any) => (option.parroquia ? option.parroquia : '')}
+						getOptionLabel={(option: Parroquia) => (option.parroquia ? option.parroquia : '')}
 						renderInput={(params: any) => (
-							<TextField {...params} name='parroquia' label='Parroquia' variant='outlined' inputProps={{ ...params.inputProps, autoComplete: 'parroquia', }}/>
+							<TextField
+								{...params}
+								name='parroquia'
+								label='Parroquia'
+								variant='outlined'
+								inputProps={{ ...params.inputProps, autoComplete: 'parroquia' }}
+							/>
 						)}
 					/>
 				</div>

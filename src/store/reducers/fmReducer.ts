@@ -1,15 +1,15 @@
 import { ActionType } from '../types/types';
 
-interface inState {
+export interface StateFMInt {
 	id_client: number;
 	clientMash: any;
 	mashClient: boolean;
 	imagesClient: boolean;
-	validMashClient: boolean,
+	validMashClient: boolean;
 	id_commerce: number;
 	commerceMash: any;
-	mashCommerce: boolean,
-	validMashCommerce: boolean,
+	mashCommerce: boolean;
+	validMashCommerce: boolean;
 	imagesCommerce: boolean;
 	id_images: any;
 	loadedClient: boolean;
@@ -22,8 +22,7 @@ interface inState {
 	nameBank: string;
 }
 
-const initialState: inState = {
-
+const initialState: StateFMInt = {
 	id_client: 0,
 	clientMash: {},
 	mashClient: false,

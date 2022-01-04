@@ -41,13 +41,7 @@ export const Step5: React.FC<any> = ({
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
-	const { 
-		fmData,
-		fmDataError,
-		setFmData,
-		changeFmParms,
-		changeFmData,
-	}:any = useContext(FMContext);
+	const { fmData, fmDataError, setFmData, changeFmParms, changeFmData }: any = useContext(FMContext);
 
 	const handleSelectPayment = (event: any, value: any, item: string) => {
 		if (value) {
@@ -79,17 +73,17 @@ export const Step5: React.FC<any> = ({
 		}
 	};
 
-	const handleChecked = (e: any) => {
-		changeFmParms(e.target.name, !fmData[`${e.target.name}`] ? 1 : 0);
+	const handleChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+		changeFmParms(event.target.name, !fmData[`${event.target.name}`] ? 1 : 0);
 	};
 
-	const handleCheckedPagadero = (e: any) => {
-		if (!fmData[`${e.target.name}`]) {
+	const handleCheckedPagadero = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (!fmData[`${event.target.name}`]) {
 			deleteImgContributor('comp_dep');
 		}
 		setFmData({
 			...fmData,
-			[e.target.name]: !fmData[`${e.target.name}`] ? 1 : 0,
+			[event.target.name]: !fmData[`${event.target.name}`] ? 1 : 0,
 			nro_comp_dep: '',
 		});
 	};
@@ -111,10 +105,10 @@ export const Step5: React.FC<any> = ({
 	};
 
 	const handleChangeBank = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if(/^[0-9]+$/.test(event.target.value) || event.target.value === ''){
+		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
 			changeFmData(event);
-		}	
-	}
+		}
+	};
 
 	useEffect(() => {
 		if (typePay) {
@@ -222,8 +216,8 @@ export const Step5: React.FC<any> = ({
 					<Button
 						className={classes.imgIdent}
 						variant='contained'
-						style={{ 
-							background: imagesForm.rc_ref_bank ? '#5c62c5' : '#f44336' 
+						style={{
+							background: imagesForm.rc_ref_bank ? '#5c62c5' : '#f44336',
 						}}
 						component='label'>
 						{imagesForm.rc_ref_bank !== null ? (
@@ -241,13 +235,7 @@ export const Step5: React.FC<any> = ({
 								</IconButton>
 							</>
 						)}
-						<input
-							type='file'
-							hidden
-							name='rc_ref_bank'
-							accept={recaudo.acc}
-							onChange={handleChangeImages}
-						/>
+						<input type='file' hidden name='rc_ref_bank' accept={recaudo.acc} onChange={handleChangeImages} />
 					</Button>
 				</div>
 			</div>
@@ -269,11 +257,7 @@ export const Step5: React.FC<any> = ({
 					value={typePay || null}
 					getOptionLabel={(option: any) => (option.name ? option.name : '')}
 					renderInput={(params: any) => (
-						<TextField {...params}
-							name='type_pay'
-							label='Tipo de Pago'
-							variant='outlined'
-						/>
+						<TextField {...params} name='type_pay' label='Tipo de Pago' variant='outlined' />
 					)}
 				/>
 			</div>
@@ -298,7 +282,7 @@ export const Step5: React.FC<any> = ({
 					name='reqSource_docnum'
 					onChange={changeFmData}
 					inputProps={{
-						maxLength: 9 
+						maxLength: 9,
 					}}
 					value={fmData.reqSource_docnum}
 				/>

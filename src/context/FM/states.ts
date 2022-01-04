@@ -1,3 +1,4 @@
+import { Location } from '../Location/interfaces';
 import { fm_Interface, fmError_Interface, Days } from './interfaces';
 
 export const fmFormat: fm_Interface = {
@@ -31,7 +32,7 @@ export const fmFormat: fm_Interface = {
 	ident_num_commerce: '',
 	name_commerce: '',
 	id_activity: 0,
-	special_contributor: 0,
+	special_contributor: false,
 	//Step4 Location
 	//Commerce
 	id_estado: 0,
@@ -142,7 +143,7 @@ export const daysWork: Days = {
 	Domingo: true,
 };
 
-export const location: any = {
+export const location: Location = {
 	estado: null,
 	ciudad: null,
 	municipio: null,

@@ -22,10 +22,10 @@ export interface Parroquia {
 }
 
 export interface Location {
-	estado: Estado;
-	ciudad: Ciudad;
-	municipio: Municipio;
-	parroquia: Parroquia;
+	estado: Estado | null;
+	ciudad: Ciudad | null;
+	municipio: Municipio | null;
+	parroquia: Parroquia | null;
 }
 
 export interface ListLocation {

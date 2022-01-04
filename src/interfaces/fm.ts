@@ -1,5 +1,3 @@
-import React, { Dispatch } from 'react';
-
 export interface Days {
 	Lunes: boolean;
 	Martes: boolean;
@@ -13,11 +11,4 @@ export interface Days {
 export interface FMContextProp {
 	days: Days;
 	setDays: (data: Days) => void;
-};
-
-/*
-export interface FMContextProp {
-	days: Days | any;
-	setDays: React.Dispatch<React.SetStateAction<Days>>;
 }
-*/

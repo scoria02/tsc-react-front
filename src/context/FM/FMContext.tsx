@@ -3,7 +3,7 @@ import { ReactChild, ReactChildren } from 'react';
 import {
 	CHANGE_FM,
 	SET_FM,
-	CHANGE_ErrorFM,
+	//CHANGE_ErrorFM,
 	SET_ErrorFM,
 	CHANGE_DAYS,
 	SET_DAYS,
@@ -13,13 +13,10 @@ import {
 	SET_PARROQUIA_S,
 	SET_ACTIVITY,
 	COPY_LOCATION,
-	COPY_LOCATION_C_TO_CC,
-	COPY_LOCATION_C_TO_P,
-	COPY_LOCATION_CC_TO_P,
 	SET_LOCATION,
 } from './type';
 
-import { createContext, useReducer, useContext } from 'react';
+import { createContext, useReducer } from 'react';
 
 import FMReducer from './FMReducer';
 import FMLocationReducer from '../FMLocation/FMLocationReducer';
@@ -52,7 +49,7 @@ const FMProvider = ({ children }: Props) => {
 
 	const { fmData } = fmState;
 
-	const changeFmData = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const changeFmData = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const data: { name: string; value: string | number } = {
 			name: event.target.name,
 			value: event.target.value,
@@ -276,7 +273,6 @@ const FMProvider = ({ children }: Props) => {
 			type: COPY_LOCATION,
 			payload: locationCommerce,
 		});
-
 		dispatch({
 			type: SET_FM,
 			payload: {
@@ -307,6 +303,13 @@ const FMProvider = ({ children }: Props) => {
 		});
 	};
 
+	const setLocationPos = (location: Location) => {
+		dispatchP({
+			type: SET_LOCATION,
+			payload: location,
+		});
+	};
+
 	return (
 		<FMContext.Provider
 			value={{
@@ -322,8 +325,10 @@ const FMProvider = ({ children }: Props) => {
 				locationClient,
 				locationCommerce,
 				locationPos,
+
 				setLocationClient,
 				setLocationCommerce,
+				setLocationPos,
 
 				setEstadoClient,
 				setMunicipioClient,

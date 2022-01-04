@@ -1,7 +1,7 @@
 import React from 'react';
-import LocationsProvider from '../../context/Location/LocationsContext';
 import FMProvider from '../../context/FM/FMContext';
 import DataListProvider from '../../context/DataList/DataListContext';
+import LocationsProvider from '../../context/Location/LocationsContext';
 import FormM from './FormM';
 
 export const FormMaldito: React.FC = () => {
@@ -9,7 +9,7 @@ export const FormMaldito: React.FC = () => {
 		<DataListProvider>
 			<LocationsProvider>
 				<FMProvider>
-					<FormM/>
+					<FormM />
 				</FMProvider>
 			</LocationsProvider>
 		</DataListProvider>

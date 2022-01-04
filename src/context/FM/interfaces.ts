@@ -1,3 +1,5 @@
+import { Activity } from '../DataList/interface';
+
 export interface fm_Interface {
 	//step1 Cliente
 	email: string;
@@ -29,7 +31,7 @@ export interface fm_Interface {
 	ident_num_commerce: string;
 	name_commerce: string;
 	id_activity: number;
-	special_contributor: number;
+	special_contributor: boolean;
 	//Step4 Location
 	//Commerce
 	id_estado: number;
@@ -144,6 +146,23 @@ export interface fmState_Interface {
 	fmData: fm_Interface;
 	days: Days;
 	codePhone: string;
-	activity: any;
+	activity: Activity | null;
 	fmDataError: fmError_Interface;
+}
+
+export interface FMCint {
+	fmData: fmState_Interface;
+	days: any;
+	codePhone: any;
+	setFmError: any;
+	changeFmData: any;
+	locationCommerce: any;
+	locationPos: any;
+	setLocationClient: any;
+	setLocationCommerce: any;
+	setFmData: any;
+	setDays: any;
+	setActivity: any;
+	copyLocationCToCC: any;
+	copyLocationCCToP: any;
 }
