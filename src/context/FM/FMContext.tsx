@@ -14,6 +14,7 @@ import {
 	SET_ACTIVITY,
 	COPY_LOCATION,
 	SET_LOCATION,
+	SELECT_TYPE_SOLICT,
 } from './type';
 
 import { createContext, useReducer } from 'react';
@@ -35,6 +36,7 @@ interface Props {
 
 const FMProvider = ({ children }: Props) => {
 	const initialState: fmState_Interface = {
+		typeSolict: 0,
 		fmData: fmFormat,
 		days: daysWork,
 		codePhone: '58',
@@ -48,6 +50,13 @@ const FMProvider = ({ children }: Props) => {
 	const [locationPos, dispatchP] = useReducer(FMLocationReducer, location);
 
 	const { fmData } = fmState;
+
+	const selectTypeSolict = (value: number): void => {
+		dispatch({
+			type: SELECT_TYPE_SOLICT,
+			payload: value,
+		});
+	};
 
 	const changeFmData = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const data: { name: string; value: string | number } = {
@@ -315,6 +324,7 @@ const FMProvider = ({ children }: Props) => {
 			value={{
 				//FM
 				...fmState,
+				selectTypeSolict,
 				changeFmData,
 				changeFmParms,
 				setFmData,

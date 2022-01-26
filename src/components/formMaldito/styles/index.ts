@@ -87,4 +87,10 @@ export const useStylesFM = makeStyles((styles) => ({
 		margin: '10px 0',
 		fontWeight: 'bold',
 	},
+	inputSelectSolict: {
+		marginTop: '10rem',
+		width: '300px',
+		textAlign: 'center',
+		alignSelf: 'center',
+	},
 }));

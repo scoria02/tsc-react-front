@@ -3,6 +3,8 @@ import { ListLocation } from '../../context/Location/interfaces';
 import { Days } from '../../interfaces/fm';
 
 export interface FMint extends Location, LocationClient, LocationCommerce, LocationPos, LocationUtilis {
+	typeSolict: number;
+	selectTypeSolict?: (value: number) => void;
 	fmData: fm_Interface;
 	fmDataError?: fmError_Interface;
 	days?: Days;

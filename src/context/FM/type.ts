@@ -1,3 +1,5 @@
+export const SELECT_TYPE_SOLICT = 'SELECT_TYPE_SOLICT';
+
 export const CHANGE_FM = 'CHANGE_FM';
 export const SET_FM = 'SET_FM';
 

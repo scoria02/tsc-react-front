@@ -11,23 +11,15 @@ import { RootState } from '../../../store/store';
 import { useStylesFM } from '../styles';
 import { FMContext } from '../../../context/FM/FMContext';
 
-export const Step2: React.FC<any> = ({ 
-	handleChangeNames,
-}) => {
+export const Step2: React.FC<any> = ({ handleChangeNames }) => {
 	const classes = useStylesFM();
 	const fm: any = useSelector((state: RootState) => state.fm);
 
-	const { 
-		fmData,
-		fmDataError,
-		codePhone,
-		changeFmData,
-	}:any = useContext(FMContext);
+	const { fmData, fmDataError, codePhone, changeFmData }: any = useContext(FMContext);
 
 	const handleChangePhone = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.value !== '0') {
-			if(/^[0-9]+$/.test(event.target.value) || event.target.value === '')
-				changeFmData(event);
+			if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') changeFmData(event);
 		}
 	};
 

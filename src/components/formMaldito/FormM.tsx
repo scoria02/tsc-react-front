@@ -26,6 +26,7 @@ import { RootState } from '../../store/store';
 import LoaderPrimary from '../loaders/LoaderPrimary';
 import './index.scss';
 //steps
+import StepBase from './steps';
 import { Step1 } from './steps/Step1';
 import { Step2 } from './steps/Step2';
 import { Step3 } from './steps/Step3';
@@ -42,24 +43,27 @@ import { DataListContext } from '../../context/DataList/DataListContext';
 import { FMint, ImagesInt, ListLocationInt, NamesImagesInt } from './interface';
 import { StateFMInt } from '../../store/reducers/fmReducer';
 
-function getSteps() {
-	return [
-		'Información Personal del Cliente',
-		'Referencias Personales',
-		'Información del Comercio',
-		'Dirección del Comercio/POS',
-		'Solicitud de POS',
-	];
-}
+const initStep = ['Tipo de Solicitud'];
+
+const baseSteps = [
+	'Información Personal del Cliente',
+	'Referencias Personales',
+	'Información del Comercio',
+	'Dirección del Comercio/POS',
+	'Solicitud de POS',
+];
 
 const FormM: React.FC = () => {
 	const history = useHistory();
 	const classes = useStylesFM();
 	const dispatch = useDispatch();
 
+	const [steps, setSteps] = useState<string[]>(initStep);
+
 	const fm: StateFMInt = useSelector((state: RootState) => state.fm);
 
 	const {
+		typeSolict,
 		fmData,
 		fmDataError,
 		days,
@@ -534,6 +538,13 @@ const FormM: React.FC = () => {
 		}
 	}, [fm.mashCommerce, fm.commerceMash]);
 
+	const handleGetStep = () => {
+		setActiveStep((prevActiveStep) => prevActiveStep + 1);
+		const newSteps = [...initStep, ...baseSteps];
+		console.log(newSteps);
+		setSteps(newSteps);
+	};
+
 	const handleNext = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
 	};
@@ -636,9 +647,8 @@ const FormM: React.FC = () => {
 		});
 	};
 
-	const steps = getSteps();
-
 	const getStep = [
+		<StepBase />,
 		<Step1
 			namesImages={namesImages}
 			validEmailIdent={validEmailIdent}
@@ -703,11 +713,10 @@ const FormM: React.FC = () => {
 				<LoaderPrimary />
 			) : (
 				<form className='container-form'>
-					<div className='capitan-america'></div>
 					<Stepper alternativeLabel activeStep={activeStep} style={{ background: 'none', width: '100%' }}>
 						{steps.map((label, index) => {
 							const stepProps: { completed?: boolean } = {};
-							return (
+							return !activeStep ? null : (
 								<Step key={label} {...stepProps}>
 									<StepLabel error={stepError(index)}>
 										<b>{label}</b>
@@ -724,6 +733,7 @@ const FormM: React.FC = () => {
 									size='large'
 									disabled={activeStep === 0}
 									variant='contained'
+									style={{ opacity: activeStep ? 1 : 0 }}
 									onClick={handleBack}
 									className={classes.buttonBack}>
 									Volver
@@ -733,9 +743,11 @@ const FormM: React.FC = () => {
 									size='large'
 									variant='contained'
 									color='primary'
-									onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
+									onClick={
+										activeStep ? (activeStep === steps.length - 1 ? handleSubmit : handleNext) : handleGetStep
+									}
 									className={classes.buttonNext}>
-									{activeStep === steps.length - 1 ? 'Enviar' : 'Siguiente'}
+									{!activeStep ? 'Comenzar' : activeStep === steps.length - 1 ? 'Enviar' : 'Siguiente'}
 								</Button>
 							</div>
 						</div>

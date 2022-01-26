@@ -7,12 +7,11 @@ import TextField from '@material-ui/core/TextField';
 import { useDispatch, useSelector } from 'react-redux';
 import { Valid } from '../../../../store/actions/accept';
 //Url
-import { PortFiles, URL } from '../../../../config';
 import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 
-import { ModalAlert }from '../../../modals/ModalAlert';
+import { ModalAlert } from '../../../modals/ModalAlert';
 
 import Rec from '../../../utilis/images/Rec';
 
@@ -24,17 +23,17 @@ export default function PasoAccountNumber() {
 	const classes = useStyles();
 	const [state, setState] = useState(rc_ref_bank);
 	const [openModal, setOpenModal] = useState<boolean>(false);
-  const [load, setLoad] = useState(false)
+	const [load, setLoad] = useState(false);
 
 	const handleOpenModal = () => {
-		handleCancel()
+		handleCancel();
 		setOpenModal(true);
 	};
 
 	const handleCloseModal = (cancel: boolean) => {
-		if(cancel){
-			setState({ 
-				...state, 
+		if (cancel) {
+			setState({
+				...state,
 				status: !state.status,
 			});
 		}
@@ -42,7 +41,7 @@ export default function PasoAccountNumber() {
 	};
 
 	useEffect(() => {
-		dispatch(Valid({rc_ref_bank:state}));
+		dispatch(Valid({ rc_ref_bank: state }));
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.status]);
 
@@ -55,23 +54,22 @@ export default function PasoAccountNumber() {
 		handleCloseModal(true);
 	};
 
-	const handleChangeI = (event:any) => {
-		setState({ 
-			...state, 
+	const handleChangeI = (event: any) => {
+		setState({
+			...state,
 			[event.target.name]: event.target.value,
 		});
-	}
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({ 
-			...state, 
-			[event.target.name]: event.target.checked,
-		});
-		if(!event.target.checked)
-			handleOpenModal();
 	};
 
-	const imagen = `${URL}:${PortFiles}/${fm.rc_ref_bank.path}`;
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setState({
+			...state,
+			[event.target.name]: event.target.checked,
+		});
+		if (!event.target.checked) handleOpenModal();
+	};
+
+	const imagen = `${process.env.REACT_APP_API_IMAGES}/${fm.rc_ref_bank.path}`;
 
 	/*
 	const props = {
@@ -84,7 +82,7 @@ export default function PasoAccountNumber() {
 
 	return (
 		<>
-			<form className="container-step" noValidate autoComplete='off'>
+			<form className='container-step' noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
 					<TextField
 						className={classes.btn_stepNro}
@@ -99,12 +97,8 @@ export default function PasoAccountNumber() {
 					/>
 				</div>
 			</form>
-			<Rec 
-				load={load}
-				setLoad={setLoad}
-				imagen={imagen}
-			/>
-			<ModalAlert 
+			<Rec load={load} setLoad={setLoad} imagen={imagen} />
+			<ModalAlert
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
 				state={state}
@@ -115,4 +109,3 @@ export default function PasoAccountNumber() {
 		</>
 	);
 }
-

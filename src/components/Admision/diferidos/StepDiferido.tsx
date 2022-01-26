@@ -5,7 +5,6 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutlineSharp';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import React, { useState } from 'react';
 //Url
-import { PortFiles, URL as urlBack } from '../../../config';
 import Rec from '../../utilis/images/Rec';
 import { recaudo } from '../../utilis/recaudos';
 import '../comprobacion/pasosComprobacion/styles/pasos.scss';
@@ -17,7 +16,7 @@ const StepDiferido: React.FC<any> = ({ name, fm, valid, path, handleChangeImages
 	const classes = useStyles();
 	const [load, setLoad] = useState(false);
 
-	const imagen: string = uploadImg ? path : `${urlBack}:${PortFiles}/${fm.path}`;
+	const imagen: string = uploadImg ? path : `${process.env.REACT_APP_API_IMAGES}/${fm.path}`;
 
 	const [size, setSize] = useState<any>({
 		file: 700, //widthFullScrean

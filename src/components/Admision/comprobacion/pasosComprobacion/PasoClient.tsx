@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 //Url
-import { PortFiles, URL } from '../../../../config';
 import { Valid } from '../../../../store/actions/accept';
 import { RootState } from '../../../../store/store';
 import { useStyles } from './styles/styles';
@@ -67,7 +66,7 @@ export default function PasoClient() {
 		if (!event.target.checked) handleOpenModal();
 	};
 
-	const imagen = `${URL}:${PortFiles}/${fm.id_client.rc_ident_card.path}`;
+	const imagen = `${process.env.REACT_APP_API_IMAGES}/${fm.id_client.rc_ident_card.path}`;
 
 	/*
 	const props = {

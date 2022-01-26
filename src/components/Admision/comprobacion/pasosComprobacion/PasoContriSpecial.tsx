@@ -7,7 +7,6 @@ import TextField from '@material-ui/core/TextField';
 import { useDispatch, useSelector } from 'react-redux';
 import { Valid } from '../../../../store/actions/accept';
 //Url
-import { PortFiles, URL } from '../../../../config';
 import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
@@ -69,7 +68,7 @@ const PasoContriSpecial: React.FC = () => {
 		if (!event.target.checked) handleOpenModal();
 	};
 
-	const imagen: string = `${URL}:${PortFiles}/${fm.id_commerce.rc_special_contributor.path}`;
+	const imagen: string = `${process.env.REACT_APP_API_IMAGES}/${fm.id_commerce.rc_special_contributor.path}`;
 
 	return (
 		<>
