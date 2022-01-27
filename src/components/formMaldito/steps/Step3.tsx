@@ -33,21 +33,10 @@ export const Step3: React.FC<any> = ({
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
-	const { 
-		fmData,
-		fmDataError,
-		days,
-		activity,
-		setActivity,
-		changeFmData,
-		changeFmParms,
-		changeDays,
-	}:any = useContext(FMContext);
+	const { fmData, fmDataError, days, activity, setActivity, changeFmData, changeFmParms, changeDays }: any =
+		useContext(FMContext);
 
-	const {
-		listIdentType,
-		listActivity,
-	}: any = useContext(DataListContext);
+	const { listIdentType, listActivity }: any = useContext(DataListContext);
 
 	const handleSelectActivity = (event: any, value: any, item: string) => {
 		if (value) {
@@ -83,6 +72,8 @@ export const Step3: React.FC<any> = ({
 		}
 		/* eslint-disable react-hooks/exhaustive-deps */
 	}, [fmData.id_ident_type_commerce]);
+
+	console.log('comerce', fmData);
 
 	return (
 		<>

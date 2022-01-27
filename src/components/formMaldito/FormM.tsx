@@ -42,6 +42,7 @@ import { LocationsContext } from '../../context/Location/LocationsContext';
 import { DataListContext } from '../../context/DataList/DataListContext';
 import { FMint, ImagesInt, ListLocationInt, NamesImagesInt } from './interface';
 import { StateFMInt } from '../../store/reducers/fmReducer';
+import { stepError } from '../../utils/fm';
 
 const initStep = ['Tipo de Solicitud'];
 
@@ -64,6 +65,7 @@ const FormM: React.FC = () => {
 
 	const {
 		typeSolict,
+		changeFmParms,
 		fmData,
 		fmDataError,
 		days,
@@ -131,6 +133,17 @@ const FormM: React.FC = () => {
 		rc_ref_bank: '', //5
 		rc_comp_dep: '',
 	});
+
+	useEffect(() => {
+		console.log(activeStep, fmData.ident_num_commerce);
+		if (
+			fmData.ident_num_commerce !== '' &&
+			fmData.ident_num === fmData.ident_num_commerce &&
+			fmData.id_ident_type === fmData.id_ident_type_commerce
+		) {
+			changeFmParms('name_commerce', fmData.name + ' ' + fmData.last_name);
+		}
+	}, [fmData.ident_num_commerce, fmData.id_ident_type_commerce, activeStep, fmData.name, fmData.last_name]);
 
 	//SendForm
 	useEffect(() => {
@@ -241,9 +254,9 @@ const FormM: React.FC = () => {
 	}, [fmData, locationCommerce, locationPos]);
 
 	useEffect(() => {
-		if (fm.errorClient) setActiveStep(0);
-		else if (activeStep > 1 && fm.errorCommerce) setActiveStep(2);
-		else if (activeStep > 3 && fm.errorNumBank) setActiveStep(4);
+		if (fm.errorClient) setActiveStep(1);
+		else if (activeStep > 1 && fm.errorCommerce) setActiveStep(3);
+		else if (activeStep > 3 && fm.errorNumBank) setActiveStep(5);
 	}, [activeStep, fm.errorClient, fm.errorCommerce, fm.errorNumBank]);
 
 	//CheckStepAcual
@@ -688,20 +701,6 @@ const FormM: React.FC = () => {
 		/>,
 	];
 
-	const stepError = (key: number) => {
-		if (key === 0 && fm.errorClient) {
-			//Cliente
-			return true;
-		} else if (key === 2 && fm.errorCommerce) {
-			//comercio
-			return true;
-		} else if (key === 4 && fm.errorNumBank) {
-			//comercio
-			return true;
-		}
-		return false;
-	};
-
 	return (
 		<div className='ed-container container-formMaldito'>
 			{!listIdentType.length ||
@@ -718,7 +717,7 @@ const FormM: React.FC = () => {
 							const stepProps: { completed?: boolean } = {};
 							return !activeStep ? null : (
 								<Step key={label} {...stepProps}>
-									<StepLabel error={stepError(index)}>
+									<StepLabel error={stepError(index, fm)}>
 										<b>{label}</b>
 									</StepLabel>
 								</Step>

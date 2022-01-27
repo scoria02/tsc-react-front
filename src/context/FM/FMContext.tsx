@@ -27,6 +27,10 @@ import { Activity } from '../DataList/interface';
 import { Estado, Municipio, Ciudad, Parroquia, Location } from '../Location/interfaces';
 
 import { fmFormat, fmErrorFormat, daysWork, location } from './states';
+import { validateForm } from '../../components/validation/validFm';
+import { initFmClient } from './client/stateClient';
+import ClientReducer from './client/ClientReducer';
+import { CHANGE_CLIENT, SET_CLIENT } from './client/types';
 
 export const FMContext = createContext({});
 
@@ -45,11 +49,108 @@ const FMProvider = ({ children }: Props) => {
 	};
 
 	const [fmState, dispatch] = useReducer(FMReducer, initialState);
+
+	//Prueba divider fm [divide]
+	const [fmClient, dispatchFmClient] = useReducer(ClientReducer, initFmClient);
+	//const [fmCommerce, dispatchFmCommerce] = useReducer(CommerceReducer, initialStateCommerce);
+	//const [fmPos, dispatchFmPos] = useReducer(PosReducer, initialStatePos);
+
 	const [locationClient, dispatchC] = useReducer(FMLocationReducer, location);
 	const [locationCommerce, dispatchCC] = useReducer(FMLocationReducer, location);
 	const [locationPos, dispatchP] = useReducer(FMLocationReducer, location);
 
-	const { fmData } = fmState;
+	const { fmData, fmDataError } = fmState;
+
+	//Cliente
+	const handleChangeClient = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		dispatchFmClient({
+			type: CHANGE_CLIENT,
+			payload: event.target,
+		});
+	};
+
+	const setClient = (client: any): void => {
+		dispatchFmClient({
+			type: SET_CLIENT,
+			payload: client,
+		});
+	};
+
+	////Client location
+	const setEstadoClient = (data: Estado) => {
+		dispatchC({
+			type: SET_ESTADO_S,
+			payload: data,
+		});
+		setClient({
+			...fmClient,
+			id_estado_client: data ? data.id : 0,
+			id_municipio_client: 0,
+			id_ciudad_client: 0,
+			id_parroquia_client: 0,
+		});
+
+		//[Delete]
+		changeFmParms('id_estado_client', data ? data.id : 0);
+		changeFmParms('id_municipio_client', 0);
+		changeFmParms('id_ciudad_client', 0);
+		changeFmParms('id_parroquia_client', 0);
+	};
+
+	const setMunicipioClient = (data: Municipio) => {
+		dispatchC({
+			type: SET_MUNICIPIO_S,
+			payload: data,
+		});
+
+		setClient({
+			...fmClient,
+			id_municipio_client: data ? data.id : 0,
+			id_ciudad_client: 0,
+			id_parroquia_client: 0,
+		});
+
+		//[delete]
+		changeFmParms('id_municipio_client', data ? data.id : 0);
+		changeFmParms('id_ciudad_client', 0);
+		changeFmParms('id_parroquia_client', 0);
+	};
+
+	const setCiudadClient = (data: Ciudad) => {
+		dispatchC({
+			type: SET_CIUDAD_S,
+			payload: data,
+		});
+
+		setClient({
+			...fmClient,
+			id_ciudad_client: data ? data.id : 0,
+			id_parroquia_client: 0,
+			codigo_postal_client: data ? data.postal_code : '',
+		});
+
+		//[delete]
+		changeFmParms('id_ciudad_client', data ? data.id : 0);
+		changeFmParms('id_parroquia_client', 0);
+		changeFmParms('codigo_postal_client', data ? data.postal_code : '');
+	};
+
+	const setParroquiaClient = (data: Parroquia) => {
+		dispatchC({
+			type: SET_PARROQUIA_S,
+			payload: data,
+		});
+
+		setClient({
+			...fmClient,
+			id_parroquia_client: data ? data.id : 0,
+		});
+
+		//[delete]
+		changeFmParms('id_parroquia_client', data ? data.id : 0);
+	};
+
+	//...Cliente
 
 	const selectTypeSolict = (value: number): void => {
 		dispatch({
@@ -63,6 +164,9 @@ const FMProvider = ({ children }: Props) => {
 			name: event.target.name,
 			value: event.target.value,
 		};
+
+		setFmError(validateForm(fmData, fmDataError, data.name, data.value));
+
 		dispatch({
 			type: CHANGE_FM,
 			payload: data,
@@ -77,6 +181,7 @@ const FMProvider = ({ children }: Props) => {
 	};
 
 	const setFmData = (fm: fm_Interface) => {
+		console.log(fm);
 		dispatch({
 			type: SET_FM,
 			payload: fm,
@@ -106,46 +211,6 @@ const FMProvider = ({ children }: Props) => {
 			type: SET_DAYS,
 			payload: days,
 		});
-	};
-
-	//Client location
-	const setEstadoClient = (data: Estado) => {
-		dispatchC({
-			type: SET_ESTADO_S,
-			payload: data,
-		});
-		changeFmParms('id_estado_client', data ? data.id : 0);
-		changeFmParms('id_municipio_client', 0);
-		changeFmParms('id_ciudad_client', 0);
-		changeFmParms('id_parroquia_client', 0);
-	};
-
-	const setMunicipioClient = (data: Municipio) => {
-		dispatchC({
-			type: SET_MUNICIPIO_S,
-			payload: data,
-		});
-		changeFmParms('id_municipio_client', data ? data.id : 0);
-		changeFmParms('id_ciudad_client', 0);
-		changeFmParms('id_parroquia_client', 0);
-	};
-
-	const setCiudadClient = (data: Ciudad) => {
-		dispatchC({
-			type: SET_CIUDAD_S,
-			payload: data,
-		});
-		changeFmParms('id_ciudad_client', data ? data.id : 0);
-		changeFmParms('id_parroquia_client', 0);
-		changeFmParms('codigo_postal_client', data ? data.postal_code : '');
-	};
-
-	const setParroquiaClient = (data: Parroquia) => {
-		dispatchC({
-			type: SET_PARROQUIA_S,
-			payload: data,
-		});
-		changeFmParms('id_parroquia_client', data ? data.id : 0);
 	};
 
 	//Comercio location
@@ -322,6 +387,9 @@ const FMProvider = ({ children }: Props) => {
 	return (
 		<FMContext.Provider
 			value={{
+				//Cliente [divide]
+				handleChangeClient,
+
 				//FM
 				...fmState,
 				selectTypeSolict,

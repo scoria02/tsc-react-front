@@ -7,11 +7,12 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import classNames from 'classnames';
 import React, { useEffect, useState, useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { useStylesFM } from '../styles';
 import { recaudo } from '../../utilis/recaudos';
 import { FMContext } from '../../../context/FM/FMContext';
+import { validationNumBank } from '../../../store/actions/fm';
 
 //Pedido
 export const Step5: React.FC<any> = ({
@@ -38,6 +39,7 @@ export const Step5: React.FC<any> = ({
 	const [deleted, setDeleted] = useState<boolean>(false);
 	// const cuotasText = ['5 cuotas de 50$', '4 cuotas de 50$', '3 cuotas de 50$'];
 	const [cuotasTexto, setCuotasTexto] = useState('');
+	const dispatch = useDispatch();
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
@@ -106,6 +108,14 @@ export const Step5: React.FC<any> = ({
 
 	const handleChangeBank = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
+			if (event.target.value.length === 20 && fmData.email !== '') {
+				dispatch(
+					validationNumBank({
+						email: fmData.email,
+						bank_account_num: event.target.value,
+					})
+				);
+			}
 			changeFmData(event);
 		}
 	};

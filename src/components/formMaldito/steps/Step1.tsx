@@ -38,6 +38,7 @@ export const Step1: React.FC<any> = ({
 		useContext(LocationsContext);
 
 	const {
+		handleChangeClient,
 		fmData,
 		fmDataError,
 		changeFmData,
@@ -47,6 +48,7 @@ export const Step1: React.FC<any> = ({
 		setMunicipioClient,
 		setCiudadClient,
 		setParroquiaClient,
+		setFmError,
 	}: any = useContext(FMContext);
 
 	const { listIdentType }: any = useContext(DataListContext);
@@ -61,7 +63,19 @@ export const Step1: React.FC<any> = ({
 
 	const handleIdentNum = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
+			handleChangeClient(event);
 			changeFmData(event);
+		}
+		if (event.target.value.length < 6) {
+			setFmError({
+				...fmDataError,
+				ident_num: true,
+			});
+		} else {
+			setFmError({
+				...fmDataError,
+				ident_num: false,
+			});
 		}
 	};
 
@@ -77,7 +91,10 @@ export const Step1: React.FC<any> = ({
 						label='Correo'
 						autoComplete='off'
 						name='email'
-						onChange={changeFmData}
+						onChange={(event) => {
+							handleChangeClient(event);
+							changeFmData(event);
+						}}
 						onBlur={handleBlurEmailIdent}
 						value={fmData.email}
 						error={fmDataError.email || validEmailIdent}
@@ -88,7 +105,10 @@ export const Step1: React.FC<any> = ({
 						<InputLabel>DI</InputLabel>
 						<Select
 							value={fmData.id_ident_type}
-							onChange={changeFmData}
+							onChange={(event) => {
+								handleChangeClient(event);
+								changeFmData(event);
+							}}
 							onBlur={handleBlurEmailIdent}
 							name='id_ident_type'
 							error={validEmailIdent}
