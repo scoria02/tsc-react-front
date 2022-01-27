@@ -31,20 +31,22 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 	const fm: any = useSelector((state: RootState) => state.fm);
 
 	const {
-		fmData,
-		changeFmData,
+		fmCommerce,
+		fmPos,
 		locationCommerce,
 		locationPos,
-
 		setEstadoCommerce,
 		setMunicipioCommerce,
 		setCiudadCommerce,
 		setParroquiaCommerce,
-
 		setEstadoPos,
 		setMunicipioPos,
 		setCiudadPos,
 		setParroquiaPos,
+
+		//s
+		fmData,
+		changeFmData,
 	}: any = useContext(FMContext);
 
 	const handleChangeCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,7 +89,7 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						className={classes.inputText}
 						onChange={(event, value: Municipio | null) => {
 							setMunicipioCommerce(value);
-							setListCiudadCommerce(fmData.id_estado);
+							setListCiudadCommerce(fmCommerce.id_estado);
 						}}
 						value={locationCommerce.municipio || null}
 						disabled={fm.mashCommerce}
@@ -108,7 +110,7 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 					<Autocomplete
 						onChange={(event, value: Ciudad | null) => {
 							setCiudadCommerce(value);
-							setListParroquiaCommerce(fmData.id_municipio);
+							setListParroquiaCommerce(fmCommerce.id_municipio);
 						}}
 						className={classes.inputTextLeft}
 						value={locationCommerce.ciudad || null}
@@ -147,7 +149,7 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						id='standard-required'
 						label='Codigo Postal'
 						name='codigo_postal'
-						value={fmData.codigo_postal}
+						value={fmCommerce.codigo_postal}
 						disabled
 					/>
 					<TextField
@@ -159,7 +161,7 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						label='Sector'
 						name='sector'
 						onChange={handleChangeCommerce}
-						value={fmData.sector}
+						value={fmCommerce.sector}
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
@@ -172,7 +174,7 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						label='Calle'
 						name='calle'
 						onChange={handleChangeCommerce}
-						value={fmData.calle}
+						value={fmCommerce.calle}
 					/>
 					<TextField
 						className={classes.inputText}
@@ -183,7 +185,7 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						disabled={fm.mashCommerce}
 						name='local'
 						onChange={handleChangeCommerce}
-						value={fmData.local}
+						value={fmCommerce.local}
 					/>
 				</div>
 			</div>
@@ -214,7 +216,7 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						className={classes.inputText}
 						onChange={(event, value: Municipio | null) => {
 							setMunicipioPos(value);
-							setListCiudadPos(fmData.id_estado_pos);
+							setListCiudadPos(fmPos.id_estado);
 						}}
 						value={locationPos.municipio || null}
 						options={listLocationPos.municipio}
@@ -235,7 +237,7 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						className={classes.inputTextLeft}
 						onChange={(event, value: Ciudad | null) => {
 							setCiudadPos(value);
-							setListParroquiaPos(fmData.id_municipio_pos);
+							setListParroquiaPos(fmPos.id_municipio);
 						}}
 						options={listLocationPos.ciudad}
 						value={locationPos.ciudad || null}
@@ -277,7 +279,7 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						id='standard-required'
 						label='Codigo Postal'
 						name='codigo_postal_pos'
-						value={fmData.codigo_postal_pos}
+						value={fmPos.codigo_postal}
 						disabled
 					/>
 					<TextField
@@ -288,7 +290,7 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						label='Sector'
 						name='sector_pos'
 						onChange={handleChangePos}
-						value={fmData.sector_pos}
+						value={fmPos.sector}
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
@@ -300,7 +302,7 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						label='Calle'
 						name='calle_pos'
 						onChange={handleChangePos}
-						value={fmData.calle_pos}
+						value={fmPos.calle}
 					/>
 					<TextField
 						className={classes.inputText}
@@ -308,9 +310,9 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						required
 						id='standard-required'
 						label='Local'
-						name='local_pos'
+						name='local'
 						onChange={handleChangePos}
-						value={fmData.local_pos}
+						value={fmPos.local}
 					/>
 				</div>
 			</div>

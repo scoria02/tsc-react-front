@@ -65,7 +65,10 @@ const FormM: React.FC = () => {
 
 	const {
 		typeSolict,
-		changeFmParms,
+		fmClient,
+		fmCommerce,
+		handleParamsCommerce,
+		//s
 		fmData,
 		fmDataError,
 		days,
@@ -81,7 +84,7 @@ const FormM: React.FC = () => {
 		setActivity,
 		copyLocationCToCC,
 		copyLocationCCToP,
-	}: FMint = useContext(FMContext as any);
+	}: any = useContext(FMContext as any);
 
 	const {
 		listLocationClient,
@@ -135,15 +138,15 @@ const FormM: React.FC = () => {
 	});
 
 	useEffect(() => {
-		console.log(activeStep, fmData.ident_num_commerce);
 		if (
-			fmData.ident_num_commerce !== '' &&
-			fmData.ident_num === fmData.ident_num_commerce &&
-			fmData.id_ident_type === fmData.id_ident_type_commerce
+			activeStep === 3 &&
+			fmCommerce.ident_num !== '' &&
+			fmClient.ident_num === fmCommerce.ident_num &&
+			fmClient.id_ident_type === fmCommerce.id_ident_type
 		) {
-			changeFmParms('name_commerce', fmData.name + ' ' + fmData.last_name);
+			handleParamsCommerce('name', fmClient.name + ' ' + fmClient.last_name);
 		}
-	}, [fmData.ident_num_commerce, fmData.id_ident_type_commerce, activeStep, fmData.name, fmData.last_name]);
+	}, [activeStep]);
 
 	//SendForm
 	useEffect(() => {
@@ -193,7 +196,6 @@ const FormM: React.FC = () => {
 
 	useEffect(() => {
 		dispatch(cleanFM());
-		console.log('Si la vida te da limones');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -203,7 +205,7 @@ const FormM: React.FC = () => {
 
 	//Copyrighter Client to Commerce / Pos
 	useEffect(() => {
-		if (activeStep === 1 && autoCompleteCommerce && !fm.mashCommerce) {
+		if (activeStep === 3 && autoCompleteCommerce && !fm.mashCommerce) {
 			copyListLocationCToCC();
 			copyLocationCToCC();
 		}
@@ -259,10 +261,46 @@ const FormM: React.FC = () => {
 		else if (activeStep > 3 && fm.errorNumBank) setActiveStep(5);
 	}, [activeStep, fm.errorClient, fm.errorCommerce, fm.errorNumBank]);
 
+	useEffect(() => {
+		switch (activeStep) {
+			case 0:
+				setReadyStep(true);
+				break;
+			case 1:
+			case 2:
+				if (
+					!valids.checkErrorAllInput(valids.sizeStepError(activeStep), fmDataError) &&
+					!valids.inputNotNull(valids.sizeStep(activeStep), fmClient)
+				)
+					setReadyStep(true);
+				else setReadyStep(false);
+				break;
+			case 3:
+				if (!valids.inputNotNull(valids.sizeStep(activeStep), fmCommerce)) setReadyStep(true);
+				else setReadyStep(false);
+				break;
+			case 4:
+				if (
+					!valids.inputNotNull(valids.sizeStep(activeStep), fmCommerce)
+					//&&
+					//!valids.inputNotNull(valids.sizeStep(activeStep), fmPos)
+				)
+					setReadyStep(true);
+				else setReadyStep(false);
+				break;
+			default:
+				setReadyStep(false);
+				break;
+		}
+	}, [fmClient, fmCommerce, imagesForm, activeStep, fm, imagesActa]);
+
 	//CheckStepAcual
+	/*
 	useEffect(() => {
 		if (
-			!valids.allInputNotNUll(valids.sizeStep(activeStep), fmData, fm.mashClient, fm.mashCommerce) &&
+			//!valids.allInputNotNUll(valids.sizeStep(activeStep), fmData, fm.mashClient, fm.mashCommerce) &&
+			//!valids.checkErrorAllInput(valids.sizeStep(activeStep), fmDataError) &&
+			//valids.validMashes(activeStep, fm.validMashClient, fm.validMashCommerce)
 			!valids.allImgNotNUll(
 				fmData,
 				valids.sizeImagesStep(activeStep),
@@ -283,6 +321,7 @@ const FormM: React.FC = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [fmData, imagesForm, activeStep, fm, imagesActa]);
+	*/
 
 	const validateForm = (name: string, value: any): void => {
 		let temp: any = fmDataError;
@@ -361,29 +400,6 @@ const FormM: React.FC = () => {
 				break;
 		}
 		setFmError(temp);
-	};
-
-	const handleBlurEmailIdent = (): void => {
-		if (fmData.email !== '' && fmData.id_ident_type !== 0 && fmData.ident_num !== '') {
-			dispatch(
-				validationClient({
-					email: fmData.email,
-					id_ident_type: fmData.id_ident_type,
-					ident_num: fmData.ident_num,
-				})
-			);
-		}
-	};
-
-	const handleBlurCommerce = (): void => {
-		if (fmData.id_ident_type_commerce !== 0 && fmData.ident_num_commerce !== '') {
-			dispatch(
-				validationCommerce(fm.id_client, {
-					id_ident_type: fmData.id_ident_type_commerce,
-					ident_num: fmData.ident_num_commerce,
-				})
-			);
-		}
 	};
 
 	const [oldClientMatsh, setOldClientMatsh] = useState<boolean>(false);
@@ -554,7 +570,6 @@ const FormM: React.FC = () => {
 	const handleGetStep = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
 		const newSteps = [...initStep, ...baseSteps];
-		console.log(newSteps);
 		setSteps(newSteps);
 	};
 
@@ -668,14 +683,12 @@ const FormM: React.FC = () => {
 			imagesForm={imagesForm}
 			handleChangeNames={handleChangeNames}
 			handleChangeImages={handleChangeImages}
-			handleBlurEmailIdent={handleBlurEmailIdent}
 		/>,
-		<Step2 handleChangeNames={handleChangeNames} />,
+		<Step2 />,
 		<Step3
 			imagesActa={imagesActa}
 			namesImages={namesImages}
 			imagesForm={imagesForm}
-			handleBlurCommerce={handleBlurCommerce}
 			handleChangeImages={handleChangeImages}
 			handleChangeImagesMulti={handleChangeImagesMulti}
 			deleteImgContributor={deleteImgContributor}
@@ -738,7 +751,7 @@ const FormM: React.FC = () => {
 									Volver
 								</Button>
 								<Button
-									//disabled={!readyStep}
+									disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'

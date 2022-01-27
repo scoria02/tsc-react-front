@@ -13,3 +13,10 @@ export const stepError = (key: number, fm: StateFMInt) => {
 	}
 	return false;
 };
+
+export const validInputString = (event: React.ChangeEvent<HTMLInputElement>): boolean => {
+	if ((event.target.value.trim() !== '' && /^[a-zA-Z ]+$/.test(event.target.value)) || event.target.value === '') {
+		return true;
+	}
+	return false;
+};

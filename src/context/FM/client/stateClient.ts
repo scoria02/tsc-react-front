@@ -1,4 +1,6 @@
-export const initFmClient: any = {
+import { fmClient } from '../../../interfaces/fm';
+
+export const initFmClient: fmClient = {
 	//step1 Cliente
 	email: '',
 	name: '',

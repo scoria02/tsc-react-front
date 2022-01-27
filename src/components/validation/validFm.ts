@@ -68,7 +68,7 @@ export const validPhone2 = (value: string, value2: string): boolean => {
 };
 
 export const validIdentRef = (value: string, value2: string): boolean => {
-	if (value.length >= 9) {
+	if (value.length > 6) {
 		if (value === value2) return true;
 		else return false;
 	} else {

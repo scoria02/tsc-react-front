@@ -1,6 +1,6 @@
 import { CHANGE_FM, SET_FM } from '../type';
 
-export default function ClientReducer(state: any, action: any) {
+export default function PosReducer(state: any, action: any) {
 	const { payload, type } = action;
 	switch (type) {
 		case CHANGE_FM:

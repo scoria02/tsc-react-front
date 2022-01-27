@@ -3,51 +3,6 @@ import { fm_Interface, fmError_Interface, Days } from './interfaces';
 
 //new Version dividir el fm en states [divide]
 
-export const initFmCommerce: any = {
-	//step3 Comercio
-	id_ident_type_commerce: 3,
-	ident_num_commerce: '',
-	name_commerce: '',
-	id_activity: 0,
-	special_contributor: false,
-	//Step4 Location
-	//Commerce
-	id_estado: 0,
-	id_ciudad: 0,
-	id_municipio: 0,
-	id_parroquia: 0,
-	codigo_postal: '',
-	sector: '',
-	calle: '',
-	local: '',
-};
-
-export const initFmPos: any = {
-	//Step4 Location
-	//Location Pos
-	id_estado_pos: 0,
-	id_ciudad_pos: 0,
-	id_municipio_pos: 0,
-	id_parroquia_pos: 0,
-	codigo_postal_pos: '',
-	sector_pos: '',
-	calle_pos: '',
-	local_pos: '',
-	//Step5 Post
-	number_post: 1,
-	id_model_post: 0,
-	text_account_number: '',
-	id_payment_method: 0,
-	id_type_pay: 0,
-	id_request_origin: 1,
-	reqSource_docnum: '',
-	initial: 100,
-	cuotas: 0, //Si es inical coutas cambia
-	nro_comp_dep: '',
-	discount: 0,
-	pagadero: 0,
-};
-
 export const fmFormat: fm_Interface = {
 	//step1 Cliente
 	email: '',
@@ -110,8 +65,8 @@ export const fmFormat: fm_Interface = {
 	initial: 100,
 	cuotas: 0, //Si es inical coutas cambia
 	nro_comp_dep: '',
-	discount: 0,
-	pagadero: 0,
+	discount: 0, //pasar a boolean
+	pagadero: 0, //pasar a boolean
 };
 
 export const fmErrorFormat: fmError_Interface = {

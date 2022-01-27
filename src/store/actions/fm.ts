@@ -17,7 +17,7 @@ export const validationClient = (client: any) => {
 			console.log(res);
 			dispatch(requestSuccess(res.data.info));
 			return res.data.info;
-		} catch (error) {
+		} catch (error: any) {
 			console.log(error.response);
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');

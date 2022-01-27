@@ -11,7 +11,7 @@ import TextField from '@material-ui/core/TextField';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useEffect, useState, useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { recaudo } from '../../utilis/recaudos';
 import { useStylesFM } from '../styles';
@@ -19,32 +19,60 @@ import { FMContext } from '../../../context/FM/FMContext';
 
 import { DataListContext } from '../../../context/DataList/DataListContext';
 import { Activity } from '../../../context/DataList/interface';
+import { validationCommerce } from '../../../store/actions/fm';
 
 export const Step3: React.FC<any> = ({
 	imagesActa,
 	namesImages,
 	imagesForm,
-	handleBlurCommerce,
 	handleChangeImages,
 	handleChangeImagesMulti,
 	deleteImgContributor,
 }) => {
 	const classes = useStylesFM();
 	const [actaFlag, setActaFlag] = useState(false);
+	const dispatch = useDispatch();
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
-	const { fmData, fmDataError, days, activity, setActivity, changeFmData, changeFmParms, changeDays }: any =
-		useContext(FMContext);
+	const {
+		fmCommerce,
+		handleChangeCommerce,
+		handleParamsCommerce,
+
+		//ad
+		fmDataError,
+		days,
+		activity,
+		setActivity,
+		changeDays,
+	}: any = useContext(FMContext);
 
 	const { listIdentType, listActivity }: any = useContext(DataListContext);
 
+	const handleBlurCommerce = (): void => {
+		if (fmCommerce.id_ident_type !== 0 && fmCommerce.ident_num !== '') {
+			dispatch(
+				validationCommerce(fm.id_client, {
+					id_ident_type: fmCommerce.id_ident_type,
+					ident_num: fmCommerce.ident_num,
+				})
+			);
+		}
+	};
+
+	const handleChangeNameCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (/^[a-z0-9]+$/i.test(event.target.value) || event.target.value === '') {
+			handleChangeCommerce(event);
+		}
+	};
+
 	const handleSelectActivity = (event: any, value: any, item: string) => {
 		if (value) {
-			changeFmParms(`id_${item}`, value.id);
+			handleParamsCommerce(`id_${item}`, value.id);
 			setActivity(value);
 		} else {
-			changeFmParms(`id_${item}`, 0);
+			handleParamsCommerce(`id_${item}`, 0);
 			setActivity(null);
 		}
 	};
@@ -53,18 +81,18 @@ export const Step3: React.FC<any> = ({
 		if (e.target.checked) {
 			deleteImgContributor(e.target.name);
 		}
-		changeFmParms(e.target.name, e.target.checked ? 1 : 0);
+		handleParamsCommerce(e.target.name, e.target.checked);
 	};
 
 	const handleIdentNum = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
-			changeFmData(event);
+			handleChangeCommerce(event);
 		}
 	};
 
 	useEffect(() => {
 		setActaFlag(false);
-		if (fmData.id_ident_type_commerce === 3) {
+		if (fmCommerce.id_ident_type_commerce === 3) {
 			setActaFlag(true);
 		} else {
 			if (imagesForm.rc_constitutive_act) {
@@ -72,9 +100,7 @@ export const Step3: React.FC<any> = ({
 			}
 		}
 		/* eslint-disable react-hooks/exhaustive-deps */
-	}, [fmData.id_ident_type_commerce]);
-
-	console.log('comerce', fmData);
+	}, [fmCommerce.id_ident_type_commerce]);
 
 	return (
 		<>
@@ -83,9 +109,9 @@ export const Step3: React.FC<any> = ({
 					<FormControl variant='outlined' className={classes.inputSelect}>
 						<InputLabel id='demo-simple-select-outlined-label'>Doc.</InputLabel>
 						<Select
-							value={fmData.id_ident_type_commerce}
-							onChange={changeFmData}
-							name='id_ident_type_commerce'
+							value={fmCommerce.id_ident_type}
+							onChange={handleChangeCommerce}
+							name='id_ident_type'
 							label='Tipo'
 							onBlur={handleBlurCommerce}
 							error={fm.errorCommerce}
@@ -102,14 +128,14 @@ export const Step3: React.FC<any> = ({
 						variant='outlined'
 						required
 						id='standard-required'
-						label={fmData.id_ident_type_commerce === 3 ? 'Numero de Rif' : 'C.I.'}
-						name='ident_num_commerce'
+						label={fmCommerce.id_ident_type === 3 ? 'Numero de Rif' : 'C.I.'}
+						name='ident_num'
 						onChange={handleIdentNum}
 						onBlur={handleBlurCommerce}
-						value={fmData.ident_num_commerce}
+						value={fmCommerce.ident_num}
 						error={fm.errorCommerce}
 						inputProps={{
-							maxLength: fmData.id_ident_type_commerce === 5 ? 20 : 9,
+							maxLength: fmCommerce.id_ident_type_commerce === 5 ? 20 : 9,
 						}}
 					/>
 					<Button
@@ -141,9 +167,9 @@ export const Step3: React.FC<any> = ({
 						required
 						id='standard-required'
 						label='Nombre del Comercio'
-						name='name_commerce'
-						onChange={changeFmData}
-						value={fmData.name_commerce}
+						name='name'
+						onChange={handleChangeNameCommerce}
+						value={fmCommerce.name}
 						error={fmDataError.name_commerce}
 						disabled={fm.mashCommerce}
 					/>
@@ -151,9 +177,7 @@ export const Step3: React.FC<any> = ({
 				<Autocomplete
 					className={classes.input}
 					disabled={fm.mashCommerce}
-					onChange={(event, value: Activity) => {
-						handleSelectActivity(event, value, 'activity');
-					}}
+					onChange={(event, value: Activity | null) => handleSelectActivity(event, value, 'activity')}
 					options={listActivity}
 					value={activity || null}
 					getOptionLabel={(option: Activity) => (option.name ? option.name : '')}
@@ -206,7 +230,7 @@ export const Step3: React.FC<any> = ({
 								<>
 									<Checkbox
 										name='special_contributor'
-										checked={fmData.special_contributor ? true : false}
+										checked={fmCommerce.special_contributor ? true : false}
 										onChange={handleChecked}
 										disabled={fm.imagesCommerce}
 										color='primary'
@@ -229,7 +253,7 @@ export const Step3: React.FC<any> = ({
 						style={{
 							opacity: fm.imagesCommerce ? 0 : 1,
 							background: imagesForm.rc_special_contributor ? '#5c62c5' : '#f44336',
-							visibility: fmData.special_contributor ? 'visible' : 'hidden',
+							visibility: fmCommerce.special_contributor ? 'visible' : 'hidden',
 						}}
 						component='label'>
 						{imagesForm.rc_special_contributor !== null ? (

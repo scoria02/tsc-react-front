@@ -4,6 +4,8 @@ import { Days } from '../../interfaces/fm';
 
 export interface FMint extends Location, LocationClient, LocationCommerce, LocationPos, LocationUtilis {
 	typeSolict: number;
+	fmClient: any;
+	fmCommerce: any;
 	selectTypeSolict?: (value: number) => void;
 	fmData: fm_Interface;
 	fmDataError?: fmError_Interface;

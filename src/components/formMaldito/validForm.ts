@@ -5,28 +5,28 @@ export const validEmail = (value: string): boolean => {
 	} else {
 		return false;
 	}
-}
+};
 
 export const validFullName = (value: string): boolean => {
 	if (value.trim() !== '' && !/[^a-z0-9\x20]/i.test(value) && !/\d/.test(value)) {
 		return false;
 	}
 	return true;
-}
+};
 
 export const validNameCommere = (value: string): boolean => {
 	if (3 < value.length && value.length < 255) {
 		return false;
 	}
 	return true;
-}
+};
 
-export  const rangeTypeIdent = (value: string, min: number, max: number): boolean => {
+export const rangeTypeIdent = (value: string, min: number, max: number): boolean => {
 	if (value.length >= min && value.length <= max) return true;
 	else return false;
 };
 
-export const validIdentNum = (value: string, op: number):boolean => {
+export const validIdentNum = (value: string, op: number): boolean => {
 	if (value.trim() !== '' && /^[0-9]+$/.test(value) && !/[^a-z0-9\x20]/i.test(value)) {
 		switch (op) {
 			case 1: //V*
@@ -44,56 +44,49 @@ export const validIdentNum = (value: string, op: number):boolean => {
 		}
 	}
 	return true;
-}
+};
 
-export const validPhone = (value: string):boolean => {
-	if (value.trim() !== '' && 
-		/^[0-9]+$/.test(value) &&  //only number
+export const validPhone = (value: string): boolean => {
+	if (
+		value.trim() !== '' &&
+		/^[0-9]+$/.test(value) && //only number
 		!/[^a-z0-9\x20]/i.test(value) &&
-		value.length >= 9) {
-			if(/^((4(1|2)4|4(1|2)6|412))([0-9]{7})$|^(2)(([0-9]){9})$/.test(value))
-				return false;
-			else
-				return true;
-		}
-		return true;
-}
-
-export const validPhone2 = (value: string, value2: string):boolean => {
-	if(!validPhone(value)){
-		if(value === value2)
-			return true;
-		else
-			return false
+		value.length >= 9
+	) {
+		if (/^((4(1|2)4|4(1|2)6|412))([0-9]{7})$|^(2)(([0-9]){9})$/.test(value)) return false;
+		else return true;
 	}
 	return true;
-}
+};
 
-export const validIdentRef = (value: string, value2: string):boolean => {
-	if(value.length >= 9) {
-		if(value === value2)
-			return true;
-		else
-			return false;
-	}else {
+export const validPhone2 = (value: string, value2: string): boolean => {
+	if (!validPhone(value)) {
+		if (value === value2) return true;
+		else return false;
+	}
+	return true;
+};
+
+export const validIdentRef = (value: string, value2: string): boolean => {
+	if (value.length >= 9) {
+		if (value === value2) return true;
+		else return false;
+	} else {
 		return true;
 	}
-}
+};
 
-export const validNum_post= (value: number):boolean => {
-	if(value < 1) // || value  > numero de puntos disponibles en la BD
+export const validNum_post = (value: number): boolean => {
+	if (value < 1)
+		// || value  > numero de puntos disponibles en la BD
 		return true;
-	else
-		return false
-}
+	else return false;
+};
 
-export const validNumBank = (value: string):boolean => {
-	if(value.length !== 20)	
-		return true;
-	else
-		return false
-}
-
+export const validNumBank = (value: string): boolean => {
+	if (value.length !== 20) return true;
+	else return false;
+};
 
 const step1 = 15;
 const step2 = 8;
@@ -105,19 +98,58 @@ const step5 = 10;
 export const sizeStep = (active: number): number => {
 	switch (active) {
 		case 0:
-			return step1;
+			return 0;
 		case 1:
-			return step1 + step2; 
+			return step1;
 		case 2:
-			return step1 + step2 + step3; 
+			return step1 + step2;
+		//Commerce
 		case 3:
-			return step1 + step2 + step3 + step4; 
+			return step3;
 		case 4:
-			return step1 + step2 + step3 + step4 + step5; 
+			return step3 + step4;
+		case 5:
+			return step5;
 		default:
 			return 0;
 	}
-}
+};
+
+export const sizeStepError = (active: number): number => {
+	switch (active) {
+		case 0:
+			return 0;
+		case 1:
+			return step1;
+		case 2:
+			return step1 + step2;
+		//Commerce
+		case 3:
+			return step1 + step2 + step3;
+		case 4:
+			return step1 + step2 + step3 + step4;
+		case 5:
+			return step1 + step2 + step3 + step4 + step5;
+		default:
+			return 0;
+	}
+};
+
+export const inputNotNull = (last: number, form: any): boolean => {
+	let index: number = 0;
+	for (const item of Object.entries(form)) {
+		if (index === last) {
+			return false;
+		}
+		index++;
+		if (typeof item[1] === 'string' && item[1].trim() === '') {
+			return true;
+		} else if (typeof item[1] === 'number' && item[1] === 0) {
+			return true;
+		}
+	}
+	return false;
+};
 
 const step1Imagen = 1;
 const step2Imagen = 0;
@@ -130,18 +162,17 @@ export const sizeImagesStep = (active: number): number => {
 		case 0:
 			return step1Imagen;
 		case 1:
-			return step1Imagen + step2Imagen; 
+			return step1Imagen + step2Imagen;
 		case 2:
-			return step1Imagen + step2Imagen + step3Imagen; 
+			return step1Imagen + step2Imagen + step3Imagen;
 		case 3:
 			return step1Imagen + step2Imagen + step3Imagen + step4Imagen; //6 con rc_comp_dep
 		case 4:
-			return step1Imagen + step2Imagen + step3Imagen + step4Imagen + step5Imagen
+			return step1Imagen + step2Imagen + step3Imagen + step4Imagen + step5Imagen;
 		default:
 			return 0;
 	}
-}
-
+};
 export const allInputNotNUll = (last: number, form: any, mashClient: boolean, mashCommerce: boolean): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(form)) {
@@ -151,74 +182,77 @@ export const allInputNotNUll = (last: number, form: any, mashClient: boolean, ma
 		indice++;
 		//No Check when item[0] === 'IdentType'
 		if (typeof item[1] === 'string') {
-			if(mashClient && indice < 24) {
+			if (mashClient && indice < 24) {
 				//no hago nada
-			}else if( mashCommerce && 24 <= indice && indice < 29){
+			} else if (mashCommerce && 24 <= indice && indice < 29) {
 				//no hago nada
-			}else if( item[0] === 'reqSource_docnum' && form.id_request_origin !== 1 && form.id_request_origin !== 2 ){
+			} else if (item[0] === 'reqSource_docnum' && form.id_request_origin !== 1 && form.id_request_origin !== 2) {
 				//no hago nada
-			}else if((form.pagadero || form.id_payment_method === 2) && item[0] === 'nro_comp_dep'){
+			} else if ((form.pagadero || form.id_payment_method === 2) && item[0] === 'nro_comp_dep') {
 				//no hago nada
-			} else{
-				if (item[1].trim() === '') 
-					return true;
+			} else {
+				if (item[1].trim() === '') return true;
 			}
-		}else if (typeof item[1] === 'number' && item[0] !== 'special_contributor') {
-			if(mashClient && indice < 24) {
+		} else if (typeof item[1] === 'number' && item[0] !== 'special_contributor') {
+			if (mashClient && indice < 24) {
 				//no hago nada
-			}else if(mashCommerce && 24 <= indice && indice < 29){
+			} else if (mashCommerce && 24 <= indice && indice < 29) {
 				//no hago nada
-			}else if(item[0] === 'discount' || item[0] === 'pagadero'){
+			} else if (item[0] === 'discount' || item[0] === 'pagadero') {
 				//no hago nada
-			}else{
-				if(item[1] === 0){
+			} else {
+				if (item[1] === 0) {
 					return true;
 				}
-			}	
-		}else if (typeof item[1] === 'number' && item[0] === 'special_contributor') {
-			if(mashClient && indice < 24) {
+			}
+		} else if (typeof item[1] === 'number' && item[0] === 'special_contributor') {
+			if (mashClient && indice < 24) {
 				//no hago nada
-			}else if(mashCommerce && 24 <= indice && indice < 29){
+			} else if (mashCommerce && 24 <= indice && indice < 29) {
 				//no hago nada
-			}else {
+			} else {
 				// nada
 			}
-		}	
+		}
 	}
 	return false;
 };
 
-export const allImgNotNUll = (form: any, last: number, images: any, special_contributor: boolean, mashClient: boolean, mashCommerce: boolean, isActa: number): boolean => {
+export const allImgNotNUll = (
+	form: any,
+	last: number,
+	images: any,
+	special_contributor: boolean,
+	mashClient: boolean,
+	mashCommerce: boolean,
+	isActa: number
+): boolean => {
 	let indice = 0;
 	for (const item of Object.entries(images)) {
 		if (indice === last) {
 			return false;
 		}
 		indice++;
-		if(item[0] === 'rc_special_contributor' && !special_contributor) {
+		if (item[0] === 'rc_special_contributor' && !special_contributor) {
 			//Salto
-		}else if (
-			item[0] === 'rc_constitutive_act' && isActa !== 3 ){
+		} else if (item[0] === 'rc_constitutive_act' && isActa !== 3) {
 			//nada
-		}else{
-			if(mashClient && indice < 2) {
+		} else {
+			if (mashClient && indice < 2) {
 				//No hago nada
-			}
-			else if (mashCommerce && 1 < indice && indice < 5) {
+			} else if (mashCommerce && 1 < indice && indice < 5) {
 				//No hago nada
-			}
-			else if ((form.pagadero || form.id_payment_method === 2)  && item[0] === 'rc_comp_dep') {
+			} else if ((form.pagadero || form.id_payment_method === 2) && item[0] === 'rc_comp_dep') {
 				//No hago nada
-			}
-			else {
-				if(item[1] === null){
+			} else {
+				if (item[1] === null) {
 					return true;
 				}
 			}
 		}
-	}	
+	}
 	return false;
-}
+};
 
 export const checkErrorAllInput = (last: number, errors: any): boolean => {
 	let indice = 0;
@@ -232,47 +266,44 @@ export const checkErrorAllInput = (last: number, errors: any): boolean => {
 		}
 	}
 	return false;
-}
+};
 
 export const validEndPoint = (activeStep: number, fm: any): boolean => {
-	if(fm.errorClient){
+	if (fm.errorClient) {
 		return true;
-	}else if(activeStep > 1 && fm.errorCommerce){
+	} else if (activeStep > 1 && fm.errorCommerce) {
 		return true;
-	}else if(activeStep > 3 && fm.errorNumBank){
+	} else if (activeStep > 3 && fm.errorNumBank) {
 		return true;
-	}else {
-		return false 
-	}
-}
-
-export const notNullImagenActa = (activeStep: number, imagesActa: any, isActa: number, mashCommerce: boolean) => {
-	if(activeStep >= 2 && isActa === 3 && imagesActa.length === 0 && !mashCommerce)
-		return true
-	else
-		return false
-}
-
-export const daysToString = (value: any)  => {
-	let text: string = '';
-	for (const item of Object.entries(value)) {
-		if(item[1]){
-			text = text + (text.length ? '/' : '') + item[0].slice(0,3)
-		}
-	}
-	return text
-}
-
-
-export const validMashes = (activeStep: number, mashClient: boolean, mashCommerce: boolean): boolean => {
-	if(activeStep >= 0 && mashClient){
-		console.log('cliente no validado aun')
-		return true;
-	}else if(activeStep >= 2 && mashCommerce){
-		console.log('commercio no validado')
-		return true;
-	}else {
-		console.log('cliente y comercio validado')
+	} else {
 		return false;
 	}
-}
+};
+
+export const notNullImagenActa = (activeStep: number, imagesActa: any, isActa: number, mashCommerce: boolean) => {
+	if (activeStep >= 2 && isActa === 3 && imagesActa.length === 0 && !mashCommerce) return true;
+	else return false;
+};
+
+export const daysToString = (value: any) => {
+	let text: string = '';
+	for (const item of Object.entries(value)) {
+		if (item[1]) {
+			text = text + (text.length ? '/' : '') + item[0].slice(0, 3);
+		}
+	}
+	return text;
+};
+
+export const validMashes = (activeStep: number, mashClient: boolean, mashCommerce: boolean): boolean => {
+	if (activeStep >= 1 && mashClient) {
+		console.log('cliente no validado aun');
+		return true;
+	} else if (activeStep >= 3 && mashCommerce) {
+		console.log('commercio no validado');
+		return true;
+	} else {
+		console.log('cliente y comercio validado');
+		return false;
+	}
+};

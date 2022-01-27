@@ -347,7 +347,7 @@ export const Step5: React.FC<any> = ({
 								style={{
 									fontSize: '1rem',
 								}}>
-								Entrego Punto
+								Entrega de punto como forma de pago
 							</b>
 						</>
 					}
