@@ -17,7 +17,6 @@ import { Form } from '../components/administration/Form';
 import '../components/administration/styles/index.scss';
 import { getPayMent } from '../components/formMaldito/getData';
 import LoaderPrimary from '../components/loaders/LoaderPrimary';
-import { PortFiles, URL } from '../config';
 import { SocketContext } from '../context/SocketContext';
 import { RootState } from '../store/store';
 
@@ -243,7 +242,9 @@ const Administracion: FC<AdministracionProp> = () => {
 		setTypePay(event.row.id_request.id_type_payment);
 		setRowSelect(event.row.id_request);
 		setPath(
-			event.row.id_request.rc_comp_dep ? URL + ':' + PortFiles + '/' + event.row?.id_request?.rc_comp_dep.path : ''
+			event.row.id_request.rc_comp_dep
+				? process.env.REACT_APP_API_IMAGES + '/' + event.row?.id_request?.rc_comp_dep.path
+				: ''
 		);
 		setSelected(true);
 		socket.emit('cliente:trabajandoAdministra', user, event.row.id);
@@ -252,17 +253,17 @@ const Administracion: FC<AdministracionProp> = () => {
 	const handleCloseRow = () => {
 		socket.emit('cliente:disconnect');
 		setSelected(false);
-		dispatch(cleanAdmisionFMAdministration())
+		dispatch(cleanAdmisionFMAdministration());
 	};
 
 	useEffect(() => {
-		if(administration.updatedStatusAd){
+		if (administration.updatedStatusAd) {
 			socket.emit('cliente:cleansolicadminis');
-			handleCloseRow()
+			handleCloseRow();
 		}
-	}, [administration.updatedStatusAd])
+	}, [administration.updatedStatusAd]);
 
-	console.log(selected)
+	console.log(selected);
 
 	return (
 		<>

@@ -5,7 +5,6 @@ import TextField from '@material-ui/core/TextField';
 //import ReactImageZoom from 'react-image-zoom';
 import { useDispatch, useSelector } from 'react-redux';
 //Url
-import { PortFiles, URL } from '../../../../config';
 import { Valid } from '../../../../store/actions/accept';
 import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
@@ -22,18 +21,18 @@ export default function PasoPaymentReceipt() {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const [state, setState] = useState(rc_comp_dep);//falta
+	const [state, setState] = useState(rc_comp_dep); //falta
 	const [openModal, setOpenModal] = useState<boolean>(false);
-  const [load, setLoad] = useState(false)
+	const [load, setLoad] = useState(false);
 
 	const handleOpenModal = () => {
-		handleCancel()
+		handleCancel();
 		setOpenModal(true);
 	};
 	const handleCloseModal = (cancel: boolean) => {
-		if(cancel){
-			setState({ 
-				...state, 
+		if (cancel) {
+			setState({
+				...state,
 				status: !state.status,
 			});
 		}
@@ -54,28 +53,26 @@ export default function PasoPaymentReceipt() {
 		handleCloseModal(true);
 	};
 
-	const handleChangeI = (event:any) => {
-		setState({ 
-			...state, 
+	const handleChangeI = (event: any) => {
+		setState({
+			...state,
 			[event.target.name]: event.target.value,
 		});
-	}
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({ 
-			...state, 
-			[event.target.name]: event.target.checked,
-		});
-		if(!event.target.checked)
-			handleOpenModal();
 	};
 
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setState({
+			...state,
+			[event.target.name]: event.target.checked,
+		});
+		if (!event.target.checked) handleOpenModal();
+	};
 
-	const imagen:string= `${URL}:${PortFiles}/${fm.rc_comp_dep.path}`;
+	const imagen: string = `${process.env.REACT_APP_API_IMAGES}/${fm.rc_comp_dep.path}`;
 
 	return (
 		<>
-			<form className="container-step" noValidate autoComplete='off'>
+			<form className='container-step' noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
 					<TextField
 						className='btn_step btn_medio'
@@ -91,12 +88,8 @@ export default function PasoPaymentReceipt() {
 					/>
 				</div>
 			</form>
-			<Rec 
-				load={load}
-				setLoad={setLoad}
-				imagen={imagen}
-			/>
-			<ModalAlert 
+			<Rec load={load} setLoad={setLoad} imagen={imagen} />
+			<ModalAlert
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
 				state={state}
@@ -107,4 +100,3 @@ export default function PasoPaymentReceipt() {
 		</>
 	);
 }
-

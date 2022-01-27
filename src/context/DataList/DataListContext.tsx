@@ -3,7 +3,7 @@ import { INIT_LIST } from './types';
 import { createContext, useReducer, useLayoutEffect, ReactChild, ReactChildren } from 'react';
 
 import DatalistReducer from './DatalistReducer';
-import axios, { URL, Port } from '../../config';
+import axios from '../../config';
 
 import { InterFaceStateList, base } from './interface';
 
@@ -63,7 +63,7 @@ const DataListProvider = ({ children }: Props) => {
 		try {
 			const stop = routes.map(async (route: string) => {
 				return await axios.get(route, {
-					baseURL: `${URL}:${Port}`,
+					baseURL: process.env.REACT_APP_API_API,
 					headers: { common: { token: localStorage.getItem('token') } },
 				});
 			});

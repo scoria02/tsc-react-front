@@ -143,6 +143,7 @@ export interface Days {
 }
 
 export interface fmState_Interface {
+	typeSolict: number;
 	fmData: fm_Interface;
 	days: Days;
 	codePhone: string;

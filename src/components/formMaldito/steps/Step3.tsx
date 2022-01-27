@@ -74,6 +74,8 @@ export const Step3: React.FC<any> = ({
 		/* eslint-disable react-hooks/exhaustive-deps */
 	}, [fmData.id_ident_type_commerce]);
 
+	console.log('comerce', fmData);
+
 	return (
 		<>
 			<div className={classes.grid}>

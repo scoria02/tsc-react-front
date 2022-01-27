@@ -1,8 +1,22 @@
-import { CHANGE_FM, SET_FM, CHANGE_DAYS, SET_DAYS, SET_ACTIVITY, CHANGE_ErrorFM, SET_ErrorFM } from './type';
+import {
+	CHANGE_FM,
+	SET_FM,
+	CHANGE_DAYS,
+	SET_DAYS,
+	SET_ACTIVITY,
+	CHANGE_ErrorFM,
+	SET_ErrorFM,
+	SELECT_TYPE_SOLICT,
+} from './type';
 
 const FMReducer = (state: any, action: any) => {
 	const { payload, type } = action;
 	switch (type) {
+		case SELECT_TYPE_SOLICT:
+			return {
+				...state,
+				typeSolict: payload,
+			};
 		case CHANGE_FM:
 			return {
 				...state,

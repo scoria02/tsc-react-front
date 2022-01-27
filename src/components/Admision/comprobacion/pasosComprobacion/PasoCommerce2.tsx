@@ -6,7 +6,6 @@ import Switch from '@material-ui/core/Switch';
 import { useDispatch, useSelector } from 'react-redux';
 import { Valid } from '../../../../store/actions/accept';
 //Url
-import { PortFiles, URL } from '../../../../config';
 import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
@@ -22,16 +21,16 @@ export default function PasoCommerce2() {
 	const [state, setState] = useState(rc_rif);
 	const [openModal, setOpenModal] = useState<boolean>(false);
 
-  const [load, setLoad] = useState(false)
+	const [load, setLoad] = useState(false);
 
 	const handleOpenModal = () => {
-		handleCancel()
+		handleCancel();
 		setOpenModal(true);
 	};
 	const handleCloseModal = (cancel: boolean) => {
-		if(cancel){
-			setState({ 
-				...state, 
+		if (cancel) {
+			setState({
+				...state,
 				status: !state.status,
 			});
 		}
@@ -46,28 +45,27 @@ export default function PasoCommerce2() {
 		handleCloseModal(true);
 	};
 
-	const handleChangeI = (event:any) => {
-		setState({ 
-			...state, 
+	const handleChangeI = (event: any) => {
+		setState({
+			...state,
 			[event.target.name]: event.target.value,
 		});
-	}
+	};
 
 	useEffect(() => {
-		dispatch(Valid({ rc_rif:state }));
+		dispatch(Valid({ rc_rif: state }));
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state]);
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({ 
-			...state, 
+		setState({
+			...state,
 			[event.target.name]: event.target.checked,
 		});
-		if(!event.target.checked)
-			handleOpenModal();
+		if (!event.target.checked) handleOpenModal();
 	};
 
-	const imagen:string = `${URL}:${PortFiles}/${fm.id_commerce.rc_rif.path}`;
+	const imagen: string = `${process.env.REACT_APP_API_IMAGES}/${fm.id_commerce.rc_rif.path}`;
 
 	return (
 		<>
@@ -78,12 +76,8 @@ export default function PasoCommerce2() {
 					label={state.status ? 'Correcto' : 'Incorrecto'}
 				/>
 			</div>
-			<Rec 
-				load={load}
-				setLoad={setLoad}
-				imagen={imagen}
-			/>
-			<ModalAlert 
+			<Rec load={load} setLoad={setLoad} imagen={imagen} />
+			<ModalAlert
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
 				state={state}

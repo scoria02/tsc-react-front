@@ -26,6 +26,7 @@ import { RootState } from '../../store/store';
 import LoaderPrimary from '../loaders/LoaderPrimary';
 import './index.scss';
 //steps
+import StepBase from './steps';
 import { Step1 } from './steps/Step1';
 import { Step2 } from './steps/Step2';
 import { Step3 } from './steps/Step3';
@@ -41,25 +42,30 @@ import { LocationsContext } from '../../context/Location/LocationsContext';
 import { DataListContext } from '../../context/DataList/DataListContext';
 import { FMint, ImagesInt, ListLocationInt, NamesImagesInt } from './interface';
 import { StateFMInt } from '../../store/reducers/fmReducer';
+import { stepError } from '../../utils/fm';
 
-function getSteps() {
-	return [
-		'Información Personal del Cliente',
-		'Referencias Personales',
-		'Información del Comercio',
-		'Dirección del Comercio/POS',
-		'Solicitud de POS',
-	];
-}
+const initStep = ['Tipo de Solicitud'];
+
+const baseSteps = [
+	'Información Personal del Cliente',
+	'Referencias Personales',
+	'Información del Comercio',
+	'Dirección del Comercio/POS',
+	'Solicitud de POS',
+];
 
 const FormM: React.FC = () => {
 	const history = useHistory();
 	const classes = useStylesFM();
 	const dispatch = useDispatch();
 
+	const [steps, setSteps] = useState<string[]>(initStep);
+
 	const fm: StateFMInt = useSelector((state: RootState) => state.fm);
 
 	const {
+		typeSolict,
+		changeFmParms,
 		fmData,
 		fmDataError,
 		days,
@@ -127,6 +133,17 @@ const FormM: React.FC = () => {
 		rc_ref_bank: '', //5
 		rc_comp_dep: '',
 	});
+
+	useEffect(() => {
+		console.log(activeStep, fmData.ident_num_commerce);
+		if (
+			fmData.ident_num_commerce !== '' &&
+			fmData.ident_num === fmData.ident_num_commerce &&
+			fmData.id_ident_type === fmData.id_ident_type_commerce
+		) {
+			changeFmParms('name_commerce', fmData.name + ' ' + fmData.last_name);
+		}
+	}, [fmData.ident_num_commerce, fmData.id_ident_type_commerce, activeStep, fmData.name, fmData.last_name]);
 
 	//SendForm
 	useEffect(() => {
@@ -237,9 +254,9 @@ const FormM: React.FC = () => {
 	}, [fmData, locationCommerce, locationPos]);
 
 	useEffect(() => {
-		if (fm.errorClient) setActiveStep(0);
-		else if (activeStep > 1 && fm.errorCommerce) setActiveStep(2);
-		else if (activeStep > 3 && fm.errorNumBank) setActiveStep(4);
+		if (fm.errorClient) setActiveStep(1);
+		else if (activeStep > 1 && fm.errorCommerce) setActiveStep(3);
+		else if (activeStep > 3 && fm.errorNumBank) setActiveStep(5);
 	}, [activeStep, fm.errorClient, fm.errorCommerce, fm.errorNumBank]);
 
 	//CheckStepAcual
@@ -534,6 +551,13 @@ const FormM: React.FC = () => {
 		}
 	}, [fm.mashCommerce, fm.commerceMash]);
 
+	const handleGetStep = () => {
+		setActiveStep((prevActiveStep) => prevActiveStep + 1);
+		const newSteps = [...initStep, ...baseSteps];
+		console.log(newSteps);
+		setSteps(newSteps);
+	};
+
 	const handleNext = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
 	};
@@ -636,9 +660,8 @@ const FormM: React.FC = () => {
 		});
 	};
 
-	const steps = getSteps();
-
 	const getStep = [
+		<StepBase />,
 		<Step1
 			namesImages={namesImages}
 			validEmailIdent={validEmailIdent}
@@ -678,20 +701,6 @@ const FormM: React.FC = () => {
 		/>,
 	];
 
-	const stepError = (key: number) => {
-		if (key === 0 && fm.errorClient) {
-			//Cliente
-			return true;
-		} else if (key === 2 && fm.errorCommerce) {
-			//comercio
-			return true;
-		} else if (key === 4 && fm.errorNumBank) {
-			//comercio
-			return true;
-		}
-		return false;
-	};
-
 	return (
 		<div className='ed-container container-formMaldito'>
 			{!listIdentType.length ||
@@ -703,13 +712,12 @@ const FormM: React.FC = () => {
 				<LoaderPrimary />
 			) : (
 				<form className='container-form'>
-					<div className='capitan-america'></div>
 					<Stepper alternativeLabel activeStep={activeStep} style={{ background: 'none', width: '100%' }}>
 						{steps.map((label, index) => {
 							const stepProps: { completed?: boolean } = {};
-							return (
+							return !activeStep ? null : (
 								<Step key={label} {...stepProps}>
-									<StepLabel error={stepError(index)}>
+									<StepLabel error={stepError(index, fm)}>
 										<b>{label}</b>
 									</StepLabel>
 								</Step>
@@ -724,6 +732,7 @@ const FormM: React.FC = () => {
 									size='large'
 									disabled={activeStep === 0}
 									variant='contained'
+									style={{ opacity: activeStep ? 1 : 0 }}
 									onClick={handleBack}
 									className={classes.buttonBack}>
 									Volver
@@ -733,9 +742,11 @@ const FormM: React.FC = () => {
 									size='large'
 									variant='contained'
 									color='primary'
-									onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
+									onClick={
+										activeStep ? (activeStep === steps.length - 1 ? handleSubmit : handleNext) : handleGetStep
+									}
 									className={classes.buttonNext}>
-									{activeStep === steps.length - 1 ? 'Enviar' : 'Siguiente'}
+									{!activeStep ? 'Comenzar' : activeStep === steps.length - 1 ? 'Enviar' : 'Siguiente'}
 								</Button>
 							</div>
 						</div>

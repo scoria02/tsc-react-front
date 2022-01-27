@@ -7,7 +7,6 @@ import Swal from 'sweetalert2';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import DeleteIcon from '@material-ui/icons/Delete';
 //Url
-import { PortFiles, URL } from '../../../config';
 import { useStyles } from '../styles/styles';
 import '../comprobacion/pasosComprobacion/styles/pasos.scss';
 import '../scss/index.scss';
@@ -34,7 +33,7 @@ const StepActaConst: React.FC<any> = ({
 }) => {
 	const classes = useStyles();
 
-	const url: string = URL + ':' + PortFiles + '/';
+	const url: string = process.env.REACT_APP_API_IMAGES + '/';
 
 	const handleAddDelete = (id: number) => {
 		Swal.fire({
