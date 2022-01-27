@@ -18,6 +18,7 @@ import { useStylesFM } from '../styles';
 import { FMContext } from '../../../context/FM/FMContext';
 
 import { DataListContext } from '../../../context/DataList/DataListContext';
+import { Activity } from '../../../context/DataList/interface';
 
 export const Step3: React.FC<any> = ({
 	imagesActa,
@@ -33,21 +34,10 @@ export const Step3: React.FC<any> = ({
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
-	const { 
-		fmData,
-		fmDataError,
-		days,
-		activity,
-		setActivity,
-		changeFmData,
-		changeFmParms,
-		changeDays,
-	}:any = useContext(FMContext);
+	const { fmData, fmDataError, days, activity, setActivity, changeFmData, changeFmParms, changeDays }: any =
+		useContext(FMContext);
 
-	const {
-		listIdentType,
-		listActivity,
-	}: any = useContext(DataListContext);
+	const { listIdentType, listActivity }: any = useContext(DataListContext);
 
 	const handleSelectActivity = (event: any, value: any, item: string) => {
 		if (value) {
@@ -159,12 +149,12 @@ export const Step3: React.FC<any> = ({
 				<Autocomplete
 					className={classes.input}
 					disabled={fm.mashCommerce}
-					onChange={(event, value) => {
+					onChange={(event, value: Activity) => {
 						handleSelectActivity(event, value, 'activity');
 					}}
 					options={listActivity}
 					value={activity || null}
-					getOptionLabel={(option: any) => (option.name ? option.name : '')}
+					getOptionLabel={(option: Activity) => (option.name ? option.name : '')}
 					renderInput={(params: any) => (
 						<TextField {...params} name='activity' label='Actividad Comercial' variant='outlined' />
 					)}
