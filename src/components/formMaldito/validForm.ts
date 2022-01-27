@@ -91,7 +91,7 @@ export const validNumBank = (value: string): boolean => {
 const step1 = 15;
 const step2 = 8;
 const step3 = 5;
-const step4 = 17;
+const step4 = 8;
 const step5 = 10;
 
 //Extras
@@ -107,7 +107,7 @@ export const sizeStep = (active: number): number => {
 		case 3:
 			return step3;
 		case 4:
-			return step3 + step4;
+			return step4;
 		case 5:
 			return step5;
 		default:

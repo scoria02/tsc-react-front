@@ -1,5 +1,5 @@
 import { Button, FormControl, IconButton, InputLabel, MenuItem, Select } from '@material-ui/core';
-import { PhotoCamera } from '@material-ui/icons';
+import BackUpIcon from '@material-ui/icons/Backup';
 import { FC, useContext } from 'react';
 import { FMContext } from '../../../context/FM/FMContext';
 import { useStylesFM } from '../styles';
@@ -7,23 +7,32 @@ import { useStylesFM } from '../styles';
 const typesSolicts = [
 	{
 		id: 0,
-		name: 'Nueva Solicitud',
+		name: 'Persona Natural',
+		steps: [
+			'client',
+			'commerce', //cambiar list docu ident client + un digito,foto va,Contriu no va, acta no va
+			'pos',
+		],
 	},
 	{
 		id: 1,
-		name: 'Persona Natural',
+		name: 'Persona Juridica',
+		steps: [
+			'client',
+			'commerce', //J obligura, comercio acta constitu,
+			'pos',
+		],
 	},
 	{
 		id: 2,
-		name: 'Persona Juridica',
+		name: 'Firma Personal',
+		steps: ['client', 'commerce', 'actaConst', 'pos'],
+		//normal, comercio acta constitu,
 	},
 	{
 		id: 3,
-		name: 'Firma Personal',
-	},
-	{
-		id: 4,
 		name: 'Punto/Pos Extra',
+		steps: ['client-commerce', 'pos'],
 	},
 ];
 
@@ -65,7 +74,7 @@ const StepBase: FC = () => {
 								*/
 						component='label'>
 						<IconButton aria-label='upload picture' component='span'>
-							<PhotoCamera />
+							<BackUpIcon />
 						</IconButton>
 						<input
 							type='file'

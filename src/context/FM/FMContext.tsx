@@ -151,10 +151,9 @@ const FMProvider = ({ children }: Props) => {
 	};
 
 	const handleParamsCommerce = (name: string, value: string | number | boolean): void => {
-		const data = { name, value };
 		dispatchFmCommerce({
 			type: CHANGE_FM,
-			payload: data,
+			payload: { name, value },
 		});
 	};
 

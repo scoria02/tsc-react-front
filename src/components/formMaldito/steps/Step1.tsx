@@ -40,10 +40,12 @@ export const Step1: React.FC<any> = ({
 		useContext(LocationsContext);
 
 	const {
+		typeSolict,
 		fmClient,
 		handleChangeClient,
 		fmDataError,
 		handleChangeNameClient,
+		handleParamsCommerce,
 
 		//fmData,
 		//changeFmData,
@@ -236,6 +238,15 @@ export const Step1: React.FC<any> = ({
 						}}
 					/>
 				</div>
+			</div>
+			<h2
+				style={{
+					marginTop: '10px',
+					fontSize: '20px',
+				}}>
+				Dirección de Habitación
+			</h2>
+			<div className={classes.grid}>
 				<div className={classes.input}>
 					<Autocomplete
 						disabled={fm.mashClient}

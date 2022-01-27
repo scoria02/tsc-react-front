@@ -1,4 +1,6 @@
-export const initFmPos: any = {
+import { fmPos } from '../../../interfaces/fm';
+
+export const initFmPos: fmPos = {
 	//Step4 Location
 	//Location Pos
 	id_estado: 0,
@@ -20,6 +22,6 @@ export const initFmPos: any = {
 	initial: 100,
 	cuotas: 0, //Si es inical coutas cambia
 	nro_comp_dep: '',
-	discount: 0,
-	pagadero: 0,
+	discount: false,
+	pagadero: false,
 };

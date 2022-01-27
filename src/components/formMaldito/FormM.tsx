@@ -67,6 +67,7 @@ const FormM: React.FC = () => {
 		typeSolict,
 		fmClient,
 		fmCommerce,
+		fmPos,
 		handleParamsCommerce,
 		//s
 		fmData,
@@ -137,16 +138,27 @@ const FormM: React.FC = () => {
 		rc_comp_dep: '',
 	});
 
+	//TypeSOlict === 0
 	useEffect(() => {
 		if (
-			activeStep === 3 &&
+			(typeSolict === 0 && fmCommerce.ident_num !== fmClient.ident_num) ||
+			fmCommerce.name !== fmClient.name + ' ' + fmClient.last_name
+		) {
+			handleParamsCommerce('id_ident_type', 0);
+			handleParamsCommerce('ident_num', fmClient.ident_num);
+			handleParamsCommerce('name', fmClient.name + ' ' + fmClient.last_name);
+		}
+	}, [typeSolict, fmClient.ident_num, fmClient.id_ident_type, fmClient.name, fmClient.last_name]);
+
+	useEffect(() => {
+		if (
 			fmCommerce.ident_num !== '' &&
 			fmClient.ident_num === fmCommerce.ident_num &&
 			fmClient.id_ident_type === fmCommerce.id_ident_type
 		) {
 			handleParamsCommerce('name', fmClient.name + ' ' + fmClient.last_name);
 		}
-	}, [activeStep]);
+	}, [activeStep, fmCommerce.ident_num, fmCommerce.id_ident_type]);
 
 	//SendForm
 	useEffect(() => {
@@ -280,19 +292,14 @@ const FormM: React.FC = () => {
 				else setReadyStep(false);
 				break;
 			case 4:
-				if (
-					!valids.inputNotNull(valids.sizeStep(activeStep), fmCommerce)
-					//&&
-					//!valids.inputNotNull(valids.sizeStep(activeStep), fmPos)
-				)
-					setReadyStep(true);
+				if (!valids.inputNotNull(13, fmCommerce) && !valids.inputNotNull(8, fmPos)) setReadyStep(true);
 				else setReadyStep(false);
 				break;
 			default:
 				setReadyStep(false);
 				break;
 		}
-	}, [fmClient, fmCommerce, imagesForm, activeStep, fm, imagesActa]);
+	}, [fmClient, fmCommerce, fmPos, imagesForm, activeStep, fm, imagesActa]);
 
 	//CheckStepAcual
 	/*
@@ -751,7 +758,7 @@ const FormM: React.FC = () => {
 									Volver
 								</Button>
 								<Button
-									disabled={!readyStep}
+									//disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'

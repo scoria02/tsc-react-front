@@ -36,6 +36,8 @@ export const Step3: React.FC<any> = ({
 	const fm: any = useSelector((state: RootState) => state.fm);
 
 	const {
+		typeSolict,
+		fmClient,
 		fmCommerce,
 		handleChangeCommerce,
 		handleParamsCommerce,
@@ -92,7 +94,7 @@ export const Step3: React.FC<any> = ({
 
 	useEffect(() => {
 		setActaFlag(false);
-		if (fmCommerce.id_ident_type_commerce === 3) {
+		if (fmCommerce.id_ident_type === 3) {
 			setActaFlag(true);
 		} else {
 			if (imagesForm.rc_constitutive_act) {
@@ -100,12 +102,24 @@ export const Step3: React.FC<any> = ({
 			}
 		}
 		/* eslint-disable react-hooks/exhaustive-deps */
-	}, [fmCommerce.id_ident_type_commerce]);
+	}, [fmCommerce.id_ident_type]);
 
-	return (
-		<>
-			<div className={classes.grid}>
-				<div className={classes.input}>
+	const DocIdentCommerce = () => {
+		switch (typeSolict) {
+			case 0:
+				return (
+					<TextField
+						disabled
+						value={'V'}
+						id='standard-required'
+						name='ident_num'
+						onChange={handleIdentNum}
+						variant='outlined'
+						className={classes.inputSelect}
+					/>
+				);
+			default:
+				return (
 					<FormControl variant='outlined' className={classes.inputSelect}>
 						<InputLabel id='demo-simple-select-outlined-label'>Doc.</InputLabel>
 						<Select
@@ -123,6 +137,16 @@ export const Step3: React.FC<any> = ({
 							))}
 						</Select>
 					</FormControl>
+				);
+				break;
+		}
+	};
+
+	return (
+		<>
+			<div className={classes.grid}>
+				<div className={classes.input}>
+					<DocIdentCommerce />
 					<TextField
 						className={classes.inputTextLeft}
 						variant='outlined'

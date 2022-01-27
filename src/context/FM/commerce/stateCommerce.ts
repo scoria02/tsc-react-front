@@ -1,4 +1,6 @@
-export const initFmCommerce: any = {
+import { fmCommerce } from '../../../interfaces/fm';
+
+export const initFmCommerce: fmCommerce = {
 	//step3 Comercio
 	id_ident_type: 3,
 	ident_num: '',

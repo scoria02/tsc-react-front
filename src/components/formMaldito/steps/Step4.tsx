@@ -43,20 +43,22 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 		setMunicipioPos,
 		setCiudadPos,
 		setParroquiaPos,
+		handleChangeCommerce,
+		handleChangePos,
 
 		//s
 		fmData,
 		changeFmData,
 	}: any = useContext(FMContext);
 
-	const handleChangeCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleLocationCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setAutoCompleteCommerce(false);
-		changeFmData(event);
+		handleChangeCommerce(event);
 	};
 
-	const handleChangePos = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleLocationPos = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setAutoCompletePos(false);
-		changeFmData(event);
+		handleChangePos(event);
 	};
 
 	return (
@@ -160,7 +162,7 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						disabled={fm.mashCommerce}
 						label='Sector'
 						name='sector'
-						onChange={handleChangeCommerce}
+						onChange={handleLocationCommerce}
 						value={fmCommerce.sector}
 					/>
 				</div>
@@ -173,7 +175,7 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						disabled={fm.mashCommerce}
 						label='Calle'
 						name='calle'
-						onChange={handleChangeCommerce}
+						onChange={handleLocationCommerce}
 						value={fmCommerce.calle}
 					/>
 					<TextField
@@ -184,7 +186,7 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						label='Local'
 						disabled={fm.mashCommerce}
 						name='local'
-						onChange={handleChangeCommerce}
+						onChange={handleLocationCommerce}
 						value={fmCommerce.local}
 					/>
 				</div>
@@ -288,8 +290,8 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						required
 						id='standard-required'
 						label='Sector'
-						name='sector_pos'
-						onChange={handleChangePos}
+						name='sector'
+						onChange={handleLocationPos}
 						value={fmPos.sector}
 					/>
 				</div>
@@ -300,8 +302,8 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						required
 						id='standard-required'
 						label='Calle'
-						name='calle_pos'
-						onChange={handleChangePos}
+						name='calle'
+						onChange={handleLocationPos}
 						value={fmPos.calle}
 					/>
 					<TextField
@@ -311,7 +313,7 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 						id='standard-required'
 						label='Local'
 						name='local'
-						onChange={handleChangePos}
+						onChange={handleLocationPos}
 						value={fmPos.local}
 					/>
 				</div>
