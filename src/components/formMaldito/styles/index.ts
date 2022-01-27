@@ -88,8 +88,8 @@ export const useStylesFM = makeStyles((styles) => ({
 		fontWeight: 'bold',
 	},
 	inputSelectSolict: {
-		marginTop: '10rem',
 		width: '300px',
+		marginRight: '1rem',
 		textAlign: 'center',
 		alignSelf: 'center',
 	},
