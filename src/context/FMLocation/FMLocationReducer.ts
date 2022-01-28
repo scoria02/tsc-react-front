@@ -7,9 +7,9 @@ import {
 	SET_LOCATION,
 } from '../FM/type';
 
-import { Location } from '../Location/interfaces';
+import { LocationInt } from '../Location/interfaces';
 
-const FMLocationReducer = (state: Location, action: any) => {
+const FMLocationReducer = (state: LocationInt, action: any) => {
 	const { payload, type } = action;
 	switch (type) {
 		case SET_ESTADO_S:

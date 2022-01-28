@@ -11,16 +11,7 @@ import { useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { SocketContext } from '../../context/SocketContext';
 import { baseUrl } from '../../routers/url';
-import {
-	cleanFM,
-	sendClient,
-	sendCommerce,
-	sendFM,
-	sendImages,
-	validationClient,
-	validationCommerce,
-	validationNumBank,
-} from '../../store/actions/fm';
+import { cleanFM, sendClient, sendCommerce, sendFM, sendImages, validationNumBank } from '../../store/actions/fm';
 //Redux
 import { RootState } from '../../store/store';
 import LoaderPrimary from '../loaders/LoaderPrimary';
@@ -43,6 +34,7 @@ import { DataListContext } from '../../context/DataList/DataListContext';
 import { FMint, ImagesInt, ListLocationInt, NamesImagesInt } from './interface';
 import { StateFMInt } from '../../store/reducers/fmReducer';
 import { stepError } from '../../utils/fm';
+import FMDataContext from '../../context/FMAdmision/fmContext';
 
 const initStep = ['Tipo de Solicitud'];
 
@@ -62,6 +54,56 @@ const FormM: React.FC = () => {
 	const [steps, setSteps] = useState<string[]>(initStep);
 
 	const fm: StateFMInt = useSelector((state: RootState) => state.fm);
+
+	//images Acta
+	const [imagesActa, setImagesActa] = useState<any>([]);
+
+	const [validEmailIdent, setValidEmailIdent] = useState<boolean>(false);
+	const [activeStep, setActiveStep] = useState<number>(0);
+	const [readyStep, setReadyStep] = useState<boolean>(false);
+	const [sendForm, setSendForm] = useState<number>(0);
+
+	const { listIdentType, listActivity, listPayment, listModelPos, listTypePay, listRequestSource }: any =
+		useContext(DataListContext);
+
+	// Origen de solicitud
+	const [requestSource, setRequestSource] = useState<any[]>(listRequestSource[0]);
+	const [typePay, setTypePay] = useState<any>(null);
+	const [payment, setPayment] = useState<any>(null);
+	const [modelPos, setModelPost] = useState<any>(null);
+
+	const { socket } = useContext(SocketContext);
+
+	//newContext
+	const { client, commerce, handleChangeCommerce, errorsFm } = useContext(FMDataContext);
+
+	useEffect(() => {
+		switch (activeStep) {
+			case 0:
+				setReadyStep(true);
+				break;
+			case 1:
+			case 2:
+				if (
+					!valids.checkErrorAllInput(valids.sizeStepError(activeStep), errorsFm) &&
+					!valids.inputNotNull(valids.sizeStep(activeStep), client)
+				)
+					setReadyStep(true);
+				else setReadyStep(false);
+				break;
+			case 3:
+				if (!valids.inputNotNull(valids.sizeStep(activeStep), fmCommerce)) setReadyStep(true);
+				else setReadyStep(false);
+				break;
+			case 4:
+				if (!valids.inputNotNull(13, fmCommerce) && !valids.inputNotNull(8, fmPos)) setReadyStep(true);
+				else setReadyStep(false);
+				break;
+			default:
+				setReadyStep(false);
+				break;
+		}
+	}, [client, activeStep]);
 
 	const {
 		typeSolict,
@@ -87,6 +129,16 @@ const FormM: React.FC = () => {
 		copyLocationCCToP,
 	}: any = useContext(FMContext as any);
 
+	//TypeSOlict === 0
+	//Go to fmContext
+	useEffect(() => {
+		if (
+			(typeSolict === 0 && commerce.ident_num !== fmClient.ident_num) ||
+			commerce.name !== fmClient.name + ' ' + fmClient.last_name
+		) {
+		}
+	}, [typeSolict, client.ident_num, client.id_ident_type, client.name, client.last_name]);
+
 	const {
 		listLocationClient,
 		listLocationCommerce,
@@ -94,9 +146,6 @@ const FormM: React.FC = () => {
 		copyListLocationCToCC,
 		copyListLocationCCToP,
 	}: ListLocationInt = useContext(LocationsContext as any);
-
-	const { listIdentType, listActivity, listPayment, listModelPos, listTypePay, listRequestSource }: any =
-		useContext(DataListContext);
 
 	//images
 	const [imagesForm, setImagesForm] = useState<ImagesInt>({
@@ -110,22 +159,6 @@ const FormM: React.FC = () => {
 		rc_comp_dep: null,
 	});
 
-	//images Acta
-	const [imagesActa, setImagesActa] = useState<any>([]);
-
-	const [validEmailIdent, setValidEmailIdent] = useState<boolean>(false);
-	const [activeStep, setActiveStep] = useState<number>(0);
-	const [readyStep, setReadyStep] = useState<boolean>(false);
-	const [sendForm, setSendForm] = useState<number>(0);
-
-	// Origen de solicitud
-	const [requestSource, setRequestSource] = useState<any[]>(listRequestSource[0]);
-	const [typePay, setTypePay] = useState<any>(null);
-	const [payment, setPayment] = useState<any>(null);
-	const [modelPos, setModelPost] = useState<any>(null);
-
-	const { socket } = useContext(SocketContext);
-
 	//name images
 	const [namesImages, setNamesImages] = useState<NamesImagesInt>({
 		//step1
@@ -137,18 +170,6 @@ const FormM: React.FC = () => {
 		rc_ref_bank: '', //5
 		rc_comp_dep: '',
 	});
-
-	//TypeSOlict === 0
-	useEffect(() => {
-		if (
-			(typeSolict === 0 && fmCommerce.ident_num !== fmClient.ident_num) ||
-			fmCommerce.name !== fmClient.name + ' ' + fmClient.last_name
-		) {
-			handleParamsCommerce('id_ident_type', 0);
-			handleParamsCommerce('ident_num', fmClient.ident_num);
-			handleParamsCommerce('name', fmClient.name + ' ' + fmClient.last_name);
-		}
-	}, [typeSolict, fmClient.ident_num, fmClient.id_ident_type, fmClient.name, fmClient.last_name]);
 
 	useEffect(() => {
 		if (
@@ -272,34 +293,6 @@ const FormM: React.FC = () => {
 		else if (activeStep > 1 && fm.errorCommerce) setActiveStep(3);
 		else if (activeStep > 3 && fm.errorNumBank) setActiveStep(5);
 	}, [activeStep, fm.errorClient, fm.errorCommerce, fm.errorNumBank]);
-
-	useEffect(() => {
-		switch (activeStep) {
-			case 0:
-				setReadyStep(true);
-				break;
-			case 1:
-			case 2:
-				if (
-					!valids.checkErrorAllInput(valids.sizeStepError(activeStep), fmDataError) &&
-					!valids.inputNotNull(valids.sizeStep(activeStep), fmClient)
-				)
-					setReadyStep(true);
-				else setReadyStep(false);
-				break;
-			case 3:
-				if (!valids.inputNotNull(valids.sizeStep(activeStep), fmCommerce)) setReadyStep(true);
-				else setReadyStep(false);
-				break;
-			case 4:
-				if (!valids.inputNotNull(13, fmCommerce) && !valids.inputNotNull(8, fmPos)) setReadyStep(true);
-				else setReadyStep(false);
-				break;
-			default:
-				setReadyStep(false);
-				break;
-		}
-	}, [fmClient, fmCommerce, fmPos, imagesForm, activeStep, fm, imagesActa]);
 
 	//CheckStepAcual
 	/*

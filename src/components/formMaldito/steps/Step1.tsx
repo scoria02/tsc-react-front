@@ -17,56 +17,48 @@ import { RootState } from '../../../store/store';
 //sytles
 import { useStylesFM } from '../styles';
 import { recaudo } from '../../utilis/recaudos';
-import { FMContext } from '../../../context/FM/FMContext';
 
 import { LocationsContext } from '../../../context/Location/LocationsContext';
 import { DataListContext } from '../../../context/DataList/DataListContext';
 import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/Location/interfaces';
-import { validInputString } from '../../../utils/fm';
 import { validationClient } from '../../../store/actions/fm';
+import FMDataContext from '../../../context/FMAdmision/fmContext';
+import { validInputString } from '../../../utils/fm';
 
-export const Step1: React.FC<any> = ({
-	namesImages,
-	validEmailIdent,
-	imagesForm,
-	//handleChangeNameClient,
-	handleChangeImages,
-}) => {
+export const Step1: React.FC<any> = ({ namesImages, validEmailIdent, imagesForm, handleChangeImages }) => {
 	const classes = useStylesFM();
 	const fm: any = useSelector((state: RootState) => state.fm);
 	const dispatch = useDispatch();
 
-	const { listLocationClient, setListMunicipioClient, setListCiudadClient, setListParroquiaClient }: any =
-		useContext(LocationsContext);
-
+	//Context
 	const {
-		typeSolict,
-		fmClient,
-		handleChangeClient,
-		fmDataError,
-		handleChangeNameClient,
-		handleParamsCommerce,
-
-		//fmData,
-		//changeFmData,
-		codePhone,
+		errorsFm,
+		client,
 		locationClient,
-		setEstadoClient,
-		setMunicipioClient,
-		setCiudadClient,
-		setParroquiaClient,
-		setFmError,
-	}: any = useContext(FMContext);
+		setClient,
+		setLocationClient,
+		setEstado,
+		setMunicipio,
+		setCiudad,
+		setParroquia,
+		handleChangeClient,
+		handleSelectIdentClient,
+	} = useContext(FMDataContext);
 
 	const { listIdentType }: any = useContext(DataListContext);
 
+	const { listLocationClient, setListMunicipioClient, setListCiudadClient, setListParroquiaClient }: any =
+		useContext(LocationsContext);
+
+	const codePhone = '+58';
+
 	const handleBlurEmailIdent = (): void => {
-		if (fmClient.email !== '' && fmClient.id_ident_type !== 0 && fmClient.ident_num !== '') {
+		if (client.email !== '' && client.id_ident_type !== 0 && client.ident_num !== '') {
 			dispatch(
 				validationClient({
-					email: fmClient.email,
-					id_ident_type: fmClient.id_ident_type,
-					ident_num: fmClient.ident_num,
+					email: client.email,
+					id_ident_type: client.id_ident_type,
+					ident_num: client.ident_num,
 				})
 			);
 		}
@@ -84,18 +76,12 @@ export const Step1: React.FC<any> = ({
 	const handleIdentNum = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
 			handleChangeClient(event);
-			//changeFmData(event);
 		}
-		if (event.target.value.length < 6) {
-			setFmError({
-				...fmDataError,
-				ident_num: true,
-			});
-		} else {
-			setFmError({
-				...fmDataError,
-				ident_num: false,
-			});
+	};
+
+	const handleChangeNameClient = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (validInputString(event)) {
+			handleChangeClient(event);
 		}
 	};
 
@@ -111,24 +97,18 @@ export const Step1: React.FC<any> = ({
 						label='Correo'
 						autoComplete='off'
 						name='email'
-						onChange={(event) => {
-							handleChangeClient(event);
-							//changeFmData(event);
-						}}
+						onChange={handleChangeClient}
 						onBlur={handleBlurEmailIdent}
-						value={fmClient.email}
-						error={fmDataError.email || validEmailIdent}
+						value={client.email}
+						error={errorsFm.email || validEmailIdent}
 					/>
 				</div>
 				<div className={classes.input}>
 					<FormControl variant='outlined' className={classes.inputSelect}>
 						<InputLabel>DI</InputLabel>
 						<Select
-							value={fmClient.id_ident_type}
-							onChange={(event) => {
-								handleChangeClient(event);
-								//changeFmData(event);
-							}}
+							value={client.id_ident_type}
+							onChange={handleSelectIdentClient}
 							onBlur={handleBlurEmailIdent}
 							name='id_ident_type'
 							error={validEmailIdent}
@@ -149,10 +129,10 @@ export const Step1: React.FC<any> = ({
 						name='ident_num'
 						onChange={handleIdentNum}
 						onBlur={handleBlurEmailIdent}
-						value={fmClient.ident_num}
-						error={fmDataError.ident_num || validEmailIdent}
+						value={client.ident_num}
+						error={errorsFm.ident_num || validEmailIdent}
 						inputProps={{
-							maxLength: fmClient.id_ident_type === 5 ? 20 : 9,
+							maxLength: client.id_ident_type === 5 ? 20 : 9,
 						}}
 					/>
 					<Button
@@ -185,8 +165,8 @@ export const Step1: React.FC<any> = ({
 						autoComplete='nombre'
 						name='name'
 						onChange={handleChangeNameClient}
-						value={fmClient.name}
-						error={fmDataError.name}
+						value={client.name}
+						error={errorsFm.name}
 						disabled={fm.mashClient}
 					/>
 					<TextField
@@ -197,8 +177,8 @@ export const Step1: React.FC<any> = ({
 						autoComplete='last_name'
 						name='last_name'
 						onChange={handleChangeNameClient}
-						value={fmClient.last_name}
-						error={fmDataError.last_name}
+						value={client.last_name}
+						error={errorsFm.last_name}
 						disabled={fm.mashClient}
 					/>
 				</div>
@@ -212,9 +192,9 @@ export const Step1: React.FC<any> = ({
 						autoComplete='telefono1'
 						placeholder='Ej: 4121234567'
 						onChange={handleChangePhone}
-						error={fmDataError.phone1}
+						error={errorsFm.phone1}
 						disabled={fm.mashClient}
-						value={fmClient.phone1}
+						value={client.phone1}
 						inputProps={{ maxLength: 10 }}
 						InputProps={{
 							startAdornment: fm.mashClient ? null : <InputAdornment position='start'>{codePhone}</InputAdornment>,
@@ -228,9 +208,9 @@ export const Step1: React.FC<any> = ({
 						name='phone2'
 						onChange={handleChangePhone}
 						autoComplete='telefono2'
-						error={fmDataError.phone2}
+						error={errorsFm.phone2}
 						disabled={fm.mashClient}
-						value={fmClient.phone2}
+						value={client.phone2}
 						placeholder='Ej: 4127654321'
 						inputProps={{ maxLength: 10 }}
 						InputProps={{
@@ -252,7 +232,7 @@ export const Step1: React.FC<any> = ({
 						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
 						onChange={(event, value: Estado | null) => {
-							setEstadoClient(value);
+							setEstado(value, setLocationClient, setClient);
 							setListMunicipioClient(value);
 						}}
 						value={locationClient.estado || null}
@@ -273,8 +253,8 @@ export const Step1: React.FC<any> = ({
 						disabled={fm.mashClient}
 						className={classes.inputText}
 						onChange={(event, value: Municipio | null) => {
-							setMunicipioClient(value);
-							setListCiudadClient(fmClient.id_estado_client);
+							setMunicipio(value, setLocationClient, setClient);
+							setListCiudadClient(client.id_estado);
 						}}
 						value={locationClient.municipio || null}
 						options={listLocationClient.municipio}
@@ -295,8 +275,8 @@ export const Step1: React.FC<any> = ({
 						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
 						onChange={(event, value: Ciudad | null) => {
-							setCiudadClient(value);
-							setListParroquiaClient(fmClient.id_municipio_client);
+							setCiudad(value, setLocationClient, setClient);
+							setListParroquiaClient(client.id_municipio);
 						}}
 						value={locationClient.ciudad || null}
 						options={listLocationClient.ciudad}
@@ -315,7 +295,7 @@ export const Step1: React.FC<any> = ({
 						disabled={fm.mashClient}
 						className={classes.inputText}
 						onChange={(event, value: Parroquia | null) => {
-							setParroquiaClient(value);
+							setParroquia(value, setLocationClient, setClient);
 						}}
 						value={locationClient.parroquia || null}
 						options={listLocationClient.parroquia}
@@ -339,8 +319,8 @@ export const Step1: React.FC<any> = ({
 						required
 						id='standard-required'
 						label='Cod. Postal'
-						name='codigo_postal_client'
-						value={fmClient.codigo_postal_client}
+						name='codigo_postal'
+						value={client.codigo_postal}
 					/>
 					<TextField
 						disabled={fm.mashClient}
@@ -349,9 +329,9 @@ export const Step1: React.FC<any> = ({
 						required
 						id='standard-required'
 						label='Sector'
-						name='sector_client'
+						name='sector'
 						onChange={handleChangeClient}
-						value={fmClient.sector_client}
+						value={client.sector}
 					/>
 				</div>
 				<div className={classes.input}>
@@ -362,9 +342,9 @@ export const Step1: React.FC<any> = ({
 						required
 						id='standard-required'
 						label='Calle'
-						name='calle_client'
+						name='calle'
 						onChange={handleChangeClient}
-						value={fmClient.calle_client}
+						value={client.calle}
 					/>
 					<TextField
 						disabled={fm.mashClient}
@@ -373,9 +353,9 @@ export const Step1: React.FC<any> = ({
 						required
 						id='standard-required'
 						label='Casa/Quinta/Apart'
-						name='local_client'
+						name='local'
 						onChange={handleChangeClient}
-						value={fmClient.local_client}
+						value={client.local}
 					/>
 				</div>
 			</div>

@@ -24,7 +24,7 @@ import FMLocationReducer from '../FMLocation/FMLocationReducer';
 
 import { fm_Interface, fmError_Interface, Days, fmState_Interface } from './interfaces';
 import { Activity } from '../DataList/interface';
-import { Estado, Municipio, Ciudad, Parroquia, Location } from '../Location/interfaces';
+import { Estado, Municipio, Ciudad, Parroquia, LocationInt } from '../Location/interfaces';
 
 import { fmFormat, fmErrorFormat, daysWork, location } from './states';
 import { validateForm } from '../../components/validation/validFm';
@@ -421,21 +421,21 @@ const FMProvider = ({ children }: Props) => {
 	};
 	//
 
-	const setLocationClient = (location: Location) => {
+	const setLocationClient = (location: LocationInt) => {
 		dispatchC({
 			type: SET_LOCATION,
 			payload: location,
 		});
 	};
 
-	const setLocationCommerce = (location: Location) => {
+	const setLocationCommerce = (location: LocationInt) => {
 		dispatchCC({
 			type: SET_LOCATION,
 			payload: location,
 		});
 	};
 
-	const setLocationPos = (location: Location) => {
+	const setLocationPos = (location: LocationInt) => {
 		dispatchP({
 			type: SET_LOCATION,
 			payload: location,

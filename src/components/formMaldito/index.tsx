@@ -4,12 +4,16 @@ import DataListProvider from '../../context/DataList/DataListContext';
 import LocationsProvider from '../../context/Location/LocationsContext';
 import FormM from './FormM';
 
+import { FMContextProvider } from '../../context/FMAdmision/fmContext';
+
 export const FormMaldito: React.FC = () => {
 	return (
 		<DataListProvider>
 			<LocationsProvider>
 				<FMProvider>
-					<FormM />
+					<FMContextProvider>
+						<FormM />
+					</FMContextProvider>
 				</FMProvider>
 			</LocationsProvider>
 		</DataListProvider>
