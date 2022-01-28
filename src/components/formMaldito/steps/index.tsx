@@ -1,5 +1,6 @@
 import { Button, FormControl, IconButton, InputLabel, MenuItem, Select } from '@material-ui/core';
 import BackUpIcon from '@material-ui/icons/Backup';
+import classNames from 'classnames';
 import { FC, useContext } from 'react';
 import { FMContext } from '../../../context/FM/FMContext';
 import { useStylesFM } from '../styles';
@@ -48,7 +49,7 @@ const StepBase: FC = () => {
 					style={{
 						marginTop: '5rem',
 					}}
-					className={classes.input}>
+					className={classNames(classes.input, classes.daysCB)}>
 					<FormControl fullWidth variant='outlined' className={classes.inputSelectSolict}>
 						<InputLabel>Solicitudes</InputLabel>
 						<Select
@@ -63,28 +64,31 @@ const StepBase: FC = () => {
 							))}
 						</Select>
 					</FormControl>
-					<Button
-						className={classes.imgIdent}
-						variant='contained'
-						/*
-								style={{
-									opacity: fm.imagesCommerce ? 0 : 1,
-									background: imagesActa.length ? '#5c62c5' : '#f44336',
-								}}
-								*/
-						component='label'>
-						<IconButton aria-label='upload picture' component='span'>
-							<BackUpIcon />
-						</IconButton>
-						<input
-							type='file'
-							hidden
-							multiple
-							name='rc_constitutive_act'
-							//accept={recaudo.acc}
-							//onChange={handleChangeImagesMulti}
-						/>
-					</Button>
+					<div className={classes.containerBtn} style={{ marginTop: '2rem' }}>
+						<b>Cargar la planilla digitalizada</b>
+						<Button
+							className={classes.imgIdent}
+							variant='contained'
+							/*
+									style={{
+										opacity: fm.imagesCommerce ? 0 : 1,
+										background: imagesActa.length ? '#5c62c5' : '#f44336',
+									}}
+									*/
+							component='label'>
+							<IconButton aria-label='upload picture' component='span'>
+								<BackUpIcon />
+							</IconButton>
+							<input
+								type='file'
+								hidden
+								multiple
+								name='rc_constitutive_act'
+								//accept={recaudo.acc}
+								//onChange={handleChangeImagesMulti}
+							/>
+						</Button>
+					</div>
 				</div>
 			</div>
 		</div>
