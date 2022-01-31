@@ -30,15 +30,15 @@ export const validIdentNum = (value: string, op: number): boolean => {
 	if (value.trim() !== '' && /^[0-9]+$/.test(value) && !/[^a-z0-9\x20]/i.test(value)) {
 		switch (op) {
 			case 1: //V*
-				return !rangeTypeIdent(value, 7, 9);
+				return !rangeTypeIdent(value, 6, 10);
 			case 2: //E*
-				return !rangeTypeIdent(value, 7, 11);
+				return !rangeTypeIdent(value, 6, 11);
 			case 3: //J*
-				return !rangeTypeIdent(value, 8, 11);
+				return !rangeTypeIdent(value, 7, 11);
 			case 4: //R*
-				return !rangeTypeIdent(value, 7, 11);
+				return !rangeTypeIdent(value, 6, 11);
 			case 5: //P*
-				return !rangeTypeIdent(value, 7, 11);
+				return !rangeTypeIdent(value, 6, 11);
 			default:
 				return true;
 		}

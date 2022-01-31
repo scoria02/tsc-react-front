@@ -21,7 +21,7 @@ export interface Parroquia {
 	parroquia: string;
 }
 
-export interface Location {
+export interface LocationInt {
 	estado: Estado | null;
 	ciudad: Ciudad | null;
 	municipio: Municipio | null;

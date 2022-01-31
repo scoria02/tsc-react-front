@@ -1,4 +1,4 @@
-import { Location } from '../Location/interfaces';
+import { LocationInt } from '../Location/interfaces';
 import { fm_Interface, fmError_Interface, Days } from './interfaces';
 
 //new Version dividir el fm en states [divide]
@@ -145,7 +145,14 @@ export const daysWork: Days = {
 	Domingo: true,
 };
 
-export const location: Location = {
+export const location: LocationInt = {
+	estado: null,
+	ciudad: null,
+	municipio: null,
+	parroquia: null,
+};
+
+export const initLocation: LocationInt = {
 	estado: null,
 	ciudad: null,
 	municipio: null,
