@@ -25,7 +25,7 @@ import { validationClient } from '../../../store/actions/fm';
 import FMDataContext from '../../../context/FMAdmision/fmContext';
 import { validInputString } from '../../../utils/fm';
 
-export const Step1: React.FC<any> = ({ namesImages, validEmailIdent, imagesForm, handleChangeImages }) => {
+export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImages }) => {
 	const classes = useStylesFM();
 	const fm: any = useSelector((state: RootState) => state.fm);
 	const dispatch = useDispatch();
@@ -85,6 +85,15 @@ export const Step1: React.FC<any> = ({ namesImages, validEmailIdent, imagesForm,
 		}
 	};
 
+	/*
+	useEffect(() => {
+		if (activeStep === 3 && autoCompleteCommerce && !fm.mashCommerce) {
+			copyListLocationCToCC();
+			copyLocationCToCC();
+		}
+	}, [activeStep, fm.commerceMash]);
+	*/
+
 	return (
 		<>
 			<div className={classes.grid}>
@@ -100,7 +109,9 @@ export const Step1: React.FC<any> = ({ namesImages, validEmailIdent, imagesForm,
 						onChange={handleChangeClient}
 						onBlur={handleBlurEmailIdent}
 						value={client.email}
-						error={errorsFm.email || validEmailIdent}
+						error={
+							errorsFm.email //|| validEmailIdent
+						}
 					/>
 				</div>
 				<div className={classes.input}>
@@ -111,7 +122,7 @@ export const Step1: React.FC<any> = ({ namesImages, validEmailIdent, imagesForm,
 							onChange={handleSelectIdentClient}
 							onBlur={handleBlurEmailIdent}
 							name='id_ident_type'
-							error={validEmailIdent}
+							//error={validEmailIdent}
 							label='Tipo'>
 							{listIdentType.map((item: any) => (
 								<MenuItem key={item.id} value={item.id}>
@@ -130,7 +141,10 @@ export const Step1: React.FC<any> = ({ namesImages, validEmailIdent, imagesForm,
 						onChange={handleIdentNum}
 						onBlur={handleBlurEmailIdent}
 						value={client.ident_num}
-						error={errorsFm.ident_num || validEmailIdent}
+						error={
+							errorsFm.ident_num
+							//|| validEmailIdent
+						}
 						inputProps={{
 							maxLength: client.id_ident_type === 5 ? 20 : 9,
 						}}

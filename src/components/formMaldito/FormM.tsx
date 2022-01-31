@@ -58,7 +58,6 @@ const FormM: React.FC = () => {
 	//images Acta
 	const [imagesActa, setImagesActa] = useState<any>([]);
 
-	const [validEmailIdent, setValidEmailIdent] = useState<boolean>(false);
 	const [activeStep, setActiveStep] = useState<number>(0);
 	const [readyStep, setReadyStep] = useState<boolean>(false);
 	const [sendForm, setSendForm] = useState<number>(0);
@@ -75,7 +74,7 @@ const FormM: React.FC = () => {
 	const { socket } = useContext(SocketContext);
 
 	//newContext
-	const { client, commerce, handleChangeCommerce, errorsFm } = useContext(FMDataContext);
+	const { client, commerce, pos, handleChangeCommerce, errorsFm } = useContext(FMDataContext);
 
 	useEffect(() => {
 		switch (activeStep) {
@@ -92,11 +91,11 @@ const FormM: React.FC = () => {
 				else setReadyStep(false);
 				break;
 			case 3:
-				if (!valids.inputNotNull(valids.sizeStep(activeStep), fmCommerce)) setReadyStep(true);
+				if (!valids.inputNotNull(valids.sizeStep(activeStep), commerce)) setReadyStep(true);
 				else setReadyStep(false);
 				break;
 			case 4:
-				if (!valids.inputNotNull(13, fmCommerce) && !valids.inputNotNull(8, fmPos)) setReadyStep(true);
+				if (!valids.inputNotNull(13, commerce) && !valids.inputNotNull(8, pos)) setReadyStep(true);
 				else setReadyStep(false);
 				break;
 			default:
@@ -106,12 +105,6 @@ const FormM: React.FC = () => {
 	}, [client, activeStep]);
 
 	const {
-		typeSolict,
-		fmClient,
-		fmCommerce,
-		fmPos,
-		handleParamsCommerce,
-		//s
 		fmData,
 		fmDataError,
 		days,
@@ -128,16 +121,6 @@ const FormM: React.FC = () => {
 		copyLocationCToCC,
 		copyLocationCCToP,
 	}: any = useContext(FMContext as any);
-
-	//TypeSOlict === 0
-	//Go to fmContext
-	useEffect(() => {
-		if (
-			(typeSolict === 0 && commerce.ident_num !== fmClient.ident_num) ||
-			commerce.name !== fmClient.name + ' ' + fmClient.last_name
-		) {
-		}
-	}, [typeSolict, client.ident_num, client.id_ident_type, client.name, client.last_name]);
 
 	const {
 		listLocationClient,
@@ -171,28 +154,12 @@ const FormM: React.FC = () => {
 		rc_comp_dep: '',
 	});
 
-	useEffect(() => {
-		if (
-			fmCommerce.ident_num !== '' &&
-			fmClient.ident_num === fmCommerce.ident_num &&
-			fmClient.id_ident_type === fmCommerce.id_ident_type
-		) {
-			handleParamsCommerce('name', fmClient.name + ' ' + fmClient.last_name);
-		}
-	}, [activeStep, fmCommerce.ident_num, fmCommerce.id_ident_type]);
-
 	//SendForm
 	useEffect(() => {
-		if (fm.errorClient) {
-			setValidEmailIdent(true);
-		} else {
-			setValidEmailIdent(false);
-		}
-
 		if (sendForm === 1 && fm.id_client !== 0) {
 			console.log('Listo Cliente');
 			if (!fm.mashCommerce) {
-				dispatch(sendCommerce(fm.id_client, fmData, valids.daysToString(days)));
+				//dispatch(sendCommerce(fm.id_client, fmData, valids.daysToString(days)));
 			}
 			setSendForm(2);
 			//Fin comerce
@@ -209,13 +176,13 @@ const FormM: React.FC = () => {
 			}
 			formData.append('id_client', `${fm.id_client}`);
 			formData.append('id_commerce', `${fm.id_commerce}`);
-			formData.append('bank_account_num', fmData.text_account_number);
+			//formData.append('bank_account_num', fmData.text_account_number);
 			dispatch(sendImages(formData));
 			//update fm_imgaes
 			setSendForm(3);
 		} else if (sendForm === 3 && fm.id_images !== null && fm.id_commerce !== 0 && fm.id_client !== 0) {
 			console.log('Listo Images, Client/Comercio:', fm.id_client, fm.id_commerce);
-			dispatch(sendFM(fmData, fm));
+			//dispatch(sendFM(fmData, fm));
 			setSendForm(4);
 		} else if (sendForm === 4 && fm.loadedFM) {
 			console.log('Ready All FM');
@@ -231,62 +198,6 @@ const FormM: React.FC = () => {
 		dispatch(cleanFM());
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	//Autocomplete location
-	const [autoCompleteCommerce, setAutoCompleteCommerce] = useState<boolean>(true);
-	const [autoCompletePos, setAutoCompletePos] = useState<boolean>(true);
-
-	//Copyrighter Client to Commerce / Pos
-	useEffect(() => {
-		if (activeStep === 3 && autoCompleteCommerce && !fm.mashCommerce) {
-			copyListLocationCToCC();
-			copyLocationCToCC();
-		}
-	}, [activeStep, fm.commerceMash]);
-
-	//Copyrighter Commerce to pos
-	//note mover useE to step4
-	useEffect(() => {
-		if (activeStep === 3 && autoCompletePos) {
-			copyListLocationCCToP();
-			copyLocationCCToP();
-		}
-	}, [
-		activeStep,
-		locationCommerce,
-		fmData.sector,
-		fmData.calle,
-		fmData.local,
-		fmData.codigo_postal,
-		fm.commerceMash,
-	]);
-
-	useEffect(() => {
-		if (
-			locationCommerce.estado === null &&
-			locationCommerce.ciudad === null &&
-			locationCommerce.municipio === null &&
-			locationCommerce.parroquia === null &&
-			fmData.sector === '' &&
-			fmData.calle === '' &&
-			fmData.local === '' &&
-			fmData.codigo_postal === ''
-		) {
-			setAutoCompleteCommerce(true);
-		}
-		if (
-			locationPos.estado === null &&
-			locationPos.ciudad === null &&
-			locationPos.municipio === null &&
-			locationPos.parroquia === null &&
-			fmData.sector_pos === '' &&
-			fmData.calle_pos === '' &&
-			fmData.local_pos === '' &&
-			fmData.codigo_postal_pos === ''
-		) {
-			setAutoCompletePos(true);
-		}
-	}, [fmData, locationCommerce, locationPos]);
 
 	useEffect(() => {
 		if (fm.errorClient) setActiveStep(1);
@@ -322,85 +233,6 @@ const FormM: React.FC = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [fmData, imagesForm, activeStep, fm, imagesActa]);
 	*/
-
-	const validateForm = (name: string, value: any): void => {
-		let temp: any = fmDataError;
-		switch (name) {
-			case 'email':
-				temp.email = valids.validEmail(value);
-				break;
-			case 'name':
-			case 'last_name':
-				temp[name] = valids.validFullName(value);
-				break;
-			case 'id_ident_type':
-				if (fmData.ident_num.trim() !== '') {
-					temp.ident_num = valids.validIdentNum(fmData.ident_num, value);
-				}
-				break;
-			case 'ident_num':
-				temp.ident_num = valids.validIdentNum(value, fmData.id_ident_type);
-				break;
-			case 'phone1':
-				temp.phone1 = valids.validPhone(value);
-				if (fmData.phone2 !== '') temp.phone2 = valids.validPhone2(fmData.phone2, value);
-				break;
-			case 'phone2':
-				temp.phone2 = valids.validPhone2(value, fmData.phone1);
-				break;
-			case 'phone_ref1':
-				temp.phone_ref1 = valids.validPhone(value);
-				if (fmData.phone_ref2 !== '') temp.phone_ref2 = valids.validPhone2(fmData.phone_ref2, value);
-				break;
-			case 'phone_ref2':
-				temp.phone_ref2 = valids.validPhone2(value, fmData.phone_ref1);
-				break;
-			case 'doc_ident_ref1':
-				temp.doc_ident_ref1 = valids.validIdentRef(
-					fmData.doc_ident_type_ref1 + value,
-					fmData.doc_ident_type_ref2 + fmData.doc_ident_ref2
-				);
-				break;
-			case 'doc_ident_type_ref1':
-				temp.doc_ident_ref1 = valids.validIdentRef(
-					value + fmData.doc_ident_ref1,
-					fmData.doc_ident_type_ref2 + fmData.doc_ident_ref2
-				);
-				break;
-			case 'doc_ident_ref2':
-				temp.doc_ident_ref2 = valids.validIdentRef(
-					fmData.doc_ident_type_ref2 + value,
-					fmData.doc_ident_type_ref1 + fmData.doc_ident_ref1
-				);
-				break;
-			case 'doc_ident_type_ref2':
-				temp.doc_ident_ref2 = valids.validIdentRef(
-					fmData.doc_ident_type_ref1 + fmData.doc_ident_ref1,
-					value + fmData.doc_ident_ref2
-				);
-				break;
-			case 'name_commerce':
-				temp.name_commerce = valids.validNameCommere(value);
-				break;
-			case 'number_post':
-				temp.number_post = valids.validNum_post(value);
-				break;
-			case 'text_account_number':
-				temp.text_account_number = valids.validNumBank(value);
-				if (value.length === 20 && fmData.email !== '') {
-					dispatch(
-						validationNumBank({
-							email: fmData.email,
-							bank_account_num: value,
-						})
-					);
-				}
-				break;
-			default:
-				break;
-		}
-		setFmError(temp);
-	};
 
 	const [oldClientMatsh, setOldClientMatsh] = useState<boolean>(false);
 
@@ -581,18 +413,9 @@ const FormM: React.FC = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
 	};
 
-	const handleChangeNames = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (
-			(event.target.value.trim() !== '' && /^[a-zA-Z ]+$/.test(event.target.value)) ||
-			event.target.value === ''
-		) {
-			handleChange(event);
-		}
-	};
-
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (changeFmData) changeFmData(event);
-		validateForm(event.target.name, event.target.value);
+		//validateForm(event.target.name, event.target.value);
 	};
 
 	const handleChangeImages = (event: any) => {
@@ -638,9 +461,11 @@ const FormM: React.FC = () => {
 		//Send FM
 		handleLoading();
 		setSendForm(1);
+		/* Send got to 1 endpoint [delete]
 		if (!fm.mashClient && codePhone) {
 			dispatch(sendClient(fmData, codePhone));
 		}
+		*/
 	};
 
 	const handleLoading = () => {
@@ -677,13 +502,7 @@ const FormM: React.FC = () => {
 
 	const getStep = [
 		<StepBase />,
-		<Step1
-			namesImages={namesImages}
-			validEmailIdent={validEmailIdent}
-			imagesForm={imagesForm}
-			handleChangeNames={handleChangeNames}
-			handleChangeImages={handleChangeImages}
-		/>,
+		<Step1 namesImages={namesImages} imagesForm={imagesForm} handleChangeImages={handleChangeImages} />,
 		<Step2 />,
 		<Step3
 			imagesActa={imagesActa}
@@ -693,23 +512,11 @@ const FormM: React.FC = () => {
 			handleChangeImagesMulti={handleChangeImagesMulti}
 			deleteImgContributor={deleteImgContributor}
 		/>,
-		<Step4 setAutoCompleteCommerce={setAutoCompleteCommerce} setAutoCompletePos={setAutoCompletePos} />,
+		<Step4 />,
 		<Step5
-			listTypePay={listTypePay}
-			setTypePay={setTypePay}
-			typePay={typePay}
-			imagesForm={imagesForm}
-			namesImages={namesImages}
-			listModelPos={listModelPos}
-			setModelPost={setModelPost}
-			modelPos={modelPos}
-			listPayment={listPayment}
-			setPayment={setPayment}
-			payment={payment}
 			handleChangeImages={handleChangeImages}
-			listRequestSource={listRequestSource}
-			requestSource={requestSource}
-			setRequestSource={setRequestSource}
+			namesImages={namesImages}
+			imagesForm={imagesForm}
 			deleteImgContributor={deleteImgContributor}
 		/>,
 	];

@@ -2,7 +2,7 @@
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import classnames from 'classnames';
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { useStylesFM } from '../styles';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
@@ -12,7 +12,7 @@ import { LocationsContext } from '../../../context/Location/LocationsContext';
 
 import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/Location/interfaces';
 
-export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompletePos }) => {
+export const Step4: FC = () => {
 	const classes = useStylesFM();
 
 	const {
@@ -52,14 +52,32 @@ export const Step4: React.FC<any> = ({ setAutoCompleteCommerce, setAutoCompleteP
 	}: any = useContext(FMContext);
 
 	const handleLocationCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setAutoCompleteCommerce(false);
+		//setAutoCompleteCommerce(false);
 		handleChangeCommerce(event);
 	};
 
 	const handleLocationPos = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setAutoCompletePos(false);
+		//setAutoCompletePos(false);
 		handleChangePos(event);
 	};
+
+	/*
+	//Copyrighter Commerce to pos
+	useEffect(() => {
+		if (activeStep === 3 && autoCompletePos) {
+			copyListLocationCCToP();
+			copyLocationCCToP();
+		}
+	}, [
+		activeStep,
+		locationCommerce,
+		fmData.sector,
+		fmData.calle,
+		fmData.local,
+		fmData.codigo_postal,
+		fm.commerceMash,
+	]);
+	*/
 
 	return (
 		<div className='container-location'>

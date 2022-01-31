@@ -1,9 +1,10 @@
 import React, { createContext, useState, ReactChild, Dispatch, SetStateAction, useEffect } from 'react';
 import { validateForm } from '../../components/validation/validFm';
-import { fmClient, fmCommerce } from '../../interfaces/fm';
+import { fmClient, fmCommerce, fmPos } from '../../interfaces/fm';
 import { initFmClient } from '../FM/client/stateClient';
 import { initFmCommerce } from '../FM/commerce/stateCommerce';
 import { fmError_Interface } from '../FM/interfaces';
+import { initFmPos } from '../FM/pos/statePos';
 import { fmErrorFormat, initLocation } from '../FM/states';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
 import { ContextFM } from './interface';
@@ -17,6 +18,7 @@ const FMDataContext = createContext<ContextFM>({
 	errorsFm: fmErrorFormat,
 	client: initFmClient,
 	commerce: initFmCommerce,
+	pos: initFmPos,
 	locationClient: initLocation,
 	setClient: () => {},
 	setLocationClient: () => {},
@@ -28,6 +30,7 @@ const FMDataContext = createContext<ContextFM>({
 	handleSelectIdentClient: () => {},
 	handleChangeCommerce: () => {},
 	handleSelectIdentCommerce: () => {},
+	handleChangePos: () => {},
 });
 
 export const FMContextProvider = ({ children }: Props) => {
@@ -35,7 +38,14 @@ export const FMContextProvider = ({ children }: Props) => {
 	const [errorsFm, setErrorsFm] = useState<fmError_Interface>(fmErrorFormat);
 	const [client, setClient] = useState<fmClient>(initFmClient);
 	const [commerce, setCommerce] = useState<fmCommerce>(initFmCommerce);
+	const [pos, setPos] = useState<fmPos>(initFmPos);
 	const [locationClient, setLocationClient] = useState<LocationInt>(initLocation);
+	const [locationCommerce, setLocationCommerce] = useState<LocationInt>(initLocation);
+	const [locationPos, setLocationPos] = useState<LocationInt>(initLocation);
+
+	//Autocomplete location
+	const [autoCompleteCommerce, setAutoCompleteCommerce] = useState<boolean>(true);
+	const [autoCompletePos, setAutoCompletePos] = useState<boolean>(true);
 
 	useEffect(() => {
 		if (
@@ -66,6 +76,14 @@ export const FMContextProvider = ({ children }: Props) => {
 		setErrorsFm(validateForm(client, errorsFm, event.target.name, event.target.value));
 		setCommerce({
 			...commerce,
+			[event.target.name]: event.target.value,
+		});
+	};
+
+	const handleChangePos = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		setErrorsFm(validateForm(pos, errorsFm, event.target.name, event.target.value));
+		setPos({
+			...pos,
 			[event.target.name]: event.target.value,
 		});
 	};
@@ -180,6 +198,11 @@ export const FMContextProvider = ({ children }: Props) => {
 				//handles
 				handleChangeCommerce,
 				handleSelectIdentCommerce,
+
+				//Pos
+				pos,
+				//handles
+				handleChangePos,
 
 				//Locations
 				setEstado,

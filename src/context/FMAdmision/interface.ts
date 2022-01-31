@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { fmClient, fmCommerce } from '../../interfaces/fm';
+import { fmClient, fmCommerce, fmPos } from '../../interfaces/fm';
 import { fmError_Interface } from '../FM/interfaces';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
 
@@ -8,6 +8,7 @@ export interface ContextFM {
 	errorsFm: fmError_Interface;
 	client: fmClient;
 	commerce: fmCommerce;
+	pos: fmPos;
 	locationClient: LocationInt;
 	setClient: Dispatch<SetStateAction<fmClient>>;
 	setLocationClient: Dispatch<SetStateAction<LocationInt>>;
@@ -35,4 +36,5 @@ export interface ContextFM {
 	handleSelectIdentClient(event: React.ChangeEvent<{ name?: string; value: unknown }>): void;
 	handleChangeCommerce(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleSelectIdentCommerce(event: React.ChangeEvent<{ name?: string; value: unknown }>): void;
+	handleChangePos(event: React.ChangeEvent<HTMLInputElement>): void;
 }

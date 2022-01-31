@@ -14,25 +14,23 @@ import { recaudo } from '../../utilis/recaudos';
 import { FMContext } from '../../../context/FM/FMContext';
 import { validationNumBank } from '../../../store/actions/fm';
 
+/*
+			listTypePay={listTypePay}
+			setTypePay={setTypePay}
+			typePay={typePay}
+			listModelPos={listModelPos}
+			setModelPost={setModelPost}
+			modelPos={modelPos}
+			listPayment={listPayment}
+			setPayment={setPayment}
+			payment={payment}
+			listRequestSource={listRequestSource}
+			requestSource={requestSource}
+			setRequestSource={setRequestSource}
+*/
+
 //Pedido
-export const Step5: React.FC<any> = ({
-	listTypePay,
-	setTypePay,
-	typePay,
-	imagesForm,
-	namesImages,
-	listModelPos,
-	setModelPost,
-	modelPos,
-	listPayment,
-	setPayment,
-	payment,
-	handleChangeImages,
-	listRequestSource,
-	requestSource,
-	setRequestSource,
-	deleteImgContributor,
-}) => {
+export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesForm, deleteImgContributor }) => {
 	const classes = useStylesFM();
 	const [fraccion, setFraccion] = useState<boolean>(false);
 	const [referido, setReferido] = useState<boolean>(false);
@@ -48,30 +46,30 @@ export const Step5: React.FC<any> = ({
 	const handleSelectPayment = (event: any, value: any, item: string) => {
 		if (value) {
 			changeFmParms(`id_${item}`, value.id);
-			setPayment(value);
+			//setPayment(value);
 		} else {
 			changeFmParms(`id_${item}`, 0);
-			setPayment(null);
+			//setPayment(null);
 		}
 	};
 
 	const handleSelectTypePay = (event: any, value: any, item: string) => {
 		if (value) {
 			changeFmParms(`id_${item}`, value.id);
-			setTypePay(value);
+			//setTypePay(value);
 		} else {
 			changeFmParms(`id_${item}`, 0);
-			setTypePay(null);
+			//setTypePay(null);
 		}
 	};
 
 	const handleSelectPos = (event: any, value: any, item: string) => {
 		if (value) {
 			changeFmParms(`id_${item}`, value.id);
-			setModelPost(value);
+			//setModelPost(value);
 		} else {
 			changeFmParms(`id_${item}`, 0);
-			setModelPost(null);
+			//setModelPost(null);
 		}
 	};
 
@@ -96,13 +94,13 @@ export const Step5: React.FC<any> = ({
 				...fmData,
 				[`id_${item}`]: value.id,
 			});
-			setRequestSource(value);
+			//setRequestSource(value);
 		} else {
 			setFmData({
 				...fmData,
 				[`id_${item}`]: 0,
 			});
-			setRequestSource(null);
+			//setRequestSource(null);
 		}
 	};
 
@@ -120,6 +118,7 @@ export const Step5: React.FC<any> = ({
 		}
 	};
 
+	/*
 	useEffect(() => {
 		if (typePay) {
 			if (typePay.id === 2) {
@@ -169,8 +168,8 @@ export const Step5: React.FC<any> = ({
 				});
 			}
 		}
-		/* eslint-disable react-hooks/exhaustive-deps */
 	}, [fmData.number_post, fmData.initial, requestSource, typePay, modelPos]);
+	*/
 
 	useEffect(() => {
 		if (imagesForm.rc_comp_dep) {
@@ -197,16 +196,18 @@ export const Step5: React.FC<any> = ({
 					error={fmDataError.number_post}
 					value={fmData.number_post}
 				/>
+				{/*
 				<Autocomplete
 					className={classes.inputText}
 					onChange={(event, value) => handleSelectPos(event, value, 'model_post')}
-					value={modelPos || null}
-					options={listModelPos}
+					//value={modelPos || null}
+					//options={listModelPos}
 					getOptionLabel={(option: any) => (option.name ? option.name : '')}
 					renderInput={(params: any) => (
 						<TextField {...params} name='model_post' label='Modelo de los POS' variant='outlined' />
 					)}
 				/>
+				*/}
 			</div>
 			<div className={classes.input}>
 				<TextField
@@ -250,38 +251,45 @@ export const Step5: React.FC<any> = ({
 				</div>
 			</div>
 			<div className={classes.input}>
+				{/* 
 				<Autocomplete
 					className={classes.inputTextLeft}
 					onChange={(event, value) => handleSelectPayment(event, value, 'payment_method')}
-					options={listPayment}
-					value={payment || null}
+					//options={listPayment}
+					//value={payment || null}
 					getOptionLabel={(option: any) => (option.name ? option.name : '')}
 					renderInput={(params: any) => (
 						<TextField {...params} name='payment_method' label='Modalidad de Pago' variant='outlined' />
 					)}
 				/>
+				*/}
+				{/* 
 				<Autocomplete
 					className={classes.inputText}
 					onChange={(event, value) => handleSelectTypePay(event, value, 'type_pay')}
-					options={listTypePay}
-					value={typePay || null}
+					//options={listTypePay}
+					//value={typePay || null}
 					getOptionLabel={(option: any) => (option.name ? option.name : '')}
 					renderInput={(params: any) => (
 						<TextField {...params} name='type_pay' label='Tipo de Pago' variant='outlined' />
 					)}
 				/>
+				*/}
 			</div>
 			<div className={classes.input}>
+				{/* 
+
 				<Autocomplete
 					className={classes.inputTextLeft}
 					onChange={(event, value) => handleSelectOrigin(event, value, 'request_origin')}
-					value={requestSource || null}
-					options={listRequestSource}
+					//value={requestSource || null}
+					//koptions={listRequestSource}
 					getOptionLabel={(option: any) => (option.name ? option.name : '')}
 					renderInput={(params: any) => (
 						<TextField {...params} name='request_origin' label='Origen de Solicitud' variant='outlined' />
 					)}
 				/>
+				*/}
 				<TextField
 					className={classes.inputText}
 					style={{ opacity: `${referido ? 1 : 0}` }}

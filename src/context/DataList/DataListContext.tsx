@@ -7,7 +7,9 @@ import axios from '../../config';
 
 import { InterFaceStateList, base } from './interface';
 
-export const DataListContext = createContext({});
+interface ContextDataList {}
+
+const DataListContext = createContext<ContextDataList>({});
 
 interface Props {
 	children: ReactChild | ReactChildren;
@@ -56,6 +58,8 @@ const DataListProvider = ({ children }: Props) => {
 		listTypePay: listTPay,
 		listRequestSource: listRequestS,
 	};
+
+	const [listIdentType, setListIdentType] = useState();
 
 	const [state, dispatch] = useReducer(DatalistReducer, initialState);
 
