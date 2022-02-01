@@ -20,6 +20,7 @@ const FMDataContext = createContext<ContextFM>({
 	commerce: initFmCommerce,
 	pos: initFmPos,
 	locationClient: initLocation,
+	handleTypeSolict: () => {},
 	setClient: () => {},
 	setLocationClient: () => {},
 	setEstado: () => {},
@@ -63,6 +64,10 @@ export const FMContextProvider = ({ children }: Props) => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [typeSolict, client.name, client.last_name, client.ident_num, client.id_ident_type]);
+
+	const handleTypeSolict = (id: number): void => {
+		setTypeSolict(id);
+	};
 
 	const handleChangeClient = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		setErrorsFm(validateForm(client, errorsFm, event.target.name, event.target.value));
@@ -183,6 +188,7 @@ export const FMContextProvider = ({ children }: Props) => {
 		<FMDataContext.Provider
 			value={{
 				typeSolict,
+				handleTypeSolict,
 				errorsFm,
 				//Client
 				client,

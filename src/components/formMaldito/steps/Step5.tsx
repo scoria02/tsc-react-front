@@ -6,13 +6,14 @@ import TextField from '@material-ui/core/TextField';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import classNames from 'classnames';
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../store/store';
-import { useStylesFM } from '../styles';
-import { recaudo } from '../../utilis/recaudos';
 import { FMContext } from '../../../context/FM/FMContext';
 import { validationNumBank } from '../../../store/actions/fm';
+import { RootState } from '../../../store/store';
+import { recaudo } from '../../utilis/recaudos';
+import { getAci } from '../getData';
+import { useStylesFM } from '../styles';
 
 /*
 			listTypePay={listTypePay}
@@ -32,9 +33,12 @@ import { validationNumBank } from '../../../store/actions/fm';
 //Pedido
 export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesForm, deleteImgContributor }) => {
 	const classes = useStylesFM();
+	const [aci, setACI] = useState<any>({});
+	const [listAci, setListAci] = useState<any>([]);
+	const [isACI, setIsACI] = useState<boolean>(false);
+	const [deleted, setDeleted] = useState<boolean>(false);
 	const [fraccion, setFraccion] = useState<boolean>(false);
 	const [referido, setReferido] = useState<boolean>(false);
-	const [deleted, setDeleted] = useState<boolean>(false);
 	// const cuotasText = ['5 cuotas de 50$', '4 cuotas de 50$', '3 cuotas de 50$'];
 	const [cuotasTexto, setCuotasTexto] = useState('');
 	const dispatch = useDispatch();
@@ -118,6 +122,11 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 		}
 	};
 
+	const handleSelectAci = (event: any, value: any) => {
+		// dispatch(selectAci(value ? true : false));
+		setACI(value);
+	};
+
 	/*
 	useEffect(() => {
 		if (typePay) {
@@ -133,14 +142,19 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 			switch (requestSource.id) {
 				case 1:
 					setReferido(true);
+					setIsACI(false);
 					break;
 				case 2:
-					setReferido(true);
+					// is ACI
+					setIsACI(true);
+					setReferido(false);
 					break;
 				default:
+					setIsACI(false);
 					setReferido(false);
 			}
 		} else {
+			setIsACI(false);
 			setReferido(false);
 		}
 		if (fmData.initial && modelPos) {
@@ -180,6 +194,14 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 		/* eslint-disable react-hooks/exhaustive-deps */
 	}, [imagesForm.rc_comp_dep]);
 
+	useLayoutEffect(() => {
+		getAci().then((res: any) => {
+			res.forEach((item: any, indice: number) => {
+				setListAci((prevState: any) => [...prevState, item]);
+			});
+		});
+	}, []);
+
 	return (
 		<div className={classes.grid}>
 			<div className={classes.input}>
@@ -211,7 +233,7 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 			</div>
 			<div className={classes.input}>
 				<TextField
-					className={classes.inputText}
+					className={classes.inputTextLeft}
 					variant='outlined'
 					required
 					id='standard-required'
@@ -278,9 +300,9 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 			</div>
 			<div className={classes.input}>
 				{/* 
-
 				<Autocomplete
 					className={classes.inputTextLeft}
+					style={{ width: '50%' }}
 					onChange={(event, value) => handleSelectOrigin(event, value, 'request_origin')}
 					//value={requestSource || null}
 					//koptions={listRequestSource}
@@ -289,21 +311,43 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 						<TextField {...params} name='request_origin' label='Origen de Solicitud' variant='outlined' />
 					)}
 				/>
-				*/}
-				<TextField
-					className={classes.inputText}
-					style={{ opacity: `${referido ? 1 : 0}` }}
-					variant='outlined'
-					required
-					id='standard-required'
-					label='Numero de Cédula'
-					name='reqSource_docnum'
-					onChange={changeFmData}
-					inputProps={{
-						maxLength: 9,
-					}}
-					value={fmData.reqSource_docnum}
-				/>
+				{referido && (
+					<TextField
+						className={classes.inputText}
+						style={{ width: '50%' }}
+						variant='outlined'
+						required
+						id='standard-required'
+						label='Numero de Cédula'
+						name='reqSource_docnum'
+						onChange={changeFmData}
+						inputProps={{
+							maxLength: 9,
+						}}
+						value={fmData.reqSource_docnum}
+					/>
+				)}
+				{isACI && (
+					<Autocomplete
+						// className='btn_step btn_medio'
+						style={{ width: '50%' }}
+						//disabled={} //si el comercio tiene aci traelo
+						onChange={(event, value) => {
+							handleSelectAci(event, value);
+						}}
+						options={listAci}
+						value={aci || null}
+						getOptionLabel={(option: any) =>
+							option.aliNombres || option.aliIdentificacion
+								? option.aliTipoIdentificacion + option.aliIdentificacion + ' | ' + option.aliNombres
+								: ''
+						}
+						renderInput={(params: any) => (
+							<TextField {...params} name='aci' label={`Buscar Aci`} variant='outlined' />
+						)}
+					/>
+				)}
+						*/}
 			</div>
 			<div className={classes.input}>
 				{fraccion && (
@@ -340,7 +384,7 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 			</div>
 			<div className={classes.input}>
 				<FormControlLabel
-					className={classNames(classes.inputText, classes.containerCheckBox)}
+					className={classNames(classes.inputTextLeft, classes.containerCheckBox)}
 					label=''
 					control={
 						<>

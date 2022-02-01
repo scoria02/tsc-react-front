@@ -5,6 +5,8 @@ import { FC, useContext } from 'react';
 import { FMContext } from '../../../context/FM/FMContext';
 import { useStylesFM } from '../styles';
 
+import FMDataContext from '../../../context/FMAdmision/fmContext';
+
 const typesSolicts = [
 	{
 		id: 0,
@@ -40,7 +42,7 @@ const typesSolicts = [
 const StepBase: FC = () => {
 	const classes = useStylesFM();
 
-	const { typeSolict, selectTypeSolict }: any = useContext(FMContext);
+	const { typeSolict, handleTypeSolict } = useContext(FMDataContext);
 
 	return (
 		<div className='ed-container container-formMaldito'>
@@ -54,7 +56,7 @@ const StepBase: FC = () => {
 						<InputLabel>Solicitudes</InputLabel>
 						<Select
 							value={typeSolict}
-							onChange={(e) => selectTypeSolict(e.target.value)}
+							onChange={(e) => handleTypeSolict(e.target.value as number)}
 							name='typeSolict'
 							label='TipoSolict'>
 							{typesSolicts.map((item: any) => (

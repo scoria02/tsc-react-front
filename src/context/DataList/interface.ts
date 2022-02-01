@@ -24,12 +24,3 @@ export interface Products {
 	price: number;
 	quota: number;
 }
-
-export interface InterFaceStateList {
-	listIdentType: base[];
-	listActivity: Activity[];
-	listPayment: base[];
-	listModelPos: Products[];
-	listTypePay: base[];
-	listRequestSource: base[];
-}

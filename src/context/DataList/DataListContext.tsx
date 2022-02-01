@@ -1,67 +1,73 @@
 /* eslint-disable no-unused-vars */
-import { INIT_LIST } from './types';
-import { createContext, useReducer, useLayoutEffect, ReactChild, ReactChildren } from 'react';
+import { createContext, useReducer, useLayoutEffect, ReactChild, ReactChildren, useState } from 'react';
 
-import DatalistReducer from './DatalistReducer';
 import axios from '../../config';
 
-import { InterFaceStateList, base } from './interface';
-
-interface ContextDataList {}
-
-const DataListContext = createContext<ContextDataList>({});
+import { base, Activity, Products } from './interface';
 
 interface Props {
 	children: ReactChild | ReactChildren;
 }
 
-const DataListProvider = ({ children }: Props) => {
-	const listRequestS: base[] = [
-		{
-			id: 1,
-			name: 'Referido',
-		},
-		{
-			id: 2,
-			name: 'ACI',
-		},
-		{
-			id: 3,
-			name: 'Call Center',
-		},
-		{
-			id: 4,
-			name: 'Feria',
-		},
-		{
-			id: 5,
-			name: 'Pagina WEB',
-		},
-	];
+interface ContextDataList {
+	listIdentType: base[];
+	listActivity: Activity[];
+	listPayment: base[];
+	listModelPos: Products[];
+	listTypePay: base[];
+	listRequestSource: base[];
+}
 
-	const listTPay: base[] = [
-		{
-			id: 1,
-			name: 'De Contado',
-		},
-		{
-			id: 2,
-			name: 'Inicial',
-		},
-	];
+const DataListContext = createContext<ContextDataList>({
+	listIdentType: [],
+	listActivity: [],
+	listPayment: [],
+	listModelPos: [],
+	listTypePay: [],
+	listRequestSource: [],
+});
 
-	const initialState: InterFaceStateList = {
-		listIdentType: [],
-		listActivity: [],
-		listPayment: [],
-		listModelPos: [],
-		listTypePay: listTPay,
-		listRequestSource: listRequestS,
-	};
+const listRequestS: base[] = [
+	{
+		id: 1,
+		name: 'Referido',
+	},
+	{
+		id: 2,
+		name: 'ACI',
+	},
+	{
+		id: 3,
+		name: 'Call Center',
+	},
+	{
+		id: 4,
+		name: 'Feria',
+	},
+	{
+		id: 5,
+		name: 'Pagina WEB',
+	},
+];
 
-	const [listIdentType, setListIdentType] = useState();
+const listTPay: base[] = [
+	{
+		id: 1,
+		name: 'De Contado',
+	},
+	{
+		id: 2,
+		name: 'Inicial',
+	},
+];
 
-	const [state, dispatch] = useReducer(DatalistReducer, initialState);
+export const DataListProvider = ({ children }: Props) => {
+	const [listIdentType, setListIdentType] = useState<base[]>([]);
+	const [listActivity, setListActivity] = useState<Activity[]>([]);
+	const [listPayment, setListPayment] = useState<base[]>([]);
+	const [listModelPos, setListModelPos] = useState<Products[]>([]);
+	const [listTypePay, setListTypePay] = useState<base[]>(listTPay);
+	const [listRequestSource, setListRequestSource] = useState<base[]>(listRequestS);
 
 	const getters = async (routes: string[]) => {
 		try {
@@ -82,11 +88,11 @@ const DataListProvider = ({ children }: Props) => {
 		}
 	};
 
-	const initList = (arrayData: any[]) => {
-		dispatch({
-			type: INIT_LIST,
-			payload: arrayData,
-		});
+	const initList = (array: any[]) => {
+		setListIdentType(array[0].data.info);
+		setListActivity(array[1].data.info);
+		setListPayment(array[2].data.info);
+		setListModelPos(array[3].data.info);
 	};
 
 	useLayoutEffect(() => {
@@ -103,11 +109,16 @@ const DataListProvider = ({ children }: Props) => {
 	return (
 		<DataListContext.Provider
 			value={{
-				...state,
+				listIdentType,
+				listActivity,
+				listPayment,
+				listModelPos,
+				listTypePay,
+				listRequestSource,
 			}}>
 			{children}
 		</DataListContext.Provider>
 	);
 };
 
-export default DataListProvider;
+export default DataListContext;

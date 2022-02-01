@@ -1,246 +1,158 @@
 /* eslint-disable no-unused-vars */
-import { createContext, useReducer, useLayoutEffect, ReactChild, ReactChildren } from 'react';
+import {
+	createContext,
+	useReducer,
+	useLayoutEffect,
+	ReactChild,
+	ReactChildren,
+	useState,
+	Dispatch,
+	SetStateAction,
+} from 'react';
 
 import axios from '../../config';
 
-import { SET_ESTADO, SET_MUNICIPIO, SET_CIUDAD, SET_PARROQUIA, COPY_LOCATION } from './types';
-
-import ListLocationClientReducer from './ListLocationClientReducer';
-
 import { Estado, Municipio, ListLocation } from './interfaces';
-
-export const LocationsContext = createContext({});
 
 interface Props {
 	children: ReactChild | ReactChildren;
 }
 
-const LocationsProvider = ({ children }: Props) => {
-	const listClient: ListLocation = {
-		estado: [],
-		municipio: [],
-		ciudad: [],
-		parroquia: [],
-	};
+const listClient: ListLocation = {
+	estado: [],
+	municipio: [],
+	ciudad: [],
+	parroquia: [],
+};
 
-	const listCommerce: ListLocation = {
-		estado: [],
-		municipio: [],
-		ciudad: [],
-		parroquia: [],
-	};
+const listCommerce: ListLocation = {
+	estado: [],
+	municipio: [],
+	ciudad: [],
+	parroquia: [],
+};
 
-	const listPos: ListLocation = {
-		estado: [],
-		municipio: [],
-		ciudad: [],
-		parroquia: [],
-	};
+const listPos: ListLocation = {
+	estado: [],
+	municipio: [],
+	ciudad: [],
+	parroquia: [],
+};
 
-	const [listLocationClient, dispatchC] = useReducer(ListLocationClientReducer, listClient);
-	const [listLocationCommerce, dispatchCC] = useReducer(ListLocationClientReducer, listCommerce);
-	const [listLocationPos, dispatchP] = useReducer(ListLocationClientReducer, listPos);
+interface ContextLocations {
+	listLocationClient: ListLocation;
+	listLocationCommerce: ListLocation;
+	listLocationPos: ListLocation;
+	setListLocationClient: Dispatch<SetStateAction<ListLocation>>;
+	setListLocationCommerce: Dispatch<SetStateAction<ListLocation>>;
+	setListLocationPos: Dispatch<SetStateAction<ListLocation>>;
+	handleListMunicipio(id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>): void;
+	handleListCiudad(id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>): void;
+	handleListParroquia(id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>): void;
+}
+
+const LocationsContext = createContext<ContextLocations>({
+	listLocationClient: listClient,
+	listLocationCommerce: listCommerce,
+	listLocationPos: listPos,
+	setListLocationClient: () => {},
+	setListLocationCommerce: () => {},
+	setListLocationPos: () => {},
+	handleListMunicipio: () => {},
+	handleListCiudad: () => {},
+	handleListParroquia: () => {},
+});
+
+export const LocationsProvider = ({ children }: Props) => {
+	const [listLocationClient, setListLocationClient] = useState<ListLocation>(listClient);
+	const [listLocationCommerce, setListLocationCommerce] = useState<ListLocation>(listCommerce);
+	const [listLocationPos, setListLocationPos] = useState<ListLocation>(listPos);
 
 	//Estado
-	const setListEstadoClient = (estados: Estado[]) => {
-		dispatchC({
-			type: SET_ESTADO,
-			payload: estados,
-		});
-	};
-
-	const setListEstadoCommerce = (estados: Estado[]) => {
-		dispatchCC({
-			type: SET_ESTADO,
-			payload: estados,
-		});
-	};
-
-	const setListEstadoPos = (estados: Estado[]) => {
-		dispatchP({
-			type: SET_ESTADO,
-			payload: estados,
-		});
+	const setListEstado = (estados: Estado[], setListLocation: Dispatch<SetStateAction<ListLocation>>) => {
+		setListLocation((prevState) => ({
+			...prevState,
+			estado: estados,
+		}));
 	};
 
 	//Municipio
-	const setListMunicipioClient = async (value: Municipio | null) => {
-		if (value) {
+	const handleListMunicipio = async (id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>) => {
+		if (id) {
 			try {
-				await axios.get(`/Location/${value.id}/municipio`).then((res: any) => {
-					dispatchC({
-						type: SET_MUNICIPIO,
-						payload: res.data.info,
-					});
+				await axios.get(`/Location/${id}/municipio`).then((res: any) => {
+					setListLocation((prevState) => ({
+						...prevState,
+						municipio: res.data.info,
+						ciudad: [],
+						parroquia: [],
+					}));
 				});
 			} catch (e) {
 				console.log(e);
 				return [];
 			}
 		} else {
-			dispatchC({
-				type: SET_MUNICIPIO,
-				payload: [],
-			});
-		}
-	};
-
-	const setListMunicipioCommerce = async (value: Municipio | null) => {
-		if (value) {
-			try {
-				await axios.get(`/Location/${value.id}/municipio`).then((res: any) => {
-					dispatchCC({
-						type: SET_MUNICIPIO,
-						payload: res.data.info,
-					});
-				});
-			} catch (e) {
-				console.log(e);
-				return [];
-			}
-		} else {
-			dispatchCC({
-				type: SET_MUNICIPIO,
-				payload: [],
-			});
-		}
-	};
-
-	const setListMunicipioPos = async (value: Municipio | null) => {
-		if (value) {
-			try {
-				await axios.get(`/Location/${value.id}/municipio`).then((res: any) => {
-					dispatchP({
-						type: SET_MUNICIPIO,
-						payload: res.data.info,
-					});
-				});
-			} catch (e) {
-				console.log(e);
-				return [];
-			}
-		} else {
-			dispatchP({
-				type: SET_MUNICIPIO,
-				payload: [],
-			});
+			setListLocation((prevState) => ({
+				...prevState,
+				municipio: [],
+				ciudad: [],
+				parroquia: [],
+			}));
 		}
 	};
 
 	//Ciudad
-	const setListCiudadClient = async (id: number) => {
+	const handleListCiudad = async (id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>) => {
 		if (id) {
 			try {
 				await axios.get(`/Location/${id}/ciudad`).then((res: any) => {
-					dispatchC({
-						type: SET_CIUDAD,
-						payload: res.data.info,
-					});
+					setListLocation((prevState) => ({
+						...prevState,
+						ciudad: res.data.info,
+						parroquia: [],
+					}));
 				});
 			} catch (e) {
-				console.log(e);
 				return [];
 			}
 		} else {
-			dispatchC({
-				type: SET_CIUDAD,
-				payload: [],
-			});
-		}
-	};
-
-	const setListCiudadCommerce = async (id: number) => {
-		if (id) {
-			try {
-				await axios.get(`/Location/${id}/ciudad`).then((res: any) => {
-					dispatchCC({
-						type: SET_CIUDAD,
-						payload: res.data.info,
-					});
-				});
-			} catch (e) {
-				console.log(e);
-				return [];
-			}
-		} else {
-			dispatchCC({
-				type: SET_CIUDAD,
-				payload: [],
-			});
-		}
-	};
-
-	const setListCiudadPos = async (id: number) => {
-		if (id) {
-			try {
-				await axios.get(`/Location/${id}/ciudad`).then((res: any) => {
-					dispatchP({
-						type: SET_CIUDAD,
-						payload: res.data.info,
-					});
-				});
-			} catch (e) {
-				console.log(e);
-				return [];
-			}
-		} else {
-			dispatchP({
-				type: SET_CIUDAD,
-				payload: [],
-			});
+			setListLocation((prevState) => ({
+				...prevState,
+				ciudad: [],
+				parroquia: [],
+			}));
 		}
 	};
 
 	//Parroquia
-	const setListParroquiaClient = async (id: number) => {
+	const handleListParroquia = async (id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>) => {
 		try {
 			await axios.get(`/Location/${id}/parroquia`).then((res: any) => {
-				dispatchC({
-					type: SET_PARROQUIA,
-					payload: res.data.info,
-				});
+				setListLocation((prevState) => ({
+					...prevState,
+					parroquia: res.data.info,
+				}));
 			});
 		} catch (e) {
-			console.log(e);
-			return [];
+			setListLocation((prevState) => ({
+				...prevState,
+				parroquia: [],
+			}));
 		}
 	};
 
-	const setListParroquiaCommerce = async (id: number) => {
-		try {
-			await axios.get(`/Location/${id}/parroquia`).then((res: any) => {
-				dispatchCC({
-					type: SET_PARROQUIA,
-					payload: res.data.info,
-				});
-			});
-		} catch (e) {
-			console.log(e);
-			return [];
-		}
-	};
-
-	const setListParroquiaPos = async (id: number) => {
-		try {
-			await axios.get(`/Location/${id}/parroquia`).then((res: any) => {
-				dispatchP({
-					type: SET_PARROQUIA,
-					payload: res.data.info,
-				});
-			});
-		} catch (e) {
-			console.log(e);
-			return [];
-		}
+	const saveEstados = (estados: Estado[]): void => {
+		setListEstado(estados, setListLocationClient);
+		setListEstado(estados, setListLocationCommerce);
+		setListEstado(estados, setListLocationPos);
 	};
 
 	useLayoutEffect(() => {
 		const getEstados = async () => {
 			try {
 				await axios.get('/Location/estado').then((res: any) => {
-					setListEstadoClient(res.data.info);
-					setListEstadoCommerce(res.data.info);
-					setListEstadoPos(res.data.info);
+					saveEstados(res.data.info);
 					return res.data.info;
 				});
 			} catch (e) {
@@ -251,6 +163,7 @@ const LocationsProvider = ({ children }: Props) => {
 		getEstados();
 	}, []);
 
+	/*
 	const copyListLocationCToCC = () => {
 		dispatchCC({
 			type: COPY_LOCATION,
@@ -271,35 +184,30 @@ const LocationsProvider = ({ children }: Props) => {
 			payload: listLocationCommerce,
 		});
 	};
-
+	*/
 	return (
 		<LocationsContext.Provider
 			value={{
 				listLocationClient,
-				setListEstadoClient,
-				setListMunicipioClient,
-				setListCiudadClient,
-				setListParroquiaClient,
-
 				listLocationCommerce,
-				setListEstadoCommerce,
-				setListMunicipioCommerce,
-				setListCiudadCommerce,
-				setListParroquiaCommerce,
-
 				listLocationPos,
-				setListEstadoPos,
-				setListMunicipioPos,
-				setListCiudadPos,
-				setListParroquiaPos,
 
-				copyListLocationCToCC,
-				copyListLocationCToP,
-				copyListLocationCCToP,
+				setListLocationClient,
+				setListLocationCommerce,
+				setListLocationPos,
+
+				//handles
+				handleListMunicipio,
+				handleListCiudad,
+				handleListParroquia,
+
+				//copyListLocationCToCC,
+				//copyListLocationCToP,
+				//copyListLocationCCToP,
 			}}>
 			{children}
 		</LocationsContext.Provider>
 	);
 };
 
-export default LocationsProvider;
+export default LocationsContext;

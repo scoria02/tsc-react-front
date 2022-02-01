@@ -78,7 +78,7 @@ export const useStylesFM = makeStyles((styles) => ({
 	},
 	containerCheckBox: {
 		display: 'flex',
-		justifyContent: 'start',
+		justifyContent: 'center',
 	},
 	daysCB: {
 		width: '100%',

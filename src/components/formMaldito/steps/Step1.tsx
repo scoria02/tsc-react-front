@@ -18,12 +18,12 @@ import { RootState } from '../../../store/store';
 import { useStylesFM } from '../styles';
 import { recaudo } from '../../utilis/recaudos';
 
-import { LocationsContext } from '../../../context/Location/LocationsContext';
-import { DataListContext } from '../../../context/DataList/DataListContext';
+import { validInputString } from '../../../utils/fm';
 import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/Location/interfaces';
 import { validationClient } from '../../../store/actions/fm';
 import FMDataContext from '../../../context/FMAdmision/fmContext';
-import { validInputString } from '../../../utils/fm';
+import DataListContext from '../../../context/DataList/DataListContext';
+import LocationsContext from '../../../context/Location/LocationsContext';
 
 export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImages }) => {
 	const classes = useStylesFM();
@@ -45,9 +45,9 @@ export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImag
 		handleSelectIdentClient,
 	} = useContext(FMDataContext);
 
-	const { listIdentType }: any = useContext(DataListContext);
+	const { listIdentType } = useContext(DataListContext);
 
-	const { listLocationClient, setListMunicipioClient, setListCiudadClient, setListParroquiaClient }: any =
+	const { listLocationClient, setListLocationClient, handleListMunicipio, handleListCiudad, handleListParroquia } =
 		useContext(LocationsContext);
 
 	const codePhone = '+58';
@@ -247,7 +247,7 @@ export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImag
 						className={classNames(classes.inputText, classes.inputTextLeft)}
 						onChange={(event, value: Estado | null) => {
 							setEstado(value, setLocationClient, setClient);
-							setListMunicipioClient(value);
+							handleListMunicipio(value ? value.id : 0, setListLocationClient);
 						}}
 						value={locationClient.estado || null}
 						options={listLocationClient.estado}
@@ -268,7 +268,7 @@ export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImag
 						className={classes.inputText}
 						onChange={(event, value: Municipio | null) => {
 							setMunicipio(value, setLocationClient, setClient);
-							setListCiudadClient(client.id_estado);
+							handleListCiudad(client.id_estado, setListLocationClient);
 						}}
 						value={locationClient.municipio || null}
 						options={listLocationClient.municipio}
@@ -290,7 +290,7 @@ export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImag
 						className={classNames(classes.inputText, classes.inputTextLeft)}
 						onChange={(event, value: Ciudad | null) => {
 							setCiudad(value, setLocationClient, setClient);
-							setListParroquiaClient(client.id_municipio);
+							handleListParroquia(client.id_municipio, setListLocationClient);
 						}}
 						value={locationClient.ciudad || null}
 						options={listLocationClient.ciudad}

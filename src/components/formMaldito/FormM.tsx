@@ -26,15 +26,15 @@ import { Step5 } from './steps/Step5';
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
 
-import { FMContext } from '../../context/FM/FMContext';
-
-import { LocationsContext } from '../../context/Location/LocationsContext';
-
-import { DataListContext } from '../../context/DataList/DataListContext';
-import { FMint, ImagesInt, ListLocationInt, NamesImagesInt } from './interface';
+import { ImagesInt, ListLocationInt, NamesImagesInt } from './interface';
 import { StateFMInt } from '../../store/reducers/fmReducer';
 import { stepError } from '../../utils/fm';
+
 import FMDataContext from '../../context/FMAdmision/fmContext';
+import DataListContext from '../../context/DataList/DataListContext';
+import LocationsContext from '../../context/Location/LocationsContext';
+
+import { base } from '../../context/DataList/interface';
 
 const initStep = ['Tipo de Solicitud'];
 
@@ -62,11 +62,11 @@ const FormM: React.FC = () => {
 	const [readyStep, setReadyStep] = useState<boolean>(false);
 	const [sendForm, setSendForm] = useState<number>(0);
 
-	const { listIdentType, listActivity, listPayment, listModelPos, listTypePay, listRequestSource }: any =
+	const { listIdentType, listActivity, listPayment, listModelPos, listTypePay, listRequestSource } =
 		useContext(DataListContext);
 
 	// Origen de solicitud
-	const [requestSource, setRequestSource] = useState<any[]>(listRequestSource[0]);
+	const [requestSource, setRequestSource] = useState<base>(listRequestSource[0]);
 	const [typePay, setTypePay] = useState<any>(null);
 	const [payment, setPayment] = useState<any>(null);
 	const [modelPos, setModelPost] = useState<any>(null);
@@ -104,31 +104,7 @@ const FormM: React.FC = () => {
 		}
 	}, [client, activeStep]);
 
-	const {
-		fmData,
-		fmDataError,
-		days,
-		codePhone,
-		setFmError,
-		changeFmData,
-		locationCommerce,
-		locationPos,
-		setLocationClient,
-		setLocationCommerce,
-		setFmData,
-		setDays,
-		setActivity,
-		copyLocationCToCC,
-		copyLocationCCToP,
-	}: any = useContext(FMContext as any);
-
-	const {
-		listLocationClient,
-		listLocationCommerce,
-		listLocationPos,
-		copyListLocationCToCC,
-		copyListLocationCCToP,
-	}: ListLocationInt = useContext(LocationsContext as any);
+	const { listLocationClient, listLocationCommerce, listLocationPos } = useContext(LocationsContext);
 
 	//images
 	const [imagesForm, setImagesForm] = useState<ImagesInt>({
@@ -236,6 +212,8 @@ const FormM: React.FC = () => {
 
 	const [oldClientMatsh, setOldClientMatsh] = useState<boolean>(false);
 
+	/*
+
 	//MashClient
 	useEffect(() => {
 		if (fm.mashClient && fm.id_client) {
@@ -336,9 +314,11 @@ const FormM: React.FC = () => {
 			});
 		}
 	}, [fm.mashClient, fm.clientMash, fm.id_client]);
+	*/
+
+	/*
 
 	const [oldCommerceMatsh, setOldCommerceMatsh] = useState<boolean>(false);
-
 	//MashCommerce
 	useEffect(() => {
 		if (fm.mashCommerce) {
@@ -393,11 +373,8 @@ const FormM: React.FC = () => {
 				Jueves: true,
 				Viernes: true,
 				Sabado: true,
-				Domingo: true,
-			});
-			setActivity(null);
-		}
 	}, [fm.mashCommerce, fm.commerceMash]);
+	*/
 
 	const handleGetStep = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -411,11 +388,6 @@ const FormM: React.FC = () => {
 
 	const handleBack = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
-	};
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (changeFmData) changeFmData(event);
-		//validateForm(event.target.name, event.target.value);
 	};
 
 	const handleChangeImages = (event: any) => {
@@ -442,6 +414,7 @@ const FormM: React.FC = () => {
 	};
 
 	const handleSubmit = () => {
+		/*
 		if (
 			valids.allInputNotNUll(valids.sizeStep(activeStep), fmData, fm.mashClient, fm.mashCommerce) ||
 			valids.allImgNotNUll(
@@ -461,6 +434,7 @@ const FormM: React.FC = () => {
 		//Send FM
 		handleLoading();
 		setSendForm(1);
+		*/
 		/* Send got to 1 endpoint [delete]
 		if (!fm.mashClient && codePhone) {
 			dispatch(sendClient(fmData, codePhone));

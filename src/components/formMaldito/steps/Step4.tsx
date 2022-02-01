@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 
 import { FMContext } from '../../../context/FM/FMContext';
-import { LocationsContext } from '../../../context/Location/LocationsContext';
+import LocationsContext from '../../../context/Location/LocationsContext';
 
 import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/Location/interfaces';
 
@@ -17,16 +17,13 @@ export const Step4: FC = () => {
 
 	const {
 		listLocationCommerce,
-		//setListEstadoCommerce,
-		setListMunicipioCommerce,
-		setListCiudadCommerce,
-		setListParroquiaCommerce,
+		setListLocationCommerce,
+		setListLocationPos,
+		handleListMunicipio,
+		handleListCiudad,
+		handleListParroquia,
 		listLocationPos,
-		//setListEstadoPos,
-		setListMunicipioPos,
-		setListCiudadPos,
-		setListParroquiaPos,
-	}: any = useContext(LocationsContext);
+	} = useContext(LocationsContext);
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
@@ -88,7 +85,7 @@ export const Step4: FC = () => {
 						className={classes.inputTextLeft}
 						onChange={(event, value: Estado | null) => {
 							setEstadoCommerce(value);
-							setListMunicipioCommerce(value);
+							handleListMunicipio(value ? value.id : 0, setListLocationCommerce);
 						}}
 						value={locationCommerce.estado || null}
 						disabled={fm.mashCommerce}
@@ -109,7 +106,7 @@ export const Step4: FC = () => {
 						className={classes.inputText}
 						onChange={(event, value: Municipio | null) => {
 							setMunicipioCommerce(value);
-							setListCiudadCommerce(fmCommerce.id_estado);
+							handleListCiudad(fmCommerce.id_estado, setListLocationCommerce);
 						}}
 						value={locationCommerce.municipio || null}
 						disabled={fm.mashCommerce}
@@ -130,7 +127,7 @@ export const Step4: FC = () => {
 					<Autocomplete
 						onChange={(event, value: Ciudad | null) => {
 							setCiudadCommerce(value);
-							setListParroquiaCommerce(fmCommerce.id_municipio);
+							handleListParroquia(fmCommerce.id_municipio, setListLocationCommerce);
 						}}
 						className={classes.inputTextLeft}
 						value={locationCommerce.ciudad || null}
@@ -216,7 +213,7 @@ export const Step4: FC = () => {
 						className={classes.inputTextLeft}
 						onChange={(event, value: Estado | null) => {
 							setEstadoPos(value);
-							setListMunicipioPos(value);
+							handleListMunicipio(value ? value.id : 0, setListLocationPos);
 						}}
 						options={listLocationPos.estado}
 						value={locationPos.estado || null}
@@ -236,7 +233,7 @@ export const Step4: FC = () => {
 						className={classes.inputText}
 						onChange={(event, value: Municipio | null) => {
 							setMunicipioPos(value);
-							setListCiudadPos(fmPos.id_estado);
+							handleListCiudad(fmCommerce.id_estado, setListLocationPos);
 						}}
 						value={locationPos.municipio || null}
 						options={listLocationPos.municipio}
@@ -257,7 +254,7 @@ export const Step4: FC = () => {
 						className={classes.inputTextLeft}
 						onChange={(event, value: Ciudad | null) => {
 							setCiudadPos(value);
-							setListParroquiaPos(fmPos.id_municipio);
+							handleListParroquia(fmPos.id_municipio, setListLocationPos);
 						}}
 						options={listLocationPos.ciudad}
 						value={locationPos.ciudad || null}
@@ -290,8 +287,6 @@ export const Step4: FC = () => {
 							/>
 						)}
 					/>
-				</div>
-				<div className={classnames(classes.row, classes.input)}>
 					<TextField
 						className={classes.inputTextLeft}
 						variant='outlined'

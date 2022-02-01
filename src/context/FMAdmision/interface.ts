@@ -32,6 +32,7 @@ export interface ContextFM {
 		setLocation: Dispatch<SetStateAction<LocationInt>>,
 		setState: Dispatch<SetStateAction<fmClient>>
 	): void;
+	handleTypeSolict(id: number): void;
 	handleChangeClient(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleSelectIdentClient(event: React.ChangeEvent<{ name?: string; value: unknown }>): void;
 	handleChangeCommerce(event: React.ChangeEvent<HTMLInputElement>): void;

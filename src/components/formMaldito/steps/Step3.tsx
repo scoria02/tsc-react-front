@@ -17,11 +17,11 @@ import { recaudo } from '../../utilis/recaudos';
 import { useStylesFM } from '../styles';
 import { FMContext } from '../../../context/FM/FMContext';
 
-import { DataListContext } from '../../../context/DataList/DataListContext';
 import { Activity } from '../../../context/DataList/interface';
 import { validationCommerce } from '../../../store/actions/fm';
 import FMDataContext from '../../../context/FMAdmision/fmContext';
 import { types } from 'util';
+import DataListContext from '../../../context/DataList/DataListContext';
 
 export const Step3: React.FC<any> = ({
 	imagesActa,
@@ -52,7 +52,7 @@ export const Step3: React.FC<any> = ({
 		changeDays,
 	}: any = useContext(FMContext);
 
-	const { listIdentType, listActivity }: any = useContext(DataListContext);
+	const { listIdentType, listActivity } = useContext(DataListContext);
 
 	const handleBlurCommerce = (): void => {
 		if (commerce.id_ident_type !== 0 && commerce.ident_num !== '') {
