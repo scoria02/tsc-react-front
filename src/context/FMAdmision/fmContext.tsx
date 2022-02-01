@@ -1,13 +1,15 @@
 import React, { createContext, useState, ReactChild, Dispatch, SetStateAction, useEffect } from 'react';
 import { validateForm } from '../../components/validation/validFm';
-import { fmClient, fmCommerce, fmPos } from '../../interfaces/fm';
-import { initFmClient } from '../FM/client/stateClient';
-import { initFmCommerce } from '../FM/commerce/stateCommerce';
-import { fmError_Interface } from '../FM/interfaces';
-import { initFmPos } from '../FM/pos/statePos';
-import { fmErrorFormat, initLocation } from '../FM/states';
+import { fmClient, fmCommerce, fmError_Interface, fmPos } from '../../interfaces/fm';
+
+import { initFmPos } from './statePos';
+import { initFmClient } from './stateClient';
+import { initFmCommerce } from './stateCommerce';
+
+import { fmErrorFormat, initLocation } from './states';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
 import { ContextFM } from './interface';
+import { Activity } from '../DataList/interface';
 
 interface Props {
 	children: ReactChild;
@@ -18,11 +20,20 @@ const FMDataContext = createContext<ContextFM>({
 	errorsFm: fmErrorFormat,
 	client: initFmClient,
 	commerce: initFmCommerce,
+	activity: null,
+	setActivity: () => {},
 	pos: initFmPos,
 	locationClient: initLocation,
+	locationCommerce: initLocation,
+	locationPos: initLocation,
+	handleChangeDay: () => {},
 	handleTypeSolict: () => {},
 	setClient: () => {},
+	setCommerce: () => {},
+	setPos: () => {},
 	setLocationClient: () => {},
+	setLocationCommerce: () => {},
+	setLocationPos: () => {},
 	setEstado: () => {},
 	setMunicipio: () => {},
 	setCiudad: () => {},
@@ -40,6 +51,7 @@ export const FMContextProvider = ({ children }: Props) => {
 	const [client, setClient] = useState<fmClient>(initFmClient);
 	const [commerce, setCommerce] = useState<fmCommerce>(initFmCommerce);
 	const [pos, setPos] = useState<fmPos>(initFmPos);
+	const [activity, setActivity] = useState<Activity | null>(null);
 	const [locationClient, setLocationClient] = useState<LocationInt>(initLocation);
 	const [locationCommerce, setLocationCommerce] = useState<LocationInt>(initLocation);
 	const [locationPos, setLocationPos] = useState<LocationInt>(initLocation);
@@ -85,6 +97,17 @@ export const FMContextProvider = ({ children }: Props) => {
 		});
 	};
 
+	const handleChangeDay = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		//validar que los dias no todos sean vacios
+		setCommerce({
+			...commerce,
+			days: {
+				...commerce.days,
+				[event.target.name]: event.target.checked,
+			},
+		});
+	};
+
 	const handleChangePos = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		setErrorsFm(validateForm(pos, errorsFm, event.target.name, event.target.value));
 		setPos({
@@ -112,75 +135,36 @@ export const FMContextProvider = ({ children }: Props) => {
 		}
 	};
 
-	const setEstado = (
-		data: Estado | null,
-		setLocation: Dispatch<SetStateAction<LocationInt>>,
-		setState: Dispatch<SetStateAction<fmClient>>
-	) => {
+	const setEstado = (data: Estado | null, setLocation: Dispatch<SetStateAction<LocationInt>>) => {
 		setLocation({
 			estado: data,
 			municipio: null,
 			ciudad: null,
 			parroquia: null,
 		});
-		setState((prevState) => ({
-			...prevState,
-			id_estado: data ? data.id : 0,
-			id_municipio: 0,
-			id_ciudad: 0,
-			id_parroquia: 0,
-		}));
 	};
 
-	const setMunicipio = (
-		data: Municipio | null,
-		setLocation: Dispatch<SetStateAction<LocationInt>>,
-		setState: Dispatch<SetStateAction<fmClient>>
-	) => {
+	const setMunicipio = (data: Municipio | null, setLocation: Dispatch<SetStateAction<LocationInt>>) => {
 		setLocation((prevState) => ({
 			...prevState,
 			municipio: data,
 			ciudad: null,
 			parroquia: null,
 		}));
-		setState((prevState) => ({
-			...prevState,
-			id_municipio: data ? data.id : 0,
-			id_ciudad: 0,
-			id_parroquia: 0,
-		}));
 	};
 
-	const setCiudad = (
-		data: Ciudad | null,
-		setLocation: Dispatch<SetStateAction<LocationInt>>,
-		setState: Dispatch<SetStateAction<fmClient>>
-	) => {
+	const setCiudad = (data: Ciudad | null, setLocation: Dispatch<SetStateAction<LocationInt>>) => {
 		setLocation((prevState) => ({
 			...prevState,
 			ciudad: data,
 			parroquia: null,
 		}));
-		setState((prevState) => ({
-			...prevState,
-			id_ciudad: data ? data.id : 0,
-			id_parroquia: 0,
-			codigo_postal: data ? data.postal_code : '',
-		}));
 	};
 
-	const setParroquia = (
-		data: Parroquia | null,
-		setLocation: Dispatch<SetStateAction<LocationInt>>,
-		setState: Dispatch<SetStateAction<fmClient>>
-	) => {
+	const setParroquia = (data: Parroquia | null, setLocation: Dispatch<SetStateAction<LocationInt>>) => {
 		setLocation((prevState) => ({
 			...prevState,
 			parroquia: data,
-		}));
-		setState((prevState) => ({
-			...prevState,
-			id_parroquia: data ? data.id : 0,
 		}));
 	};
 
@@ -201,12 +185,21 @@ export const FMContextProvider = ({ children }: Props) => {
 
 				//Commerce
 				commerce,
+				setCommerce,
+				activity,
+				setActivity,
+				locationCommerce,
+				setLocationCommerce,
 				//handles
+				handleChangeDay,
 				handleChangeCommerce,
 				handleSelectIdentCommerce,
 
 				//Pos
 				pos,
+				locationPos,
+				setLocationPos,
+				setPos,
 				//handles
 				handleChangePos,
 
@@ -222,3 +215,70 @@ export const FMContextProvider = ({ children }: Props) => {
 };
 
 export default FMDataContext;
+
+/*
+	const copyLocationCToCC = () => {
+		dispatchCC({
+			type: COPY_LOCATION,
+			payload: locationClient,
+		});
+		dispatchFmCommerce({
+			type: SET_FM,
+			payload: {
+				...fmCommerce,
+				id_estado: fmClient.id_estado_client,
+				id_ciudad: fmClient.id_ciudad_client,
+				id_municipio: fmClient.id_municipio_client,
+				id_parroquia: fmClient.id_parroquia_client,
+				sector: fmClient.sector_client,
+				calle: fmClient.calle_client,
+				local: fmClient.local_client,
+				codigo_postal: fmClient.codigo_postal_client,
+			},
+		});
+	};
+
+	const copyLocationCCToP = () => {
+		dispatchP({
+			type: COPY_LOCATION,
+			payload: locationCommerce,
+		});
+		dispatchFmPos({
+			type: SET_FM,
+			payload: {
+				...fmPos,
+				id_estado: fmCommerce.id_estado,
+				id_ciudad: fmCommerce.id_ciudad,
+				id_municipio: fmCommerce.id_municipio,
+				id_parroquia: fmCommerce.id_parroquia,
+				sector: fmCommerce.sector,
+				calle: fmCommerce.calle,
+				local: fmCommerce.local,
+				codigo_postal: fmCommerce.codigo_postal,
+			},
+		});
+	};
+
+	//[delete]
+	const copyLocationCToP = () => {
+		dispatchP({
+			type: COPY_LOCATION,
+			payload: locationClient,
+		});
+		dispatch({
+			type: SET_FM,
+			payload: {
+				...fmData,
+				id_estado_pos: fmData.id_estado_client,
+				id_ciudad_pos: fmData.id_ciudad_client,
+				id_municipio_pos: fmData.id_municipio_client,
+				id_parroquia_pos: fmData.id_parroquia_client,
+				sector_pos: fmData.sector_client,
+				calle_pos: fmData.calle_client,
+				local_pos: fmData.local_client,
+				codigo_postal_pos: fmData.codigo_postal_client,
+			},
+		});
+	};
+	//
+*/

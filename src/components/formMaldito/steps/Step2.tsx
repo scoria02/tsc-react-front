@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 //sytles
 import { useStylesFM } from '../styles';
-import { FMContext } from '../../../context/FM/FMContext';
 import { validInputString } from '../../../utils/fm';
 import FMDataContext from '../../../context/FMAdmision/fmContext';
 

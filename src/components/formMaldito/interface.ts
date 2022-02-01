@@ -1,25 +1,6 @@
-import { fmError_Interface, fm_Interface } from '../../context/FM/interfaces';
-import { ListLocation } from '../../context/Location/interfaces';
-import { Days } from '../../interfaces/fm';
+//import { ListLocation } from '../../context/Location/interfaces';
 
-export interface FMint extends Location, LocationClient, LocationCommerce, LocationPos, LocationUtilis {
-	typeSolict: number;
-	fmClient: any;
-	fmCommerce: any;
-	selectTypeSolict?: (value: number) => void;
-	fmData: fm_Interface;
-	fmDataError?: fmError_Interface;
-	days?: Days;
-	codePhone?: string;
-	changeFmData?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-	changeFmParms?: any;
-	setFmData?: any;
-	changeDays?: any;
-	setDays?: any;
-	setActivity?: any;
-	setFmError?: any;
-}
-
+/*
 export interface Location {
 	locationClient?: any;
 	locationCommerce?: any;
@@ -64,6 +45,7 @@ export interface ListLocationInt {
 	copyListLocationCToCC: any;
 	copyListLocationCCToP: any;
 }
+*/
 
 export interface ImagesInt {
 	rc_ident_card: any;

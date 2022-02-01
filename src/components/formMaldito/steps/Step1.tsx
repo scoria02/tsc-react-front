@@ -35,7 +35,6 @@ export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImag
 		errorsFm,
 		client,
 		locationClient,
-		setClient,
 		setLocationClient,
 		setEstado,
 		setMunicipio,
@@ -246,7 +245,7 @@ export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImag
 						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
 						onChange={(event, value: Estado | null) => {
-							setEstado(value, setLocationClient, setClient);
+							setEstado(value, setLocationClient);
 							handleListMunicipio(value ? value.id : 0, setListLocationClient);
 						}}
 						value={locationClient.estado || null}
@@ -267,8 +266,8 @@ export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImag
 						disabled={fm.mashClient}
 						className={classes.inputText}
 						onChange={(event, value: Municipio | null) => {
-							setMunicipio(value, setLocationClient, setClient);
-							handleListCiudad(client.id_estado, setListLocationClient);
+							setMunicipio(value, setLocationClient);
+							handleListCiudad(locationClient.estado!.id, setListLocationClient);
 						}}
 						value={locationClient.municipio || null}
 						options={listLocationClient.municipio}
@@ -289,8 +288,8 @@ export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImag
 						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
 						onChange={(event, value: Ciudad | null) => {
-							setCiudad(value, setLocationClient, setClient);
-							handleListParroquia(client.id_municipio, setListLocationClient);
+							setCiudad(value, setLocationClient);
+							handleListParroquia(locationClient.municipio!.id, setListLocationClient);
 						}}
 						value={locationClient.ciudad || null}
 						options={listLocationClient.ciudad}
@@ -309,7 +308,7 @@ export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImag
 						disabled={fm.mashClient}
 						className={classes.inputText}
 						onChange={(event, value: Parroquia | null) => {
-							setParroquia(value, setLocationClient, setClient);
+							setParroquia(value, setLocationClient);
 						}}
 						value={locationClient.parroquia || null}
 						options={listLocationClient.parroquia}
@@ -334,7 +333,7 @@ export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImag
 						id='standard-required'
 						label='Cod. Postal'
 						name='codigo_postal'
-						value={client.codigo_postal}
+						value={locationClient.ciudad?.postal_code || ''}
 					/>
 					<TextField
 						disabled={fm.mashClient}

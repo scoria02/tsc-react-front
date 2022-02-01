@@ -8,12 +8,12 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import classNames from 'classnames';
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FMContext } from '../../../context/FM/FMContext';
 import { validationNumBank } from '../../../store/actions/fm';
 import { RootState } from '../../../store/store';
 import { recaudo } from '../../utilis/recaudos';
 import { getAci } from '../getData';
 import { useStylesFM } from '../styles';
+import FMDataContext from '../../../context/FMAdmision/fmContext';
 
 /*
 			listTypePay={listTypePay}
@@ -45,63 +45,65 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
-	const { fmData, fmDataError, setFmData, changeFmParms, changeFmData }: any = useContext(FMContext);
+	const { client, pos, errorsFm, setPos, handleChangePos } = useContext(FMDataContext);
 
 	const handleSelectPayment = (event: any, value: any, item: string) => {
 		if (value) {
-			changeFmParms(`id_${item}`, value.id);
+			//changeFmParms(`id_${item}`, value.id);
 			//setPayment(value);
 		} else {
-			changeFmParms(`id_${item}`, 0);
+			//changeFmParms(`id_${item}`, 0);
 			//setPayment(null);
 		}
 	};
 
 	const handleSelectTypePay = (event: any, value: any, item: string) => {
 		if (value) {
-			changeFmParms(`id_${item}`, value.id);
+			//changeFmParms(`id_${item}`, value.id);
 			//setTypePay(value);
 		} else {
-			changeFmParms(`id_${item}`, 0);
+			//changeFmParms(`id_${item}`, 0);
 			//setTypePay(null);
 		}
 	};
 
 	const handleSelectPos = (event: any, value: any, item: string) => {
 		if (value) {
-			changeFmParms(`id_${item}`, value.id);
+			//changeFmParms(`id_${item}`, value.id);
 			//setModelPost(value);
 		} else {
-			changeFmParms(`id_${item}`, 0);
+			//changeFmParms(`id_${item}`, 0);
 			//setModelPost(null);
 		}
 	};
 
 	const handleChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
-		changeFmParms(event.target.name, !fmData[`${event.target.name}`] ? 1 : 0);
+		//changeFmParms(event.target.name, !pos[`${event.target.name}`] ? 1 : 0);
 	};
 
 	const handleCheckedPagadero = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (!fmData[`${event.target.name}`]) {
-			deleteImgContributor('comp_dep');
-		}
-		setFmData({
-			...fmData,
-			[event.target.name]: !fmData[`${event.target.name}`] ? 1 : 0,
-			nro_comp_dep: '',
-		});
+		/*
+			if (!pos[`${event.target.name}`]) {
+				deleteImgContributor('comp_dep');
+			}
+			setPos({
+				...pos,
+				[event.target.name]: !pos[`${event.target.name}`] ? 1 : 0,
+				nro_comp_dep: '',
+			});
+			*/
 	};
 
 	const handleSelectOrigin = (event: any, value: any, item: string) => {
 		if (value) {
-			setFmData({
-				...fmData,
+			setPos({
+				...pos,
 				[`id_${item}`]: value.id,
 			});
 			//setRequestSource(value);
 		} else {
-			setFmData({
-				...fmData,
+			setPos({
+				...pos,
 				[`id_${item}`]: 0,
 			});
 			//setRequestSource(null);
@@ -110,15 +112,15 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 
 	const handleChangeBank = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
-			if (event.target.value.length === 20 && fmData.email !== '') {
+			if (event.target.value.length === 20 && client.email !== '') {
 				dispatch(
 					validationNumBank({
-						email: fmData.email,
+						email: client.email,
 						bank_account_num: event.target.value,
 					})
 				);
 			}
-			changeFmData(event);
+			handleChangePos(event);
 		}
 	};
 
@@ -157,32 +159,32 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 			setIsACI(false);
 			setReferido(false);
 		}
-		if (fmData.initial && modelPos) {
+		if (pos.initial && modelPos) {
 			// cable pelado para el monto del precio del modelo seleccionado para calcular las cuotas
-			let valor = fmData.number_post * (modelPos.price - fmData.initial);
-			let cuotas = valor / (fmData.number_post * 50);
+			let valor = pos.number_post * (modelPos.price - pos.initial);
+			let cuotas = valor / (pos.number_post * 50);
 
-			setFmData({
-				...fmData,
-				cuotas: valor / (fmData.number_post * 50),
+			setPos({
+				...pos,
+				cuotas: valor / (pos.number_post * 50),
 			});
 
 			if (valor < 0) {
-				setFmData({
-					...fmData,
+				setPos({
+					...pos,
 					initial: 100,
 				});
 			}
 			if (cuotas % 1 === 0 && cuotas > 0 && cuotas) {
 				setCuotasTexto(`${cuotas} cuota/s de 50$`);
 			} else {
-				setFmData({
-					...fmData,
+				setPos({
+					...pos,
 					initial: 100,
 				});
 			}
 		}
-	}, [fmData.number_post, fmData.initial, requestSource, typePay, modelPos]);
+	}, [pos.number_post, pos.initial, requestSource, typePay, modelPos]);
 	*/
 
 	useEffect(() => {
@@ -214,9 +216,9 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 					label='Numero de Puntos'
 					type='number'
 					name='number_post'
-					onChange={changeFmData}
-					error={fmDataError.number_post}
-					value={fmData.number_post}
+					onChange={handleChangePos}
+					error={errorsFm.number_post}
+					value={pos.number_post}
 				/>
 				{/*
 				<Autocomplete
@@ -240,8 +242,8 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 					label={fm.nameBank === '' ? 'Numero de Cuenta' : fm.nameBank}
 					name='text_account_number'
 					onChange={handleChangeBank}
-					value={fmData.text_account_number}
-					error={fmDataError.text_account_number || fm.errorNumBank}
+					value={pos.text_account_number}
+					error={errorsFm.text_account_number || fm.errorNumBank}
 					inputProps={{ maxLength: 20 }}
 				/>
 				<div className={classes.row}>
@@ -320,11 +322,11 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 						id='standard-required'
 						label='Numero de Cédula'
 						name='reqSource_docnum'
-						onChange={changeFmData}
+						onChange={handleChangePos}
 						inputProps={{
 							maxLength: 9,
 						}}
-						value={fmData.reqSource_docnum}
+						value={pos.reqSource_docnum}
 					/>
 				)}
 				{isACI && (
@@ -359,7 +361,7 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 							type='number'
 							name='initial'
 							variant='outlined'
-							value={fmData.initial}
+							value={pos.initial}
 							onKeyDown={(e) => {
 								e.preventDefault();
 							}}
@@ -368,7 +370,7 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 								step: '50',
 								min: '100',
 							}}
-							onChange={changeFmData}
+							onChange={handleChangePos}
 						/>
 						<TextField
 							disabled
@@ -390,7 +392,7 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 						<>
 							<Checkbox
 								name='discount'
-								checked={fmData.discount === 1 ? true : false}
+								checked={pos.discount}
 								onChange={handleChecked}
 								color='primary'
 								inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -411,7 +413,7 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 						<>
 							<Checkbox
 								name='pagadero'
-								checked={fmData.pagadero === 1 ? true : false}
+								checked={pos.pagadero}
 								onChange={handleCheckedPagadero}
 								color='primary'
 								inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -426,7 +428,7 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 					}
 				/>
 			</div>
-			{fmData.pagadero || fmData.id_payment_method === 2 ? null : (
+			{pos.pagadero || pos.id_payment_method === 2 ? null : (
 				<div className={classes.input}>
 					<div className={classNames(classes.row, classes.inputTextLeft)}>
 						<b className={classes.labels}>Comprobante de pago</b>
@@ -471,8 +473,8 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 							label='Referencia'
 							placeholder='Numero de comprobante'
 							name='nro_comp_dep'
-							onChange={changeFmData}
-							value={fmData.nro_comp_dep}
+							onChange={handleChangePos}
+							value={pos.nro_comp_dep}
 							//error={erorr.reqSource_docnum}
 						/>
 					</div>

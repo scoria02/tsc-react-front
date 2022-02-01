@@ -1,13 +1,8 @@
-import { fmPos } from '../../../interfaces/fm';
+import { fmPos } from '../../interfaces/fm';
 
 export const initFmPos: fmPos = {
 	//Step4 Location
 	//Location Pos
-	id_estado: 0,
-	id_ciudad: 0,
-	id_municipio: 0,
-	id_parroquia: 0,
-	codigo_postal: '',
 	sector: '',
 	calle: '',
 	local: '',

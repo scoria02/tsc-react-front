@@ -7,46 +7,41 @@ import { useStylesFM } from '../styles';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 
-import { FMContext } from '../../../context/FM/FMContext';
 import LocationsContext from '../../../context/Location/LocationsContext';
 
 import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/Location/interfaces';
+import FMDataContext from '../../../context/FMAdmision/fmContext';
 
 export const Step4: FC = () => {
 	const classes = useStylesFM();
 
 	const {
 		listLocationCommerce,
+		listLocationPos,
 		setListLocationCommerce,
 		setListLocationPos,
 		handleListMunicipio,
 		handleListCiudad,
 		handleListParroquia,
-		listLocationPos,
 	} = useContext(LocationsContext);
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
 	const {
-		fmCommerce,
-		fmPos,
+		errorsFm,
+		commerce,
+		pos,
 		locationCommerce,
 		locationPos,
-		setEstadoCommerce,
-		setMunicipioCommerce,
-		setCiudadCommerce,
-		setParroquiaCommerce,
-		setEstadoPos,
-		setMunicipioPos,
-		setCiudadPos,
-		setParroquiaPos,
+		setLocationCommerce,
+		setLocationPos,
+		setEstado,
+		setMunicipio,
+		setCiudad,
+		setParroquia,
 		handleChangeCommerce,
 		handleChangePos,
-
-		//s
-		fmData,
-		changeFmData,
-	}: any = useContext(FMContext);
+	} = useContext(FMDataContext);
 
 	const handleLocationCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
 		//setAutoCompleteCommerce(false);
@@ -84,7 +79,7 @@ export const Step4: FC = () => {
 					<Autocomplete
 						className={classes.inputTextLeft}
 						onChange={(event, value: Estado | null) => {
-							setEstadoCommerce(value);
+							setEstado(value, setLocationCommerce);
 							handleListMunicipio(value ? value.id : 0, setListLocationCommerce);
 						}}
 						value={locationCommerce.estado || null}
@@ -105,8 +100,8 @@ export const Step4: FC = () => {
 					<Autocomplete
 						className={classes.inputText}
 						onChange={(event, value: Municipio | null) => {
-							setMunicipioCommerce(value);
-							handleListCiudad(fmCommerce.id_estado, setListLocationCommerce);
+							setMunicipio(value, setLocationCommerce);
+							handleListCiudad(locationCommerce.estado!.id, setListLocationCommerce);
 						}}
 						value={locationCommerce.municipio || null}
 						disabled={fm.mashCommerce}
@@ -126,8 +121,8 @@ export const Step4: FC = () => {
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
 						onChange={(event, value: Ciudad | null) => {
-							setCiudadCommerce(value);
-							handleListParroquia(fmCommerce.id_municipio, setListLocationCommerce);
+							setCiudad(value, setLocationCommerce);
+							handleListParroquia(locationCommerce.municipio!.id, setListLocationCommerce);
 						}}
 						className={classes.inputTextLeft}
 						value={locationCommerce.ciudad || null}
@@ -147,7 +142,7 @@ export const Step4: FC = () => {
 					<Autocomplete
 						className={classes.inputText}
 						onChange={(event, value: Parroquia | null) => {
-							setParroquiaCommerce(value);
+							setParroquia(value, setLocationCommerce);
 						}}
 						value={locationCommerce.parroquia || null}
 						disabled={fm.mashCommerce}
@@ -166,7 +161,7 @@ export const Step4: FC = () => {
 						id='standard-required'
 						label='Codigo Postal'
 						name='codigo_postal'
-						value={fmCommerce.codigo_postal}
+						value={locationCommerce.ciudad?.postal_code || ''}
 						disabled
 					/>
 					<TextField
@@ -178,7 +173,7 @@ export const Step4: FC = () => {
 						label='Sector'
 						name='sector'
 						onChange={handleLocationCommerce}
-						value={fmCommerce.sector}
+						value={commerce.sector}
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
@@ -191,7 +186,7 @@ export const Step4: FC = () => {
 						label='Calle'
 						name='calle'
 						onChange={handleLocationCommerce}
-						value={fmCommerce.calle}
+						value={commerce.calle}
 					/>
 					<TextField
 						className={classes.inputText}
@@ -202,7 +197,7 @@ export const Step4: FC = () => {
 						disabled={fm.mashCommerce}
 						name='local'
 						onChange={handleLocationCommerce}
-						value={fmCommerce.local}
+						value={commerce.local}
 					/>
 				</div>
 			</div>
@@ -212,7 +207,7 @@ export const Step4: FC = () => {
 					<Autocomplete
 						className={classes.inputTextLeft}
 						onChange={(event, value: Estado | null) => {
-							setEstadoPos(value);
+							setEstado(value, setLocationPos);
 							handleListMunicipio(value ? value.id : 0, setListLocationPos);
 						}}
 						options={listLocationPos.estado}
@@ -232,8 +227,8 @@ export const Step4: FC = () => {
 					<Autocomplete
 						className={classes.inputText}
 						onChange={(event, value: Municipio | null) => {
-							setMunicipioPos(value);
-							handleListCiudad(fmCommerce.id_estado, setListLocationPos);
+							setMunicipio(value, setLocationPos);
+							handleListCiudad(locationPos.estado!.id, setListLocationPos);
 						}}
 						value={locationPos.municipio || null}
 						options={listLocationPos.municipio}
@@ -253,8 +248,8 @@ export const Step4: FC = () => {
 					<Autocomplete
 						className={classes.inputTextLeft}
 						onChange={(event, value: Ciudad | null) => {
-							setCiudadPos(value);
-							handleListParroquia(fmPos.id_municipio, setListLocationPos);
+							setCiudad(value, setLocationPos);
+							handleListParroquia(locationPos.municipio!.id, setListLocationPos);
 						}}
 						options={listLocationPos.ciudad}
 						value={locationPos.ciudad || null}
@@ -272,7 +267,7 @@ export const Step4: FC = () => {
 					<Autocomplete
 						className={classes.inputText}
 						onChange={(event, value: Parroquia | null) => {
-							setParroquiaPos(value);
+							setParroquia(value, setLocationPos);
 						}}
 						options={listLocationPos.parroquia}
 						value={locationPos.parroquia || null}
@@ -287,6 +282,8 @@ export const Step4: FC = () => {
 							/>
 						)}
 					/>
+				</div>
+				<div className={classnames(classes.row, classes.input)}>
 					<TextField
 						className={classes.inputTextLeft}
 						variant='outlined'
@@ -294,7 +291,7 @@ export const Step4: FC = () => {
 						id='standard-required'
 						label='Codigo Postal'
 						name='codigo_postal_pos'
-						value={fmPos.codigo_postal}
+						value={locationPos.ciudad?.postal_code || ''}
 						disabled
 					/>
 					<TextField
@@ -305,7 +302,7 @@ export const Step4: FC = () => {
 						label='Sector'
 						name='sector'
 						onChange={handleLocationPos}
-						value={fmPos.sector}
+						value={pos.sector}
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
@@ -317,7 +314,7 @@ export const Step4: FC = () => {
 						label='Calle'
 						name='calle'
 						onChange={handleLocationPos}
-						value={fmPos.calle}
+						value={pos.calle}
 					/>
 					<TextField
 						className={classes.inputText}
@@ -327,7 +324,7 @@ export const Step4: FC = () => {
 						label='Local'
 						name='local'
 						onChange={handleLocationPos}
-						value={fmPos.local}
+						value={pos.local}
 					/>
 				</div>
 			</div>

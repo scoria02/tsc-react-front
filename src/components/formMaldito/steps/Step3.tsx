@@ -15,13 +15,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { recaudo } from '../../utilis/recaudos';
 import { useStylesFM } from '../styles';
-import { FMContext } from '../../../context/FM/FMContext';
 
 import { Activity } from '../../../context/DataList/interface';
 import { validationCommerce } from '../../../store/actions/fm';
 import FMDataContext from '../../../context/FMAdmision/fmContext';
 import { types } from 'util';
 import DataListContext from '../../../context/DataList/DataListContext';
+import { Days } from '../../../interfaces/fm';
 
 export const Step3: React.FC<any> = ({
 	imagesActa,
@@ -38,19 +38,16 @@ export const Step3: React.FC<any> = ({
 	const fm: any = useSelector((state: RootState) => state.fm);
 
 	//Context
-	const { typeSolict, errorsFm, commerce, handleSelectIdentCommerce, handleChangeCommerce } =
-		useContext(FMDataContext);
-
 	const {
-		handleParamsCommerce,
-
-		//ad
-		fmDataError,
-		days,
+		typeSolict,
+		errorsFm,
+		commerce,
 		activity,
 		setActivity,
-		changeDays,
-	}: any = useContext(FMContext);
+		handleChangeDay,
+		handleSelectIdentCommerce,
+		handleChangeCommerce,
+	} = useContext(FMDataContext);
 
 	const { listIdentType, listActivity } = useContext(DataListContext);
 
@@ -73,10 +70,10 @@ export const Step3: React.FC<any> = ({
 
 	const handleSelectActivity = (event: any, value: any, item: string) => {
 		if (value) {
-			handleParamsCommerce(`id_${item}`, value.id);
+			//handleParamsCommerce(`id_${item}`, value.id);
 			setActivity(value);
 		} else {
-			handleParamsCommerce(`id_${item}`, 0);
+			//handleParamsCommerce(`id_${item}`, 0);
 			setActivity(null);
 		}
 	};
@@ -85,7 +82,7 @@ export const Step3: React.FC<any> = ({
 		if (e.target.checked) {
 			deleteImgContributor(e.target.name);
 		}
-		handleParamsCommerce(e.target.name, e.target.checked);
+		//handleParamsCommerce(e.target.name, e.target.checked);
 	};
 
 	const handleIdentNum = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -197,7 +194,7 @@ export const Step3: React.FC<any> = ({
 						name='name'
 						onChange={handleChangeNameCommerce}
 						value={commerce.name}
-						error={fmDataError.name}
+						error={errorsFm.name}
 						disabled={fm.mashCommerce}
 					/>
 				</div>
@@ -308,10 +305,17 @@ export const Step3: React.FC<any> = ({
 			<div className={classes.daysCB}>
 				Días laborales
 				<FormGroup row style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr ' }}>
-					{Object.keys(days).map((key: any) => {
+					{Object.keys(commerce.days).map((key: string) => {
 						return (
 							<FormControlLabel
-								control={<Checkbox checked={days[key]} onChange={changeDays} name={key} color='primary' />}
+								control={
+									<Checkbox
+										checked={commerce.days[key as keyof Days]}
+										onChange={handleChangeDay}
+										name={key}
+										color='primary'
+									/>
+								}
 								label={key.replaceAll('_', ' ')}
 								key={key}
 							/>

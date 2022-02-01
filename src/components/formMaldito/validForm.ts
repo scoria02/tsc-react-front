@@ -1,3 +1,7 @@
+import { Activity } from '../../context/DataList/interface';
+import { LocationInt } from '../../context/Location/interfaces';
+import { fmClient, fmCommerce, fmError_Interface, fmPos } from '../../interfaces/fm';
+
 export const validEmail = (value: string): boolean => {
 	let validatedEmail = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i.test(value);
 	if (!validatedEmail) {
@@ -88,7 +92,7 @@ export const validNumBank = (value: string): boolean => {
 	else return false;
 };
 
-const step1 = 15;
+const step1 = 10;
 const step2 = 8;
 const step3 = 5;
 const step4 = 8;
@@ -141,6 +145,7 @@ export const inputNotNull = (last: number, form: any): boolean => {
 		if (index === last) {
 			return false;
 		}
+		console.log(item, last);
 		index++;
 		if (typeof item[1] === 'string' && item[1].trim() === '') {
 			return true;
@@ -172,50 +177,6 @@ export const sizeImagesStep = (active: number): number => {
 		default:
 			return 0;
 	}
-};
-export const allInputNotNUll = (last: number, form: any, mashClient: boolean, mashCommerce: boolean): boolean => {
-	let indice = 0;
-	for (const item of Object.entries(form)) {
-		if (indice === last) {
-			return false;
-		}
-		indice++;
-		//No Check when item[0] === 'IdentType'
-		if (typeof item[1] === 'string') {
-			if (mashClient && indice < 24) {
-				//no hago nada
-			} else if (mashCommerce && 24 <= indice && indice < 29) {
-				//no hago nada
-			} else if (item[0] === 'reqSource_docnum' && form.id_request_origin !== 1 && form.id_request_origin !== 2) {
-				//no hago nada
-			} else if ((form.pagadero || form.id_payment_method === 2) && item[0] === 'nro_comp_dep') {
-				//no hago nada
-			} else {
-				if (item[1].trim() === '') return true;
-			}
-		} else if (typeof item[1] === 'number' && item[0] !== 'special_contributor') {
-			if (mashClient && indice < 24) {
-				//no hago nada
-			} else if (mashCommerce && 24 <= indice && indice < 29) {
-				//no hago nada
-			} else if (item[0] === 'discount' || item[0] === 'pagadero') {
-				//no hago nada
-			} else {
-				if (item[1] === 0) {
-					return true;
-				}
-			}
-		} else if (typeof item[1] === 'number' && item[0] === 'special_contributor') {
-			if (mashClient && indice < 24) {
-				//no hago nada
-			} else if (mashCommerce && 24 <= indice && indice < 29) {
-				//no hago nada
-			} else {
-				// nada
-			}
-		}
-	}
-	return false;
 };
 
 export const allImgNotNUll = (
@@ -268,6 +229,13 @@ export const checkErrorAllInput = (last: number, errors: any): boolean => {
 	return false;
 };
 
+export const inputNotNullLocation = (location: LocationInt): boolean => {
+	for (const item of Object.entries(location)) {
+		if (!item[1]) return true;
+	}
+	return false;
+};
+
 export const validEndPoint = (activeStep: number, fm: any): boolean => {
 	if (fm.errorClient) {
 		return true;
@@ -305,5 +273,46 @@ export const validMashes = (activeStep: number, mashClient: boolean, mashCommerc
 	} else {
 		console.log('cliente y comercio validado');
 		return false;
+	}
+};
+
+export const validReadyStep = (
+	activeStep: number,
+	errorsFm: fmError_Interface,
+	client: fmClient,
+	commerce: fmCommerce,
+	pos: fmPos,
+	activity: Activity | null,
+	locationClient: LocationInt,
+	locationCommerce: LocationInt,
+	locationPos: LocationInt
+): boolean => {
+	switch (activeStep) {
+		case 0:
+			return true;
+		case 1:
+		case 2:
+			if (
+				!checkErrorAllInput(sizeStepError(activeStep), errorsFm) &&
+				!inputNotNullLocation(locationClient) &&
+				!inputNotNull(sizeStep(activeStep), client)
+			)
+				return true;
+			return false;
+		case 3:
+			console.log(activity);
+			if (!inputNotNull(sizeStep(activeStep), commerce) && activity) return true;
+			else return false;
+		case 4:
+			if (
+				!inputNotNull(13, commerce) &&
+				!inputNotNull(3, pos) &&
+				!inputNotNullLocation(locationCommerce) &&
+				!inputNotNullLocation(locationPos)
+			)
+				return true;
+			else return false;
+		default:
+			return false;
 	}
 };

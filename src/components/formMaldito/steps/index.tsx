@@ -2,7 +2,6 @@ import { Button, FormControl, IconButton, InputLabel, MenuItem, Select } from '@
 import BackUpIcon from '@material-ui/icons/Backup';
 import classNames from 'classnames';
 import { FC, useContext } from 'react';
-import { FMContext } from '../../../context/FM/FMContext';
 import { useStylesFM } from '../styles';
 
 import FMDataContext from '../../../context/FMAdmision/fmContext';

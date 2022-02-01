@@ -26,7 +26,7 @@ import { Step5 } from './steps/Step5';
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
 
-import { ImagesInt, ListLocationInt, NamesImagesInt } from './interface';
+import { ImagesInt, NamesImagesInt } from './interface';
 import { StateFMInt } from '../../store/reducers/fmReducer';
 import { stepError } from '../../utils/fm';
 
@@ -74,35 +74,24 @@ const FormM: React.FC = () => {
 	const { socket } = useContext(SocketContext);
 
 	//newContext
-	const { client, commerce, pos, handleChangeCommerce, errorsFm } = useContext(FMDataContext);
+	const { client, commerce, pos, activity, locationClient, locationCommerce, locationPos, errorsFm } =
+		useContext(FMDataContext);
 
 	useEffect(() => {
-		switch (activeStep) {
-			case 0:
-				setReadyStep(true);
-				break;
-			case 1:
-			case 2:
-				if (
-					!valids.checkErrorAllInput(valids.sizeStepError(activeStep), errorsFm) &&
-					!valids.inputNotNull(valids.sizeStep(activeStep), client)
-				)
-					setReadyStep(true);
-				else setReadyStep(false);
-				break;
-			case 3:
-				if (!valids.inputNotNull(valids.sizeStep(activeStep), commerce)) setReadyStep(true);
-				else setReadyStep(false);
-				break;
-			case 4:
-				if (!valids.inputNotNull(13, commerce) && !valids.inputNotNull(8, pos)) setReadyStep(true);
-				else setReadyStep(false);
-				break;
-			default:
-				setReadyStep(false);
-				break;
-		}
-	}, [client, activeStep]);
+		setReadyStep(
+			valids.validReadyStep(
+				activeStep,
+				errorsFm,
+				client,
+				commerce,
+				pos,
+				activity,
+				locationClient,
+				locationCommerce,
+				locationPos
+			)
+		);
+	}, [client, commerce, pos, locationClient, locationCommerce, locationPos, activity, activeStep]);
 
 	const { listLocationClient, listLocationCommerce, listLocationPos } = useContext(LocationsContext);
 
@@ -532,7 +521,7 @@ const FormM: React.FC = () => {
 									Volver
 								</Button>
 								<Button
-									//disabled={!readyStep}
+									disabled={!readyStep}
 									size='large'
 									variant='contained'
 									color='primary'
