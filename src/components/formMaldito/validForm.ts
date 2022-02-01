@@ -145,10 +145,36 @@ export const inputNotNull = (last: number, form: any): boolean => {
 		if (index === last) {
 			return false;
 		}
-		console.log(item, last);
+		console.log(item);
 		index++;
 		if (typeof item[1] === 'string' && item[1].trim() === '') {
 			return true;
+		} else if (typeof item[1] === 'number' && item[1] === 0) {
+			return true;
+		}
+	}
+	return false;
+};
+
+export const inputNotNullPos = (last: number, form: any): boolean => {
+	let index: number = 0;
+	for (const item of Object.entries(form)) {
+		if (index === last) {
+			return false;
+		}
+		index++;
+		if (typeof item[1] === 'string' && item[1].trim() === '') {
+			if (item[0] === 'reqSource_docnum') {
+				if (form['type_pay']?.id === 2) {
+					return true;
+				}
+			} else if (item[0] === 'nro_comp_dep') {
+				if (!form['pagadero']) {
+					return true;
+				}
+			} else {
+				return true;
+			}
 		} else if (typeof item[1] === 'number' && item[1] === 0) {
 			return true;
 		}
@@ -300,9 +326,8 @@ export const validReadyStep = (
 				return true;
 			return false;
 		case 3:
-			console.log(activity);
 			if (!inputNotNull(sizeStep(activeStep), commerce) && activity) return true;
-			else return false;
+			return false;
 		case 4:
 			if (
 				!inputNotNull(13, commerce) &&
@@ -311,7 +336,10 @@ export const validReadyStep = (
 				!inputNotNullLocation(locationPos)
 			)
 				return true;
-			else return false;
+			return false;
+		case 5:
+			if (!inputNotNullPos(3 + 12, pos)) return true;
+			return false;
 		default:
 			return false;
 	}

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Checkbox, FormControlLabel } from '@material-ui/core';
+import { Checkbox, FormControlLabel, InputAdornment } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
@@ -14,71 +14,40 @@ import { recaudo } from '../../utilis/recaudos';
 import { getAci } from '../getData';
 import { useStylesFM } from '../styles';
 import FMDataContext from '../../../context/FMAdmision/fmContext';
-
-/*
-			listTypePay={listTypePay}
-			setTypePay={setTypePay}
-			typePay={typePay}
-			listModelPos={listModelPos}
-			setModelPost={setModelPost}
-			modelPos={modelPos}
-			listPayment={listPayment}
-			setPayment={setPayment}
-			payment={payment}
-			listRequestSource={listRequestSource}
-			requestSource={requestSource}
-			setRequestSource={setRequestSource}
-*/
+import DataListContext from '../../../context/DataList/DataListContext';
+import { Aci } from '../../../context/DataList/interface';
 
 //Pedido
 export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesForm, deleteImgContributor }) => {
 	const classes = useStylesFM();
-	const [aci, setACI] = useState<any>({});
-	const [listAci, setListAci] = useState<any>([]);
+	const [aci, setACI] = useState<Aci | null>(null);
 	const [isACI, setIsACI] = useState<boolean>(false);
 	const [deleted, setDeleted] = useState<boolean>(false);
 	const [fraccion, setFraccion] = useState<boolean>(false);
 	const [referido, setReferido] = useState<boolean>(false);
-	// const cuotasText = ['5 cuotas de 50$', '4 cuotas de 50$', '3 cuotas de 50$'];
 	const [cuotasTexto, setCuotasTexto] = useState('');
 	const dispatch = useDispatch();
+	// const cuotasText = ['5 cuotas de 50$', '4 cuotas de 50$', '3 cuotas de 50$'];
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
-	const { client, pos, errorsFm, setPos, handleChangePos } = useContext(FMDataContext);
+	const { client, pos, errorsFm, handleParamsPos, handleChangePos, handleCheckedPos } = useContext(FMDataContext);
+	const { listPayment, listModelPos, listTypePay, listRequestSource, listAci } = useContext(DataListContext);
 
-	const handleSelectPayment = (event: any, value: any, item: string) => {
-		if (value) {
-			//changeFmParms(`id_${item}`, value.id);
-			//setPayment(value);
-		} else {
-			//changeFmParms(`id_${item}`, 0);
-			//setPayment(null);
+	const handleChangeReferido = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		if (/^[V0-9]+$/.test(event.target.value) || event.target.value === '') {
+			handleChangePos(event);
 		}
 	};
 
-	const handleSelectTypePay = (event: any, value: any, item: string) => {
-		if (value) {
-			//changeFmParms(`id_${item}`, value.id);
-			//setTypePay(value);
-		} else {
-			//changeFmParms(`id_${item}`, 0);
-			//setTypePay(null);
-		}
+	const handleSelect = (event: any, value: any, name: string) => {
+		if (value) handleParamsPos(name, value);
+		else handleParamsPos(name, null);
 	};
 
-	const handleSelectPos = (event: any, value: any, item: string) => {
-		if (value) {
-			//changeFmParms(`id_${item}`, value.id);
-			//setModelPost(value);
-		} else {
-			//changeFmParms(`id_${item}`, 0);
-			//setModelPost(null);
-		}
-	};
-
-	const handleChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
-		//changeFmParms(event.target.name, !pos[`${event.target.name}`] ? 1 : 0);
+	const handleSelectSource = (event: any, value: any, name: string) => {
+		if (value) handleParamsPos(name, value.id as string);
+		else handleParamsPos(name, '');
 	};
 
 	const handleCheckedPagadero = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,28 +55,9 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 			if (!pos[`${event.target.name}`]) {
 				deleteImgContributor('comp_dep');
 			}
-			setPos({
-				...pos,
-				[event.target.name]: !pos[`${event.target.name}`] ? 1 : 0,
-				nro_comp_dep: '',
-			});
 			*/
-	};
-
-	const handleSelectOrigin = (event: any, value: any, item: string) => {
-		if (value) {
-			setPos({
-				...pos,
-				[`id_${item}`]: value.id,
-			});
-			//setRequestSource(value);
-		} else {
-			setPos({
-				...pos,
-				[`id_${item}`]: 0,
-			});
-			//setRequestSource(null);
-		}
+		handleParamsPos('nro_comp_dep', '');
+		handleCheckedPos(event);
 	};
 
 	const handleChangeBank = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,10 +79,9 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 		setACI(value);
 	};
 
-	/*
 	useEffect(() => {
-		if (typePay) {
-			if (typePay.id === 2) {
+		if (pos.type_pay) {
+			if (pos.type_pay.id === 2) {
 				setFraccion(true);
 			} else {
 				setFraccion(false);
@@ -140,8 +89,8 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 		} else {
 			setFraccion(false);
 		}
-		if (requestSource) {
-			switch (requestSource.id) {
+		if (pos.request_origin) {
+			switch (pos.request_origin.id) {
 				case 1:
 					setReferido(true);
 					setIsACI(false);
@@ -159,33 +108,38 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 			setIsACI(false);
 			setReferido(false);
 		}
-		if (pos.initial && modelPos) {
+		if (pos.initial && pos.model_post) {
 			// cable pelado para el monto del precio del modelo seleccionado para calcular las cuotas
-			let valor = pos.number_post * (modelPos.price - pos.initial);
+			let valor = pos.number_post * (pos.model_post.price - pos.initial);
 			let cuotas = valor / (pos.number_post * 50);
 
+			/*
 			setPos({
 				...pos,
 				cuotas: valor / (pos.number_post * 50),
 			});
+			*/
 
 			if (valor < 0) {
+				/*
 				setPos({
 					...pos,
 					initial: 100,
 				});
+				*/
 			}
 			if (cuotas % 1 === 0 && cuotas > 0 && cuotas) {
 				setCuotasTexto(`${cuotas} cuota/s de 50$`);
 			} else {
+				/*
 				setPos({
 					...pos,
 					initial: 100,
 				});
+				*/
 			}
 		}
-	}, [pos.number_post, pos.initial, requestSource, typePay, modelPos]);
-	*/
+	}, [pos.number_post, pos.initial, pos.request_origin, pos.type_pay, pos.model_post]);
 
 	useEffect(() => {
 		if (imagesForm.rc_comp_dep) {
@@ -195,14 +149,6 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 		}
 		/* eslint-disable react-hooks/exhaustive-deps */
 	}, [imagesForm.rc_comp_dep]);
-
-	useLayoutEffect(() => {
-		getAci().then((res: any) => {
-			res.forEach((item: any, indice: number) => {
-				setListAci((prevState: any) => [...prevState, item]);
-			});
-		});
-	}, []);
 
 	return (
 		<div className={classes.grid}>
@@ -220,18 +166,16 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 					error={errorsFm.number_post}
 					value={pos.number_post}
 				/>
-				{/*
 				<Autocomplete
 					className={classes.inputText}
-					onChange={(event, value) => handleSelectPos(event, value, 'model_post')}
-					//value={modelPos || null}
-					//options={listModelPos}
+					onChange={(event, value) => handleSelect(event, value, 'model_post')}
+					value={pos.model_post || null}
+					options={listModelPos}
 					getOptionLabel={(option: any) => (option.name ? option.name : '')}
 					renderInput={(params: any) => (
 						<TextField {...params} name='model_post' label='Modelo de los POS' variant='outlined' />
 					)}
 				/>
-				*/}
 			</div>
 			<div className={classes.input}>
 				<TextField
@@ -275,39 +219,34 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 				</div>
 			</div>
 			<div className={classes.input}>
-				{/* 
 				<Autocomplete
 					className={classes.inputTextLeft}
-					onChange={(event, value) => handleSelectPayment(event, value, 'payment_method')}
-					//options={listPayment}
-					//value={payment || null}
+					onChange={(event, value) => handleSelect(event, value, 'payment_method')}
+					options={listPayment}
+					value={pos.payment_method || null}
 					getOptionLabel={(option: any) => (option.name ? option.name : '')}
 					renderInput={(params: any) => (
 						<TextField {...params} name='payment_method' label='Modalidad de Pago' variant='outlined' />
 					)}
 				/>
-				*/}
-				{/* 
 				<Autocomplete
 					className={classes.inputText}
-					onChange={(event, value) => handleSelectTypePay(event, value, 'type_pay')}
-					//options={listTypePay}
-					//value={typePay || null}
+					onChange={(event, value) => handleSelect(event, value, 'type_pay')}
+					options={listTypePay}
+					value={pos.type_pay || null}
 					getOptionLabel={(option: any) => (option.name ? option.name : '')}
 					renderInput={(params: any) => (
 						<TextField {...params} name='type_pay' label='Tipo de Pago' variant='outlined' />
 					)}
 				/>
-				*/}
 			</div>
 			<div className={classes.input}>
-				{/* 
 				<Autocomplete
 					className={classes.inputTextLeft}
 					style={{ width: '50%' }}
-					onChange={(event, value) => handleSelectOrigin(event, value, 'request_origin')}
-					//value={requestSource || null}
-					//koptions={listRequestSource}
+					onChange={(event, value) => handleSelect(event, value, 'request_origin')}
+					options={listRequestSource}
+					value={pos.request_origin || null}
 					getOptionLabel={(option: any) => (option.name ? option.name : '')}
 					renderInput={(params: any) => (
 						<TextField {...params} name='request_origin' label='Origen de Solicitud' variant='outlined' />
@@ -322,11 +261,15 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 						id='standard-required'
 						label='Numero de Cédula'
 						name='reqSource_docnum'
-						onChange={handleChangePos}
+						onChange={handleChangeReferido}
 						inputProps={{
 							maxLength: 9,
 						}}
 						value={pos.reqSource_docnum}
+						InputProps={{
+							startAdornment: <InputAdornment position='start'>V</InputAdornment>,
+						}}
+						error={errorsFm.reqSource_docnum}
 					/>
 				)}
 				{isACI && (
@@ -335,21 +278,20 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 						style={{ width: '50%' }}
 						//disabled={} //si el comercio tiene aci traelo
 						onChange={(event, value) => {
-							handleSelectAci(event, value);
+							handleSelectSource(event, value, 'reqSource_docnum');
+							setACI(value);
 						}}
 						options={listAci}
 						value={aci || null}
-						getOptionLabel={(option: any) =>
-							option.aliNombres || option.aliIdentificacion
-								? option.aliTipoIdentificacion + option.aliIdentificacion + ' | ' + option.aliNombres
-								: ''
+						getOptionLabel={(option: Aci | null) =>
+							option ? option.aliTipoIdentificacion + option.aliIdentificacion + ' | ' + option.aliNombres : ''
 						}
+						getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
 						renderInput={(params: any) => (
 							<TextField {...params} name='aci' label={`Buscar Aci`} variant='outlined' />
 						)}
 					/>
 				)}
-						*/}
 			</div>
 			<div className={classes.input}>
 				{fraccion && (
@@ -386,27 +328,6 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 			</div>
 			<div className={classes.input}>
 				<FormControlLabel
-					className={classNames(classes.inputTextLeft, classes.containerCheckBox)}
-					label=''
-					control={
-						<>
-							<Checkbox
-								name='discount'
-								checked={pos.discount}
-								onChange={handleChecked}
-								color='primary'
-								inputProps={{ 'aria-label': 'secondary checkbox' }}
-							/>
-							<b
-								style={{
-									fontSize: '1rem',
-								}}>
-								Entrega de punto como forma de pago
-							</b>
-						</>
-					}
-				/>
-				<FormControlLabel
 					className={classNames(classes.inputText, classes.containerCheckBox)}
 					label=''
 					control={
@@ -428,58 +349,82 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 					}
 				/>
 			</div>
-			{pos.pagadero || pos.id_payment_method === 2 ? null : (
-				<div className={classes.input}>
-					<div className={classNames(classes.row, classes.inputTextLeft)}>
-						<b className={classes.labels}>Comprobante de pago</b>
-						<Button
-							className={classes.imgIdent}
-							variant='contained'
-							style={{ background: imagesForm.rc_comp_dep ? '#5c62c5' : '#f44336' }}
-							onClick={() => {
-								deleted && deleteImgContributor('comp_dep');
-							}}
-							component='label'>
-							{imagesForm.rc_comp_dep !== null ? (
-								<>
-									<IconButton aria-label='upload picture' component='span'>
-										<PhotoCamera />
-									</IconButton>
-									<p className='nameImg'>{namesImages.rc_comp_dep.slice(0, 5)}...</p>
-								</>
-							) : (
-								<>
-									<IconButton aria-label='upload picture' component='span'>
-										<PhotoCamera />
-									</IconButton>
-								</>
-							)}
-							<input
-								type='file'
-								hidden
-								name='rc_comp_dep'
-								accept={recaudo.acc}
-								disabled={deleted}
-								onChange={handleChangeImages}
-							/>
-						</Button>
-					</div>
-					<div className={classes.inputText}>
-						<TextField
-							className={classes.inputText}
-							variant='outlined'
-							required
-							id='standard-required'
-							label='Referencia'
-							placeholder='Numero de comprobante'
-							name='nro_comp_dep'
-							onChange={handleChangePos}
-							value={pos.nro_comp_dep}
-							//error={erorr.reqSource_docnum}
+			<FormControlLabel
+				className={classNames(classes.inputTextLeft, classes.containerCheckBox)}
+				label=''
+				control={
+					<>
+						<Checkbox
+							name='discount'
+							checked={pos.discount}
+							onChange={handleCheckedPos}
+							color='primary'
+							inputProps={{ 'aria-label': 'secondary checkbox' }}
 						/>
-					</div>
+						<b
+							style={{
+								fontSize: '1rem',
+							}}>
+							Entrega de punto como forma de pago
+						</b>
+					</>
+				}
+			/>
+			<div
+				className={classes.input}
+				style={{
+					opacity: pos.pagadero || pos.payment_method?.id === 2 ? 0 : 1,
+				}}>
+				<div className={classNames(classes.row, classes.inputTextLeft)}>
+					<b className={classes.labels}>Comprobante de pago</b>
+					<Button
+						className={classes.imgIdent}
+						variant='contained'
+						style={{ background: imagesForm.rc_comp_dep ? '#5c62c5' : '#f44336' }}
+						onClick={() => {
+							deleted && deleteImgContributor('comp_dep');
+						}}
+						component='label'>
+						{imagesForm.rc_comp_dep !== null ? (
+							<>
+								<IconButton aria-label='upload picture' component='span'>
+									<PhotoCamera />
+								</IconButton>
+								<p className='nameImg'>{namesImages.rc_comp_dep.slice(0, 5)}...</p>
+							</>
+						) : (
+							<>
+								<IconButton aria-label='upload picture' component='span'>
+									<PhotoCamera />
+								</IconButton>
+							</>
+						)}
+						<input
+							type='file'
+							hidden
+							name='rc_comp_dep'
+							accept={recaudo.acc}
+							disabled={deleted}
+							onChange={handleChangeImages}
+						/>
+					</Button>
 				</div>
-			)}
+				<div className={classes.inputText}>
+					<TextField
+						className={classes.inputText}
+						variant='outlined'
+						required
+						id='standard-required'
+						label='Referencia'
+						placeholder='Numero de comprobante'
+						name='nro_comp_dep'
+						onChange={handleChangePos}
+						value={pos.nro_comp_dep}
+						inputProps={{ maxLength: 20 }}
+						//error={erorr.reqSource_docnum}
+					/>
+				</div>
+			</div>
 		</div>
 	);
 };

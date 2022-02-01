@@ -3,7 +3,8 @@ import { createContext, useReducer, useLayoutEffect, ReactChild, ReactChildren, 
 
 import axios from '../../config';
 
-import { base, Activity, Products } from './interface';
+import { base, Activity, Products, Aci } from './interface';
+import { listRequestS, listTPay } from './state';
 
 interface Props {
 	children: ReactChild | ReactChildren;
@@ -16,6 +17,7 @@ interface ContextDataList {
 	listModelPos: Products[];
 	listTypePay: base[];
 	listRequestSource: base[];
+	listAci: Aci[];
 }
 
 const DataListContext = createContext<ContextDataList>({
@@ -25,41 +27,8 @@ const DataListContext = createContext<ContextDataList>({
 	listModelPos: [],
 	listTypePay: [],
 	listRequestSource: [],
+	listAci: [],
 });
-
-const listRequestS: base[] = [
-	{
-		id: 1,
-		name: 'Referido',
-	},
-	{
-		id: 2,
-		name: 'ACI',
-	},
-	{
-		id: 3,
-		name: 'Call Center',
-	},
-	{
-		id: 4,
-		name: 'Feria',
-	},
-	{
-		id: 5,
-		name: 'Pagina WEB',
-	},
-];
-
-const listTPay: base[] = [
-	{
-		id: 1,
-		name: 'De Contado',
-	},
-	{
-		id: 2,
-		name: 'Inicial',
-	},
-];
 
 export const DataListProvider = ({ children }: Props) => {
 	const [listIdentType, setListIdentType] = useState<base[]>([]);
@@ -68,6 +37,7 @@ export const DataListProvider = ({ children }: Props) => {
 	const [listModelPos, setListModelPos] = useState<Products[]>([]);
 	const [listTypePay, setListTypePay] = useState<base[]>(listTPay);
 	const [listRequestSource, setListRequestSource] = useState<base[]>(listRequestS);
+	const [listAci, setListAci] = useState<Aci[]>([]);
 
 	const getters = async (routes: string[]) => {
 		try {
@@ -93,10 +63,11 @@ export const DataListProvider = ({ children }: Props) => {
 		setListActivity(array[1].data.info);
 		setListPayment(array[2].data.info);
 		setListModelPos(array[3].data.info);
+		setListAci(array[4].data.info);
 	};
 
 	useLayoutEffect(() => {
-		const routes = [`/ident_type`, `/activity`, `/payment/all`, `/products`];
+		const routes = [`/ident_type`, `/activity`, `/payment/all`, `/products`, `aci`];
 		getters(routes)
 			.then((responses) => {
 				initList(responses);
@@ -115,6 +86,7 @@ export const DataListProvider = ({ children }: Props) => {
 				listModelPos,
 				listTypePay,
 				listRequestSource,
+				listAci,
 			}}>
 			{children}
 		</DataListContext.Provider>

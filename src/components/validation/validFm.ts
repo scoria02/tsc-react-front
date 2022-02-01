@@ -335,6 +335,10 @@ export const validateForm = (fmData: any, fmDataError: any, name: string, value:
 		case 'text_account_number':
 			temp.text_account_number = validNumBank(value as string);
 			break;
+		case 'reqSource_docnum':
+			const str: string = value as string;
+			temp.reqSource_docnum = validIdentNum(str, 1);
+			break;
 		default:
 			break;
 	}

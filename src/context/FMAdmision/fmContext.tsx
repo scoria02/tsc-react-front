@@ -9,7 +9,7 @@ import { initFmCommerce } from './stateCommerce';
 import { fmErrorFormat, initLocation } from './states';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
 import { ContextFM } from './interface';
-import { Activity } from '../DataList/interface';
+import { base, Activity, Products } from '../DataList/interface';
 
 interface Props {
 	children: ReactChild;
@@ -43,6 +43,8 @@ const FMDataContext = createContext<ContextFM>({
 	handleChangeCommerce: () => {},
 	handleSelectIdentCommerce: () => {},
 	handleChangePos: () => {},
+	handleParamsPos: () => {},
+	handleCheckedPos: () => {},
 });
 
 export const FMContextProvider = ({ children }: Props) => {
@@ -113,6 +115,20 @@ export const FMContextProvider = ({ children }: Props) => {
 		setPos({
 			...pos,
 			[event.target.name]: event.target.value,
+		});
+	};
+
+	const handleParamsPos = (name: string, value: base | string | null): void => {
+		console.log(value);
+		setPos({
+			...pos,
+			[name]: value,
+		});
+	};
+	const handleCheckedPos = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		setPos({
+			...pos,
+			[event.target.name]: event.target.checked,
 		});
 	};
 
@@ -202,7 +218,8 @@ export const FMContextProvider = ({ children }: Props) => {
 				setPos,
 				//handles
 				handleChangePos,
-
+				handleParamsPos,
+				handleCheckedPos,
 				//Locations
 				setEstado,
 				setMunicipio,

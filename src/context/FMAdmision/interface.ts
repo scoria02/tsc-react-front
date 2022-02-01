@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { fmClient, fmCommerce, fmError_Interface, fmPos } from '../../interfaces/fm';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
-import { Activity } from '../DataList/interface';
+import { Activity, base } from '../DataList/interface';
 
 export interface ContextFM {
 	typeSolict: number;
@@ -31,4 +31,6 @@ export interface ContextFM {
 	handleSelectIdentCommerce(event: React.ChangeEvent<{ name?: string; value: unknown }>): void;
 	handleChangeDay(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleChangePos(event: React.ChangeEvent<HTMLInputElement>): void;
+	handleParamsPos(name: string, value: base | null | string): void;
+	handleCheckedPos(event: React.ChangeEvent<HTMLInputElement>): void;
 }

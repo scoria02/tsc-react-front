@@ -8,14 +8,14 @@ export const initFmPos: fmPos = {
 	local: '',
 	//Step5 Post
 	number_post: 1,
-	id_model_post: 0,
 	text_account_number: '',
-	id_payment_method: 0,
-	id_type_pay: 0,
-	id_request_origin: 1,
+	model_post: null,
+	payment_method: null,
+	type_pay: null,
+	request_origin: null,
 	reqSource_docnum: '',
 	initial: 100,
-	cuotas: 0, //Si es inical coutas cambia
+	//cuotas: 0, //Si es inical coutas cambia
 	nro_comp_dep: '',
 	discount: false,
 	pagadero: false,

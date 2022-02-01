@@ -24,3 +24,27 @@ export interface Products {
 	price: number;
 	quota: number;
 }
+
+export interface Aci {
+	id: number;
+	aliApellidos: string;
+	aliCelular: string;
+	aliCodEstatus: number;
+	aliCodModalidadPago: number;
+	aliCodZonaAtencion: number;
+	aliCodigoCelular: string;
+	aliCodigoTelHabitacion: string;
+	aliCuentaAbono: string;
+	aliDireccion: string;
+	aliEmail: string;
+	aliFechaNacimiento: string;
+	aliIdUsuario: null | any;
+	aliIdentificacion: string;
+	aliNombres: string;
+	aliObservaciones: string;
+	aliProfesion: string;
+	aliRecaudos: null | any;
+	aliSexo: string;
+	aliTelefonoHabitacion: string;
+	aliTipoIdentificacion: string;
+}
