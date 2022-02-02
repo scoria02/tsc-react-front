@@ -38,6 +38,8 @@ const FMDataContext = createContext<ContextFM>({
 	setMunicipio: () => {},
 	setCiudad: () => {},
 	setParroquia: () => {},
+	copyLocationToCommerce: () => {},
+	copyLocationToPos: () => {},
 	handleChangeClient: () => {},
 	handleSelectIdentClient: () => {},
 	handleChangeCommerce: () => {},
@@ -184,6 +186,26 @@ export const FMContextProvider = ({ children }: Props) => {
 		}));
 	};
 
+	const copyLocationToCommerce = (stateLocation: LocationInt, state: fmClient | fmCommerce | fmPos): void => {
+		setLocationCommerce(stateLocation);
+		setCommerce({
+			...commerce,
+			sector: state.sector,
+			calle: state.calle,
+			local: state.calle,
+		});
+	};
+
+	const copyLocationToPos = (stateLocation: LocationInt, state: fmClient | fmCommerce | fmPos): void => {
+		setLocationPos(stateLocation);
+		setPos({
+			...pos,
+			sector: state.sector,
+			calle: state.calle,
+			local: state.local,
+		});
+	};
+
 	return (
 		<FMDataContext.Provider
 			value={{
@@ -225,6 +247,9 @@ export const FMContextProvider = ({ children }: Props) => {
 				setMunicipio,
 				setCiudad,
 				setParroquia,
+
+				copyLocationToCommerce,
+				copyLocationToPos,
 			}}>
 			{children}
 		</FMDataContext.Provider>

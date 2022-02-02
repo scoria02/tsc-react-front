@@ -62,20 +62,39 @@ const FormM: React.FC = () => {
 	const [readyStep, setReadyStep] = useState<boolean>(false);
 	const [sendForm, setSendForm] = useState<number>(0);
 
+	const { socket } = useContext(SocketContext);
+
 	const { listIdentType, listActivity, listPayment, listModelPos, listTypePay, listRequestSource } =
 		useContext(DataListContext);
+
+	//newContext
+	const {
+		typeSolict,
+		client,
+		commerce,
+		pos,
+		activity,
+		locationClient,
+		locationCommerce,
+		locationPos,
+		copyLocationToCommerce,
+		copyLocationToPos,
+		errorsFm,
+	} = useContext(FMDataContext);
+
+	const {
+		listLocationClient,
+		listLocationCommerce,
+		listLocationPos,
+		copyListLocationToCommerce,
+		copyListLocationToPos,
+	} = useContext(LocationsContext);
 
 	// Origen de solicitud
 	const [requestSource, setRequestSource] = useState<base>(listRequestSource[0]);
 	const [typePay, setTypePay] = useState<any>(null);
 	const [payment, setPayment] = useState<any>(null);
 	const [modelPos, setModelPost] = useState<any>(null);
-
-	const { socket } = useContext(SocketContext);
-
-	//newContext
-	const { client, commerce, pos, activity, locationClient, locationCommerce, locationPos, errorsFm } =
-		useContext(FMDataContext);
 
 	useEffect(() => {
 		setReadyStep(
@@ -93,7 +112,18 @@ const FormM: React.FC = () => {
 		);
 	}, [client, commerce, pos, locationClient, locationCommerce, locationPos, activity, activeStep]);
 
-	const { listLocationClient, listLocationCommerce, listLocationPos } = useContext(LocationsContext);
+	//AutoComplete Locaitons
+	useEffect(() => {
+		if (typeSolict === 0) {
+			copyListLocationToCommerce(listLocationClient);
+			copyLocationToCommerce(locationClient, client);
+		}
+	}, [locationClient, listLocationClient, client.sector, client.calle, client.local]);
+
+	useEffect(() => {
+		copyListLocationToPos(listLocationCommerce);
+		copyLocationToPos(locationCommerce, commerce);
+	}, [locationCommerce, listLocationCommerce, commerce.sector, commerce.calle, commerce.local]);
 
 	//images
 	const [imagesForm, setImagesForm] = useState<ImagesInt>({

@@ -49,6 +49,8 @@ interface ContextLocations {
 	handleListMunicipio(id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>): void;
 	handleListCiudad(id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>): void;
 	handleListParroquia(id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>): void;
+	copyListLocationToCommerce(stateListLocation: ListLocation): void;
+	copyListLocationToPos(stateListLocation: ListLocation): void;
 }
 
 const LocationsContext = createContext<ContextLocations>({
@@ -61,6 +63,8 @@ const LocationsContext = createContext<ContextLocations>({
 	handleListMunicipio: () => {},
 	handleListCiudad: () => {},
 	handleListParroquia: () => {},
+	copyListLocationToCommerce: () => {},
+	copyListLocationToPos: () => {},
 });
 
 export const LocationsProvider = ({ children }: Props) => {
@@ -163,28 +167,14 @@ export const LocationsProvider = ({ children }: Props) => {
 		getEstados();
 	}, []);
 
-	/*
-	const copyListLocationCToCC = () => {
-		dispatchCC({
-			type: COPY_LOCATION,
-			payload: listLocationClient,
-		});
+	const copyListLocationToCommerce = (stateListLocation: ListLocation) => {
+		setListLocationCommerce(stateListLocation);
 	};
 
-	const copyListLocationCToP = () => {
-		dispatchP({
-			type: COPY_LOCATION,
-			payload: listLocationClient,
-		});
+	const copyListLocationToPos = (stateListLocation: ListLocation) => {
+		setListLocationPos(stateListLocation);
 	};
 
-	const copyListLocationCCToP = () => {
-		dispatchP({
-			type: COPY_LOCATION,
-			payload: listLocationCommerce,
-		});
-	};
-	*/
 	return (
 		<LocationsContext.Provider
 			value={{
@@ -201,9 +191,9 @@ export const LocationsProvider = ({ children }: Props) => {
 				handleListCiudad,
 				handleListParroquia,
 
-				//copyListLocationCToCC,
-				//copyListLocationCToP,
-				//copyListLocationCCToP,
+				//Copy List Locations
+				copyListLocationToCommerce,
+				copyListLocationToPos,
 			}}>
 			{children}
 		</LocationsContext.Provider>

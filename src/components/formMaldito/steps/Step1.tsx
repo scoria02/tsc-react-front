@@ -33,6 +33,7 @@ export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImag
 	//Context
 	const {
 		errorsFm,
+		typeSolict,
 		client,
 		locationClient,
 		setLocationClient,
@@ -123,11 +124,14 @@ export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImag
 							name='id_ident_type'
 							//error={validEmailIdent}
 							label='Tipo'>
-							{listIdentType.map((item: any) => (
-								<MenuItem key={item.id} value={item.id}>
-									{item.name}
-								</MenuItem>
-							))}
+							{listIdentType.map((item: any) => {
+								if (item.name === 'J' && typeSolict === 0) return;
+								return (
+									<MenuItem key={item.id} value={item.id}>
+										{item.name}
+									</MenuItem>
+								);
+							})}
 						</Select>
 					</FormControl>
 					<TextField

@@ -24,6 +24,8 @@ export interface ContextFM {
 	setMunicipio(data: Municipio | null, setLocation: Dispatch<SetStateAction<LocationInt>>): void;
 	setCiudad(data: Ciudad | null, setLocation: Dispatch<SetStateAction<LocationInt>>): void;
 	setParroquia(data: Parroquia | null, setLocation: Dispatch<SetStateAction<LocationInt>>): void;
+	copyLocationToCommerce(stateLocation: LocationInt, state: fmClient | fmCommerce | fmPos): void;
+	copyLocationToPos(stateLocation: LocationInt, state: fmClient | fmCommerce | fmPos): void;
 	handleTypeSolict(id: number): void;
 	handleChangeClient(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleSelectIdentClient(event: React.ChangeEvent<{ name?: string; value: unknown }>): void;

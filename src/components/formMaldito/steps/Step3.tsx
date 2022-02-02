@@ -19,9 +19,10 @@ import { useStylesFM } from '../styles';
 import { Activity } from '../../../context/DataList/interface';
 import { validationCommerce } from '../../../store/actions/fm';
 import FMDataContext from '../../../context/FMAdmision/fmContext';
-import { types } from 'util';
 import DataListContext from '../../../context/DataList/DataListContext';
 import { Days } from '../../../interfaces/fm';
+import { InputAdornment, setRef } from '@material-ui/core';
+import { types } from 'util';
 
 export const Step3: React.FC<any> = ({
 	imagesActa,
@@ -59,6 +60,12 @@ export const Step3: React.FC<any> = ({
 					ident_num: commerce.ident_num,
 				})
 			);
+		}
+	};
+
+	const handleChangeLastRif = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
+			//setLastRif(event.target.value);
 		}
 	};
 
@@ -103,25 +110,14 @@ export const Step3: React.FC<any> = ({
 		/* eslint-disable react-hooks/exhaustive-deps */
 	}, [commerce.id_ident_type]);
 
-	const DocIdentCommerce = () => {
-		switch (typeSolict) {
-			case 0:
-				return (
-					<TextField
-						disabled
-						value={'V'}
-						id='standard-required'
-						name='ident_num'
-						onChange={handleIdentNum}
-						variant='outlined'
-						className={classes.inputSelect}
-					/>
-				);
-			default:
-				return (
+	return (
+		<>
+			<div className={classes.grid}>
+				<div className={classes.input}>
 					<FormControl variant='outlined' className={classes.inputSelect}>
 						<InputLabel id='demo-simple-select-outlined-label'>Doc.</InputLabel>
 						<Select
+							disabled={typeSolict === 0}
 							value={commerce.id_ident_type}
 							onChange={handleSelectIdentCommerce}
 							name='id_ident_type'
@@ -136,16 +132,6 @@ export const Step3: React.FC<any> = ({
 							))}
 						</Select>
 					</FormControl>
-				);
-				break;
-		}
-	};
-
-	return (
-		<>
-			<div className={classes.grid}>
-				<div className={classes.input}>
-					<DocIdentCommerce />
 					<TextField
 						disabled={typeSolict === 0 ? true : false}
 						className={classes.inputTextLeft}

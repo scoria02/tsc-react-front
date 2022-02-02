@@ -93,4 +93,7 @@ export const useStylesFM = makeStyles((styles) => ({
 		textAlign: 'center',
 		alignSelf: 'center',
 	},
+	inputPropIdent: {
+		width: '40px',
+	},
 }));
