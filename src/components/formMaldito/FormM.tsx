@@ -30,11 +30,12 @@ import { ImagesInt, NamesImagesInt } from './interface';
 import { StateFMInt } from '../../store/reducers/fmReducer';
 import { stepError } from '../../utils/fm';
 
-import FMDataContext from '../../context/FMAdmision/fmContext';
+import FMDataContext from '../../context/FM/fmAdmision/FmContext';
 import DataListContext from '../../context/DataList/DataListContext';
-import LocationsContext from '../../context/Location/LocationsContext';
+import LocationsContext from '../../context/FM/Location/LocationsContext';
 
 import { base } from '../../context/DataList/interface';
+import ImagesFmContext from '../../context/FM/fmImages/ImagesFmContext';
 
 const initStep = ['Tipo de Solicitud'];
 
@@ -55,9 +56,6 @@ const FormM: React.FC = () => {
 
 	const fm: StateFMInt = useSelector((state: RootState) => state.fm);
 
-	//images Acta
-	const [imagesActa, setImagesActa] = useState<any>([]);
-
 	const [activeStep, setActiveStep] = useState<number>(0);
 	const [readyStep, setReadyStep] = useState<boolean>(false);
 	const [sendForm, setSendForm] = useState<number>(0);
@@ -67,7 +65,6 @@ const FormM: React.FC = () => {
 	const { listIdentType, listActivity, listPayment, listModelPos, listTypePay, listRequestSource } =
 		useContext(DataListContext);
 
-	//newContext
 	const {
 		typeSolict,
 		client,
@@ -90,11 +87,7 @@ const FormM: React.FC = () => {
 		copyListLocationToPos,
 	} = useContext(LocationsContext);
 
-	// Origen de solicitud
-	const [requestSource, setRequestSource] = useState<base>(listRequestSource[0]);
-	const [typePay, setTypePay] = useState<any>(null);
-	const [payment, setPayment] = useState<any>(null);
-	const [modelPos, setModelPost] = useState<any>(null);
+	const { imagesForm, imagesActa, namesImages } = useContext(ImagesFmContext);
 
 	useEffect(() => {
 		setReadyStep(
@@ -107,10 +100,23 @@ const FormM: React.FC = () => {
 				activity,
 				locationClient,
 				locationCommerce,
-				locationPos
+				locationPos,
+				imagesForm,
+				imagesActa
 			)
 		);
-	}, [client, commerce, pos, locationClient, locationCommerce, locationPos, activity, activeStep]);
+	}, [
+		client,
+		commerce,
+		pos,
+		locationClient,
+		locationCommerce,
+		locationPos,
+		activity,
+		activeStep,
+		imagesForm,
+		imagesActa,
+	]);
 
 	//AutoComplete Locaitons
 	useEffect(() => {
@@ -125,69 +131,9 @@ const FormM: React.FC = () => {
 		copyLocationToPos(locationCommerce, commerce);
 	}, [locationCommerce, listLocationCommerce, commerce.sector, commerce.calle, commerce.local]);
 
-	//images
-	const [imagesForm, setImagesForm] = useState<ImagesInt>({
-		//Step1
-		rc_ident_card: null, //11
-		//Step2
-		rc_rif: null, //10
-		rc_special_contributor: null, //4
-		//Step4
-		rc_ref_bank: null, //5
-		rc_comp_dep: null,
-	});
-
-	//name images
-	const [namesImages, setNamesImages] = useState<NamesImagesInt>({
-		//step1
-		rc_ident_card: '', //11
-		//step2
-		rc_rif: '', //10
-		rc_special_contributor: '', //4
-		//step4
-		rc_ref_bank: '', //5
-		rc_comp_dep: '',
-	});
-
-	//SendForm
-	useEffect(() => {
-		if (sendForm === 1 && fm.id_client !== 0) {
-			console.log('Listo Cliente');
-			if (!fm.mashCommerce) {
-				//dispatch(sendCommerce(fm.id_client, fmData, valids.daysToString(days)));
-			}
-			setSendForm(2);
-			//Fin comerce
-		} else if (sendForm === 2 && fm.id_commerce !== 0 && fm.id_client !== 0) {
-			console.log('Listo Comercio');
-			const formData: FormData = new FormData();
-			for (const item of Object.entries(imagesForm)) {
-				if (item[1] !== null) {
-					formData.append('images', item[1]);
-				}
-			}
-			for (const item of imagesActa) {
-				formData.append('constitutive_act', item);
-			}
-			formData.append('id_client', `${fm.id_client}`);
-			formData.append('id_commerce', `${fm.id_commerce}`);
-			//formData.append('bank_account_num', fmData.text_account_number);
-			dispatch(sendImages(formData));
-			//update fm_imgaes
-			setSendForm(3);
-		} else if (sendForm === 3 && fm.id_images !== null && fm.id_commerce !== 0 && fm.id_client !== 0) {
-			console.log('Listo Images, Client/Comercio:', fm.id_client, fm.id_commerce);
-			//dispatch(sendFM(fmData, fm));
-			setSendForm(4);
-		} else if (sendForm === 4 && fm.loadedFM) {
-			console.log('Ready All FM');
-			socket.emit('cliente:disconnect');
-			setSendForm(5);
-			handleSendForm();
-			dispatch(cleanFM());
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [sendForm, fm]);
+	const handleChangeImages = (event: any) => {};
+	const handleChangeImagesMulti = (event: any) => {};
+	const deleteImgContributor = (name: string) => {};
 
 	useEffect(() => {
 		dispatch(cleanFM());
@@ -200,39 +146,9 @@ const FormM: React.FC = () => {
 		else if (activeStep > 3 && fm.errorNumBank) setActiveStep(5);
 	}, [activeStep, fm.errorClient, fm.errorCommerce, fm.errorNumBank]);
 
-	//CheckStepAcual
-	/*
-	useEffect(() => {
-		if (
-			//!valids.allInputNotNUll(valids.sizeStep(activeStep), fmData, fm.mashClient, fm.mashCommerce) &&
-			//!valids.checkErrorAllInput(valids.sizeStep(activeStep), fmDataError) &&
-			//valids.validMashes(activeStep, fm.validMashClient, fm.validMashCommerce)
-			!valids.allImgNotNUll(
-				fmData,
-				valids.sizeImagesStep(activeStep),
-				imagesForm,
-				fmData.special_contributor,
-				fm.imagesClient,
-				fm.imagesCommerce,
-				fmData.id_ident_type_commerce
-			) &&
-			!valids.checkErrorAllInput(valids.sizeStep(activeStep), fmDataError) &&
-			!valids.validEndPoint(activeStep, fm) &&
-			!valids.notNullImagenActa(activeStep, imagesActa, fmData.id_ident_type_commerce, fm.imagesCommerce) &&
-			valids.validMashes(activeStep, fm.validMashClient, fm.validMashCommerce)
-		) {
-			setReadyStep(true);
-		} else {
-			setReadyStep(false);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [fmData, imagesForm, activeStep, fm, imagesActa]);
-	*/
-
-	const [oldClientMatsh, setOldClientMatsh] = useState<boolean>(false);
+	//const [oldClientMatsh, setOldClientMatsh] = useState<boolean>(false);
 
 	/*
-
 	//MashClient
 	useEffect(() => {
 		if (fm.mashClient && fm.id_client) {
@@ -336,7 +252,6 @@ const FormM: React.FC = () => {
 	*/
 
 	/*
-
 	const [oldCommerceMatsh, setOldCommerceMatsh] = useState<boolean>(false);
 	//MashCommerce
 	useEffect(() => {
@@ -409,29 +324,6 @@ const FormM: React.FC = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
 	};
 
-	const handleChangeImages = (event: any) => {
-		if (event.target.files[0]) {
-			let file = event.target.files[0];
-			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: file.type });
-			//Save img
-			setImagesForm({
-				...imagesForm,
-				[event.target.name]: newFile,
-			});
-			setNamesImages({
-				...namesImages,
-				[event.target.name]: event.target.files[0].name,
-			});
-		}
-	};
-
-	const handleChangeImagesMulti = (event: any) => {
-		if (event.target.files[0]) {
-			let files = event.target.files;
-			setImagesActa(files);
-		}
-	};
-
 	const handleSubmit = () => {
 		/*
 		if (
@@ -482,20 +374,9 @@ const FormM: React.FC = () => {
 		history.push(baseUrl);
 	};
 
-	const deleteImgContributor = (name: string) => {
-		setImagesForm({
-			...imagesForm,
-			[`rc_${name}`]: null,
-		});
-		setNamesImages({
-			...namesImages,
-			[`rc_${name}`]: '',
-		});
-	};
-
 	const getStep = [
 		<StepBase />,
-		<Step1 namesImages={namesImages} imagesForm={imagesForm} handleChangeImages={handleChangeImages} />,
+		<Step1 />,
 		<Step2 />,
 		<Step3
 			imagesActa={imagesActa}

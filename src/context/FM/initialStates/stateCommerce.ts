@@ -1,4 +1,4 @@
-import { fmCommerce } from '../../interfaces/fm';
+import { fmCommerce } from '../../../interfaces/fm';
 import { daysWork } from './states';
 
 export const initFmCommerce: fmCommerce = {

@@ -273,6 +273,50 @@ export const sendFM = (cursedForm: any, fm: any) => {
 	}
 };
 
+export const sendCompleteFM = () => {
+	/*
+	//SendForm
+	useEffect(() => {
+		if (sendForm === 1 && fm.id_client !== 0) {
+			console.log('Listo Cliente');
+			if (!fm.mashCommerce) {
+				//dispatch(sendCommerce(fm.id_client, fmData, valids.daysToString(days)));
+			}
+			setSendForm(2);
+			//Fin comerce
+		} else if (sendForm === 2 && fm.id_commerce !== 0 && fm.id_client !== 0) {
+			console.log('Listo Comercio');
+			const formData: FormData = new FormData();
+			for (const item of Object.entries(imagesForm)) {
+				if (item[1] !== null) {
+					formData.append('images', item[1]);
+				}
+			}
+			for (const item of imagesActa) {
+				formData.append('constitutive_act', item);
+			}
+			formData.append('id_client', `${fm.id_client}`);
+			formData.append('id_commerce', `${fm.id_commerce}`);
+			//formData.append('bank_account_num', fmData.text_account_number);
+			dispatch(sendImages(formData));
+			//update fm_imgaes
+			setSendForm(3);
+		} else if (sendForm === 3 && fm.id_images !== null && fm.id_commerce !== 0 && fm.id_client !== 0) {
+			console.log('Listo Images, Client/Comercio:', fm.id_client, fm.id_commerce);
+			//dispatch(sendFM(fmData, fm));
+			setSendForm(4);
+		} else if (sendForm === 4 && fm.loadedFM) {
+			console.log('Ready All FM');
+			socket.emit('cliente:disconnect');
+			setSendForm(5);
+			handleSendForm();
+			dispatch(cleanFM());
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [sendForm, fm]);
+	*/
+};
+
 export const cleanFM = () => {
 	return async (dispatch: any) => {
 		dispatch(request());

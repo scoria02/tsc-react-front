@@ -19,13 +19,14 @@ import { useStylesFM } from '../styles';
 import { recaudo } from '../../utilis/recaudos';
 
 import { validInputString } from '../../../utils/fm';
-import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/Location/interfaces';
+import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/FM/Location/interfaces';
 import { validationClient } from '../../../store/actions/fm';
-import FMDataContext from '../../../context/FMAdmision/fmContext';
+import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 import DataListContext from '../../../context/DataList/DataListContext';
-import LocationsContext from '../../../context/Location/LocationsContext';
+import LocationsContext from '../../../context/FM/Location/LocationsContext';
+import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
 
-export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImages }) => {
+export const Step1: React.FC<any> = () => {
 	const classes = useStylesFM();
 	const fm: any = useSelector((state: RootState) => state.fm);
 	const dispatch = useDispatch();
@@ -49,6 +50,8 @@ export const Step1: React.FC<any> = ({ namesImages, imagesForm, handleChangeImag
 
 	const { listLocationClient, setListLocationClient, handleListMunicipio, handleListCiudad, handleListParroquia } =
 		useContext(LocationsContext);
+
+	const { namesImages, imagesForm, handleChangeImages } = useContext(ImagesFmContext);
 
 	const codePhone = '+58';
 

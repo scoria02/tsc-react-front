@@ -13,7 +13,7 @@ import { RootState } from '../../../store/store';
 import { recaudo } from '../../utilis/recaudos';
 import { getAci } from '../getData';
 import { useStylesFM } from '../styles';
-import FMDataContext from '../../../context/FMAdmision/fmContext';
+import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 import DataListContext from '../../../context/DataList/DataListContext';
 import { Aci } from '../../../context/DataList/interface';
 

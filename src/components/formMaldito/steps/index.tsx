@@ -1,10 +1,15 @@
-import { Button, FormControl, IconButton, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { Button, FormControl, IconButton, InputLabel, MenuItem, Select, Tooltip } from '@material-ui/core';
 import BackUpIcon from '@material-ui/icons/Backup';
+import CheckCircleIcon from '@material-ui/icons/CheckCircleOutline';
+import ClearIcon from '@material-ui/icons/Clear';
 import classNames from 'classnames';
-import { FC, useContext } from 'react';
+import { FC, useContext, useEffect } from 'react';
 import { useStylesFM } from '../styles';
 
-import FMDataContext from '../../../context/FMAdmision/fmContext';
+import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
+import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
+import { recaudo } from '../../utilis/recaudos';
+import LocationsContext from '../../../context/FM/Location/LocationsContext';
 
 const typesSolicts = [
 	{
@@ -41,7 +46,15 @@ const typesSolicts = [
 const StepBase: FC = () => {
 	const classes = useStylesFM();
 
-	const { typeSolict, handleTypeSolict } = useContext(FMDataContext);
+	const { typeSolict, handleTypeSolict, resetFm } = useContext(FMDataContext);
+	const { resetListLocaitons } = useContext(LocationsContext);
+	const { imagePlanilla, handleChangePlanilla, removePlanilla, resetImages } = useContext(ImagesFmContext);
+
+	useEffect(() => {
+		resetFm();
+		resetListLocaitons();
+		resetImages();
+	}, [typeSolict]);
 
 	return (
 		<div className='ed-container container-formMaldito'>
@@ -70,25 +83,33 @@ const StepBase: FC = () => {
 						<Button
 							className={classes.imgIdent}
 							variant='contained'
-							/*
-									style={{
-										opacity: fm.imagesCommerce ? 0 : 1,
-										background: imagesActa.length ? '#5c62c5' : '#f44336',
-									}}
-									*/
+							style={{
+								background: imagePlanilla ? '#5c62c5' : '#f44336',
+							}}
 							component='label'>
 							<IconButton aria-label='upload picture' component='span'>
-								<BackUpIcon />
+								{imagePlanilla ? <CheckCircleIcon /> : <BackUpIcon />}
 							</IconButton>
-							<input
-								type='file'
-								hidden
-								multiple
-								name='rc_constitutive_act'
-								//accept={recaudo.acc}
-								//onChange={handleChangeImagesMulti}
-							/>
+							<input type='file' hidden name='rc_planilla' accept={recaudo.acc} onChange={handleChangePlanilla} />
 						</Button>
+						{imagePlanilla ? (
+							<Button
+								className={classes.imgIdent}
+								variant='contained'
+								onClick={removePlanilla}
+								color='secondary'
+								style={{
+									marginLeft: '10px',
+									width: '20px',
+								}}
+								component='label'>
+								<Tooltip title='Borrar Planilla'>
+									<IconButton aria-label='upload picture' component='span'>
+										<ClearIcon />
+									</IconButton>
+								</Tooltip>
+							</Button>
+						) : null}
 					</div>
 				</div>
 			</div>

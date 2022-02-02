@@ -1,5 +1,6 @@
 import { Activity } from '../../context/DataList/interface';
-import { LocationInt } from '../../context/Location/interfaces';
+import { ImagesInt } from '../../context/FM/fmImages/interface';
+import { LocationInt } from '../../context/FM/Location/interfaces';
 import { fmClient, fmCommerce, fmError_Interface, fmPos } from '../../interfaces/fm';
 
 export const validEmail = (value: string): boolean => {
@@ -139,17 +140,29 @@ export const sizeStepError = (active: number): number => {
 	}
 };
 
-export const inputNotNull = (last: number, form: any): boolean => {
+export const inputNotNull = (last: number, form: fmClient | fmCommerce | fmPos): boolean => {
 	let index: number = 0;
 	for (const item of Object.entries(form)) {
 		if (index === last) {
 			return false;
 		}
-		console.log(item);
 		index++;
 		if (typeof item[1] === 'string' && item[1].trim() === '') {
 			return true;
 		} else if (typeof item[1] === 'number' && item[1] === 0) {
+			return true;
+		}
+	}
+	return false;
+};
+export const inputFileNotNull = (last: number, form: ImagesInt): boolean => {
+	let index: number = 0;
+	for (const item of Object.entries(form)) {
+		if (index === last) {
+			return false;
+		}
+		index++;
+		if (!item[1]) {
 			return true;
 		}
 	}
@@ -311,7 +324,9 @@ export const validReadyStep = (
 	activity: Activity | null,
 	locationClient: LocationInt,
 	locationCommerce: LocationInt,
-	locationPos: LocationInt
+	locationPos: LocationInt,
+	imagesForm: ImagesInt,
+	imagesActa: FileList | []
 ): boolean => {
 	switch (activeStep) {
 		case 0:
@@ -321,7 +336,8 @@ export const validReadyStep = (
 			if (
 				!checkErrorAllInput(sizeStepError(activeStep), errorsFm) &&
 				!inputNotNullLocation(locationClient) &&
-				!inputNotNull(sizeStep(activeStep), client)
+				!inputNotNull(sizeStep(activeStep), client) &&
+				!inputFileNotNull(1, imagesForm)
 			)
 				return true;
 			return false;
@@ -344,3 +360,32 @@ export const validReadyStep = (
 			return false;
 	}
 };
+
+//CheckStepAcual
+/*
+	useEffect(() => {
+		if (
+			//!valids.allInputNotNUll(valids.sizeStep(activeStep), fmData, fm.mashClient, fm.mashCommerce) &&
+			//!valids.checkErrorAllInput(valids.sizeStep(activeStep), fmDataError) &&
+			//valids.validMashes(activeStep, fm.validMashClient, fm.validMashCommerce)
+			!valids.allImgNotNUll(
+				fmData,
+				valids.sizeImagesStep(activeStep),
+				imagesForm,
+				fmData.special_contributor,
+				fm.imagesClient,
+				fm.imagesCommerce,
+				fmData.id_ident_type_commerce
+			) &&
+			!valids.checkErrorAllInput(valids.sizeStep(activeStep), fmDataError) &&
+			!valids.validEndPoint(activeStep, fm) &&
+			!valids.notNullImagenActa(activeStep, imagesActa, fmData.id_ident_type_commerce, fm.imagesCommerce) &&
+			valids.validMashes(activeStep, fm.validMashClient, fm.validMashCommerce)
+		) {
+			setReadyStep(true);
+		} else {
+			setReadyStep(false);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [fmData, imagesForm, activeStep, fm, imagesActa]);
+	*/

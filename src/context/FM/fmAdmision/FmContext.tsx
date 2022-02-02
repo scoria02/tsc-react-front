@@ -1,15 +1,15 @@
 import React, { createContext, useState, ReactChild, Dispatch, SetStateAction, useEffect } from 'react';
-import { validateForm } from '../../components/validation/validFm';
-import { fmClient, fmCommerce, fmError_Interface, fmPos } from '../../interfaces/fm';
+import { validateForm } from '../../../components/validation/validFm';
+import { fmClient, fmCommerce, fmError_Interface, fmPos } from '../../../interfaces/fm';
 
-import { initFmPos } from './statePos';
-import { initFmClient } from './stateClient';
-import { initFmCommerce } from './stateCommerce';
+import { initFmPos } from '../initialStates/statePos';
+import { initFmClient } from '../initialStates/stateClient';
+import { initFmCommerce } from '../initialStates/stateCommerce';
 
-import { fmErrorFormat, initLocation } from './states';
+import { fmErrorFormat, initLocation } from '../initialStates/states';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
 import { ContextFM } from './interface';
-import { base, Activity, Products } from '../DataList/interface';
+import { base, Activity, Products } from '../../DataList/interface';
 
 interface Props {
 	children: ReactChild;
@@ -47,6 +47,7 @@ const FMDataContext = createContext<ContextFM>({
 	handleChangePos: () => {},
 	handleParamsPos: () => {},
 	handleCheckedPos: () => {},
+	resetFm: () => {},
 });
 
 export const FMContextProvider = ({ children }: Props) => {
@@ -61,8 +62,19 @@ export const FMContextProvider = ({ children }: Props) => {
 	const [locationPos, setLocationPos] = useState<LocationInt>(initLocation);
 
 	//Autocomplete location
-	const [autoCompleteCommerce, setAutoCompleteCommerce] = useState<boolean>(true);
-	const [autoCompletePos, setAutoCompletePos] = useState<boolean>(true);
+	//const [autoCompleteCommerce, setAutoCompleteCommerce] = useState<boolean>(true);
+	//const [autoCompletePos, setAutoCompletePos] = useState<boolean>(true);
+
+	const resetFm = (): void => {
+		setErrorsFm(fmErrorFormat);
+		setClient(initFmClient);
+		setCommerce(initFmCommerce);
+		setPos(initFmPos);
+		setActivity(null);
+		setLocationClient(initLocation);
+		setLocationCommerce(initLocation);
+		setLocationPos(initLocation);
+	};
 
 	useEffect(() => {
 		if (
@@ -79,7 +91,7 @@ export const FMContextProvider = ({ children }: Props) => {
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [typeSolict, client.name, client.last_name, client.ident_num, client.id_ident_type]);
+	}, [client.name, client.last_name, client.ident_num, client.id_ident_type]);
 
 	const handleTypeSolict = (id: number): void => {
 		setTypeSolict(id);
@@ -250,6 +262,7 @@ export const FMContextProvider = ({ children }: Props) => {
 
 				copyLocationToCommerce,
 				copyLocationToPos,
+				resetFm,
 			}}>
 			{children}
 		</FMDataContext.Provider>
@@ -257,70 +270,3 @@ export const FMContextProvider = ({ children }: Props) => {
 };
 
 export default FMDataContext;
-
-/*
-	const copyLocationCToCC = () => {
-		dispatchCC({
-			type: COPY_LOCATION,
-			payload: locationClient,
-		});
-		dispatchFmCommerce({
-			type: SET_FM,
-			payload: {
-				...fmCommerce,
-				id_estado: fmClient.id_estado_client,
-				id_ciudad: fmClient.id_ciudad_client,
-				id_municipio: fmClient.id_municipio_client,
-				id_parroquia: fmClient.id_parroquia_client,
-				sector: fmClient.sector_client,
-				calle: fmClient.calle_client,
-				local: fmClient.local_client,
-				codigo_postal: fmClient.codigo_postal_client,
-			},
-		});
-	};
-
-	const copyLocationCCToP = () => {
-		dispatchP({
-			type: COPY_LOCATION,
-			payload: locationCommerce,
-		});
-		dispatchFmPos({
-			type: SET_FM,
-			payload: {
-				...fmPos,
-				id_estado: fmCommerce.id_estado,
-				id_ciudad: fmCommerce.id_ciudad,
-				id_municipio: fmCommerce.id_municipio,
-				id_parroquia: fmCommerce.id_parroquia,
-				sector: fmCommerce.sector,
-				calle: fmCommerce.calle,
-				local: fmCommerce.local,
-				codigo_postal: fmCommerce.codigo_postal,
-			},
-		});
-	};
-
-	//[delete]
-	const copyLocationCToP = () => {
-		dispatchP({
-			type: COPY_LOCATION,
-			payload: locationClient,
-		});
-		dispatch({
-			type: SET_FM,
-			payload: {
-				...fmData,
-				id_estado_pos: fmData.id_estado_client,
-				id_ciudad_pos: fmData.id_ciudad_client,
-				id_municipio_pos: fmData.id_municipio_client,
-				id_parroquia_pos: fmData.id_parroquia_client,
-				sector_pos: fmData.sector_client,
-				calle_pos: fmData.calle_client,
-				local_pos: fmData.local_client,
-				codigo_postal_pos: fmData.codigo_postal_client,
-			},
-		});
-	};
-	//
-*/

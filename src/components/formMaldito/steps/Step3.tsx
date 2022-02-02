@@ -18,11 +18,9 @@ import { useStylesFM } from '../styles';
 
 import { Activity } from '../../../context/DataList/interface';
 import { validationCommerce } from '../../../store/actions/fm';
-import FMDataContext from '../../../context/FMAdmision/fmContext';
+import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 import DataListContext from '../../../context/DataList/DataListContext';
 import { Days } from '../../../interfaces/fm';
-import { InputAdornment, setRef } from '@material-ui/core';
-import { types } from 'util';
 
 export const Step3: React.FC<any> = ({
 	imagesActa,
@@ -125,11 +123,14 @@ export const Step3: React.FC<any> = ({
 							onBlur={handleBlurCommerce}
 							error={fm.errorCommerce}
 							placeholder=''>
-							{listIdentType.map((item: any) => (
-								<MenuItem key={item.id} value={item.id}>
-									{item.name}
-								</MenuItem>
-							))}
+							{listIdentType.map((item: any) => {
+								if (typeSolict === 1 && item.name !== 'J') return;
+								return (
+									<MenuItem key={item.id} value={item.id}>
+										{item.name}
+									</MenuItem>
+								);
+							})}
 						</Select>
 					</FormControl>
 					<TextField

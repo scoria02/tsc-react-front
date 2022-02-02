@@ -10,7 +10,7 @@ import { RootState } from '../../../store/store';
 //sytles
 import { useStylesFM } from '../styles';
 import { validInputString } from '../../../utils/fm';
-import FMDataContext from '../../../context/FMAdmision/fmContext';
+import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 
 export const Step2: FC = () => {
 	const classes = useStylesFM();

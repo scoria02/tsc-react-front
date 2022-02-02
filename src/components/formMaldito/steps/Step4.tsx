@@ -7,10 +7,10 @@ import { useStylesFM } from '../styles';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 
-import LocationsContext from '../../../context/Location/LocationsContext';
+import LocationsContext from '../../../context/FM/Location/LocationsContext';
 
-import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/Location/interfaces';
-import FMDataContext from '../../../context/FMAdmision/fmContext';
+import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/FM/Location/interfaces';
+import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 
 export const Step4: FC = () => {
 	const classes = useStylesFM();

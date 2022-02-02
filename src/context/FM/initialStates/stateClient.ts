@@ -1,4 +1,4 @@
-import { fmClient } from '../../interfaces/fm';
+import { fmClient } from '../../../interfaces/fm';
 
 export const initFmClient: fmClient = {
 	//step1 Cliente

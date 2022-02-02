@@ -10,7 +10,7 @@ import {
 	SetStateAction,
 } from 'react';
 
-import axios from '../../config';
+import axios from '../../../config';
 
 import { Estado, Municipio, ListLocation } from './interfaces';
 
@@ -18,21 +18,7 @@ interface Props {
 	children: ReactChild | ReactChildren;
 }
 
-const listClient: ListLocation = {
-	estado: [],
-	municipio: [],
-	ciudad: [],
-	parroquia: [],
-};
-
-const listCommerce: ListLocation = {
-	estado: [],
-	municipio: [],
-	ciudad: [],
-	parroquia: [],
-};
-
-const listPos: ListLocation = {
+const initialListLocation: ListLocation = {
 	estado: [],
 	municipio: [],
 	ciudad: [],
@@ -51,12 +37,13 @@ interface ContextLocations {
 	handleListParroquia(id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>): void;
 	copyListLocationToCommerce(stateListLocation: ListLocation): void;
 	copyListLocationToPos(stateListLocation: ListLocation): void;
+	resetListLocaitons(): void;
 }
 
 const LocationsContext = createContext<ContextLocations>({
-	listLocationClient: listClient,
-	listLocationCommerce: listCommerce,
-	listLocationPos: listPos,
+	listLocationClient: initialListLocation,
+	listLocationCommerce: initialListLocation,
+	listLocationPos: initialListLocation,
 	setListLocationClient: () => {},
 	setListLocationCommerce: () => {},
 	setListLocationPos: () => {},
@@ -65,12 +52,30 @@ const LocationsContext = createContext<ContextLocations>({
 	handleListParroquia: () => {},
 	copyListLocationToCommerce: () => {},
 	copyListLocationToPos: () => {},
+	resetListLocaitons: () => {},
 });
 
 export const LocationsProvider = ({ children }: Props) => {
-	const [listLocationClient, setListLocationClient] = useState<ListLocation>(listClient);
-	const [listLocationCommerce, setListLocationCommerce] = useState<ListLocation>(listCommerce);
-	const [listLocationPos, setListLocationPos] = useState<ListLocation>(listPos);
+	const [listLocationClient, setListLocationClient] = useState<ListLocation>(initialListLocation);
+	const [listLocationCommerce, setListLocationCommerce] = useState<ListLocation>(initialListLocation);
+	const [listLocationPos, setListLocationPos] = useState<ListLocation>(initialListLocation);
+
+	const resetListLocaitons = (): void => {
+		const { estado, ...extra } = initialListLocation;
+		console.log(extra);
+		setListLocationClient({
+			estado: listLocationClient.estado,
+			...extra,
+		});
+		setListLocationPos({
+			estado: listLocationCommerce.estado,
+			...extra,
+		});
+		setListLocationCommerce({
+			estado: listLocationPos.estado,
+			...extra,
+		});
+	};
 
 	//Estado
 	const setListEstado = (estados: Estado[], setListLocation: Dispatch<SetStateAction<ListLocation>>) => {
@@ -194,6 +199,8 @@ export const LocationsProvider = ({ children }: Props) => {
 				//Copy List Locations
 				copyListLocationToCommerce,
 				copyListLocationToPos,
+
+				resetListLocaitons,
 			}}>
 			{children}
 		</LocationsContext.Provider>

@@ -48,11 +48,11 @@ export interface ListLocationInt {
 */
 
 export interface ImagesInt {
-	rc_ident_card: any;
-	rc_rif: any;
-	rc_special_contributor: any;
-	rc_ref_bank: any;
-	rc_comp_dep: any;
+	rc_ident_card: object | null;
+	rc_rif: object | null;
+	rc_special_contributor: object | null;
+	rc_ref_bank: object | null;
+	rc_comp_dep: object | null;
 }
 
 export interface NamesImagesInt {

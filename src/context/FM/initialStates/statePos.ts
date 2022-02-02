@@ -1,4 +1,4 @@
-import { fmPos } from '../../interfaces/fm';
+import { fmPos } from '../../../interfaces/fm';
 
 export const initFmPos: fmPos = {
 	//Step4 Location
