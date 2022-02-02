@@ -21,8 +21,10 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		position: 'relative',
 	},
 	media: {
-		height: 400,
-		width: 400,
+		height: 450,
+		width: 450,
+		padding: 0,
+		marginBottom: '-2rem',
 	},
 	bullet: {
 		display: 'inline-block',
@@ -86,7 +88,6 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		},
 	},
 	buttonLeft: {
-		marginTop: '-2.5rem',
 		textTransform: 'none',
 		padding: '.5rem 1rem',
 	},

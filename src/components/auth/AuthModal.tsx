@@ -7,8 +7,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-//import luffy from '../../../img/itachi2.png';
-import luffy from '../../img/user.png';
+//import logo from '../../img/user.png';
+import logo from '../../img/logo_1000pagos.svg';
 import { useStylesModalUser } from './styles';
 import './login/index.scss';
 
@@ -24,7 +24,7 @@ const AuthModal: React.FC<any> = ({ children, name, register }) => {
 			<CardContent>
 				<div className='ed-grid s-grid-1 m-grid-2'>
 					<div className={classes.containerLeft}>
-						<CardMedia className={classes.media} image={luffy} title='Logo Mil Pagos' />
+						<CardMedia className={classes.media} image={logo} title='Logo 1000Pagos' />
 						<Button
 							className={classes.buttonLeft}
 							size='small'
