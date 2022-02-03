@@ -5,13 +5,13 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 //Material
 import Stepper from '@material-ui/core/Stepper';
-import React, { useContext, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { SocketContext } from '../../context/SocketContext';
 import { baseUrl } from '../../routers/url';
-import { cleanFM, sendClient, sendCommerce, sendFM, sendImages, validationNumBank } from '../../store/actions/fm';
+import { cleanFM, sendCompleteFM } from '../../store/actions/fm';
+import { useDispatch, useSelector } from 'react-redux';
 //Redux
 import { RootState } from '../../store/store';
 import LoaderPrimary from '../loaders/LoaderPrimary';
@@ -25,16 +25,12 @@ import { Step4 } from './steps/Step4';
 import { Step5 } from './steps/Step5';
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
-
-import { ImagesInt, NamesImagesInt } from './interface';
 import { StateFMInt } from '../../store/reducers/fmReducer';
 import { stepError } from '../../utils/fm';
 
 import FMDataContext from '../../context/FM/fmAdmision/FmContext';
 import DataListContext from '../../context/DataList/DataListContext';
 import LocationsContext from '../../context/FM/Location/LocationsContext';
-
-import { base } from '../../context/DataList/interface';
 import ImagesFmContext from '../../context/FM/fmImages/ImagesFmContext';
 
 const initStep = ['Tipo de Solicitud'];
@@ -52,15 +48,14 @@ const FormM: React.FC = () => {
 	const classes = useStylesFM();
 	const dispatch = useDispatch();
 
+	const { socket } = useContext(SocketContext);
+
 	const [steps, setSteps] = useState<string[]>(initStep);
 
 	const fm: StateFMInt = useSelector((state: RootState) => state.fm);
 
 	const [activeStep, setActiveStep] = useState<number>(0);
 	const [readyStep, setReadyStep] = useState<boolean>(false);
-	const [sendForm, setSendForm] = useState<number>(0);
-
-	const { socket } = useContext(SocketContext);
 
 	const { listIdentType, listActivity, listPayment, listModelPos, listTypePay, listRequestSource } =
 		useContext(DataListContext);
@@ -87,11 +82,12 @@ const FormM: React.FC = () => {
 		copyListLocationToPos,
 	} = useContext(LocationsContext);
 
-	const { imagesForm, imagesActa, namesImages } = useContext(ImagesFmContext);
+	const { imagePlanilla, imagesForm, imagesActa, namesImages } = useContext(ImagesFmContext);
 
 	useEffect(() => {
 		setReadyStep(
 			valids.validReadyStep(
+				typeSolict,
 				activeStep,
 				errorsFm,
 				client,
@@ -118,12 +114,15 @@ const FormM: React.FC = () => {
 		imagesActa,
 	]);
 
+	useEffect(() => {
+		dispatch(cleanFM());
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	//AutoComplete Locaitons
 	useEffect(() => {
-		if (typeSolict === 0) {
-			copyListLocationToCommerce(listLocationClient);
-			copyLocationToCommerce(locationClient, client);
-		}
+		copyListLocationToCommerce(listLocationClient);
+		copyLocationToCommerce(locationClient, client);
 	}, [locationClient, listLocationClient, client.sector, client.calle, client.local]);
 
 	useEffect(() => {
@@ -131,14 +130,14 @@ const FormM: React.FC = () => {
 		copyLocationToPos(locationCommerce, commerce);
 	}, [locationCommerce, listLocationCommerce, commerce.sector, commerce.calle, commerce.local]);
 
-	const handleChangeImages = (event: any) => {};
-	const handleChangeImagesMulti = (event: any) => {};
-	const deleteImgContributor = (name: string) => {};
-
 	useEffect(() => {
-		dispatch(cleanFM());
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+		if (fm.loadedFM) {
+			console.log('Ready All FM');
+			socket.emit('cliente:disconnect');
+			handleSendForm();
+			dispatch(cleanFM());
+		}
+	}, [fm.loadedFM]);
 
 	useEffect(() => {
 		if (fm.errorClient) setActiveStep(1);
@@ -147,7 +146,6 @@ const FormM: React.FC = () => {
 	}, [activeStep, fm.errorClient, fm.errorCommerce, fm.errorNumBank]);
 
 	//const [oldClientMatsh, setOldClientMatsh] = useState<boolean>(false);
-
 	/*
 	//MashClient
 	useEffect(() => {
@@ -325,32 +323,39 @@ const FormM: React.FC = () => {
 	};
 
 	const handleSubmit = () => {
-		/*
 		if (
-			valids.allInputNotNUll(valids.sizeStep(activeStep), fmData, fm.mashClient, fm.mashCommerce) ||
-			valids.allImgNotNUll(
-				fmData,
-				valids.sizeImagesStep(activeStep),
+			!valids.validReadyStep(
+				typeSolict,
+				activeStep,
+				errorsFm,
+				client,
+				commerce,
+				pos,
+				activity,
+				locationClient,
+				locationCommerce,
+				locationPos,
 				imagesForm,
-				fmData.special_contributor,
-				fm.imagesClient,
-				fm.imagesCommerce,
-				fmData.id_ident_type_commerce
-			) ||
-			valids.checkErrorAllInput(valids.sizeStep(activeStep), fmDataError) ||
-			valids.validEndPoint(activeStep, fm) ||
-			valids.notNullImagenActa(activeStep, imagesActa, fmData.id_ident_type_commerce, fm.imagesCommerce)
+				imagesActa
+			)
 		)
 			return;
 		//Send FM
 		handleLoading();
-		setSendForm(1);
-		*/
-		/* Send got to 1 endpoint [delete]
-		if (!fm.mashClient && codePhone) {
-			dispatch(sendClient(fmData, codePhone));
-		}
-		*/
+		dispatch(
+			sendCompleteFM(
+				client,
+				locationClient,
+				commerce,
+				locationCommerce,
+				activity,
+				pos,
+				locationPos,
+				imagePlanilla,
+				imagesForm,
+				imagesActa
+			)
+		);
 	};
 
 	const handleLoading = () => {
@@ -374,26 +379,7 @@ const FormM: React.FC = () => {
 		history.push(baseUrl);
 	};
 
-	const getStep = [
-		<StepBase />,
-		<Step1 />,
-		<Step2 />,
-		<Step3
-			imagesActa={imagesActa}
-			namesImages={namesImages}
-			imagesForm={imagesForm}
-			handleChangeImages={handleChangeImages}
-			handleChangeImagesMulti={handleChangeImagesMulti}
-			deleteImgContributor={deleteImgContributor}
-		/>,
-		<Step4 />,
-		<Step5
-			handleChangeImages={handleChangeImages}
-			namesImages={namesImages}
-			imagesForm={imagesForm}
-			deleteImgContributor={deleteImgContributor}
-		/>,
-	];
+	const getStep: ReactElement[] = [<StepBase />, <Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 />];
 
 	return (
 		<div className='ed-container container-formMaldito'>

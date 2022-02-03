@@ -9,7 +9,7 @@ import { initFmCommerce } from '../initialStates/stateCommerce';
 import { fmErrorFormat, initLocation } from '../initialStates/states';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
 import { ContextFM } from './interface';
-import { base, Activity, Products } from '../../DataList/interface';
+import { base, Activity, Products, Aci } from '../../DataList/interface';
 
 interface Props {
 	children: ReactChild;
@@ -44,9 +44,11 @@ const FMDataContext = createContext<ContextFM>({
 	handleSelectIdentClient: () => {},
 	handleChangeCommerce: () => {},
 	handleSelectIdentCommerce: () => {},
+	handleChangeCheckedCommerce: () => {},
 	handleChangePos: () => {},
 	handleParamsPos: () => {},
 	handleCheckedPos: () => {},
+	handleSourceAci: () => {},
 	resetFm: () => {},
 });
 
@@ -77,10 +79,7 @@ export const FMContextProvider = ({ children }: Props) => {
 	};
 
 	useEffect(() => {
-		if (
-			(typeSolict === 0 && commerce.ident_num !== client.ident_num) ||
-			commerce.name !== client.name + ' ' + client.last_name
-		) {
+		if (typeSolict === 0) {
 			setCommerce((prevState) => {
 				return {
 					...prevState,
@@ -91,7 +90,16 @@ export const FMContextProvider = ({ children }: Props) => {
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [client.name, client.last_name, client.ident_num, client.id_ident_type]);
+	}, [typeSolict, client.name, client.last_name, client.ident_num, client.id_ident_type]);
+
+	useEffect(() => {
+		if (pos.type_pay) {
+			setPos({
+				...pos,
+				reqSource_docnum: '',
+			});
+		}
+	}, [pos.request_origin]);
 
 	const handleTypeSolict = (id: number): void => {
 		setTypeSolict(id);
@@ -110,6 +118,13 @@ export const FMContextProvider = ({ children }: Props) => {
 		setCommerce({
 			...commerce,
 			[event.target.name]: event.target.value,
+		});
+	};
+
+	const handleChangeCheckedCommerce = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		setCommerce({
+			...commerce,
+			[event.target.name]: event.target.checked,
 		});
 	};
 
@@ -161,6 +176,20 @@ export const FMContextProvider = ({ children }: Props) => {
 			setCommerce({
 				...commerce,
 				[event.target.name]: Number(event.target.value),
+			});
+		}
+	};
+
+	const handleSourceAci = (event: any, value: Aci | null, name: string): void => {
+		if (value) {
+			setPos({
+				...pos,
+				reqSource_docnum: value,
+			});
+		} else {
+			setPos({
+				...pos,
+				reqSource_docnum: '',
 			});
 		}
 	};
@@ -244,6 +273,7 @@ export const FMContextProvider = ({ children }: Props) => {
 				handleChangeDay,
 				handleChangeCommerce,
 				handleSelectIdentCommerce,
+				handleChangeCheckedCommerce,
 
 				//Pos
 				pos,
@@ -262,6 +292,7 @@ export const FMContextProvider = ({ children }: Props) => {
 
 				copyLocationToCommerce,
 				copyLocationToPos,
+				handleSourceAci,
 				resetFm,
 			}}>
 			{children}

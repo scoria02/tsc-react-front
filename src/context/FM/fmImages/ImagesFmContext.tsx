@@ -81,7 +81,7 @@ export const ImagesFmProvider = ({ children }: Props) => {
 	};
 
 	const handleChangeImages = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (event?.target?.files) {
+		if (event?.target?.files && event.target.files[0]) {
 			let file = event.target.files[0];
 			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: file.type });
 			//Save img

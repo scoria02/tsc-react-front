@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import classNames from 'classnames';
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { validationNumBank } from '../../../store/actions/fm';
 import { RootState } from '../../../store/store';
@@ -16,11 +16,11 @@ import { useStylesFM } from '../styles';
 import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 import DataListContext from '../../../context/DataList/DataListContext';
 import { Aci } from '../../../context/DataList/interface';
+import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
 
 //Pedido
-export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesForm, deleteImgContributor }) => {
+export const Step5: FC = () => {
 	const classes = useStylesFM();
-	const [aci, setACI] = useState<Aci | null>(null);
 	const [isACI, setIsACI] = useState<boolean>(false);
 	const [deleted, setDeleted] = useState<boolean>(false);
 	const [fraccion, setFraccion] = useState<boolean>(false);
@@ -31,8 +31,14 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
-	const { client, pos, errorsFm, handleParamsPos, handleChangePos, handleCheckedPos } = useContext(FMDataContext);
+	const { client, pos, errorsFm, handleParamsPos, handleChangePos, handleCheckedPos, handleSourceAci } =
+		useContext(FMDataContext);
 	const { listPayment, listModelPos, listTypePay, listRequestSource, listAci } = useContext(DataListContext);
+	const { namesImages, imagesForm, handleChangeImages, deleteImgContributor } = useContext(ImagesFmContext);
+
+	const [aci, setACI] = useState<Aci | null>(
+		typeof pos.reqSource_docnum === 'object' ? pos.reqSource_docnum : null
+	);
 
 	const handleChangeReferido = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		if (/^[V0-9]+$/.test(event.target.value) || event.target.value === '') {
@@ -45,17 +51,10 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 		else handleParamsPos(name, null);
 	};
 
-	const handleSelectSource = (event: any, value: any, name: string) => {
-		if (value) handleParamsPos(name, value.id as string);
-		else handleParamsPos(name, '');
-	};
-
 	const handleCheckedPagadero = (event: React.ChangeEvent<HTMLInputElement>) => {
-		/*
-			if (!pos[`${event.target.name}`]) {
-				deleteImgContributor('comp_dep');
-			}
-			*/
+		if (!event.target.checked && imagesForm.rc_comp_dep) {
+			deleteImgContributor('comp_dep');
+		}
 		handleParamsPos('nro_comp_dep', '');
 		handleCheckedPos(event);
 	};
@@ -72,11 +71,6 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 			}
 			handleChangePos(event);
 		}
-	};
-
-	const handleSelectAci = (event: any, value: any) => {
-		// dispatch(selectAci(value ? true : false));
-		setACI(value);
 	};
 
 	useEffect(() => {
@@ -278,7 +272,7 @@ export const Step5: React.FC<any> = ({ handleChangeImages, namesImages, imagesFo
 						style={{ width: '50%' }}
 						//disabled={} //si el comercio tiene aci traelo
 						onChange={(event, value) => {
-							handleSelectSource(event, value, 'reqSource_docnum');
+							handleSourceAci(event, value, 'reqSource_docnum');
 							setACI(value);
 						}}
 						options={listAci}

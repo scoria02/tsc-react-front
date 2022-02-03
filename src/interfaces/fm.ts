@@ -1,4 +1,4 @@
-import { Activity, base, Products } from '../context/DataList/interface';
+import { Aci, Activity, base, Products } from '../context/DataList/interface';
 
 export interface fmClient {
 	email: string;
@@ -42,7 +42,7 @@ export interface fmPos {
 	payment_method: base | null;
 	type_pay: base | null;
 	request_origin: base | null;
-	reqSource_docnum: string;
+	reqSource_docnum: string | Aci;
 	initial: number;
 	//cuotas: number;
 	nro_comp_dep: string;

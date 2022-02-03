@@ -1,3 +1,4 @@
+import { ElectricalServices, ImagesearchRoller, SwitchRight } from '@mui/icons-material';
 import { Activity } from '../../context/DataList/interface';
 import { ImagesInt } from '../../context/FM/fmImages/interface';
 import { LocationInt } from '../../context/FM/Location/interfaces';
@@ -178,7 +179,7 @@ export const inputNotNullPos = (last: number, form: any): boolean => {
 		index++;
 		if (typeof item[1] === 'string' && item[1].trim() === '') {
 			if (item[0] === 'reqSource_docnum') {
-				if (form['type_pay']?.id === 2) {
+				if (form['request_origin']?.id === 1 || (form['request_origin']?.id === 2 && item[1] === '')) {
 					return true;
 				}
 			} else if (item[0] === 'nro_comp_dep') {
@@ -189,6 +190,8 @@ export const inputNotNullPos = (last: number, form: any): boolean => {
 				return true;
 			}
 		} else if (typeof item[1] === 'number' && item[1] === 0) {
+			return true;
+		} else if (typeof item[1] === 'object' && !item[1]) {
 			return true;
 		}
 	}
@@ -315,7 +318,35 @@ export const validMashes = (activeStep: number, mashClient: boolean, mashCommerc
 	}
 };
 
+const imagesCommerceForTS = (
+	typeS: number,
+	imagesForm: ImagesInt,
+	imagesActa: FileList | [],
+	commerce: fmCommerce
+): boolean => {
+	switch (typeS) {
+		case 0:
+			return imagesForm.rc_rif ? false : true;
+		case 1:
+			if (commerce.special_contributor) {
+				if (imagesForm.rc_special_contributor) return false;
+				else return true;
+			}
+			return imagesForm.rc_rif && imagesActa.length ? false : true;
+		default:
+			return false;
+	}
+};
+
+const imagesForPos = (imagesForm: ImagesInt, pos: fmPos) => {
+	if (!imagesForm.rc_ref_bank) {
+		return true;
+	} else if (!pos.pagadero && !imagesForm.rc_comp_dep) return true;
+	else return false;
+};
+
 export const validReadyStep = (
+	typeSolict: number,
 	activeStep: number,
 	errorsFm: fmError_Interface,
 	client: fmClient,
@@ -329,9 +360,9 @@ export const validReadyStep = (
 	imagesActa: FileList | []
 ): boolean => {
 	switch (activeStep) {
-		case 0:
+		case 0: //Tipo de Solicitud
 			return true;
-		case 1:
+		case 1: //Cliente
 		case 2:
 			if (
 				!checkErrorAllInput(sizeStepError(activeStep), errorsFm) &&
@@ -341,10 +372,15 @@ export const validReadyStep = (
 			)
 				return true;
 			return false;
-		case 3:
-			if (!inputNotNull(sizeStep(activeStep), commerce) && activity) return true;
+		case 3: //Comercio
+			if (
+				!inputNotNull(sizeStep(activeStep), commerce) &&
+				!imagesCommerceForTS(typeSolict, imagesForm, imagesActa, commerce) &&
+				activity
+			)
+				return true;
 			return false;
-		case 4:
+		case 4: //Locations Comercio y Pos
 			if (
 				!inputNotNull(13, commerce) &&
 				!inputNotNull(3, pos) &&
@@ -353,39 +389,15 @@ export const validReadyStep = (
 			)
 				return true;
 			return false;
-		case 5:
-			if (!inputNotNullPos(3 + 12, pos)) return true;
+		case 5: //FM Pos
+			if (
+				!inputNotNullPos(3 + 12, pos) &&
+				!imagesForPos(imagesForm, pos) &&
+				!checkErrorAllInput(sizeStepError(activeStep), errorsFm)
+			)
+				return true;
 			return false;
 		default:
 			return false;
 	}
 };
-
-//CheckStepAcual
-/*
-	useEffect(() => {
-		if (
-			//!valids.allInputNotNUll(valids.sizeStep(activeStep), fmData, fm.mashClient, fm.mashCommerce) &&
-			//!valids.checkErrorAllInput(valids.sizeStep(activeStep), fmDataError) &&
-			//valids.validMashes(activeStep, fm.validMashClient, fm.validMashCommerce)
-			!valids.allImgNotNUll(
-				fmData,
-				valids.sizeImagesStep(activeStep),
-				imagesForm,
-				fmData.special_contributor,
-				fm.imagesClient,
-				fm.imagesCommerce,
-				fmData.id_ident_type_commerce
-			) &&
-			!valids.checkErrorAllInput(valids.sizeStep(activeStep), fmDataError) &&
-			!valids.validEndPoint(activeStep, fm) &&
-			!valids.notNullImagenActa(activeStep, imagesActa, fmData.id_ident_type_commerce, fm.imagesCommerce) &&
-			valids.validMashes(activeStep, fm.validMashClient, fm.validMashCommerce)
-		) {
-			setReadyStep(true);
-		} else {
-			setReadyStep(false);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [fmData, imagesForm, activeStep, fm, imagesActa]);
-	*/

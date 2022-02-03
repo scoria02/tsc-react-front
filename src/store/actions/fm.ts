@@ -2,6 +2,10 @@
 import { AxiosResponse } from 'axios';
 import Swal from 'sweetalert2';
 import useAxios, { axiosFiles } from '../../config/index';
+import { Activity } from '../../context/DataList/interface';
+import { ImagesInt } from '../../context/FM/fmImages/interface';
+import { LocationInt } from '../../context/FM/Location/interfaces';
+import { fmClient, fmCommerce, fmPos } from '../../interfaces/fm';
 import { ActionType } from '../types/types';
 
 export const updateToken = (token: any) => {
@@ -273,7 +277,164 @@ export const sendFM = (cursedForm: any, fm: any) => {
 	}
 };
 
-export const sendCompleteFM = () => {
+export const dataFormatClient = (client: fmClient, locationClient: LocationInt) => ({
+	email: client.email,
+	name: client.name,
+	last_name: client.last_name,
+	id_ident_type: client.id_ident_type,
+	ident_num: client.ident_num,
+	phone1: '58' + client.phone1,
+	phone2: '+58' + client.phone2,
+	location: {
+		id_estado: locationClient.estado?.id,
+		id_municipio: locationClient.municipio?.id,
+		id_parroquia: locationClient.parroquia?.id,
+		id_ciudad: locationClient.ciudad?.id,
+		sector: client.sector,
+		calle: client.calle,
+		local: client.local,
+	},
+	ref_person_1: {
+		fullName: client.name_ref1,
+		document: client.doc_ident_type_ref1 + client.doc_ident_ref1,
+		phone: '+58' + client.phone_ref1,
+	},
+	ref_person_2: {
+		fullName: client.name_ref1,
+		document: client.doc_ident_type_ref2 + client.doc_ident_ref2,
+		phone: '+58' + client.phone_ref2,
+	},
+});
+
+export const dataFormatCommerce = (
+	commerce: fmCommerce,
+	locationCommerce: LocationInt,
+	activity: Activity | null,
+	pos: fmPos
+) => ({
+	id_ident_type: commerce.id_ident_type,
+	ident_num: commerce.ident_num,
+	special_contributor: commerce.special_contributor ? 1 : 0,
+	name: commerce.name,
+	bank_account_num: pos.text_account_number,
+	id_activity: activity?.id,
+	location: {
+		id_estado: locationCommerce.estado?.id,
+		id_municipio: locationCommerce.municipio?.id,
+		id_parroquia: locationCommerce.parroquia?.id,
+		id_ciudad: locationCommerce.ciudad?.id,
+		sector: commerce.sector,
+		calle: commerce.calle,
+		local: commerce.local,
+	},
+	days: commerce.days,
+});
+
+export const dataFormatPos = (
+	pos: fmPos,
+	locationPos: LocationInt,
+	idClient: number,
+	idCommerce: number,
+	idImages: any
+) => ({
+	//Data FM
+	...idImages,
+	number_post: pos.number_post,
+	id_payment_method: pos.payment_method?.id,
+	id_client: idClient,
+	id_commerce: idCommerce,
+	dir_pos: {
+		id_estado: locationPos.estado?.id,
+		id_municipio: locationPos.municipio?.id,
+		id_parroquia: locationPos.parroquia?.id,
+		id_ciudad: locationPos.ciudad?.id,
+		sector: pos.sector,
+		calle: pos.calle,
+		local: pos.local,
+	},
+	bank_account_num: pos.text_account_number,
+	id_request_origin: pos.request_origin?.id,
+	id_type_payment: pos.type_pay?.id,
+	ci_referred: pos.reqSource_docnum,
+	id_product: pos.model_post?.id,
+	requestSource_docnum: pos.request_origin?.id,
+	discount: pos.discount,
+	nro_comp_dep: pos.nro_comp_dep,
+	pagadero: pos.pagadero,
+	initial: pos.initial,
+	//coutas: pos.coutas,
+});
+
+export const createFormDataFm = (
+	idClient: number,
+	idCommerce: number,
+	imagePlanilla: object | null,
+	imagesForm: ImagesInt,
+	imagesActa: FileList | []
+): FormData => {
+	const formData: FormData = new FormData();
+	formData.append('id_client', idClient.toString());
+	formData.append('id_commerce', idCommerce.toString());
+	for (const item of Object.entries(imagesForm)) {
+		if (item[1] !== null) {
+			formData.append('images', item[1]);
+		}
+	}
+	for (let i: number = 0; i < imagesActa.length; i++) {
+		formData.append('constitutive_act', imagesActa[i]);
+	}
+	return formData;
+};
+
+export const sendCompleteFM = (
+	client: fmClient,
+	locationClient: LocationInt,
+	commerce: fmCommerce,
+	locationCommerce: LocationInt,
+	activity: Activity | null,
+	pos: fmPos,
+	locationPos: LocationInt,
+	imagePlanilla: object | null,
+	imagesForm: ImagesInt,
+	imagesActa: FileList | []
+) => {
+	const dataClient = dataFormatClient(client, locationClient);
+	const dataCommerce = dataFormatCommerce(commerce, locationCommerce, activity, pos);
+	return async (dispatch: any) => {
+		try {
+			const resClient: AxiosResponse<any> = await useAxios.post(`/FM/client`, dataClient);
+			const idClient: number = resClient.data.info.id;
+			console.log('Client', idClient);
+			const resCommerce: AxiosResponse<any> = await useAxios.post(`/FM/${idClient}/commerce`, dataCommerce);
+			const idCommerce: number = resCommerce.data.info.id_commerce;
+			console.log('Commerce', idCommerce);
+			const images: any = createFormDataFm(idClient, idCommerce, imagePlanilla, imagesForm, imagesActa);
+			console.log(axiosFiles.defaults);
+			const resImages: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, images);
+			const idImages = resImages.data.info;
+			console.log('idImages', idImages);
+			const dataPos = dataFormatPos(pos, locationPos, idClient, idCommerce, idImages);
+			const resPos: AxiosResponse<any> = await useAxios.post(`/FM`, dataPos);
+			console.log('fm cargado', resPos.data);
+			//const res: AxiosResponse<any> = await useAxios.post(`/FM`, form);
+			//updateToken(res);
+			dispatch(requestSuccess());
+		} catch (error: any) {
+			//console.log(error.reponse)
+			dispatch(requestError());
+			Swal.fire('Error', error.response?.data.message, 'error');
+		}
+	};
+	function requestSuccess() {
+		return {
+			type: ActionType.sendFM,
+		};
+	}
+	function requestError() {
+		return {
+			type: ActionType.sendFMError,
+		};
+	}
 	/*
 	//SendForm
 	useEffect(() => {
@@ -297,7 +458,6 @@ export const sendCompleteFM = () => {
 			}
 			formData.append('id_client', `${fm.id_client}`);
 			formData.append('id_commerce', `${fm.id_commerce}`);
-			//formData.append('bank_account_num', fmData.text_account_number);
 			dispatch(sendImages(formData));
 			//update fm_imgaes
 			setSendForm(3);

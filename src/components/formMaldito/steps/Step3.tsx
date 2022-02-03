@@ -10,7 +10,7 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { recaudo } from '../../utilis/recaudos';
@@ -20,16 +20,10 @@ import { Activity } from '../../../context/DataList/interface';
 import { validationCommerce } from '../../../store/actions/fm';
 import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 import DataListContext from '../../../context/DataList/DataListContext';
+import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
 import { Days } from '../../../interfaces/fm';
 
-export const Step3: React.FC<any> = ({
-	imagesActa,
-	namesImages,
-	imagesForm,
-	handleChangeImages,
-	handleChangeImagesMulti,
-	deleteImgContributor,
-}) => {
+export const Step3: FC = () => {
 	const classes = useStylesFM();
 	const [actaFlag, setActaFlag] = useState(false);
 	const dispatch = useDispatch();
@@ -45,10 +39,20 @@ export const Step3: React.FC<any> = ({
 		setActivity,
 		handleChangeDay,
 		handleSelectIdentCommerce,
+		handleChangeCheckedCommerce,
 		handleChangeCommerce,
 	} = useContext(FMDataContext);
 
 	const { listIdentType, listActivity } = useContext(DataListContext);
+
+	const {
+		imagesActa,
+		namesImages,
+		imagesForm,
+		handleChangeImages,
+		handleChangeImagesMulti,
+		deleteImgContributor,
+	} = useContext(ImagesFmContext);
 
 	const handleBlurCommerce = (): void => {
 		if (commerce.id_ident_type !== 0 && commerce.ident_num !== '') {
@@ -61,12 +65,6 @@ export const Step3: React.FC<any> = ({
 		}
 	};
 
-	const handleChangeLastRif = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
-			//setLastRif(event.target.value);
-		}
-	};
-
 	const handleChangeNameCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (/^[a-z0-9]+$/i.test(event.target.value) || event.target.value === '') {
 			handleChangeCommerce(event);
@@ -74,20 +72,15 @@ export const Step3: React.FC<any> = ({
 	};
 
 	const handleSelectActivity = (event: any, value: any, item: string) => {
-		if (value) {
-			//handleParamsCommerce(`id_${item}`, value.id);
-			setActivity(value);
-		} else {
-			//handleParamsCommerce(`id_${item}`, 0);
-			setActivity(null);
-		}
+		if (value) setActivity(value);
+		else setActivity(null);
 	};
 
-	const handleChecked = (e: any) => {
-		if (e.target.checked) {
-			deleteImgContributor(e.target.name);
+	const handleChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (!event.target.checked && imagesForm.rc_special_contributor) {
+			deleteImgContributor(event.target.name);
 		}
-		//handleParamsCommerce(e.target.name, e.target.checked);
+		handleChangeCheckedCommerce(event);
 	};
 
 	const handleIdentNum = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,8 +94,8 @@ export const Step3: React.FC<any> = ({
 		if (commerce.id_ident_type === 3) {
 			setActaFlag(true);
 		} else {
-			if (imagesForm.rc_constitutive_act) {
-				deleteImgContributor('constitutive_act');
+			if (imagesActa.length) {
+				//deleteImgContributor('constitutive_act');
 			}
 		}
 		/* eslint-disable react-hooks/exhaustive-deps */
@@ -115,7 +108,7 @@ export const Step3: React.FC<any> = ({
 					<FormControl variant='outlined' className={classes.inputSelect}>
 						<InputLabel id='demo-simple-select-outlined-label'>Doc.</InputLabel>
 						<Select
-							disabled={typeSolict === 0}
+							disabled={typeSolict === 0 || typeSolict === 1}
 							value={commerce.id_ident_type}
 							onChange={handleSelectIdentCommerce}
 							name='id_ident_type'
@@ -233,30 +226,32 @@ export const Step3: React.FC<any> = ({
 					)}
 				</div>
 				<div className={classes.input}>
-					<div className={classes.inputText}>
-						<FormControlLabel
-							style={{ margin: 0 }}
-							label=''
-							control={
-								<>
-									<Checkbox
-										name='special_contributor'
-										checked={commerce.special_contributor ? true : false}
-										onChange={handleChecked}
-										disabled={fm.imagesCommerce}
-										color='primary'
-										inputProps={{ 'aria-label': 'secondary checkbox' }}
-									/>
-									<b
-										style={{
-											fontSize: '1rem',
-										}}>
-										Contribuye Especial
-									</b>
-								</>
-							}
-						/>
-					</div>
+					{typeSolict === 1 ? (
+						<div className={classes.inputText}>
+							<FormControlLabel
+								style={{ margin: 0 }}
+								label=''
+								control={
+									<>
+										<Checkbox
+											name='special_contributor'
+											checked={commerce.special_contributor}
+											onChange={handleChecked}
+											disabled={fm.imagesCommerce}
+											color='primary'
+											inputProps={{ 'aria-label': 'secondary checkbox' }}
+										/>
+										<b
+											style={{
+												fontSize: '1rem',
+											}}>
+											Contribuye Especial
+										</b>
+									</>
+								}
+							/>
+						</div>
+					) : null}
 					<Button
 						className={classes.imgIdent}
 						disabled={fm.imagesCommerce}
@@ -267,17 +262,12 @@ export const Step3: React.FC<any> = ({
 							visibility: commerce.special_contributor ? 'visible' : 'hidden',
 						}}
 						component='label'>
-						{imagesForm.rc_special_contributor !== null ? (
-							<>
-								<p className='nameImg'>{namesImages.rc_special_contributor.slice(0, 7)}...</p>
-							</>
+						{imagesForm.rc_special_contributor ? (
+							<p className='nameImg'>{namesImages.rc_special_contributor.slice(0, 7)}...</p>
 						) : (
-							<>
-								{/*<b>Subir</b>*/}
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-							</>
+							<IconButton aria-label='upload picture' component='span'>
+								<PhotoCamera />
+							</IconButton>
 						)}
 						<input
 							type='file'
