@@ -1,21 +1,15 @@
-import React from 'react';
 import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@mui/lab/Autocomplete';
+import React from 'react';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
+import { selectAci } from '../../../../store/actions/accept';
 //Url
 import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 
-import Autocomplete from '@material-ui/lab/Autocomplete';
-
-import { selectAci } from '../../../../store/actions/accept';
-
-const PasoSelectAci: React.FC<any> = ({
-	aci,
-	setAci,
-	listAci,
-}) => {
+const PasoSelectAci: React.FC<any> = ({ aci, setAci, listAci }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
@@ -23,89 +17,89 @@ const PasoSelectAci: React.FC<any> = ({
 	const handleSelectAci = (event: any, value: any) => {
 		dispatch(selectAci(value ? true : false));
 		setAci(value);
-	}
+	};
 
 	return (
 		<>
-			<form className="container-step" noValidate autoComplete='off'>
-					<div className='comprobar_container_2'>
-						<div>
-							<div className={classes.btn_stepM}>
-								<TextField 
-									className='btn_step btn_medio'
-									id='outlined-basic'
-									label='Ubicacion del POS'
-									variant='outlined'
-									disabled
-								/>
-							</div>
-							<div className={classes.btn_stepM}>
-								<TextField
-									className={classes.btn_stepT}
-									id='outlined-basic'
-									label='Estado'
-									value={fm.dir_pos[0].id_location.id_estado.estado}
-									variant='outlined'
-								/>
-								<TextField
-									className={classes.btn_stepT}
-									id='outlined-basic'
-									label='Ciudad'
-									value={fm.dir_pos[0].id_location.id_ciudad.ciudad}
-									variant='outlined'
-								/>
-							</div>
-							<div className={classes.btn_stepM}>
-								<TextField
-									className={classes.btn_stepT}
-									id='outlined-basic'
-									label='Municipio'
-									value={fm.dir_pos[0].id_location.id_municipio.municipio}
-									variant='outlined'
-								/>
-								<TextField
-									className={classes.btn_stepT}
-									id='outlined-basic'
-									label='Parroquia'
-									value={fm.dir_pos[0].id_location.id_parroquia.parroquia}
-									variant='outlined'
-								/>
-							</div>
-							<div className={classes.btn_stepM}>
-								<TextField
-									className={classes.btn_stepT}
-									id='outlined-basic'
-									label='Cod. Postal'
-									value={fm.dir_pos[0].id_location.id_ciudad.postal_code}
-									variant='outlined'
-								/>
-								<TextField
-									className={classes.btn_stepT}
-									id='outlined-basic'
-									label='Sector'
-									value={fm.dir_pos[0].id_location.sector}
-									variant='outlined'
-								/>
-							</div>
-							<div className={classes.btn_stepM}>
-								<TextField
-									className={classes.btn_stepT}
-									id='outlined-basic'
-									label='Calle'
-									value={fm.dir_pos[0].id_location.calle}
-									variant='outlined'
-								/>
-								<TextField
-									className={classes.btn_stepT}
-									id='outlined-basic'
-									label='Local'
-									value={fm.dir_pos[0].id_location.local}
-									variant='outlined'
-								/>
-							</div>
+			<form className='container-step' noValidate autoComplete='off'>
+				<div className='comprobar_container_2'>
+					<div>
+						<div className={classes.btn_stepM}>
+							<TextField
+								className='btn_step btn_medio'
+								id='outlined-basic'
+								label='Ubicacion del POS'
+								variant='outlined'
+								disabled
+							/>
 						</div>
-						<div>
-							<div className={classes.btn_stepM}>
+						<div className={classes.btn_stepM}>
+							<TextField
+								className={classes.btn_stepT}
+								id='outlined-basic'
+								label='Estado'
+								value={fm.dir_pos[0].id_location.id_estado.estado}
+								variant='outlined'
+							/>
+							<TextField
+								className={classes.btn_stepT}
+								id='outlined-basic'
+								label='Ciudad'
+								value={fm.dir_pos[0].id_location.id_ciudad.ciudad}
+								variant='outlined'
+							/>
+						</div>
+						<div className={classes.btn_stepM}>
+							<TextField
+								className={classes.btn_stepT}
+								id='outlined-basic'
+								label='Municipio'
+								value={fm.dir_pos[0].id_location.id_municipio.municipio}
+								variant='outlined'
+							/>
+							<TextField
+								className={classes.btn_stepT}
+								id='outlined-basic'
+								label='Parroquia'
+								value={fm.dir_pos[0].id_location.id_parroquia.parroquia}
+								variant='outlined'
+							/>
+						</div>
+						<div className={classes.btn_stepM}>
+							<TextField
+								className={classes.btn_stepT}
+								id='outlined-basic'
+								label='Cod. Postal'
+								value={fm.dir_pos[0].id_location.id_ciudad.postal_code}
+								variant='outlined'
+							/>
+							<TextField
+								className={classes.btn_stepT}
+								id='outlined-basic'
+								label='Sector'
+								value={fm.dir_pos[0].id_location.sector}
+								variant='outlined'
+							/>
+						</div>
+						<div className={classes.btn_stepM}>
+							<TextField
+								className={classes.btn_stepT}
+								id='outlined-basic'
+								label='Calle'
+								value={fm.dir_pos[0].id_location.calle}
+								variant='outlined'
+							/>
+							<TextField
+								className={classes.btn_stepT}
+								id='outlined-basic'
+								label='Local'
+								value={fm.dir_pos[0].id_location.local}
+								variant='outlined'
+							/>
+						</div>
+					</div>
+					<div>
+						<div className={classes.btn_stepM}>
 							<Autocomplete
 								className='btn_step btn_medio'
 								//disabled={} //si el comercio tiene aci traelo
@@ -113,12 +107,11 @@ const PasoSelectAci: React.FC<any> = ({
 									handleSelectAci(event, value);
 								}}
 								options={listAci}
-								value={aci|| null}
-								getOptionLabel={
-									(option: any) => (
-									option.aliNombres || option.aliIdentificacion ? 
-									option.aliTipoIdentificacion + option.aliIdentificacion + ' | ' + option.aliNombres : ''
-									)
+								value={aci || null}
+								getOptionLabel={(option: any) =>
+									option.aliNombres || option.aliIdentificacion
+										? option.aliTipoIdentificacion + option.aliIdentificacion + ' | ' + option.aliNombres
+										: ''
 								}
 								renderInput={(params: any) => (
 									<TextField {...params} name='aci' label={`Buscar Aci`} variant='outlined' />
@@ -130,6 +123,6 @@ const PasoSelectAci: React.FC<any> = ({
 			</form>
 		</>
 	);
-}
+};
 
 export default PasoSelectAci;

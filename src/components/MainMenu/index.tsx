@@ -1,17 +1,3 @@
-import {
-	//	AppBar,
-	Avatar,
-	Badge,
-	Divider,
-	Drawer,
-	IconButton,
-	List,
-	ListItem,
-	ListItemIcon,
-	ListItemText,
-	Menu,
-	MenuItem,
-} from '@mui/material';
 import AppBar from '@material-ui/core/AppBar';
 //import Avatar from '@material-ui/core/Avatar';
 //import Badge from '@material-ui/core/Badge';
@@ -28,20 +14,33 @@ import AppBar from '@material-ui/core/AppBar';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { default as AccountCircle } from '@material-ui/icons/AccountCircle';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import CreditCardIcon from '@material-ui/icons/CreditCard';
-import FolderIcon from '@material-ui/icons/Folder';
-import HomeIcon from '@material-ui/icons/Home';
-import MailIcon from '@material-ui/icons/Mail';
-import MenuIcon from '@material-ui/icons/Menu';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import PeopleIcon from '@material-ui/icons/PeopleAlt';
-import PersonAdd from '@material-ui/icons/PersonAdd';
-// import WorkIcon from '@material-ui/icons/Work';
+import { default as AccountCircle } from '@mui/icons-material/AccountCircle';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import FolderIcon from '@mui/icons-material/Folder';
+import HomeIcon from '@mui/icons-material/Home';
+import MailIcon from '@mui/icons-material/Mail';
+import MenuIcon from '@mui/icons-material/Menu';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import PeopleIcon from '@mui/icons-material/PeopleAlt';
+import PersonAdd from '@mui/icons-material/PersonAdd';
+import {
+	Avatar,
+	Badge,
+	Divider,
+	Drawer,
+	IconButton,
+	List,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
+	Menu,
+	MenuItem,
+} from '@mui/material';
+// import WorkIcon from '@mui/icons-material/Work';
 import classNames from 'classnames';
 import { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

@@ -1,25 +1,20 @@
 import { Button } from '@material-ui/core';
-import React from 'react';
+import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-
-import Swal from 'sweetalert2';
-
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import DeleteIcon from '@material-ui/icons/Delete';
-//Url
-import { useStyles } from '../styles/styles';
-import '../comprobacion/pasosComprobacion/styles/pasos.scss';
-import '../scss/index.scss';
-import { recaudo } from '../../utilis/recaudos';
-
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-
-import Avatar from '@material-ui/core/Avatar';
-
-import ImageIcon from '@material-ui/icons/Image';
-import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ImageIcon from '@mui/icons-material/Image';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import React from 'react';
+import Swal from 'sweetalert2';
+import { recaudo } from '../../utilis/recaudos';
+import '../comprobacion/pasosComprobacion/styles/pasos.scss';
+import '../scss/index.scss';
+//Url
+import { useStyles } from '../styles/styles';
 
 const StepActaConst: React.FC<any> = ({
 	name,

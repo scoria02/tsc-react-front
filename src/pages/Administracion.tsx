@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button, makeStyles, Paper, Theme } from '@material-ui/core';
+import CloseIcon from '@mui/icons-material/Close';
 import {
 	DataGrid,
 	GridColDef,
@@ -8,8 +9,7 @@ import {
 	GridToolbarContainer,
 	GridToolbarFilterButton,
 	GridValueGetterParams,
-} from '@material-ui/data-grid';
-import CloseIcon from '@material-ui/icons/Close';
+} from '@mui/x-data-grid';
 import classNames from 'classnames';
 import { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,9 +18,8 @@ import '../components/administration/styles/index.scss';
 import { getPayMent } from '../components/formMaldito/getData';
 import LoaderPrimary from '../components/loaders/LoaderPrimary';
 import { SocketContext } from '../context/SocketContext';
-import { RootState } from '../store/store';
-
 import { cleanAdmisionFMAdministration } from '../store/actions/administration';
+import { RootState } from '../store/store';
 
 interface AdministracionProp {}
 
@@ -30,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 		display: 'grid',
 		gridColumnGap: '2rem',
 		gridTemplateColumns: '1fr 1fr',
+		height: '80vh',
 	},
 	button: {
 		width: 200,
@@ -118,29 +118,24 @@ const columns: GridColDef[] = [
 	{
 		field: 'id_request',
 		headerName: 'Cod.',
-		width: 150, //120,
+		width: 60, //120,
 		editable: false,
 		sortable: false,
-		valueFormatter: (value: GridValueGetterParams) => {
-			return value.row?.id_request.code;
-		},
+		valueGetter: (value: GridValueGetterParams) => value.row?.id_request.code,
 	},
 	{
 		field: 'name_commerce',
 		headerName: 'Comercio',
 		width: 160,
-		valueFormatter: (value: GridValueGetterParams) => {
-			return value.row?.id_request.id_commerce.name;
-		},
+		valueGetter: (value: GridValueGetterParams) => value.row?.id_request.id_commerce.name,
 		sortable: false,
 	},
 	{
 		field: 'name_client',
 		headerName: 'Cliente',
 		width: 160,
-		valueFormatter: (value: GridValueGetterParams) => {
-			return `${value.row?.id_request.id_client.name} ${value.row?.id_request.id_client.last_name}`;
-		},
+		valueGetter: (value: GridValueGetterParams) =>
+			`${value.row?.id_request.id_client.name} ${value.row?.id_request.id_client.last_name}`,
 		sortable: false,
 	},
 	{
@@ -149,9 +144,7 @@ const columns: GridColDef[] = [
 		width: 150,
 		editable: false,
 		sortable: false,
-		valueFormatter: (value: GridValueGetterParams) => {
-			return value.row?.id_request.pagadero ? 'Si' : 'No';
-		},
+		valueGetter: (value: GridValueGetterParams) => (value.row?.id_request.pagadero ? 'Si' : 'No'),
 	},
 ];
 

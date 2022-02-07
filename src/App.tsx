@@ -1,13 +1,12 @@
-import { unstable_createMuiStrictModeTheme as createTheme } from '@material-ui/core';
-import { esES as coreesES } from '@material-ui/core/locale';
-import { esES } from '@material-ui/data-grid';
-import ThemeProvider from '@material-ui/styles/ThemeProvider';
+import { esES as coreesES } from '@mui/material/locale';
+import { ThemeProvider, unstable_createMuiStrictModeTheme as createTheme } from '@mui/material/styles';
+import { esES } from '@mui/x-data-grid';
 import { Provider } from 'react-redux';
+import { SocketProvider } from './context/SocketContext';
 import { AppRouter } from './routers/AppRouter';
 import { store } from './store/store';
-import { SocketProvider } from './context/SocketContext';
-
 import './styles/styles.scss';
+
 export * from './store/store';
 
 const theme = createTheme(

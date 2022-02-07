@@ -1,8 +1,8 @@
 import { Button } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutlineSharp';
-import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutlineSharp';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import React, { useState } from 'react';
 //Url
 import Rec from '../../utilis/images/Rec';

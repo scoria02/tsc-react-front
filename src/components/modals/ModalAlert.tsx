@@ -1,6 +1,6 @@
 //modal
 import Button from '@material-ui/core/Button';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutlineSharp';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutlineSharp';
 import AnimationModal from './AnimationModal';
 import './scss/modalAlert.scss';
 import { useStylesModalAlert } from './styles';

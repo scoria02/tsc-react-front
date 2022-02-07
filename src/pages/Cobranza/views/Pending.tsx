@@ -9,7 +9,7 @@ import {
 	GridToolbarContainer,
 	GridToolbarFilterButton,
 	GridValueGetterParams,
-} from '@material-ui/data-grid';
+} from '@mui/x-data-grid';
 import classNames from 'classnames';
 import { DateTime } from 'luxon';
 import { FC, useContext, useState } from 'react';

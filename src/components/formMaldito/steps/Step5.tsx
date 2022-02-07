@@ -3,20 +3,19 @@ import { Checkbox, FormControlLabel, InputAdornment } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import { Autocomplete } from '@mui/material';
 import classNames from 'classnames';
-import React, { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import DataListContext from '../../../context/DataList/DataListContext';
+import { Aci } from '../../../context/DataList/interface';
+import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
+import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
 import { validationNumBank } from '../../../store/actions/fm';
 import { RootState } from '../../../store/store';
 import { recaudo } from '../../utilis/recaudos';
-import { getAci } from '../getData';
 import { useStylesFM } from '../styles';
-import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
-import DataListContext from '../../../context/DataList/DataListContext';
-import { Aci } from '../../../context/DataList/interface';
-import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
 
 //Pedido
 export const Step5: FC = () => {
@@ -280,7 +279,7 @@ export const Step5: FC = () => {
 						getOptionLabel={(option: Aci | null) =>
 							option ? option.aliTipoIdentificacion + option.aliIdentificacion + ' | ' + option.aliNombres : ''
 						}
-						getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
+						// getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
 						renderInput={(params: any) => (
 							<TextField {...params} name='aci' label={`Buscar Aci`} variant='outlined' />
 						)}

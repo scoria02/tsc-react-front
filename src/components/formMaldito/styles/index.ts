@@ -21,7 +21,7 @@ export const useStylesFM = makeStyles((styles) => ({
 		margin: '8px 0',
 		textAlign: 'center',
 		alignItems: 'center',
-		justifyContent: 'center',
+		// justifyContent: 'center',
 	},
 	row: {
 		display: 'flex',

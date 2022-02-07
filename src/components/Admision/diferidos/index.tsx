@@ -7,7 +7,7 @@ import {
 	GridToolbarContainer,
 	GridToolbarFilterButton,
 	GridValueGetterParams,
-} from '@material-ui/data-grid';
+} from '@mui/x-data-grid';
 import { DateTime } from 'luxon';
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +20,7 @@ const columns: GridColDef[] = [
 	{
 		field: 'code',
 		headerName: 'Cod.',
-		width: 80,
+		width: 70,
 		editable: false,
 		sortable: false,
 	},
@@ -35,26 +35,22 @@ const columns: GridColDef[] = [
 		field: 'nameClient',
 		headerName: 'Cliente',
 		width: 120,
-		valueFormatter: (value: GridValueGetterParams) => {
-			return `${value.row?.nameClient} ${value.row?.lastnameClient}`;
-		},
+		valueGetter: (value: GridValueGetterParams) => `${value.row?.nameClient} ${value.row?.lastnameClient}`,
 		sortable: false,
 	},
 	{
 		field: 'identNumComer',
 		headerName: 'DI Comercio',
-		width: 140,
-		valueFormatter: (value: GridValueGetterParams) => {
-			return `${value.row?.identTypeComer} ${value.row?.identNumComer}`;
-		},
+		width: 120,
+		valueGetter: (params: GridValueGetterParams) => `${params.row?.identTypeComer} ${params.row?.identNumComer}`,
 		sortable: false,
 	},
 	{
 		field: 'updatedAt',
 		headerName: 'Fecha',
-		width: 120,
-		valueFormatter: (value: GridValueGetterParams) => {
-			return DateTime.fromISO(value.row?.updatedAt.toString()).toFormat('dd/LL/yyyy').toLocaleString();
+		width: 90,
+		valueGetter: (params: GridValueGetterParams) => {
+			return DateTime.fromISO(params.row?.updatedAt.toString()).toFormat('dd/LL/yyyy').toLocaleString();
 		},
 		sortable: false,
 	},
