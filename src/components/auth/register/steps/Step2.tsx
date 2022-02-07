@@ -1,28 +1,20 @@
-import React from "react"
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import {useDispatch, useSelector} from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 //Material
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+import { Select, TextField, FormControl, InputAdornment, InputLabel, MenuItem } from '@mui/material';
 
 //Styles
-import {useStylesModalUser} from '../../styles';
+import { useStylesModalUser, styledMui } from '../../styles';
 
-import {checkErrorInput} from '../validationForm';
+import { checkErrorInput } from '../validationForm';
 
 //Redux
-import {RootState} from '../../../../store/store';
-import {validationIdentDoc} from '../../../../store/actions/auth';
+import { RootState } from '../../../../store/store';
+import { validationIdentDoc } from '../../../../store/actions/auth';
 
 //Interfaces
-import {
-	Interface_RegisterUser,
-	Interface_RegisterUserError,
-} from '../../interfaceAuth';
+import { Interface_RegisterUser, Interface_RegisterUserError } from '../../interfaceAuth';
 
 interface Props {
 	userForm: Interface_RegisterUser; //json
@@ -33,7 +25,6 @@ interface Props {
 	company: any;
 	listIdentType: any[];
 }
-
 
 export const Step2: React.FC<Props> = ({
 	userForm,
@@ -47,13 +38,12 @@ export const Step2: React.FC<Props> = ({
 	const dispatch = useDispatch();
 	const classes = useStylesModalUser();
 
-	const validationIdent = (doc: {id_ident_type: number; ident_num: string}) => {
+	const validationIdent = (doc: { id_ident_type: number; ident_num: string }) => {
 		dispatch(validationIdentDoc(doc));
 	};
 
 	//selector
 	const auth: any = useSelector((state: RootState) => state.auth);
-
 
 	//Handle
 	const handleBlurIdent = () => {
@@ -67,10 +57,9 @@ export const Step2: React.FC<Props> = ({
 
 	const handleChangePhone = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.value !== '0') {
-			if(/^[0-9]+$/.test(event.target.value) || event.target.value === '')
-				handleChange(event);
+			if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') handleChange(event);
 		}
-	}
+	};
 
 	const handleIdentNum = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
@@ -82,13 +71,14 @@ export const Step2: React.FC<Props> = ({
 		<>
 			<div className={classes.input}>
 				<TextField
+					sx={styledMui.inputStyle}
 					required
 					className={classes.inputN}
 					type='text'
 					value={userForm.name}
 					name='name'
 					onChange={handleChange}
-					style={{marginRight: '1%'}}
+					style={{ marginRight: '1%' }}
 					id='name'
 					label='Nombre'
 					variant='outlined'
@@ -98,10 +88,11 @@ export const Step2: React.FC<Props> = ({
 					required
 					type='text'
 					className={classes.inputN}
+					sx={styledMui.inputStyle}
 					value={userForm.last_name}
 					name='last_name'
 					onChange={handleChange}
-					style={{marginLeft: '1%'}}
+					style={{ marginLeft: '1%' }}
 					id='last_name'
 					label='Apellido'
 					variant='outlined'
@@ -109,7 +100,11 @@ export const Step2: React.FC<Props> = ({
 				/>
 			</div>
 			<div className={classes.input}>
-				<FormControl style={{marginRight: '2%'}} variant='outlined' className={classes.formControl}>
+				<FormControl
+					style={{ marginRight: '2%' }}
+					variant='outlined'
+					className={classes.formControl}
+					sx={styledMui.inputStyle}>
 					<InputLabel id='demo-simple-select-outlined-label'>Tipo</InputLabel>
 					<Select
 						value={userForm.id_ident_type}
@@ -129,6 +124,7 @@ export const Step2: React.FC<Props> = ({
 					required
 					type='text'
 					onBlur={handleBlurIdent}
+					sx={styledMui.inputStyle}
 					name='ident_num'
 					className={classes.inputNro}
 					value={userForm.ident_num}
@@ -136,7 +132,7 @@ export const Step2: React.FC<Props> = ({
 					label='Documento de identidad'
 					variant='outlined'
 					inputProps={{
-						maxLength: userForm.id_ident_type === 5 ? 20 : 9 
+						maxLength: userForm.id_ident_type === 5 ? 20 : 9,
 					}}
 					error={userFormError.ident_num || checkErrorInput('ident', auth.error)}
 				/>
@@ -144,6 +140,7 @@ export const Step2: React.FC<Props> = ({
 			<div className={classes.input}>
 				<TextField
 					required
+					sx={styledMui.inputStyle}
 					className={classes.inputPhone}
 					variant='outlined'
 					value={userForm.phone}
@@ -152,29 +149,21 @@ export const Step2: React.FC<Props> = ({
 					type='text'
 					name='phone'
 					placeholder='Ej: 412*******'
-					autoComplete="telefono1"
+					autoComplete='telefono1'
 					onChange={handleChangePhone}
 					error={userFormError.phone}
 					inputProps={{ maxLength: 10 }}
 					InputProps={{
-						startAdornment: (
-							<InputAdornment position="start">
-								{codePhone}
-							</InputAdornment>
-						)
+						startAdornment: <InputAdornment position='start'>{codePhone}</InputAdornment>,
 					}}
 				/>
 				<FormControl
-					style={{marginLeft: '2%'}}
+					style={{ marginLeft: '2%' }}
 					className={classes.formControlCompany}
 					variant='outlined'
-				>
+					sx={styledMui.inputStyle}>
 					<InputLabel id='demo-simple-select-outlined-label'>Compañía</InputLabel>
-					<Select
-						value={userForm.id_company}
-						onChange={handleSelect}
-						name='id_company'
-						label='Company'>
+					<Select value={userForm.id_company} onChange={handleSelect} name='id_company' label='Company'>
 						{company.map((item: any) => (
 							<MenuItem key={item.id} value={item.id}>
 								{item.name}
@@ -184,6 +173,5 @@ export const Step2: React.FC<Props> = ({
 				</FormControl>
 			</div>
 		</>
-	)
-}
-
+	);
+};

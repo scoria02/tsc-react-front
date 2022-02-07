@@ -2,14 +2,9 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 //Material
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import Visibility from '@material-ui/icons/Visibility';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import Typography from '@material-ui/core/Typography';
+import { Typography, SnackbarContent, Snackbar, IconButton, InputAdornment, TextField } from '@mui/material';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Visibility from '@mui/icons-material/Visibility';
 
 import Alert from '../../../alert/Alert1';
 
@@ -17,7 +12,7 @@ import Alert from '../../../alert/Alert1';
 import { checkErrorInput } from '../validationForm';
 
 //Styles
-import { useStylesModalUser } from '../../styles';
+import { useStylesModalUser, styledMui } from '../../styles';
 
 //Redux
 import { RootState } from '../../../../store/store';
@@ -56,6 +51,7 @@ export const Step1: React.FC<Props> = ({ userForm, userFormError, errorPassword,
 			<TextField
 				required
 				className={classes.input}
+				sx={styledMui.inputStyle}
 				name='email'
 				onChange={handleChange}
 				onBlur={() => handleBlurEmail(userForm.email)}
@@ -70,6 +66,7 @@ export const Step1: React.FC<Props> = ({ userForm, userFormError, errorPassword,
 			<TextField
 				id='password'
 				className={classes.input}
+				sx={styledMui.inputStyle}
 				name='password'
 				onFocus={() => setOpen(true)}
 				onBlur={() => setOpen(false)}
@@ -131,6 +128,7 @@ export const Step1: React.FC<Props> = ({ userForm, userFormError, errorPassword,
 			<TextField
 				id='confirmPassword'
 				className={classes.input}
+				sx={styledMui.inputStyle}
 				value={userForm.confirmPassword}
 				onFocus={() => setOpen(true)}
 				onBlur={() => setOpen(false)}

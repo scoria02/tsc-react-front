@@ -12,8 +12,6 @@ import logo from '../../img/logo_1000pagos.svg';
 import { useStylesModalUser } from './styles';
 import './login/index.scss';
 
-import './index.scss';
-
 const AuthModal: React.FC<any> = ({ children, name, register }) => {
 	const classes = useStylesModalUser();
 

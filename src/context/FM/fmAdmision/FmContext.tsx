@@ -1,5 +1,5 @@
 import React, { createContext, useState, ReactChild, Dispatch, SetStateAction, useEffect } from 'react';
-import { validateForm } from '../../../components/validation/validFm';
+import { validateForm } from '../../../validation/validFm';
 import { fmClient, fmCommerce, fmError_Interface, fmPos } from '../../../interfaces/fm';
 
 import { initFmPos } from '../initialStates/statePos';

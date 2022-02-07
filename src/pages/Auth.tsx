@@ -2,11 +2,7 @@ import React from 'react';
 import Login from '../components/auth/login';
 
 const Auth: React.FC = () => {
-	return (
-		<div>
-			<Login />
-		</div>
-	);
+	return <Login />;
 };
 
 export default Auth;

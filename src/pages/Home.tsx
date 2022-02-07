@@ -1,11 +1,8 @@
-import { Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
-import React from 'react';
+import React, { FC } from 'react';
 import Milpago from '../img/1000pagos_LogoBlue.png';
-
-interface HomeInt {
-	prueba?: any;
-}
+//Mui
+import { makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material/styles';
 
 const useStyles = makeStyles((theme: Theme) => ({
 	base: {
@@ -28,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 		margin: '2rem 0',
 	},
 }));
-const Inicio: React.FC<HomeInt> = ({ prueba }) => {
+const Inicio: FC = () => {
 	const classes = useStyles();
 
 	return (

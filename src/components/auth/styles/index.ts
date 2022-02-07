@@ -1,5 +1,6 @@
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Tooltip from '@material-ui/core/Tooltip';
+import { makeStyles, withStyles } from '@mui/styles';
+import { Theme } from '@mui/material/styles';
+import Tooltip from '@mui/material/Tooltip';
 
 export const HtmlTooltip = withStyles(() => ({
 	tooltip: {
@@ -11,7 +12,7 @@ export const HtmlTooltip = withStyles(() => ({
 	},
 }))(Tooltip);
 
-export const useStylesModalUser = makeStyles((styles) => ({
+export const useStylesModalUser = makeStyles((styles: Theme) => ({
 	root: {
 		maxWidth: '80vw',
 		borderRadius: '2rem',
@@ -41,10 +42,12 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		width: '49%',
 	},
 	input: {
-		marginTop: styles.spacing(1),
-		marginBottom: styles.spacing(1),
-		width: '100%',
+		marginLeft: 'auto',
+		marginRight: 'auto',
+		width: '80%',
+		textAlign: 'center',
 		alignSelf: 'center',
+		display: 'block',
 	},
 	inputNro: {
 		width: '70%',
@@ -59,32 +62,32 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		width: '46%',
 	},
 	button: {
-		margin: styles.spacing(1),
+		//margin: styles.spacing(1),
 		textTransform: 'none',
-		backgroundColor: styles.palette.primary.main,
-		color: styles.palette.secondary.main,
+		//backgroundColor: styles.palette.primary.main,
+		//color: styles.palette.secondary.main,
 		fontSize: '1.2rem',
 		maxWidth: '80%',
 		'&:hover': {
-			backgroundColor: styles.palette.primary.light,
+			//backgroundColor: styles.palette.primary.light,
 		},
 	},
 	buttonStep: {
 		textTransform: 'none',
 		letterSpacing: '1px',
-		backgroundColor: styles.palette.primary.main,
+		//backgroundColor: styles.palette.primary.main,
 		color: '#fff',
 		'&:hover': {
-			backgroundColor: styles.palette.primary.light,
+			//backgroundColor: styles.palette.primary.light,
 		},
 	},
 	buttonSend: {
 		textTransform: 'none',
 		letterSpacing: '1px',
-		backgroundColor: styles.palette.success.main,
-		color: styles.palette.secondary.contrastText,
+		//backgroundColor: styles.palette.success.main,
+		//color: styles.palette.secondary.contrastText,
 		'&:hover': {
-			backgroundColor: styles.palette.success.light,
+			//backgroundColor: styles.palette.success.light,
 		},
 	},
 	buttonLeft: {
@@ -106,39 +109,39 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		color: '#ffffff',
 		padding: '.6rem 4rem',
 		borderRadius: '0.25rem',
-		backgroundColor: styles.palette.success.main,
+		//backgroundColor: styles.palette.success.main,
 		'&:hover': {
-			backgroundColor: styles.palette.success.light,
+			//backgroundColor: styles.palette.success.light,
 		},
 	},
 	buttonRes: {
 		textTransform: 'none',
-		backgroundColor: styles.palette.success.main,
-		color: styles.palette.secondary.main,
+		//backgroundColor: styles.palette.success.main,
+		//color: styles.palette.secondary.main,
 		'&:hover': {
-			backgroundColor: styles.palette.success.light,
+			//backgroundColor: styles.palette.success.light,
 		},
 	},
 	buttonResMain: {
-		margin: styles.spacing(1),
-		marginLeft: styles.spacing(2),
+		//margin: styles.spacing(1),
+		//marginLeft: styles.spacing(2),
 		textTransform: 'none',
-		backgroundColor: styles.palette.success.main,
-		border: `1px solid ${styles.palette.success.main}`,
-		color: styles.palette.secondary.main,
+		//backgroundColor: styles.palette.success.main,
+		//border: `1px solid ${styles.palette.success.main}`,
+		//color: styles.palette.secondary.main,
 		paddingLeft: '2rem',
 		paddingRight: '2rem',
 		maxWidth: '80%',
 		'&:hover': {
-			backgroundColor: styles.palette.success.light,
-			border: `1px solid ${styles.palette.success.light}`,
+			//backgroundColor: styles.palette.success.light,
+			//border: `1px solid ${styles.palette.success.light}`,
 		},
 	},
 	buttonBack: {
-		color: styles.palette.primary.main,
+		//color: styles.palette.primary.main,
 	},
 	text: {
-		color: styles.palette.error.main,
+		//color: styles.palette.error.main,
 		fontSize: '13px',
 	},
 	textM: {
@@ -146,7 +149,7 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		fontSize: '15px',
 	},
 	ErrorLogin: {
-		color: styles.palette.error.main,
+		//color: styles.palette.error.main,
 	},
 	step: {
 		flexGrow: 1,
@@ -155,7 +158,7 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		alignSelf: 'center',
 	},
 	typography: {
-		padding: styles.spacing(2),
+		//padding: styles.spacing(2),
 	},
 	containerLeft: {
 		display: 'flex',
@@ -164,3 +167,12 @@ export const useStylesModalUser = makeStyles((styles) => ({
 		flexDirection: 'column',
 	},
 }));
+
+export const styledMui = {
+	inputStyle: {
+		mt: 1,
+		mb: 1,
+		mr: 'auto',
+		ml: 'auto',
+	},
+};

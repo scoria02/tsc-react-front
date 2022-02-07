@@ -1,33 +1,16 @@
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-// import CardActionArea from '@material-ui/core/CardActionArea';
-// import { useForm, SubmitHandler } from 'react-hook-form';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-//import luffy from '../../../img/itachi2.png';
-// import { useForm } from '../../../hooks/useForm';
+//Material
+import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
+import { useStylesModalUser, styledMui } from '../styles';
 import { startLogin } from '../../../store/actions/auth';
 import AuthModal from '../AuthModal';
-import { useStylesModalUser } from '../styles';
-import './index.scss';
-
-const useStylesButton = makeStyles((theme: Theme) => ({
-	root: {
-		'& > *': {
-			// margin: theme.spacing(1),
-			// width: '95%',
-		},
-	},
-}));
 
 const Login: React.FC = () => {
-	const classesbutton = useStylesButton();
 	const classes = useStylesModalUser();
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -58,9 +41,10 @@ const Login: React.FC = () => {
 	return (
 		<AuthModal register={false} name='BackOffice'>
 			<div className={classes.containerRight}>
-				<form onSubmit={handleLogin} className={classesbutton.root} autoComplete='off'>
+				<form onSubmit={handleLogin} autoComplete='off'>
 					<div className='ed-container'>
 						<TextField
+							sx={styledMui.inputStyle}
 							className={classes.input}
 							id='email'
 							name='email'
@@ -70,6 +54,7 @@ const Login: React.FC = () => {
 							onChange={handleUsernameChange}
 						/>
 						<TextField
+							sx={styledMui.inputStyle}
 							id='password'
 							className={classes.input}
 							name='password'

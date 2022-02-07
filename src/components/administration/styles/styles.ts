@@ -1,4 +1,5 @@
-import { makeStyles, Theme } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material/styles';
 
 export const useStyles = makeStyles((theme: Theme) => ({
 	tableTitle: {
@@ -89,5 +90,5 @@ export const useStyles = makeStyles((theme: Theme) => ({
 	},
 	buttonPdf: {
 		borderRadius: '2rem',
-	}
+	},
 }));
