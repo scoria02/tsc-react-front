@@ -30,7 +30,7 @@ export const Step1: React.FC<any> = () => {
 
 	//Context
 	const {
-		errorsFm,
+		errorsClient,
 		typeSolict,
 		client,
 		locationClient,
@@ -109,9 +109,7 @@ export const Step1: React.FC<any> = () => {
 						onChange={handleChangeClient}
 						onBlur={handleBlurEmailIdent}
 						value={client.email}
-						error={
-							errorsFm.email //|| validEmailIdent
-						}
+						error={errorsClient.email || fm.errorClient}
 					/>
 				</div>
 				<div className={classes.input}>
@@ -144,10 +142,7 @@ export const Step1: React.FC<any> = () => {
 						onChange={handleIdentNum}
 						onBlur={handleBlurEmailIdent}
 						value={client.ident_num}
-						error={
-							errorsFm.ident_num
-							//|| validEmailIdent
-						}
+						error={errorsClient.ident_num || fm.errorClient}
 						inputProps={{
 							maxLength: client.id_ident_type === 5 ? 20 : 9,
 						}}
@@ -183,7 +178,7 @@ export const Step1: React.FC<any> = () => {
 						name='name'
 						onChange={handleChangeNameClient}
 						value={client.name}
-						error={errorsFm.name}
+						error={errorsClient.name}
 						disabled={fm.mashClient}
 					/>
 					<TextField
@@ -195,7 +190,7 @@ export const Step1: React.FC<any> = () => {
 						name='last_name'
 						onChange={handleChangeNameClient}
 						value={client.last_name}
-						error={errorsFm.last_name}
+						error={errorsClient.last_name}
 						disabled={fm.mashClient}
 					/>
 				</div>
@@ -209,7 +204,7 @@ export const Step1: React.FC<any> = () => {
 						autoComplete='telefono1'
 						placeholder='Ej: 4121234567'
 						onChange={handleChangePhone}
-						error={errorsFm.phone1}
+						error={errorsClient.phone1}
 						disabled={fm.mashClient}
 						value={client.phone1}
 						inputProps={{ maxLength: 10 }}
@@ -225,7 +220,7 @@ export const Step1: React.FC<any> = () => {
 						name='phone2'
 						onChange={handleChangePhone}
 						autoComplete='telefono2'
-						error={errorsFm.phone2}
+						error={errorsClient.phone2}
 						disabled={fm.mashClient}
 						value={client.phone2}
 						placeholder='Ej: 4127654321'

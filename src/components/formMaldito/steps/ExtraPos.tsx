@@ -18,7 +18,8 @@ const ExtraPos: FC = () => {
 
 	//Context
 	const {
-		errorsFm,
+		errorsClient,
+		errorsCommerce,
 		typeSolict,
 		client,
 		commerce,
@@ -81,10 +82,7 @@ const ExtraPos: FC = () => {
 						name='ident_num'
 						onChange={handleIdentNum}
 						value={client.ident_num}
-						error={
-							errorsFm.ident_num
-							//|| validEmailIdent
-						}
+						error={errorsClient.ident_num}
 						inputProps={{
 							maxLength: client.id_ident_type === 5 ? 20 : 9,
 						}}
@@ -129,22 +127,11 @@ const ExtraPos: FC = () => {
 						name='ident_num'
 						onChange={handleIdentNumCommerce}
 						value={commerce.ident_num}
-						error={fm.errorCommerce}
+						error={errorsCommerce.ident_num}
 						inputProps={{
 							maxLength: commerce.id_ident_type === 5 ? 20 : 9,
 						}}
 					/>
-				</div>
-				<div className={classes.input}>
-					<Button
-						size='large'
-						disabled={false}
-						variant='contained'
-						color='primary'
-						//onClick={handleBack}
-						className={classes.buttonBack}>
-						Validar
-					</Button>
 				</div>
 			</div>
 		</>
