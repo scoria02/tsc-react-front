@@ -2,6 +2,8 @@ import React, { createContext, useState, ReactChild, Dispatch, SetStateAction, u
 import { validateForm } from '../../../validation/validFm';
 import { fmClient, fmCommerce, fmError_Interface, fmPos } from '../../../interfaces/fm';
 
+import useAxios from '../../../config';
+
 import { initFmPos } from '../initialStates/statePos';
 import { initFmClient } from '../initialStates/stateClient';
 import { initFmCommerce } from '../initialStates/stateCommerce';
@@ -10,6 +12,7 @@ import { fmErrorFormat, initLocation } from '../initialStates/states';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
 import { ContextFM } from './interface';
 import { base, Activity, Products, Aci } from '../../DataList/interface';
+import Swal from 'sweetalert2';
 
 interface Props {
 	children: ReactChild;
@@ -245,6 +248,19 @@ export const FMContextProvider = ({ children }: Props) => {
 			calle: state.calle,
 			local: state.local,
 		});
+	};
+
+	const validClientAndCommerce = async () => {
+		const Data = {};
+		//console.log(client);
+		try {
+			const res = await useAxios.post(`/FM/client/valid`, client);
+			console.log(res, pos);
+			return res.data.info;
+		} catch (error: any) {
+			console.log(error.response);
+			Swal.fire('Error', error.response.data.message, 'error');
+		}
 	};
 
 	return (

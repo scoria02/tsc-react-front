@@ -364,7 +364,14 @@ export const validReadyStep = (
 			return true;
 		case 1: //Cliente
 		case 2:
-			if (
+			if (typeSolict === 3) {
+				if (true) {
+					console.log('xd');
+					return true;
+				} else {
+					return false;
+				}
+			} else if (
 				!checkErrorAllInput(sizeStepError(activeStep), errorsFm) &&
 				!inputNotNullLocation(locationClient) &&
 				!inputNotNull(sizeStep(activeStep), client) &&

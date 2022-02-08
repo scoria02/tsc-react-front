@@ -4,16 +4,16 @@ import InputBase from '@material-ui/core/InputBase';
 //Material ui
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import SearchIcon from '@material-ui/icons/Search';
-import React, { useState, useContext } from 'react';
+import SearchIcon from '@mui/icons-material/Search';
+import React, { useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { SocketContext } from '../../../context/SocketContext';
 //import { SocketContext } from '../../../context/SocketContext';
 import { CloseModalListSolic } from '../../../store/actions/ui';
 import AnimationModal from '../../modals/AnimationModal';
 import { useStyles } from './styles';
-import { SocketContext } from '../../../context/SocketContext';
 
-const ListFms: React.FC = () => {	
+const ListFms: React.FC = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const { socket } = useContext(SocketContext);
@@ -23,10 +23,10 @@ const ListFms: React.FC = () => {
 
 	const [fm, setFm] = useState<any>({
 		email: '',
-		name: '', 
+		name: '',
 		last: '',
 		ci: '',
-		code: ''
+		code: '',
 	});
 
 	const { modalOpenListSolic } = useSelector((state: any) => state.ui);
@@ -42,9 +42,9 @@ const ListFms: React.FC = () => {
 	const handleSearching = (e: any) => {
 		e.preventDefault();
 		console.log(search);
-		socket.emit('cliente:coleado',search, (data:any) => {
-			console.log('data del boton',data);
-			if(data){
+		socket.emit('cliente:coleado', search, (data: any) => {
+			console.log('data del boton', data);
+			if (data) {
 				setFm({
 					email: data.email,
 					name: data.name,
@@ -59,7 +59,7 @@ const ListFms: React.FC = () => {
 
 	const handleSelect = () => {
 		//socket.emit('cliente:coleado',search)
-	}
+	};
 
 	return (
 		<AnimationModal openModal={modalOpenListSolic} handleCloseModal={handleClose}>
@@ -83,7 +83,9 @@ const ListFms: React.FC = () => {
 				<Paper>
 					{searching && (
 						<>
-							<Grid container spacing={4}
+							<Grid
+								container
+								spacing={4}
 								onClick={handleSelect}
 								style={{
 									padding: '.5rem 1rem',
@@ -98,20 +100,16 @@ const ListFms: React.FC = () => {
 									}}>
 									<Grid item xs container direction='column' spacing={2}>
 										<Grid item xs>
-											<Typography gutterBottom variant="subtitle1" component="div">
-												<b>
-													{'Correo: '}
-												</b>
+											<Typography gutterBottom variant='subtitle1' component='div'>
+												<b>{'Correo: '}</b>
 												{fm.email}
 											</Typography>
-											<Typography gutterBottom variant="subtitle1" component="div">
-												<b>
-													{'Nombre Cliente: '}
-												</b>
+											<Typography gutterBottom variant='subtitle1' component='div'>
+												<b>{'Nombre Cliente: '}</b>
 												{`${fm.name} ${fm.last}`}
 											</Typography>
-											<Typography variant="body2" color="secondary">
-												<b>{'Code: '}</b> 
+											<Typography variant='body2' color='secondary'>
+												<b>{'Code: '}</b>
 												{fm.code}
 											</Typography>
 										</Grid>
@@ -125,9 +123,10 @@ const ListFms: React.FC = () => {
 					style={{
 						marginTop: '1.5rem',
 						marginBottom: 0,
-						padding: '.2rem'
-					}}
-				>Puede Buscar por: Correo, Cedula, Rif, Codigo FM</p>
+						padding: '.2rem',
+					}}>
+					Puede Buscar por: Correo, Cedula, Rif, Codigo FM
+				</p>
 			</div>
 		</AnimationModal>
 	);

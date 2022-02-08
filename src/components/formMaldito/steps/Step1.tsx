@@ -1,30 +1,27 @@
 import Button from '@material-ui/core/Button';
-//Material
-import { useContext } from 'react';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import Autocomplete from '@mui/lab/Autocomplete';
 import classNames from 'classnames';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import DataListContext from '../../../context/DataList/DataListContext';
+import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
+import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
+import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/FM/Location/interfaces';
+import LocationsContext from '../../../context/FM/Location/LocationsContext';
+import { validationClient } from '../../../store/actions/fm';
 import { RootState } from '../../../store/store';
+import { validInputString } from '../../../utils/fm';
+import { recaudo } from '../../utilis/recaudos';
 //sytles
 import { useStylesFM } from '../styles';
-import { recaudo } from '../../utilis/recaudos';
-
-import { validInputString } from '../../../utils/fm';
-import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/FM/Location/interfaces';
-import { validationClient } from '../../../store/actions/fm';
-import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
-import DataListContext from '../../../context/DataList/DataListContext';
-import LocationsContext from '../../../context/FM/Location/LocationsContext';
-import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
 
 export const Step1: React.FC<any> = () => {
 	const classes = useStylesFM();
@@ -258,7 +255,7 @@ export const Step1: React.FC<any> = () => {
 						value={locationClient.estado || null}
 						options={listLocationClient.estado}
 						getOptionLabel={(option: Estado) => (option.estado ? option.estado : '')}
-						getOptionSelected={(option: Estado, value: Estado) => option.id === value.id}
+						// getOptionSelected={(option: Estado, value: Estado) => option.id === value.id}
 						renderInput={(params: any) => (
 							<TextField
 								{...params}

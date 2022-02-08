@@ -8,20 +8,19 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { useEffect, useState, useContext, FC } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import Autocomplete from '@mui/lab/Autocomplete';
+import { FC, useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import DataListContext from '../../../context/DataList/DataListContext';
+import { Activity } from '../../../context/DataList/interface';
+import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
+import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
+import { Days } from '../../../interfaces/fm';
+import { validationCommerce } from '../../../store/actions/fm';
 import { RootState } from '../../../store/store';
 import { recaudo } from '../../utilis/recaudos';
 import { useStylesFM } from '../styles';
-
-import { Activity } from '../../../context/DataList/interface';
-import { validationCommerce } from '../../../store/actions/fm';
-import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
-import DataListContext from '../../../context/DataList/DataListContext';
-import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
-import { Days } from '../../../interfaces/fm';
 
 export const Step3: FC = () => {
 	const classes = useStylesFM();
@@ -66,7 +65,7 @@ export const Step3: FC = () => {
 	};
 
 	const handleChangeNameCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (/^[a-z0-9]+$/i.test(event.target.value) || event.target.value === '') {
+		if (/^[a-z0-9 ]+$/i.test(event.target.value) || event.target.value === '') {
 			handleChangeCommerce(event);
 		}
 	};
@@ -117,7 +116,7 @@ export const Step3: FC = () => {
 							error={fm.errorCommerce}
 							placeholder=''>
 							{listIdentType.map((item: any) => {
-								if (typeSolict === 1 && item.name !== 'J') return;
+								if ((typeSolict === 1 || typeSolict === 2) && item.name !== 'J') return;
 								return (
 									<MenuItem key={item.id} value={item.id}>
 										{item.name}

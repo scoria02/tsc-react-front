@@ -1,14 +1,13 @@
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+//Material
+import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-//Material
-import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-
-import { useStylesModalUser, styledMui } from '../styles';
 import { startLogin } from '../../../store/actions/auth';
 import AuthModal from '../AuthModal';
+import { styledMui, useStylesModalUser } from '../styles';
 
 const Login: React.FC = () => {
 	const classes = useStylesModalUser();

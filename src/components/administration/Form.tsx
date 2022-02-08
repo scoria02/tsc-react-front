@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button, TextField } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import Autocomplete from '@mui/lab/Autocomplete';
 import React, { useEffect, useState } from 'react';
 //Redux
 import { useDispatch } from 'react-redux';
@@ -167,7 +167,7 @@ export const Form: React.FC<any> = ({
 		}
 	}, [payment]);
 
-	console.log(fm)
+	console.log(fm);
 
 	return (
 		<>
@@ -184,7 +184,7 @@ export const Form: React.FC<any> = ({
 								options={listPayment}
 								value={payment}
 								getOptionLabel={(option: any) => (option.name ? option.name : '')}
-								getOptionSelected={(option: any, value: any) => option.id === value.id}
+								// getOptionSelected={(option: any, value: any) => option.id === value.id}
 								renderInput={(params: any) => (
 									<TextField
 										{...params}
@@ -211,7 +211,7 @@ export const Form: React.FC<any> = ({
 								options={listTypePay}
 								value={typePay || null}
 								getOptionLabel={(option: any) => (option.name ? option.name : '')}
-								getOptionSelected={(option: any, value: any) => option.id === value.id}
+								// getOptionSelected={(option: any, value: any) => option.id === value.id}
 								renderInput={(params: any) => (
 									<TextField
 										{...params}
@@ -278,8 +278,8 @@ export const Form: React.FC<any> = ({
 							{uploadImg && (
 								<div className={classes.containerImg}>
 									{uploadImg && uploadImg.name.split('.')[uploadImg.name.split('.').length - 1] === 'pdf' ? (
-										<div 
-											//	className={classes.btn_stepM}
+										<div
+										//	className={classes.btn_stepM}
 										>
 											<a target='_blank' rel='noreferrer' href={path}>
 												<Button
@@ -287,19 +287,19 @@ export const Form: React.FC<any> = ({
 													variant='contained'
 													component='label'
 													//disabled={ready}
-													>
+												>
 													<IconButton aria-label='upload picture' component='span'>
-														<PictureAsPdfIcon 
-															//className={classes.iconUpload}
+														<PictureAsPdfIcon
+														//className={classes.iconUpload}
 														/>
 													</IconButton>
 												</Button>
 											</a>
 											<div>
 												<h2>Solo se guardara la primera pagina</h2>
+											</div>
 										</div>
-									</div>
-									):(
+									) : (
 										<Rec load={load} setLoad={setLoad} imagen={imagen} />
 									)}
 								</div>

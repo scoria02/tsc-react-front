@@ -10,15 +10,15 @@ import {
 	Paper,
 	TextField,
 } from '@material-ui/core';
+import CloseIcon from '@mui/icons-material/Close';
+import Autocomplete from '@mui/lab/Autocomplete';
 import {
 	DataGrid,
 	GridColDef,
 	GridToolbarContainer,
 	GridToolbarFilterButton,
 	GridValueGetterParams,
-} from '@material-ui/data-grid';
-import CloseIcon from '@material-ui/icons/Close';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+} from '@mui/x-data-grid';
 import classnames from 'classnames';
 import { useLayoutEffect, useState } from 'react';
 import Swal from 'sweetalert2';
@@ -403,9 +403,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 													value={userDep}
 													options={department}
 													getOptionLabel={(option: any) => (option.name ? option.name : '')}
-													getOptionSelected={(option, value) => {
-														return value.id === option.id;
-													}}
+													// getOptionSelected={(option, value) => value.id === option.id}}
 													renderInput={(params: any) => (
 														<TextField {...params} name='department' label='Departamento' variant='outlined' />
 													)}

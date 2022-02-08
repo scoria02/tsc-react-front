@@ -1,16 +1,14 @@
 //Materail
 import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@mui/lab/Autocomplete';
 import classnames from 'classnames';
 import React, { FC, useContext } from 'react';
-import { useStylesFM } from '../styles';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../store/store';
-
-import LocationsContext from '../../../context/FM/Location/LocationsContext';
-
-import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/FM/Location/interfaces';
 import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
+import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/FM/Location/interfaces';
+import LocationsContext from '../../../context/FM/Location/LocationsContext';
+import { RootState } from '../../../store/store';
+import { useStylesFM } from '../styles';
 
 export const Step4: FC = () => {
 	const classes = useStylesFM();
@@ -86,7 +84,7 @@ export const Step4: FC = () => {
 						disabled={fm.mashCommerce}
 						options={listLocationCommerce.estado}
 						getOptionLabel={(option: Estado) => (option.estado ? option.estado : '')}
-						getOptionSelected={(option: Estado, value: Estado) => option.id === value.id}
+						// getOptionSelected={(option: Estado, value: Estado) => option.id === value.id}
 						renderInput={(params: any) => (
 							<TextField
 								{...params}
@@ -213,7 +211,7 @@ export const Step4: FC = () => {
 						options={listLocationPos.estado}
 						value={locationPos.estado || null}
 						getOptionLabel={(option: Estado) => (option.estado ? option.estado : '')}
-						getOptionSelected={(option: Estado, value: Estado) => option.id === value.id}
+						// getOptionSelected={(option: Estado, value: Estado) => option.id === value.id}
 						renderInput={(params: any) => (
 							<TextField
 								{...params}

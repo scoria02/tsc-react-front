@@ -12,7 +12,7 @@ import ModalSteps from '../../modals/ModalSteps';
 import '../scss/index.scss';
 import PasoAccountNumber from './pasosComprobacion/PasoAccountNumber';
 import PasoActaConst from './pasosComprobacion/PasoActaConst';
-//import CancelIcon from '@material-ui/icons/Cancel';
+//import CancelIcon from '@mui/icons-material/Cancel';
 import PasoClient from './pasosComprobacion/PasoClient';
 import PasoCommerce from './pasosComprobacion/PasoCommerce';
 import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';

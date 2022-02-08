@@ -1,8 +1,8 @@
 import { Tab } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import TabContext from '@material-ui/lab/TabContext';
-import TabList from '@material-ui/lab/TabList';
-import TabPanel from '@material-ui/lab/TabPanel';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
 import { FC, useState } from 'react';
 import { CobranzaContext } from '../../context/CobranzaContext';
 import Completed from './views/Completed';

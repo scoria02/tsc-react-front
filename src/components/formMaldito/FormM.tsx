@@ -18,6 +18,7 @@ import LoaderPrimary from '../loaders/LoaderPrimary';
 import './index.scss';
 //steps
 import StepBase from './steps';
+import ExtraPos from './steps/ExtraPos';
 import { Step1 } from './steps/Step1';
 import { Step2 } from './steps/Step2';
 import { Step3 } from './steps/Step3';
@@ -42,6 +43,8 @@ const baseSteps = [
 	'Dirección del Comercio/POS',
 	'Solicitud de POS',
 ];
+
+const PosExtraSteps = ['Cliente/Comerio', 'Solicitud de POS'];
 
 const FormM: React.FC = () => {
 	const history = useHistory();
@@ -310,7 +313,8 @@ const FormM: React.FC = () => {
 
 	const handleGetStep = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
-		const newSteps = [...initStep, ...baseSteps];
+		const stepOp = typeSolict !== 3 ? baseSteps : PosExtraSteps;
+		const newSteps = [...initStep, ...stepOp];
 		setSteps(newSteps);
 	};
 
@@ -380,6 +384,7 @@ const FormM: React.FC = () => {
 	};
 
 	const getStep: ReactElement[] = [<StepBase />, <Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 />];
+	const getStepExtraPos: ReactElement[] = [<StepBase />, <ExtraPos />, <Step5 />];
 
 	return (
 		<div className='ed-container container-formMaldito'>
@@ -406,7 +411,7 @@ const FormM: React.FC = () => {
 					</Stepper>
 					<div className={classes.containerFM}>
 						<div className='container-steps'>
-							{getStep[activeStep]}
+							{typeSolict === 3 ? getStepExtraPos[activeStep] : getStep[activeStep]}
 							<div className={classes.buttonFixed}>
 								<Button
 									size='large'

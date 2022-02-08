@@ -1,15 +1,14 @@
 import { Button, FormControl, IconButton, InputLabel, MenuItem, Select, Tooltip } from '@material-ui/core';
-import BackUpIcon from '@material-ui/icons/Backup';
-import CheckCircleIcon from '@material-ui/icons/CheckCircleOutline';
-import ClearIcon from '@material-ui/icons/Clear';
+import BackUpIcon from '@mui/icons-material/Backup';
+import CheckCircleIcon from '@mui/icons-material/CheckCircleOutline';
+import ClearIcon from '@mui/icons-material/Clear';
 import classNames from 'classnames';
 import { FC, useContext, useEffect } from 'react';
-import { useStylesFM } from '../styles';
-
 import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
-import { recaudo } from '../../utilis/recaudos';
 import LocationsContext from '../../../context/FM/Location/LocationsContext';
+import { recaudo } from '../../utilis/recaudos';
+import { useStylesFM } from '../styles';
 
 const typesSolicts = [
 	{
