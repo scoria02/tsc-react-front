@@ -19,7 +19,7 @@ export const useStylesModalUser = makeStyles((styles: Theme) => ({
 	},
 	containerRight: {
 		margin: 0,
-		position: 'relative',
+		//position: 'relative',
 	},
 	media: {
 		height: 450,
@@ -44,13 +44,22 @@ export const useStylesModalUser = makeStyles((styles: Theme) => ({
 	input: {
 		marginLeft: 'auto',
 		marginRight: 'auto',
-		width: '80%',
+		width: '70%',
 		textAlign: 'center',
 		alignSelf: 'center',
-		display: 'block',
 	},
 	inputNro: {
 		width: '70%',
+	},
+	containerAuthModal: {
+		position: 'relative',
+		overflow: 'hidden',
+		width: '660px',
+		maxWidth: '100%',
+		minHeight: '400px',
+		textAlign: 'center',
+		flexWrap: 'wrap',
+		justifyContent: 'center',
 	},
 	inputPhone: {
 		width: '52%',
@@ -60,6 +69,10 @@ export const useStylesModalUser = makeStyles((styles: Theme) => ({
 	},
 	formControlCompany: {
 		width: '46%',
+	},
+	buttonText: {
+		textTransform: 'none',
+		fontSize: '1rem',
 	},
 	button: {
 		//margin: styles.spacing(1),
@@ -91,8 +104,9 @@ export const useStylesModalUser = makeStyles((styles: Theme) => ({
 		},
 	},
 	buttonLeft: {
-		textTransform: 'none',
-		padding: '.5rem 1rem',
+		position: 'absolute',
+		bottom: '.5rem',
+		left: '1rem',
 	},
 	inputButton: {
 		display: 'flex',

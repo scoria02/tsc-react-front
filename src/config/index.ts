@@ -11,7 +11,8 @@ export const configAxios: AxiosRequestConfig = {
 };
 
 const configAxiosFiles: AxiosRequestConfig = {
-	baseURL: process.env.REACT_APP_API_IMAGES,
+	//baseURL: process.env.REACT_APP_API_IMAGES,
+	baseURL: 'http://localhost:6060',
 	headers: { common: { token: localStorage.getItem('token') } },
 };
 

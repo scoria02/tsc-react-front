@@ -1,11 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { makeStyles, Theme } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material/styles';
 import { createContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 import { GuardedRoute, GuardProvider } from 'react-router-guards';
 import LoaderPrimary from '../components/loaders/LoaderPrimary';
 import MainMenu from '../components/MainMenu';
+import Logo from '../img/1000pagos_LogoBlue.png';
 //Redux
 import { refreshLogin } from '../store/actions/auth';
 import { FinishLoading } from '../store/actions/ui';
@@ -25,12 +27,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 	},
 	auth: {
 		alignItems: 'center',
-		backgroundColor: '#5c62c5',
 		display: 'flex',
 		justifyContent: 'center',
 		margin: 0,
 		height: '100vh',
 		width: '100vw',
+		backgroundColor: '#5c62c5',
 	},
 }));
 
@@ -104,6 +106,16 @@ export const AppRouter = () => {
 						) : (
 							<>
 								<div className={classes.auth}>
+									<img
+										src={Logo}
+										alt='Logo'
+										style={{
+											position: 'absolute',
+											top: '1rem',
+											padding: '2rem',
+											width: '60%',
+										}}
+									/>
 									{Public.map(({ component, meta, path }, i) => {
 										return <GuardedRoute key={i} exact path={path} component={component} meta={meta} />;
 									})}

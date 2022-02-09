@@ -39,51 +39,49 @@ const Login: React.FC = () => {
 
 	return (
 		<AuthModal register={false} name='BackOffice'>
-			<div className={classes.containerRight}>
-				<form onSubmit={handleLogin} autoComplete='off'>
-					<div className='ed-container'>
-						<TextField
-							sx={styledMui.inputStyle}
-							className={classes.input}
-							id='email'
-							name='email'
-							label='Correo'
-							variant='outlined'
-							type='email'
-							onChange={handleUsernameChange}
-						/>
-						<TextField
-							sx={styledMui.inputStyle}
-							id='password'
-							className={classes.input}
-							name='password'
-							onChange={handlePasswordChange}
-							label='Contraseña'
-							type={showPassword ? 'text' : 'password'}
-							autoComplete='current-password'
-							variant='outlined'
-							InputProps={{
-								endAdornment: (
-									<InputAdornment position='end'>
-										<IconButton
-											aria-label='toggle password visibility'
-											onMouseDown={() => setShowPassword(!showPassword)}
-											onMouseUp={() => setShowPassword(!showPassword)}
-											edge='end'>
-											{showPassword ? <Visibility /> : <VisibilityOff />}
-										</IconButton>
-									</InputAdornment>
-								),
-							}}
-						/>
-						<div className={classes.inputButton}>
-							<Button className={classes.buttonLogin} type='submit' variant='contained'>
-								Ingresar
-							</Button>
-						</div>
+			<form onSubmit={handleLogin} autoComplete='off'>
+				<div className=''>
+					<TextField
+						sx={styledMui.inputStyle}
+						className={classes.input}
+						id='email'
+						name='email'
+						label='Correo'
+						variant='outlined'
+						type='email'
+						onChange={handleUsernameChange}
+					/>
+					<TextField
+						sx={styledMui.inputStyle}
+						id='password'
+						className={classes.input}
+						name='password'
+						onChange={handlePasswordChange}
+						label='Contraseña'
+						type={showPassword ? 'text' : 'password'}
+						autoComplete='current-password'
+						variant='outlined'
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position='end'>
+									<IconButton
+										aria-label='toggle password visibility'
+										onMouseDown={() => setShowPassword(!showPassword)}
+										onMouseUp={() => setShowPassword(!showPassword)}
+										edge='end'>
+										{showPassword ? <Visibility /> : <VisibilityOff />}
+									</IconButton>
+								</InputAdornment>
+							),
+						}}
+					/>
+					<div className={classes.inputButton}>
+						<Button className={classes.buttonLogin} type='submit' variant='contained'>
+							Ingresar
+						</Button>
 					</div>
-				</form>
-			</div>
+				</div>
+			</form>
 		</AuthModal>
 	);
 };

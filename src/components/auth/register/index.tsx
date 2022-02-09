@@ -258,55 +258,53 @@ const Register: React.FC = () => {
 
 	return (
 		<AuthModal register={true} name='Registro'>
-			<div className={classes.containerRight}>
-				<form autoComplete='off'>
-					<div className='ed-container'>
-						{getStep[activeStep]}
-						<MobileStepper
-							variant='dots'
-							steps={2}
-							position='static'
-							style={{ background: 'none' }}
-							activeStep={activeStep}
-							className={classes.step}
-							nextButton={
-								activeStep === 1 ? (
-									<Button
-										className={classes.buttonSend}
-										onClick={handleSubmit}
-										disabled={!readyStep}
-										variant='contained'>
-										{isMediumScreen ? <SendIcon /> : <span style={{ color: '#fff' }}>Registrarme</span>}
-									</Button>
-								) : (
-									<Button
-										className={classes.buttonStep}
-										onClick={handleNext}
-										disabled={!readyStep}
-										variant='contained'>
-										{isMediumScreen ? null : <span>Siguiente</span>}
-										<ArrowForwardIosIcon />
-									</Button>
-								)
-							}
-							backButton={
-								activeStep === 0 ? (
-									<Button className={classes.buttonBack}></Button>
-								) : (
-									<Button
-										className={classes.buttonStep}
-										onClick={handleBack}
-										disabled={activeStep === 0}
-										variant='contained'>
-										<ArrowBackIosIcon />
-										{isMediumScreen ? null : <span>Anterior</span>}
-									</Button>
-								)
-							}
-						/>
-					</div>
-				</form>
-			</div>
+			<form autoComplete='off'>
+				<div className=''>
+					{getStep[activeStep]}
+					<MobileStepper
+						variant='dots'
+						steps={2}
+						position='static'
+						style={{ background: 'none' }}
+						activeStep={activeStep}
+						className={classes.step}
+						nextButton={
+							activeStep === 1 ? (
+								<Button
+									className={classes.buttonSend}
+									onClick={handleSubmit}
+									disabled={!readyStep}
+									variant='contained'>
+									{isMediumScreen ? <SendIcon /> : <span style={{ color: '#fff' }}>Registrarme</span>}
+								</Button>
+							) : (
+								<Button
+									className={classes.buttonStep}
+									onClick={handleNext}
+									disabled={!readyStep}
+									variant='contained'>
+									{isMediumScreen ? null : <span>Siguiente</span>}
+									<ArrowForwardIosIcon />
+								</Button>
+							)
+						}
+						backButton={
+							activeStep === 0 ? (
+								<Button className={classes.buttonBack}></Button>
+							) : (
+								<Button
+									className={classes.buttonStep}
+									onClick={handleBack}
+									disabled={activeStep === 0}
+									variant='contained'>
+									<ArrowBackIosIcon />
+									{isMediumScreen ? null : <span>Anterior</span>}
+								</Button>
+							)
+						}
+					/>
+				</div>
+			</form>
 		</AuthModal>
 	);
 };

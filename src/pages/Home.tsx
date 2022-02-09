@@ -29,15 +29,11 @@ const Inicio: FC = () => {
 	const classes = useStyles();
 
 	return (
-		<>
-			<div className='ed-container'>
-				<div className={classes.base}>
-					<img src={Milpago} className={classes.logo} alt='logo milpagos' />
-					<div className={classes.title}>Bienvenido al BackOffice</div>
-					<div className={classes.subtitle}>Haga click en el menu superior izquierdo para navegar</div>
-				</div>
-			</div>
-		</>
+		<div className={classes.base}>
+			<img src={Milpago} className={classes.logo} alt='logo milpagos' />
+			<div className={classes.title}>Bienvenido al BackOffice</div>
+			<div className={classes.subtitle}>Haga click en el menu superior izquierdo para navegar</div>
+		</div>
 	);
 };
 

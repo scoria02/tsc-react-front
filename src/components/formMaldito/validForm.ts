@@ -1,4 +1,3 @@
-import { ElectricalServices, ImagesearchRoller, SwitchRight } from '@mui/icons-material';
 import { Activity } from '../../context/DataList/interface';
 import { ImagesInt } from '../../context/FM/fmImages/interface';
 import { LocationInt } from '../../context/FM/Location/interfaces';
@@ -325,6 +324,7 @@ const imagesCommerceForTS = (
 		case 0:
 			return imagesForm.rc_rif ? false : true;
 		case 1:
+		case 2:
 			if (commerce.special_contributor) {
 				if (imagesForm.rc_special_contributor) return false;
 				else return true;

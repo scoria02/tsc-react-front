@@ -18,7 +18,7 @@ import { fmErrorCommerce, initFmCommerce } from '../initialStates/stateCommerce'
 import { fmErrorFormat, initLocation } from '../initialStates/states';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
 import { ContextFM } from './interface';
-import { base, Activity, Products, Aci } from '../../DataList/interface';
+import { base, Activity, Aci } from '../../DataList/interface';
 import Swal from 'sweetalert2';
 import { validateFormClient, validateFormCommerce } from '../../../validation/validFm';
 
@@ -83,6 +83,7 @@ export const FMContextProvider = ({ children }: Props) => {
 	const [errorsCommerce, setErrorsCommerce] = useState<fmError_CommerceINT>(fmErrorCommerce);
 
 	const [idsCAndCc, setIdsCAndCc] = useState<IdClient_CommerceINT | null>(null);
+	//const [aci, setAci] = useState < Aci || null > null;
 
 	//Autocomplete location
 	//const [autoCompleteCommerce, setAutoCompleteCommerce] = useState<boolean>(true);
@@ -112,7 +113,7 @@ export const FMContextProvider = ({ children }: Props) => {
 					name: client.name + ' ' + client.last_name,
 				};
 			});
-		} else if (typeSolict === 1) {
+		} else if (typeSolict === 1 || typeSolict === 2) {
 			setCommerce((prevState) => {
 				return {
 					...prevState,
@@ -131,7 +132,8 @@ export const FMContextProvider = ({ children }: Props) => {
 				reqSource_docnum: '',
 			});
 		}
-	}, [pos.request_origin]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [pos.type_pay]);
 
 	const handleTypeSolict = (id: number): void => {
 		setTypeSolict(id);
