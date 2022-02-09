@@ -227,8 +227,8 @@ export const sendImages = (formData: any) => {
 
 export const dataFormatClient = (client: fmClient, locationClient: LocationInt) => ({
 	email: client.email,
-	name: client.name,
-	last_name: client.last_name,
+	name: client.name.trim(),
+	last_name: client.last_name.trim(),
 	id_ident_type: client.id_ident_type,
 	ident_num: client.ident_num,
 	phone1: '58' + client.phone1,
@@ -243,12 +243,12 @@ export const dataFormatClient = (client: fmClient, locationClient: LocationInt) 
 		local: client.local,
 	},
 	ref_person_1: {
-		fullName: client.name_ref1,
+		fullName: client.name_ref1.trim(),
 		document: client.doc_ident_type_ref1 + client.doc_ident_ref1,
 		phone: '+58' + client.phone_ref1,
 	},
 	ref_person_2: {
-		fullName: client.name_ref1,
+		fullName: client.name_ref1.trim(),
 		document: client.doc_ident_type_ref2 + client.doc_ident_ref2,
 		phone: '+58' + client.phone_ref2,
 	},
@@ -263,7 +263,7 @@ export const dataFormatCommerce = (
 	id_ident_type: commerce.id_ident_type,
 	ident_num: commerce.ident_num,
 	special_contributor: commerce.special_contributor ? 1 : 0,
-	name: commerce.name,
+	name: commerce.name.trim(),
 	bank_account_num: pos.text_account_number,
 	id_activity: activity?.id,
 	location: {
@@ -303,7 +303,7 @@ export const dataFormatPos = (
 	bank_account_num: pos.text_account_number,
 	id_request_origin: pos.request_origin?.id,
 	id_type_payment: pos.type_pay?.id,
-	ci_referred: typeof pos.reqSource_docnum === 'object' ? pos.reqSource_docnum.id : pos.reqSource_docnum,
+	ci_referred: pos.request_origin?.id === 1 ? pos.reqSource_docnum : '',
 	id_product: pos.model_post?.id,
 	requestSource_docnum: pos.request_origin?.id,
 	discount: pos.discount,
@@ -316,7 +316,7 @@ export const dataFormatPos = (
 export const createFormDataFm = (
 	idClient: number,
 	idCommerce: number,
-	imagePlanilla: object | null,
+	imagePlanilla: FileList | [],
 	imagesForm: ImagesInt,
 	imagesActa: FileList | []
 ): FormData => {
@@ -331,6 +331,9 @@ export const createFormDataFm = (
 	for (let i: number = 0; i < imagesActa.length; i++) {
 		formData.append('constitutive_act', imagesActa[i]);
 	}
+	for (let i: number = 0; i < imagePlanilla.length; i++) {
+		formData.append('planilla', imagePlanilla[i]);
+	}
 	return formData;
 };
 
@@ -342,12 +345,13 @@ export const sendCompleteFM = (
 	activity: Activity | null,
 	pos: fmPos,
 	locationPos: LocationInt,
-	imagePlanilla: object | null,
+	imagePlanilla: FileList | [],
 	imagesForm: ImagesInt,
 	imagesActa: FileList | []
 ) => {
 	const dataClient = dataFormatClient(client, locationClient);
 	const dataCommerce = dataFormatCommerce(commerce, locationCommerce, activity, pos);
+	console.log('trim', dataClient);
 	return async (dispatch: any) => {
 		try {
 			const resClient: AxiosResponse<any> = await useAxios.post(`/FM/client`, dataClient);
@@ -388,7 +392,7 @@ export const sendCompleteFMExtraPos = (
 	idsCAndCc: IdClient_CommerceINT,
 	pos: fmPos,
 	locationPos: LocationInt,
-	imagePlanilla: object | null,
+	imagePlanilla: FileList | [],
 	imagesForm: ImagesInt
 ) => {
 	return async (dispatch: any) => {

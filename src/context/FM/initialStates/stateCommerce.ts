@@ -4,7 +4,7 @@ import { daysWork } from './states';
 export const initFmCommerce: fmCommerce = {
 	//step3 Comercio
 	id_ident_type: 1,
-	ident_num: '23679104',
+	ident_num: '222222222',
 	name: '',
 	special_contributor: false,
 	days: daysWork,

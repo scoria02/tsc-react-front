@@ -30,14 +30,10 @@ export const Step5: FC = () => {
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
-	const { client, pos, errorsFm, handleParamsPos, handleChangePos, handleCheckedPos, handleSourceAci } =
+	const { client, pos, errorsFm, handleParamsPos, handleChangePos, handleCheckedPos, handleSourceAci, aci } =
 		useContext(FMDataContext);
 	const { listPayment, listModelPos, listTypePay, listRequestSource, listAci } = useContext(DataListContext);
 	const { namesImages, imagesForm, handleChangeImages, deleteImgContributor } = useContext(ImagesFmContext);
-
-	const [aci, setACI] = useState<Aci | null>(
-		typeof pos.reqSource_docnum === 'object' ? pos.reqSource_docnum : null
-	);
 
 	const handleChangeReferido = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		if (/^[V0-9]+$/.test(event.target.value) || event.target.value === '') {
@@ -272,7 +268,6 @@ export const Step5: FC = () => {
 						//disabled={} //si el comercio tiene aci traelo
 						onChange={(event, value) => {
 							handleSourceAci(event, value, 'reqSource_docnum');
-							setACI(value);
 						}}
 						options={listAci}
 						value={aci || null}

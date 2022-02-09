@@ -2,11 +2,11 @@ import { fmClient, fmError_ClientINT } from '../../../interfaces/fm';
 
 export const initFmClient: fmClient = {
 	//step1 Cliente
-	email: 'jesus@corre.com',
+	email: 'test@corre.com',
 	name: 'jesus',
 	last_name: 'hernan',
 	id_ident_type: 1,
-	ident_num: '23679104',
+	ident_num: '222222222',
 	phone1: '4242456154',
 	phone2: '4242457631',
 	sector: 'hola',

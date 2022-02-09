@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { createContext, useReducer, useLayoutEffect, ReactChild, ReactChildren, useState } from 'react';
+import { createContext, useLayoutEffect, ReactChild, ReactChildren, useState } from 'react';
 
 import axios from '../../config';
 
@@ -35,7 +35,9 @@ export const DataListProvider = ({ children }: Props) => {
 	const [listActivity, setListActivity] = useState<Activity[]>([]);
 	const [listPayment, setListPayment] = useState<base[]>([]);
 	const [listModelPos, setListModelPos] = useState<Products[]>([]);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [listTypePay, setListTypePay] = useState<base[]>(listTPay);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [listRequestSource, setListRequestSource] = useState<base[]>(listRequestS);
 	const [listAci, setListAci] = useState<Aci[]>([]);
 

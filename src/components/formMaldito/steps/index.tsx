@@ -53,6 +53,7 @@ const StepBase: FC = () => {
 		resetFm();
 		resetListLocaitons();
 		resetImages();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [typeSolict]);
 
 	return (
@@ -87,11 +88,18 @@ const StepBase: FC = () => {
 							}}
 							component='label'>
 							<IconButton aria-label='upload picture' component='span'>
-								{imagePlanilla ? <CheckCircleIcon /> : <BackUpIcon />}
+								{imagePlanilla.length ? <CheckCircleIcon /> : <BackUpIcon />}
 							</IconButton>
-							<input type='file' hidden name='rc_planilla' accept={recaudo.acc} onChange={handleChangePlanilla} />
+							<input
+								type='file'
+								multiple
+								hidden
+								name='rc_planilla'
+								accept={recaudo.acc}
+								onChange={handleChangePlanilla}
+							/>
 						</Button>
-						{imagePlanilla ? (
+						{imagePlanilla.length ? (
 							<Button
 								className={classes.imgIdent}
 								variant='contained'

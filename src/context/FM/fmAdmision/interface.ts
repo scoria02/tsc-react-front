@@ -46,8 +46,9 @@ export interface ContextFM {
 	handleChangePos(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleParamsPos(name: string, value: base | null | string): void;
 	handleCheckedPos(event: React.ChangeEvent<HTMLInputElement>): void;
-	handleSourceAci(event: any, value: Aci | null, name: string): void;
 	resetFm(): void;
 	validClientAndCommerce(): void | Promise<boolean>;
 	idsCAndCc: IdClient_CommerceINT | null;
+	aci: Aci | null;
+	handleSourceAci(event: any, value: Aci | null, name: string): void;
 }

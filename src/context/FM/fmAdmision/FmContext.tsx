@@ -66,6 +66,7 @@ const FMDataContext = createContext<ContextFM>({
 	//EndPoint
 	validClientAndCommerce: () => {},
 	idsCAndCc: null,
+	aci: null,
 });
 
 export const FMContextProvider = ({ children }: Props) => {
@@ -83,7 +84,7 @@ export const FMContextProvider = ({ children }: Props) => {
 	const [errorsCommerce, setErrorsCommerce] = useState<fmError_CommerceINT>(fmErrorCommerce);
 
 	const [idsCAndCc, setIdsCAndCc] = useState<IdClient_CommerceINT | null>(null);
-	//const [aci, setAci] = useState < Aci || null > null;
+	const [aci, setAci] = useState<Aci | null>(null);
 
 	//Autocomplete location
 	//const [autoCompleteCommerce, setAutoCompleteCommerce] = useState<boolean>(true);
@@ -101,6 +102,7 @@ export const FMContextProvider = ({ children }: Props) => {
 		setLocationCommerce(initLocation);
 		setLocationPos(initLocation);
 		setIdsCAndCc(null);
+		setAci(null);
 	};
 
 	useEffect(() => {
@@ -123,7 +125,7 @@ export const FMContextProvider = ({ children }: Props) => {
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [typeSolict]);
+	}, [typeSolict, client.id_ident_type, client.ident_num, client.name, client.last_name]);
 
 	useEffect(() => {
 		if (pos.type_pay) {
@@ -216,15 +218,9 @@ export const FMContextProvider = ({ children }: Props) => {
 
 	const handleSourceAci = (event: any, value: Aci | null, name: string): void => {
 		if (value) {
-			setPos({
-				...pos,
-				reqSource_docnum: value,
-			});
+			setAci(value);
 		} else {
-			setPos({
-				...pos,
-				reqSource_docnum: '',
-			});
+			setAci(null);
 		}
 	};
 
@@ -366,6 +362,7 @@ export const FMContextProvider = ({ children }: Props) => {
 				//Endpoint
 				validClientAndCommerce,
 				idsCAndCc,
+				aci,
 			}}>
 			{children}
 		</FMDataContext.Provider>
