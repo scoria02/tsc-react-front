@@ -7,7 +7,6 @@ import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 import { GuardedRoute, GuardProvider } from 'react-router-guards';
 import LoaderPrimary from '../components/loaders/LoaderPrimary';
 import MainMenu from '../components/MainMenu';
-import Logo from '../img/logo_1000pagos_blanco.svg';
 //Redux
 import { refreshLogin } from '../store/actions/auth';
 import { FinishLoading } from '../store/actions/ui';
@@ -106,21 +105,6 @@ export const AppRouter = () => {
 						) : (
 							<>
 								<div className={classes.auth}>
-									<img
-										src={Logo}
-										alt='Logo'
-										style={{
-											position: 'absolute',
-											top: '0',
-											padding: 0,
-											margin: 0,
-											width: '500px',
-											height: '150px',
-											//background: 'red',
-											objectFit: 'cover',
-											objectPosition: '20% 45%' /* try 20px 10px */,
-										}}
-									/>
 									{Public.map(({ component, meta, path }, i) => {
 										return <GuardedRoute key={i} exact path={path} component={component} meta={meta} />;
 									})}
