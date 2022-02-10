@@ -3,7 +3,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
-import React, { useContext, FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import DataListContext from '../../../context/DataList/DataListContext';
 import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
@@ -54,12 +54,13 @@ const ExtraPos: FC = () => {
 					Cliente
 				</h2>
 				<div className={classes.input}>
-					<FormControl variant='outlined' className={classes.inputSelect}>
+					<FormControl className={classes.inputSelect}>
 						<InputLabel>DI</InputLabel>
 						<Select
 							value={client.id_ident_type}
 							onChange={handleSelectIdentClient}
 							name='id_ident_type'
+							variant='outlined'
 							//error={validEmailIdent}
 							label='Tipo'>
 							{listIdentType.map((item: any) => {

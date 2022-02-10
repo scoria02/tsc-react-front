@@ -65,13 +65,14 @@ const StepBase: FC = () => {
 						marginTop: '5rem',
 					}}
 					className={classNames(classes.input, classes.daysCB)}>
-					<FormControl fullWidth variant='outlined' className={classes.inputSelectSolict}>
+					<FormControl className={classes.inputSelectSolict}>
 						<InputLabel>Solicitudes</InputLabel>
 						<Select
 							value={typeSolict}
 							onChange={(e) => handleTypeSolict(e.target.value as number)}
 							name='typeSolict'
-							label='TipoSolict'>
+							variant='outlined'
+							label='Solicitudes'>
 							{typesSolicts.map((item: any) => (
 								<MenuItem key={item.id} value={item.id}>
 									{item.name}

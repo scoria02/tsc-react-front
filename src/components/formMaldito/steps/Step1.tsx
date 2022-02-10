@@ -107,13 +107,14 @@ export const Step1: React.FC<any> = () => {
 					/>
 				</div>
 				<div className={classes.input}>
-					<FormControl variant='outlined' className={classes.inputSelect}>
+					<FormControl className={classes.inputSelect}>
 						<InputLabel>DI</InputLabel>
 						<Select
 							value={client.id_ident_type}
 							onChange={handleSelectIdentClient}
 							onBlur={handleBlurEmailIdent}
 							name='id_ident_type'
+							variant='outlined'
 							//error={validEmailIdent}
 							label='Tipo'>
 							{listIdentType.map((item: any) => {
