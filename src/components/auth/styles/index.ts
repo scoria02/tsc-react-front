@@ -1,6 +1,6 @@
-import { makeStyles, withStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
+import { makeStyles, withStyles } from '@mui/styles';
 
 export const HtmlTooltip = withStyles(() => ({
 	tooltip: {
@@ -115,8 +115,7 @@ export const useStylesModalUser = makeStyles((styles: Theme) => ({
 		justifyContent: 'center',
 		flexDirection: 'column',
 		alignItems: 'center',
-		marginTop: '2.2rem',
-		marginBottom: '2.5rem',
+		margin: '1.7rem 0 2rem',
 		width: '100%',
 	},
 	buttonLogin: {
