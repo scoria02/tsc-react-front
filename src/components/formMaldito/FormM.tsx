@@ -1,19 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import Button from '@material-ui/core/Button';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-//Material
-import Stepper from '@material-ui/core/Stepper';
+
+import { Button, Step, StepLabel, Stepper } from '@mui/material';
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import DataListContext from '../../context/DataList/DataListContext';
+import FMDataContext from '../../context/FM/fmAdmision/FmContext';
+import ImagesFmContext from '../../context/FM/fmImages/ImagesFmContext';
+import LocationsContext from '../../context/FM/Location/LocationsContext';
 import { SocketContext } from '../../context/SocketContext';
 import { urlFM } from '../../routers/url';
 import { cleanFM, sendCompleteFM, sendCompleteFMExtraPos } from '../../store/actions/fm';
-import { useDispatch, useSelector } from 'react-redux';
+import { StateFMInt } from '../../store/reducers/fmReducer';
 //Redux
 import { RootState } from '../../store/store';
+import { stepError } from '../../utils/fm';
 import LoaderPrimary from '../loaders/LoaderPrimary';
 import './index.scss';
 //steps
@@ -26,16 +29,6 @@ import { Step4 } from './steps/Step4';
 import { Step5 } from './steps/Step5';
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
-import { StateFMInt } from '../../store/reducers/fmReducer';
-import { stepError } from '../../utils/fm';
-
-import FMDataContext from '../../context/FM/fmAdmision/FmContext';
-import DataListContext from '../../context/DataList/DataListContext';
-import LocationsContext from '../../context/FM/Location/LocationsContext';
-import ImagesFmContext from '../../context/FM/fmImages/ImagesFmContext';
-import { types } from 'util';
-import { act } from 'react-dom/test-utils';
-import { ActionType } from '../../store/types/types';
 
 const initStep = ['Tipo de Solicitud'];
 

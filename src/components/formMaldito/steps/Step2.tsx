@@ -1,16 +1,15 @@
 //Material
-import InputAdornment from '@material-ui/core/InputAdornment';
-import MenuItem from '@material-ui/core/MenuItem';
+
 import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
+import { InputAdornment, MenuItem, TextField } from '@mui/material';
 import classNames from 'classnames';
 import React, { FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
+import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 import { RootState } from '../../../store/store';
+import { validInputString } from '../../../utils/fm';
 //sytles
 import { useStylesFM } from '../styles';
-import { validInputString } from '../../../utils/fm';
-import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 
 export const Step2: FC = () => {
 	const classes = useStylesFM();

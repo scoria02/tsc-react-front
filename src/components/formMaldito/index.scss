@@ -5,15 +5,15 @@
 }
 
 .titleFM {
-	font-size: 1.4rem; 
-	padding: 0; 
+	font-size: 1.4rem;
+	padding: 0;
 	margin: 0;
 	margin-top: -1rem;
 	align-self: start;
 }
 
 .capitan-america {
-//	background: url("https://imagenes.heraldo.es/files/image_990_v1/uploads/imagenes/2018/11/12/_20MARCHIVO30499280_b08f782d.jpg") no-repeat left;
+	//	background: url("https://imagenes.heraldo.es/files/image_990_v1/uploads/imagenes/2018/11/12/_20MARCHIVO30499280_b08f782d.jpg") no-repeat left;
 	height: 100%;
 	width: 70%;
 	top: 10%;
@@ -31,15 +31,6 @@
 	display: flex;
 }
 
-.container-steps{
-	display: flex;
-	width: auto;
-	justify-content: left;
-	align-items: center;
-	flex-direction: column;
-	margin-top: 1.5rem;
-}
-
 .nameImg {
 	margin-bottom: 0;
 }
@@ -52,7 +43,7 @@
 	font-size: 12px;
 }
 
-.container-location{
+.container-location {
 	display: grid;
 	grid-column-gap: 10%;
 	grid-template-columns: 1fr 1fr;

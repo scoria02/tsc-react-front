@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import TextField from '@material-ui/core/TextField';
+import { FormControlLabel, Switch } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { Valid } from '../../../../store/actions/accept';
 //Url
 import { RootState } from '../../../../store/store';
+import { ModalAlert } from '../../../modals/ModalAlert';
+import Rec from '../../../utilis/images/Rec';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
-import { ModalAlert } from '../../../modals/ModalAlert';
-
-import Rec from '../../../utilis/images/Rec';
 
 const PasoContriSpecial: React.FC = () => {
 	const classes = useStyles();
@@ -72,24 +69,24 @@ const PasoContriSpecial: React.FC = () => {
 
 	return (
 		<>
-			<form className='container-step' noValidate autoComplete='off'>
+			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					<TextField
-						className='btn_step btn_medio'
+					{/* <TextField
+						className={classes.btn_medio}
 						id='outlined-basic '
 						label='Contribuyente Especial'
 						variant='outlined'
 						value='Foto de Contribuyente Especial'
 						disabled
-					/>
+					/> */}
 					<FormControlLabel
 						className={classes.checkText}
 						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
 						label='Correcto'
 					/>
 				</div>
+				<Rec load={load} setLoad={setLoad} imagen={imagen} />
 			</form>
-			<Rec load={load} setLoad={setLoad} imagen={imagen} />
 			<ModalAlert
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}

@@ -1,4 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import CloseIcon from '@mui/icons-material/Close';
+import Autocomplete from '@mui/lab/Autocomplete';
 import {
 	Avatar,
 	Button,
@@ -6,12 +8,11 @@ import {
 	FormControlLabel,
 	FormGroup,
 	Grid,
-	makeStyles,
 	Paper,
 	TextField,
-} from '@material-ui/core';
-import CloseIcon from '@mui/icons-material/Close';
-import Autocomplete from '@mui/lab/Autocomplete';
+	Theme,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import {
 	DataGrid,
 	GridColDef,
@@ -68,7 +69,7 @@ const columns: GridColDef[] = [
 	},
 ];
 
-const useStyles = makeStyles((styles) => ({
+const useStyles = makeStyles((styles: Theme) => ({
 	layout: {
 		padding: '0 1rem',
 	},

@@ -1,10 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Checkbox, FormControlLabel, InputAdornment } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { Autocomplete } from '@mui/material';
+import {
+	Autocomplete,
+	Button,
+	Checkbox,
+	FormControlLabel,
+	IconButton,
+	InputAdornment,
+	TextField,
+} from '@mui/material';
 import classNames from 'classnames';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

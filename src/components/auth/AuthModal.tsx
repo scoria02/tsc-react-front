@@ -1,5 +1,5 @@
-import React from 'react';
 import { Button, Card, CardContent, Typography } from '@mui/material';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useStylesModalUser } from './styles';
 //import logo from '../../img/logo_1000pagos.svg';

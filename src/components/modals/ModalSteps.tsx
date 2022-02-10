@@ -1,19 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
-import { useDispatch } from 'react-redux';
-
 import Button from '@material-ui/core/Button';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import Stepper from '@material-ui/core/Stepper';
 import Typography from '@material-ui/core/Typography';
-
-import { useContext } from 'react';
+import React, { useContext } from 'react';
+import { useDispatch } from 'react-redux';
 import { SocketContext } from '../../context/SocketContext';
-
-import FullModal from './FullModal';
 import LoaderPrimary from '../loaders/LoaderPrimary';
-
+import FullModal from './FullModal';
 import { useStyles } from './styles/modalStep';
 
 const ModalSteps: React.FC<any> = ({

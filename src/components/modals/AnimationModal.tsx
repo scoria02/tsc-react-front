@@ -1,7 +1,5 @@
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import Modal from '@material-ui/core/Modal';
 //import 'animate.css';
+import { Backdrop, Fade, Modal } from '@mui/material';
 import React from 'react';
 import { useStylesModal } from './styles';
 
@@ -10,11 +8,7 @@ interface ModalProps {
 	handleCloseModal: () => void;
 }
 
-const AnimatedModal: React.FC<ModalProps> = ({
-	openModal,
-	handleCloseModal,
-	children
-}) => {
+const AnimatedModal: React.FC<ModalProps> = ({ openModal, handleCloseModal, children }) => {
 	const classes = useStylesModal();
 	return (
 		<>
@@ -28,9 +22,7 @@ const AnimatedModal: React.FC<ModalProps> = ({
 					timeout: 500,
 				}}>
 				<Fade in={openModal}>
-					<div>
-						{children}
-					</div>
+					<div>{children}</div>
 				</Fade>
 			</Modal>
 		</>

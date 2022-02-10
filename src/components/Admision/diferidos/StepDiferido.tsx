@@ -1,8 +1,7 @@
-import { Button } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutlineSharp';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import { Button, IconButton } from '@mui/material';
 import React, { useState } from 'react';
 //Url
 import Rec from '../../utilis/images/Rec';
@@ -24,7 +23,7 @@ const StepDiferido: React.FC<any> = ({ name, fm, valid, path, handleChangeImages
 
 	return (
 		<>
-			<form className='container-step' noValidate autoComplete='off'>
+			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
 					<Button
 						className={classes.uploadImg}

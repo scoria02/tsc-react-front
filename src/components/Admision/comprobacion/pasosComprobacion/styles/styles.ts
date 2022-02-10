@@ -1,6 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { Theme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
-export const useStyles = makeStyles((styles) => ({
+export const useStyles = makeStyles((styles: Theme) => ({
 	btn_stepM: {
 		width: '100%',
 		display: 'flex',
@@ -14,8 +15,8 @@ export const useStyles = makeStyles((styles) => ({
 		width: '50%',
 	},
 	btn_stepT: {
-		marginLeft: styles.spacing(1),
-		marginRight: styles.spacing(1),
+		marginLeft: `${styles.spacing(1)} !important`,
+		marginRight: `${styles.spacing(1)} !important`,
 	},
 	img_zoom: {
 		width: '40vw',
@@ -39,7 +40,7 @@ export const useStyles = makeStyles((styles) => ({
 		marginLeft: '40%',
 	},
 	btn_stepNro: {
-		marginRight: '5%',
+		marginRight: '5% !important',
 	},
 	checkText: {
 		marginLeft: '1rem',
@@ -57,6 +58,16 @@ export const useStyles = makeStyles((styles) => ({
 		textTransform: 'none',
 	},
 	itemLink: {
+		textDecoration: 'none',
+		textTransform: 'none',
 		paddingLeft: '.5rem',
+	},
+	containerStep: {
+		width: '100%',
+		flexDirection: 'column',
+		display: 'flex',
+	},
+	btn_medio: {
+		width: '70%',
 	},
 }));

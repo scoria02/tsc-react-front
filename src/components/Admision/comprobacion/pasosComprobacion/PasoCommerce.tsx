@@ -1,5 +1,5 @@
-import TextField from '@material-ui/core/TextField';
 //Redux
+import { TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
@@ -11,7 +11,7 @@ export default function PasoUno() {
 
 	return (
 		<>
-			<form className='container-step' noValidate autoComplete='off' style={{ marginTop: '1rem' }}>
+			<form className={classes.containerStep} noValidate autoComplete='off' style={{ marginTop: '1rem' }}>
 				<div className={classes.btn_stepM}>
 					<TextField
 						className={classes.btn_stepT}

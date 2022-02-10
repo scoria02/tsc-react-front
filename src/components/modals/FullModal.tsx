@@ -1,11 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
-
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { TransitionProps } from '@material-ui/core/transitions';
-
+import React from 'react';
 import './scss/fullmodal.scss';
 
 const Transition = React.forwardRef(function Transition(
@@ -25,11 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-const FullModal: React.FC<any> = ({
-	modalOpen,
-	handleClose,
-	children,
-}) => {
+const FullModal: React.FC<any> = ({ modalOpen, handleClose, children }) => {
 	const classes = useStyles();
 
 	return (
@@ -41,9 +35,7 @@ const FullModal: React.FC<any> = ({
 					<label className='closee'>Cerrar</label>
 				</div>
 			</div>
-			<div className={classes.root}>
-				{children}
-			</div>
+			<div className={classes.root}>{children}</div>
 		</Dialog>
 	);
 };

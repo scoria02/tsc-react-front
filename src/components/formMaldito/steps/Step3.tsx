@@ -1,15 +1,17 @@
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import IconButton from '@material-ui/core/IconButton';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Autocomplete from '@mui/lab/Autocomplete';
+import {
+	Button,
+	Checkbox,
+	FormControl,
+	FormControlLabel,
+	FormGroup,
+	IconButton,
+	InputLabel,
+	MenuItem,
+	TextField,
+} from '@mui/material';
 import { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DataListContext from '../../../context/DataList/DataListContext';
