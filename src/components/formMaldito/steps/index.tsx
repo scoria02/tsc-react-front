@@ -10,42 +10,12 @@ import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
 import LocationsContext from '../../../context/FM/Location/LocationsContext';
 import { recaudo } from '../../utilis/recaudos';
 import { useStylesFM } from '../styles';
-
-const typesSolicts = [
-	{
-		id: 0,
-		name: 'Persona Natural',
-		steps: [
-			'client',
-			'commerce', //cambiar list docu ident client + un digito,foto va,Contriu no va, acta no va
-			'pos',
-		],
-	},
-	{
-		id: 1,
-		name: 'Persona Juridica',
-		steps: [
-			'client',
-			'commerce', //J obligura, comercio acta constitu,
-			'pos',
-		],
-	},
-	{
-		id: 2,
-		name: 'Firma Personal',
-		steps: ['client', 'commerce', 'actaConst', 'pos'],
-		//normal, comercio acta constitu,
-	},
-	{
-		id: 3,
-		name: 'Punto/Pos Extra',
-		steps: ['client-commerce', 'pos'],
-	},
-];
+import DataListContext from '../../../context/DataList/DataListContext';
 
 const StepBase: FC = () => {
 	const classes = useStylesFM();
 
+	const { listTypesSolicts } = useContext(DataListContext);
 	const { typeSolict, handleTypeSolict, resetFm } = useContext(FMDataContext);
 	const { resetListLocaitons } = useContext(LocationsContext);
 	const { imagePlanilla, handleChangePlanilla, removePlanilla, resetImages } = useContext(ImagesFmContext);
@@ -72,7 +42,7 @@ const StepBase: FC = () => {
 							onChange={(e) => handleTypeSolict(e.target.value as number)}
 							name='typeSolict'
 							label='TipoSolict'>
-							{typesSolicts.map((item: any) => (
+							{listTypesSolicts.map((item: any) => (
 								<MenuItem key={item.id} value={item.id}>
 									{item.name}
 								</MenuItem>

@@ -11,7 +11,15 @@ export * from './store/store';
 
 const theme = createTheme(
 	{
-		palette: {},
+		palette: {
+			primary: {
+				main: '#2f3775',
+				contrastText: '#ffffff',
+			},
+			secondary: {
+				main: '#f44336',
+			},
+		},
 	},
 	esES,
 	coreesES

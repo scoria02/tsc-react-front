@@ -27,7 +27,7 @@ interface Props {
 }
 
 const FMDataContext = createContext<ContextFM>({
-	typeSolict: 0,
+	typeSolict: 1,
 	errorsFm: fmErrorFormat,
 	errorsClient: fmErrorClient,
 	errorsCommerce: fmErrorCommerce,
@@ -70,7 +70,7 @@ const FMDataContext = createContext<ContextFM>({
 });
 
 export const FMContextProvider = ({ children }: Props) => {
-	const [typeSolict, setTypeSolict] = useState<number>(0);
+	const [typeSolict, setTypeSolict] = useState<number>(1);
 	const [errorsFm, setErrorsFm] = useState<fmError_Interface>(fmErrorFormat);
 	const [client, setClient] = useState<fmClient>(initFmClient);
 	const [commerce, setCommerce] = useState<fmCommerce>(initFmCommerce);

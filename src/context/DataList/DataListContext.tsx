@@ -18,6 +18,7 @@ interface ContextDataList {
 	listTypePay: base[];
 	listRequestSource: base[];
 	listAci: Aci[];
+	listTypesSolicts: base[];
 }
 
 const DataListContext = createContext<ContextDataList>({
@@ -28,6 +29,7 @@ const DataListContext = createContext<ContextDataList>({
 	listTypePay: [],
 	listRequestSource: [],
 	listAci: [],
+	listTypesSolicts: [],
 });
 
 export const DataListProvider = ({ children }: Props) => {
@@ -40,6 +42,9 @@ export const DataListProvider = ({ children }: Props) => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [listRequestSource, setListRequestSource] = useState<base[]>(listRequestS);
 	const [listAci, setListAci] = useState<Aci[]>([]);
+	const [listTypesSolicts, setListTypesSolicts] = useState<base[]>([]);
+
+	console.log('list', listTypesSolicts);
 
 	const getters = async (routes: string[]) => {
 		try {
@@ -66,10 +71,11 @@ export const DataListProvider = ({ children }: Props) => {
 		setListPayment(array[2].data.info);
 		setListModelPos(array[3].data.info);
 		setListAci(array[4].data.info);
+		setListTypesSolicts(array[5].data.info);
 	};
 
 	useLayoutEffect(() => {
-		const routes = [`/ident_type`, `/activity`, `/payment/all`, `/products`, `aci`];
+		const routes = [`/ident_type`, `/activity`, `/payment/all`, `/products`, `/aci`, `/types_solict`];
 		getters(routes)
 			.then((responses) => {
 				initList(responses);
@@ -89,6 +95,7 @@ export const DataListProvider = ({ children }: Props) => {
 				listTypePay,
 				listRequestSource,
 				listAci,
+				listTypesSolicts,
 			}}>
 			{children}
 		</DataListContext.Provider>
