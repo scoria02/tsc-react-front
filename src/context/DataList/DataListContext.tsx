@@ -44,8 +44,6 @@ export const DataListProvider = ({ children }: Props) => {
 	const [listAci, setListAci] = useState<Aci[]>([]);
 	const [listTypesSolicts, setListTypesSolicts] = useState<base[]>([]);
 
-	console.log('list', listTypesSolicts);
-
 	const getters = async (routes: string[]) => {
 		try {
 			const stop = routes.map(async (route: string) => {
@@ -72,7 +70,7 @@ export const DataListProvider = ({ children }: Props) => {
 		setListModelPos(array[3].data.info);
 		setListAci(array[4].data.info);
 		setListTypesSolicts(array[5].data.info);
-		console.log(array[6].data.info);
+		console.log(array);
 	};
 
 	useLayoutEffect(() => {
@@ -83,7 +81,7 @@ export const DataListProvider = ({ children }: Props) => {
 			`/products`,
 			`/aci`,
 			`/types_solict`,
-			`/tipo_de_carteras`,
+			//`/tipo_de_carteras`,
 		];
 		getters(routes)
 			.then((responses) => {
