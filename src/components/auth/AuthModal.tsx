@@ -3,7 +3,6 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Logo from '../../img/logo_1000pagos_blanco.svg';
 import { useStylesModalUser } from './styles';
-//import logo from '../../img/logo_1000pagos.svg';
 
 const AuthModal: React.FC<any> = ({ children, name, register }) => {
 	const classes = useStylesModalUser();
