@@ -79,6 +79,12 @@ const Register: React.FC = () => {
 		sig: true,
 	});
 
+	useEffect(() => {
+		if (valids.checkErrorInput('email', auth.error)) {
+			setActiveStep(0);
+		}
+	}, [auth]);
+
 	//Validations
 	const validateForm = (name: string, value: any) => {
 		let temp: Interface_RegisterUserError = { ...userFormError };

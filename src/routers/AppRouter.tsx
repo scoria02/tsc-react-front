@@ -7,7 +7,7 @@ import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 import { GuardedRoute, GuardProvider } from 'react-router-guards';
 import LoaderPrimary from '../components/loaders/LoaderPrimary';
 import MainMenu from '../components/MainMenu';
-import Logo from '../img/1000pagos_LogoBlue.png';
+import Logo from '../img/logo_1000pagos_blanco.svg';
 //Redux
 import { refreshLogin } from '../store/actions/auth';
 import { FinishLoading } from '../store/actions/ui';
@@ -111,9 +111,14 @@ export const AppRouter = () => {
 										alt='Logo'
 										style={{
 											position: 'absolute',
-											top: '1rem',
-											padding: '2rem',
-											width: '60%',
+											top: '0',
+											padding: 0,
+											margin: 0,
+											width: '500px',
+											height: '150px',
+											//background: 'red',
+											objectFit: 'cover',
+											objectPosition: '20% 45%' /* try 20px 10px */,
 										}}
 									/>
 									{Public.map(({ component, meta, path }, i) => {

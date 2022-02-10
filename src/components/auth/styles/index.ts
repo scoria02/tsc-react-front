@@ -54,12 +54,14 @@ export const useStylesModalUser = makeStyles((styles: Theme) => ({
 	containerAuthModal: {
 		position: 'relative',
 		overflow: 'hidden',
-		width: '660px',
 		maxWidth: '100%',
-		minHeight: '400px',
+		minHeight: '360px',
+		maxHeight: '360px',
+		width: '660px',
 		textAlign: 'center',
 		flexWrap: 'wrap',
 		justifyContent: 'center',
+		zIndex: 1,
 	},
 	inputPhone: {
 		width: '52%',
