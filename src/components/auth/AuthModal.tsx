@@ -4,6 +4,12 @@ import { useHistory } from 'react-router-dom';
 import Logo from '../../img/logo_1000pagos_blanco.svg';
 import { useStylesModalUser } from './styles';
 
+const sxStyles = {
+	borderRadius: '2rem',
+	maxWidth: '80vw',
+	marginTop: '1.5rem',
+} as const;
+
 const AuthModal: React.FC<any> = ({ children, name, register }) => {
 	const classes = useStylesModalUser();
 
@@ -25,12 +31,7 @@ const AuthModal: React.FC<any> = ({ children, name, register }) => {
 					objectPosition: '20% 45%' /* try 20px 10px */,
 				}}
 			/>
-			<Card
-				sx={{
-					borderRadius: '2rem',
-					maxWidth: '80vw',
-					marginTop: '1.5rem',
-				}}>
+			<Card sx={sxStyles}>
 				<CardContent>
 					<div className={classes.containerAuthModal}>
 						<Typography gutterBottom variant='h5' component='h2' align='center' className={register ? '' : 'toto'}>
