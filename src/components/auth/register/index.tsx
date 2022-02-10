@@ -1,17 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+//icons
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import SendIcon from '@mui/icons-material/Send';
+//Material UI
+import { Button, MobileStepper, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { baseUrl } from '../../../routers/url';
 import { registerUser } from '../../../store/actions/auth';
-//Material UI
-import { useMediaQuery, Button } from '@mui/material';
-import MobileStepper from '@material-ui/core/MobileStepper';
-//icons
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import SendIcon from '@mui/icons-material/Send';
 //Redux
 import { RootState } from '../../../store/store';
 import AuthModal from '../AuthModal';

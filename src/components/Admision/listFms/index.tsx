@@ -1,10 +1,5 @@
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import InputBase from '@material-ui/core/InputBase';
-//Material ui
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@mui/icons-material/Search';
+import { Grid, IconButton, InputBase, Paper, Typography } from '@mui/material';
 import React, { useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SocketContext } from '../../../context/SocketContext';

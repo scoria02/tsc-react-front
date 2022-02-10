@@ -1,6 +1,6 @@
-import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@mui/lab/Autocomplete';
-import React from 'react';
+import { TextField } from '@mui/material';
+import { FC } from 'react';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAci } from '../../../../store/actions/accept';
@@ -9,7 +9,7 @@ import { RootState } from '../../../../store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 
-const PasoSelectAci: React.FC<any> = ({ aci, setAci, listAci }) => {
+const PasoSelectAci: FC<any> = ({ aci, setAci, listAci }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
@@ -21,17 +21,17 @@ const PasoSelectAci: React.FC<any> = ({ aci, setAci, listAci }) => {
 
 	return (
 		<>
-			<form className='container-step' noValidate autoComplete='off'>
+			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className='comprobar_container_2'>
 					<div>
 						<div className={classes.btn_stepM}>
-							<TextField
-								className='btn_step btn_medio'
-								id='outlined-basic'
-								label='Ubicacion del POS'
-								variant='outlined'
-								disabled
-							/>
+							<h2
+								style={{
+									marginTop: '10px',
+									fontSize: '20px',
+								}}>
+								Ubicación del POS
+							</h2>
 						</div>
 						<div className={classes.btn_stepM}>
 							<TextField
@@ -100,8 +100,17 @@ const PasoSelectAci: React.FC<any> = ({ aci, setAci, listAci }) => {
 					</div>
 					<div>
 						<div className={classes.btn_stepM}>
+							<h2
+								style={{
+									marginTop: '10px',
+									fontSize: '20px',
+								}}>
+								Asignacion del ACI
+							</h2>
+						</div>
+						<div className={classes.btn_stepM}>
 							<Autocomplete
-								className='btn_step btn_medio'
+								className={classes.btn_medio}
 								//disabled={} //si el comercio tiene aci traelo
 								onChange={(event, value) => {
 									handleSelectAci(event, value);

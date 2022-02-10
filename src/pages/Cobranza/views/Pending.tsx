@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import Grid from '@material-ui/core/Grid';
+import { Grid } from '@mui/material';
 import {
 	DataGrid,
 	GridColDef,

@@ -1,46 +1,6 @@
-.container-step {
-	width: 100% !important;
-	display: flex;
-	flex-direction: column;
-}
-
-.btn_step {
-	width: 40% !important;
-}
-
-.btn_corto {
-	width: 10ch !important;
-}
-
-.btn_medio {
-	width: 40ch !important;
-}
-
-.btn_largo {
-	width: 100% !important;
-}
-
-.btn_type_id {
-	height: 6ch !important;
-	width: 16% !important;
-	margin-right: 4% !important;
-}
-
-.btn_num_id {
-	height: 6ch !important;
-	width: 80% !important;
-}
-
 .img {
 	cursor: pointer;
 	max-width: 35rem;
-	display: block;
-	margin: 0 auto;
-}
-
-.img_zoom {
-	cursor: pointer;
-	max-width: 70rem;
 	display: block;
 	margin: 0 auto;
 }

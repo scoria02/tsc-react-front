@@ -1,19 +1,3 @@
-import AppBar from '@material-ui/core/AppBar';
-//import Avatar from '@material-ui/core/Avatar';
-//import Badge from '@material-ui/core/Badge';
-// import CssBaseline from '@material-ui/core/CssBaseline';
-//import Divider from '@material-ui/core/Divider';
-//import Drawer from '@material-ui/core/Drawer';
-//import IconButton from '@material-ui/core/IconButton';
-//import List from '@material-ui/core/List';
-//import ListItem from '@material-ui/core/ListItem';
-//import ListItemIcon from '@material-ui/core/ListItemIcon';
-//import ListItemText from '@material-ui/core/ListItemText';
-//import Menu from '@material-ui/core/Menu';
-//import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import { default as AccountCircle } from '@mui/icons-material/AccountCircle';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -28,6 +12,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import PeopleIcon from '@mui/icons-material/PeopleAlt';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import {
+	AppBar,
 	Avatar,
 	Badge,
 	Divider,
@@ -39,6 +24,9 @@ import {
 	ListItemText,
 	Menu,
 	MenuItem,
+	Toolbar,
+	Typography,
+	useTheme,
 } from '@mui/material';
 // import WorkIcon from '@mui/icons-material/Work';
 import classNames from 'classnames';
@@ -53,111 +41,7 @@ import { refreshLogin, startLogout } from '../../store/actions/auth';
 import { FinishLoading } from '../../store/actions/ui';
 import { RootState } from '../../store/store';
 import './index.scss';
-
-const drawerWidth = 220;
-
-const useStyles = makeStyles((theme: Theme) => ({
-	root: {
-		flexGrow: 1,
-	},
-	appBar: {
-		zIndex: theme.zIndex.drawer + 1,
-		transition: theme.transitions.create(['width', 'margin'], {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen,
-		}),
-	},
-	appBarShift: {
-		marginLeft: drawerWidth,
-		width: `calc(100% - ${drawerWidth}px)`,
-		transition: theme.transitions.create(['width', 'margin'], {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.enteringScreen,
-		}),
-	},
-	menuButton: {
-		marginRight: 36,
-	},
-	title: {
-		display: 'none',
-		[theme.breakpoints.up('sm')]: {
-			display: 'block',
-		},
-	},
-	hide: {
-		display: 'none',
-	},
-	sectionDesktop: {
-		display: 'none',
-		[theme.breakpoints.up('md')]: {
-			display: 'flex',
-		},
-	},
-	grow: {
-		flexGrow: 1,
-	},
-	userName: {
-		display: 'none',
-		padding: '1rem',
-		paddingRight: '0',
-		[theme.breakpoints.up('sm')]: {
-			display: 'block',
-		},
-	},
-	sectionMobile: {
-		display: 'flex',
-		[theme.breakpoints.up('md')]: {
-			display: 'none',
-		},
-	},
-	drawer: {
-		width: drawerWidth,
-		flexShrink: 0,
-		whiteSpace: 'nowrap',
-	},
-	drawerOpen: {
-		width: drawerWidth,
-		transition: theme.transitions.create('width', {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.enteringScreen,
-		}),
-	},
-	drawerClose: {
-		transition: theme.transitions.create('width', {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen,
-		}),
-		overflowX: 'hidden',
-		width: theme.spacing(7) + 1,
-		[theme.breakpoints.up('sm')]: {
-			// width: theme.spacing(9) + 1,
-		},
-	},
-	toolbar: {
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-		padding: theme.spacing(0, 1),
-		// necessary for content to be below app bar
-		...theme.mixins.toolbar,
-	},
-	link: {
-		textDecoration: 'none',
-		// color: theme.palette.primary.contrastText,
-	},
-	img: {
-		'& img': {
-			maxWidth: 176,
-		},
-	},
-	icon: {
-		minWidth: 40,
-	},
-	avatarLetter: {
-		textTransform: 'uppercase',
-		backgroundColor: theme.palette.primary.light,
-	},
-}));
+import useStyles from './styles';
 
 const MainMenu: FC = () => {
 	const dispatch = useDispatch();

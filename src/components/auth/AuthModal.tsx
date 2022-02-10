@@ -1,16 +1,10 @@
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-// import CardActionArea from '@material-ui/core/CardActionArea';
-// import { useForm, SubmitHandler } from 'react-hook-form';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
+import { Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 //import logo from '../../img/user.png';
 import logo from '../../img/logo_1000pagos.svg';
-import { useStylesModalUser } from './styles';
 import './login/index.scss';
+import { useStylesModalUser } from './styles';
 
 const AuthModal: React.FC<any> = ({ children, name, register }) => {
 	const classes = useStylesModalUser();

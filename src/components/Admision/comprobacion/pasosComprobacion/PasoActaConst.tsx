@@ -1,13 +1,6 @@
-import { Button } from '@material-ui/core';
-import Avatar from '@material-ui/core/Avatar';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Switch from '@material-ui/core/Switch';
-import TextField from '@material-ui/core/TextField';
 import ImageIcon from '@mui/icons-material/Image';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import { Avatar, Button, FormControlLabel, List, ListItem, ListItemText, Switch } from '@mui/material';
 import React, { useEffect } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
@@ -18,10 +11,6 @@ import { RootState } from '../../../../store/store';
 import { ModalAlert } from '../../../modals/ModalAlert';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
-
-//import ImageIcon from '@material-ui/core/Image';
-//import WorkIcon from '@material-ui/core/Work';
-//import BeachAccessIcon from '@material-ui/core/BeachAccessIcon';
 
 const PasoActaConst: React.FC = () => {
 	const classes = useStyles();
@@ -81,16 +70,16 @@ const PasoActaConst: React.FC = () => {
 
 	return (
 		<>
-			<form className='container-step' noValidate autoComplete='off'>
+			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					<TextField
-						className='btn_step btn_medio'
+					{/* <TextField
+						className={classes.btn_medio}
 						id='outlined-basic '
 						label='Acta Constitutiva'
 						variant='outlined'
 						value={`Archivo${imagenes.length ? 's' : ''} de Acta Constitutiva`}
 						disabled
-					/>
+					/> */}
 					<FormControlLabel
 						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
 						className={classes.checkText}

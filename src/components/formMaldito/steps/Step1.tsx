@@ -1,13 +1,7 @@
-import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Autocomplete from '@mui/lab/Autocomplete';
+import { Button, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, TextField } from '@mui/material';
 import classNames from 'classnames';
 import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

@@ -1,17 +1,13 @@
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import TextField from '@material-ui/core/TextField';
+import { FormControlLabel, Switch, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 //Url
 import { Valid } from '../../../../store/actions/accept';
 import { RootState } from '../../../../store/store';
-import { useStyles } from './styles/styles';
-import './styles/pasos.scss';
-
 import { ModalAlert } from '../../../modals/ModalAlert';
-
 import Rec from '../../../utilis/images/Rec';
+import './styles/pasos.scss';
+import { useStyles } from './styles/styles';
 
 export default function PasoClient() {
 	const rc_ident_card: any = useSelector((state: RootState) => state.acceptance.validado.rc_ident_card);
@@ -78,7 +74,7 @@ export default function PasoClient() {
 	 */
 
 	return (
-		<form className='container-step' noValidate autoComplete='off'>
+		<form className={classes.containerStep} noValidate autoComplete='off'>
 			<div className={classes.btn_stepM}>
 				<TextField
 					className={classes.btn_stepT}

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { makeStyles, Theme } from '@material-ui/core';
+import { Theme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { createContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Redirect, Switch } from 'react-router-dom';

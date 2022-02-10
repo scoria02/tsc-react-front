@@ -1,18 +1,14 @@
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import React, { useState, useEffect } from 'react';
-import Switch from '@material-ui/core/Switch';
-import TextField from '@material-ui/core/TextField';
+import { FormControlLabel, Switch, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 import { useDispatch, useSelector } from 'react-redux';
 //Url
 import { Valid } from '../../../../store/actions/accept';
 import { RootState } from '../../../../store/store';
+import { ModalAlert } from '../../../modals/ModalAlert';
+import Rec from '../../../utilis/images/Rec';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
-
-import { ModalAlert } from '../../../modals/ModalAlert';
-
-import Rec from '../../../utilis/images/Rec';
 
 export default function PasoPaymentReceipt() {
 	//falta
@@ -72,10 +68,10 @@ export default function PasoPaymentReceipt() {
 
 	return (
 		<>
-			<form className='container-step' noValidate autoComplete='off'>
+			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
 					<TextField
-						className='btn_step btn_medio'
+						className={classes.btn_medio}
 						id='outlined-basic '
 						label='Comprobantede pago'
 						variant='outlined'

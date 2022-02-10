@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Button, makeStyles, Paper, Theme } from '@material-ui/core';
 import CloseIcon from '@mui/icons-material/Close';
+import { Button, Paper, Theme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import {
 	DataGrid,
 	GridColDef,

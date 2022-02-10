@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Button, TextField } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import Autocomplete from '@mui/lab/Autocomplete';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
 import React, { useEffect, useState } from 'react';
 //Redux
 import { useDispatch } from 'react-redux';

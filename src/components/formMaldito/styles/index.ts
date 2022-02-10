@@ -1,6 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 
-export const useStylesFM = makeStyles((styles) => ({
+export const useStylesFM = makeStyles((styles: Theme) => ({
 	containerFM: {
 		position: 'relative',
 		// height: '440px',
@@ -95,5 +96,13 @@ export const useStylesFM = makeStyles((styles) => ({
 	},
 	inputPropIdent: {
 		width: '40px',
+	},
+	containerSteps: {
+		display: 'flex',
+		width: 'auto',
+		justifyContent: 'left',
+		alignItems: 'center',
+		flexDirection: 'column',
+		marginTop: '1.5rem',
 	},
 }));

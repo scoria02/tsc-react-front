@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Fab } from '@material-ui/core';
 import AddIcon from '@mui/icons-material/Add';
 import LowPriority from '@mui/icons-material/LowPrioritySharp';
+import { Fab } from '@mui/material';
 import classNames from 'classnames';
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

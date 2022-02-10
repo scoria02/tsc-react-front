@@ -1,5 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
 import MuiAlert, { AlertProps } from '@mui/lab/Alert';
+import { makeStyles } from '@mui/styles';
 
 function Alert(props: AlertProps) {
 	return <MuiAlert elevation={6} variant='filled' {...props} />;
