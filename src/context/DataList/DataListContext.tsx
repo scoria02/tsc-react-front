@@ -72,10 +72,19 @@ export const DataListProvider = ({ children }: Props) => {
 		setListModelPos(array[3].data.info);
 		setListAci(array[4].data.info);
 		setListTypesSolicts(array[5].data.info);
+		console.log(array[6].data.info);
 	};
 
 	useLayoutEffect(() => {
-		const routes = [`/ident_type`, `/activity`, `/payment/all`, `/products`, `/aci`, `/types_solict`];
+		const routes = [
+			`/ident_type`,
+			`/activity`,
+			`/payment/all`,
+			`/products`,
+			`/aci`,
+			`/types_solict`,
+			`/tipo_de_carteras`,
+		];
 		getters(routes)
 			.then((responses) => {
 				initList(responses);

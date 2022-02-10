@@ -35,7 +35,7 @@ const StepBase: FC = () => {
 						marginTop: '5rem',
 					}}
 					className={classNames(classes.input, classes.daysCB)}>
-					<FormControl fullWidth variant='outlined' className={classes.inputSelectSolict}>
+					<FormControl className={classes.inputSelectSolict}>
 						<InputLabel>Solicitudes</InputLabel>
 						<Select
 							value={typeSolict}
