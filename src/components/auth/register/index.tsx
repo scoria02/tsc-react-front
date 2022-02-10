@@ -80,9 +80,7 @@ const Register: React.FC = () => {
 	});
 
 	useEffect(() => {
-		if (valids.checkErrorInput('email', auth.error)) {
-			setActiveStep(0);
-		}
+		if (valids.checkErrorInput('email', auth.error)) setActiveStep(0);
 	}, [auth]);
 
 	//Validations

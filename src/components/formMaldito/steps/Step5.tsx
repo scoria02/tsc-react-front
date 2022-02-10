@@ -353,7 +353,7 @@ export const Step5: FC = () => {
 							style={{
 								fontSize: '1rem',
 							}}>
-							Entrega de punto como forma de pago
+							Entrega de punto como parte de pago
 						</b>
 					</>
 				}
