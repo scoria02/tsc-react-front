@@ -20,7 +20,7 @@ const initialNamesImagesFm: NamesImagesInt = {
 };
 
 interface ContextImagesFm {
-	imagePlanilla: object | null;
+	imagePlanilla: FileList | [];
 	imagesActa: FileList | [];
 	namesImages: NamesImagesInt;
 	imagesForm: ImagesInt;
@@ -33,7 +33,7 @@ interface ContextImagesFm {
 }
 
 const ImagesFmContext = createContext<ContextImagesFm>({
-	imagePlanilla: null,
+	imagePlanilla: [],
 	imagesActa: [],
 	namesImages: initialNamesImagesFm,
 	imagesForm: initialImagesFm,
@@ -50,33 +50,26 @@ interface Props {
 }
 
 export const ImagesFmProvider = ({ children }: Props) => {
-	const [imagePlanilla, setImagePlanilla] = useState<object | null>(null);
+	const [imagePlanilla, setImagePlanilla] = useState<FileList | []>([]);
 	const [imagesActa, setImagesActa] = useState<FileList | []>([]);
 	const [namesImages, setNamesImages] = useState<NamesImagesInt>(initialNamesImagesFm);
 	const [imagesForm, setImagesForm] = useState<ImagesInt>(initialImagesFm);
 
 	const resetImages = () => {
-		setImagePlanilla(null);
+		setImagePlanilla([]);
 		setImagesActa([]);
 		setNamesImages(initialNamesImagesFm);
 		setImagesForm(initialImagesFm);
 	};
 
 	const removePlanilla = () => {
-		setImagePlanilla(null);
+		setImagePlanilla([]);
 	};
 
 	const handleChangePlanilla = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (event?.target?.files && event.target.files[0]) {
-			let file = event.target.files[0];
-			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: file.type });
-			setImagePlanilla({
-				[event.target.name]: newFile,
-			});
-		} else {
-			setImagePlanilla({
-				[event.target.name]: null,
-			});
+		if (event.target.files) {
+			let files = event.target.files;
+			setImagePlanilla(files);
 		}
 	};
 

@@ -35,6 +35,12 @@ export const useStylesFM = makeStyles((styles: Theme) => ({
 		gridColumnGap: '1%',
 		gridTemplateColumns: '1fr 1fr',
 	},
+	grid2: {
+		width: '50%',
+		display: 'grid',
+		gridColumnGap: '1%',
+		gridTemplateColumns: '1fr',
+	},
 	inputSelect: {
 		display: 'flex',
 		width: '25%',

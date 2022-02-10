@@ -1,8 +1,14 @@
-import { ElectricalServices, ImagesearchRoller, SwitchRight } from '@mui/icons-material';
-import { Activity } from '../../context/DataList/interface';
+import { Aci, Activity } from '../../context/DataList/interface';
 import { ImagesInt } from '../../context/FM/fmImages/interface';
 import { LocationInt } from '../../context/FM/Location/interfaces';
-import { fmClient, fmCommerce, fmError_Interface, fmPos } from '../../interfaces/fm';
+import {
+	fmClient,
+	fmCommerce,
+	fmError_ClientINT,
+	fmError_CommerceINT,
+	fmError_Interface,
+	fmPos,
+} from '../../interfaces/fm';
 
 export const validEmail = (value: string): boolean => {
 	let validatedEmail = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i.test(value);
@@ -170,24 +176,31 @@ export const inputFileNotNull = (last: number, form: ImagesInt): boolean => {
 	return false;
 };
 
-export const inputNotNullPos = (last: number, form: any): boolean => {
+export const inputNotNullPos = (last: number, form: any, aci: Aci | null): boolean => {
 	let index: number = 0;
 	for (const item of Object.entries(form)) {
 		if (index === last) {
 			return false;
 		}
 		index++;
-		if (typeof item[1] === 'string' && item[1].trim() === '') {
+		console.log(item[0], typeof item[1]);
+		if (typeof item[1] === 'string') {
 			if (item[0] === 'reqSource_docnum') {
-				if (form['request_origin']?.id === 1 || (form['request_origin']?.id === 2 && item[1] === '')) {
+				console.log('llegue');
+				if (form['request_origin']?.id === 1) {
+					if (item[1] === '') return true;
+				} else if (form['request_origin']?.id === 2) {
+					console.log('aci');
+					if (!aci) return true;
+				}
+			} else if (item[1].trim() === '') {
+				if (item[0] === 'nro_comp_dep') {
+					if (!form['pagadero']) {
+						return true;
+					}
+				} else {
 					return true;
 				}
-			} else if (item[0] === 'nro_comp_dep') {
-				if (!form['pagadero']) {
-					return true;
-				}
-			} else {
-				return true;
 			}
 		} else if (typeof item[1] === 'number' && item[1] === 0) {
 			return true;
@@ -295,16 +308,6 @@ export const notNullImagenActa = (activeStep: number, imagesActa: any, isActa: n
 	else return false;
 };
 
-export const daysToString = (value: any) => {
-	let text: string = '';
-	for (const item of Object.entries(value)) {
-		if (item[1]) {
-			text = text + (text.length ? '/' : '') + item[0].slice(0, 3);
-		}
-	}
-	return text;
-};
-
 export const validMashes = (activeStep: number, mashClient: boolean, mashCommerce: boolean): boolean => {
 	if (activeStep >= 1 && mashClient) {
 		console.log('cliente no validado aun');
@@ -328,6 +331,7 @@ const imagesCommerceForTS = (
 		case 0:
 			return imagesForm.rc_rif ? false : true;
 		case 1:
+		case 2:
 			if (commerce.special_contributor) {
 				if (imagesForm.rc_special_contributor) return false;
 				else return true;
@@ -345,33 +349,105 @@ const imagesForPos = (imagesForm: ImagesInt, pos: fmPos) => {
 	else return false;
 };
 
+const checkInputForExtraPos = (client: fmClient, commerce: fmCommerce) => {
+	if (!client.id_ident_type || client.ident_num === '' || !commerce.id_ident_type || commerce.ident_num === '')
+		return true;
+	return false;
+};
+
+const checkInputForExtraPosDataPos = (form: fmPos, min: number, last: number, aci: Aci | null) => {
+	console.log(form);
+	let index: number = 0;
+	for (const item of Object.entries(form)) {
+		if (index === last) {
+			console.log('index', index);
+			return false;
+		} else if (index >= min) {
+			if (typeof item[1] === 'string') {
+				if (item[0] === 'reqSource_docnum') {
+					console.log('llegue');
+					if (form['request_origin']?.id === 1) {
+						if (item[1] === '') return true;
+					} else if (form['request_origin']?.id === 2) {
+						console.log('aci');
+						if (!aci) return true;
+					}
+				} else if (item[1].trim() === '') {
+					if (item[0] === 'nro_comp_dep') {
+						if (!form['pagadero']) {
+							return true;
+						}
+					} else {
+						return true;
+					}
+				}
+			} else if (typeof item[1] === 'number' && item[1] === 0) {
+				return true;
+			} else if (typeof item[1] === 'object' && !item[1]) {
+				return true;
+			}
+		}
+		index++;
+	}
+	return false;
+};
+
+const checkErrorExtraPosInput = (errorsClient: fmError_ClientINT, errorsCommerce: fmError_CommerceINT) => {
+	if (
+		errorsClient.id_ident_type ||
+		errorsClient.ident_num ||
+		errorsCommerce.id_ident_type ||
+		errorsCommerce.ident_num
+	)
+		return true;
+	return false;
+};
+
 export const validReadyStep = (
 	typeSolict: number,
 	activeStep: number,
 	errorsFm: fmError_Interface,
+	errorsClient: fmError_ClientINT,
+	errorsCommerce: fmError_CommerceINT,
 	client: fmClient,
 	commerce: fmCommerce,
 	pos: fmPos,
+	aci: Aci | null,
 	activity: Activity | null,
 	locationClient: LocationInt,
 	locationCommerce: LocationInt,
 	locationPos: LocationInt,
 	imagesForm: ImagesInt,
-	imagesActa: FileList | []
+	imagesActa: FileList | [],
+	errorClient: boolean,
+	errorCommerce: boolean,
+	errorNumBank: boolean
 ): boolean => {
 	switch (activeStep) {
 		case 0: //Tipo de Solicitud
 			return true;
 		case 1: //Cliente
 		case 2:
-			if (
-				!checkErrorAllInput(sizeStepError(activeStep), errorsFm) &&
-				!inputNotNullLocation(locationClient) &&
-				!inputNotNull(sizeStep(activeStep), client) &&
-				!inputFileNotNull(1, imagesForm)
-			)
-				return true;
-			return false;
+			console.log(errorClient);
+			if (!errorClient) {
+				if (typeSolict === 3) {
+					if (activeStep === 1) {
+						if (!checkInputForExtraPos(client, commerce) && !checkErrorExtraPosInput(errorsClient, errorsCommerce))
+							return true;
+						else return false;
+					} else if (activeStep === 2) {
+						if (!checkInputForExtraPosDataPos(pos, 3, 3 + 12, aci) && !imagesForPos(imagesForm, pos)) return true;
+						else return false;
+					}
+				} else if (
+					!checkErrorAllInput(sizeStepError(activeStep), errorsClient) &&
+					!inputNotNullLocation(locationClient) &&
+					!inputNotNull(sizeStep(activeStep), client) &&
+					!inputFileNotNull(1, imagesForm)
+				)
+					return true;
+				return false;
+			} else return false;
 		case 3: //Comercio
 			if (
 				!inputNotNull(sizeStep(activeStep), commerce) &&
@@ -391,7 +467,7 @@ export const validReadyStep = (
 			return false;
 		case 5: //FM Pos
 			if (
-				!inputNotNullPos(3 + 12, pos) &&
+				!inputNotNullPos(3 + 12, pos, aci) &&
 				!imagesForPos(imagesForm, pos) &&
 				!checkErrorAllInput(sizeStepError(activeStep), errorsFm)
 			)

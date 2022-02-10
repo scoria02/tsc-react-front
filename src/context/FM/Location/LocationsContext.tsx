@@ -62,7 +62,6 @@ export const LocationsProvider = ({ children }: Props) => {
 
 	const resetListLocaitons = (): void => {
 		const { estado, ...extra } = initialListLocation;
-		console.log(extra);
 		setListLocationClient({
 			estado: listLocationClient.estado,
 			...extra,

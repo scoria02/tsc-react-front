@@ -1,15 +1,26 @@
 import React, { createContext, useState, ReactChild, Dispatch, SetStateAction, useEffect } from 'react';
-import { validateForm } from '../../../validation/validFm';
-import { fmClient, fmCommerce, fmError_Interface, fmPos } from '../../../interfaces/fm';
+import {
+	fmClient,
+	fmCommerce,
+	fmError_ClientINT,
+	fmError_CommerceINT,
+	fmError_Interface,
+	fmPos,
+	IdClient_CommerceINT,
+} from '../../../interfaces/fm';
+
+import useAxios from '../../../config';
 
 import { initFmPos } from '../initialStates/statePos';
-import { initFmClient } from '../initialStates/stateClient';
-import { initFmCommerce } from '../initialStates/stateCommerce';
+import { fmErrorClient, initFmClient } from '../initialStates/stateClient';
+import { fmErrorCommerce, initFmCommerce } from '../initialStates/stateCommerce';
 
 import { fmErrorFormat, initLocation } from '../initialStates/states';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
 import { ContextFM } from './interface';
-import { base, Activity, Products, Aci } from '../../DataList/interface';
+import { base, Activity, Aci } from '../../DataList/interface';
+import Swal from 'sweetalert2';
+import { validateFormClient, validateFormCommerce } from '../../../validation/validFm';
 
 interface Props {
 	children: ReactChild;
@@ -18,6 +29,8 @@ interface Props {
 const FMDataContext = createContext<ContextFM>({
 	typeSolict: 0,
 	errorsFm: fmErrorFormat,
+	errorsClient: fmErrorClient,
+	errorsCommerce: fmErrorCommerce,
 	client: initFmClient,
 	commerce: initFmCommerce,
 	activity: null,
@@ -50,6 +63,10 @@ const FMDataContext = createContext<ContextFM>({
 	handleCheckedPos: () => {},
 	handleSourceAci: () => {},
 	resetFm: () => {},
+	//EndPoint
+	validClientAndCommerce: () => {},
+	idsCAndCc: null,
+	aci: null,
 });
 
 export const FMContextProvider = ({ children }: Props) => {
@@ -63,12 +80,20 @@ export const FMContextProvider = ({ children }: Props) => {
 	const [locationCommerce, setLocationCommerce] = useState<LocationInt>(initLocation);
 	const [locationPos, setLocationPos] = useState<LocationInt>(initLocation);
 
+	const [errorsClient, setErrorsClient] = useState<fmError_ClientINT>(fmErrorClient);
+	const [errorsCommerce, setErrorsCommerce] = useState<fmError_CommerceINT>(fmErrorCommerce);
+
+	const [idsCAndCc, setIdsCAndCc] = useState<IdClient_CommerceINT | null>(null);
+	const [aci, setAci] = useState<Aci | null>(null);
+
 	//Autocomplete location
 	//const [autoCompleteCommerce, setAutoCompleteCommerce] = useState<boolean>(true);
 	//const [autoCompletePos, setAutoCompletePos] = useState<boolean>(true);
 
 	const resetFm = (): void => {
 		setErrorsFm(fmErrorFormat);
+		setErrorsClient(fmErrorClient);
+		setErrorsCommerce(fmErrorCommerce);
 		setClient(initFmClient);
 		setCommerce(initFmCommerce);
 		setPos(initFmPos);
@@ -76,6 +101,8 @@ export const FMContextProvider = ({ children }: Props) => {
 		setLocationClient(initLocation);
 		setLocationCommerce(initLocation);
 		setLocationPos(initLocation);
+		setIdsCAndCc(null);
+		setAci(null);
 	};
 
 	useEffect(() => {
@@ -88,9 +115,17 @@ export const FMContextProvider = ({ children }: Props) => {
 					name: client.name + ' ' + client.last_name,
 				};
 			});
+		} else if (typeSolict === 1 || typeSolict === 2) {
+			setCommerce((prevState) => {
+				return {
+					...prevState,
+					id_ident_type: 3,
+					ident_num: '',
+				};
+			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [typeSolict, client.name, client.last_name, client.ident_num, client.id_ident_type]);
+	}, [typeSolict, client.id_ident_type, client.ident_num, client.name, client.last_name]);
 
 	useEffect(() => {
 		if (pos.type_pay) {
@@ -99,14 +134,15 @@ export const FMContextProvider = ({ children }: Props) => {
 				reqSource_docnum: '',
 			});
 		}
-	}, [pos.request_origin]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [pos.type_pay]);
 
 	const handleTypeSolict = (id: number): void => {
 		setTypeSolict(id);
 	};
 
 	const handleChangeClient = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		setErrorsFm(validateForm(client, errorsFm, event.target.name, event.target.value));
+		setErrorsClient(validateFormClient(client, errorsClient, event.target.name, event.target.value));
 		setClient({
 			...client,
 			[event.target.name]: event.target.value,
@@ -114,7 +150,7 @@ export const FMContextProvider = ({ children }: Props) => {
 	};
 
 	const handleChangeCommerce = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		setErrorsFm(validateForm(client, errorsFm, event.target.name, event.target.value));
+		setErrorsCommerce(validateFormCommerce(commerce, errorsCommerce, event.target.name, event.target.value));
 		setCommerce({
 			...commerce,
 			[event.target.name]: event.target.value,
@@ -140,7 +176,7 @@ export const FMContextProvider = ({ children }: Props) => {
 	};
 
 	const handleChangePos = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		setErrorsFm(validateForm(pos, errorsFm, event.target.name, event.target.value));
+		//setErrorsFm(validateForm(pos, errorsFm, event.target.name, event.target.value));
 		setPos({
 			...pos,
 			[event.target.name]: event.target.value,
@@ -163,7 +199,7 @@ export const FMContextProvider = ({ children }: Props) => {
 
 	const handleSelectIdentClient = (event: React.ChangeEvent<{ name?: string; value: unknown }>): void => {
 		if (event.target.name) {
-			setErrorsFm(validateForm(client, errorsFm, event.target.name, Number(event.target.value)));
+			setErrorsClient(validateFormClient(client, errorsClient, event.target.name, Number(event.target.value)));
 			setClient({
 				...client,
 				[event.target.name]: Number(event.target.value),
@@ -182,15 +218,9 @@ export const FMContextProvider = ({ children }: Props) => {
 
 	const handleSourceAci = (event: any, value: Aci | null, name: string): void => {
 		if (value) {
-			setPos({
-				...pos,
-				reqSource_docnum: value,
-			});
+			setAci(value);
 		} else {
-			setPos({
-				...pos,
-				reqSource_docnum: '',
-			});
+			setAci(null);
 		}
 	};
 
@@ -247,12 +277,46 @@ export const FMContextProvider = ({ children }: Props) => {
 		});
 	};
 
+	const validClientAndCommerce = async (): Promise<boolean> => {
+		const data = {
+			id_ident_type: client.id_ident_type,
+			ident_num: client.ident_num,
+			id_ident_type_commerce: commerce.id_ident_type,
+			ident_num_commerce: commerce.ident_num,
+		};
+		try {
+			const res = await useAxios.post(`/FM/valid/extrapos`, data);
+			const { nameClient, nameCommerce, emailClient, ...ids } = res.data.info;
+			setIdsCAndCc(ids);
+			setClient({
+				...client,
+				email: emailClient,
+			});
+			Swal.fire({
+				position: 'center',
+				icon: 'success',
+				title: 'Cliente',
+				text: ` ${nameClient}`,
+				showConfirmButton: false,
+				timer: 2000,
+			});
+			return true;
+		} catch (error: any) {
+			console.log(error.response);
+			setIdsCAndCc(null);
+			Swal.fire('Error', error.response.data.message, 'error');
+			return false;
+		}
+	};
+
 	return (
 		<FMDataContext.Provider
 			value={{
 				typeSolict,
 				handleTypeSolict,
 				errorsFm,
+				errorsClient,
+				errorsCommerce,
 				//Client
 				client,
 				locationClient,
@@ -294,6 +358,11 @@ export const FMContextProvider = ({ children }: Props) => {
 				copyLocationToPos,
 				handleSourceAci,
 				resetFm,
+
+				//Endpoint
+				validClientAndCommerce,
+				idsCAndCc,
+				aci,
 			}}>
 			{children}
 		</FMDataContext.Provider>

@@ -1,10 +1,8 @@
-import { Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { Button, Card, CardContent, Typography } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-//import logo from '../../img/user.png';
-import logo from '../../img/logo_1000pagos.svg';
-import './login/index.scss';
 import { useStylesModalUser } from './styles';
+//import logo from '../../img/logo_1000pagos.svg';
 
 const AuthModal: React.FC<any> = ({ children, name, register }) => {
 	const classes = useStylesModalUser();
@@ -14,33 +12,20 @@ const AuthModal: React.FC<any> = ({ children, name, register }) => {
 	return (
 		<Card className={classes.root}>
 			<CardContent>
-				<div className='ed-grid s-grid-1 m-grid-2'>
-					<div className={classes.containerLeft}>
-						<CardMedia className={classes.media} image={logo} title='Logo 1000Pagos' />
+				<div className={classes.containerAuthModal}>
+					<Typography gutterBottom variant='h5' component='h2' align='center' className={register ? '' : 'toto'}>
+						<b>{name}</b>
+					</Typography>
+					<div>{children}</div>
+					<div className={classes.buttonLeft}>
 						<Button
-							className={classes.buttonLeft}
 							size='small'
 							color='primary'
 							variant='contained'
 							onClick={() => history.push(`/auth/${!register ? 'register' : 'login'}`)}>
-							<div className='ed-container'>
-								<div className='s-to-center button-login'>{!register ? 'Registrarme ' : 'Volver al Inicio'}</div>
-							</div>
+							<span className={classes.buttonText}>{!register ? 'Registrarme ' : 'Volver al Inicio'}</span>
 						</Button>
 					</div>
-					<CardContent>
-						<div className='s-py-4'>
-							<Typography
-								gutterBottom
-								variant='h5'
-								component='h2'
-								align='center'
-								className={register ? '' : 'toto'}>
-								<b>{name}</b>
-							</Typography>
-						</div>
-						<div>{children}</div>
-					</CardContent>
 				</div>
 			</CardContent>
 		</Card>

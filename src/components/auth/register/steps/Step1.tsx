@@ -78,20 +78,6 @@ export const Step1: React.FC<Props> = ({ userForm, userFormError, errorPassword,
 				autoComplete='current-password'
 				variant='outlined'
 				error={userFormError.password}
-				InputProps={{
-					// <-- This is where the toggle button is added.
-					endAdornment: (
-						<InputAdornment position='end'>
-							<IconButton
-								aria-label='toggle password visibility'
-								onMouseDown={() => setShowPassword(!showPassword)}
-								onMouseUp={() => setShowPassword(!showPassword)}
-								edge='end'>
-								{showPassword ? <Visibility /> : <VisibilityOff />}
-							</IconButton>
-						</InputAdornment>
-					),
-				}}
 			/>
 			<Snackbar
 				open={open && (errorPassword.rango || errorPassword.mayus || errorPassword.sig || errorPassword.minus)}

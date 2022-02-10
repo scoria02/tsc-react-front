@@ -1,11 +1,21 @@
 import { Dispatch, SetStateAction } from 'react';
-import { fmClient, fmCommerce, fmError_Interface, fmPos } from '../../../interfaces/fm';
+import {
+	fmClient,
+	fmCommerce,
+	fmError_ClientINT,
+	fmError_CommerceINT,
+	fmError_Interface,
+	fmPos,
+	IdClient_CommerceINT,
+} from '../../../interfaces/fm';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
 import { Aci, Activity, base } from '../../DataList/interface';
 
 export interface ContextFM {
 	typeSolict: number;
 	errorsFm: fmError_Interface;
+	errorsClient: fmError_ClientINT;
+	errorsCommerce: fmError_CommerceINT;
 	client: fmClient;
 	commerce: fmCommerce;
 	activity: Activity | null;
@@ -36,6 +46,9 @@ export interface ContextFM {
 	handleChangePos(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleParamsPos(name: string, value: base | null | string): void;
 	handleCheckedPos(event: React.ChangeEvent<HTMLInputElement>): void;
-	handleSourceAci(event: any, value: Aci | null, name: string): void;
 	resetFm(): void;
+	validClientAndCommerce(): void | Promise<boolean>;
+	idsCAndCc: IdClient_CommerceINT | null;
+	aci: Aci | null;
+	handleSourceAci(event: any, value: Aci | null, name: string): void;
 }

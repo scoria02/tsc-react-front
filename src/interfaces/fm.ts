@@ -42,7 +42,7 @@ export interface fmPos {
 	payment_method: base | null;
 	type_pay: base | null;
 	request_origin: base | null;
-	reqSource_docnum: string | Aci;
+	reqSource_docnum: string;
 	initial: number;
 	//cuotas: number;
 	nro_comp_dep: string;
@@ -58,6 +58,42 @@ export interface Days {
 	Viernes: boolean;
 	Sabado: boolean;
 	Domingo: boolean;
+}
+
+export interface fmError_ClientINT {
+	email: boolean;
+	name: boolean;
+	last_name: boolean;
+	id_ident_type: boolean;
+	ident_num: boolean;
+	phone1: boolean;
+	phone2: boolean;
+	sector: boolean;
+	calle: boolean;
+	local: boolean;
+	//Step2 Referencias Personales
+	name_ref1: boolean;
+	doc_ident_type_ref1: boolean;
+	doc_ident_ref1: boolean;
+	phone_ref1: boolean;
+	name_ref2: boolean;
+	doc_ident_type_ref2: boolean;
+	doc_ident_ref2: boolean;
+	phone_ref2: boolean;
+}
+
+export interface fmError_CommerceINT {
+	//step3 Comercio
+	id_ident_type: boolean;
+	ident_num: boolean;
+	name: boolean;
+	id_activity: boolean;
+	special_contributor: boolean;
+	//Step4 Location
+	//Commerce
+	sector: boolean;
+	calle: boolean;
+	local: boolean;
 }
 
 export interface fmError_Interface {
@@ -109,4 +145,9 @@ export interface fmError_Interface {
 	nro_comp_dep: boolean;
 	discount: boolean;
 	pagadero: boolean;
+}
+
+export interface IdClient_CommerceINT {
+	idClient: number;
+	idCommerce: number;
 }

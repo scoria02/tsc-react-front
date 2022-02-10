@@ -11,8 +11,8 @@ import FMDataContext from '../../context/FM/fmAdmision/FmContext';
 import ImagesFmContext from '../../context/FM/fmImages/ImagesFmContext';
 import LocationsContext from '../../context/FM/Location/LocationsContext';
 import { SocketContext } from '../../context/SocketContext';
-import { baseUrl } from '../../routers/url';
-import { cleanFM, sendCompleteFM } from '../../store/actions/fm';
+import { urlFM } from '../../routers/url';
+import { cleanFM, sendCompleteFM, sendCompleteFMExtraPos } from '../../store/actions/fm';
 import { StateFMInt } from '../../store/reducers/fmReducer';
 //Redux
 import { RootState } from '../../store/store';
@@ -21,6 +21,7 @@ import LoaderPrimary from '../loaders/LoaderPrimary';
 import './index.scss';
 //steps
 import StepBase from './steps';
+import ExtraPos from './steps/ExtraPos';
 import { Step1 } from './steps/Step1';
 import { Step2 } from './steps/Step2';
 import { Step3 } from './steps/Step3';
@@ -39,6 +40,8 @@ const baseSteps = [
 	'Solicitud de POS',
 ];
 
+const PosExtraSteps = ['Cliente/Comerio', 'Solicitud de POS'];
+
 const FormM: React.FC = () => {
 	const history = useHistory();
 	const classes = useStylesFM();
@@ -52,6 +55,8 @@ const FormM: React.FC = () => {
 
 	const [activeStep, setActiveStep] = useState<number>(0);
 	const [readyStep, setReadyStep] = useState<boolean>(false);
+
+	const [titleNextButton, setTitleNextButton] = useState('Comenzar');
 
 	const { listIdentType, listActivity, listPayment, listModelPos, listTypePay, listRequestSource } =
 		useContext(DataListContext);
@@ -68,11 +73,17 @@ const FormM: React.FC = () => {
 		copyLocationToCommerce,
 		copyLocationToPos,
 		errorsFm,
+		errorsClient,
+		errorsCommerce,
+		validClientAndCommerce,
+		idsCAndCc,
+		aci,
 	} = useContext(FMDataContext);
 
 	const {
 		listLocationClient,
 		listLocationCommerce,
+
 		listLocationPos,
 		copyListLocationToCommerce,
 		copyListLocationToPos,
@@ -86,15 +97,21 @@ const FormM: React.FC = () => {
 				typeSolict,
 				activeStep,
 				errorsFm,
+				errorsClient,
+				errorsCommerce,
 				client,
 				commerce,
 				pos,
+				aci,
 				activity,
 				locationClient,
 				locationCommerce,
 				locationPos,
 				imagesForm,
-				imagesActa
+				imagesActa,
+				fm.errorClient,
+				fm.errorCommerce,
+				fm.errorNumBank
 			)
 		);
 	}, [
@@ -108,7 +125,20 @@ const FormM: React.FC = () => {
 		activeStep,
 		imagesForm,
 		imagesActa,
+		fm,
+		aci,
 	]);
+
+	useEffect(() => {
+		if (activeStep) {
+			if (activeStep === steps.length - 1) {
+				setTitleNextButton('Enviar');
+			} else {
+				if (typeSolict === 3 && activeStep === 1) setTitleNextButton('Validar');
+				else setTitleNextButton('Siguiente');
+			}
+		} else setTitleNextButton('Comenzar');
+	}, [activeStep]);
 
 	useEffect(() => {
 		dispatch(cleanFM());
@@ -141,172 +171,10 @@ const FormM: React.FC = () => {
 		else if (activeStep > 3 && fm.errorNumBank) setActiveStep(5);
 	}, [activeStep, fm.errorClient, fm.errorCommerce, fm.errorNumBank]);
 
-	//const [oldClientMatsh, setOldClientMatsh] = useState<boolean>(false);
-	/*
-	//MashClient
-	useEffect(() => {
-		if (fm.mashClient && fm.id_client) {
-			const ref1 = JSON.parse(fm.clientMash.ref_person_1);
-			const ref2 = JSON.parse(fm.clientMash.ref_person_2);
-			setOldClientMatsh(true);
-			setFmData({
-				...fmData,
-				email: fm.clientMash.email,
-				name: fm.clientMash.name,
-				last_name: fm.clientMash.last_name,
-				phone1: fm.clientMash.phones[0].phone,
-				phone2: fm.clientMash.phones[1].phone,
-				id_estado_client: fm.clientMash.id_location.id_estado.id,
-				id_ciudad_client: fm.clientMash.id_location.id_ciudad.id,
-				id_municipio_client: fm.clientMash.id_location.id_municipio.id,
-				id_parroquia_client: fm.clientMash.id_location.id_parroquia.id,
-				codigo_postal_client: fm.clientMash.id_location.id_ciudad.postal_code,
-				sector_client: fm.clientMash.id_location.sector,
-				calle_client: fm.clientMash.id_location.calle,
-				local_client: fm.clientMash.id_location.local,
-				name_ref1: ref1.fullName,
-				doc_ident_type_ref1: ref1.document[0],
-				doc_ident_ref1: ref1.document,
-				phone_ref1: ref1.phone,
-				name_ref2: ref2.fullName,
-				doc_ident_type_ref2: ref2.document[0],
-				doc_ident_ref2: ref2.document,
-				phone_ref2: ref2.phone,
-			});
-			setLocationClient({
-				estado: fm.clientMash.id_location.id_estado,
-				ciudad: fm.clientMash.id_location.id_ciudad,
-				municipio: fm.clientMash.id_location.id_municipio,
-				parroquia: fm.clientMash.id_location.id_parroquia,
-			});
-			setFmError({
-				...fmDataError,
-				//step 1
-				email: false,
-				name: false,
-				last_name: false,
-				id_ident_type: false,
-				ident_num: false,
-				phone1: false,
-				phone2: false,
-				id_estado_client: false,
-				id_ciudad_client: false,
-				id_municipio_client: false,
-				id_parroquia_client: false,
-				codigo_postal_client: false,
-				sector_client: false,
-				calle_client: false,
-				local_client: false,
-				//Step2 Referencias Personales
-				name_ref1: false,
-				doc_ident_type_ref1: false,
-				doc_ident_ref1: false,
-				phone_ref1: false,
-				name_ref2: false,
-				doc_ident_type_ref2: false,
-				doc_ident_ref2: false,
-				phone_ref2: false,
-			});
-		} else if (!fm.mashClient && oldClientMatsh && !Object.keys(fm.clientMash).length) {
-			setOldClientMatsh(false);
-			console.log('vaciar client');
-			setFmData({
-				...fmData,
-				//Step1
-				name: '',
-				last_name: '',
-				phone1: '',
-				phone2: '',
-				id_estado_client: 0,
-				id_ciudad_client: 0,
-				id_municipio_client: 0,
-				id_parroquia_client: 0,
-				codigo_postal_client: '',
-				sector_client: '',
-				calle_client: '',
-				local_client: '',
-				//Step2 Referencias Personales
-				name_ref1: '',
-				doc_ident_type_ref1: 'V',
-				doc_ident_ref1: '',
-				phone_ref1: '',
-				name_ref2: '',
-				doc_ident_type_ref2: 'V',
-				doc_ident_ref2: '',
-				phone_ref2: '',
-			});
-			setLocationClient({
-				estado: null,
-				ciudad: null,
-				municipio: null,
-				parroquia: null,
-			});
-		}
-	}, [fm.mashClient, fm.clientMash, fm.id_client]);
-	*/
-
-	/*
-	const [oldCommerceMatsh, setOldCommerceMatsh] = useState<boolean>(false);
-	//MashCommerce
-	useEffect(() => {
-		if (fm.mashCommerce) {
-			console.log('comercio ya existe');
-			setOldCommerceMatsh(true);
-			setFmData({
-				...fmData,
-				//step1
-				name_commerce: fm.commerceMash.name,
-				id_activity: fm.commerceMash.id_activity.id,
-				special_contributor: fm.commerceMash.special_contributor,
-				//step2
-				id_estado: fm.clientMash.id_location.id_estado.id,
-				id_ciudad: fm.clientMash.id_location.id_ciudad.id,
-				id_municipio: fm.clientMash.id_location.id_municipio.id,
-				id_parroquia: fm.clientMash.id_location.id_parroquia.id,
-				codigo_postal: fm.clientMash.id_location.id_ciudad.postal_code,
-				sector: fm.commerceMash.id_location.sector,
-				calle: fm.commerceMash.id_location.calle,
-				local: fm.commerceMash.id_location.local,
-				//Note:
-				//update days work commerce
-			});
-			setLocationCommerce({
-				estado: fm.commerceMash.id_location.id_estado,
-				ciudad: fm.commerceMash.id_location.id_ciudad,
-				municipio: fm.commerceMash.id_location.id_municipio,
-				parroquia: fm.commerceMash.id_location.id_parroquia,
-			});
-			setActivity(fm.commerceMash.id_activity);
-			setFmError({
-				...fmDataError,
-				name_commerce: false,
-				ident_num_commerce: false,
-				id_activity: false,
-			});
-		} else if (!fm.mashCommerce && oldCommerceMatsh) {
-			setOldCommerceMatsh(false);
-			console.log('vaciar Commercio', fm.commerceMash);
-			setFmData({
-				...fmData,
-				name_commerce: '',
-				id_activity: 0,
-				special_contributor: 0,
-				//Step3 Location
-				//Location se carga del cliente
-			});
-			setDays({
-				Lunes: true,
-				Martes: true,
-				Miercoles: true,
-				Jueves: true,
-				Viernes: true,
-				Sabado: true,
-	}, [fm.mashCommerce, fm.commerceMash]);
-	*/
-
 	const handleGetStep = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
-		const newSteps = [...initStep, ...baseSteps];
+		const stepOp = typeSolict !== 3 ? baseSteps : PosExtraSteps;
+		const newSteps = [...initStep, ...stepOp];
 		setSteps(newSteps);
 	};
 
@@ -324,15 +192,21 @@ const FormM: React.FC = () => {
 				typeSolict,
 				activeStep,
 				errorsFm,
+				errorsClient,
+				errorsCommerce,
 				client,
 				commerce,
 				pos,
+				aci,
 				activity,
 				locationClient,
 				locationCommerce,
 				locationPos,
 				imagesForm,
-				imagesActa
+				imagesActa,
+				fm.errorClient,
+				fm.errorCommerce,
+				fm.errorNumBank
 			)
 		)
 			return;
@@ -354,6 +228,36 @@ const FormM: React.FC = () => {
 		);
 	};
 
+	const handleSubmitExtraPos = () => {
+		if (
+			!valids.validReadyStep(
+				typeSolict,
+				activeStep,
+				errorsFm,
+				errorsClient,
+				errorsCommerce,
+				client,
+				commerce,
+				pos,
+				aci,
+				activity,
+				locationClient,
+				locationCommerce,
+				locationPos,
+				imagesForm,
+				imagesActa,
+				fm.errorClient,
+				fm.errorCommerce,
+				fm.errorNumBank
+			)
+		)
+			return;
+		//Send FM
+		handleLoading();
+
+		dispatch(sendCompleteFMExtraPos(idsCAndCc!, pos, locationPos, imagePlanilla, imagesForm));
+	};
+
 	const handleLoading = () => {
 		Swal.fire({
 			icon: 'info',
@@ -372,10 +276,37 @@ const FormM: React.FC = () => {
 			showConfirmButton: false,
 			timer: 1500,
 		});
-		history.push(baseUrl);
+		history.push(urlFM);
+	};
+
+	const handleExtraPosValid = async () => {
+		if (client.id_ident_type && client.ident_num !== '' && commerce.id_ident_type && commerce.ident_num !== '') {
+			const res = await validClientAndCommerce();
+			if (res) {
+				handleNext();
+			}
+		}
 	};
 
 	const getStep: ReactElement[] = [<StepBase />, <Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 />];
+	const getStepExtraPos: ReactElement[] = [<StepBase />, <ExtraPos />, <Step5 />];
+
+	const handleClickButton = () => {
+		if (activeStep) {
+			if (activeStep === steps.length - 1) {
+				if (typeSolict === 3) handleSubmitExtraPos();
+				else handleSubmit();
+			} else {
+				if (typeSolict === 3) {
+					handleExtraPosValid();
+				} else {
+					handleNext();
+				}
+			}
+		} else {
+			handleGetStep();
+		}
+	};
 
 	return (
 		<div className='ed-container container-formMaldito'>
@@ -401,8 +332,8 @@ const FormM: React.FC = () => {
 						})}
 					</Stepper>
 					<div className={classes.containerFM}>
-						<div className={classes.containerSteps}>
-							{getStep[activeStep]}
+						<div className='container-steps'>
+							{typeSolict === 3 ? getStepExtraPos[activeStep] : getStep[activeStep]}
 							<div className={classes.buttonFixed}>
 								<Button
 									size='large'
@@ -418,11 +349,9 @@ const FormM: React.FC = () => {
 									size='large'
 									variant='contained'
 									color='primary'
-									onClick={
-										activeStep ? (activeStep === steps.length - 1 ? handleSubmit : handleNext) : handleGetStep
-									}
+									onClick={handleClickButton}
 									className={classes.buttonNext}>
-									{!activeStep ? 'Comenzar' : activeStep === steps.length - 1 ? 'Enviar' : 'Siguiente'}
+									{titleNextButton}
 								</Button>
 							</div>
 						</div>

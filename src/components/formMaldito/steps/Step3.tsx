@@ -67,7 +67,7 @@ export const Step3: FC = () => {
 	};
 
 	const handleChangeNameCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (/^[a-z0-9]+$/i.test(event.target.value) || event.target.value === '') {
+		if (/^[a-z0-9 ]+$/i.test(event.target.value) || event.target.value === '') {
 			handleChangeCommerce(event);
 		}
 	};
@@ -118,7 +118,7 @@ export const Step3: FC = () => {
 							error={fm.errorCommerce}
 							placeholder=''>
 							{listIdentType.map((item: any) => {
-								if (typeSolict === 1 && item.name !== 'J') return;
+								if ((typeSolict === 1 || typeSolict === 2) && item.name !== 'J') return;
 								return (
 									<MenuItem key={item.id} value={item.id}>
 										{item.name}

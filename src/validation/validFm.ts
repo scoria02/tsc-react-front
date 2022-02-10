@@ -1,3 +1,5 @@
+import { fmClient, fmCommerce, fmError_ClientINT, fmError_CommerceINT, fmPos } from '../interfaces/fm';
+
 export const validEmail = (value: string): boolean => {
 	let validatedEmail = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i.test(value);
 	if (!validatedEmail) {
@@ -270,8 +272,13 @@ export const validMashes = (activeStep: number, mashClient: boolean, mashCommerc
 	}
 };
 
-export const validateForm = (fmData: any, fmDataError: any, name: string, value: string | number): any => {
-	let temp: any = fmDataError;
+export const validateFormClient = (
+	client: fmClient,
+	fmDataError: fmError_ClientINT,
+	name: string,
+	value: string | number
+): any => {
+	let temp = fmDataError;
 	switch (name) {
 		case 'email':
 			temp.email = validEmail(value as string);
@@ -281,54 +288,85 @@ export const validateForm = (fmData: any, fmDataError: any, name: string, value:
 			temp[name] = validFullName(value as string);
 			break;
 		case 'id_ident_type':
-			if (fmData.ident_num.trim() !== '') {
-				temp.ident_num = validIdentNum(fmData.ident_num, value as number);
+			if (client.ident_num.trim() !== '') {
+				temp.ident_num = validIdentNum(client.ident_num, value as number);
 			}
 			break;
 		case 'ident_num':
-			temp.ident_num = validIdentNum(value as string, fmData.id_ident_type);
+			temp.ident_num = validIdentNum(value as string, client.id_ident_type);
 			break;
 		case 'phone1':
 			temp.phone1 = validPhone(value as string);
-			if (fmData.phone2 !== '') temp.phone2 = validPhone2(fmData.phone2, value as string);
+			if (client.phone2 !== '') temp.phone2 = validPhone2(client.phone2, value as string);
 			break;
 		case 'phone2':
-			temp.phone2 = validPhone2(value as string, fmData.phone1);
+			temp.phone2 = validPhone2(value as string, client.phone1);
 			break;
 		case 'phone_ref1':
 			temp.phone_ref1 = validPhone(value as string);
-			if (fmData.phone_ref2 !== '') temp.phone_ref2 = validPhone2(fmData.phone_ref2, value as string);
+			if (client.phone_ref2 !== '') temp.phone_ref2 = validPhone2(client.phone_ref2, value as string);
 			break;
 		case 'phone_ref2':
-			temp.phone_ref2 = validPhone2(value as string, fmData.phone_ref1);
+			temp.phone_ref2 = validPhone2(value as string, client.phone_ref1);
 			break;
 		case 'doc_ident_ref1':
 			temp.doc_ident_ref1 = validIdentRef(
-				fmData.doc_ident_type_ref1 + value,
-				fmData.doc_ident_type_ref2 + fmData.doc_ident_ref2
+				client.doc_ident_type_ref1 + value,
+				client.doc_ident_type_ref2 + client.doc_ident_ref2
 			);
 			break;
 		case 'doc_ident_type_ref1':
 			temp.doc_ident_ref1 = validIdentRef(
-				value + fmData.doc_ident_ref1,
-				fmData.doc_ident_type_ref2 + fmData.doc_ident_ref2
+				value + client.doc_ident_ref1,
+				client.doc_ident_type_ref2 + client.doc_ident_ref2
 			);
 			break;
 		case 'doc_ident_ref2':
 			temp.doc_ident_ref2 = validIdentRef(
-				fmData.doc_ident_type_ref2 + value,
-				fmData.doc_ident_type_ref1 + fmData.doc_ident_ref1
+				client.doc_ident_type_ref2 + value,
+				client.doc_ident_type_ref1 + client.doc_ident_ref1
 			);
 			break;
 		case 'doc_ident_type_ref2':
 			temp.doc_ident_ref2 = validIdentRef(
-				fmData.doc_ident_type_ref1 + fmData.doc_ident_ref1,
-				value + fmData.doc_ident_ref2
+				client.doc_ident_type_ref1 + client.doc_ident_ref1,
+				value + client.doc_ident_ref2
 			);
 			break;
-		case 'name_commerce':
-			temp.name_commerce = validNameCommere(value as string);
+		default:
 			break;
+	}
+	return temp;
+};
+
+export const validateFormCommerce = (
+	commerce: fmCommerce,
+	fmDataError: fmError_CommerceINT,
+	name: string,
+	value: string | number
+): any => {
+	let temp = fmDataError;
+	switch (name) {
+		case 'name':
+			temp.name = validNameCommere(value as string);
+			break;
+		case 'id_ident_type':
+			if (commerce.ident_num.trim() !== '') {
+				temp.ident_num = validIdentNum(commerce.ident_num, value as number);
+			}
+			break;
+		case 'ident_num':
+			temp.ident_num = validIdentNum(value as string, commerce.id_ident_type);
+			break;
+		default:
+			break;
+	}
+	return temp;
+};
+
+export const validateFormPos = (pos: fmPos, fmDataError: any, name: string, value: string | number): any => {
+	let temp = fmDataError;
+	switch (name) {
 		case 'number_post':
 			temp.number_post = validNum_post(value as number);
 			break;

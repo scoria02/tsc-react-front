@@ -2,13 +2,17 @@ import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { configure } from 'axios-hooks';
 import LRU from 'lru-cache';
 
+//REACT_APP_API_API=http://192.168.253.15:5051
+
 export const configAxios: AxiosRequestConfig = {
-	baseURL: process.env.REACT_APP_API_API,
+	//baseURL: process.env.REACT_APP_API_API,
+	baseURL: 'http://localhost:5051',
 	headers: { common: { token: localStorage.getItem('token') } },
 };
 
 const configAxiosFiles: AxiosRequestConfig = {
 	baseURL: process.env.REACT_APP_API_IMAGES,
+	//baseURL: 'http://localhost:6060',
 	headers: { common: { token: localStorage.getItem('token') } },
 };
 
