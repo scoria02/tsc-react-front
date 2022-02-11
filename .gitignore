@@ -5,8 +5,8 @@
 /.pnp
 .pnp.js
 
-#Config axios
-./src/config
+.env.development
+.env.production
 
 # testing
 /coverage
