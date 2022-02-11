@@ -20,7 +20,6 @@ const axios = Axios.create(configAxios);
 export const axiosFiles = Axios.create(configAxiosFiles);
 
 axios.interceptors.response.use((resp: AxiosResponse<any>): AxiosResponse<any> => {
-	console.log(process.env.REACT_APP_API_API);
 	if (resp.data.token) {
 		axios.defaults.headers.common['token'] = resp.data.token;
 		localStorage.setItem('token', resp.data.token);

@@ -52,17 +52,22 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any, aci: num
 			valid_comp_dep: accept.rc_comp_dep.msg,
 		},
 	};
-	console.log('mandar', id_status)
+	console.log('mandar', id_status);
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.put(`/FM/admision/${id_fm}/status`, id_status);
 			updateToken(res);
 			dispatch(requestSuccess(status));
-		} catch (error) {
+		} catch (error: any) {
 			//console.log(error.response)
 			dispatch(CloseModal());
 			dispatch(requestError());
-			Swal.fire('Error', error.response.data.message, 'error');
+			Swal.fire({
+				icon: 'error',
+				title: 'Error',
+				customClass: { container: 'swal2-validated' },
+				text: error.response?.data?.message,
+			});
 		}
 	};
 	function requestSuccess(status: number) {
