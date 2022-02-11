@@ -1,4 +1,5 @@
-import { Aci, Activity } from '../../context/DataList/interface';
+import { Type } from 'typescript';
+import { Aci, Activity, TypeWallet } from '../../context/DataList/interface';
 import { ImagesInt } from '../../context/FM/fmImages/interface';
 import { LocationInt } from '../../context/FM/Location/interfaces';
 import {
@@ -176,22 +177,29 @@ export const inputFileNotNull = (last: number, form: ImagesInt): boolean => {
 	return false;
 };
 
-export const inputNotNullPos = (last: number, form: any, aci: Aci | null): boolean => {
+export const inputNotNullPos = (
+	last: number,
+	form: any,
+	aci: Aci | null,
+	typeWallet: TypeWallet | null
+): boolean => {
 	let index: number = 0;
 	for (const item of Object.entries(form)) {
 		if (index === last) {
 			return false;
 		}
 		index++;
-		console.log(item[0], typeof item[1]);
+		//console.log(item[0], typeof item[1]);
 		if (typeof item[1] === 'string') {
 			if (item[0] === 'reqSource_docnum') {
-				console.log('llegue');
+				//console.log('llegue');
 				if (form['request_origin']?.id === 1) {
 					if (item[1] === '') return true;
 				} else if (form['request_origin']?.id === 2) {
-					console.log('aci');
+					//console.log('aci');
 					if (!aci) return true;
+				} else if (form['request_origin']?.id === 6) {
+					if (!typeWallet) return true;
 				}
 			} else if (item[1].trim() === '') {
 				if (item[0] === 'nro_comp_dep') {
@@ -355,22 +363,30 @@ const checkInputForExtraPos = (client: fmClient, commerce: fmCommerce) => {
 	return false;
 };
 
-const checkInputForExtraPosDataPos = (form: fmPos, min: number, last: number, aci: Aci | null) => {
-	console.log(form);
+const checkInputForExtraPosDataPos = (
+	form: fmPos,
+	min: number,
+	last: number,
+	aci: Aci | null,
+	typeWallet: TypeWallet | null
+) => {
+	//console.log(form);
 	let index: number = 0;
 	for (const item of Object.entries(form)) {
 		if (index === last) {
-			console.log('index', index);
+			//console.log('index', index);
 			return false;
 		} else if (index >= min) {
 			if (typeof item[1] === 'string') {
 				if (item[0] === 'reqSource_docnum') {
-					console.log('llegue');
+					//console.log('llegue');
 					if (form['request_origin']?.id === 1) {
 						if (item[1] === '') return true;
 					} else if (form['request_origin']?.id === 2) {
-						console.log('aci');
+						//console.log('aci');
 						if (!aci) return true;
+					} else if (form['request_origin']?.id === 6) {
+						if (!typeWallet) return true;
 					}
 				} else if (item[1].trim() === '') {
 					if (item[0] === 'nro_comp_dep') {
@@ -413,6 +429,7 @@ export const validReadyStep = (
 	commerce: fmCommerce,
 	pos: fmPos,
 	aci: Aci | null,
+	typeWallet: TypeWallet | null,
 	activity: Activity | null,
 	locationClient: LocationInt,
 	locationCommerce: LocationInt,
@@ -428,15 +445,16 @@ export const validReadyStep = (
 			return true;
 		case 1: //Cliente
 		case 2:
-			console.log(errorClient);
+			//console.log(errorClient);
 			if (!errorClient) {
-				if (typeSolict === 3) {
+				if (typeSolict === 4) {
 					if (activeStep === 1) {
 						if (!checkInputForExtraPos(client, commerce) && !checkErrorExtraPosInput(errorsClient, errorsCommerce))
 							return true;
 						else return false;
 					} else if (activeStep === 2) {
-						if (!checkInputForExtraPosDataPos(pos, 3, 3 + 12, aci) && !imagesForPos(imagesForm, pos)) return true;
+						if (!checkInputForExtraPosDataPos(pos, 3, 3 + 12, aci, typeWallet) && !imagesForPos(imagesForm, pos))
+							return true;
 						else return false;
 					}
 				} else if (
@@ -467,7 +485,7 @@ export const validReadyStep = (
 			return false;
 		case 5: //FM Pos
 			if (
-				!inputNotNullPos(3 + 12, pos, aci) &&
+				!inputNotNullPos(3 + 12, pos, aci, typeWallet) &&
 				!imagesForPos(imagesForm, pos) &&
 				!checkErrorAllInput(sizeStepError(activeStep), errorsFm)
 			)

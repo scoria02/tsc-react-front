@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DataListContext from '../../../context/DataList/DataListContext';
-import { Aci } from '../../../context/DataList/interface';
+import { Aci, TypeWallet } from '../../../context/DataList/interface';
 import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
 import { validationNumBank } from '../../../store/actions/fm';
@@ -24,7 +24,7 @@ import { useStylesFM } from '../styles';
 //Pedido
 export const Step5: FC = () => {
 	const classes = useStylesFM();
-	const [isACI, setIsACI] = useState<boolean>(false);
+	//const [isACI, setIsACI] = useState<boolean>(false);
 	const [deleted, setDeleted] = useState<boolean>(false);
 	const [fraccion, setFraccion] = useState<boolean>(false);
 	const [referido, setReferido] = useState<boolean>(false);
@@ -34,9 +34,20 @@ export const Step5: FC = () => {
 
 	const fm: any = useSelector((state: RootState) => state.fm);
 
-	const { client, pos, errorsFm, handleParamsPos, handleChangePos, handleCheckedPos, handleSourceAci, aci } =
-		useContext(FMDataContext);
-	const { listPayment, listModelPos, listTypePay, listRequestSource, listAci } = useContext(DataListContext);
+	const {
+		client,
+		pos,
+		aci,
+		typeWallet,
+		errorsFm,
+		handleParamsPos,
+		handleChangePos,
+		handleCheckedPos,
+		handleSourceAci,
+		handleTypeWallet,
+	} = useContext(FMDataContext);
+	const { listPayment, listModelPos, listTypePay, listRequestSource, listAci, listWalletType } =
+		useContext(DataListContext);
 	const { namesImages, imagesForm, handleChangeImages, deleteImgContributor } = useContext(ImagesFmContext);
 
 	const handleChangeReferido = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -82,25 +93,27 @@ export const Step5: FC = () => {
 		} else {
 			setFraccion(false);
 		}
+		/*
 		if (pos.request_origin) {
 			switch (pos.request_origin.id) {
 				case 1:
 					setReferido(true);
-					setIsACI(false);
+					//setIsACI(false);
 					break;
 				case 2:
 					// is ACI
-					setIsACI(true);
+					//setIsACI(true);
 					setReferido(false);
 					break;
 				default:
-					setIsACI(false);
+					//setIsACI(false);
 					setReferido(false);
 			}
 		} else {
-			setIsACI(false);
+			//setIsACI(false);
 			setReferido(false);
 		}
+		*/
 		if (pos.initial && pos.model_post) {
 			// cable pelado para el monto del precio del modelo seleccionado para calcular las cuotas
 			let valor = pos.number_post * (pos.model_post.price - pos.initial);
@@ -245,7 +258,7 @@ export const Step5: FC = () => {
 						<TextField {...params} name='request_origin' label='Origen de Solicitud' variant='outlined' />
 					)}
 				/>
-				{referido && (
+				{pos.request_origin?.id === 1 && (
 					<TextField
 						className={classes.inputText}
 						style={{ width: '50%' }}
@@ -265,7 +278,7 @@ export const Step5: FC = () => {
 						error={errorsFm.reqSource_docnum}
 					/>
 				)}
-				{isACI && (
+				{pos.request_origin?.id === 2 ? (
 					<Autocomplete
 						// className='btn_step btn_medio'
 						style={{ width: '50%' }}
@@ -283,6 +296,24 @@ export const Step5: FC = () => {
 							<TextField {...params} name='aci' label={`Buscar Aci`} variant='outlined' />
 						)}
 					/>
+				) : (
+					pos.request_origin?.id === 6 && (
+						<Autocomplete
+							// className='btn_step btn_medio'
+							style={{ width: '50%' }}
+							//disabled={} //si el comercio tiene aci traelo
+							onChange={(event, value) => {
+								handleTypeWallet(event, value, 'typeWallet');
+							}}
+							options={listWalletType}
+							value={typeWallet || null}
+							getOptionLabel={(option: TypeWallet | null) => (option ? option.Nombre_Org : '')}
+							// getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
+							renderInput={(params: any) => (
+								<TextField {...params} name='typeWallet' label={`Tipos de Cartera`} variant='outlined' />
+							)}
+						/>
+					)
 				)}
 			</div>
 			<div className={classes.input}>

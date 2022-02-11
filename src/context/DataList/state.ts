@@ -21,6 +21,10 @@ export const listRequestS: base[] = [
 		id: 5,
 		name: 'Pagina WEB',
 	},
+	{
+		id: 6,
+		name: 'Banco',
+	},
 ];
 
 export const listTPay: base[] = [

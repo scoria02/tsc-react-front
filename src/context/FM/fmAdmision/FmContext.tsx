@@ -18,7 +18,7 @@ import { fmErrorCommerce, initFmCommerce } from '../initialStates/stateCommerce'
 import { fmErrorFormat, initLocation } from '../initialStates/states';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
 import { ContextFM } from './interface';
-import { base, Activity, Aci } from '../../DataList/interface';
+import { base, Activity, Aci, TypeWallet } from '../../DataList/interface';
 import Swal from 'sweetalert2';
 import { validateFormClient, validateFormCommerce } from '../../../validation/validFm';
 
@@ -67,6 +67,8 @@ const FMDataContext = createContext<ContextFM>({
 	validClientAndCommerce: () => {},
 	idsCAndCc: null,
 	aci: null,
+	typeWallet: null,
+	handleTypeWallet: () => {},
 });
 
 export const FMContextProvider = ({ children }: Props) => {
@@ -85,6 +87,8 @@ export const FMContextProvider = ({ children }: Props) => {
 
 	const [idsCAndCc, setIdsCAndCc] = useState<IdClient_CommerceINT | null>(null);
 	const [aci, setAci] = useState<Aci | null>(null);
+
+	const [typeWallet, setTypeWallet] = useState<TypeWallet | null>(null);
 
 	//Autocomplete location
 	//const [autoCompleteCommerce, setAutoCompleteCommerce] = useState<boolean>(true);
@@ -136,6 +140,14 @@ export const FMContextProvider = ({ children }: Props) => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [pos.type_pay]);
+
+	const handleTypeWallet = (event: any, value: TypeWallet | null, name: string): void => {
+		if (value) {
+			setTypeWallet(value);
+		} else {
+			setTypeWallet(null);
+		}
+	};
 
 	const handleTypeSolict = (id: number): void => {
 		setTypeSolict(id);
@@ -363,6 +375,8 @@ export const FMContextProvider = ({ children }: Props) => {
 				validClientAndCommerce,
 				idsCAndCc,
 				aci,
+				typeWallet,
+				handleTypeWallet,
 			}}>
 			{children}
 		</FMDataContext.Provider>

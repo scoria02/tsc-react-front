@@ -109,7 +109,7 @@ export const Step3: FC = () => {
 					<FormControl variant='outlined' className={classes.inputSelect}>
 						<InputLabel id='demo-simple-select-outlined-label'>Doc.</InputLabel>
 						<Select
-							disabled={typeSolict === 0 || typeSolict === 1}
+							disabled={typeSolict === 1 || typeSolict === 2}
 							value={commerce.id_ident_type}
 							onChange={handleSelectIdentCommerce}
 							name='id_ident_type'
@@ -118,7 +118,7 @@ export const Step3: FC = () => {
 							error={fm.errorCommerce}
 							placeholder=''>
 							{listIdentType.map((item: any) => {
-								if ((typeSolict === 1 || typeSolict === 2) && item.name !== 'J') return;
+								if ((typeSolict === 2 || typeSolict === 3) && item.name !== 'J') return null;
 								return (
 									<MenuItem key={item.id} value={item.id}>
 										{item.name}

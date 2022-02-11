@@ -78,6 +78,7 @@ const FormM: React.FC = () => {
 		validClientAndCommerce,
 		idsCAndCc,
 		aci,
+		typeWallet,
 	} = useContext(FMDataContext);
 
 	const {
@@ -103,6 +104,7 @@ const FormM: React.FC = () => {
 				commerce,
 				pos,
 				aci,
+				typeWallet,
 				activity,
 				locationClient,
 				locationCommerce,
@@ -127,6 +129,7 @@ const FormM: React.FC = () => {
 		imagesActa,
 		fm,
 		aci,
+		typeWallet,
 	]);
 
 	useEffect(() => {
@@ -134,7 +137,7 @@ const FormM: React.FC = () => {
 			if (activeStep === steps.length - 1) {
 				setTitleNextButton('Enviar');
 			} else {
-				if (typeSolict === 3 && activeStep === 1) setTitleNextButton('Validar');
+				if (typeSolict === 4 && activeStep === 1) setTitleNextButton('Validar');
 				else setTitleNextButton('Siguiente');
 			}
 		} else setTitleNextButton('Comenzar');
@@ -163,7 +166,7 @@ const FormM: React.FC = () => {
 			handleSendForm();
 			dispatch(cleanFM());
 		}
-	}, [fm.loadedFM]);
+	}, [fm.loadedFM, dispatch]);
 
 	useEffect(() => {
 		if (fm.errorClient) setActiveStep(1);
@@ -173,7 +176,7 @@ const FormM: React.FC = () => {
 
 	const handleGetStep = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
-		const stepOp = typeSolict !== 3 ? baseSteps : PosExtraSteps;
+		const stepOp = typeSolict !== 4 ? baseSteps : PosExtraSteps;
 		const newSteps = [...initStep, ...stepOp];
 		setSteps(newSteps);
 	};
@@ -198,6 +201,7 @@ const FormM: React.FC = () => {
 				commerce,
 				pos,
 				aci,
+				typeWallet,
 				activity,
 				locationClient,
 				locationCommerce,
@@ -220,6 +224,8 @@ const FormM: React.FC = () => {
 				locationCommerce,
 				activity,
 				pos,
+				aci,
+				typeWallet,
 				locationPos,
 				imagePlanilla,
 				imagesForm,
@@ -240,6 +246,7 @@ const FormM: React.FC = () => {
 				commerce,
 				pos,
 				aci,
+				typeWallet,
 				activity,
 				locationClient,
 				locationCommerce,
@@ -255,7 +262,7 @@ const FormM: React.FC = () => {
 		//Send FM
 		handleLoading();
 
-		dispatch(sendCompleteFMExtraPos(idsCAndCc!, pos, locationPos, imagePlanilla, imagesForm));
+		dispatch(sendCompleteFMExtraPos(idsCAndCc!, pos, aci, typeWallet, locationPos, imagePlanilla, imagesForm));
 	};
 
 	const handleLoading = () => {
@@ -277,13 +284,14 @@ const FormM: React.FC = () => {
 			timer: 1500,
 		});
 		history.push(urlFM);
+		setActiveStep(0);
 	};
 
 	const handleExtraPosValid = async () => {
 		if (client.id_ident_type && client.ident_num !== '' && commerce.id_ident_type && commerce.ident_num !== '') {
 			const res = await validClientAndCommerce();
 			if (res) {
-				handleNext();
+				setActiveStep(2);
 			}
 		}
 	};
@@ -294,10 +302,10 @@ const FormM: React.FC = () => {
 	const handleClickButton = () => {
 		if (activeStep) {
 			if (activeStep === steps.length - 1) {
-				if (typeSolict === 3) handleSubmitExtraPos();
+				if (typeSolict === 4) handleSubmitExtraPos();
 				else handleSubmit();
 			} else {
-				if (typeSolict === 3) {
+				if (typeSolict === 4) {
 					handleExtraPosValid();
 				} else {
 					handleNext();
@@ -333,7 +341,7 @@ const FormM: React.FC = () => {
 					</Stepper>
 					<div className={classes.containerFM}>
 						<div className='container-steps'>
-							{typeSolict === 3 ? getStepExtraPos[activeStep] : getStep[activeStep]}
+							{typeSolict === 4 ? getStepExtraPos[activeStep] : getStep[activeStep]}
 							<div className={classes.buttonFixed}>
 								<Button
 									size='large'

@@ -118,7 +118,7 @@ export const Step1: React.FC<any> = () => {
 							//error={validEmailIdent}
 							label='Tipo'>
 							{listIdentType.map((item: any) => {
-								if (item.name === 'J' && typeSolict === 0) return;
+								if (item.name === 'J' && typeSolict === 1) return null;
 								return (
 									<MenuItem key={item.id} value={item.id}>
 										{item.name}

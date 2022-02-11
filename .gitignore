@@ -6,7 +6,7 @@
 .pnp.js
 
 #Config axios
-#./src/config 
+./src/config
 
 # testing
 /coverage

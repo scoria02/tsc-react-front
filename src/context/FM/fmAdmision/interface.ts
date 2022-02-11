@@ -9,7 +9,7 @@ import {
 	IdClient_CommerceINT,
 } from '../../../interfaces/fm';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
-import { Aci, Activity, base } from '../../DataList/interface';
+import { Aci, Activity, base, TypeWallet } from '../../DataList/interface';
 
 export interface ContextFM {
 	typeSolict: number;
@@ -51,4 +51,6 @@ export interface ContextFM {
 	idsCAndCc: IdClient_CommerceINT | null;
 	aci: Aci | null;
 	handleSourceAci(event: any, value: Aci | null, name: string): void;
+	typeWallet: TypeWallet | null;
+	handleTypeWallet(event: any, value: TypeWallet | null, name: string): void;
 }

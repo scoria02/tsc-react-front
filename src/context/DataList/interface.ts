@@ -4,6 +4,12 @@ export interface base {
 	name: string;
 }
 
+export interface TypeWallet {
+	Id: number;
+	Cod_Cartera: string;
+	Nombre_Org: string;
+}
+
 export interface Afiliado {
 	id: number;
 	bank_account_number: string;

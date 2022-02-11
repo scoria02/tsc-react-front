@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import {
 	createContext,
-	useReducer,
 	useLayoutEffect,
 	ReactChild,
 	ReactChildren,
@@ -12,7 +11,7 @@ import {
 
 import axios from '../../../config';
 
-import { Estado, Municipio, ListLocation } from './interfaces';
+import { Estado, ListLocation } from './interfaces';
 
 interface Props {
 	children: ReactChild | ReactChildren;

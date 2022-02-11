@@ -2,7 +2,7 @@
 import { AxiosResponse } from 'axios';
 import Swal from 'sweetalert2';
 import useAxios, { axiosFiles } from '../../config/index';
-import { Activity } from '../../context/DataList/interface';
+import { Aci, Activity, TypeWallet } from '../../context/DataList/interface';
 import { ImagesInt } from '../../context/FM/fmImages/interface';
 import { LocationInt } from '../../context/FM/Location/interfaces';
 import { fmClient, fmCommerce, fmPos, IdClient_CommerceINT } from '../../interfaces/fm';
@@ -280,38 +280,49 @@ export const dataFormatCommerce = (
 
 export const dataFormatPos = (
 	pos: fmPos,
+	aci: Aci | null,
+	typeWallet: TypeWallet | null,
 	locationPos: LocationInt,
 	idClient: number,
 	idCommerce: number,
 	idImages: any
-) => ({
-	//Data FM
-	...idImages,
-	number_post: pos.number_post,
-	id_payment_method: pos.payment_method?.id,
-	id_client: idClient,
-	id_commerce: idCommerce,
-	dir_pos: {
-		id_estado: locationPos.estado?.id,
-		id_municipio: locationPos.municipio?.id,
-		id_parroquia: locationPos.parroquia?.id,
-		id_ciudad: locationPos.ciudad?.id,
-		sector: pos.sector,
-		calle: pos.calle,
-		local: pos.local,
-	},
-	bank_account_num: pos.text_account_number,
-	id_request_origin: pos.request_origin?.id,
-	id_type_payment: pos.type_pay?.id,
-	ci_referred: pos.request_origin?.id === 1 ? pos.reqSource_docnum : '',
-	id_product: pos.model_post?.id,
-	requestSource_docnum: pos.request_origin?.id,
-	discount: pos.discount,
-	nro_comp_dep: pos.nro_comp_dep,
-	pagadero: pos.pagadero,
-	initial: pos.initial,
-	//coutas: pos.coutas,
-});
+) => {
+	//pos.request_origin?.id === 2 ? (aci ? aci : '') | ''
+	let auxOrigen: string = '';
+	if (pos.request_origin?.id === 2) {
+		auxOrigen = aci!.id.toString();
+	} else if (pos.request_origin?.id === 6) {
+		auxOrigen = typeWallet!.Id.toString();
+	}
+	return {
+		//Data FM
+		...idImages,
+		number_post: pos.number_post,
+		id_payment_method: pos.payment_method?.id,
+		id_client: idClient,
+		id_commerce: idCommerce,
+		dir_pos: {
+			id_estado: locationPos.estado?.id,
+			id_municipio: locationPos.municipio?.id,
+			id_parroquia: locationPos.parroquia?.id,
+			id_ciudad: locationPos.ciudad?.id,
+			sector: pos.sector,
+			calle: pos.calle,
+			local: pos.local,
+		},
+		bank_account_num: pos.text_account_number,
+		id_request_origin: pos.request_origin?.id,
+		id_type_payment: pos.type_pay?.id,
+		id_product: pos.model_post?.id,
+		//requestSource_docnum: auxOrigen,
+		ci_referred: auxOrigen,
+		discount: pos.discount,
+		nro_comp_dep: pos.pagadero ? '' : pos.nro_comp_dep,
+		pagadero: pos.pagadero,
+		initial: pos.initial,
+		//coutas: pos.coutas,
+	};
+};
 
 export const createFormDataFm = (
 	idClient: number,
@@ -344,6 +355,8 @@ export const sendCompleteFM = (
 	locationCommerce: LocationInt,
 	activity: Activity | null,
 	pos: fmPos,
+	aci: Aci | null,
+	typeWallet: TypeWallet | null,
 	locationPos: LocationInt,
 	imagePlanilla: FileList | [],
 	imagesForm: ImagesInt,
@@ -364,7 +377,7 @@ export const sendCompleteFM = (
 			const resImages: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, images);
 			const idImages = resImages.data.info;
 			console.log('idImages', idImages);
-			const dataPos = dataFormatPos(pos, locationPos, idClient, idCommerce, idImages);
+			const dataPos = dataFormatPos(pos, aci, typeWallet, locationPos, idClient, idCommerce, idImages);
 			const resPos: AxiosResponse<any> = await useAxios.post(`/FM`, dataPos);
 			console.log('fm cargado', resPos.data);
 			//const res: AxiosResponse<any> = await useAxios.post(`/FM`, form);
@@ -391,6 +404,8 @@ export const sendCompleteFM = (
 export const sendCompleteFMExtraPos = (
 	idsCAndCc: IdClient_CommerceINT,
 	pos: fmPos,
+	aci: Aci | null,
+	typeWallet: TypeWallet | null,
 	locationPos: LocationInt,
 	imagePlanilla: FileList | [],
 	imagesForm: ImagesInt
@@ -407,7 +422,15 @@ export const sendCompleteFMExtraPos = (
 			const resImages: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, images);
 			const idImages = resImages.data.info;
 			console.log('idImages', idImages);
-			const dataPos = dataFormatPos(pos, locationPos, idsCAndCc.idClient, idsCAndCc.idCommerce, idImages);
+			const dataPos = dataFormatPos(
+				pos,
+				aci,
+				typeWallet,
+				locationPos,
+				idsCAndCc.idClient,
+				idsCAndCc.idCommerce,
+				idImages
+			);
 			const resPos: AxiosResponse<any> = await useAxios.post(`/FM/extraPos`, dataPos);
 			console.log('fm cargado', resPos.data);
 			//updateToken(res);

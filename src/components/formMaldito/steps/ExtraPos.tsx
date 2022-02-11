@@ -19,7 +19,6 @@ const ExtraPos: FC = () => {
 	const {
 		errorsClient,
 		errorsCommerce,
-		typeSolict,
 		client,
 		commerce,
 		handleChangeCommerce,
@@ -64,7 +63,7 @@ const ExtraPos: FC = () => {
 							//error={validEmailIdent}
 							label='Tipo'>
 							{listIdentType.map((item: any) => {
-								if (item.name === 'J') return;
+								if (item.name === 'J') return null;
 								return (
 									<MenuItem key={item.id} value={item.id}>
 										{item.name}
@@ -100,7 +99,6 @@ const ExtraPos: FC = () => {
 					<FormControl variant='outlined' className={classes.inputSelect}>
 						<InputLabel id='demo-simple-select-outlined-label'>Doc.</InputLabel>
 						<Select
-							disabled={typeSolict === 0 || typeSolict === 1}
 							value={commerce.id_ident_type}
 							onChange={handleSelectIdentCommerce}
 							name='id_ident_type'
@@ -108,7 +106,6 @@ const ExtraPos: FC = () => {
 							error={fm.errorCommerce}
 							placeholder=''>
 							{listIdentType.map((item: any) => {
-								if ((typeSolict === 1 || typeSolict === 2) && item.name !== 'J') return;
 								return (
 									<MenuItem key={item.id} value={item.id}>
 										{item.name}
@@ -118,7 +115,6 @@ const ExtraPos: FC = () => {
 						</Select>
 					</FormControl>
 					<TextField
-						disabled={typeSolict === 0 ? true : false}
 						className={classes.inputTextLeft}
 						variant='outlined'
 						required
