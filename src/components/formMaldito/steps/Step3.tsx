@@ -2,6 +2,7 @@ import Select from '@material-ui/core/Select';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Autocomplete from '@mui/lab/Autocomplete';
 import {
+	InputLabel,
 	Button,
 	Checkbox,
 	FormControl,
@@ -106,9 +107,7 @@ export const Step3: FC = () => {
 			<div className={classes.grid}>
 				<div className={classes.input}>
 					<FormControl sx={sxStyled.inputSelect} className={classes.inputSelect}>
-						{/*
 						<InputLabel id='demo-simple-select-outlined-label'>Doc.</InputLabel>
-						*/}
 						<Select
 							disabled={typeSolict === 1 || typeSolict === 2}
 							variant='outlined'
@@ -117,8 +116,7 @@ export const Step3: FC = () => {
 							name='id_ident_type'
 							label='Tipo'
 							onBlur={handleBlurCommerce}
-							error={fm.errorCommerce}
-							placeholder=''>
+							error={fm.errorCommerce}>
 							{listIdentType.map((item: any) => {
 								if ((typeSolict === 2 || typeSolict === 3) && item.name !== 'J') return null;
 								return (

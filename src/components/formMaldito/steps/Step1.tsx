@@ -111,11 +111,11 @@ export const Step1: React.FC<any> = () => {
 						<InputLabel>DI</InputLabel>
 						*/}
 						<Select
+							variant='outlined'
 							onChange={(event: any) => handleSelectIdentClient('id_ident_type', event.target.value)}
 							value={client.id_ident_type}
 							onBlur={handleBlurEmailIdent}
 							name='id_ident_type'
-							variant='outlined'
 							error={fm.errorClient}
 							label='Tipo'>
 							{listIdentType.map((item: any) => {
