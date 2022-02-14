@@ -160,14 +160,14 @@ export const LocationsProvider = ({ children }: Props) => {
 			try {
 				await axios.get('/Location/estado').then((res: any) => {
 					saveEstados(res.data.info);
-					return res.data.info;
 				});
 			} catch (e) {
 				console.log(e);
-				return [];
 			}
 		};
 		getEstados();
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const copyListLocationToCommerce = (stateListLocation: ListLocation) => {

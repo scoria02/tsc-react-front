@@ -1,4 +1,3 @@
-import { Type } from 'typescript';
 import { Aci, Activity, TypeWallet } from '../../context/DataList/interface';
 import { ImagesInt } from '../../context/FM/fmImages/interface';
 import { LocationInt } from '../../context/FM/Location/interfaces';
@@ -203,7 +202,7 @@ export const inputNotNullPos = (
 				}
 			} else if (item[1].trim() === '') {
 				if (item[0] === 'nro_comp_dep') {
-					if (!form['pagadero']) {
+					if (!form['pagadero'] && form['payment_method'].id !== 2) {
 						return true;
 					}
 				} else {
@@ -336,10 +335,10 @@ const imagesCommerceForTS = (
 	commerce: fmCommerce
 ): boolean => {
 	switch (typeS) {
-		case 0:
-			return imagesForm.rc_rif ? false : true;
 		case 1:
+			return imagesForm.rc_rif ? false : true;
 		case 2:
+		case 3:
 			if (commerce.special_contributor) {
 				if (imagesForm.rc_special_contributor) return false;
 				else return true;
@@ -353,7 +352,7 @@ const imagesCommerceForTS = (
 const imagesForPos = (imagesForm: ImagesInt, pos: fmPos) => {
 	if (!imagesForm.rc_ref_bank) {
 		return true;
-	} else if (!pos.pagadero && !imagesForm.rc_comp_dep) return true;
+	} else if (!pos.pagadero && pos.payment_method?.id !== 2 && !imagesForm.rc_comp_dep) return true;
 	else return false;
 };
 
@@ -446,27 +445,28 @@ export const validReadyStep = (
 		case 1: //Cliente
 		case 2:
 			//console.log(errorClient);
-			if (!errorClient) {
-				if (typeSolict === 4) {
-					if (activeStep === 1) {
-						if (!checkInputForExtraPos(client, commerce) && !checkErrorExtraPosInput(errorsClient, errorsCommerce))
-							return true;
-						else return false;
-					} else if (activeStep === 2) {
-						if (!checkInputForExtraPosDataPos(pos, 3, 3 + 12, aci, typeWallet) && !imagesForPos(imagesForm, pos))
-							return true;
-						else return false;
-					}
-				} else if (
-					!checkErrorAllInput(sizeStepError(activeStep), errorsClient) &&
-					!inputNotNullLocation(locationClient) &&
-					!inputNotNull(sizeStep(activeStep), client) &&
-					!inputFileNotNull(1, imagesForm)
-				)
-					return true;
-				return false;
-			} else return false;
+			if (errorClient) return false;
+			if (typeSolict === 4) {
+				if (activeStep === 1) {
+					if (!checkInputForExtraPos(client, commerce) && !checkErrorExtraPosInput(errorsClient, errorsCommerce))
+						return true;
+					else return false;
+				} else if (activeStep === 2) {
+					if (!checkInputForExtraPosDataPos(pos, 3, 3 + 12, aci, typeWallet) && !imagesForPos(imagesForm, pos))
+						return true;
+					else return false;
+				}
+			} else if (
+				!checkErrorAllInput(sizeStepError(activeStep), errorsClient) &&
+				!inputNotNullLocation(locationClient) &&
+				!inputNotNull(sizeStep(activeStep), client) &&
+				!inputFileNotNull(1, imagesForm)
+			) {
+				return true;
+			}
+			return false;
 		case 3: //Comercio
+			if (errorCommerce) return false;
 			if (
 				!inputNotNull(sizeStep(activeStep), commerce) &&
 				!imagesCommerceForTS(typeSolict, imagesForm, imagesActa, commerce) &&
@@ -484,8 +484,9 @@ export const validReadyStep = (
 				return true;
 			return false;
 		case 5: //FM Pos
+			if (errorNumBank) return false;
 			if (
-				!inputNotNullPos(3 + 12, pos, aci, typeWallet) &&
+				!inputNotNullPos(3 + 9, pos, aci, typeWallet) &&
 				!imagesForPos(imagesForm, pos) &&
 				!checkErrorAllInput(sizeStepError(activeStep), errorsFm)
 			)

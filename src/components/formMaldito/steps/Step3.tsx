@@ -8,7 +8,6 @@ import {
 	FormControlLabel,
 	FormGroup,
 	IconButton,
-	InputLabel,
 	MenuItem,
 	TextField,
 } from '@mui/material';
@@ -22,7 +21,7 @@ import { Days } from '../../../interfaces/fm';
 import { validationCommerce } from '../../../store/actions/fm';
 import { RootState } from '../../../store/store';
 import { recaudo } from '../../utilis/recaudos';
-import { useStylesFM } from '../styles';
+import { sxStyled, useStylesFM } from '../styles';
 
 export const Step3: FC = () => {
 	const classes = useStylesFM();
@@ -106,12 +105,15 @@ export const Step3: FC = () => {
 		<>
 			<div className={classes.grid}>
 				<div className={classes.input}>
-					<FormControl variant='outlined' className={classes.inputSelect}>
+					<FormControl sx={sxStyled.inputSelect} className={classes.inputSelect}>
+						{/*
 						<InputLabel id='demo-simple-select-outlined-label'>Doc.</InputLabel>
+						*/}
 						<Select
 							disabled={typeSolict === 1 || typeSolict === 2}
+							variant='outlined'
 							value={commerce.id_ident_type}
-							onChange={handleSelectIdentCommerce}
+							onChange={(event: any) => handleSelectIdentCommerce('id_ident_type', event.target.value)}
 							name='id_ident_type'
 							label='Tipo'
 							onBlur={handleBlurCommerce}
@@ -128,8 +130,9 @@ export const Step3: FC = () => {
 						</Select>
 					</FormControl>
 					<TextField
-						disabled={typeSolict === 0 ? true : false}
+						disabled={typeSolict === 1 ? true : false}
 						className={classes.inputTextLeft}
+						sx={sxStyled.inputLeft}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -227,7 +230,7 @@ export const Step3: FC = () => {
 					)}
 				</div>
 				<div className={classes.input}>
-					{typeSolict === 1 ? (
+					{typeSolict === 2 ? (
 						<div className={classes.inputText}>
 							<FormControlLabel
 								style={{ margin: 0 }}

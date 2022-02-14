@@ -9,14 +9,14 @@ import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 import { RootState } from '../../../store/store';
 import { validInputString } from '../../../utils/fm';
 //sytles
-import { useStylesFM } from '../styles';
+import { sxStyled, useStylesFM } from '../styles';
 
 export const Step2: FC = () => {
 	const classes = useStylesFM();
 	const fm: any = useSelector((state: RootState) => state.fm);
 
 	//Context
-	const { errorsFm, client, handleChangeClient, handleSelectIdentClient } = useContext(FMDataContext);
+	const { errorsClient, client, handleChangeClient, handleSelectIdentClient } = useContext(FMDataContext);
 
 	const codePhone = '58';
 
@@ -44,6 +44,7 @@ export const Step2: FC = () => {
 				<TextField
 					disabled={fm.mashClient}
 					className={classNames(classes.inputText, classes.inputTextLeft)}
+					sx={sxStyled.inputLeft}
 					variant='outlined'
 					required
 					id='standard-required'
@@ -55,6 +56,7 @@ export const Step2: FC = () => {
 				<TextField
 					disabled={fm.mashClient}
 					className={classNames(classes.inputText, classes.inputTextLeft)}
+					sx={sxStyled.inputLeft}
 					variant='outlined'
 					required
 					id='standard-required'
@@ -63,7 +65,7 @@ export const Step2: FC = () => {
 					name='doc_ident_ref1'
 					onChange={handleIdentNum}
 					value={client.doc_ident_ref1}
-					error={errorsFm.doc_ident_ref1}
+					error={errorsClient.doc_ident_ref1}
 					inputProps={{
 						maxLength: client.doc_ident_type_ref1 === 'P' ? 20 : 9,
 					}}
@@ -71,7 +73,7 @@ export const Step2: FC = () => {
 						startAdornment: fm.mashClient ? null : (
 							<InputAdornment position='start'>
 								<Select
-									onChange={handleSelectIdentClient}
+									onChange={(event: any) => handleSelectIdentClient('doc_ident_type_ref1', event.target.value)}
 									name='doc_ident_type_ref1'
 									value={client.doc_ident_type_ref1}
 									label='Tipo'>
@@ -85,6 +87,7 @@ export const Step2: FC = () => {
 				/>
 				<TextField
 					className={classNames(classes.inputText, classes.inputTextLeft)}
+					sx={sxStyled.inputLeft}
 					variant='outlined'
 					required
 					label='Telefono'
@@ -92,7 +95,7 @@ export const Step2: FC = () => {
 					autoComplete='telefono'
 					placeholder='Ej: 4121234567'
 					onChange={handleChangePhone}
-					error={errorsFm.phone_ref1}
+					error={errorsClient.phone_ref1}
 					disabled={fm.mashClient}
 					value={client.phone_ref1}
 					inputProps={{ maxLength: 10 }}
@@ -105,6 +108,7 @@ export const Step2: FC = () => {
 				<TextField
 					disabled={fm.mashClient}
 					className={classNames(classes.inputText, classes.inputTextLeft)}
+					sx={sxStyled.inputLeft}
 					variant='outlined'
 					required
 					id='standard-required'
@@ -116,6 +120,7 @@ export const Step2: FC = () => {
 				<TextField
 					disabled={fm.mashClient}
 					className={classNames(classes.inputText, classes.inputTextLeft)}
+					sx={sxStyled.inputLeft}
 					variant='outlined'
 					required
 					id='standard-required'
@@ -124,7 +129,7 @@ export const Step2: FC = () => {
 					name='doc_ident_ref2'
 					onChange={handleIdentNum}
 					value={client.doc_ident_ref2}
-					error={errorsFm.doc_ident_ref2}
+					error={errorsClient.doc_ident_ref2}
 					inputProps={{
 						maxLength: client.doc_ident_type_ref2 === 'P' ? 20 : 9,
 					}}
@@ -132,7 +137,7 @@ export const Step2: FC = () => {
 						startAdornment: fm.mashClient ? null : (
 							<InputAdornment position='start'>
 								<Select
-									onChange={handleSelectIdentClient}
+									onChange={(event: any) => handleSelectIdentClient('doc_ident_type_ref2', event.target.value)}
 									name='doc_ident_type_ref2'
 									value={client.doc_ident_type_ref2}
 									label='Tipo'>
@@ -146,6 +151,7 @@ export const Step2: FC = () => {
 				/>
 				<TextField
 					className={classNames(classes.inputText, classes.inputTextLeft)}
+					sx={sxStyled.inputLeft}
 					variant='outlined'
 					required
 					label='Telefono'
@@ -153,7 +159,7 @@ export const Step2: FC = () => {
 					autoComplete='telefono'
 					placeholder='Ej: 4121234567'
 					onChange={handleChangePhone}
-					error={errorsFm.phone_ref2}
+					error={errorsClient.phone_ref2}
 					disabled={fm.mashClient}
 					value={client.phone_ref2}
 					inputProps={{ maxLength: 10 }}

@@ -1,7 +1,6 @@
-import Select from '@material-ui/core/Select';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Autocomplete from '@mui/lab/Autocomplete';
-import { Button, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, TextField } from '@mui/material';
+import { Button, IconButton, InputAdornment, Select, FormControl, MenuItem, TextField } from '@mui/material';
 import classNames from 'classnames';
 import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +14,7 @@ import { RootState } from '../../../store/store';
 import { validInputString } from '../../../utils/fm';
 import { recaudo } from '../../utilis/recaudos';
 //sytles
-import { useStylesFM } from '../styles';
+import { sxStyled, useStylesFM } from '../styles';
 
 export const Step1: React.FC<any> = () => {
 	const classes = useStylesFM();
@@ -107,15 +106,17 @@ export const Step1: React.FC<any> = () => {
 					/>
 				</div>
 				<div className={classes.input}>
-					<FormControl className={classes.inputSelect}>
+					<FormControl sx={sxStyled.inputSelect} className={classes.inputSelect}>
+						{/* 
 						<InputLabel>DI</InputLabel>
+						*/}
 						<Select
+							onChange={(event: any) => handleSelectIdentClient('id_ident_type', event.target.value)}
 							value={client.id_ident_type}
-							onChange={handleSelectIdentClient}
 							onBlur={handleBlurEmailIdent}
 							name='id_ident_type'
 							variant='outlined'
-							//error={validEmailIdent}
+							error={fm.errorClient}
 							label='Tipo'>
 							{listIdentType.map((item: any) => {
 								if (item.name === 'J' && typeSolict === 1) return null;
@@ -129,6 +130,7 @@ export const Step1: React.FC<any> = () => {
 					</FormControl>
 					<TextField
 						className={classes.inputTextLeft}
+						sx={sxStyled.inputLeft}
 						variant='outlined'
 						required
 						label='C.I.'
@@ -166,6 +168,7 @@ export const Step1: React.FC<any> = () => {
 				<div className={classes.input}>
 					<TextField
 						className={classNames(classes.inputText, classes.inputTextLeft)}
+						sx={sxStyled.inputLeft}
 						variant='outlined'
 						required
 						label='Nombre'
@@ -192,6 +195,7 @@ export const Step1: React.FC<any> = () => {
 				<div className={classes.input}>
 					<TextField
 						className={classNames(classes.inputText, classes.inputTextLeft)}
+						sx={sxStyled.inputLeft}
 						variant='outlined'
 						required
 						label='Telefono'
@@ -238,6 +242,7 @@ export const Step1: React.FC<any> = () => {
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
+						sx={sxStyled.inputLeft}
 						onChange={(event, value: Estado | null) => {
 							setEstado(value, setLocationClient);
 							handleListMunicipio(value ? value.id : 0, setListLocationClient);
@@ -281,6 +286,7 @@ export const Step1: React.FC<any> = () => {
 					<Autocomplete
 						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
+						sx={sxStyled.inputLeft}
 						onChange={(event, value: Ciudad | null) => {
 							setCiudad(value, setLocationClient);
 							handleListParroquia(locationClient.municipio!.id, setListLocationClient);
@@ -322,6 +328,7 @@ export const Step1: React.FC<any> = () => {
 					<TextField
 						disabled
 						className={classNames(classes.inputText, classes.inputTextLeft)}
+						sx={sxStyled.inputLeft}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -345,6 +352,7 @@ export const Step1: React.FC<any> = () => {
 					<TextField
 						disabled={fm.mashClient}
 						className={classNames(classes.inputText, classes.inputTextLeft)}
+						sx={sxStyled.inputLeft}
 						variant='outlined'
 						required
 						id='standard-required'

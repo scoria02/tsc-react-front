@@ -4,16 +4,21 @@ import { makeStyles } from '@mui/styles';
 export const useStylesFM = makeStyles((styles: Theme) => ({
 	containerFM: {
 		position: 'relative',
-		// height: '440px',
 		width: '80%',
+		// height: '440px',
 	},
 	buttonNext: {
-		marginRight: styles.spacing(1),
 		textTransform: 'none',
 		width: 115,
 	},
+	textButton: {
+		paddingLeft: '10px',
+		paddingRight: '10px',
+		textTransform: 'none',
+		fontSize: '15px',
+	},
 	buttonBack: {
-		marginRight: styles.spacing(40),
+		//marginRight: styles.spacing(40),
 		textTransform: 'none',
 	},
 	input: {
@@ -46,7 +51,7 @@ export const useStylesFM = makeStyles((styles: Theme) => ({
 		width: '25%',
 		textAlign: 'center',
 		alignSelf: 'center',
-		marginRight: '2%',
+		//marginRight: '2%',
 	},
 	inputText: {
 		width: '100%',
@@ -112,3 +117,12 @@ export const useStylesFM = makeStyles((styles: Theme) => ({
 		marginTop: '1.5rem',
 	},
 }));
+
+export const sxStyled = {
+	inputLeft: {
+		mr: '2%',
+	},
+	inputSelect: {
+		mr: '2%',
+	},
+};

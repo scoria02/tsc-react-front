@@ -1,15 +1,11 @@
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
+import { Select, FormControl, MenuItem, TextField } from '@mui/material';
 import React, { FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import DataListContext from '../../../context/DataList/DataListContext';
 import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 import { RootState } from '../../../store/store';
 //sytles
-import { useStylesFM } from '../styles';
+import { sxStyled, useStylesFM } from '../styles';
 
 const ExtraPos: FC = () => {
 	const classes = useStylesFM();
@@ -53,13 +49,12 @@ const ExtraPos: FC = () => {
 					Cliente
 				</h2>
 				<div className={classes.input}>
-					<FormControl className={classes.inputSelect}>
-						<InputLabel>DI</InputLabel>
+					<FormControl sx={sxStyled.inputSelect} className={classes.inputSelect}>
 						<Select
-							value={client.id_ident_type}
-							onChange={handleSelectIdentClient}
-							name='id_ident_type'
+							onChange={(event: any) => handleSelectIdentClient('id_ident_type', event.target.value)}
 							variant='outlined'
+							value={client.id_ident_type}
+							name='id_ident_type'
 							//error={validEmailIdent}
 							label='Tipo'>
 							{listIdentType.map((item: any) => {
@@ -74,6 +69,7 @@ const ExtraPos: FC = () => {
 					</FormControl>
 					<TextField
 						className={classes.inputTextLeft}
+						sx={sxStyled.inputSelect}
 						variant='outlined'
 						required
 						label='C.I.'
@@ -96,11 +92,11 @@ const ExtraPos: FC = () => {
 					Comercio
 				</h2>
 				<div className={classes.input}>
-					<FormControl variant='outlined' className={classes.inputSelect}>
-						<InputLabel id='demo-simple-select-outlined-label'>Doc.</InputLabel>
+					<FormControl sx={sxStyled.inputSelect} className={classes.inputSelect}>
 						<Select
+							onChange={(event: any) => handleSelectIdentCommerce('id_ident_type', event.target.value)}
+							variant='outlined'
 							value={commerce.id_ident_type}
-							onChange={handleSelectIdentCommerce}
 							name='id_ident_type'
 							label='Tipo'
 							error={fm.errorCommerce}
@@ -116,6 +112,7 @@ const ExtraPos: FC = () => {
 					</FormControl>
 					<TextField
 						className={classes.inputTextLeft}
+						sx={sxStyled.inputSelect}
 						variant='outlined'
 						required
 						id='standard-required'

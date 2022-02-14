@@ -27,7 +27,6 @@ export const Step5: FC = () => {
 	//const [isACI, setIsACI] = useState<boolean>(false);
 	const [deleted, setDeleted] = useState<boolean>(false);
 	const [fraccion, setFraccion] = useState<boolean>(false);
-	const [referido, setReferido] = useState<boolean>(false);
 	const [cuotasTexto, setCuotasTexto] = useState('');
 	const dispatch = useDispatch();
 	// const cuotasText = ['5 cuotas de 50$', '4 cuotas de 50$', '3 cuotas de 50$'];

@@ -1,5 +1,6 @@
 import { fmClient, fmError_ClientINT } from '../../../interfaces/fm';
 
+/*
 export const initFmClient: fmClient = {
 	//step1 Cliente
 	email: 'test@corre.com',
@@ -22,8 +23,8 @@ export const initFmClient: fmClient = {
 	doc_ident_ref2: 'queos',
 	phone_ref2: '4241234346',
 };
+*/
 
-/*
 export const initFmClient: fmClient = {
 	//step1 Cliente
 	email: '',
@@ -46,7 +47,6 @@ export const initFmClient: fmClient = {
 	doc_ident_ref2: '',
 	phone_ref2: '',
 };
-*/
 
 export const fmErrorClient: fmError_ClientINT = {
 	email: false,

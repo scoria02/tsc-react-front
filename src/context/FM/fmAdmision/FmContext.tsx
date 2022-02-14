@@ -110,7 +110,7 @@ export const FMContextProvider = ({ children }: Props) => {
 	};
 
 	useEffect(() => {
-		if (typeSolict === 0) {
+		if (typeSolict === 1) {
 			setCommerce((prevState) => {
 				return {
 					...prevState,
@@ -119,7 +119,7 @@ export const FMContextProvider = ({ children }: Props) => {
 					name: client.name + ' ' + client.last_name,
 				};
 			});
-		} else if (typeSolict === 1 || typeSolict === 2) {
+		} else if (typeSolict === 2 || typeSolict === 3) {
 			setCommerce((prevState) => {
 				return {
 					...prevState,
@@ -196,7 +196,7 @@ export const FMContextProvider = ({ children }: Props) => {
 	};
 
 	const handleParamsPos = (name: string, value: base | string | null): void => {
-		console.log(value);
+		//console.log(value);
 		setPos({
 			...pos,
 			[name]: value,
@@ -209,23 +209,20 @@ export const FMContextProvider = ({ children }: Props) => {
 		});
 	};
 
-	const handleSelectIdentClient = (event: React.ChangeEvent<{ name?: string; value: unknown }>): void => {
-		if (event.target.name) {
-			setErrorsClient(validateFormClient(client, errorsClient, event.target.name, Number(event.target.value)));
-			setClient({
-				...client,
-				[event.target.name]: Number(event.target.value),
-			});
-		}
+	const handleSelectIdentClient = (name: string, value: number | string) => {
+		setErrorsClient(validateFormClient(client, errorsClient, name, value));
+		setClient({
+			...client,
+			[name]: value,
+		});
 	};
 
-	const handleSelectIdentCommerce = (event: React.ChangeEvent<{ name?: string; value: unknown }>): void => {
-		if (event.target.name) {
-			setCommerce({
-				...commerce,
-				[event.target.name]: Number(event.target.value),
-			});
-		}
+	const handleSelectIdentCommerce = (name: string, value: number | string) => {
+		setErrorsCommerce(validateFormCommerce(commerce, errorsCommerce, name, value));
+		setCommerce({
+			...commerce,
+			[name]: value,
+		});
 	};
 
 	const handleSourceAci = (event: any, value: Aci | null, name: string): void => {
@@ -314,7 +311,7 @@ export const FMContextProvider = ({ children }: Props) => {
 			});
 			return true;
 		} catch (error: any) {
-			console.log(error.response);
+			//console.log(error.response);
 			setIdsCAndCc(null);
 			Swal.fire('Error', error.response.data.message, 'error');
 			return false;

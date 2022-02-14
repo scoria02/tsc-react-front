@@ -279,6 +279,7 @@ export const dataFormatCommerce = (
 });
 
 export const dataFormatPos = (
+	typeSolict: number,
 	pos: fmPos,
 	aci: Aci | null,
 	typeWallet: TypeWallet | null,
@@ -297,6 +298,7 @@ export const dataFormatPos = (
 	return {
 		//Data FM
 		...idImages,
+		id_type_request: typeSolict,
 		number_post: pos.number_post,
 		id_payment_method: pos.payment_method?.id,
 		id_client: idClient,
@@ -349,6 +351,7 @@ export const createFormDataFm = (
 };
 
 export const sendCompleteFM = (
+	typeSolict: number,
 	client: fmClient,
 	locationClient: LocationInt,
 	commerce: fmCommerce,
@@ -377,7 +380,7 @@ export const sendCompleteFM = (
 			const resImages: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, images);
 			const idImages = resImages.data.info;
 			console.log('idImages', idImages);
-			const dataPos = dataFormatPos(pos, aci, typeWallet, locationPos, idClient, idCommerce, idImages);
+			const dataPos = dataFormatPos(typeSolict, pos, aci, typeWallet, locationPos, idClient, idCommerce, idImages);
 			const resPos: AxiosResponse<any> = await useAxios.post(`/FM`, dataPos);
 			console.log('fm cargado', resPos.data);
 			//const res: AxiosResponse<any> = await useAxios.post(`/FM`, form);
@@ -402,6 +405,7 @@ export const sendCompleteFM = (
 };
 
 export const sendCompleteFMExtraPos = (
+	typeSolict: number,
 	idsCAndCc: IdClient_CommerceINT,
 	pos: fmPos,
 	aci: Aci | null,
@@ -423,6 +427,7 @@ export const sendCompleteFMExtraPos = (
 			const idImages = resImages.data.info;
 			console.log('idImages', idImages);
 			const dataPos = dataFormatPos(
+				typeSolict,
 				pos,
 				aci,
 				typeWallet,

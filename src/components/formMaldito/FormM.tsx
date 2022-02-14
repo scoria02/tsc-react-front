@@ -84,7 +84,6 @@ const FormM: React.FC = () => {
 	const {
 		listLocationClient,
 		listLocationCommerce,
-
 		listLocationPos,
 		copyListLocationToCommerce,
 		copyListLocationToPos,
@@ -218,6 +217,7 @@ const FormM: React.FC = () => {
 		handleLoading();
 		dispatch(
 			sendCompleteFM(
+				typeSolict,
 				client,
 				locationClient,
 				commerce,
@@ -262,7 +262,9 @@ const FormM: React.FC = () => {
 		//Send FM
 		handleLoading();
 
-		dispatch(sendCompleteFMExtraPos(idsCAndCc!, pos, aci, typeWallet, locationPos, imagePlanilla, imagesForm));
+		dispatch(
+			sendCompleteFMExtraPos(typeSolict, idsCAndCc!, pos, aci, typeWallet, locationPos, imagePlanilla, imagesForm)
+		);
 	};
 
 	const handleLoading = () => {
@@ -340,26 +342,32 @@ const FormM: React.FC = () => {
 						})}
 					</Stepper>
 					<div className={classes.containerFM}>
-						<div className='container-steps'>
+						<div>
 							{typeSolict === 4 ? getStepExtraPos[activeStep] : getStep[activeStep]}
 							<div className={classes.buttonFixed}>
 								<Button
+									sx={{
+										mr: 60,
+									}}
 									size='large'
 									disabled={activeStep === 0}
 									variant='contained'
 									style={{ opacity: activeStep ? 1 : 0 }}
 									onClick={handleBack}
 									className={classes.buttonBack}>
-									Volver
+									<span className={classes.textButton}>Volver</span>
 								</Button>
 								<Button
 									disabled={!readyStep}
+									sx={{
+										mr: 50,
+									}}
 									size='large'
 									variant='contained'
 									color='primary'
 									onClick={handleClickButton}
 									className={classes.buttonNext}>
-									{titleNextButton}
+									<span className={classes.textButton}>{titleNextButton}</span>
 								</Button>
 							</div>
 						</div>

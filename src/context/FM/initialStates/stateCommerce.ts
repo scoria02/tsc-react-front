@@ -1,6 +1,7 @@
 import { fmCommerce, fmError_CommerceINT } from '../../../interfaces/fm';
 import { daysWork } from './states';
 
+/*
 export const initFmCommerce: fmCommerce = {
 	//step3 Comercio
 	id_ident_type: 1,
@@ -14,8 +15,8 @@ export const initFmCommerce: fmCommerce = {
 	calle: '',
 	local: '',
 };
+*/
 
-/*
 export const initFmCommerce: fmCommerce = {
 	//step3 Comercio
 	id_ident_type: 3,
@@ -29,7 +30,6 @@ export const initFmCommerce: fmCommerce = {
 	calle: '',
 	local: '',
 };
-*/
 
 export const fmErrorCommerce: fmError_CommerceINT = {
 	//step3 Comercio

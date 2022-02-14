@@ -8,7 +8,7 @@ import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/FM/Location/interfaces';
 import LocationsContext from '../../../context/FM/Location/LocationsContext';
 import { RootState } from '../../../store/store';
-import { useStylesFM } from '../styles';
+import { sxStyled, useStylesFM } from '../styles';
 
 export const Step4: FC = () => {
 	const classes = useStylesFM();
@@ -26,7 +26,6 @@ export const Step4: FC = () => {
 	const fm: any = useSelector((state: RootState) => state.fm);
 
 	const {
-		errorsFm,
 		commerce,
 		pos,
 		locationCommerce,
@@ -76,6 +75,7 @@ export const Step4: FC = () => {
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
 						className={classes.inputTextLeft}
+						sx={sxStyled.inputSelect}
 						onChange={(event, value: Estado | null) => {
 							setEstado(value, setLocationCommerce);
 							handleListMunicipio(value ? value.id : 0, setListLocationCommerce);
@@ -123,6 +123,7 @@ export const Step4: FC = () => {
 							handleListParroquia(locationCommerce.municipio!.id, setListLocationCommerce);
 						}}
 						className={classes.inputTextLeft}
+						sx={sxStyled.inputSelect}
 						value={locationCommerce.ciudad || null}
 						disabled={fm.mashCommerce}
 						options={listLocationCommerce.ciudad}
@@ -154,6 +155,7 @@ export const Step4: FC = () => {
 				<div className={classnames(classes.row, classes.input)}>
 					<TextField
 						className={classes.inputTextLeft}
+						sx={sxStyled.inputSelect}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -177,6 +179,7 @@ export const Step4: FC = () => {
 				<div className={classnames(classes.row, classes.input)}>
 					<TextField
 						className={classes.inputTextLeft}
+						sx={sxStyled.inputSelect}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -204,6 +207,7 @@ export const Step4: FC = () => {
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
 						className={classes.inputTextLeft}
+						sx={sxStyled.inputSelect}
 						onChange={(event, value: Estado | null) => {
 							setEstado(value, setLocationPos);
 							handleListMunicipio(value ? value.id : 0, setListLocationPos);
@@ -245,6 +249,7 @@ export const Step4: FC = () => {
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
 						className={classes.inputTextLeft}
+						sx={sxStyled.inputSelect}
 						onChange={(event, value: Ciudad | null) => {
 							setCiudad(value, setLocationPos);
 							handleListParroquia(locationPos.municipio!.id, setListLocationPos);
@@ -284,6 +289,7 @@ export const Step4: FC = () => {
 				<div className={classnames(classes.row, classes.input)}>
 					<TextField
 						className={classes.inputTextLeft}
+						sx={sxStyled.inputSelect}
 						variant='outlined'
 						required
 						id='standard-required'
@@ -306,6 +312,7 @@ export const Step4: FC = () => {
 				<div className={classnames(classes.row, classes.input)}>
 					<TextField
 						className={classes.inputTextLeft}
+						sx={sxStyled.inputSelect}
 						variant='outlined'
 						required
 						id='standard-required'

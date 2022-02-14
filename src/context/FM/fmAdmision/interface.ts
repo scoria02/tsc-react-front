@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, ReactNode, SetStateAction } from 'react';
 import {
 	fmClient,
 	fmCommerce,
@@ -10,6 +10,7 @@ import {
 } from '../../../interfaces/fm';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
 import { Aci, Activity, base, TypeWallet } from '../../DataList/interface';
+import { SelectChangeEvent } from '@mui/material';
 
 export interface ContextFM {
 	typeSolict: number;
@@ -38,9 +39,9 @@ export interface ContextFM {
 	copyLocationToPos(stateLocation: LocationInt, state: fmClient | fmCommerce | fmPos): void;
 	handleTypeSolict(id: number): void;
 	handleChangeClient(event: React.ChangeEvent<HTMLInputElement>): void;
-	handleSelectIdentClient(event: React.ChangeEvent<{ name?: string; value: unknown }>): void;
+	handleSelectIdentClient(name: string, value: number | string): void;
 	handleChangeCommerce(event: React.ChangeEvent<HTMLInputElement>): void;
-	handleSelectIdentCommerce(event: React.ChangeEvent<{ name?: string; value: unknown }>): void;
+	handleSelectIdentCommerce(name: string, value: number | string): void;
 	handleChangeCheckedCommerce(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleChangeDay(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleChangePos(event: React.ChangeEvent<HTMLInputElement>): void;
