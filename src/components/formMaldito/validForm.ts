@@ -389,7 +389,7 @@ const checkInputForExtraPosDataPos = (
 					}
 				} else if (item[1].trim() === '') {
 					if (item[0] === 'nro_comp_dep') {
-						if (!form['pagadero']) {
+						if (!form['pagadero'] && form['payment_method']?.id !== 2) {
 							return true;
 						}
 					} else {
