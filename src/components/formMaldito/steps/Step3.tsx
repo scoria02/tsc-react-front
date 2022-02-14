@@ -1,4 +1,4 @@
-import Select from '@material-ui/core/Select';
+import { Select } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Autocomplete from '@mui/lab/Autocomplete';
 import {
@@ -106,6 +106,27 @@ export const Step3: FC = () => {
 		<>
 			<div className={classes.grid}>
 				<div className={classes.input}>
+					<FormControl sx={sxStyled.inputSelect} className={classes.inputSelect}>
+						<InputLabel id='demo-simple-select-outlined-label'>Doc.</InputLabel>
+						<Select
+							disabled={typeSolict === 1 || typeSolict === 2}
+							variant='outlined'
+							value={commerce.id_ident_type}
+							onChange={(event: any) => handleSelectIdentCommerce('id_ident_type', event.target.value)}
+							name='id_ident_type'
+							label='Tipo'
+							onBlur={handleBlurCommerce}
+							error={fm.errorCommerce}>
+							{listIdentType.map((item: any) => {
+								if ((typeSolict === 2 || typeSolict === 3) && item.name !== 'J') return null;
+								return (
+									<MenuItem key={item.id} value={item.id}>
+										{item.name}
+									</MenuItem>
+								);
+							})}
+						</Select>
+					</FormControl>
 					<TextField
 						disabled={typeSolict === 1 ? true : false}
 						className={classes.inputTextLeft}
