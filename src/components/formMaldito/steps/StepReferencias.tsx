@@ -8,10 +8,11 @@ import { useSelector } from 'react-redux';
 import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 import { RootState } from '../../../store/store';
 import { validInputString } from '../../../utils/fm';
+import { capitalizedFull } from '../../../utils/formatName';
 //sytles
 import { sxStyled, useStylesFM } from '../styles';
 
-export const Step2: FC = () => {
+const StepReferencias: FC = () => {
 	const classes = useStylesFM();
 	const fm: any = useSelector((state: RootState) => state.fm);
 
@@ -34,6 +35,7 @@ export const Step2: FC = () => {
 
 	const handleChangeNameClient = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (validInputString(event)) {
+			event.target.value = capitalizedFull(event.target.value);
 			handleChangeClient(event);
 		}
 	};
@@ -171,3 +173,5 @@ export const Step2: FC = () => {
 		</>
 	);
 };
+
+export default StepReferencias;

@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
-import { Button, Step, StepLabel, Stepper } from '@mui/material';
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import { Button, Step, StepLabel, Stepper } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -18,15 +17,14 @@ import { StateFMInt } from '../../store/reducers/fmReducer';
 import { RootState } from '../../store/store';
 import { stepError } from '../../utils/fm';
 import LoaderPrimary from '../loaders/LoaderPrimary';
-import './index.scss';
 //steps
 import StepBase from './steps';
-import ExtraPos from './steps/ExtraPos';
-import { Step1 } from './steps/Step1';
-import { Step2 } from './steps/Step2';
-import { Step3 } from './steps/Step3';
-import { Step4 } from './steps/Step4';
-import { Step5 } from './steps/Step5';
+import StepExtraPos from './steps/ExtraPos';
+import StepClient from './steps/StepClient';
+import StepReferencias from './steps/StepReferencias';
+import StepCommerce from './steps/StepCommerce';
+import StepLocationCCandPos from './steps/StepLocationCCandPos';
+import StepPos from './steps/StepPos';
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
 
@@ -58,8 +56,7 @@ const FormM: React.FC = () => {
 
 	const [titleNextButton, setTitleNextButton] = useState('Comenzar');
 
-	const { listIdentType, listActivity, listPayment, listModelPos, listTypePay, listRequestSource } =
-		useContext(DataListContext);
+	const { listIdentType, listActivity, listPayment } = useContext(DataListContext);
 
 	const {
 		typeSolict,
@@ -298,8 +295,15 @@ const FormM: React.FC = () => {
 		}
 	};
 
-	const getStep: ReactElement[] = [<StepBase />, <Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 />];
-	const getStepExtraPos: ReactElement[] = [<StepBase />, <ExtraPos />, <Step5 />];
+	const getStep: ReactElement[] = [
+		<StepBase />,
+		<StepClient />,
+		<StepReferencias />,
+		<StepCommerce />,
+		<StepLocationCCandPos />,
+		<StepPos />,
+	];
+	const getStepExtraPos: ReactElement[] = [<StepBase />, <StepExtraPos />, <StepPos />];
 
 	const handleClickButton = () => {
 		if (activeStep) {
@@ -319,7 +323,7 @@ const FormM: React.FC = () => {
 	};
 
 	return (
-		<div className='ed-container container-formMaldito'>
+		<div>
 			{!listIdentType.length ||
 			!listActivity.length ||
 			!listPayment.length ||
@@ -328,7 +332,7 @@ const FormM: React.FC = () => {
 			!listLocationPos.estado.length ? (
 				<LoaderPrimary />
 			) : (
-				<form className='container-form'>
+				<form className={classes.containerSteps}>
 					<Stepper alternativeLabel activeStep={activeStep} style={{ background: 'none', width: '100%' }}>
 						{steps.map((label, index) => {
 							const stepProps: { completed?: boolean } = {};

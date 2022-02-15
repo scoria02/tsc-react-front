@@ -113,11 +113,14 @@ export const Step2: React.FC<Props> = ({
 						name='id_ident_type'
 						label='Tipo'
 						placeholder=''>
-						{listIdentType.map((item: any) => (
-							<MenuItem key={item.id} value={item.id}>
-								{item.name}
-							</MenuItem>
-						))}
+						{listIdentType.map((item: any) => {
+							if (item.name === 'J') return null;
+							return (
+								<MenuItem key={item.id} value={item.id}>
+									{item.name}
+								</MenuItem>
+							);
+						})}
 					</Select>
 				</FormControl>
 				<TextField

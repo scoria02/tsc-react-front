@@ -72,11 +72,11 @@ export const refreshLogin = () => {
 export const registerUser = (user: any) => {
 	return async (dispatch: any) => {
 		const newUser = {
-			email: user.email,
+			email: user.email.trim(),
 			password: user.password,
 			confirmPassword: user.confirmPassword,
-			name: user.name,
-			last_name: user.last_name,
+			name: user.name.trim(),
+			last_name: user.last_name.trim(),
 			id_ident_type: user.id_ident_type,
 			ident_num: user.ident_num,
 			phone: user.code + user.phone,

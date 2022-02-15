@@ -110,7 +110,7 @@ export const FMContextProvider = ({ children }: Props) => {
 	};
 
 	useEffect(() => {
-		if (typeSolict === 1) {
+		if (typeSolict === 1 || typeSolict === 3) {
 			setCommerce((prevState) => {
 				return {
 					...prevState,
@@ -119,7 +119,7 @@ export const FMContextProvider = ({ children }: Props) => {
 					name: client.name + ' ' + client.last_name,
 				};
 			});
-		} else if (typeSolict === 2 || typeSolict === 3) {
+		} else if (typeSolict === 2) {
 			setCommerce((prevState) => {
 				return {
 					...prevState,

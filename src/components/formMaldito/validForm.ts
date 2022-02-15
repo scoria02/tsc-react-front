@@ -338,12 +338,20 @@ const imagesCommerceForTS = (
 		case 1:
 			return imagesForm.rc_rif ? false : true;
 		case 2:
-		case 3:
 			if (commerce.special_contributor) {
 				if (imagesForm.rc_special_contributor) return false;
 				else return true;
 			}
 			return imagesForm.rc_rif && imagesActa.length ? false : true;
+		case 3:
+			if (imagesForm.rc_rif) {
+				if (commerce.id_ident_type === 3) {
+					if (imagesActa.length) return false;
+					return true;
+				} else return false;
+			} else {
+				return true;
+			}
 		default:
 			return false;
 	}

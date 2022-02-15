@@ -7,7 +7,7 @@ import { RootState } from '../../../store/store';
 //sytles
 import { sxStyled, useStylesFM } from '../styles';
 
-const ExtraPos: FC = () => {
+const StepExtraPos: FC = () => {
 	const classes = useStylesFM();
 	const fm: any = useSelector((state: RootState) => state.fm);
 
@@ -131,4 +131,4 @@ const ExtraPos: FC = () => {
 	);
 };
 
-export default ExtraPos;
+export default StepExtraPos;

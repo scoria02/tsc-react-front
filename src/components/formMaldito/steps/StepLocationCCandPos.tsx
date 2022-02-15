@@ -10,7 +10,7 @@ import LocationsContext from '../../../context/FM/Location/LocationsContext';
 import { RootState } from '../../../store/store';
 import { sxStyled, useStylesFM } from '../styles';
 
-export const Step4: FC = () => {
+const StepLocationCCandPos: FC = () => {
 	const classes = useStylesFM();
 
 	const {
@@ -69,7 +69,7 @@ export const Step4: FC = () => {
 	*/
 
 	return (
-		<div className='container-location'>
+		<div className={classes.containerLocation}>
 			<div>
 				<h2>Dirección Fiscal</h2>
 				<div className={classnames(classes.row, classes.input)}>
@@ -336,3 +336,5 @@ export const Step4: FC = () => {
 		</div>
 	);
 };
+
+export default StepLocationCCandPos;

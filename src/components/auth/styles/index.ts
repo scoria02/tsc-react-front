@@ -15,7 +15,10 @@ export const HtmlTooltip = withStyles(() => ({
 export const useStylesModalUser = makeStyles((styles: Theme) => ({
 	root: {
 		maxWidth: '80vw',
-		borderRadius: '2rem',
+		borderRadius: '2.5rem',
+	},
+	containerLogin: {
+		margin: '2rem',
 	},
 	containerRight: {
 		margin: 0,

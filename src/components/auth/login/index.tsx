@@ -40,7 +40,7 @@ const Login: React.FC = () => {
 	return (
 		<AuthModal register={false} name='BackOffice'>
 			<form onSubmit={handleLogin} autoComplete='off'>
-				<div className=''>
+				<div className={classes.containerLogin}>
 					<TextField
 						sx={styledMui.inputStyle}
 						className={classes.input}

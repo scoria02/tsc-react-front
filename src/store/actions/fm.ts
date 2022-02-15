@@ -14,16 +14,16 @@ export const updateToken = (token: any) => {
 };
 
 export const validationClient = (client: any) => {
-	console.log(client);
+	//console.log(client);
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
 			updateToken(res);
-			console.log(res);
+			//console.log(res);
 			dispatch(requestSuccess(res.data.info));
 			return res.data.info;
 		} catch (error: any) {
-			console.log(error.response);
+			//console.log(error.response);
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
@@ -51,8 +51,8 @@ export const validationCommerce = (id_client: number, commerce: any) => {
 			} else {
 				dispatch(requestSuccessOk());
 			}
-		} catch (error) {
-			console.log('valid comerce', error);
+		} catch (error: any) {
+			//console.log('valid comerce', error);
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
@@ -81,7 +81,7 @@ export const validationNumBank = (clientBank: any) => {
 			const res = await useAxios.post(`/FM/bank/valid`, clientBank);
 			updateToken(res);
 			dispatch(requestSuccess(res.data.info.name));
-		} catch (error) {
+		} catch (error: any) {
 			//console.log(error.response);
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
@@ -96,131 +96,6 @@ export const validationNumBank = (clientBank: any) => {
 	function requestError() {
 		return {
 			type: ActionType.validNumBankError,
-		};
-	}
-};
-
-export const sendClient = (cursedForm: any, codePhone: string) => {
-	//console.log(client)
-	const client = {
-		email: cursedForm.email,
-		name: cursedForm.name,
-		last_name: cursedForm.last_name,
-		id_ident_type: cursedForm.id_ident_type,
-		ident_num: cursedForm.ident_num,
-		phone1: codePhone + cursedForm.phone1,
-		phone2: codePhone + cursedForm.phone2,
-		location: {
-			id_estado: cursedForm.id_estado_client,
-			id_municipio: cursedForm.id_municipio_client,
-			id_parroquia: cursedForm.id_parroquia_client,
-			id_ciudad: cursedForm.id_ciudad_client,
-			sector: cursedForm.sector_client,
-			calle: cursedForm.calle_client,
-			local: cursedForm.local_client,
-		},
-		ref_person_1: {
-			fullName: cursedForm.name_ref1,
-			document: cursedForm.doc_ident_type_ref1 + cursedForm.doc_ident_ref1,
-			phone: codePhone + cursedForm.phone_ref1,
-		},
-		ref_person_2: {
-			fullName: cursedForm.name_ref1,
-			document: cursedForm.doc_ident_type_ref2 + cursedForm.doc_ident_ref2,
-			phone: codePhone + cursedForm.phone_ref2,
-		},
-	};
-
-	return async (dispatch: any) => {
-		try {
-			const res: AxiosResponse<any> = await useAxios.post(`/FM/client`, client);
-			updateToken(res);
-			dispatch(requestSuccess(res.data.info.id));
-		} catch (error) {
-			//console.log(error.reponse)
-			dispatch(requestError());
-			Swal.fire('Error', error.response.data.message, 'error');
-		}
-	};
-	function requestSuccess(state: any) {
-		return {
-			type: ActionType.sendClient,
-			payload: state,
-		};
-	}
-	function requestError() {
-		return {
-			type: ActionType.sendClientError,
-		};
-	}
-};
-
-export const sendCommerce = (id_client: number, cursedForm: any, days: string) => {
-	//console.log('Client', id_client, 'Comercio', commerce);
-	const commerce = {
-		id_ident_type: cursedForm.id_ident_type_commerce,
-		ident_num: cursedForm.ident_num_commerce,
-		special_contributor: cursedForm.special_contributor,
-		name: cursedForm.name_commerce,
-		bank_account_num: cursedForm.text_account_number,
-		id_activity: cursedForm.id_activity,
-		location: {
-			id_estado: cursedForm.id_estado,
-			id_municipio: cursedForm.id_municipio,
-			id_parroquia: cursedForm.id_parroquia,
-			id_ciudad: cursedForm.id_ciudad,
-			sector: cursedForm.sector,
-			calle: cursedForm.calle,
-			local: cursedForm.local,
-		},
-		days: days,
-	};
-
-	return async (dispatch: any) => {
-		try {
-			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce`, commerce);
-			updateToken(res);
-			dispatch(requestSuccess(res.data.info.id_commerce));
-		} catch (error) {
-			console.log(error.reponse);
-			dispatch(requestError());
-			Swal.fire('Error', error.response.data.message, 'error');
-		}
-	};
-	function requestSuccess(state: any) {
-		return {
-			type: ActionType.sendCommerce,
-			payload: state,
-		};
-	}
-	function requestError() {
-		return {
-			type: ActionType.sendCommerceError,
-		};
-	}
-};
-
-export const sendImages = (formData: any) => {
-	return async (dispatch: any) => {
-		try {
-			const res: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, formData);
-			updateToken(res);
-			dispatch(requestSuccess(res.data.info));
-		} catch (error) {
-			console.log('error images', error.reponse);
-			dispatch(requestError());
-			Swal.fire('Error', error.response.data.message, 'error');
-		}
-	};
-	function requestSuccess(state: any) {
-		return {
-			type: ActionType.sendImages,
-			payload: state,
-		};
-	}
-	function requestError() {
-		return {
-			type: ActionType.sendImagesError,
 		};
 	}
 };

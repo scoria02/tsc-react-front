@@ -2,7 +2,7 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Autocomplete from '@mui/lab/Autocomplete';
 import { Button, IconButton, InputAdornment, Select, FormControl, MenuItem, TextField } from '@mui/material';
 import classNames from 'classnames';
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DataListContext from '../../../context/DataList/DataListContext';
 import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
@@ -12,11 +12,12 @@ import LocationsContext from '../../../context/FM/Location/LocationsContext';
 import { validationClient } from '../../../store/actions/fm';
 import { RootState } from '../../../store/store';
 import { validInputString } from '../../../utils/fm';
+import { capitalizedFull } from '../../../utils/formatName';
 import { recaudo } from '../../utilis/recaudos';
 //sytles
 import { sxStyled, useStylesFM } from '../styles';
 
-export const Step1: React.FC<any> = () => {
+const StepClient: FC = () => {
 	const classes = useStylesFM();
 	const fm: any = useSelector((state: RootState) => state.fm);
 	const dispatch = useDispatch();
@@ -24,7 +25,6 @@ export const Step1: React.FC<any> = () => {
 	//Context
 	const {
 		errorsClient,
-		typeSolict,
 		client,
 		locationClient,
 		setLocationClient,
@@ -74,6 +74,7 @@ export const Step1: React.FC<any> = () => {
 
 	const handleChangeNameClient = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (validInputString(event)) {
+			event.target.value = capitalizedFull(event.target.value);
 			handleChangeClient(event);
 		}
 	};
@@ -119,7 +120,7 @@ export const Step1: React.FC<any> = () => {
 							error={fm.errorClient}
 							label='Tipo'>
 							{listIdentType.map((item: any) => {
-								if (item.name === 'J' && typeSolict === 1) return null;
+								if (item.name === 'J') return null;
 								return (
 									<MenuItem key={item.id} value={item.id}>
 										{item.name}
@@ -377,3 +378,5 @@ export const Step1: React.FC<any> = () => {
 		</>
 	);
 };
+
+export default StepClient;

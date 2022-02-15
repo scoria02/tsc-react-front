@@ -2,10 +2,30 @@ import { Theme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 
 export const useStylesFM = makeStyles((styles: Theme) => ({
+	containerSteps: {
+		display: 'flex',
+		width: 'auto',
+		justifyContent: 'left',
+		alignItems: 'center',
+		flexDirection: 'column',
+		marginTop: '.5rem',
+	},
+	containerForm: {
+		padding: 0,
+		width: '100%',
+		flexDirection: 'column',
+		alignItems: 'center',
+		display: 'flex',
+	},
 	containerFM: {
 		position: 'relative',
 		width: '80%',
 		// height: '440px',
+	},
+	containerLocation: {
+		display: 'grid',
+		gridColumnGap: '10%',
+		gridTemplateColumns: '1fr 1fr',
 	},
 	buttonNext: {
 		textTransform: 'none',
@@ -108,14 +128,6 @@ export const useStylesFM = makeStyles((styles: Theme) => ({
 	inputPropIdent: {
 		width: '40px',
 	},
-	containerSteps: {
-		display: 'flex',
-		width: 'auto',
-		justifyContent: 'left',
-		alignItems: 'center',
-		flexDirection: 'column',
-		marginTop: '1.5rem',
-	},
 }));
 
 export const sxStyled = {
@@ -126,3 +138,37 @@ export const sxStyled = {
 		mr: '2%',
 	},
 };
+
+/*
+.container-formMaldito {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.titleFM {
+	font-size: 1.4rem;
+	padding: 0;
+	margin: 0;
+	margin-top: -1rem;
+	align-self: start;
+}
+
+.nameImg {
+	margin-bottom: 0;
+}
+
+.textSubir {
+	font-size: 12px;
+}
+
+.fontStep {
+	font-size: 12px;
+}
+
+.container-location {
+	display: grid;
+	grid-column-gap: 10%;
+	grid-template-columns: 1fr 1fr;
+}
+*/

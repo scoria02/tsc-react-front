@@ -22,7 +22,7 @@ import { recaudo } from '../../utilis/recaudos';
 import { useStylesFM } from '../styles';
 
 //Pedido
-export const Step5: FC = () => {
+const StepPos: FC = () => {
 	const classes = useStylesFM();
 	//const [isACI, setIsACI] = useState<boolean>(false);
 	const [deleted, setDeleted] = useState<boolean>(false);
@@ -450,3 +450,5 @@ export const Step5: FC = () => {
 		</div>
 	);
 };
+
+export default StepPos;

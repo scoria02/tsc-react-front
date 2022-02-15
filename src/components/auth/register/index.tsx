@@ -13,6 +13,7 @@ import { baseUrl } from '../../../routers/url';
 import { registerUser } from '../../../store/actions/auth';
 //Redux
 import { RootState } from '../../../store/store';
+import { capitalizedFull } from '../../../utils/formatName';
 import AuthModal from '../AuthModal';
 import { Interface_ErrorPass, Interface_RegisterUser, Interface_RegisterUserError } from '../interfaceAuth';
 //styles
@@ -208,11 +209,15 @@ const Register: React.FC = () => {
 
 	//Handle
 	const handleChangeForm = (event: React.ChangeEvent<HTMLInputElement>) => {
+		let value =
+			event.target.name === 'name' || event.target.name === 'last_name'
+				? capitalizedFull(event.target.value)
+				: event.target.value;
 		setUserForm({
 			...userForm,
-			[event.target.name]: event.target.value,
+			[event.target.name]: value,
 		});
-		validateForm(event.target.name, event.target.value);
+		validateForm(event.target.name, value);
 	};
 
 	const handleNext = () => {

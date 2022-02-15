@@ -28,6 +28,7 @@ interface ContextImagesFm {
 	handleChangeImages(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleChangeImagesMulti(event: React.ChangeEvent<HTMLInputElement>): void;
 	deleteImgContributor(name: string): void;
+	deleteImgActa(): void;
 	removePlanilla(): void;
 	resetImages(): void;
 }
@@ -41,6 +42,7 @@ const ImagesFmContext = createContext<ContextImagesFm>({
 	handleChangeImages: () => {},
 	handleChangeImagesMulti: () => {},
 	deleteImgContributor: () => {},
+	deleteImgActa: () => {},
 	removePlanilla: () => {},
 	resetImages: () => {},
 });
@@ -96,6 +98,10 @@ export const ImagesFmProvider = ({ children }: Props) => {
 		}
 	};
 
+	const deleteImgActa = () => {
+		setImagesActa([]);
+	};
+
 	const deleteImgContributor = (name: string) => {
 		setImagesForm({
 			...imagesForm,
@@ -118,6 +124,7 @@ export const ImagesFmProvider = ({ children }: Props) => {
 				handleChangeImages,
 				handleChangeImagesMulti,
 				deleteImgContributor,
+				deleteImgActa,
 				removePlanilla,
 				resetImages,
 			}}>

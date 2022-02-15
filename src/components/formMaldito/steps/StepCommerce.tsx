@@ -24,7 +24,7 @@ import { RootState } from '../../../store/store';
 import { recaudo } from '../../utilis/recaudos';
 import { sxStyled, useStylesFM } from '../styles';
 
-export const Step3: FC = () => {
+const StepCommerce: FC = () => {
 	const classes = useStylesFM();
 	const [actaFlag, setActaFlag] = useState(false);
 	const dispatch = useDispatch();
@@ -53,6 +53,7 @@ export const Step3: FC = () => {
 		handleChangeImages,
 		handleChangeImagesMulti,
 		deleteImgContributor,
+		deleteImgActa,
 	} = useContext(ImagesFmContext);
 
 	const handleBlurCommerce = (): void => {
@@ -96,7 +97,8 @@ export const Step3: FC = () => {
 			setActaFlag(true);
 		} else {
 			if (imagesActa.length) {
-				//deleteImgContributor('constitutive_act');
+				console.log('delete');
+				deleteImgActa();
 			}
 		}
 		/* eslint-disable react-hooks/exhaustive-deps */
@@ -118,7 +120,8 @@ export const Step3: FC = () => {
 							onBlur={handleBlurCommerce}
 							error={fm.errorCommerce}>
 							{listIdentType.map((item: any) => {
-								if ((typeSolict === 2 || typeSolict === 3) && item.name !== 'J') return null;
+								if (typeSolict === 1 && item.name === 'J') return null;
+								if (typeSolict === 2 && item.name !== 'J') return null;
 								return (
 									<MenuItem key={item.id} value={item.id}>
 										{item.name}
@@ -305,3 +308,5 @@ export const Step3: FC = () => {
 		</>
 	);
 };
+
+export default StepCommerce;

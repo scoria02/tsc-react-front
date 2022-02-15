@@ -19,7 +19,7 @@ export const initFmCommerce: fmCommerce = {
 
 export const initFmCommerce: fmCommerce = {
 	//step3 Comercio
-	id_ident_type: 3,
+	id_ident_type: 1,
 	ident_num: '',
 	name: '',
 	special_contributor: false,
