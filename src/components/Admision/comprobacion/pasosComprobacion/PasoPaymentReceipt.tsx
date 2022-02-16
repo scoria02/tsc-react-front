@@ -71,11 +71,11 @@ export default function PasoPaymentReceipt() {
 			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
 					<TextField
-						className={classes.btn_medio}
+						className={classes.btn_stepNro}
 						id='outlined-basic '
-						label='Comprobantede pago'
+						label='Nro comprobante'
+						value={fm.nro_comp_dep}
 						variant='outlined'
-						disabled
 					/>
 					<FormControlLabel
 						className={classes.checkText}

@@ -48,6 +48,7 @@ export default function PasoClient() {
 	};
 
 	const handleChangeI = (event: any) => {
+		console.log('first');
 		setState({
 			...state,
 			[event.target.name]: event.target.value,
