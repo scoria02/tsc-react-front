@@ -132,6 +132,7 @@ export const useStylesFM = makeStyles((styles: Theme) => ({
 
 export const sxStyled = {
 	inputLeft: {
+		width: '100%',
 		mr: '2%',
 	},
 	inputSelect: {

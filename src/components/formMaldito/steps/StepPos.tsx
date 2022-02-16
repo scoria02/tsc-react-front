@@ -19,7 +19,7 @@ import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
 import { validationNumBank } from '../../../store/actions/fm';
 import { RootState } from '../../../store/store';
 import { recaudo } from '../../utilis/recaudos';
-import { useStylesFM } from '../styles';
+import { sxStyled, useStylesFM } from '../styles';
 
 //Pedido
 const StepPos: FC = () => {
@@ -184,7 +184,8 @@ const StepPos: FC = () => {
 			</div>
 			<div className={classes.input}>
 				<TextField
-					className={classes.inputTextLeft}
+					sx={sxStyled.inputLeft}
+					// className={classes.inputTextLeft}
 					variant='outlined'
 					required
 					id='standard-required'
@@ -225,7 +226,8 @@ const StepPos: FC = () => {
 			</div>
 			<div className={classes.input}>
 				<Autocomplete
-					className={classes.inputTextLeft}
+					// className={classes.inputTextLeft}
+					sx={sxStyled.inputLeft}
 					onChange={(event, value) => handleSelect(event, value, 'payment_method')}
 					options={listPayment}
 					value={pos.payment_method || null}
@@ -247,7 +249,8 @@ const StepPos: FC = () => {
 			</div>
 			<div className={classes.input}>
 				<Autocomplete
-					className={classes.inputTextLeft}
+					// className={classes.inputTextLeft}
+					sx={sxStyled.inputLeft}
 					style={{ width: '50%' }}
 					onChange={(event, value) => handleSelect(event, value, 'request_origin')}
 					options={listRequestSource}
@@ -319,9 +322,9 @@ const StepPos: FC = () => {
 				{fraccion && (
 					<>
 						<TextField
+							sx={sxStyled.inputLeft}
 							id='initial'
 							label='Inicial'
-							className={classes.inputTextLeft}
 							type='number'
 							name='initial'
 							variant='outlined'
@@ -372,7 +375,8 @@ const StepPos: FC = () => {
 				/>
 			</div>
 			<FormControlLabel
-				className={classNames(classes.inputTextLeft, classes.containerCheckBox)}
+				sx={sxStyled.inputLeft}
+				className={classes.containerCheckBox}
 				label=''
 				control={
 					<>
