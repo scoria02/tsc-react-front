@@ -157,6 +157,14 @@ export const Form: FC<any> = ({
 		}
 	};
 
+	const handleChangeInitial = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		// Cambiar a que reconozca cuanto es el maximo de inicial que puede ingresar segun el maximo del FM
+		setFraccion({
+			...fraccion,
+			[event.target.name]: event.target.value,
+		});
+	};
+
 	useEffect(() => {
 		if (payment && payment.id === 2) {
 			setUploadImg(null);
@@ -252,17 +260,16 @@ export const Form: FC<any> = ({
 									}}
 									inputProps={{
 										maxLength: 5,
-										step: '10',
+										step: '1',
 										min: '100',
 									}}
-									//onChange={handleChange}
+									onChange={handleChangeInitial}
 								/>
 								<TextField
 									disabled
 									id='initial'
 									label='Cantidad de cuotas'
 									sx={sxStyled.textAutoCompleteLeft}
-									// className={classes.inputText}
 									type='text'
 									variant='outlined'
 									value={cuotasTexto}
