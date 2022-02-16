@@ -14,12 +14,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
 			backgroundColor: `${theme.palette.error.light} !important`,
 		},
 	},
-	buttonV: {
-		textTransform: 'none',
-		marginRight: theme.spacing(1),
-		width: 115,
-		alignSelf: 'center',
-	},
 	yellow: {
 		backgroundColor: theme.palette.warning.main,
 		color: theme.palette.secondary.contrastText,
@@ -36,7 +30,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
 	},
 	wrapper: {
 		justifyContent: 'center',
-		padding: '2px 0',
+		padding: '1rem 0',
 		height: '100%',
 	},
 	img_zoom: {
@@ -46,7 +40,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
 	},
 	containerImg: {
 		alignSelf: 'center',
-		marginTop: '1rem',
 		marginBottom: '.5rem',
 	},
 	content: {
@@ -70,6 +63,23 @@ export const useStyles = makeStyles((theme: Theme) => ({
 	codeFm: {
 		color: theme.palette.primary.main,
 	},
+	iconUpload: {
+		fontSize: '4rem',
+	},
+	nameImg: {
+		fontSize: '1rem',
+		marginBottom: '-3px',
+	},
+}));
+
+export const sxStyled = {
+	textAutoCompleteLeft: {
+		marginRight: 1,
+		width: '100%',
+	},
+	buttonPdf: {
+		borderRadius: '2rem',
+	},
 	uploadImg: {
 		margin: '1rem',
 		padding: '0',
@@ -81,14 +91,10 @@ export const useStyles = makeStyles((theme: Theme) => ({
 		height: '500x',
 		alignSelf: 'center',
 	},
-	iconUpload: {
-		fontSize: '4rem',
-	},
-	nameImg: {
-		fontSize: '1rem',
-		marginBottom: '-3px',
-	},
-	buttonPdf: {
-		borderRadius: '2rem',
-	},
-}));
+	buttonV: (theme: Theme) => ({
+		textTransform: 'none',
+		marginRight: theme.spacing(1),
+		width: '115px',
+		alignSelf: 'center',
+	}),
+};

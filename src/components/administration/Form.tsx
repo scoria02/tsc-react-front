@@ -6,7 +6,7 @@ import Autocomplete from '@mui/lab/Autocomplete';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
-import React, { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 //Redux
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -15,9 +15,9 @@ import Rec from '../utilis/images/Rec';
 import { recaudo } from '../utilis/recaudos';
 //Url
 import './styles/index.scss';
-import { useStyles } from './styles/styles';
+import { sxStyled, useStyles } from './styles/styles';
 
-export const Form: React.FC<any> = ({
+export const Form: FC<any> = ({
 	fm,
 	setFm,
 	uploadImg,
@@ -242,7 +242,7 @@ export const Form: React.FC<any> = ({
 								<TextField
 									id='initial'
 									label='Inicial'
-									className={classes.textAutoCompleteLeft}
+									sx={sxStyled.textAutoCompleteLeft}
 									type='number'
 									name='initial'
 									variant='outlined'
@@ -261,7 +261,7 @@ export const Form: React.FC<any> = ({
 									disabled
 									id='initial'
 									label='Cantidad de cuotas'
-									className={classes.textAutoCompleteLeft}
+									sx={sxStyled.textAutoCompleteLeft}
 									// className={classes.inputText}
 									type='text'
 									variant='outlined'
@@ -276,6 +276,14 @@ export const Form: React.FC<any> = ({
 						</div>
 					) : (
 						<>
+							<Button
+								sx={sxStyled.buttonV}
+								onClick={handleVerificated}
+								variant='contained'
+								disabled={disButton()}
+								color='primary'>
+								Verificar
+							</Button>
 							{uploadImg && (
 								<div className={classes.containerImg}>
 									{uploadImg && uploadImg.name.split('.')[uploadImg.name.split('.').length - 1] === 'pdf' ? (
@@ -284,7 +292,7 @@ export const Form: React.FC<any> = ({
 										>
 											<a target='_blank' rel='noreferrer' href={path}>
 												<Button
-													className={classes.buttonPdf}
+													sx={sxStyled.buttonPdf}
 													variant='contained'
 													component='label'
 													//disabled={ready}
@@ -306,7 +314,7 @@ export const Form: React.FC<any> = ({
 								</div>
 							)}
 							{payment && payment.id !== 2 && (
-								<Button className={classes.uploadImg} variant='contained' component='label'>
+								<Button sx={sxStyled.uploadImg} variant='contained' component='label'>
 									{uploadImg !== null ? (
 										<IconButton aria-label='upload picture' component='span'>
 											<p className={classes.nameImg}>{nameImg.slice(0, 10)} ...</p>
@@ -327,14 +335,6 @@ export const Form: React.FC<any> = ({
 							)}
 						</>
 					)}
-					<Button
-						className={classes.buttonV}
-						onClick={handleVerificated}
-						variant='contained'
-						disabled={disButton()}
-						color='primary'>
-						Verificar
-					</Button>
 				</div>
 			</div>
 		</>
