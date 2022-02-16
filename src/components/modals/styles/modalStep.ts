@@ -19,8 +19,8 @@ export const useStyles = makeStyles((theme: Theme) =>
 			display: 'inline-block',
 		},
 		instructions: {
-			marginTop: theme.spacing(1),
-			marginBottom: theme.spacing(1),
+			marginTop: '1rem',
+			marginBottom: '1rem',
 		},
 		cancelIcon: {
 			fontSize: '3rem',
@@ -35,12 +35,17 @@ export const useStyles = makeStyles((theme: Theme) =>
 			},
 		},
 		containerStep: {
-			marginTop: theme.spacing(2),
-			display: 'flex',
-			flexDirection: 'column',
+			//display: 'flex',
+			//flexDirection: 'column',
 		},
 		buttonS: {
 			textTransform: 'none',
 		},
 	})
 );
+
+export const sxStyled = {
+	button: {
+		mr: 1,
+	},
+};

@@ -15,10 +15,12 @@ const Transition = React.forwardRef(function Transition(
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
-		root: {
+		modalFull: {
 			width: '100%',
 			margin: '1.5rem',
 			padding: '1rem',
+			display: 'flex',
+			flexDirection: 'column',
 		},
 	})
 );
@@ -35,7 +37,7 @@ const FullModal: React.FC<any> = ({ modalOpen, handleClose, children }) => {
 					<label className='closee'>Cerrar</label>
 				</div>
 			</div>
-			<div className={classes.root}>{children}</div>
+			<div className={classes.modalFull}>{children}</div>
 		</Dialog>
 	);
 };

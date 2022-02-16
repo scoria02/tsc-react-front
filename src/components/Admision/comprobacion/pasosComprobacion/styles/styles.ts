@@ -71,3 +71,10 @@ export const useStyles = makeStyles((styles: Theme) => ({
 		width: '70%',
 	},
 }));
+
+export const sxStyled = {
+	btn_stepM: {
+		m: '8px 0',
+		//margin: '8px 0',
+	},
+};

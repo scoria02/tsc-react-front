@@ -1,26 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Button from '@material-ui/core/Button';
-import Step from '@material-ui/core/Step';
-import StepButton from '@material-ui/core/StepButton';
-import Stepper from '@material-ui/core/Stepper';
-import Typography from '@material-ui/core/Typography';
 import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
+import { Button, Step, StepButton, Stepper, Typography } from '@mui/material';
 import { SocketContext } from '../../context/SocketContext';
 import LoaderPrimary from '../loaders/LoaderPrimary';
+import { useStyles, sxStyled } from './styles/modalStep';
 import FullModal from './FullModal';
-import { useStyles } from './styles/modalStep';
 
 const ModalSteps: React.FC<any> = ({
-	stepComplete,
 	clean,
 	CloseModal,
 	steps,
 	getStepContent,
 	fm,
 	modalOpen,
-	updatedStatus,
-	id_status,
 	getSteps,
 	activeStep,
 	setActiveStep,
@@ -69,19 +62,15 @@ const ModalSteps: React.FC<any> = ({
 					<Stepper alternativeLabel nonLinear activeStep={activeStep}>
 						{steps.map((label: any, index: number) => {
 							const stepProps: { completed?: boolean } = {};
-							const buttonProps: { optional?: React.ReactNode } = {};
+							//const buttonProps: { optional?: React.ReactNode } = {};
 							return totalSteps() > 1 ? (
-								<Step key={index} {...stepProps}>
-									<StepButton onClick={handleStep(index)} completed={isStepComplete(index)} {...buttonProps}>
+								<Step key={index} {...stepProps} completed={isStepComplete(index)}>
+									<StepButton onClick={handleStep(index)}>
 										<b>{label}</b>
 									</StepButton>
 								</Step>
 							) : (
-								<StepButton
-									key={index}
-									onClick={handleStep(index)}
-									completed={isStepComplete(index)}
-									{...buttonProps}>
+								<StepButton key={index} onClick={handleStep(index)}>
 									<b style={{ fontSize: '1.2rem' }}>{label}</b>
 								</StepButton>
 							);
@@ -90,10 +79,19 @@ const ModalSteps: React.FC<any> = ({
 					<div className={classes.containerStep}>
 						<div className={classes.instructions}>{getStepContent(activeStep, steps)}</div>
 						<div className='btn-divfloat'>
-							<Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+							<Button
+								sx={sxStyled.button}
+								disabled={activeStep === 0}
+								onClick={handleBack}
+								className={classes.button}>
 								Volver
 							</Button>
-							<Button variant='contained' color='primary' onClick={handleNext} className={classes.button}>
+							<Button
+								sx={sxStyled.button}
+								variant='contained'
+								color='primary'
+								onClick={handleNext}
+								className={classes.button}>
 								Siguiente
 							</Button>
 							{activeStep !== steps.length &&
@@ -103,6 +101,7 @@ const ModalSteps: React.FC<any> = ({
 									</Typography>
 								) : (
 									<Button
+										sx={sxStyled.button}
 										className={classes.buttonS}
 										variant='contained'
 										color='primary'

@@ -210,8 +210,10 @@ const MainMenu: FC = () => {
 			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
 			open={isMenuOpen}
 			onClose={handleMenuClose}>
+			{/*
 			<MenuItem onClick={handleMenuClose}>Perfil</MenuItem>
 			<MenuItem onClick={handleMenuClose}>Mi Cuenta</MenuItem>
+				*/}
 			<MenuItem onClick={handleMenuLogout}>Cerrar sesión</MenuItem>
 		</Menu>
 	);

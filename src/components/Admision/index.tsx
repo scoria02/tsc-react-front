@@ -3,7 +3,7 @@ import AddIcon from '@mui/icons-material/Add';
 import LowPriority from '@mui/icons-material/LowPrioritySharp';
 import { Fab } from '@mui/material';
 import classNames from 'classnames';
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { SocketContext } from '../../context/SocketContext';
@@ -22,7 +22,7 @@ interface AdmisionInt {
 	isWorker: boolean;
 }
 
-const Admision: React.FC<AdmisionInt> = ({ isWorker = false }) => {
+const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { SocketContext } from '../../../context/SocketContext';
@@ -20,7 +20,7 @@ import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
 import PasoSelectAci from './pasosComprobacion/PasoSelectAci';
 
-const Comprobacion: React.FC<any> = () => {
+const Comprobacion: FC = () => {
 	function getStepContent(step: number, steps: string[]) {
 		switch (steps[step]) {
 			case 'Cliente':
