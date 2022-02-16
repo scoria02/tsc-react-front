@@ -17,7 +17,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Form } from '../components/administration/Form';
 import '../components/administration/styles/index.scss';
 import { getPayMent } from '../components/formMaldito/getData';
-import LoaderPrimary from '../components/loaders/LoaderPrimary';
 import { SocketContext } from '../context/SocketContext';
 import { cleanAdmisionFMAdministration } from '../store/actions/administration';
 import { RootState } from '../store/store';
@@ -38,31 +37,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 		background: theme.palette.primary.main,
 		color: theme.palette.primary.contrastText,
 	},
-	dataGrid: {
-		width: '100%',
-		height: '75vh',
-	},
 	tableTitle: {
 		fontSize: 32,
 		fontWeight: 'bold',
 		padding: '0 8px',
 	},
 	view: {
-		width: '100%',
 		padding: '1rem',
 		display: 'flex',
 		flexDirection: 'column',
 		position: 'relative',
-	},
-	closeBtn: {
-		width: 40,
-		height: 40,
-		position: 'absolute',
-		top: 8,
-		right: 8,
-		padding: 0,
-		minWidth: 'unset',
-		borderRadius: 20,
 	},
 	red: {
 		backgroundColor: theme.palette.error.main,
@@ -115,6 +99,19 @@ const useStyles = makeStyles((theme: Theme) => ({
 	},
 }));
 
+export const sxStyled = {
+	closeBtn: {
+		width: 40,
+		height: 40,
+		position: 'absolute',
+		top: 8,
+		right: 8,
+		padding: 0,
+		minWidth: 'unset',
+		borderRadius: 20,
+	},
+};
+
 const columns: GridColDef[] = [
 	{
 		field: 'id_request',
@@ -153,6 +150,17 @@ const Administracion: FC<AdministracionProp> = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
+	//POS
+	const [path, setPath] = useState('');
+	const [rowsAd, setRowsAd] = useState([]);
+	const [nameImg, setNameImage] = useState('');
+	const [typePay, setTypePay] = useState(null);
+	const [payment, setPayment] = useState(null);
+	const [selected, setSelected] = useState(false);
+	const [uploadImg, setUploadImg] = useState(null);
+	const [listPayment, setListPayment] = useState<any[]>([]);
+	const [rowSelected, setRowSelect] = useState(null);
+	const [getDataControl, setGetDataControl] = useState(0);
 	//list tipo de pago
 	const [listTypePay, setListListTypePay] = useState<any>([
 		{
@@ -164,60 +172,10 @@ const Administracion: FC<AdministracionProp> = () => {
 			name: 'Inicial',
 		},
 	]);
-	const [typePay, setTypePay] = useState<any>(null);
-
-	//POS
-	const [listPayment, setListPayment] = useState<any[]>([]);
-	const [payment, setPayment] = useState<any>(null);
-	const [path, setPath] = useState<string>('');
-
-	const { user } = useSelector((state: any) => state.auth);
-	const administration: any = useSelector((state: RootState) => state.administration);
-
-	const [selected, setSelected] = useState(false);
-	const [rowSelected, setRowSelect] = useState(null);
-
-	const [rowsAd, setRowsAd] = useState([]);
-
-	const [uploadImg, setUploadImg] = useState<any>(null);
-	const [nameImg, setNameImage] = useState<string>('');
-
-	const [getDataControl, setGetDataControl] = useState<number>(0);
 
 	const { socket } = useContext(SocketContext);
-
-	useLayoutEffect(() => {
-		//dispatch(getDataFMAdministration());
-		socket.emit('cliente:loadAdministracion');
-	}, []);
-
-	//socket io (todos)
-	useEffect(() => {
-		socket.on('server:loadAdministracion', (data: any) => {
-			setRowsAd(data);
-		});
-	}, [socket]);
-
-	useEffect(() => {
-		//Get Type Doc Ident
-		if (getDataControl === 0) {
-			if (listPayment.length === 0) {
-				getPayMent().then((res) => {
-					res.forEach((item, indice) => {
-						setListPayment((prevState: any) => [...prevState, item]);
-						if (indice === res.length - 1) {
-							setGetDataControl(1);
-						}
-					});
-				});
-			}
-		} else if (getDataControl === 1) {
-		}
-	}, [getDataControl]);
-
-	useEffect(() => {
-		//setRowsAd(administration.fmAd);
-	}, [administration]);
+	const { user } = useSelector((state: any) => state.auth);
+	const administration: any = useSelector((state: RootState) => state.administration);
 
 	const customToolbar: () => JSX.Element = () => {
 		return (
@@ -257,36 +215,69 @@ const Administracion: FC<AdministracionProp> = () => {
 		}
 	}, [administration.updatedStatusAd]);
 
+	//socket io (todos)
+	useEffect(() => {
+		socket.on('server:loadAdministracion', (data: any) => {
+			setRowsAd(data);
+		});
+	}, [socket]);
+
+	useEffect(() => {
+		//Get Type Doc Ident
+		if (getDataControl === 0) {
+			if (listPayment.length === 0) {
+				getPayMent().then((res) => {
+					res.forEach((item, indice) => {
+						setListPayment((prevState: any) => [...prevState, item]);
+						if (indice === res.length - 1) {
+							setGetDataControl(1);
+						}
+					});
+				});
+			}
+		} else if (getDataControl === 1) {
+		}
+	}, [getDataControl]);
+
+	useEffect(() => {
+		//setRowsAd(administration.fmAd);
+	}, [administration]);
+
+	useLayoutEffect(() => {
+		//dispatch(getDataFMAdministration());
+		socket.emit('cliente:loadAdministracion');
+	}, []);
+
 	console.log(selected);
 
 	return (
 		<>
 			<div className={classes.administracion}>
-				{!rowsAd.length ? (
+				<DataGrid
+					onCellClick={handleRow}
+					components={{
+						Toolbar: customToolbar,
+					}}
+					rows={rowsAd}
+					columns={columns}
+					rowsPerPageOptions={[25, 100]}
+					getRowClassName={(params: GridRowParams) =>
+						classNames({
+							[classes.red]: false,
+							[classes.yellow]: false,
+							[classes.green]: false,
+						})
+					}
+				/>
+				{/* {!rowsAd.length ? (
 					<LoaderPrimary />
 				) : (
-					<DataGrid
-						onCellClick={handleRow}
-						components={{
-							Toolbar: customToolbar,
-						}}
-						rows={rowsAd}
-						columns={columns}
-						rowsPerPageOptions={[25, 100]}
-						className={classes.dataGrid}
-						getRowClassName={(params: GridRowParams) =>
-							classNames({
-								[classes.red]: false,
-								[classes.yellow]: false,
-								[classes.green]: false,
-							})
-						}
-					/>
-				)}
+					)
+				} */}
 				{selected && (
 					<>
 						<Paper variant='outlined' elevation={3} className={classes.view}>
-							<Button className={classes.closeBtn} onClick={handleCloseRow}>
+							<Button sx={sxStyled.closeBtn} onClick={handleCloseRow}>
 								<CloseIcon />
 							</Button>
 							{selected && getDataControl === 1 && (
