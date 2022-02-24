@@ -10,6 +10,12 @@ export interface TypeWallet {
 	Nombre_Org: string;
 }
 
+export interface TeleMarket {
+	id: number;
+	name: string;
+	id_types_telemarket: number;
+}
+
 export interface Afiliado {
 	id: number;
 	bank_account_number: string;

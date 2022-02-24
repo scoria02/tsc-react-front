@@ -362,7 +362,7 @@ const FormM: React.FC = () => {
 									<span className={classes.textButton}>Volver</span>
 								</Button>
 								<Button
-									disabled={!readyStep}
+									//disabled={!readyStep}
 									sx={{
 										mr: 50,
 									}}
