@@ -1,7 +1,7 @@
 //modal
 
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutlineSharp';
-import { Button, TextareaAutosize, TextField } from '@mui/material';
+import { Button, TextareaAutosize } from '@mui/material';
 import AnimationModal from './AnimationModal';
 import './scss/modalAlert.scss';
 import { useStylesModalAlert } from './styles';

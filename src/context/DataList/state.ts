@@ -11,7 +11,7 @@ export const listRequestS: base[] = [
 	},
 	{
 		id: 3,
-		name: 'Call Center',
+		name: 'Telemercadeo',
 	},
 	{
 		id: 4,
