@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DataListContext from '../../../context/DataList/DataListContext';
-import { Aci, TypeWallet } from '../../../context/DataList/interface';
+import { Aci, TeleMarket, TypeWallet } from '../../../context/DataList/interface';
 import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
 import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
 import { validationNumBank } from '../../../store/actions/fm';
@@ -27,6 +27,7 @@ const StepPos: FC = () => {
 	//const [isACI, setIsACI] = useState<boolean>(false);
 	const [deleted, setDeleted] = useState<boolean>(false);
 	const [fraccion, setFraccion] = useState<boolean>(false);
+	const [telemark, setTelemark] = useState<TeleMarket | null>(null);
 	const [cuotasTexto, setCuotasTexto] = useState('');
 	const dispatch = useDispatch();
 	// const cuotasText = ['5 cuotas de 50$', '4 cuotas de 50$', '3 cuotas de 50$'];
@@ -45,7 +46,7 @@ const StepPos: FC = () => {
 		handleSourceAci,
 		handleTypeWallet,
 	} = useContext(FMDataContext);
-	const { listPayment, listModelPos, listTypePay, listRequestSource, listAci, listWalletType } =
+	const { listPayment, listModelPos, listTypePay, listRequestSource, listAci, listWalletType, listTeleMarket } =
 		useContext(DataListContext);
 	const { namesImages, imagesForm, handleChangeImages, deleteImgContributor } = useContext(ImagesFmContext);
 
@@ -296,6 +297,23 @@ const StepPos: FC = () => {
 						// getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
 						renderInput={(params: any) => (
 							<TextField {...params} name='aci' label={`Buscar Aci`} variant='outlined' />
+						)}
+					/>
+				) : pos.request_origin?.id === 3 ? (
+					<Autocomplete
+						// className='btn_step btn_medio'
+						style={{ width: '50%' }}
+						//disabled={} //si el comercio tiene aci traelo
+						onChange={(event, value) => {
+							setTelemark(value ? value : null);
+							//handleTypeWallet(event, value, 'typeWallet');
+						}}
+						options={listTeleMarket}
+						value={telemark || null}
+						getOptionLabel={(option: TeleMarket | null) => (option ? option.name : '')}
+						// getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
+						renderInput={(params: any) => (
+							<TextField {...params} name='typeWallet' label={`TeleMercadeo`} variant='outlined' />
 						)}
 					/>
 				) : (

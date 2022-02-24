@@ -3,7 +3,7 @@ import { createContext, useLayoutEffect, ReactChild, ReactChildren, useState } f
 
 import axios from '../../config';
 
-import { base, Activity, Products, Aci, TypeWallet } from './interface';
+import { base, Activity, Products, Aci, TypeWallet, TeleMarket } from './interface';
 import { listRequestS, listTPay } from './state';
 
 interface Props {
@@ -20,6 +20,7 @@ interface ContextDataList {
 	listAci: Aci[];
 	listTypesSolicts: base[];
 	listWalletType: TypeWallet[];
+	listTeleMarket: TeleMarket[];
 }
 
 const DataListContext = createContext<ContextDataList>({
@@ -32,6 +33,7 @@ const DataListContext = createContext<ContextDataList>({
 	listAci: [],
 	listTypesSolicts: [],
 	listWalletType: [],
+	listTeleMarket: [],
 });
 
 export const DataListProvider = ({ children }: Props) => {
@@ -46,6 +48,7 @@ export const DataListProvider = ({ children }: Props) => {
 	const [listAci, setListAci] = useState<Aci[]>([]);
 	const [listTypesSolicts, setListTypesSolicts] = useState<base[]>([]);
 	const [listWalletType, setListWalletType] = useState<TypeWallet[]>([]);
+	const [listTeleMarket, setListTeleMarket] = useState<TeleMarket[]>([]);
 
 	const getters = async (routes: string[]) => {
 		try {
@@ -74,6 +77,7 @@ export const DataListProvider = ({ children }: Props) => {
 		setListAci(array[4].data.info);
 		setListTypesSolicts(array[5].data.info);
 		setListWalletType(array[6].data.info);
+		setListTeleMarket(array[7].data.info);
 	};
 
 	useLayoutEffect(() => {
@@ -85,6 +89,7 @@ export const DataListProvider = ({ children }: Props) => {
 			`/aci`,
 			`/types_solict`,
 			`/tipo_de_carteras`,
+			`/telemarket`,
 		];
 		getters(routes)
 			.then((responses) => {
@@ -107,6 +112,7 @@ export const DataListProvider = ({ children }: Props) => {
 				listAci,
 				listTypesSolicts,
 				listWalletType,
+				listTeleMarket,
 			}}>
 			{children}
 		</DataListContext.Provider>
