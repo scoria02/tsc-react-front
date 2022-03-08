@@ -2,12 +2,12 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 //Material
 import { IconButton, InputAdornment, Snackbar, SnackbarContent, TextField, Typography } from '@mui/material';
+import Alert from 'components/alert/Alert1';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { validationEmail } from 'store/actions/auth';
 //Redux
 import { RootState } from 'store/store';
-import Alert from '../../../alert/Alert1';
 import { Interface_ErrorPass, Interface_RegisterUser, Interface_RegisterUserError } from '../../interfaceAuth';
 //Styles
 import { styledMui, useStylesModalUser } from '../../styles';

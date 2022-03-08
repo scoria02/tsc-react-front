@@ -1,14 +1,14 @@
-import { FC, useContext, useEffect } from 'react';
 import BackUpIcon from '@mui/icons-material/Backup';
 import CheckCircleIcon from '@mui/icons-material/CheckCircleOutline';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Select, Button, FormControl, IconButton, InputLabel, MenuItem, Tooltip } from '@mui/material';
+import { Button, FormControl, IconButton, InputLabel, MenuItem, Select, Tooltip } from '@mui/material';
 import classNames from 'classnames';
-import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
-import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
-import LocationsContext from '../../../context/FM/Location/LocationsContext';
-import DataListContext from '../../../context/DataList/DataListContext';
-import { recaudo } from '../../utilis/recaudos';
+import DataListContext from 'context/DataList/DataListContext';
+import FMDataContext from 'context/FM/fmAdmision/FmContext';
+import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
+import LocationsContext from 'context/FM/Location/LocationsContext';
+import { FC, useContext, useEffect } from 'react';
+import { recaudo } from 'utils/recaudos';
 import { useStylesFM } from '../styles';
 
 const StepBase: FC = () => {

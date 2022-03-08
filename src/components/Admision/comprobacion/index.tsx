@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { SocketContext } from 'context/SocketContext';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { stepComplete } from 'store/actions/accept';
+import { cleanAdmisionFM, updateStatusFM } from 'store/actions/admisionFm';
+import { CloseModal } from 'store/actions/ui';
+import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
-import { SocketContext } from '../../../context/SocketContext';
-import { stepComplete } from '../../../store/actions/accept';
-import { cleanAdmisionFM, updateStatusFM } from '../../../store/actions/admisionFm';
-import { CloseModal } from '../../../store/actions/ui';
-import { RootState } from '../../../store/store';
 import { getAci } from '../../formMaldito/getData';
 import ModalSteps from '../../modals/ModalSteps';
 import '../scss/index.scss';

@@ -3,9 +3,9 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutlineSharp';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { Button, IconButton } from '@mui/material';
 import React, { useState } from 'react';
+import { recaudo } from '../../../utils/recaudos';
 //Url
 import Rec from '../../utilis/images/Rec';
-import { recaudo } from '../../utilis/recaudos';
 import '../comprobacion/pasosComprobacion/styles/pasos.scss';
 import '../scss/index.scss';
 import { useStyles } from '../styles/styles';

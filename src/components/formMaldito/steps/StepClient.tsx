@@ -1,19 +1,19 @@
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Autocomplete from '@mui/lab/Autocomplete';
-import { Button, IconButton, InputAdornment, Select, FormControl, MenuItem, TextField } from '@mui/material';
+import { Button, FormControl, IconButton, InputAdornment, MenuItem, Select, TextField } from '@mui/material';
 import classNames from 'classnames';
+import DataListContext from 'context/DataList/DataListContext';
+import FMDataContext from 'context/FM/fmAdmision/FmContext';
+import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
+import { Ciudad, Estado, Municipio, Parroquia } from 'context/FM/Location/interfaces';
+import LocationsContext from 'context/FM/Location/LocationsContext';
 import React, { FC, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import DataListContext from '../../../context/DataList/DataListContext';
-import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
-import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
-import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/FM/Location/interfaces';
-import LocationsContext from '../../../context/FM/Location/LocationsContext';
-import { validationClient } from '../../../store/actions/fm';
-import { RootState } from '../../../store/store';
-import { validInputString } from '../../../utils/fm';
-import { capitalizedFull } from '../../../utils/formatName';
-import { recaudo } from '../../utilis/recaudos';
+import { validationClient } from 'store/actions/fm';
+import { RootState } from 'store/store';
+import { validInputString } from 'utils/fm';
+import { capitalizedFull } from 'utils/formatName';
+import { recaudo } from 'utils/recaudos';
 //sytles
 import { sxStyled, useStylesFM } from '../styles';
 

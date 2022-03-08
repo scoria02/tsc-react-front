@@ -9,11 +9,11 @@ import { Button, MobileStepper, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { baseUrl } from '../../../routers/url';
-import { registerUser } from '../../../store/actions/auth';
+import { baseUrl } from 'routers/url';
+import { registerUser } from 'store/actions/auth';
 //Redux
-import { RootState } from '../../../store/store';
-import { capitalizedFull } from '../../../utils/formatName';
+import { RootState } from 'store/store';
+import { capitalizedFull } from 'utils/formatName';
 import AuthModal from '../AuthModal';
 import { Interface_ErrorPass, Interface_RegisterUser, Interface_RegisterUserError } from '../interfaceAuth';
 //styles

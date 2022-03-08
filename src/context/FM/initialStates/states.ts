@@ -1,4 +1,4 @@
-import { Days, fmError_Interface } from '../../../interfaces/fm';
+import { Days, fmError_Interface } from 'interfaces/fm';
 import { LocationInt } from '../Location/interfaces';
 
 export const fmErrorFormat: fmError_Interface = {

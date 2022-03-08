@@ -5,7 +5,7 @@ import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { startLogin } from '../../../store/actions/auth';
+import { startLogin } from 'store/actions/auth';
 import AuthModal from '../AuthModal';
 import { styledMui, useStylesModalUser } from '../styles';
 

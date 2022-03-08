@@ -3,12 +3,12 @@
 import Select from '@material-ui/core/Select';
 import { InputAdornment, MenuItem, TextField } from '@mui/material';
 import classNames from 'classnames';
+import FMDataContext from 'context/FM/fmAdmision/FmContext';
 import React, { FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
-import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
-import { RootState } from '../../../store/store';
-import { validInputString } from '../../../utils/fm';
-import { capitalizedFull } from '../../../utils/formatName';
+import { RootState } from 'store/store';
+import { validInputString } from 'utils/fm';
+import { capitalizedFull } from 'utils/formatName';
 //sytles
 import { sxStyled, useStylesFM } from '../styles';
 
