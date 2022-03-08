@@ -6,13 +6,13 @@ import Autocomplete from '@mui/lab/Autocomplete';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
+import { recaudo } from 'components/utilis/recaudos';
 import { FC, useEffect, useState } from 'react';
 //Redux
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import { updateStatusFMAdministration } from '../../store/actions/administration';
 import Rec from '../utilis/images/Rec';
-import { recaudo } from '../utilis/recaudos';
 //Url
 import './styles/index.scss';
 import { sxStyled, useStyles } from './styles/styles';

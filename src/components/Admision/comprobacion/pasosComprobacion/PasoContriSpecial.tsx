@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { Valid } from '../../../../store/actions/accept';
+import { Valid } from 'store/actions/accept';
 //Url
-import { RootState } from '../../../../store/store';
+import { RootState } from 'store/store';
 import { ModalAlert } from '../../../modals/ModalAlert';
 import Rec from '../../../utilis/images/Rec';
 import './styles/pasos.scss';

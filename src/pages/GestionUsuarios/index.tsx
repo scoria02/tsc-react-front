@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import CloseIcon from '@mui/icons-material/Close';
-import Autocomplete from '@mui/lab/Autocomplete';
 import {
+	Autocomplete,
 	Avatar,
 	Button,
 	Checkbox,
@@ -21,9 +21,9 @@ import {
 	GridValueGetterParams,
 } from '@mui/x-data-grid';
 import classnames from 'classnames';
+import axios from 'config';
 import { useLayoutEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import axios from '../../config';
 import './scss/index.scss';
 
 interface GestionUsuariosProps {}
@@ -77,7 +77,6 @@ const useStyles = makeStyles((styles: Theme) => ({
 		display: 'grid',
 		gridTemplateColumns: '1fr 4fr',
 		gridColumnGap: '1rem',
-		marginBottom: '1rem',
 	},
 	tableTitle: {
 		fontSize: 32,
@@ -88,16 +87,6 @@ const useStyles = makeStyles((styles: Theme) => ({
 		fontSize: 28,
 		padding: '0 8px',
 	},
-	closeBtn: {
-		width: 40,
-		height: 40,
-		position: 'absolute',
-		top: 0,
-		right: 0,
-		padding: 0,
-		minWidth: 'unset',
-		borderRadius: '50%',
-	},
 	img: {
 		width: 170,
 		height: 170,
@@ -107,16 +96,6 @@ const useStyles = makeStyles((styles: Theme) => ({
 			height: '100%',
 			borderRadius: '50%',
 			objectFit: 'cover',
-		},
-	},
-	buttonSave: {
-		background: styles.palette.primary.main,
-		color: styles.palette.primary.contrastText,
-		position: 'absolute',
-		bottom: 8,
-		right: 16,
-		'&:hover': {
-			background: styles.palette.primary.light,
 		},
 	},
 	form: {
@@ -136,11 +115,7 @@ const useStyles = makeStyles((styles: Theme) => ({
 	cardTitles: {
 		fontSize: 16,
 		fontWeight: 'bold',
-	},
-	avatarLetter: {
-		textTransform: 'uppercase',
-		backgroundColor: styles.palette.primary.light,
-		fontSize: 56,
+		position: 'relative',
 	},
 	card: {
 		alignItems: 'center',
@@ -175,6 +150,47 @@ const useStyles = makeStyles((styles: Theme) => ({
 		},
 	},
 }));
+
+const sxStyled = {
+	closeBtn: {
+		width: 40,
+		height: 40,
+		position: 'absolute',
+		top: 0,
+		right: 0,
+		padding: 0,
+		minWidth: 'unset',
+		borderRadius: '50%',
+	},
+	blockedButtonOn: (styles: Theme) => ({
+		fontWeight: 'bold',
+		backgroundColor: styles.palette.success.light,
+		color: styles.palette.secondary.contrastText,
+		'&:hover': {
+			backgroundColor: `${styles.palette.success.main} !important`,
+		},
+	}),
+	blockedButtonOff: (styles: Theme) => ({
+		fontWeight: 'bold',
+		backgroundColor: styles.palette.error.light,
+		color: styles.palette.secondary.contrastText,
+		'&:hover': {
+			backgroundColor: `${styles.palette.error.main} !important`,
+		},
+	}),
+	avatarLetter: (styles: Theme) => ({
+		textTransform: 'uppercase',
+		backgroundColor: styles.palette.primary.light,
+		fontSize: 56,
+	}),
+	buttonSaveData: (styles: Theme) => ({
+		backgroundColor: styles.palette.primary.light,
+		color: styles.palette.primary.contrastText,
+		'&:hover': {
+			backgroundColor: styles.palette.primary.main,
+		},
+	}),
+};
 
 const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	const classes = useStyles();
@@ -364,15 +380,15 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 				</Grid>
 				<Grid item xs={7}>
 					{openUserView && (
-						<Paper variant='outlined' elevation={3}>
+						<Paper variant='outlined'>
 							<div className={classes.card}>
-								<Button className={classes.closeBtn} onClick={handleCloseRow}>
+								<Button sx={sxStyled.closeBtn} onClick={handleCloseRow}>
 									<CloseIcon />
 								</Button>
 								<form className={classes.form}>
 									<div className={classes.grid}>
 										<div className={classes.img}>
-											<Avatar className={classes.avatarLetter}>{`${name.slice(0, 1)}${lname.slice(0, 1)}`}</Avatar>
+											<Avatar sx={sxStyled.avatarLetter}>{`${name.slice(0, 1)}${lname.slice(0, 1)}`}</Avatar>
 										</div>
 										<div>
 											<div className={classes.textFields}>
@@ -402,6 +418,9 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 													className={classes.inputText}
 													onChange={(event, value) => handleSelect(event, value, 'department')}
 													value={userDep}
+													isOptionEqualToValue={(option: any) => {
+														return option.name === userDep.name;
+													}}
 													options={department}
 													getOptionLabel={(option: any) => (option.name ? option.name : '')}
 													// getOptionSelected={(option, value) => value.id === option.id}}
@@ -411,10 +430,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 												/>
 												<Button
 													onClick={() => setUserBlocked(!userBlocked)}
-													className={classnames(classes.blockedButton, {
-														[classes.blockedButtonOff]: !userBlocked,
-														[classes.blockedButtonOn]: userBlocked,
-													})}>
+													sx={!userBlocked ? sxStyled.blockedButtonOff : sxStyled.blockedButtonOn}>
 													{userBlocked ? `Desbloquear` : `Bloquear`}
 												</Button>
 											</div>
@@ -445,10 +461,11 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 												</FormGroup>
 											</div>
 										</div>
+										<div className=''></div>
+										<Button sx={sxStyled.buttonSaveData} onClick={handleSaveData}>
+											Guardar
+										</Button>
 									</div>
-									<Button className={classes.buttonSave} onClick={handleSaveData}>
-										Guardar
-									</Button>
 								</form>
 							</div>
 						</Paper>

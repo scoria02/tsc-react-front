@@ -1,20 +1,15 @@
+//Material
+import { FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-//Material
-import { Select, TextField, FormControl, InputAdornment, InputLabel, MenuItem } from '@mui/material';
-
-//Styles
-import { useStylesModalUser, styledMui } from '../../styles';
-
-import { checkErrorInput } from '../validationForm';
-
+import { validationIdentDoc } from 'store/actions/auth';
 //Redux
-import { RootState } from '../../../../store/store';
-import { validationIdentDoc } from '../../../../store/actions/auth';
-
+import { RootState } from 'store/store';
 //Interfaces
 import { Interface_RegisterUser, Interface_RegisterUserError } from '../../interfaceAuth';
+//Styles
+import { styledMui, useStylesModalUser } from '../../styles';
+import { checkErrorInput } from '../validationForm';
 
 interface Props {
 	userForm: Interface_RegisterUser; //json

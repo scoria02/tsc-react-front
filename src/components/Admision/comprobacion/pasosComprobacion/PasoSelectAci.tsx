@@ -3,9 +3,9 @@ import { TextField } from '@mui/material';
 import { FC } from 'react';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { selectAci } from '../../../../store/actions/accept';
+import { selectAci } from 'store/actions/accept';
 //Url
-import { RootState } from '../../../../store/store';
+import { RootState } from 'store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 
