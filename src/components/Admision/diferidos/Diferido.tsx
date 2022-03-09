@@ -8,7 +8,7 @@ import { cleanDataFmDiferido, updateStatusFMDiferido } from 'store/actions/admis
 import { CloseModalDiferido } from 'store/actions/ui';
 import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
-import './scss/index.scss';
+import '../scss/index.scss';
 import StepActaConst from './StepActaConst';
 import StepDiferido from './StepDiferido';
 

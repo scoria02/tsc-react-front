@@ -1,30 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { Button, Step, StepLabel, Stepper } from '@mui/material';
+import DataListContext from 'context/DataList/DataListContext';
+import FMDataContext from 'context/FM/fmAdmision/FmContext';
+import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
+import LocationsContext from 'context/FM/Location/LocationsContext';
+import { SocketContext } from 'context/SocketContext';
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import DataListContext from '../../context/DataList/DataListContext';
-import FMDataContext from '../../context/FM/fmAdmision/FmContext';
-import ImagesFmContext from '../../context/FM/fmImages/ImagesFmContext';
-import LocationsContext from '../../context/FM/Location/LocationsContext';
-import { SocketContext } from '../../context/SocketContext';
-import { urlFM } from '../../routers/url';
-import { cleanFM, sendCompleteFM, sendCompleteFMExtraPos } from '../../store/actions/fm';
-import { StateFMInt } from '../../store/reducers/fmReducer';
+import { urlFM } from 'routers/url';
+import { cleanFM, sendCompleteFM, sendCompleteFMExtraPos } from 'store/actions/fm';
+import { StateFMInt } from 'store/reducers/fmReducer';
 //Redux
-import { RootState } from '../../store/store';
-import { stepError } from '../../utils/fm';
+import { RootState } from 'store/store';
+import Swal from 'sweetalert2';
+import { stepError } from 'utils/fm';
 import LoaderPrimary from '../loaders/LoaderPrimary';
 //steps
 import StepBase from './steps';
 import StepExtraPos from './steps/ExtraPos';
 import StepClient from './steps/StepClient';
-import StepReferencias from './steps/StepReferencias';
 import StepCommerce from './steps/StepCommerce';
 import StepLocationCCandPos from './steps/StepLocationCCandPos';
 import StepPos from './steps/StepPos';
+import StepReferencias from './steps/StepReferencias';
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
 

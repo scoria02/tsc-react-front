@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { Button, Step, StepButton, Stepper, Typography } from '@mui/material';
+import { SocketContext } from 'context/SocketContext';
 import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button, Step, StepButton, Stepper, Typography } from '@mui/material';
-import { SocketContext } from '../../context/SocketContext';
 import LoaderPrimary from '../loaders/LoaderPrimary';
-import { useStyles, sxStyled } from './styles/modalStep';
 import FullModal from './FullModal';
+import { sxStyled, useStyles } from './styles/modalStep';
 
 const ModalSteps: React.FC<any> = ({
 	clean,

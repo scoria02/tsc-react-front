@@ -1,3 +1,4 @@
+import { Aci, Activity, base, TypeWallet } from 'context/DataList/interface';
 import {
 	fmClient,
 	fmCommerce,
@@ -8,7 +9,6 @@ import {
 	IdClient_CommerceINT,
 } from 'interfaces/fm';
 import { Dispatch, SetStateAction } from 'react';
-import { Aci, Activity, base, TypeWallet } from '../../DataList/interface';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
 
 export interface ContextFM {

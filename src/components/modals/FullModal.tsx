@@ -1,14 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Dialog from '@material-ui/core/Dialog';
-import Slide from '@material-ui/core/Slide';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { TransitionProps } from '@material-ui/core/transitions';
-import React from 'react';
+import { Dialog, Slide, Theme } from '@mui/material';
+import { TransitionProps } from '@mui/material/transitions';
+import { createStyles, makeStyles } from '@mui/styles';
+import { FC, forwardRef, ReactElement, Ref } from 'react';
 import './scss/fullmodal.scss';
 
-const Transition = React.forwardRef(function Transition(
-	props: TransitionProps & { children?: React.ReactElement },
-	ref: React.Ref<unknown>
+const Transition = forwardRef(function Transition(
+	props: TransitionProps & { children: ReactElement },
+	ref: Ref<unknown>
 ) {
 	return <Slide direction='up' ref={ref} {...props} />;
 });
@@ -25,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-const FullModal: React.FC<any> = ({ modalOpen, handleClose, children }) => {
+const FullModal: FC<any> = ({ modalOpen, handleClose, children }) => {
 	const classes = useStyles();
 
 	return (

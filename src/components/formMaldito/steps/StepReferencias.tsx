@@ -1,10 +1,9 @@
 //Material
 
-import Select from '@material-ui/core/Select';
-import { InputAdornment, MenuItem, TextField } from '@mui/material';
+import { InputAdornment, MenuItem, Select, TextField } from '@mui/material';
 import classNames from 'classnames';
 import FMDataContext from 'context/FM/fmAdmision/FmContext';
-import React, { FC, useContext } from 'react';
+import { ChangeEvent, FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import { validInputString } from 'utils/fm';
@@ -21,19 +20,19 @@ const StepReferencias: FC = () => {
 
 	const codePhone = '58';
 
-	const handleChangePhone = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChangePhone = (event: ChangeEvent<HTMLInputElement>) => {
 		if (event.target.value !== '0') {
 			if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') handleChangeClient(event);
 		}
 	};
 
-	const handleIdentNum = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleIdentNum = (event: ChangeEvent<HTMLInputElement>) => {
 		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
 			handleChangeClient(event);
 		}
 	};
 
-	const handleChangeNameClient = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChangeNameClient = (event: ChangeEvent<HTMLInputElement>) => {
 		if (validInputString(event)) {
 			event.target.value = capitalizedFull(event.target.value);
 			handleChangeClient(event);

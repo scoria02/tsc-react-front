@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { createContext, useLayoutEffect, ReactChild, ReactChildren, useState } from 'react';
-
-import axios from '../../config';
-
-import { base, Activity, Products, Aci, TypeWallet, TeleMarket } from './interface';
+import axios from 'config';
+import { createContext, ReactChild, ReactChildren, useLayoutEffect, useState } from 'react';
+import { Aci, Activity, base, Products, TeleMarket, TypeWallet } from './interface';
 import { listRequestS, listTPay } from './state';
 
 interface Props {

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AxiosResponse } from 'axios';
+import useAxios, { axiosFiles } from 'config/index';
+import { Aci, Activity, TypeWallet } from 'context/DataList/interface';
+import { ImagesInt } from 'context/FM/fmImages/interface';
+import { LocationInt } from 'context/FM/Location/interfaces';
+import { fmClient, fmCommerce, fmPos, IdClient_CommerceINT } from 'interfaces/fm';
 import Swal from 'sweetalert2';
-import useAxios, { axiosFiles } from '../../config/index';
-import { Aci, Activity, TypeWallet } from '../../context/DataList/interface';
-import { ImagesInt } from '../../context/FM/fmImages/interface';
-import { LocationInt } from '../../context/FM/Location/interfaces';
-import { fmClient, fmCommerce, fmPos, IdClient_CommerceINT } from '../../interfaces/fm';
-import { daysToString } from '../../validation/validFm';
+import { daysToString } from 'validation/validFm';
 import { ActionType } from '../types/types';
 
 export const updateToken = (token: any) => {
