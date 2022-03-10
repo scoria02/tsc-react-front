@@ -1,27 +1,27 @@
-import { Select } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import Autocomplete from '@mui/lab/Autocomplete';
 import {
-	InputLabel,
+	Autocomplete,
 	Button,
 	Checkbox,
 	FormControl,
 	FormControlLabel,
 	FormGroup,
 	IconButton,
+	InputLabel,
 	MenuItem,
+	Select,
 	TextField,
 } from '@mui/material';
+import DataListContext from 'context/DataList/DataListContext';
+import { Activity } from 'context/DataList/interface';
+import FMDataContext from 'context/FM/fmAdmision/FmContext';
+import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
+import { Days } from 'interfaces/fm';
 import { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import DataListContext from '../../../context/DataList/DataListContext';
-import { Activity } from '../../../context/DataList/interface';
-import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
-import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
-import { Days } from '../../../interfaces/fm';
-import { validationCommerce } from '../../../store/actions/fm';
-import { RootState } from '../../../store/store';
-import { recaudo } from '../../utilis/recaudos';
+import { validationCommerce } from 'store/actions/fm';
+import { RootState } from 'store/store';
+import { recaudo } from 'utils/recaudos';
 import { sxStyled, useStylesFM } from '../styles';
 
 const StepCommerce: FC = () => {

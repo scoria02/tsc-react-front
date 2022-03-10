@@ -8,11 +8,11 @@ import {
 	GridToolbarFilterButton,
 	GridValueGetterParams,
 } from '@mui/x-data-grid';
+import { SocketContext } from 'context/SocketContext';
 import { DateTime } from 'luxon';
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SocketContext } from '../../../context/SocketContext';
-import { OpenModalDiferido } from '../../../store/actions/ui';
+import { OpenModalDiferido } from 'store/actions/ui';
 import { useStyles } from '../styles/styles';
 import Diferido from './Diferido';
 

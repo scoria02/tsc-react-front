@@ -11,10 +11,10 @@ import {
 	GridValueGetterParams,
 } from '@mui/x-data-grid';
 import classNames from 'classnames';
+import { CobranzaContext } from 'context/CobranzaContext';
 import { DateTime } from 'luxon';
 import { FC, useContext, useState } from 'react';
 import { useStyles } from '..';
-import { CobranzaContext } from '../../../context/CobranzaContext';
 
 export const columns: GridColDef[] = [
 	// {

@@ -1,24 +1,18 @@
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+//Material
+import { IconButton, InputAdornment, Snackbar, SnackbarContent, TextField, Typography } from '@mui/material';
+import Alert from 'components/alert/Alert1';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-//Material
-import { Typography, SnackbarContent, Snackbar, IconButton, InputAdornment, TextField } from '@mui/material';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Visibility from '@mui/icons-material/Visibility';
-
-import Alert from '../../../alert/Alert1';
-
+import { validationEmail } from 'store/actions/auth';
+//Redux
+import { RootState } from 'store/store';
+import { Interface_ErrorPass, Interface_RegisterUser, Interface_RegisterUserError } from '../../interfaceAuth';
+//Styles
+import { styledMui, useStylesModalUser } from '../../styles';
 //validation
 import { checkErrorInput } from '../validationForm';
-
-//Styles
-import { useStylesModalUser, styledMui } from '../../styles';
-
-//Redux
-import { RootState } from '../../../../store/store';
-import { validationEmail } from '../../../../store/actions/auth';
-
-import { Interface_RegisterUser, Interface_RegisterUserError, Interface_ErrorPass } from '../../interfaceAuth';
 
 interface Props {
 	userForm: Interface_RegisterUser; //json

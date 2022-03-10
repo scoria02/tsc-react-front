@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import ModalSteps from 'components/modals/ModalSteps';
+import { SocketContext } from 'context/SocketContext';
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { stepComplete } from 'store/actions/accept';
+import { cleanDataFmDiferido, updateStatusFMDiferido } from 'store/actions/admisionFm';
+import { CloseModalDiferido } from 'store/actions/ui';
+import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
-import { SocketContext } from '../../../context/SocketContext';
-import { stepComplete } from '../../../store/actions/accept';
-import { cleanDataFmDiferido, updateStatusFMDiferido } from '../../../store/actions/admisionFm';
-import { CloseModalDiferido } from '../../../store/actions/ui';
-import { RootState } from '../../../store/store';
-import ModalSteps from '../../modals/ModalSteps';
 import '../scss/index.scss';
 import StepActaConst from './StepActaConst';
 import StepDiferido from './StepDiferido';
@@ -23,8 +23,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 
 	const [deleteActa, setDeleteActa] = useState<any>([]);
 
-	useLayoutEffect(() => {
-	}, [])
+	useLayoutEffect(() => {}, []);
 
 	const [actaImages, setActaImages] = useState<any>([]);
 	const [actaPaths, setActaPaths] = useState<any>([]);
@@ -234,9 +233,9 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				for (const item of actaImages) {
 					formData.append('constitutive_act', item);
 				}
-				let text: string= '';
+				let text: string = '';
 				for (const item of deleteActa) {
-					if(item){
+					if (item) {
 						text = text + (text.length ? ',' : '') + item;
 					}
 				}

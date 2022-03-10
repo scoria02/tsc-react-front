@@ -41,11 +41,11 @@ export const ChartTorta = (col?: any, data?: any) => {
 			data={state}
 			className='canvas_prueba'
 			options={{
-				title: {
-					display: true,
-					text: '',
-					fontSize: 2,
-				},
+				// title: {
+				// 	display: true,
+				// 	text: '',
+				// 	fontSize: 2,
+				// },
 				responsive: true,
 			}}
 		/>

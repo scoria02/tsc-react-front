@@ -1,9 +1,9 @@
 import { AxiosResponse } from 'axios';
+import useAxios, { axiosFiles } from 'config/index';
 import Swal from 'sweetalert2';
-import useAxios, { axiosFiles } from '../../config/index';
 import { ActionType } from '../types/types';
-import { CloseModal, CloseModalDiferido } from './ui';
 import { cleanRec } from './accept';
+import { CloseModal, CloseModalDiferido } from './ui';
 
 export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
@@ -15,7 +15,7 @@ export const getDataFM = (fm: any) => {
 			//const res: AxiosResponse<any> = await useAxios.get(`/FM`);
 			//updateToken(res);
 			dispatch(requestSuccess(fm));
-		} catch (error) {
+		} catch (error: any) {
 			//console.log(error.response)
 			dispatch(CloseModal());
 			dispatch(requestError());
@@ -103,7 +103,7 @@ export const updateStatusFMDiferido = (id_fm: number, formData: any) => {
 			await axiosFiles.put(`/1000pagosRC/RC/admition/${id_fm}/diferidos`, formData);
 			//console.log('updateimg', res)
 			dispatch(requestSuccess());
-		} catch (error) {
+		} catch (error: any) {
 			//console.log(error.response)
 			dispatch(CloseModalDiferido());
 			dispatch(requestError());

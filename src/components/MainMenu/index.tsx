@@ -30,16 +30,16 @@ import {
 } from '@mui/material';
 // import WorkIcon from '@mui/icons-material/Work';
 import classNames from 'classnames';
+import Milpago from 'img/1000pagos_LogoBlue.png';
 import { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import Milpago from '../../img/1000pagos_LogoBlue.png';
-import { ApprouterContext } from '../../routers/AppRouter';
+import { ApprouterContext } from 'routers/AppRouter';
 //Redux
-import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, urlLogin, userAdmin } from '../../routers/url';
-import { refreshLogin, startLogout } from '../../store/actions/auth';
-import { FinishLoading } from '../../store/actions/ui';
-import { RootState } from '../../store/store';
+import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, urlLogin, userAdmin } from 'routers/url';
+import { refreshLogin, startLogout } from 'store/actions/auth';
+import { FinishLoading } from 'store/actions/ui';
+import { RootState } from 'store/store';
 import './index.scss';
 import useStyles from './styles';
 

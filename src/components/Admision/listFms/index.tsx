@@ -1,11 +1,11 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Grid, IconButton, InputBase, Paper, Typography } from '@mui/material';
+import AnimationModal from 'components/modals/AnimationModal';
+import { SocketContext } from 'context/SocketContext';
 import React, { useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SocketContext } from '../../../context/SocketContext';
-//import { SocketContext } from '../../../context/SocketContext';
-import { CloseModalListSolic } from '../../../store/actions/ui';
-import AnimationModal from '../../modals/AnimationModal';
+//import { SocketContext } from 'context/SocketContext';
+import { CloseModalListSolic } from 'store/actions/ui';
 import { useStyles } from './styles';
 
 const ListFms: React.FC = () => {

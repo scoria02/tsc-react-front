@@ -1,14 +1,14 @@
 import ImageIcon from '@mui/icons-material/Image';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { Avatar, Button, FormControlLabel, List, ListItem, ListItemText, Switch } from '@mui/material';
+import { ModalAlert } from 'components/modals/ModalAlert';
 import React, { useEffect } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { Valid } from '../../../../store/actions/accept';
+import { Valid } from 'store/actions/accept';
 //Url
-import { RootState } from '../../../../store/store';
-import { ModalAlert } from '../../../modals/ModalAlert';
+import { RootState } from 'store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 

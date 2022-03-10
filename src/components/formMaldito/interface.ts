@@ -1,4 +1,4 @@
-//import { ListLocation } from '../../context/Location/interfaces';
+//import { ListLocation } from 'context/Location/interfaces';
 
 /*
 export interface Location {

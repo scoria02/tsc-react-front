@@ -1,13 +1,13 @@
 import { FormControlLabel, Switch } from '@mui/material';
+import { ModalAlert } from 'components/modals/ModalAlert';
+import Rec from 'components/utilis/images/Rec';
 import React, { useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { Valid } from '../../../../store/actions/accept';
+import { Valid } from 'store/actions/accept';
 //Url
-import { RootState } from '../../../../store/store';
-import { ModalAlert } from '../../../modals/ModalAlert';
-import Rec from '../../../utilis/images/Rec';
+import { RootState } from 'store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 

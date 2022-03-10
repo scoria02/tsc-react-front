@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
+import useAxios from 'config';
+import { baseUrl, urlLogin } from 'routers/url';
 import Swal from 'sweetalert2';
-import useAxios from '../../config';
-import { baseUrl, urlLogin } from '../../routers/url';
 import { ActionType } from '../types/types';
 import { StartLoading } from './ui';
 
@@ -25,7 +25,7 @@ export const startLogin = (email: any, password: any, history?: any) => {
 			history?.push(baseUrl);
 			dispatch(StartLoading());
 			Swal.fire('¡Éxito!', res.data.message, 'success');
-		} catch (error) {
+		} catch (error: any) {
 			Swal.fire('Error', error.response.data.message, 'error');
 			dispatch(requestError());
 		}

@@ -2,12 +2,12 @@
 import Autocomplete from '@mui/lab/Autocomplete';
 import { TextField } from '@mui/material';
 import classnames from 'classnames';
+import FMDataContext from 'context/FM/fmAdmision/FmContext';
+import { Ciudad, Estado, Municipio, Parroquia } from 'context/FM/Location/interfaces';
+import LocationsContext from 'context/FM/Location/LocationsContext';
 import React, { FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
-import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
-import { Ciudad, Estado, Municipio, Parroquia } from '../../../context/FM/Location/interfaces';
-import LocationsContext from '../../../context/FM/Location/LocationsContext';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store/store';
 import { sxStyled, useStylesFM } from '../styles';
 
 const StepLocationCCandPos: FC = () => {

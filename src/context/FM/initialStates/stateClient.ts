@@ -1,4 +1,4 @@
-import { fmClient, fmError_ClientINT } from '../../../interfaces/fm';
+import { fmClient, fmError_ClientINT } from 'interfaces/fm';
 
 /*
 export const initFmClient: fmClient = {

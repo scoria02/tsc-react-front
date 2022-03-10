@@ -1,16 +1,14 @@
 /* eslint-disable no-unused-vars */
+import axios from 'config';
 import {
 	createContext,
-	useLayoutEffect,
+	Dispatch,
 	ReactChild,
 	ReactChildren,
-	useState,
-	Dispatch,
 	SetStateAction,
+	useLayoutEffect,
+	useState,
 } from 'react';
-
-import axios from '../../../config';
-
 import { Estado, ListLocation } from './interfaces';
 
 interface Props {

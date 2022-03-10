@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
+import useAxios from 'config/index';
 import Swal from 'sweetalert2';
-import useAxios from '../../config/index';
 import { ActionType } from '../types/types';
 
 export const updateToken = (token: any) => {
@@ -37,15 +37,15 @@ export const updateStatusFMAdministration = (id_fm: number, id_statusFMAd: numbe
 	const data = {
 		...newP,
 		id_status_request: id_statusFMAd,
-	}
+	};
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.put(`/FM/administration/${id_fm}/status`, data);
-			console.log(res)
+			console.log(res);
 			updateToken(res);
 			dispatch(requestSuccess(id_statusFMAd));
-		} catch (error) {
-			console.log(error.response)
+		} catch (error: any) {
+			console.log(error.response);
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
@@ -53,7 +53,7 @@ export const updateStatusFMAdministration = (id_fm: number, id_statusFMAd: numbe
 	function requestSuccess(status: number) {
 		return {
 			type: ActionType.updateStatusFMAdministration,
-			payload: status
+			payload: status,
 		};
 	}
 	function requestError() {
@@ -62,7 +62,6 @@ export const updateStatusFMAdministration = (id_fm: number, id_statusFMAd: numbe
 		};
 	}
 };
-
 
 export const cleanAdmisionFMAdministration = () => {
 	return async (dispatch: any) => {
@@ -73,4 +72,4 @@ export const cleanAdmisionFMAdministration = () => {
 			type: ActionType.cleanDataFMAdministration,
 		};
 	}
-}
+};

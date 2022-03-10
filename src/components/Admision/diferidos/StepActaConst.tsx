@@ -5,7 +5,7 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { Avatar, Button, IconButton, List, ListItem, ListItemText } from '@mui/material';
 import React from 'react';
 import Swal from 'sweetalert2';
-import { recaudo } from '../../utilis/recaudos';
+import { recaudo } from 'utils/recaudos';
 import '../comprobacion/pasosComprobacion/styles/pasos.scss';
 import '../scss/index.scss';
 //Url

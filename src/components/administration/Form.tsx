@@ -9,10 +9,10 @@ import TextField from '@mui/material/TextField';
 import { FC, useEffect, useState } from 'react';
 //Redux
 import { useDispatch } from 'react-redux';
+import { updateStatusFMAdministration } from 'store/actions/administration';
 import Swal from 'sweetalert2';
-import { updateStatusFMAdministration } from '../../store/actions/administration';
+import { recaudo } from 'utils/recaudos';
 import Rec from '../utilis/images/Rec';
-import { recaudo } from '../utilis/recaudos';
 //Url
 import './styles/index.scss';
 import { sxStyled, useStyles } from './styles/styles';

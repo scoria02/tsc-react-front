@@ -1,4 +1,4 @@
-import { fmCommerce, fmError_CommerceINT } from '../../../interfaces/fm';
+import { fmCommerce, fmError_CommerceINT } from 'interfaces/fm';
 import { daysWork } from './states';
 
 /*

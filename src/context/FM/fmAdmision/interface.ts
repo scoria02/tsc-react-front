@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction } from 'react';
+import { Aci, Activity, base, TypeWallet } from 'context/DataList/interface';
 import {
 	fmClient,
 	fmCommerce,
@@ -7,10 +7,9 @@ import {
 	fmError_Interface,
 	fmPos,
 	IdClient_CommerceINT,
-} from '../../../interfaces/fm';
+} from 'interfaces/fm';
+import { Dispatch, SetStateAction } from 'react';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
-import { Aci, Activity, base, TypeWallet } from '../../DataList/interface';
-import { SelectChangeEvent } from '@mui/material';
 
 export interface ContextFM {
 	typeSolict: number;

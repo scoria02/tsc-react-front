@@ -10,15 +10,15 @@ import {
 	TextField,
 } from '@mui/material';
 import classNames from 'classnames';
+import DataListContext from 'context/DataList/DataListContext';
+import { Aci, TeleMarket, TypeWallet } from 'context/DataList/interface';
+import FMDataContext from 'context/FM/fmAdmision/FmContext';
+import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import DataListContext from '../../../context/DataList/DataListContext';
-import { Aci, TeleMarket, TypeWallet } from '../../../context/DataList/interface';
-import FMDataContext from '../../../context/FM/fmAdmision/FmContext';
-import ImagesFmContext from '../../../context/FM/fmImages/ImagesFmContext';
-import { validationNumBank } from '../../../store/actions/fm';
-import { RootState } from '../../../store/store';
-import { recaudo } from '../../utilis/recaudos';
+import { validationNumBank } from 'store/actions/fm';
+import { RootState } from 'store/store';
+import { recaudo } from 'utils/recaudos';
 import { sxStyled, useStylesFM } from '../styles';
 
 //Pedido

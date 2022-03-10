@@ -3,8 +3,8 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { Tab, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { CobranzaContext } from 'context/CobranzaContext';
 import { FC, useState } from 'react';
-import { CobranzaContext } from '../../context/CobranzaContext';
 import Completed from './views/Completed';
 import Pending from './views/Pending';
 

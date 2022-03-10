@@ -1,6 +1,6 @@
-import { Aci, Activity, TypeWallet } from '../../context/DataList/interface';
-import { ImagesInt } from '../../context/FM/fmImages/interface';
-import { LocationInt } from '../../context/FM/Location/interfaces';
+import { Aci, Activity, TypeWallet } from 'context/DataList/interface';
+import { ImagesInt } from 'context/FM/fmImages/interface';
+import { LocationInt } from 'context/FM/Location/interfaces';
 import {
 	fmClient,
 	fmCommerce,
@@ -8,7 +8,7 @@ import {
 	fmError_CommerceINT,
 	fmError_Interface,
 	fmPos,
-} from '../../interfaces/fm';
+} from 'interfaces/fm';
 
 export const validEmail = (value: string): boolean => {
 	let validatedEmail = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i.test(value);

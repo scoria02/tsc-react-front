@@ -1,4 +1,5 @@
-import React, { createContext, useState, ReactChild, Dispatch, SetStateAction, useEffect } from 'react';
+import useAxios from 'config';
+import { Aci, Activity, base, TypeWallet } from 'context/DataList/interface';
 import {
 	fmClient,
 	fmCommerce,
@@ -7,20 +8,16 @@ import {
 	fmError_Interface,
 	fmPos,
 	IdClient_CommerceINT,
-} from '../../../interfaces/fm';
-
-import useAxios from '../../../config';
-
-import { initFmPos } from '../initialStates/statePos';
+} from 'interfaces/fm';
+import React, { createContext, Dispatch, ReactChild, SetStateAction, useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+import { validateFormClient, validateFormCommerce } from 'validation/validFm';
 import { fmErrorClient, initFmClient } from '../initialStates/stateClient';
 import { fmErrorCommerce, initFmCommerce } from '../initialStates/stateCommerce';
-
+import { initFmPos } from '../initialStates/statePos';
 import { fmErrorFormat, initLocation } from '../initialStates/states';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
 import { ContextFM } from './interface';
-import { base, Activity, Aci, TypeWallet } from '../../DataList/interface';
-import Swal from 'sweetalert2';
-import { validateFormClient, validateFormCommerce } from '../../../validation/validFm';
 
 interface Props {
 	children: ReactChild;
