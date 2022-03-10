@@ -317,7 +317,7 @@ const StepPos: FC = () => {
 						)}
 					/>
 				) : (
-					pos.request_origin?.id === 6 && (
+					pos.request_origin?.id === 5 && (
 						<Autocomplete
 							// className='btn_step btn_medio'
 							style={{ width: '50%' }}
@@ -334,6 +334,26 @@ const StepPos: FC = () => {
 							)}
 						/>
 					)
+				)}
+				{pos.request_origin?.id === 6 && (
+					<TextField
+						className={classes.inputText}
+						style={{ width: '50%' }}
+						variant='outlined'
+						required
+						id='standard-required'
+						label='Numero de Cédula'
+						name='reqSource_docnum'
+						onChange={handleChangeReferido}
+						inputProps={{
+							maxLength: 9,
+						}}
+						value={pos.reqSource_docnum}
+						InputProps={{
+							startAdornment: <InputAdornment position='start'>V</InputAdornment>,
+						}}
+						error={errorsFm.reqSource_docnum}
+					/>
 				)}
 			</div>
 			<div className={classes.input}>
