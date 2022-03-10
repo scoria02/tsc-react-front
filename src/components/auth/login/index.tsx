@@ -4,7 +4,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { startLogin } from 'store/actions/auth';
 import AuthModal from '../AuthModal';
 import { styledMui, useStylesModalUser } from '../styles';
