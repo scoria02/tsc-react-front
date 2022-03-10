@@ -155,7 +155,9 @@ export const inputNotNull = (last: number, form: fmClient | fmCommerce | fmPos):
 		}
 		index++;
 		if (typeof item[1] === 'string' && item[1].trim() === '') {
-			return true;
+			if (item[0] !== 'phone2') {
+				return true;
+			}
 		} else if (typeof item[1] === 'number' && item[1] === 0) {
 			return true;
 		}
