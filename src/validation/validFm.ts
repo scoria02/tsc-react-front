@@ -300,7 +300,8 @@ export const validateFormClient = (
 			if (client.phone2 !== '') temp.phone2 = validPhone2(client.phone2, value as string);
 			break;
 		case 'phone2':
-			temp.phone2 = validPhone2(value as string, client.phone1);
+			if (value !== '') temp.phone2 = validPhone2(value as string, client.phone1);
+			else temp.phone2 = false;
 			break;
 		case 'phone_ref1':
 			temp.phone_ref1 = validPhone(value as string);
