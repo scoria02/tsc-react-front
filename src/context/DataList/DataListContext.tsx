@@ -2,7 +2,6 @@
 import axios from 'config';
 import { createContext, ReactChild, ReactChildren, useLayoutEffect, useState } from 'react';
 import { Aci, Activity, base, Products, TeleMarket, TypeWallet } from './interface';
-import { listRequestS, listTPay } from './state';
 
 interface Props {
 	children: ReactChild | ReactChildren;
@@ -40,9 +39,9 @@ export const DataListProvider = ({ children }: Props) => {
 	const [listPayment, setListPayment] = useState<base[]>([]);
 	const [listModelPos, setListModelPos] = useState<Products[]>([]);
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [listTypePay, setListTypePay] = useState<base[]>(listTPay);
+	const [listTypePay, setListTypePay] = useState<base[]>([]);
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [listRequestSource, setListRequestSource] = useState<base[]>(listRequestS);
+	const [listRequestSource, setListRequestSource] = useState<base[]>([]);
 	const [listAci, setListAci] = useState<Aci[]>([]);
 	const [listTypesSolicts, setListTypesSolicts] = useState<base[]>([]);
 	const [listWalletType, setListWalletType] = useState<TypeWallet[]>([]);
@@ -76,6 +75,8 @@ export const DataListProvider = ({ children }: Props) => {
 		setListTypesSolicts(array[5].data.info);
 		setListWalletType(array[6].data.info);
 		setListTeleMarket(array[7].data.info);
+		setListTypePay(array[8].data.info);
+		setListRequestSource(array[9].data.info);
 	};
 
 	useLayoutEffect(() => {
@@ -88,6 +89,8 @@ export const DataListProvider = ({ children }: Props) => {
 			`/types_solict`,
 			`/tipo_de_carteras`,
 			`/telemarket`,
+			`/type_pay`,
+			`/request_source`,
 		];
 		getters(routes)
 			.then((responses) => {
