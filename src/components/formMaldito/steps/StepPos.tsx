@@ -437,7 +437,7 @@ const StepPos: FC = () => {
 			<div
 				className={classes.input}
 				style={{
-					opacity: pos.pagadero || pos.payment_method?.id === 2 ? 0 : 1,
+					visibility: pos.pagadero || pos.payment_method?.id === 2 ? 'hidden' : 'visible',
 				}}>
 				<div className={classNames(classes.row, classes.inputTextLeft)}>
 					<b className={classes.labels}>Comprobante de pago</b>
