@@ -1,6 +1,6 @@
 //Material
 
-import { InputAdornment, MenuItem, Select, TextField } from '@mui/material';
+import { FormControl, InputAdornment, MenuItem, Select, TextField } from '@mui/material';
 import classNames from 'classnames';
 import FMDataContext from 'context/FM/fmAdmision/FmContext';
 import { ChangeEvent, FC, useContext } from 'react';
@@ -73,15 +73,17 @@ const StepReferencias: FC = () => {
 					InputProps={{
 						startAdornment: fm.mashClient ? null : (
 							<InputAdornment position='start'>
-								<Select
-									onChange={(event: any) => handleSelectIdentClient('doc_ident_type_ref1', event.target.value)}
-									name='doc_ident_type_ref1'
-									value={client.doc_ident_type_ref1}
-									label='Tipo'>
-									<MenuItem value='V'>V</MenuItem>
-									<MenuItem value='J'>J</MenuItem>
-									<MenuItem value='P'>P</MenuItem>
-								</Select>
+								<FormControl variant='standard'>
+									<Select
+										onChange={(event: any) => handleSelectIdentClient('doc_ident_type_ref1', event.target.value)}
+										name='doc_ident_type_ref1'
+										value={client.doc_ident_type_ref1}
+										label='Tipo'>
+										<MenuItem value='V'>V</MenuItem>
+										<MenuItem value='J'>J</MenuItem>
+										<MenuItem value='P'>P</MenuItem>
+									</Select>
+								</FormControl>
 							</InputAdornment>
 						),
 					}}
@@ -137,15 +139,17 @@ const StepReferencias: FC = () => {
 					InputProps={{
 						startAdornment: fm.mashClient ? null : (
 							<InputAdornment position='start'>
-								<Select
-									onChange={(event: any) => handleSelectIdentClient('doc_ident_type_ref2', event.target.value)}
-									name='doc_ident_type_ref2'
-									value={client.doc_ident_type_ref2}
-									label='Tipo'>
-									<MenuItem value='V'>V</MenuItem>
-									<MenuItem value='J'>J</MenuItem>
-									<MenuItem value='P'>P</MenuItem>
-								</Select>
+								<FormControl variant='standard'>
+									<Select
+										onChange={(event: any) => handleSelectIdentClient('doc_ident_type_ref2', event.target.value)}
+										name='doc_ident_type_ref2'
+										value={client.doc_ident_type_ref2}
+										label='Tipo'>
+										<MenuItem value='V'>V</MenuItem>
+										<MenuItem value='J'>J</MenuItem>
+										<MenuItem value='P'>P</MenuItem>
+									</Select>
+								</FormControl>
 							</InputAdornment>
 						),
 					}}
