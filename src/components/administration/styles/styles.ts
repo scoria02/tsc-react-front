@@ -97,4 +97,7 @@ export const sxStyled = {
 		width: '115px',
 		alignSelf: 'center',
 	}),
+	textfieldLeft: {
+		marginRight: '8px',
+	},
 };
