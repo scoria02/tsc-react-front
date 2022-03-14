@@ -50,7 +50,7 @@ const ModalSteps: React.FC<any> = ({
 
 	const handleClose = () => {
 		socket.emit('cliente:disconnect');
-		console.log('clean for close');
+		// console.log('clean for close');
 		dispatch(CloseModal());
 		dispatch(clean());
 	};

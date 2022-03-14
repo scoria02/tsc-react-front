@@ -103,7 +103,7 @@ const Diferidos: React.FC = () => {
 	const handleRow = (event: any) => {
 		//setRowSelect(null);
 		socket.emit('Editar_diferido', event.row.id, (res: any) => {
-			console.log('editar este', res);
+			// console.log('editar este', res);
 			setRowSelect({
 				...res,
 				id: event.row.id,

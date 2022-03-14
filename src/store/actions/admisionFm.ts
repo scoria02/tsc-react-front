@@ -85,7 +85,7 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any, aci: num
 
 export const cleanAdmisionFM = () => {
 	return async (dispatch: any) => {
-		console.log('Clean data FM & accept');
+		// console.log('Clean data FM & accept');
 		dispatch(cleanRec());
 		dispatch(CloseModal());
 		dispatch(request());

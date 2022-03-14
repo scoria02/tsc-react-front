@@ -104,7 +104,7 @@ const Comprobacion: FC = () => {
 				});
 			});
 		} else if (getDataControl === 1) {
-			console.log('Get list Acis');
+			// console.log('Get list Acis');
 			setGetDataControl(2);
 		}
 	}, [getDataControl]);
