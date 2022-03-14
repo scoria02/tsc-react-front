@@ -70,45 +70,31 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 			//console.log('E3', todo)
 			setTodoTodos(todo);
 		});
-
-		/*
-		socket.emit('cliente:Todos', user, (todo: any) => {
-			//console.log('save 0', todo);
-		});
-		socket.emit('cliente:dashdata', user, (data: any) => {
-			if (Object.keys(data).length) {
-				//console.log('save 1', data);
-				setChartData(data);
-				setTodo(data);
-			}
-		}); */
-		// socket.emit('cliente:loadDiferidos');
-		// socket.emit('cliente:dashdatasiempre');
-		// socket.on('server:dashdata', (data: any) => {
-		// 	if (Object.keys(data).length) {
-		// 		//console.log('save 2', data);
-		// 		setChartData(data);
-		// 		setTodo(data);
-		// 	}
-		// });
-		/*
-		socket.on('server:prueba', (data: any) => {
-			console.log('aldrin res', data)
-		})
-		 */
 	}, [socket, user]);
 
 	const [selectModal, setSelectModal] = useState<boolean>(false);
 
 	const handleClick = () => {
-		console.log('cliick');
 		if (!selectModal) {
-			setSelectModal(true);
-			socket.emit('Trabanjando_Solic', user);
-			let index = 0;
-			socket.on('server:Trabanjando_Solic', (data: any) => {
-				index++;
-				console.log('solic', index, data);
+			socket.emit('client:atrabajar', user);
+			// let index = 0;
+			socket.on('server:atrabajar', (data: any) => {
+				// console.log('solic', index, data);
+				// Si la respuesta del socket es 400 es que no hay data
+				if (data.code === 400) {
+					setSelectModal(false);
+					Swal.fire({
+						icon: 'warning',
+						title: 'No hay Formularios en espera',
+						customClass: { container: 'swal2-validated' },
+						showConfirmButton: false,
+						timer: 2500,
+					});
+					return;
+				}
+
+				setSelectModal(true);
+				// index++;
 				if (data?.status === true) {
 					Swal.fire({
 						icon: 'warning',
