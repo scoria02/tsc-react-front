@@ -6,7 +6,7 @@ import Autocomplete from '@mui/lab/Autocomplete';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useLayoutEffect, useState } from 'react';
 //Redux
 import { useDispatch } from 'react-redux';
 import { updateStatusFMAdministration } from 'store/actions/administration';
@@ -176,7 +176,9 @@ export const Form: FC<any> = ({
 		}
 	}, [payment]);
 
-	console.log(fm);
+	useLayoutEffect(() => {
+		console.log('form admin', fm);
+	}, []);
 
 	return (
 		<>
@@ -188,7 +190,8 @@ export const Form: FC<any> = ({
 					<div className={classes.row}>
 						{fm.pagadero ? (
 							<Autocomplete
-								className={classes.textAutoCompleteLeft}
+								// className={classes.textAutoCompleteLeft}
+								sx={sxStyled.textAutoCompleteLeft}
 								onChange={(event, value) => handleSelectPayment(event, value)}
 								options={listPayment}
 								value={payment}
@@ -206,7 +209,8 @@ export const Form: FC<any> = ({
 							/>
 						) : (
 							<TextField
-								className={classes.textfieldLeft}
+								sx={sxStyled.textfieldLeft}
+								// className={classes.textfieldLeft}
 								id='outlined-basic'
 								label='Metodo de Pago'
 								variant='outlined'
@@ -215,7 +219,7 @@ export const Form: FC<any> = ({
 						)}
 						{fm?.pagadero ? (
 							<Autocomplete
-								className={classes.textAutoCompleteLeft}
+								sx={sxStyled.textAutoCompleteLeft}
 								onChange={(event, value) => handleSelectTypePay(event, value)} //arreglar (es nesario usar event y value??)
 								options={listTypePay}
 								value={typePay || null}
@@ -233,7 +237,7 @@ export const Form: FC<any> = ({
 							/>
 						) : (
 							<TextField
-								className={classes.textfieldLeft}
+								sx={sxStyled.textfieldLeft}
 								id='outlined-basic'
 								label='Tipo de Pago'
 								variant='outlined'
@@ -269,7 +273,7 @@ export const Form: FC<any> = ({
 									disabled
 									id='initial'
 									label='Cantidad de cuotas'
-									sx={sxStyled.textAutoCompleteLeft}
+									// sx={sxStyled.textAutoCompleteLeft}
 									type='text'
 									variant='outlined'
 									value={cuotasTexto}
