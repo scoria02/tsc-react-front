@@ -1,10 +1,11 @@
 //modal
 
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutlineSharp';
-import { Button, TextareaAutosize } from '@mui/material';
+import { Button, FormControlLabel } from '@mui/material';
 import AnimationModal from './AnimationModal';
 import './scss/modalAlert.scss';
 import { useStylesModalAlert } from './styles';
+import Checkbox from '@mui/material/Checkbox';
 
 interface Props {
 	openModal: any;
@@ -36,15 +37,23 @@ export const ModalAlert: React.FC<Props> = ({
 								Indique claramente las razones por la cual el recaudo NO se validó, este mensaje sera enviado por
 								correo al cliente.
 							</p>
+							<FormControlLabel control={<Checkbox defaultChecked />} label='Enviar al cliente' />
 						</div>
-						<textarea className={classes.textareaAlert} name='msg' value={state.msg} onChange={handleChangeI} />
+						<textarea
+							className={classes.textareaAlert}
+							name='msg'
+							value={state.msg}
+							onChange={handleChangeI}
+							placeholder='Ej: la imagen...'
+						/>
+						{/*}
 						<TextareaAutosize
 							className={classes.textareaAlert}
 							value={state.msg}
 							onChange={handleChangeI}
 							aria-label='minimum height'
-							placeholder='Ej: la imagen...'
 						/>
+						*/}
 					</div>
 				</div>
 				<div className={classes.containerBtn}>

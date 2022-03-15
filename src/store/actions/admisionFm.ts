@@ -49,6 +49,7 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any, aci: num
 			//step4
 			valid_constitutive_act: accept.rc_constitutive_act.msg,
 			valid_special_contributor: accept.rc_special_contributor.msg,
+			valid_planilla: accept.rc_planilla.msg,
 			valid_comp_dep: accept.rc_comp_dep.msg,
 		},
 	};

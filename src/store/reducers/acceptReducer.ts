@@ -3,71 +3,71 @@ import { ActionType } from '../types/types';
 interface inState {
 	stepComplete: any[];
 	validado: {
-		//step1
 		rc_ident_card: {
-			status: boolean,
-			msg: string
+			status: boolean;
+			msg: string;
 		};
-		//step2
 		rc_rif: {
-			status: boolean,
-			msg: string
+			status: boolean;
+			msg: string;
 		};
-		//step3
 		rc_ref_bank: {
-			status: boolean,
-			msg: string
+			status: boolean;
+			msg: string;
 		};
-		//step4
+		rc_planilla: {
+			status: boolean;
+			msg: string;
+		};
 		rc_constitutive_act: {
-			status: boolean,
-			msg: string
+			status: boolean;
+			msg: string;
 		};
 		rc_special_contributor: {
-			status: boolean,
-			msg: string
+			status: boolean;
+			msg: string;
 		};
 		rc_comp_dep: {
-			status: boolean,
-			msg: string
+			status: boolean;
+			msg: string;
 		};
 		contrubuyente: number;
 		localFrente: boolean;
 		localDentro: boolean;
 	};
-	aci: boolean,
+	aci: boolean;
 }
 
 const initialState: inState = {
 	stepComplete: [],
 	validado: {
-		//step1
 		rc_ident_card: {
 			status: true,
-			msg: ''
+			msg: '',
 		},
-		//step2
 		rc_rif: {
 			status: true,
-			msg: ''
-		}, 
-		//step3
+			msg: '',
+		},
 		rc_ref_bank: {
 			status: true,
-			msg: ''
+			msg: '',
 		},
-		//step4
+		rc_planilla: {
+			status: true,
+			msg: '',
+		},
 		rc_constitutive_act: {
 			status: true,
-			msg: ''
+			msg: '',
 		},
 		rc_special_contributor: {
 			status: true,
-			msg: ''
-		}, 
+			msg: '',
+		},
 		rc_comp_dep: {
 			status: true,
-			msg: ''
+			msg: '',
 		},
 		contrubuyente: 0,
 		localFrente: false,
@@ -89,14 +89,14 @@ export const acceptReducer = (state = initialState, action: any) => {
 				...state,
 				validado: {
 					...state.validado,
-					...action.payload
-				}
+					...action.payload,
+				},
 			};
 		case ActionType.acceptAci: {
 			return {
 				...state,
-					aci: action.payload,
-			}
+				aci: action.payload,
+			};
 		}
 		//Register User
 		case ActionType.registerUser:
