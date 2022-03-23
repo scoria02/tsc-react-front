@@ -1,6 +1,6 @@
 import { FormControlLabel, Switch, TextField } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
-import Rec from 'components/utilis/images/Rec';
+import RecPdf from 'components/utilis/images/RecPdf';
 import React, { useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -84,7 +84,7 @@ export default function PasoPaymentReceipt() {
 					/>
 				</div>
 			</form>
-			<Rec load={load} setLoad={setLoad} imagen={imagen} />
+			<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 			<ModalAlert
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}

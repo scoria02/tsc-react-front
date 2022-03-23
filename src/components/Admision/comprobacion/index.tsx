@@ -91,7 +91,7 @@ const Comprobacion: FC = () => {
 	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatus);
 	const id_statusFM: any = useSelector((state: RootState) => state.fmAdmision.id_statusFM);
 
-	console.log('actual fm', fm);
+	//console.log('actual fm', fm);
 
 	//states
 	const [activeStep, setActiveStep] = useState(0);
@@ -179,7 +179,8 @@ const Comprobacion: FC = () => {
 	useEffect(() => {
 		if (id_statusFM !== 0 && updatedStatus) {
 			const idStatus = id_statusFM;
-			socket.emit('cliente:cleansolic');
+			//socket.emit('cliente:cleansolic');
+			socket.emit('cliente:disconnect');
 			if (idStatus === 3) {
 				socket.emit('cliente:loadAdministracionTodos');
 			}

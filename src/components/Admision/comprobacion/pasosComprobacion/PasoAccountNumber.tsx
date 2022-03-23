@@ -1,6 +1,6 @@
 import { FormControlLabel, Switch, TextField } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
-import Rec from 'components/utilis/images/Rec';
+import RecPdf from 'components/utilis/images/RecPdf';
 import React, { useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
@@ -91,7 +91,7 @@ export default function PasoAccountNumber() {
 						label={state.status ? 'Correcto' : 'Incorrecto'}
 					/>
 				</div>
-				<Rec load={load} setLoad={setLoad} imagen={imagen} />
+				<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 			</form>
 			<ModalAlert
 				openModal={openModal}

@@ -105,6 +105,7 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 					});
 					setSelectModal(false);
 				} else {
+					console.log('fm', data);
 					dispatch(getDataFM(data));
 					if (data.length === 0) {
 						setSelectModal(false);
