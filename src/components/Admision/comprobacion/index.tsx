@@ -180,7 +180,6 @@ const Comprobacion: FC = () => {
 		if (id_statusFM !== 0 && updatedStatus) {
 			const idStatus = id_statusFM;
 			//socket.emit('cliente:cleansolic');
-			socket.emit('cliente:disconnect');
 			if (idStatus === 3) {
 				socket.emit('cliente:loadAdministracionTodos');
 			}
@@ -191,6 +190,7 @@ const Comprobacion: FC = () => {
 				showConfirmButton: false,
 				timer: 1500,
 			});
+			socket.emit('cliente:disconnect');
 			dispatch(cleanAdmisionFM());
 		}
 	}, [id_statusFM, updatedStatus]);
