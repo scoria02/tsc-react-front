@@ -116,7 +116,7 @@ const columns: GridColDef[] = [
 	{
 		field: 'id_request',
 		headerName: 'Cod.',
-		width: 60, //120,
+		width: 80,
 		editable: false,
 		sortable: false,
 		valueGetter: (value: GridValueGetterParams) => value.row?.id_request.code,
@@ -124,14 +124,14 @@ const columns: GridColDef[] = [
 	{
 		field: 'name_commerce',
 		headerName: 'Comercio',
-		width: 160,
+		width: 180,
 		valueGetter: (value: GridValueGetterParams) => value.row?.id_request.id_commerce.name,
 		sortable: false,
 	},
 	{
 		field: 'name_client',
 		headerName: 'Cliente',
-		width: 160,
+		width: 180,
 		valueGetter: (value: GridValueGetterParams) =>
 			`${value.row?.id_request.id_client.name} ${value.row?.id_request.id_client.last_name}`,
 		sortable: false,
@@ -139,7 +139,7 @@ const columns: GridColDef[] = [
 	{
 		field: 'pagadero',
 		headerName: 'Paga Despues',
-		width: 150,
+		width: 110,
 		editable: false,
 		sortable: false,
 		valueGetter: (value: GridValueGetterParams) => (value.row?.id_request.pagadero ? 'Si' : 'No'),
@@ -216,11 +216,9 @@ const Administracion: FC<AdministracionProp> = () => {
 	}, [administration.updatedStatusAd]);
 
 	//socket io (todos)
-	useEffect(() => {
-		socket.on('server:loadAdministracion', (data: any) => {
-			setRowsAd(data);
-		});
-	}, [socket]);
+	socket.on('server:loadAdministracion', (data: any) => {
+		setRowsAd(data);
+	});
 
 	useEffect(() => {
 		//Get Type Doc Ident
@@ -235,7 +233,8 @@ const Administracion: FC<AdministracionProp> = () => {
 					});
 				});
 			}
-		} else if (getDataControl === 1) {
+		}
+		if (getDataControl === 1) {
 		}
 	}, [getDataControl]);
 
@@ -247,8 +246,6 @@ const Administracion: FC<AdministracionProp> = () => {
 		//dispatch(getDataFMAdministration());
 		socket.emit('cliente:loadAdministracion');
 	}, []);
-
-	console.log(selected);
 
 	return (
 		<>
@@ -269,35 +266,28 @@ const Administracion: FC<AdministracionProp> = () => {
 						})
 					}
 				/>
-				{/* {!rowsAd.length ? (
-					<LoaderPrimary />
-				) : (
-					)
-				} */}
 				{selected && (
 					<>
-						<Paper variant='outlined' elevation={3} className={classes.view}>
+						<Paper variant='outlined' className={classes.view}>
 							<Button sx={sxStyled.closeBtn} onClick={handleCloseRow}>
 								<CloseIcon />
 							</Button>
-							{selected && getDataControl === 1 && (
-								<Form
-									fm={rowSelected}
-									setFm={setRowSelect}
-									uploadImg={uploadImg}
-									nameImg={nameImg}
-									setUploadImg={setUploadImg}
-									setNameImage={setNameImage}
-									payment={payment}
-									setPayment={setPayment}
-									listPayment={listPayment}
-									typePay={typePay}
-									setTypePay={setTypePay}
-									listTypePay={listTypePay}
-									path={path}
-									setPath={setPath}
-								/>
-							)}
+							<Form
+								fm={rowSelected}
+								setFm={setRowSelect}
+								uploadImg={uploadImg}
+								nameImg={nameImg}
+								setUploadImg={setUploadImg}
+								setNameImage={setNameImage}
+								payment={payment}
+								setPayment={setPayment}
+								listPayment={listPayment}
+								typePay={typePay}
+								setTypePay={setTypePay}
+								listTypePay={listTypePay}
+								path={path}
+								setPath={setPath}
+							/>
 						</Paper>
 					</>
 				)}
