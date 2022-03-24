@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import ModalSteps from 'components/modals/ModalSteps';
 import { SocketContext } from 'context/SocketContext';
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { stepComplete } from 'store/actions/accept';
 import { cleanDataFmDiferido, updateStatusFMDiferido } from 'store/actions/admisionFm';
@@ -17,16 +17,19 @@ const Diferido: React.FC<any> = ({ fm }) => {
 
 	const { id, id_valid_request, ...recaudos } = fm;
 
+	console.log(fm);
+
 	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
 
 	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
 
 	const [deleteActa, setDeleteActa] = useState<any>([]);
 
-	useLayoutEffect(() => {}, []);
-
 	const [actaImages, setActaImages] = useState<any>([]);
 	const [actaPaths, setActaPaths] = useState<any>([]);
+
+	//const [planillas, setPlanilla] = useState<any>([]);
+	//const [planillasPath, setPlanillaPaths] = useState<any>([]);
 
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [completed, setCompleted] = React.useState(new Set<number>());

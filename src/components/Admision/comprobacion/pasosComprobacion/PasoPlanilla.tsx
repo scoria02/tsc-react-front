@@ -1,25 +1,24 @@
-import { FormControlLabel, Switch, TextField } from '@mui/material';
+import ImageIcon from '@mui/icons-material/Image';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import { Avatar, Button, FormControlLabel, List, ListItem, ListItemText, Switch } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
-import RecPdf from 'components/utilis/images/RecPdf';
 import React, { useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
+//Redux
 import { useDispatch, useSelector } from 'react-redux';
-//Url
 import { Valid } from 'store/actions/accept';
+//Url
 import { RootState } from 'store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 
-export default function PasoPaymentReceipt() {
-	//falta
-	const rc_comp_dep: any = useSelector((state: RootState) => state.acceptance.validado.rc_comp_dep);
-
-	const dispatch = useDispatch();
+const PasoPlanilla: React.FC = () => {
 	const classes = useStyles();
+	const dispatch = useDispatch();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const [state, setState] = useState(rc_comp_dep); //falta
+	const rc_planilla: any = useSelector((state: RootState) => state.acceptance.validado.rc_planilla);
+	const [state, setState] = useState(rc_planilla);
 	const [openModal, setOpenModal] = useState<boolean>(false);
-	const [load, setLoad] = useState(false);
 
 	const handleOpenModal = () => {
 		handleCancel();
@@ -36,12 +35,12 @@ export default function PasoPaymentReceipt() {
 	};
 
 	useEffect(() => {
-		dispatch(Valid({ rc_comp_dep: state }));
+		dispatch(Valid({ rc_planilla: state }));
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.status]);
 
 	const handleIncorret = () => {
-		dispatch(Valid({ rc_comp_dep: state }));
+		dispatch(Valid({ rc_planilla: state }));
 		handleCloseModal(false);
 	};
 
@@ -64,27 +63,61 @@ export default function PasoPaymentReceipt() {
 		if (!event.target.checked) handleOpenModal();
 	};
 
-	const imagen: string = `${process.env.REACT_APP_API_IMAGES}/${fm.rc_comp_dep.path}`;
+	const imagenes: any = fm.rc_planilla;
+	const url: string = process.env.REACT_APP_API_IMAGES + '/';
 
 	return (
 		<>
 			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					<TextField
-						className={classes.btn_stepNro}
+					{/* <TextField
+						className={classes.btn_medio}
 						id='outlined-basic '
-						label='Nro comprobante'
-						value={fm.nro_comp_dep}
+						label='Acta Constitutiva'
 						variant='outlined'
-					/>
+						value={`Archivo${imagenes.length ? 's' : ''} de Acta Constitutiva`}
+						disabled
+					/> */}
 					<FormControlLabel
-						className={classes.checkText}
 						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
-						label='Correcto'
+						className={classes.checkText}
+						label={state.status ? 'Correcto' : 'Incorrecto'}
 					/>
 				</div>
+				<List className={classes.container_ListActa}>
+					{imagenes.map((item: any, index: number) => (
+						<ListItem key={item.id} value={item.id}>
+							<Button
+								className={classes.link}
+								href={url + item.id_photo.path}
+								target='_blank'
+								rel='noreferrer'
+								key={item.id}>
+								<Avatar>
+									{item.id_photo.name.split('.')[item.id_photo.name.split('.').length - 1] === 'pdf' ? (
+										<PictureAsPdfIcon />
+									) : (
+										<ImageIcon />
+									)}
+								</Avatar>
+								<ListItemText
+									className={classes.itemLink}
+									primary={item.id_photo.name.split('@')[item.id_photo.name.split('.').length - 1]}
+									secondary={index + 1}
+								/>
+							</Button>
+						</ListItem>
+					))}
+				</List>
 			</form>
-			<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
+
+			{/*
+			<Rec 
+				load={load}
+				setLoad={setLoad}
+				imagen={imagen}
+			/>
+				*/}
 			<ModalAlert
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
@@ -95,4 +128,6 @@ export default function PasoPaymentReceipt() {
 			/>
 		</>
 	);
-}
+};
+
+export default PasoPlanilla;

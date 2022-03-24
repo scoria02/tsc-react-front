@@ -46,6 +46,7 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"dev": "react-scripts start",
+		"dev:u": "sudo kill -9 $(sudo lsof -t -i:3000)",
 		"dev:s": "react-scripts --openssl-legacy-provider start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",

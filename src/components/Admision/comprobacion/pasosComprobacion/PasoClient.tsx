@@ -1,6 +1,5 @@
 import { FormControlLabel, Switch, TextField } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
-import Rec from 'components/utilis/images/Rec';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 //Url
@@ -8,6 +7,7 @@ import { Valid } from 'store/actions/accept';
 import { RootState } from 'store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
+import RecPdf from 'components/utilis/images/RecPdf';
 
 export default function PasoClient() {
 	const rc_ident_card: any = useSelector((state: RootState) => state.acceptance.validado.rc_ident_card);
@@ -104,7 +104,7 @@ export default function PasoClient() {
 					label={state.status ? 'Correcto' : 'Incorrecto'}
 				/>
 			</div>
-			<Rec load={load} setLoad={setLoad} imagen={imagen} />
+			<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 			<ModalAlert
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}

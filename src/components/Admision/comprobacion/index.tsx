@@ -18,6 +18,7 @@ import PasoCommerce from './pasosComprobacion/PasoCommerce';
 import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
 import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
+import PasoPlanilla from './pasosComprobacion/PasoPlanilla';
 import PasoSelectAci from './pasosComprobacion/PasoSelectAci';
 
 const Comprobacion: FC = () => {
@@ -44,6 +45,12 @@ const Comprobacion: FC = () => {
 				return (
 					<div>
 						<PasoAccountNumber />
+					</div>
+				);
+			case 'Planilla de Solicitud':
+				return (
+					<div>
+						<PasoPlanilla />
 					</div>
 				);
 			case 'Acta Const.':
@@ -84,6 +91,8 @@ const Comprobacion: FC = () => {
 	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatus);
 	const id_statusFM: any = useSelector((state: RootState) => state.fmAdmision.id_statusFM);
 
+	//console.log('actual fm', fm);
+
 	//states
 	const [activeStep, setActiveStep] = useState(0);
 	const [completed, setCompleted] = useState(new Set<number>());
@@ -113,6 +122,9 @@ const Comprobacion: FC = () => {
 
 	function getSteps(form: any) {
 		const list: string[] = ['Cliente', 'Comercio', 'Referencia Bancaria'];
+		if (form.rc_planilla.length && !list.includes('Planilla de Solicitud')) {
+			list.push('Planilla de Solicitud');
+		}
 		if (form.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')) {
 			list.push('Acta Const.');
 		}
@@ -167,7 +179,7 @@ const Comprobacion: FC = () => {
 	useEffect(() => {
 		if (id_statusFM !== 0 && updatedStatus) {
 			const idStatus = id_statusFM;
-			socket.emit('cliente:cleansolic');
+			//socket.emit('cliente:cleansolic');
 			if (idStatus === 3) {
 				socket.emit('cliente:loadAdministracionTodos');
 			}
@@ -178,6 +190,7 @@ const Comprobacion: FC = () => {
 				showConfirmButton: false,
 				timer: 1500,
 			});
+			socket.emit('cliente:disconnect');
 			dispatch(cleanAdmisionFM());
 		}
 	}, [id_statusFM, updatedStatus]);

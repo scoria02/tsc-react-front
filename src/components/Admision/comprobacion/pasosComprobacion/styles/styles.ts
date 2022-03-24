@@ -53,6 +53,9 @@ export const useStyles = makeStyles((styles: Theme) => ({
 		gridColumnGap: '1%',
 		gridTemplateColumns: '1fr 1fr',
 	},
+	container_imgpdf: {
+		marginTop: '1rem',
+	},
 	link: {
 		textDecoration: 'none',
 		textTransform: 'none',
