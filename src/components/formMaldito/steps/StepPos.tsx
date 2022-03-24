@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import classNames from 'classnames';
 import DataListContext from 'context/DataList/DataListContext';
-import { Aci, TeleMarket, TypeWallet } from 'context/DataList/interface';
+import { Aci, Distributor, TeleMarket, TypeWallet } from 'context/DataList/interface';
 import FMDataContext from 'context/FM/fmAdmision/FmContext';
 import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
 import React, { FC, useContext, useEffect, useState } from 'react';
@@ -46,8 +46,16 @@ const StepPos: FC = () => {
 		handleSourceAci,
 		handleTypeWallet,
 	} = useContext(FMDataContext);
-	const { listPayment, listModelPos, listTypePay, listRequestSource, listAci, listWalletType, listTeleMarket } =
-		useContext(DataListContext);
+	const {
+		listPayment,
+		listModelPos,
+		listTypePay,
+		listRequestSource,
+		listAci,
+		listWalletType,
+		listTeleMarket,
+		listDistributor,
+	} = useContext(DataListContext);
 	const { namesImages, imagesForm, handleChangeImages, deleteImgContributor } = useContext(ImagesFmContext);
 
 	const handleChangeReferido = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -316,21 +324,40 @@ const StepPos: FC = () => {
 							<TextField {...params} name='typeWallet' label={`TeleMercadeo`} variant='outlined' />
 						)}
 					/>
+				) : pos.request_origin?.id === 5 ? (
+					<Autocomplete
+						// className='btn_step btn_medio'
+						style={{ width: '50%' }}
+						//disabled={} //si el comercio tiene aci traelo
+						onChange={(event, value) => {
+							handleTypeWallet(event, value, 'typeWallet');
+						}}
+						options={listWalletType}
+						value={typeWallet || null}
+						getOptionLabel={(option: TypeWallet | null) => (option ? option.Nombre_Org : '')}
+						// getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
+						renderInput={(params: any) => (
+							<TextField {...params} name='typeWallet' label={`Tipos de Cartera`} variant='outlined' />
+						)}
+					/>
 				) : (
-					pos.request_origin?.id === 5 && (
+					pos.request_origin?.id === 8 && (
 						<Autocomplete
 							// className='btn_step btn_medio'
 							style={{ width: '50%' }}
 							//disabled={} //si el comercio tiene aci traelo
 							onChange={(event, value) => {
-								handleTypeWallet(event, value, 'typeWallet');
+								// Cambiar Aca yisus
+								handleSourceAci(event, value, 'reqSource_docnum');
 							}}
-							options={listWalletType}
-							value={typeWallet || null}
-							getOptionLabel={(option: TypeWallet | null) => (option ? option.Nombre_Org : '')}
+							options={listDistributor}
+							value={aci || null}
+							getOptionLabel={(option: Distributor | null) =>
+								option ? option.aliTipoIdentificacion + option.aliIdentificacion + ' | ' + option.aliNombres : ''
+							}
 							// getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
 							renderInput={(params: any) => (
-								<TextField {...params} name='typeWallet' label={`Tipos de Cartera`} variant='outlined' />
+								<TextField {...params} name='distributor' label={`Buscar distribuidor`} variant='outlined' />
 							)}
 						/>
 					)
