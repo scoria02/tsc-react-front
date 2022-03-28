@@ -75,6 +75,7 @@ const FormM: React.FC = () => {
 		validClientAndCommerce,
 		idsCAndCc,
 		aci,
+		telemarket,
 		typeWallet,
 	} = useContext(FMDataContext);
 
@@ -100,6 +101,7 @@ const FormM: React.FC = () => {
 				commerce,
 				pos,
 				aci,
+				telemarket,
 				typeWallet,
 				activity,
 				locationClient,
@@ -125,6 +127,7 @@ const FormM: React.FC = () => {
 		imagesActa,
 		fm,
 		aci,
+		telemarket,
 		typeWallet,
 	]);
 
@@ -197,6 +200,7 @@ const FormM: React.FC = () => {
 				commerce,
 				pos,
 				aci,
+				telemarket,
 				typeWallet,
 				activity,
 				locationClient,
@@ -222,6 +226,7 @@ const FormM: React.FC = () => {
 				activity,
 				pos,
 				aci,
+				telemarket,
 				typeWallet,
 				locationPos,
 				imagePlanilla,
@@ -243,6 +248,7 @@ const FormM: React.FC = () => {
 				commerce,
 				pos,
 				aci,
+				telemarket,
 				typeWallet,
 				activity,
 				locationClient,
@@ -260,7 +266,17 @@ const FormM: React.FC = () => {
 		handleLoading();
 
 		dispatch(
-			sendCompleteFMExtraPos(typeSolict, idsCAndCc!, pos, aci, typeWallet, locationPos, imagePlanilla, imagesForm)
+			sendCompleteFMExtraPos(
+				typeSolict,
+				idsCAndCc!,
+				pos,
+				aci,
+				telemarket,
+				typeWallet,
+				locationPos,
+				imagePlanilla,
+				imagesForm
+			)
 		);
 	};
 

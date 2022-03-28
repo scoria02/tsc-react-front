@@ -27,7 +27,6 @@ const StepPos: FC = () => {
 	//const [isACI, setIsACI] = useState<boolean>(false);
 	const [deleted, setDeleted] = useState<boolean>(false);
 	const [fraccion, setFraccion] = useState<boolean>(false);
-	const [telemark, setTelemark] = useState<TeleMarket | null>(null);
 	const [cuotasTexto, setCuotasTexto] = useState('');
 	const dispatch = useDispatch();
 	// const cuotasText = ['5 cuotas de 50$', '4 cuotas de 50$', '3 cuotas de 50$'];
@@ -38,12 +37,14 @@ const StepPos: FC = () => {
 		client,
 		pos,
 		aci,
+		telemarket,
 		typeWallet,
 		errorsFm,
 		handleParamsPos,
 		handleChangePos,
 		handleCheckedPos,
 		handleSourceAci,
+		handleSourceTelemarket,
 		handleTypeWallet,
 	} = useContext(FMDataContext);
 	const {
@@ -313,11 +314,11 @@ const StepPos: FC = () => {
 						style={{ width: '50%' }}
 						//disabled={} //si el comercio tiene aci traelo
 						onChange={(event, value) => {
-							setTelemark(value ? value : null);
-							//handleTypeWallet(event, value, 'typeWallet');
+							// setTelemark(value ? value : null);
+							handleSourceTelemarket(event, value ? value : null);
 						}}
 						options={listTeleMarket}
-						value={telemark || null}
+						value={telemarket || null}
 						getOptionLabel={(option: TeleMarket | null) => (option ? option.name : '')}
 						// getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
 						renderInput={(params: any) => (
@@ -347,7 +348,6 @@ const StepPos: FC = () => {
 							style={{ width: '50%' }}
 							//disabled={} //si el comercio tiene aci traelo
 							onChange={(event, value) => {
-								// Cambiar Aca yisus
 								handleSourceAci(event, value, 'reqSource_docnum');
 							}}
 							options={listDistributor}

@@ -1,4 +1,4 @@
-import { Aci, Activity, base, TypeWallet } from 'context/DataList/interface';
+import { Aci, Activity, base, TeleMarket, TypeWallet } from 'context/DataList/interface';
 import {
 	fmClient,
 	fmCommerce,
@@ -51,6 +51,8 @@ export interface ContextFM {
 	idsCAndCc: IdClient_CommerceINT | null;
 	aci: Aci | null;
 	handleSourceAci(event: any, value: Aci | null, name: string): void;
+	telemarket: TeleMarket | null;
+	handleSourceTelemarket(event: any, value: TeleMarket | null): void;
 	typeWallet: TypeWallet | null;
 	handleTypeWallet(event: any, value: TypeWallet | null, name: string): void;
 }

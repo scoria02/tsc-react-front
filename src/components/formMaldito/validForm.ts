@@ -1,4 +1,4 @@
-import { Aci, Activity, TypeWallet } from 'context/DataList/interface';
+import { Aci, Activity, Distributor, TypeWallet } from 'context/DataList/interface';
 import { ImagesInt } from 'context/FM/fmImages/interface';
 import { LocationInt } from 'context/FM/Location/interfaces';
 import {
@@ -9,6 +9,7 @@ import {
 	fmError_Interface,
 	fmPos,
 } from 'interfaces/fm';
+import { TeleMarket } from './../../context/DataList/interface';
 
 export const validEmail = (value: string): boolean => {
 	let validatedEmail = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i.test(value);
@@ -181,7 +182,8 @@ export const inputFileNotNull = (last: number, form: ImagesInt): boolean => {
 export const inputNotNullPos = (
 	last: number,
 	form: any,
-	aci: Aci | null,
+	aci: Aci | Distributor | null,
+	telemarket: TeleMarket | null,
 	typeWallet: TypeWallet | null
 ): boolean => {
 	let index: number = 0;
@@ -196,10 +198,14 @@ export const inputNotNullPos = (
 				//console.log('llegue');
 				if (form['request_origin']?.id === 1) {
 					if (item[1] === '') return true;
-				} else if (form['request_origin']?.id === 2) {
-					//console.log('aci');
+				}
+				if (form['request_origin']?.id === 3) {
+					if (!telemarket) return true;
+				}
+				if (form['request_origin']?.id === 2 || form['request_origin']?.id === 8) {
 					if (!aci) return true;
-				} else if (form['request_origin']?.id === 6) {
+				}
+				if (form['request_origin']?.id === 6) {
 					if (!typeWallet) return true;
 				}
 			} else if (item[1].trim() === '') {
@@ -211,9 +217,11 @@ export const inputNotNullPos = (
 					return true;
 				}
 			}
-		} else if (typeof item[1] === 'number' && item[1] === 0) {
+		}
+		if (typeof item[1] === 'number' && item[1] === 0) {
 			return true;
-		} else if (typeof item[1] === 'object' && !item[1]) {
+		}
+		if (typeof item[1] === 'object' && !item[1]) {
 			return true;
 		}
 	}
@@ -376,7 +384,7 @@ const checkInputForExtraPosDataPos = (
 	form: fmPos,
 	min: number,
 	last: number,
-	aci: Aci | null,
+	aci: Aci | Distributor | null,
 	typeWallet: TypeWallet | null
 ) => {
 	//console.log(form);
@@ -391,7 +399,7 @@ const checkInputForExtraPosDataPos = (
 					//console.log('llegue');
 					if (form['request_origin']?.id === 1) {
 						if (item[1] === '') return true;
-					} else if (form['request_origin']?.id === 2) {
+					} else if (form['request_origin']?.id === 2 || form['request_origin']?.id === 8) {
 						//console.log('aci');
 						if (!aci) return true;
 					} else if (form['request_origin']?.id === 6) {
@@ -437,7 +445,8 @@ export const validReadyStep = (
 	client: fmClient,
 	commerce: fmCommerce,
 	pos: fmPos,
-	aci: Aci | null,
+	aci: Aci | Distributor | null,
+	telemarket: TeleMarket | null,
 	typeWallet: TypeWallet | null,
 	activity: Activity | null,
 	locationClient: LocationInt,
@@ -496,7 +505,7 @@ export const validReadyStep = (
 		case 5: //FM Pos
 			if (errorNumBank) return false;
 			if (
-				!inputNotNullPos(3 + 9, pos, aci, typeWallet) &&
+				!inputNotNullPos(3 + 9, pos, aci, telemarket, typeWallet) &&
 				!imagesForPos(imagesForm, pos) &&
 				!checkErrorAllInput(sizeStepError(activeStep), errorsFm)
 			)

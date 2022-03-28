@@ -8,6 +8,7 @@ import { fmClient, fmCommerce, fmPos, IdClient_CommerceINT } from 'interfaces/fm
 import Swal from 'sweetalert2';
 import { daysToString } from 'validation/validFm';
 import { ActionType } from '../types/types';
+import { TeleMarket } from './../../context/DataList/interface';
 
 export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
@@ -157,6 +158,7 @@ export const dataFormatPos = (
 	typeSolict: number,
 	pos: fmPos,
 	aci: Aci | null,
+	telemarket: TeleMarket | null,
 	typeWallet: TypeWallet | null,
 	locationPos: LocationInt,
 	idClient: number,
@@ -165,9 +167,13 @@ export const dataFormatPos = (
 ) => {
 	//pos.request_origin?.id === 2 ? (aci ? aci : '') | ''
 	let auxOrigen: string = '';
-	if (pos.request_origin?.id === 2) {
+	if (pos.request_origin?.id === 2 || pos.request_origin?.id === 8) {
 		auxOrigen = aci!.id.toString();
-	} else if (pos.request_origin?.id === 6) {
+	}
+	if (pos.request_origin?.id === 3) {
+		auxOrigen = telemarket!.id.toString();
+	}
+	if (pos.request_origin?.id === 6) {
 		auxOrigen = typeWallet!.Id.toString();
 	}
 	return {
@@ -234,6 +240,7 @@ export const sendCompleteFM = (
 	activity: Activity | null,
 	pos: fmPos,
 	aci: Aci | null,
+	telemarket: TeleMarket | null,
 	typeWallet: TypeWallet | null,
 	locationPos: LocationInt,
 	imagePlanilla: FileList | [],
@@ -255,7 +262,17 @@ export const sendCompleteFM = (
 			const resImages: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, images);
 			const idImages = resImages.data.info;
 			console.log('idImages', idImages);
-			const dataPos = dataFormatPos(typeSolict, pos, aci, typeWallet, locationPos, idClient, idCommerce, idImages);
+			const dataPos = dataFormatPos(
+				typeSolict,
+				pos,
+				aci,
+				telemarket,
+				typeWallet,
+				locationPos,
+				idClient,
+				idCommerce,
+				idImages
+			);
 			const resPos: AxiosResponse<any> = await useAxios.post(`/FM`, dataPos);
 			console.log('fm cargado', resPos.data);
 			//const res: AxiosResponse<any> = await useAxios.post(`/FM`, form);
@@ -284,6 +301,7 @@ export const sendCompleteFMExtraPos = (
 	idsCAndCc: IdClient_CommerceINT,
 	pos: fmPos,
 	aci: Aci | null,
+	telemarket: TeleMarket | null,
 	typeWallet: TypeWallet | null,
 	locationPos: LocationInt,
 	imagePlanilla: FileList | [],
@@ -305,6 +323,7 @@ export const sendCompleteFMExtraPos = (
 				typeSolict,
 				pos,
 				aci,
+				telemarket,
 				typeWallet,
 				locationPos,
 				idsCAndCc.idClient,
