@@ -26,8 +26,8 @@
 	justify-content: center;
 	top: 47%;
 	left: 50%;
-	margin-top: -100px; 
-	margin-left: -250px;	
+	margin-top: -100px;
+	margin-left: -250px;
 }
 
 .swal2-validated {
@@ -37,12 +37,6 @@
 .comprobar_container {
 	width: 90%;
 }
-.comprobar_container_2 {
-	width: 90%;
-	display: grid;
-	grid-column-gap: 5% !important;
-	grid-template-columns: 1fr 1fr;
-}
 
 .img_container {
 	display: center;
@@ -50,8 +44,8 @@
 	justify-content: center;
 	top: 47%;
 	left: 50%;
-	margin-top: -100px; 
-	margin-left: -250px;	
+	margin-top: -100px;
+	margin-left: -250px;
 }
 
 .img_container_1 {
@@ -90,7 +84,7 @@
 .btn-divfloat {
 	position: fixed !important;
 	bottom: 1.5rem;
-	left: 38%;
+	// left: 38%;
 }
 
 .titulo {
@@ -101,7 +95,7 @@
 	margin-top: -1rem;
 }
 
-.MuiDialog-paperFullScreen{
+.MuiDialog-paperFullScreen {
 	overflow-x: hidden;
 }
 

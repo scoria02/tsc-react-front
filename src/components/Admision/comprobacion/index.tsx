@@ -20,63 +20,36 @@ import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
 import PasoPlanilla from './pasosComprobacion/PasoPlanilla';
 import PasoSelectAci from './pasosComprobacion/PasoSelectAci';
+import { useStyles } from './pasosComprobacion/styles/styles';
 
 const Comprobacion: FC = () => {
+	const classes = useStyles();
 	function getStepContent(step: number, steps: string[]) {
 		switch (steps[step]) {
 			case 'Cliente':
-				return (
-					<div>
-						<PasoClient />
-					</div>
-				);
+				return <PasoClient />;
 			case 'Comercio':
 				return (
-					<div className='comprobar_container_2'>
-						<div>
-							<PasoCommerce />
-						</div>
+					<div className={classes.wrapperGrid}>
+						<PasoCommerce />
+
 						<div>
 							<PasoCommerce2 />
 						</div>
 					</div>
 				);
 			case 'Referencia Bancaria':
-				return (
-					<div>
-						<PasoAccountNumber />
-					</div>
-				);
+				return <PasoAccountNumber />;
 			case 'Planilla de Solicitud':
-				return (
-					<div>
-						<PasoPlanilla />
-					</div>
-				);
+				return <PasoPlanilla />;
 			case 'Acta Const.':
-				return (
-					<div>
-						<PasoActaConst />
-					</div>
-				);
+				return <PasoActaConst />;
 			case 'Cont. Especial':
-				return (
-					<div>
-						<PasoContriSpecial />
-					</div>
-				);
+				return <PasoContriSpecial />;
 			case 'Comprobante de Pago':
-				return (
-					<div>
-						<PasoPaymentReceipt />
-					</div>
-				);
+				return <PasoPaymentReceipt />;
 			case 'Asignación ACI':
-				return (
-					<div>
-						<PasoSelectAci aci={aci} setAci={setAci} listAci={listAci} />
-					</div>
-				);
+				return <PasoSelectAci aci={aci} setAci={setAci} listAci={listAci} />;
 			default:
 				return 'Invalid step';
 		}

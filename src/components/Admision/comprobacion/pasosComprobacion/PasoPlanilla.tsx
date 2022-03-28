@@ -10,7 +10,7 @@ import { Valid } from 'store/actions/accept';
 //Url
 import { RootState } from 'store/store';
 import './styles/pasos.scss';
-import { useStyles } from './styles/styles';
+import { sxStyled, useStyles } from './styles/styles';
 
 const PasoPlanilla: React.FC = () => {
 	const classes = useStyles();
@@ -84,7 +84,7 @@ const PasoPlanilla: React.FC = () => {
 						label={state.status ? 'Correcto' : 'Incorrecto'}
 					/>
 				</div>
-				<List className={classes.container_ListActa}>
+				<List sx={sxStyled.container_ListActa} className={classes.container_ListActa}>
 					{imagenes.map((item: any, index: number) => (
 						<ListItem key={item.id} value={item.id}>
 							<Button
