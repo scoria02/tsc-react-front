@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { isPrivate } from 'hooks/Functions';
 import { createContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
@@ -13,7 +14,7 @@ import { FinishLoading } from '../store/actions/ui';
 import { Auth, PrivGuard } from './guards';
 import Private from './routes/private';
 import Public from './routes/public';
-import { urlLogin, urlPrivate } from './url';
+import { urlLogin } from './url';
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
@@ -52,13 +53,6 @@ export const AppRouter = () => {
 	const { user } = useSelector((state: any) => state.auth);
 	const [checking, setChecking] = useState<boolean>(true);
 	const [menu, setMenu] = useState<any>('');
-
-	const isPrivate = () => {
-		const is = urlPrivate.findIndex((val) => {
-			return val === window.location.pathname;
-		});
-		return is !== -1;
-	};
 
 	useLayoutEffect(() => {
 		dispatch(FinishLoading());
