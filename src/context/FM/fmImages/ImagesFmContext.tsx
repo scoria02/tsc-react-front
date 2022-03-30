@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { createContext, ReactChild, ReactChildren, useState } from 'react';
+import { errorFile } from 'utils/validFormatFile';
 
 import { ImagesInt, NamesImagesInt } from './interface';
 
@@ -70,8 +71,12 @@ export const ImagesFmProvider = ({ children }: Props) => {
 
 	const handleChangePlanilla = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files) {
-			let files = event.target.files;
-			setImagePlanilla(files);
+			if (!errorFile(event)) {
+				let files = event.target.files;
+				setImagePlanilla(files);
+			} else {
+				setImagePlanilla([]);
+			}
 		}
 	};
 
@@ -79,22 +84,29 @@ export const ImagesFmProvider = ({ children }: Props) => {
 		if (event?.target?.files && event.target.files[0]) {
 			let file = event.target.files[0];
 			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: file.type });
-			//Save img
-			setImagesForm({
-				...imagesForm,
-				[event.target.name]: newFile,
-			});
-			setNamesImages({
-				...namesImages,
-				[event.target.name]: event.target.files[0].name,
-			});
+			if (!errorFile(event)) {
+				//Save img
+				setImagesForm({
+					...imagesForm,
+					[event.target.name]: newFile,
+				});
+				setNamesImages({
+					...namesImages,
+					[event.target.name]: event.target.files[0].name,
+				});
+			} else {
+				setNamesImages(initialNamesImagesFm);
+				setImagesForm(initialImagesFm);
+			}
 		}
 	};
 
 	const handleChangeImagesMulti = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files) {
-			let files = event.target.files;
-			setImagesActa(files);
+			if (!errorFile(event)) {
+				let files = event.target.files;
+				setImagesActa(files);
+			} else deleteImgActa();
 		}
 	};
 

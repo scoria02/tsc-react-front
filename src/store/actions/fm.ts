@@ -184,7 +184,7 @@ export const dataFormatPos = (
 		id_payment_method: pos.payment_method?.id,
 		id_client: idClient,
 		id_commerce: idCommerce,
-		dir_pos: {
+		pos: {
 			id_estado: locationPos.estado?.id,
 			id_municipio: locationPos.municipio?.id,
 			id_parroquia: locationPos.parroquia?.id,
