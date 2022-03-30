@@ -1,3 +1,4 @@
+import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 export const useStylesModal = makeStyles(() => ({
@@ -8,10 +9,10 @@ export const useStylesModal = makeStyles(() => ({
 	},
 }));
 
-export const useStylesModalAlert = makeStyles(() => ({
+export const useStylesModalAlert = makeStyles((styles: Theme) => ({
 	containerBtn: {
 		display: 'flex',
-		justifyContent: 'center',
+		justifyContent: 'space-evenly',
 	},
 	btnSend: {
 		margin: '1rem',
@@ -33,7 +34,7 @@ export const useStylesModalAlert = makeStyles(() => ({
 		width: '100%',
 		height: 'auto',
 		alignItems: 'center',
-		justifyContent: 'center',
+		justifyItems: 'center',
 	},
 	containerTop: {
 		width: '500px',
@@ -43,7 +44,13 @@ export const useStylesModalAlert = makeStyles(() => ({
 	},
 	iconsAlert: {
 		fontSize: '5rem !important',
-		color: '#ff0000',
+		color: styles.palette.error.light,
+		width: '7rem !important',
+		height: '7rem !important',
+	},
+	iconsAlertWarning: {
+		fontSize: '5rem !important',
+		color: styles.palette.warning.light,
 		width: '7rem !important',
 		height: '7rem !important',
 	},
