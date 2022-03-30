@@ -3,7 +3,8 @@
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutlineSharp';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { useLayoutEffect, useState } from 'react';
+import DataListAdmisionContext from 'context/DataList/DatalistAdmisionContext';
+import { useContext, useLayoutEffect, useState } from 'react';
 import AnimationModal from './AnimationModal';
 import './scss/modalAlert.scss';
 import { useStylesModalAlert } from './styles';
@@ -32,6 +33,8 @@ export const ModalAlert: React.FC<Props> = ({
 		setRazon(event.target.value as number);
 	};
 
+	const { listRazon } = useContext(DataListAdmisionContext);
+
 	useLayoutEffect(() => {
 		// Agregar endpoint de razones de diferido
 	}, []);
@@ -46,8 +49,11 @@ export const ModalAlert: React.FC<Props> = ({
 						}}>
 						<InputLabel>Razon</InputLabel>
 						<Select value={razon} label='Razon' onChange={handleChange}>
-							<MenuItem value={0}>Interno</MenuItem>
-							<MenuItem value={1}>Recaudo</MenuItem>
+							{listRazon.map((item: any) => (
+								<MenuItem key={item.id} value={item.id}>
+									{item.name}
+								</MenuItem>
+							))}
 						</Select>
 					</FormControl>
 					{razon === 0 && (
