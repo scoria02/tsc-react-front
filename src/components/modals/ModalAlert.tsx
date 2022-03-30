@@ -12,6 +12,7 @@ interface Props {
 	openModal: any;
 	handleCloseModal: any;
 	state: any;
+	setState?: React.Dispatch<any>;
 	handleChangeI(event: any): void;
 	handleIncorret(event: any): void;
 	handleCancel(event: any): void;
@@ -21,6 +22,7 @@ export const ModalAlert: React.FC<Props> = ({
 	openModal,
 	handleCloseModal,
 	state,
+	setState,
 	handleChangeI,
 	handleIncorret,
 	handleCancel,
