@@ -40,8 +40,7 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any, aci: num
 		id_status_request: status,
 		id_aci: aci,
 		valids: {
-			//step1
-			valid_ident_card: accept.rc_ident_card.msg,
+			//step1 valid_ident_card: accept.rc_ident_card.msg,
 			//step2
 			valid_rif: accept.rc_rif.msg,
 			//step3
@@ -60,7 +59,7 @@ export const updateStatusFM = (id_fm: number, status: any, accept: any, aci: num
 			updateToken(res);
 			dispatch(requestSuccess(status));
 		} catch (error: any) {
-			//console.log(error.response)
+			console.log(error.response);
 			dispatch(CloseModal());
 			dispatch(requestError());
 			Swal.fire({

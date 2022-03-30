@@ -2,16 +2,16 @@ import { ActionType } from '../types/types';
 
 interface inState {
 	//validation Fm
-	fm: any,
-	errorGetData: boolean,
-	updatedStatus: boolean,
-	errorStatusFM: boolean,
+	fm: any;
+	errorGetData: boolean;
+	updatedStatus: boolean;
+	errorStatusFM: boolean;
 	id_statusFM: number;
 
-	diferido: any,
-	id_statusDiferido: number,
-	updatedStatusDiferido: boolean,
-	errorStatusDiferido: boolean,
+	diferido: any;
+	id_statusDiferido: number;
+	updatedStatusDiferido: boolean;
+	errorStatusDiferido: boolean;
 }
 
 const initialState: inState = {
@@ -77,4 +77,4 @@ export const admisionFM = (state = initialState, action: any) => {
 		default:
 			return state;
 	}
-}
+};

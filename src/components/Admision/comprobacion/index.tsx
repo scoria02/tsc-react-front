@@ -163,7 +163,7 @@ const Comprobacion: FC = () => {
 				showConfirmButton: false,
 				timer: 1500,
 			});
-			socket.emit('cliente:disconnect');
+			socket.emit('cliete:disconnect');
 			dispatch(cleanAdmisionFM());
 		}
 	}, [id_statusFM, updatedStatus]);
