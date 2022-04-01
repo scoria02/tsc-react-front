@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FormControlLabel, Switch, TextField } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import RecPdf from 'components/utilis/images/RecPdf';
@@ -12,12 +13,12 @@ import { useStyles } from './styles/styles';
 
 export default function PasoPaymentReceipt() {
 	//falta
-	const rc_comp_dep: any = useSelector((state: RootState) => state.acceptance.validado.rc_comp_dep);
+	const valid_comp_dep: any = useSelector((state: RootState) => state.acceptance.validado.valid_comp_dep);
 
 	const dispatch = useDispatch();
 	const classes = useStyles();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const [state, setState] = useState(rc_comp_dep); //falta
+	const [state, setState] = useState(valid_comp_dep); //falta
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [load, setLoad] = useState(false);
 
@@ -36,24 +37,11 @@ export default function PasoPaymentReceipt() {
 	};
 
 	useEffect(() => {
-		dispatch(Valid({ rc_comp_dep: state }));
-		//eslint-disable-next-line react-hooks/exhaustive-deps
+		dispatch(Valid({ valid_comp_dep: state }));
 	}, [state.status]);
-
-	const handleIncorret = () => {
-		dispatch(Valid({ rc_comp_dep: state }));
-		handleCloseModal(false);
-	};
 
 	const handleCancel = () => {
 		handleCloseModal(true);
-	};
-
-	const handleChangeI = (event: any) => {
-		setState({
-			...state,
-			[event.target.name]: event.target.value,
-		});
 	};
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,12 +74,11 @@ export default function PasoPaymentReceipt() {
 			</form>
 			<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 			<ModalAlert
+				from='valid_comp_dep'
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
 				state={state}
-				handleChangeI={handleChangeI}
-				handleIncorret={handleIncorret}
-				handleCancel={handleCancel}
+				setState={setState}
 			/>
 		</>
 	);

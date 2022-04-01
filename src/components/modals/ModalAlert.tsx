@@ -1,45 +1,57 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 //modal
 
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutlineSharp';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import DataListAdmisionContext from 'context/DataList/DatalistAdmisionContext';
-import { useContext, useLayoutEffect, useState } from 'react';
+import { useContext, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Valid } from 'store/actions/accept';
 import AnimationModal from './AnimationModal';
 import './scss/modalAlert.scss';
 import { useStylesModalAlert } from './styles';
 
 interface Props {
+	from: string;
 	openModal: any;
 	handleCloseModal: any;
 	state: any;
-	setState?: React.Dispatch<any>;
-	handleChangeI(event: any): void;
-	handleIncorret(event: any): void;
-	handleCancel(event: any): void;
+	setState: React.Dispatch<any>;
 }
 
-export const ModalAlert: React.FC<Props> = ({
-	openModal,
-	handleCloseModal,
-	state,
-	setState,
-	handleChangeI,
-	handleIncorret,
-	handleCancel,
-}) => {
+export const ModalAlert: React.FC<Props> = ({ from, openModal, handleCloseModal, state, setState }) => {
+	const dispatch = useDispatch();
 	const classes = useStylesModalAlert();
-	const [razon, setRazon] = useState(0);
+	const [razon, setRazon] = useState(1);
+	const { listRazon } = useContext(DataListAdmisionContext);
 
 	const handleChange = (event: any) => {
 		setRazon(event.target.value as number);
 	};
 
-	const { listRazon } = useContext(DataListAdmisionContext);
+	const handleChangeI = (event: any) => {
+		setState({
+			...state,
+			[event.target.name]: event.target.value,
+		});
+	};
 
-	useLayoutEffect(() => {
-		// Agregar endpoint de razones de diferido
-	}, []);
+	const handleCancel = () => {
+		handleCloseModal(true);
+	};
+
+	const handleIncorret = () => {
+		dispatch(
+			Valid({
+				[`${from}`]: {
+					...state,
+					id_typedif: razon,
+				},
+			})
+		);
+		handleCloseModal(false);
+	};
 
 	return (
 		<AnimationModal openModal={openModal} handleCloseModal={handleCloseModal}>
@@ -58,36 +70,36 @@ export const ModalAlert: React.FC<Props> = ({
 							))}
 						</Select>
 					</FormControl>
-					{razon === 0 && (
-						<div>
+					<div className={classes.containerMsg}>
+						{razon === 1 && (
 							<div className={classes.containerTop}>
 								<WarningAmberOutlinedIcon className={classes.iconsAlertWarning} />
 								<p className={classes.containerText}>
-									Este recaudo fue ingresado al sistema de manera erronea, al marcarlo como diferido se habilitaran
-									los campos de la planilla para su corrección.
+									Este recaudo fue ingresado al sistema de manera erronea, al <strong>guardar</strong> sera
+									habilitado para su edición en la tabla de diferidos.
 								</p>
 							</div>
-						</div>
-					)}
-					{razon === 1 && (
-						<div>
-							<div className={classes.containerTop}>
-								<ErrorOutlineIcon className={classes.iconsAlert} />
-								<p className={classes.containerText}>
-									Indique claramente las razones por la cual el recaudo NO se validó, este mensaje sera enviado por
-									correo al cliente.
-								</p>
-								{/* <FormControlLabel control={<Checkbox defaultChecked />} label='Enviar al cliente' /> */}
-							</div>
-							<textarea
-								className={classes.textareaAlert}
-								name='msg'
-								value={state.msg}
-								onChange={handleChangeI}
-								placeholder='Ej: la imagen...'
-							/>
-						</div>
-					)}
+						)}
+						{razon === 2 && (
+							<>
+								<div className={classes.containerTop}>
+									<ErrorOutlineIcon className={classes.iconsAlert} />
+									<p className={classes.containerText}>
+										Indique claramente las razones por la cual el recaudo NO se validó, este mensaje sera enviado
+										por correo al cliente.
+									</p>
+									{/* <FormControlLabel control={<Checkbox defaultChecked />} label='Enviar al cliente' /> */}
+								</div>
+								<textarea
+									className={classes.textareaAlert}
+									name='msg'
+									value={state.msg}
+									onChange={handleChangeI}
+									placeholder='Ej: la imagen...'
+								/>
+							</>
+						)}
+					</div>
 				</div>
 				<div className={classes.containerBtn}>
 					<Button className={classes.btnSend} variant='contained' color='secondary' onClick={handleCancel}>
@@ -98,8 +110,8 @@ export const ModalAlert: React.FC<Props> = ({
 						variant='contained'
 						color='primary'
 						onClick={handleIncorret}
-						disabled={razon === 0 ? false : state.msg.length > 10 ? false : true}>
-						Guardar Mensaje
+						disabled={razon === 1 ? false : state.msg.length > 10 ? false : true}>
+						Guardar {razon === 2 && 'Mensaje'}
 					</Button>
 				</div>
 			</form>

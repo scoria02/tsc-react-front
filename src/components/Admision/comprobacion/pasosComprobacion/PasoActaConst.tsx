@@ -16,10 +16,10 @@ const PasoActaConst: React.FC = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const rc_constitutive_act: any = useSelector(
-		(state: RootState) => state.acceptance.validado.rc_constitutive_act
+	const valid_constitutive_act: any = useSelector(
+		(state: RootState) => state.acceptance.validado.valid_constitutive_act
 	);
-	const [state, setState] = React.useState(rc_constitutive_act);
+	const [state, setState] = React.useState(valid_constitutive_act);
 	const [openModal, setOpenModal] = React.useState<boolean>(false);
 
 	const handleOpenModal = () => {
@@ -37,24 +37,12 @@ const PasoActaConst: React.FC = () => {
 	};
 
 	useEffect(() => {
-		dispatch(Valid({ rc_constitutive_act: state }));
+		dispatch(Valid({ valid_constitutive_act: state }));
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.status]);
 
-	const handleIncorret = () => {
-		dispatch(Valid({ rc_constitutive_act: state }));
-		handleCloseModal(false);
-	};
-
 	const handleCancel = () => {
 		handleCloseModal(true);
-	};
-
-	const handleChangeI = (event: any) => {
-		setState({
-			...state,
-			[event.target.name]: event.target.value,
-		});
 	};
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,12 +109,11 @@ const PasoActaConst: React.FC = () => {
 			/>
 				*/}
 			<ModalAlert
+				from='valid_constitutive_act'
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
 				state={state}
-				handleChangeI={handleChangeI}
-				handleIncorret={handleIncorret}
-				handleCancel={handleCancel}
+				setState={setState}
 			/>
 		</>
 	);

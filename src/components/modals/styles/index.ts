@@ -36,6 +36,9 @@ export const useStylesModalAlert = makeStyles((styles: Theme) => ({
 		alignItems: 'center',
 		justifyItems: 'center',
 	},
+	containerMsg: {
+		margin: '1rem 0',
+	},
 	containerTop: {
 		width: '500px',
 		display: 'flex',
