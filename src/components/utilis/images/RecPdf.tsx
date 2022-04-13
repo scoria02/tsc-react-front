@@ -17,14 +17,26 @@ const RecPdf: React.FC<any> = ({ load, setLoad, imagen }) => {
 	return (
 		<>
 			{imagen.split('.')[imagen.split('.').length - 1] === 'pdf' ? (
-				<>
-					<Button onClick={handleOpenModal}>
-						<Avatar>
-							<PictureAsPdfIcon />
+				<div
+					style={{
+						width: '100%',
+						justifyContent: 'center',
+						display: 'flex',
+						marginTop: '2rem',
+					}}>
+					<Button variant='contained' color='primary' onClick={handleOpenModal}>
+						<Avatar sx={{ padding: 2 }}>
+							<PictureAsPdfIcon
+								sx={{
+									fontSize: '4rem',
+									padding: 2,
+									width: 50,
+								}}
+							/>
 						</Avatar>
 					</Button>
 					<RenderCustomPdf modal={modal} handleCloseModal={handleCloseModal} url={imagen} />
-				</>
+				</div>
 			) : (
 				<Rec load={load} setLoad={setLoad} imagen={imagen} />
 			)}

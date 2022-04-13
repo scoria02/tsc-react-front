@@ -35,24 +35,33 @@ export const getDataFM = (fm: any) => {
 	}
 };
 
-export const updateStatusFM = (id_fm: number, status: any, accept: any, aci: number) => {
+export const updateStatusFM = (id_fm: number, status: any, validado: any, aci: number) => {
+	console.log('aqui', validado);
 	const id_status: any = {
 		id_status_request: status,
 		id_aci: aci,
 		valids: {
-			//step1 valid_ident_card: accept.rc_ident_card.msg,
-			//step2
-			valid_rif: accept.rc_rif.msg,
-			//step3
-			valid_ref_bank: accept.rc_ref_bank.msg,
-			//step4
-			valid_constitutive_act: accept.rc_constitutive_act.msg,
-			valid_special_contributor: accept.rc_special_contributor.msg,
-			valid_planilla: accept.rc_planilla.msg,
-			valid_comp_dep: accept.rc_comp_dep.msg,
+			id_typedif_pos: null,
+			id_typedif_client: validado.valid_cliente.id_typedif || null,
+			id_typedif_commerce: validado.valid_commerce.id_typedif || null,
+			id_typedif_ref_bank: validado.valid_ref_bank.id_typedif || null,
+			id_typedif_comp_num: validado.valid_comp_dep.id_typedif || null,
+			//falta en base de datos
+			id_typedif_consitutive_acta: validado.valid_ref_bank.id_typedif || null,
+			id_typedif_planilla: validado.valid_planilla.id_typedif || null,
+			id_typedif_special_contributor: validado.valid_special_contributor.id_typedif || null,
+			//msg
+			valid_ident_card: validado.valid_cliente.msg,
+			valid_rif: validado.valid_commerce.msg,
+			valid_planilla: validado.valid_planilla.msg,
+			valid_constitutive_act: validado.valid_constitutive_act.msg,
+			valid_special_contributor: validado.valid_special_contributor.msg,
+			valid_ref_bank: validado.valid_ref_bank.msg,
+			valid_comp_dep: validado.valid_comp_dep.msg,
 		},
 	};
-	console.log('mandar', id_status);
+	console.log('aquix', id_status);
+
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.put(`/FM/admision/${id_fm}/status`, id_status);

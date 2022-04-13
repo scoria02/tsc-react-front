@@ -1,6 +1,6 @@
 import { ActionType } from '../types/types';
 
-interface inState {
+export interface inStateAccept {
 	stepComplete: any[];
 	validado: {
 		valid_cliente: {
@@ -38,14 +38,11 @@ interface inState {
 			id_typedif: number;
 			msg: string;
 		};
-		contrubuyente: number;
-		localFrente: boolean;
-		localDentro: boolean;
 	};
 	aci: boolean;
 }
 
-const initialState: inState = {
+const initialState: inStateAccept = {
 	stepComplete: [],
 	validado: {
 		valid_cliente: {
@@ -83,9 +80,6 @@ const initialState: inState = {
 			id_typedif: 0,
 			msg: '',
 		},
-		contrubuyente: 0,
-		localFrente: false,
-		localDentro: false,
 	},
 	aci: false,
 };

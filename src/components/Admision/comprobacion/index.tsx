@@ -123,12 +123,10 @@ const Comprobacion: FC = () => {
 	};
 
 	const validStatusFm = (): boolean => {
-		for (const item in validated) {
-			if (item.slice(0, 3) === 'rc_') {
-				const element = validated[item];
-				if (element.status === false) {
-					return true;
-				}
+		for (const item of Object.entries(validated)) {
+			const aux: any = item[1];
+			if (!aux.status) {
+				return true;
 			}
 		}
 		return false;

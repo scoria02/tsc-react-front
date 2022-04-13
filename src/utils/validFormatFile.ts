@@ -5,7 +5,7 @@ export const errorFile = (event: React.ChangeEvent<HTMLInputElement>): boolean =
 	let error = false;
 	Array.from(files!).forEach((file) => {
 		let typeFile = file.name.split('.')[file.name.split('.').length - 1];
-		if (typeFile !== 'pdf' && typeFile !== 'jpg' && typeFile !== 'jpg' && typeFile !== 'jpeg') {
+		if (typeFile !== 'pdf' && typeFile !== 'jpg' && typeFile !== 'jpeg' && typeFile !== 'png') {
 			error = true;
 			Swal.fire({
 				icon: 'warning',
