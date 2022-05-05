@@ -231,6 +231,82 @@ export const createFormDataFm = (
 	return formData;
 };
 
+export const dataForPos = (
+	typeSolict: number,
+	pos: fmPos,
+	aci: Aci | null,
+	telemarket: TeleMarket | null,
+	typeWallet: TypeWallet | null,
+	locationPos: LocationInt
+) => {
+	//pos.request_origin?.id === 2 ? (aci ? aci : '') | ''
+	let auxOrigen: string = '';
+	if (pos.request_origin?.id === 2 || pos.request_origin?.id === 8) {
+		auxOrigen = aci!.id.toString();
+	}
+	if (pos.request_origin?.id === 3) {
+		auxOrigen = telemarket!.id.toString();
+	}
+	if (pos.request_origin?.id === 6) {
+		auxOrigen = typeWallet!.Id.toString();
+	}
+	return {
+		//Data FM
+		id_type_request: typeSolict,
+		number_post: pos.number_post,
+		id_payment_method: pos.payment_method?.id,
+		pos: {
+			id_estado: locationPos.estado?.id,
+			id_municipio: locationPos.municipio?.id,
+			id_parroquia: locationPos.parroquia?.id,
+			id_ciudad: locationPos.ciudad?.id,
+			sector: pos.sector,
+			calle: pos.calle,
+			local: pos.local,
+		},
+		bank_account_num: pos.text_account_number,
+		id_request_origin: pos.request_origin?.id,
+		id_type_payment: pos.type_pay?.id,
+		id_product: pos.model_post?.id,
+		//requestSource_docnum: auxOrigen,
+		ci_referred: auxOrigen,
+		discount: pos.discount,
+		nro_comp_dep: pos.pagadero ? '' : pos.nro_comp_dep,
+		pagadero: pos.pagadero,
+		initial: pos.initial,
+		//coutas: pos.coutas,
+	};
+};
+
+export const createFM = (
+	client: any,
+	comerce: any,
+	//Images
+	imagePlanilla: FileList | [],
+	imagesForm: ImagesInt,
+	imagesActa: FileList | [],
+	//pos
+	pos: any
+) => {
+	//console.log(client.stringify());
+	const formData: FormData = new FormData();
+	formData.append('client', JSON.stringify(client));
+	formData.append('commerce', JSON.stringify(comerce));
+	formData.append('posX', JSON.stringify(pos));
+	for (const item of Object.entries(imagesForm)) {
+		if (item[1] !== null) {
+			formData.append('images', item[1]);
+		}
+	}
+	for (let i: number = 0; i < imagesActa.length; i++) {
+		formData.append('constitutive_act', imagesActa[i]);
+	}
+	for (let i: number = 0; i < imagePlanilla.length; i++) {
+		formData.append('planilla', imagePlanilla[i]);
+	}
+	return formData;
+};
+
 export const sendCompleteFM = (
 	typeSolict: number,
 	client: fmClient,
@@ -249,9 +325,31 @@ export const sendCompleteFM = (
 ) => {
 	const dataClient = dataFormatClient(client, locationClient);
 	const dataCommerce = dataFormatCommerce(commerce, locationCommerce, activity, pos);
-	console.log('trim', dataClient);
+	const dataPost = dataForPos(typeSolict, pos, aci, telemarket, typeWallet, locationPos);
 	return async (dispatch: any) => {
 		try {
+			const fm: any = createFM(
+				//Client
+				dataClient,
+				//Comerce
+				dataCommerce,
+				//Images
+				imagePlanilla,
+				imagesForm,
+				imagesActa,
+				//Pos
+				dataPost
+			);
+			const resFM: AxiosResponse<any> = await useAxios.post(`/FM`, fm);
+			/*
+			let res = Array.from(fm.entries(), ([key, prop]) => ({
+				[key]: {
+					ContentLength: typeof prop === 'string' ? prop.length : prop.size,
+				},
+			}));
+			console.log(res);
+			*/
+			/*
 			const resClient: AxiosResponse<any> = await useAxios.post(`/FM/client`, dataClient);
 			const idClient: number = resClient.data.info.id;
 			console.log('Client', idClient);
@@ -275,8 +373,8 @@ export const sendCompleteFM = (
 			);
 			const resPos: AxiosResponse<any> = await useAxios.post(`/FM`, dataPos);
 			console.log('fm cargado', resPos.data);
-			//const res: AxiosResponse<any> = await useAxios.post(`/FM`, form);
 			//updateToken(res);
+			*/
 			dispatch(requestSuccess());
 		} catch (error: any) {
 			//console.log(error.reponse)
