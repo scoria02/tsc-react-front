@@ -20,7 +20,7 @@ export const validationClient = (client: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
 			updateToken(res);
-			//console.log(res);
+			console.log(res);
 			dispatch(requestSuccess(res.data.info));
 			return res.data.info;
 		} catch (error: any) {
@@ -162,8 +162,7 @@ export const dataFormatPos = (
 	typeWallet: TypeWallet | null,
 	locationPos: LocationInt,
 	idClient: number,
-	idCommerce: number,
-	idImages: any
+	idCommerce: number
 ) => {
 	//pos.request_origin?.id === 2 ? (aci ? aci : '') | ''
 	let auxOrigen: string = '';
@@ -177,13 +176,12 @@ export const dataFormatPos = (
 		auxOrigen = typeWallet!.Id.toString();
 	}
 	return {
+		id_client: idClient,
+		id_commerce: idCommerce,
 		//Data FM
-		...idImages,
 		id_type_request: typeSolict,
 		number_post: pos.number_post,
 		id_payment_method: pos.payment_method?.id,
-		id_client: idClient,
-		id_commerce: idCommerce,
 		pos: {
 			id_estado: locationPos.estado?.id,
 			id_municipio: locationPos.municipio?.id,
@@ -243,12 +241,12 @@ export const dataForPos = (
 	let auxOrigen: string = '';
 	if (pos.request_origin?.id === 2 || pos.request_origin?.id === 8) {
 		auxOrigen = aci!.id.toString();
-	}
-	if (pos.request_origin?.id === 3) {
+	} else if (pos.request_origin?.id === 3) {
 		auxOrigen = telemarket!.id.toString();
-	}
-	if (pos.request_origin?.id === 6) {
+	} else if (pos.request_origin?.id === 6) {
 		auxOrigen = typeWallet!.Id.toString();
+	} else {
+		auxOrigen = pos.reqSource_docnum;
 	}
 	return {
 		//Data FM
@@ -286,10 +284,13 @@ export const createFM = (
 	imagesForm: ImagesInt,
 	imagesActa: FileList | [],
 	//pos
-	pos: any
+	pos: any,
+	//
+	id_client: number
 ) => {
 	//console.log(client.stringify());
 	const formData: FormData = new FormData();
+	formData.append('id_client', id_client.toString());
 	formData.append('client', JSON.stringify(client));
 	formData.append('commerce', JSON.stringify(comerce));
 	formData.append('posX', JSON.stringify(pos));
@@ -300,6 +301,31 @@ export const createFM = (
 	}
 	for (let i: number = 0; i < imagesActa.length; i++) {
 		formData.append('constitutive_act', imagesActa[i]);
+	}
+	for (let i: number = 0; i < imagePlanilla.length; i++) {
+		formData.append('planilla', imagePlanilla[i]);
+	}
+	return formData;
+};
+
+export const createFMExtraPos = (
+	id_client: number,
+	id_comerce: number,
+	//Images
+	imagePlanilla: FileList | [],
+	imagesForm: ImagesInt,
+	//pos
+	pos: any
+) => {
+	//console.log(client.stringify());
+	const formData: FormData = new FormData();
+	formData.append('id_client', id_client.toString());
+	formData.append('id_commerce', id_comerce.toString());
+	formData.append('posX', JSON.stringify(pos));
+	for (const item of Object.entries(imagesForm)) {
+		if (item[1] !== null) {
+			formData.append('images', item[1]);
+		}
 	}
 	for (let i: number = 0; i < imagePlanilla.length; i++) {
 		formData.append('planilla', imagePlanilla[i]);
@@ -321,11 +347,14 @@ export const sendCompleteFM = (
 	locationPos: LocationInt,
 	imagePlanilla: FileList | [],
 	imagesForm: ImagesInt,
-	imagesActa: FileList | []
+	imagesActa: FileList | [],
+	id_client: number
 ) => {
-	const dataClient = dataFormatClient(client, locationClient);
+	//Crear formart
+	const dataClient = id_client ? null : dataFormatClient(client, locationClient);
 	const dataCommerce = dataFormatCommerce(commerce, locationCommerce, activity, pos);
 	const dataPost = dataForPos(typeSolict, pos, aci, telemarket, typeWallet, locationPos);
+	console.log('cliente: ', dataClient, ' id ', id_client);
 	return async (dispatch: any) => {
 		try {
 			const fm: any = createFM(
@@ -338,53 +367,23 @@ export const sendCompleteFM = (
 				imagesForm,
 				imagesActa,
 				//Pos
-				dataPost
+				dataPost,
+				//
+				id_client
 			);
 			const resFM: AxiosResponse<any> = await useAxios.post(`/FM`, fm);
-			/*
-			let res = Array.from(fm.entries(), ([key, prop]) => ({
-				[key]: {
-					ContentLength: typeof prop === 'string' ? prop.length : prop.size,
-				},
-			}));
-			console.log(res);
-			*/
-			/*
-			const resClient: AxiosResponse<any> = await useAxios.post(`/FM/client`, dataClient);
-			const idClient: number = resClient.data.info.id;
-			console.log('Client', idClient);
-			const resCommerce: AxiosResponse<any> = await useAxios.post(`/FM/${idClient}/commerce`, dataCommerce);
-			const idCommerce: number = resCommerce.data.info.id_commerce;
-			console.log('Commerce', idCommerce);
-			const images: any = createFormDataFm(idClient, idCommerce, imagePlanilla, imagesForm, imagesActa);
-			const resImages: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, images);
-			const idImages = resImages.data.info;
-			console.log('idImages', idImages);
-			const dataPos = dataFormatPos(
-				typeSolict,
-				pos,
-				aci,
-				telemarket,
-				typeWallet,
-				locationPos,
-				idClient,
-				idCommerce,
-				idImages
-			);
-			const resPos: AxiosResponse<any> = await useAxios.post(`/FM`, dataPos);
-			console.log('fm cargado', resPos.data);
-			//updateToken(res);
-			*/
-			dispatch(requestSuccess());
+			console.log('creado fm id: ', resFM);
+			dispatch(requestSuccess(resFM.data.info.code));
 		} catch (error: any) {
 			//console.log(error.reponse)
 			dispatch(requestError());
 			Swal.fire('Error', error.response?.data.message, 'error');
 		}
 	};
-	function requestSuccess() {
+	function requestSuccess(code: string) {
 		return {
 			type: ActionType.sendFM,
+			payload: code,
 		};
 	}
 	function requestError() {
@@ -406,41 +405,38 @@ export const sendCompleteFMExtraPos = (
 	imagesForm: ImagesInt
 ) => {
 	return async (dispatch: any) => {
+		const dataPos = dataFormatPos(
+			typeSolict,
+			pos,
+			aci,
+			telemarket,
+			typeWallet,
+			locationPos,
+			idsCAndCc.idClient,
+			idsCAndCc.idCommerce
+		);
+		const fmExtraPos = createFMExtraPos(
+			idsCAndCc.idClient,
+			idsCAndCc.idCommerce,
+			imagePlanilla,
+			imagesForm,
+			dataPos
+		);
 		try {
-			const images: any = createFormDataFm(
-				idsCAndCc.idClient,
-				idsCAndCc.idCommerce,
-				imagePlanilla,
-				imagesForm,
-				[]
-			);
-			const resImages: AxiosResponse<any> = await axiosFiles.post(`/1000pagosRC/RC`, images);
-			const idImages = resImages.data.info;
-			console.log('idImages', idImages);
-			const dataPos = dataFormatPos(
-				typeSolict,
-				pos,
-				aci,
-				telemarket,
-				typeWallet,
-				locationPos,
-				idsCAndCc.idClient,
-				idsCAndCc.idCommerce,
-				idImages
-			);
-			const resPos: AxiosResponse<any> = await useAxios.post(`/FM/extraPos`, dataPos);
-			console.log('fm cargado', resPos.data);
+			const resFM: AxiosResponse<any> = await useAxios.post(`/FM/extraPos`, fmExtraPos);
+			console.log('fm cargado', resFM.data);
 			//updateToken(res);
-			dispatch(requestSuccess());
+			dispatch(requestSuccess(resFM.data.info.code));
 		} catch (error: any) {
 			//console.log(error.reponse)
 			dispatch(requestError());
 			Swal.fire('Error', error.response?.data.message, 'error');
 		}
 	};
-	function requestSuccess() {
+	function requestSuccess(code: string) {
 		return {
 			type: ActionType.sendFM,
+			payload: code,
 		};
 	}
 	function requestError() {

@@ -77,6 +77,7 @@ const FormM: React.FC = () => {
 		aci,
 		telemarket,
 		typeWallet,
+		handleTypeSolict,
 	} = useContext(FMDataContext);
 
 	const {
@@ -88,6 +89,21 @@ const FormM: React.FC = () => {
 	} = useContext(LocationsContext);
 
 	const { imagePlanilla, imagesForm, imagesActa, namesImages } = useContext(ImagesFmContext);
+
+	useEffect(() => {
+		if (
+			fm.mashClient &&
+			fm.mashCommerce &&
+			client.ident_num !== '' &&
+			commerce.ident_num !== '' &&
+			typeSolict !== 4
+		) {
+			handleTypeSolict(4);
+			setActiveStep(1);
+			const newSteps = [...initStep, ...PosExtraSteps];
+			setSteps(newSteps);
+		}
+	}, [fm]);
 
 	useEffect(() => {
 		setReadyStep(
@@ -111,7 +127,8 @@ const FormM: React.FC = () => {
 				imagesActa,
 				fm.errorClient,
 				fm.errorCommerce,
-				fm.errorNumBank
+				fm.errorNumBank,
+				fm
 			)
 		);
 	}, [
@@ -185,7 +202,11 @@ const FormM: React.FC = () => {
 	};
 
 	const handleBack = () => {
-		setActiveStep((prevActiveStep) => prevActiveStep - 1);
+		if (fm.mashClient && activeStep === 3) {
+			setActiveStep(1);
+		} else {
+			setActiveStep((prevActiveStep) => prevActiveStep - 1);
+		}
 	};
 
 	const handleSubmit = () => {
@@ -210,7 +231,8 @@ const FormM: React.FC = () => {
 				imagesActa,
 				fm.errorClient,
 				fm.errorCommerce,
-				fm.errorNumBank
+				fm.errorNumBank,
+				fm
 			)
 		)
 			return;
@@ -231,7 +253,8 @@ const FormM: React.FC = () => {
 				locationPos,
 				imagePlanilla,
 				imagesForm,
-				imagesActa
+				imagesActa,
+				fm.id_client
 			)
 		);
 	};
@@ -258,7 +281,8 @@ const FormM: React.FC = () => {
 				imagesActa,
 				fm.errorClient,
 				fm.errorCommerce,
-				fm.errorNumBank
+				fm.errorNumBank,
+				fm
 			)
 		)
 			return;
@@ -292,11 +316,13 @@ const FormM: React.FC = () => {
 	};
 
 	const handleSendForm = () => {
+		const text = `Nro: <b>${fm.code}</b>`;
 		Swal.fire({
 			icon: 'success',
 			title: 'Solicitud Enviada',
+			html: text,
 			showConfirmButton: false,
-			timer: 1500,
+			timer: 2500,
 		});
 		history.push(urlFM);
 		setActiveStep(0);
@@ -330,7 +356,11 @@ const FormM: React.FC = () => {
 				if (typeSolict === 4) {
 					handleExtraPosValid();
 				} else {
-					handleNext();
+					if (fm.mashClient && activeStep === 1) {
+						setActiveStep(3);
+					} else {
+						handleNext();
+					}
 				}
 			}
 		} else {

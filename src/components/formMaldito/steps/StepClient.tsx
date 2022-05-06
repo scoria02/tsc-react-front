@@ -108,9 +108,6 @@ const StepClient: FC = () => {
 				</div>
 				<div className={classes.input}>
 					<FormControl sx={sxStyled.inputSelect} className={classes.inputSelect}>
-						{/* 
-						<InputLabel>DI</InputLabel>
-						*/}
 						<Select
 							variant='outlined'
 							onChange={(event: any) => handleSelectIdentClient('id_ident_type', event.target.value)}
@@ -166,215 +163,227 @@ const StepClient: FC = () => {
 						<input type='file' hidden name='rc_ident_card' accept={recaudo.acc} onChange={handleChangeImages} />
 					</Button>
 				</div>
-				<div className={classes.input}>
-					<TextField
-						className={classNames(classes.inputText, classes.inputTextLeft)}
-						sx={sxStyled.inputLeft}
-						variant='outlined'
-						required
-						label='Nombre'
-						autoComplete='nombre'
-						name='name'
-						onChange={handleChangeNameClient}
-						value={client.name}
-						error={errorsClient.name}
-						disabled={fm.mashClient}
-					/>
-					<TextField
-						className={classes.inputText}
-						variant='outlined'
-						required
-						label='Apellido'
-						autoComplete='last_name'
-						name='last_name'
-						onChange={handleChangeNameClient}
-						value={client.last_name}
-						error={errorsClient.last_name}
-						disabled={fm.mashClient}
-					/>
-				</div>
-				<div className={classes.input}>
-					<TextField
-						className={classNames(classes.inputText, classes.inputTextLeft)}
-						sx={sxStyled.inputLeft}
-						variant='outlined'
-						required
-						label='Telefono'
-						name='phone1'
-						autoComplete='telefono1'
-						placeholder='Ej: 4121234567'
-						onChange={handleChangePhone}
-						error={errorsClient.phone1}
-						disabled={fm.mashClient}
-						value={client.phone1}
-						inputProps={{ maxLength: 10 }}
-						InputProps={{
-							startAdornment: fm.mashClient ? null : <InputAdornment position='start'>{codePhone}</InputAdornment>,
-						}}
-					/>
-					<TextField
-						className={classes.inputText}
-						variant='outlined'
-						required
-						label='Telefono'
-						name='phone2'
-						onChange={handleChangePhone}
-						autoComplete='telefono2'
-						error={errorsClient.phone2}
-						disabled={fm.mashClient}
-						value={client.phone2}
-						placeholder='Ej: 4127654321'
-						inputProps={{ maxLength: 10 }}
-						InputProps={{
-							startAdornment: fm.mashClient ? null : <InputAdornment position='start'>{codePhone}</InputAdornment>,
-						}}
-					/>
-				</div>
+				{!fm.mashClient ? (
+					<>
+						<div className={classes.input}>
+							<TextField
+								className={classNames(classes.inputText, classes.inputTextLeft)}
+								sx={sxStyled.inputLeft}
+								variant='outlined'
+								required
+								label='Nombre'
+								autoComplete='nombre'
+								name='name'
+								onChange={handleChangeNameClient}
+								value={client.name}
+								error={errorsClient.name}
+								disabled={fm.mashClient}
+							/>
+							<TextField
+								className={classes.inputText}
+								variant='outlined'
+								required
+								label='Apellido'
+								autoComplete='last_name'
+								name='last_name'
+								onChange={handleChangeNameClient}
+								value={client.last_name}
+								error={errorsClient.last_name}
+								disabled={fm.mashClient}
+							/>
+						</div>
+						<div className={classes.input}>
+							<TextField
+								className={classNames(classes.inputText, classes.inputTextLeft)}
+								sx={sxStyled.inputLeft}
+								variant='outlined'
+								required
+								label='Telefono'
+								name='phone1'
+								autoComplete='telefono1'
+								placeholder='Ej: 4121234567'
+								onChange={handleChangePhone}
+								error={errorsClient.phone1}
+								disabled={fm.mashClient}
+								value={client.phone1}
+								inputProps={{ maxLength: 10 }}
+								InputProps={{
+									startAdornment: fm.mashClient ? null : (
+										<InputAdornment position='start'>{codePhone}</InputAdornment>
+									),
+								}}
+							/>
+							<TextField
+								className={classes.inputText}
+								variant='outlined'
+								required
+								label='Telefono'
+								name='phone2'
+								onChange={handleChangePhone}
+								autoComplete='telefono2'
+								error={errorsClient.phone2}
+								disabled={fm.mashClient}
+								value={client.phone2}
+								placeholder='Ej: 4127654321'
+								inputProps={{ maxLength: 10 }}
+								InputProps={{
+									startAdornment: fm.mashClient ? null : (
+										<InputAdornment position='start'>{codePhone}</InputAdornment>
+									),
+								}}
+							/>
+						</div>
+					</>
+				) : null}
 			</div>
-			<h2
-				style={{
-					marginTop: '10px',
-					fontSize: '20px',
-				}}>
-				Dirección de Habitación
-			</h2>
-			<div className={classes.grid}>
-				<div className={classes.input}>
-					<Autocomplete
-						disabled={fm.mashClient}
-						className={classNames(classes.inputText, classes.inputTextLeft)}
-						sx={sxStyled.inputLeft}
-						onChange={(event, value: Estado | null) => {
-							setEstado(value, setLocationClient);
-							handleListMunicipio(value ? value.id : 0, setListLocationClient);
-						}}
-						value={locationClient.estado || null}
-						options={listLocationClient.estado}
-						getOptionLabel={(option: Estado) => (option.estado ? option.estado : '')}
-						// getOptionSelected={(option: Estado, value: Estado) => option.id === value.id}
-						renderInput={(params: any) => (
-							<TextField
-								{...params}
-								name='estado'
-								label='Estado'
-								inputProps={{ ...params.inputProps, autoComplete: 'estado' }}
-								variant='outlined'
+			{!fm.mashClient ? (
+				<>
+					<h2
+						style={{
+							marginTop: '10px',
+							fontSize: '20px',
+						}}>
+						Dirección de Habitación
+					</h2>
+					<div className={classes.grid}>
+						<div className={classes.input}>
+							<Autocomplete
+								disabled={fm.mashClient}
+								className={classNames(classes.inputText, classes.inputTextLeft)}
+								sx={sxStyled.inputLeft}
+								onChange={(event, value: Estado | null) => {
+									setEstado(value, setLocationClient);
+									handleListMunicipio(value ? value.id : 0, setListLocationClient);
+								}}
+								value={locationClient.estado || null}
+								options={listLocationClient.estado}
+								getOptionLabel={(option: Estado) => (option.estado ? option.estado : '')}
+								// getOptionSelected={(option: Estado, value: Estado) => option.id === value.id}
+								renderInput={(params: any) => (
+									<TextField
+										{...params}
+										name='estado'
+										label='Estado'
+										inputProps={{ ...params.inputProps, autoComplete: 'estado' }}
+										variant='outlined'
+									/>
+								)}
 							/>
-						)}
-					/>
-					<Autocomplete
-						disabled={fm.mashClient}
-						className={classes.inputText}
-						onChange={(event, value: Municipio | null) => {
-							setMunicipio(value, setLocationClient);
-							handleListCiudad(locationClient.estado!.id, setListLocationClient);
-						}}
-						value={locationClient.municipio || null}
-						options={listLocationClient.municipio}
-						getOptionLabel={(option: Municipio) => (option.municipio ? option.municipio : '')}
-						renderInput={(params: any) => (
-							<TextField
-								{...params}
-								name='municipio'
-								label='Municipio'
-								variant='outlined'
-								inputProps={{ ...params.inputProps, autoComplete: 'municipio' }}
+							<Autocomplete
+								disabled={fm.mashClient}
+								className={classes.inputText}
+								onChange={(event, value: Municipio | null) => {
+									setMunicipio(value, setLocationClient);
+									handleListCiudad(locationClient.estado!.id, setListLocationClient);
+								}}
+								value={locationClient.municipio || null}
+								options={listLocationClient.municipio}
+								getOptionLabel={(option: Municipio) => (option.municipio ? option.municipio : '')}
+								renderInput={(params: any) => (
+									<TextField
+										{...params}
+										name='municipio'
+										label='Municipio'
+										variant='outlined'
+										inputProps={{ ...params.inputProps, autoComplete: 'municipio' }}
+									/>
+								)}
 							/>
-						)}
-					/>
-				</div>
-				<div className={classes.input}>
-					<Autocomplete
-						disabled={fm.mashClient}
-						className={classNames(classes.inputText, classes.inputTextLeft)}
-						sx={sxStyled.inputLeft}
-						onChange={(event, value: Ciudad | null) => {
-							setCiudad(value, setLocationClient);
-							handleListParroquia(locationClient.municipio!.id, setListLocationClient);
-						}}
-						value={locationClient.ciudad || null}
-						options={listLocationClient.ciudad}
-						getOptionLabel={(option: Ciudad) => (option.ciudad ? option.ciudad : '')}
-						renderInput={(params: any) => (
-							<TextField
-								{...params}
-								name='ciudad'
-								label='Ciudad'
-								variant='outlined'
-								inputProps={{ ...params.inputProps, autoComplete: 'ciudad' }}
+						</div>
+						<div className={classes.input}>
+							<Autocomplete
+								disabled={fm.mashClient}
+								className={classNames(classes.inputText, classes.inputTextLeft)}
+								sx={sxStyled.inputLeft}
+								onChange={(event, value: Ciudad | null) => {
+									setCiudad(value, setLocationClient);
+									handleListParroquia(locationClient.municipio!.id, setListLocationClient);
+								}}
+								value={locationClient.ciudad || null}
+								options={listLocationClient.ciudad}
+								getOptionLabel={(option: Ciudad) => (option.ciudad ? option.ciudad : '')}
+								renderInput={(params: any) => (
+									<TextField
+										{...params}
+										name='ciudad'
+										label='Ciudad'
+										variant='outlined'
+										inputProps={{ ...params.inputProps, autoComplete: 'ciudad' }}
+									/>
+								)}
 							/>
-						)}
-					/>
-					<Autocomplete
-						disabled={fm.mashClient}
-						className={classes.inputText}
-						onChange={(event, value: Parroquia | null) => {
-							setParroquia(value, setLocationClient);
-						}}
-						value={locationClient.parroquia || null}
-						options={listLocationClient.parroquia}
-						getOptionLabel={(option: Parroquia) => (option.parroquia ? option.parroquia : '')}
-						renderInput={(params: any) => (
-							<TextField
-								{...params}
-								name='parroquia'
-								label='Parroquia'
-								variant='outlined'
-								inputProps={{ ...params.inputProps, autoComplete: 'parroquia' }}
+							<Autocomplete
+								disabled={fm.mashClient}
+								className={classes.inputText}
+								onChange={(event, value: Parroquia | null) => {
+									setParroquia(value, setLocationClient);
+								}}
+								value={locationClient.parroquia || null}
+								options={listLocationClient.parroquia}
+								getOptionLabel={(option: Parroquia) => (option.parroquia ? option.parroquia : '')}
+								renderInput={(params: any) => (
+									<TextField
+										{...params}
+										name='parroquia'
+										label='Parroquia'
+										variant='outlined'
+										inputProps={{ ...params.inputProps, autoComplete: 'parroquia' }}
+									/>
+								)}
 							/>
-						)}
-					/>
-				</div>
-				<div className={classes.input}>
-					<TextField
-						disabled
-						className={classNames(classes.inputText, classes.inputTextLeft)}
-						sx={sxStyled.inputLeft}
-						variant='outlined'
-						required
-						id='standard-required'
-						label='Cod. Postal'
-						name='codigo_postal'
-						value={locationClient.ciudad?.postal_code || ''}
-					/>
-					<TextField
-						disabled={fm.mashClient}
-						className={classes.inputText}
-						variant='outlined'
-						required
-						id='standard-required'
-						label='Sector'
-						name='sector'
-						onChange={handleChangeClient}
-						value={client.sector}
-					/>
-				</div>
-				<div className={classes.input}>
-					<TextField
-						disabled={fm.mashClient}
-						className={classNames(classes.inputText, classes.inputTextLeft)}
-						sx={sxStyled.inputLeft}
-						variant='outlined'
-						required
-						id='standard-required'
-						label='Calle'
-						name='calle'
-						onChange={handleChangeClient}
-						value={client.calle}
-					/>
-					<TextField
-						disabled={fm.mashClient}
-						className={classes.inputText}
-						variant='outlined'
-						required
-						id='standard-required'
-						label='Casa/Quinta/Apart'
-						name='local'
-						onChange={handleChangeClient}
-						value={client.local}
-					/>
-				</div>
-			</div>
+						</div>
+						<div className={classes.input}>
+							<TextField
+								disabled
+								className={classNames(classes.inputText, classes.inputTextLeft)}
+								sx={sxStyled.inputLeft}
+								variant='outlined'
+								required
+								id='standard-required'
+								label='Cod. Postal'
+								name='codigo_postal'
+								value={locationClient.ciudad?.postal_code || ''}
+							/>
+							<TextField
+								disabled={fm.mashClient}
+								className={classes.inputText}
+								variant='outlined'
+								required
+								id='standard-required'
+								label='Sector'
+								name='sector'
+								onChange={handleChangeClient}
+								value={client.sector}
+							/>
+						</div>
+						<div className={classes.input}>
+							<TextField
+								disabled={fm.mashClient}
+								className={classNames(classes.inputText, classes.inputTextLeft)}
+								sx={sxStyled.inputLeft}
+								variant='outlined'
+								required
+								id='standard-required'
+								label='Calle'
+								name='calle'
+								onChange={handleChangeClient}
+								value={client.calle}
+							/>
+							<TextField
+								disabled={fm.mashClient}
+								className={classes.inputText}
+								variant='outlined'
+								required
+								id='standard-required'
+								label='Casa/Quinta/Apart'
+								name='local'
+								onChange={handleChangeClient}
+								value={client.local}
+							/>
+						</div>
+					</div>
+				</>
+			) : null}
 		</>
 	);
 };

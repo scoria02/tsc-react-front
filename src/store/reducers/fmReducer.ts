@@ -20,6 +20,7 @@ export interface StateFMInt {
 	errorCommerce: boolean;
 	errorNumBank: boolean;
 	nameBank: string;
+	code: string;
 }
 
 const initialState: StateFMInt = {
@@ -45,6 +46,7 @@ const initialState: StateFMInt = {
 	errorCommerce: false,
 	errorNumBank: false,
 	nameBank: '',
+	code: '',
 };
 
 export const fmReducer = (state = initialState, action: any) => {
@@ -152,6 +154,7 @@ export const fmReducer = (state = initialState, action: any) => {
 			return {
 				...state,
 				loadedFM: true,
+				code: action.payload,
 			};
 		case ActionType.sendFMError:
 			return {

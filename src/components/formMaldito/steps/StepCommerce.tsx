@@ -36,6 +36,7 @@ const StepCommerce: FC = () => {
 		typeSolict,
 		errorsFm,
 		commerce,
+		errorsCommerce,
 		activity,
 		setActivity,
 		handleChangeDay,
@@ -142,7 +143,7 @@ const StepCommerce: FC = () => {
 						onChange={handleIdentNum}
 						onBlur={handleBlurCommerce}
 						value={commerce.ident_num}
-						error={fm.errorCommerce}
+						error={fm.errorCommerce || errorsCommerce.ident_num}
 						inputProps={{
 							maxLength: commerce.id_ident_type === 5 ? 20 : 9,
 						}}

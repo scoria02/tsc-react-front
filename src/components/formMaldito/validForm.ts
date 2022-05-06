@@ -456,7 +456,8 @@ export const validReadyStep = (
 	imagesActa: FileList | [],
 	errorClient: boolean,
 	errorCommerce: boolean,
-	errorNumBank: boolean
+	errorNumBank: boolean,
+	fm: any
 ): boolean => {
 	switch (activeStep) {
 		case 0: //Tipo de Solicitud
@@ -475,13 +476,17 @@ export const validReadyStep = (
 						return true;
 					else return false;
 				}
-			} else if (
-				!checkErrorAllInput(sizeStepError(activeStep), errorsClient) &&
-				!inputNotNullLocation(locationClient) &&
-				!inputNotNull(sizeStep(activeStep), client) &&
-				!inputFileNotNull(1, imagesForm)
-			) {
-				return true;
+			} else {
+				if (fm.mashClient) {
+					return true;
+				} else if (
+					!checkErrorAllInput(sizeStepError(activeStep), errorsClient) &&
+					!inputNotNullLocation(locationClient) &&
+					!inputNotNull(sizeStep(activeStep), client) &&
+					!inputFileNotNull(1, imagesForm)
+				) {
+					return true;
+				}
 			}
 			return false;
 		case 3: //Comercio
