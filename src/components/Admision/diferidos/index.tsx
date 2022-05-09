@@ -20,14 +20,14 @@ const columns: GridColDef[] = [
 	{
 		field: 'code',
 		headerName: 'Cod.',
-		width: 70,
+		width: 140,
 		editable: false,
 		sortable: false,
 	},
 	{
 		field: 'nameComer',
-		headerName: 'Nombre Comercio',
-		width: 150,
+		headerName: 'Comercio',
+		width: 120,
 		editable: false,
 		sortable: false,
 	},

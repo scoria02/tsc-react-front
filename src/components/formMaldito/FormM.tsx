@@ -61,6 +61,7 @@ const FormM: React.FC = () => {
 	const {
 		typeSolict,
 		client,
+		setClient,
 		commerce,
 		pos,
 		activity,
@@ -102,6 +103,13 @@ const FormM: React.FC = () => {
 			setActiveStep(1);
 			const newSteps = [...initStep, ...PosExtraSteps];
 			setSteps(newSteps);
+		}
+		if ((fm.mashClient && client.name === '' && client.last_name === '' && typeSolict === 1) || typeSolict === 3) {
+			setClient({
+				...client,
+				name: fm.clientMash.name,
+				last_name: fm.clientMash.last_name,
+			});
 		}
 	}, [fm]);
 
