@@ -12,10 +12,49 @@ import '../scss/index.scss';
 import StepActaConst from './StepActaConst';
 import StepDiferido from './StepDiferido';
 
+import PasoAccountNumber from './pasosComprobacion/PasoAccountNumber';
+import PasoActaConst from './pasosComprobacion/PasoActaConst';
+import PasoClient from './pasosComprobacion/PasoClient';
+import PasoCommerce from './pasosComprobacion/PasoCommerce';
+import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
+import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
+import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
+import PasoPlanilla from './pasosComprobacion/PasoPlanilla';
+import PasoSelectAci from './pasosComprobacion/PasoSelectAci';
+import { useStyles } from './pasosComprobacion/styles/styles';
+
 const Diferido: React.FC<any> = ({ fm }) => {
 	const dispatch = useDispatch();
+	const classes = useStyles();
 
-	const { id, id_valid_request, ...recaudos } = fm;
+	function getStepContent(step: number, steps: string[]) {
+		switch (steps[step]) {
+			case 'Cliente':
+				return <PasoClient />;
+			case 'Comercio':
+				return (
+					<div className={classes.wrapperGrid}>
+						<PasoCommerce />
+
+						<div>
+							<PasoCommerce2 />
+						</div>
+					</div>
+				);
+			case 'Referencia Bancaria':
+				return <PasoAccountNumber />;
+			case 'Planilla de Solicitud':
+				return <PasoPlanilla />;
+			case 'Acta Const.':
+				return <PasoActaConst />;
+			case 'Cont. Especial':
+				return <PasoContriSpecial />;
+			case 'Comprobante de Pago':
+				return <PasoPaymentReceipt />;
+			default:
+				return 'Invalid step';
+		}
+	}
 
 	console.log(fm);
 
@@ -107,35 +146,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		}
 	}, [updatedStatus]);
 
-	const steps = getSteps();
-
-	function nameSteps(name: any) {
-		switch (name) {
-			case 'rc_ident_card':
-				return 'Documento de identidad del Cliente';
-			case 'rc_rif':
-				return 'Documento de identidad del Comercio';
-			case 'rc_constitutive_act':
-				return 'Acta Constitutiva';
-			case 'rc_special_contributor':
-				return 'Contribuyente Especial';
-			case 'rc_ref_bank':
-				return 'Referencia Bancaria';
-			case 'rc_comp_dep':
-				return 'Comprobante de Pago';
-			default:
-				return 'Otros';
-		}
-	}
-
-	function getSteps() {
-		let list: string[] = [];
-		for (const item of Object.entries(recaudos).reverse()) {
-			list.push(nameSteps(item[0]));
-		}
-		return list;
-	}
-
 	const validStep = (item: any, list: any) => {
 		for (const element of Object.entries(list)) {
 			if (item.slice(3, item.length) === element[0].slice(6, element[0].length)) {
@@ -145,50 +155,28 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		return '';
 	};
 
-	function getStepContent(step: number) {
-		let index = 0;
-		for (const item of Object.entries(recaudos).reverse()) {
-			//const element: any = item[1];
-			if (step === index) {
-				const ready = completed.has(activeStep);
-				setNameStep(item[0]);
-				if (item[0] === 'rc_constitutive_act') {
-					return (
-						<StepActaConst
-							key={index}
-							name={item[0]}
-							acta={item[1]}
-							paths={actaPaths}
-							handleChangeImages={handleChangeImagesActa}
-							uploadImg={actaImages}
-							readyStep={readyStep}
-							ready={ready}
-							deleteActa={deleteActa}
-							setDeleteActa={setDeleteActa}
-						/>
-					);
-				} else {
-					return (
-						<StepDiferido
-							key={index}
-							name={item[0]}
-							fm={item[1]}
-							valid={validStep(item[0], fm.id_valid_request)}
-							path={paths[item[0]]}
-							handleChangeImages={handleChangeImages}
-							uploadImg={uploadImgs[item[0]]}
-							readyStep={readyStep}
-							ready={ready}
-						/>
-					);
-				}
-			}
-			index++;
+	const steps = getSteps(fm);
+
+	function getSteps(form: any) {
+		const list: string[] = ['Cliente', 'Comercio', 'Referencia Bancaria'];
+		if (form.rc_planilla.length && !list.includes('Planilla de Solicitud')) {
+			list.push('Planilla de Solicitud');
 		}
+		if (form.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')) {
+			list.push('Acta Const.');
+		}
+		if (form.id_commerce.rc_special_contributor && !list.includes('Cont. Especial')) {
+			list.push('Cont. Especial');
+		}
+		if (form.rc_comp_dep && !list.includes('Comprobante de Pago')) {
+			list.push('Comprobante de Pago');
+		}
+		list.push('Asignación ACI');
+		return list;
 	}
 
 	const totalSteps = () => {
-		return getSteps().length;
+		return getSteps(fm).length;
 	};
 
 	const completedSteps = () => {
@@ -219,7 +207,8 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		if (Object.keys(actaImages).length) {
 			index++;
 		}
-		return index === Object.keys(recaudos).length ? true : false;
+		return false;
+		//return index === Object.keys(recaudos).length ? true : false;
 	};
 
 	useEffect(() => {
@@ -291,16 +280,20 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		});
 	};
 
+	const handleSend = () => {
+		console.log('Enviar');
+	};
+
 	return (
 		<ModalSteps
 			stepComplete={stepComplete}
 			clean={cleanDataFmDiferido}
-			updatedStatus={updatedStatus}
-			CloseModal={CloseModalDiferido}
+			updatedStatus={updateStatusFMDiferido}
 			steps={steps}
 			getStepContent={getStepContent}
 			fm={fm}
 			modalOpen={modalOpenDiferido}
+			CloseModal={CloseModalDiferido}
 			id_status={0}
 			getSteps={getSteps}
 			activeStep={activeStep}
@@ -310,6 +303,7 @@ const Diferido: React.FC<any> = ({ fm }) => {
 			readyStep={readyStep}
 			handleNext={handleNext}
 			handleComplete={handleComplete}
+			handleSend={handleSend}
 		/>
 	);
 };

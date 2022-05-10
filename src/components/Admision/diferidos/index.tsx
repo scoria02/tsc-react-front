@@ -105,14 +105,14 @@ const Diferidos: React.FC = () => {
 		socket.emit('Editar_diferido', event.row.id, (res: any) => {
 			// console.log('editar este', res);
 			setRowSelect({
-				...res,
-				id: event.row.id,
+				...res.id_request,
 			});
 		});
-
-		socket.emit('cliente:trabanjandoDiferido', user, event.row.id);
 		dispatch(OpenModalDiferido());
+		socket.emit('cliente:trabanjandoDiferido', user, event.row.id);
 	};
+
+	console.log(modalOpenDiferido);
 
 	return (
 		<div style={{ height: '100%', width: '100%' }}>

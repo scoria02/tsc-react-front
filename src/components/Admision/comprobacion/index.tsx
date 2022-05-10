@@ -68,6 +68,7 @@ const Comprobacion: FC = () => {
 
 	//states
 	const [activeStep, setActiveStep] = useState(0);
+	const [send, setSend] = useState(false);
 	const [completed, setCompleted] = useState(new Set<number>());
 
 	const [aci, setAci] = useState<any>(null);
@@ -134,18 +135,38 @@ const Comprobacion: FC = () => {
 
 	useEffect(() => {
 		if (allStepsCompleted() && !updatedStatus) {
-			if (validStatusFm()) {
-				dispatch(updateStatusFM(fm.id, 4, validated, aci.id));
-				console.log('mandado diferido');
-			} else {
-				dispatch(updateStatusFM(fm.id, 3, validated, aci.id));
-				console.log('fin validacion');
-			}
+			//activar button for enviar
+			setSend(true);
 		}
 		// socket.emit('cliente:loadDiferidos');
 		// socket.emit('cliente:dashdatasiempre');
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activeStep, dispatch, allStepsCompleted]);
+
+	const handleSend = async () => {
+		Swal.fire({
+			title: 'Confirmar verificación',
+			icon: 'warning',
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Verificado',
+			showCancelButton: true,
+			cancelButtonText: 'Atras',
+			showCloseButton: true,
+			customClass: { container: 'swal2-validated' },
+		}).then((result) => {
+			if (result.isConfirmed) {
+				handleLoading();
+				if (validStatusFm()) {
+					dispatch(updateStatusFM(fm.id, 4, validated, aci.id));
+					console.log('mandado diferido');
+				} else {
+					dispatch(updateStatusFM(fm.id, 3, validated, aci.id));
+					console.log('fin validacion');
+				}
+			}
+		});
+	};
 
 	useEffect(() => {
 		if (id_statusFM !== 0 && updatedStatus) {
@@ -244,6 +265,7 @@ const Comprobacion: FC = () => {
 			readyStep={readyStep}
 			handleNext={handleNext}
 			handleComplete={handleComplete}
+			handleSend={handleSend}
 		/>
 	);
 };

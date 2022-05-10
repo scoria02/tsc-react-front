@@ -65,11 +65,11 @@ export const updateStatusFM = (id_fm: number, status: any, validado: any, aci: n
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.put(`/FM/admision/${id_fm}/status`, id_status);
-			updateToken(res);
+			//updateToken(res);
 			dispatch(requestSuccess(status));
 		} catch (error: any) {
 			console.log(error.response);
-			dispatch(CloseModal());
+			//dispatch(CloseModal());
 			dispatch(requestError());
 			Swal.fire({
 				icon: 'error',
