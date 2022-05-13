@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import ModalSteps from 'components/modals/ModalSteps';
 import { SocketContext } from 'context/SocketContext';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { stepComplete } from 'store/actions/accept';
 import { cleanDataFmDiferido, updateStatusFMDiferido } from 'store/actions/admisionFm';
@@ -20,12 +20,20 @@ import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
 import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
 import PasoPlanilla from './pasosComprobacion/PasoPlanilla';
-import PasoSelectAci from './pasosComprobacion/PasoSelectAci';
 import { useStyles } from './pasosComprobacion/styles/styles';
+import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
 
-const Diferido: React.FC<any> = ({ fm }) => {
+const Diferido: React.FC<any> = ({ fmData: any }) => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
+
+	const { fm, initFm, resetFm } = useContext(FMDiferidoContext);
+
+	useLayoutEffect(() => {
+		if (!fm) {
+			initFm(fm);
+		}
+	}, []);
 
 	function getStepContent(step: number, steps: string[]) {
 		switch (steps[step]) {
@@ -35,7 +43,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				return (
 					<div className={classes.wrapperGrid}>
 						<PasoCommerce />
-
 						<div>
 							<PasoCommerce2 />
 						</div>
@@ -55,8 +62,6 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				return 'Invalid step';
 		}
 	}
-
-	console.log(fm);
 
 	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
 
@@ -124,16 +129,10 @@ const Diferido: React.FC<any> = ({ fm }) => {
 	const [nameStep, setNameStep] = useState<string>('');
 
 	useEffect(() => {
-		const validStep = () => {
-			if (uploadImgs[nameStep]) {
-				return true;
-			} else if (nameStep === 'rc_constitutive_act') {
-				if (Object.keys(actaImages).length) return true;
-				else return false;
-			} else return false;
-		};
-		setReadyStep(!validStep());
-	}, [nameStep, uploadImgs, actaImages]);
+		if (activeStep === steps.length - 1) {
+			setReadyStep(true);
+		} else setReadyStep(false);
+	}, [nameStep, uploadImgs, actaImages, activeStep]);
 
 	useEffect(() => {
 		if (updatedStatus) {
@@ -142,9 +141,14 @@ const Diferido: React.FC<any> = ({ fm }) => {
 				icon: 'success',
 				customClass: { container: 'swal2-validated' },
 			});
-			dispatch(cleanDataFmDiferido()); //hoy
+			cleanDiferido();
 		}
 	}, [updatedStatus]);
+
+	const cleanDiferido = () => {
+		dispatch(cleanDataFmDiferido()); //hoy
+		resetFm();
+	};
 
 	const validStep = (item: any, list: any) => {
 		for (const element of Object.entries(list)) {
@@ -155,23 +159,21 @@ const Diferido: React.FC<any> = ({ fm }) => {
 		return '';
 	};
 
-	const steps = getSteps(fm);
+	const steps = !fm ? [] : getSteps(fm.id_valid_request);
 
-	function getSteps(form: any) {
-		const list: string[] = ['Cliente', 'Comercio', 'Referencia Bancaria'];
-		if (form.rc_planilla.length && !list.includes('Planilla de Solicitud')) {
-			list.push('Planilla de Solicitud');
+	function getSteps(valid: any) {
+		const list: string[] = [];
+		if (fm) {
+			if (valid.id_typedif_client !== null && !list.includes('Cliente')) list.push('Cliente');
+			if (valid.id_typedif_commerce !== null && !list.includes('Comercio')) list.push('Comercio');
+			if (valid.id_typedif_ref_bank !== null && !list.includes('Referencia Bancaria'))
+				list.push('Referencia Bancaria');
+			if (valid.id_typedif_planilla && !list.includes('Planilla de Solicitud')) list.push('Planilla de Solicitud');
+			if (valid.id_typedif_consitutive_acta !== null && !list.includes('Acta Const.')) list.push('Acta Const.');
+			if (valid.id_typedif_special_contributor && !list.includes('Cont. Especial')) list.push('Cont. Especial');
+			if (valid.id_comp_dep && !list.includes('Comprobante de Pago')) list.push('Comprobante de Pago');
 		}
-		if (form.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')) {
-			list.push('Acta Const.');
-		}
-		if (form.id_commerce.rc_special_contributor && !list.includes('Cont. Especial')) {
-			list.push('Cont. Especial');
-		}
-		if (form.rc_comp_dep && !list.includes('Comprobante de Pago')) {
-			list.push('Comprobante de Pago');
-		}
-		list.push('Asignación ACI');
+		//
 		return list;
 	}
 
@@ -281,30 +283,35 @@ const Diferido: React.FC<any> = ({ fm }) => {
 	};
 
 	const handleSend = () => {
-		console.log('Enviar');
+		console.log('Send Diferidos');
 	};
 
 	return (
-		<ModalSteps
-			stepComplete={stepComplete}
-			clean={cleanDataFmDiferido}
-			updatedStatus={updateStatusFMDiferido}
-			steps={steps}
-			getStepContent={getStepContent}
-			fm={fm}
-			modalOpen={modalOpenDiferido}
-			CloseModal={CloseModalDiferido}
-			id_status={0}
-			getSteps={getSteps}
-			activeStep={activeStep}
-			setActiveStep={setActiveStep}
-			completed={completed}
-			setCompleted={setCompleted}
-			readyStep={readyStep}
-			handleNext={handleNext}
-			handleComplete={handleComplete}
-			handleSend={handleSend}
-		/>
+		<>
+			{fm ? (
+				<ModalSteps
+					stepComplete={stepComplete}
+					clean={cleanDataFmDiferido}
+					updatedStatus={updateStatusFMDiferido}
+					steps={steps}
+					getStepContent={getStepContent}
+					fm={fm}
+					modalOpen={modalOpenDiferido}
+					CloseModal={CloseModalDiferido}
+					id_status={0}
+					getSteps={getSteps}
+					activeStep={activeStep}
+					setActiveStep={setActiveStep}
+					completed={completed}
+					setCompleted={setCompleted}
+					readyStep={readyStep}
+					handleNext={handleNext}
+					handleComplete={handleComplete}
+					handleSend={handleSend}
+					cleanContext={resetFm}
+				/>
+			) : null}
+		</>
 	);
 };
 

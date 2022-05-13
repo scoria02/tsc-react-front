@@ -5,7 +5,7 @@ import { Fab } from '@mui/material';
 import classNames from 'classnames';
 import { DataListAdmisionProvider } from 'context/DataList/DatalistAdmisionContext';
 import { SocketContext } from 'context/SocketContext';
-import React, { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDataFM } from 'store/actions/admisionFm';
 import { OpenModal, OpenModalListSolic } from 'store/actions/ui';

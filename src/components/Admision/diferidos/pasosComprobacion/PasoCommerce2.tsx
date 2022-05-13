@@ -15,7 +15,7 @@ import { useStyles } from './styles/styles';
 export default function PasoCommerce2() {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.diferido);
 	const valid_commerce: any = useSelector((state: RootState) => state.acceptance.validado.valid_commerce);
 	const [state, setState] = useState(valid_commerce);
 	const [openModal, setOpenModal] = useState<boolean>(false);

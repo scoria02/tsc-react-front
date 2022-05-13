@@ -29,6 +29,7 @@ const initialState: inState = {
 };
 
 export const admisionFM = (state = initialState, action: any) => {
+	console.log(action.payload);
 	switch (action.type) {
 		//FM
 		case ActionType.getDataFM:
@@ -66,14 +67,31 @@ export const admisionFM = (state = initialState, action: any) => {
 				updatedStatusDiferido: true,
 				errorStatusDiferido: false,
 			};
+		case ActionType.getDataFMDiferido:
+			return {
+				...state,
+				diferido: action.payload,
+			};
 		case ActionType.updateStatusErrorDiferido:
 			return {
 				...state,
 				updatedStatusDiferido: false,
 				errorStatusDiferido: true,
 			};
+		//
+		case ActionType.onChangeDiferido:
+			return {
+				...state,
+				diferido: {
+					...state.diferido,
+					[action.payload.target.name]: action.payload.target.value,
+				},
+			};
 		case ActionType.cleanDataDiferido:
 			return initialState;
+		case ActionType.cleanDataFM:
+			return initialState;
+		//Status Diferido
 		default:
 			return state;
 	}

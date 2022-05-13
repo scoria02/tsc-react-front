@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Rec from './Rec';
 import RenderCustomPdf from 'components/renderPdf';
 import { Avatar, Button } from '@mui/material';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
-const RecPdf: React.FC<any> = ({ load, setLoad, imagen }) => {
+const RecDifPdf: React.FC<any> = ({ load, setLoad, imagen, type }) => {
 	const [modal, setModal] = useState(false);
+	const [pdf, setPdf] = useState(false);
 
 	const handleOpenModal = () => {
 		setModal(true);
@@ -15,11 +16,19 @@ const RecPdf: React.FC<any> = ({ load, setLoad, imagen }) => {
 		setModal(false);
 	};
 
-	console.log('img', imagen);
+	useEffect(() => {
+		if (type) {
+			setPdf(type === 'pdf' ? true : false);
+		} else {
+			setPdf(imagen.split('.')[imagen.split('.').length - 1] === 'pdf' ? true : false);
+		}
+	}, [type]);
+
+	console.log('img', imagen, type);
 
 	return (
 		<>
-			{imagen.split('.')[imagen.split('.').length - 1] === 'pdf' ? (
+			{pdf ? (
 				<div
 					style={{
 						width: '100%',
@@ -47,4 +56,4 @@ const RecPdf: React.FC<any> = ({ load, setLoad, imagen }) => {
 	);
 };
 
-export default RecPdf;
+export default RecDifPdf;

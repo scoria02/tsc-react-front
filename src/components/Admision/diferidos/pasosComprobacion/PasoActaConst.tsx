@@ -15,7 +15,7 @@ import { sxStyled, useStyles } from './styles/styles';
 const PasoActaConst: React.FC = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.diferido);
 	const valid_constitutive_act: any = useSelector(
 		(state: RootState) => state.acceptance.validado.valid_constitutive_act
 	);

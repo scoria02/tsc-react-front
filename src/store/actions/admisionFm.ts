@@ -143,3 +143,34 @@ export const cleanDataFmDiferido = () => {
 		};
 	}
 };
+
+export const getDataFMDiferido = (fm: any) => {
+	return async (dispatch: any) => {
+		try {
+			dispatch(requestSuccess(fm));
+		} catch (error: any) {
+			//console.log(error.response)
+			dispatch(CloseModalDiferido());
+			dispatch(requestError());
+			Swal.fire('Error', error.response.data.message, 'error');
+		}
+	};
+	function requestSuccess(state: any) {
+		return {
+			type: ActionType.getDataFMDiferido,
+			payload: state,
+		};
+	}
+	function requestError() {
+		return {
+			type: ActionType.getDataFMDiferidoError,
+		};
+	}
+};
+
+export const onChangeFmDiferito = (event: any) => async (dispatch: any) => {
+	dispatch({
+		type: ActionType.onChangeDiferido,
+		payload: event,
+	});
+};

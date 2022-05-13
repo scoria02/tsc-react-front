@@ -22,6 +22,7 @@ const ModalSteps: React.FC<any> = ({
 	handleNext,
 	handleComplete,
 	handleSend,
+	cleanContext,
 }) => {
 	const classes = useStyles();
 
@@ -54,6 +55,7 @@ const ModalSteps: React.FC<any> = ({
 		// console.log('clean for close');
 		dispatch(CloseModal());
 		dispatch(clean());
+		cleanContext();
 	};
 
 	return (

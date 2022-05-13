@@ -14,7 +14,7 @@ import { useStyles } from './styles/styles';
 const PasoContriSpecial: React.FC = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.diferido);
 	const valid_special_contributor: any = useSelector(
 		(state: RootState) => state.acceptance.validado.valid_special_contributor
 	);

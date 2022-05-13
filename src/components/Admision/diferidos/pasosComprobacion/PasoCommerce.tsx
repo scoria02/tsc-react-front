@@ -6,7 +6,7 @@ import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 
 export default function PasoUno() {
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.diferido);
 	const classes = useStyles();
 
 	return (

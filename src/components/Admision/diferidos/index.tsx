@@ -12,9 +12,12 @@ import { SocketContext } from 'context/SocketContext';
 import { DateTime } from 'luxon';
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getDataFMDiferido } from 'store/actions/admisionFm';
 import { OpenModalDiferido } from 'store/actions/ui';
 import { useStyles } from '../styles/styles';
 import Diferido from './Diferido';
+import { RootState } from 'store/store';
+import { FMDiferidoContextProvider } from 'context/Admision/Diferido/FmDiferidoContext';
 
 const columns: GridColDef[] = [
 	{
@@ -61,6 +64,9 @@ const Diferidos: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
+
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.diferido);
+
 	// const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
 	const { user } = useSelector((state: any) => state.auth);
 
@@ -98,6 +104,9 @@ const Diferidos: React.FC = () => {
 			//console.log('diferidos', data)
 			setDiferidos(data);
 		});
+		if (!modalOpenDiferido) {
+			setRowSelect(null);
+		}
 	}, [socket, modalOpenDiferido]);
 
 	const handleRow = (event: any) => {
@@ -107,12 +116,20 @@ const Diferidos: React.FC = () => {
 			setRowSelect({
 				...res.id_request,
 			});
+			dispatch(getDataFMDiferido(res.id_request));
 		});
-		dispatch(OpenModalDiferido());
+		//dispatch(OpenModalDiferido());
 		socket.emit('cliente:trabanjandoDiferido', user, event.row.id);
 	};
 
-	console.log(modalOpenDiferido);
+	useEffect(() => {
+		console.log('index', fm);
+		if (Object.keys(fm).length && !modalOpenDiferido) {
+			dispatch(OpenModalDiferido());
+		}
+	}, [fm, modalOpenDiferido]);
+
+	//console.log(modalOpenDiferido);
 
 	return (
 		<div style={{ height: '100%', width: '100%' }}>
@@ -131,7 +148,9 @@ const Diferidos: React.FC = () => {
 				disableColumnMenu
 				getRowId={(row) => row.id}
 			/>
-			{modalOpenDiferido && rowSelected && <Diferido fm={rowSelected} />}
+			<FMDiferidoContextProvider value={rowSelected}>
+				<>{modalOpenDiferido ? <Diferido /> : null}</>
+			</FMDiferidoContextProvider>
 		</div>
 	);
 };

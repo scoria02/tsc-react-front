@@ -13,7 +13,7 @@ const PasoSelectAci: FC<any> = ({ aci, setAci, listAci }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.diferido);
 
 	const handleSelectAci = (event: any, value: any) => {
 		dispatch(selectAci(value ? true : false));

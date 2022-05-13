@@ -17,7 +17,7 @@ export default function PasoPaymentReceipt() {
 
 	const dispatch = useDispatch();
 	const classes = useStyles();
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.diferido);
 	const [state, setState] = useState(valid_comp_dep); //falta
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [load, setLoad] = useState(false);

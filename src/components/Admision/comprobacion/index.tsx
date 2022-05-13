@@ -266,6 +266,7 @@ const Comprobacion: FC = () => {
 			handleNext={handleNext}
 			handleComplete={handleComplete}
 			handleSend={handleSend}
+			cleanContext={() => {}}
 		/>
 	);
 };
