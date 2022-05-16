@@ -4,6 +4,7 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { PhotoCamera } from '@mui/icons-material';
 import ImageIcon from '@mui/icons-material/Image';
 import { useStyles } from '../../Admision/diferidos/pasosComprobacion/styles/styles';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
 	Avatar,
 	Button,
@@ -20,16 +21,18 @@ import { sxStyledList } from './styles/styles';
 
 interface Props {
 	listImagen: FileList | [];
-	imagenes: any;
+	imagenes: any[];
+	deleteItemImagenes(id: number): void;
 }
 
-const ListImages: React.FC<Props> = ({ listImagen, imagenes }) => {
+const ListImages: React.FC<Props> = ({ listImagen, imagenes, deleteItemImagenes }) => {
 	const classes = useStyles();
 	const url: string = process.env.REACT_APP_API_IMAGES + '/';
+
 	return (
 		<List sx={sxStyledList.container_ListActa} className={classes.container_ListActa}>
 			{Array.from(listImagen).map((item, index) => {
-				console.log(item);
+				//console.log(item);
 				return (
 					<ListItem key={item.name} value={item.name}>
 						<Button
@@ -70,6 +73,13 @@ const ListImages: React.FC<Props> = ({ listImagen, imagenes }) => {
 							primary={item.id_photo.name.split('@')[item.id_photo.name.split('.').length - 1]}
 							secondary={index + 1}
 						/>
+					</Button>
+					<Button
+						onClick={() => deleteItemImagenes(item.id)}
+						size='small'
+						className={classes.deleteButton}
+						color='error'>
+						<DeleteIcon sx={{ width: 20 }} />
 					</Button>
 				</ListItem>
 			))}

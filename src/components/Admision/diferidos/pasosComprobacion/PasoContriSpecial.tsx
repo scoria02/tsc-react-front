@@ -1,6 +1,6 @@
 import { FormControlLabel, Switch } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
-import Rec from 'components/utilis/images/Rec';
+import RecPdf from 'components/utilis/images/RecPdf';
 import React, { useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
@@ -73,7 +73,7 @@ const PasoContriSpecial: React.FC = () => {
 						label='Correcto'
 					/>
 				</div>
-				<Rec load={load} setLoad={setLoad} imagen={imagen} />
+				<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 			</form>
 			<ModalAlert
 				from='valid_special_contributor'

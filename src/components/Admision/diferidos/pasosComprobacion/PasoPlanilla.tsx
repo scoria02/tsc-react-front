@@ -1,6 +1,4 @@
-import ImageIcon from '@mui/icons-material/Image';
 import { PhotoCamera } from '@mui/icons-material';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import {
 	Avatar,
 	Button,
@@ -35,7 +33,8 @@ const PasoPlanilla: React.FC = () => {
 	const [state, setState] = useState(valid_planilla);
 	const [openModal, setOpenModal] = useState<boolean>(false);
 
-	const { fm, handleChange, imagePlanilla, handleChangePlanilla, removePlanilla } = useContext(FMDiferidoContext);
+	const { fm, disabled, handleChange, imagePlanilla, handleChangePlanilla, removePlanilla, deleteItemPlanilla } =
+		useContext(FMDiferidoContext);
 
 	const handleOpenModal = () => {
 		handleCancel();
@@ -60,27 +59,32 @@ const PasoPlanilla: React.FC = () => {
 		handleCloseModal(true);
 	};
 
-	const imagenes: any = fm.rc_planilla;
+	const imagenes: any[] = fm.rc_planilla;
 	const url: string = process.env.REACT_APP_API_IMAGES + '/';
 
 	return (
 		<>
 			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					<TextareaAutosize
-						className={classes.btn_stepText}
-						maxRows={4}
-						disabled
-						defaultValue={fm.id_valid_request.valid_planilla}
-						placeholder=''
-					/>
+					{fm.id_valid_request.id_typedif_planilla === 2 ? (
+						<TextareaAutosize
+							className={classes.btn_stepText}
+							maxRows={4}
+							disabled
+							defaultValue={fm.id_valid_request.valid_planilla}
+							placeholder=''
+						/>
+					) : (
+						<h2 className={classes.btn_stepTextInterno}> Error Interno </h2>
+					)}
 				</div>
 				<div className={classes.btn_stepM}>
 					<Button
 						className={classes.imgIdent}
 						variant='contained'
+						disabled={disabled}
 						style={{
-							background: imagePlanilla.length ? '#5c62c5' : '#f44336',
+							background: imagePlanilla.length && !disabled ? '#5c62c5' : '#D3D3D3',
 						}}
 						component='label'>
 						{!imagePlanilla.length ? (
@@ -101,14 +105,14 @@ const PasoPlanilla: React.FC = () => {
 							type='file'
 							multiple
 							hidden
-							name='rc_ref_bank'
+							name='rc_planilla'
 							accept={recaudo.acc}
 							onChange={handleChangePlanilla}
 						/>
 					</Button>
 				</div>
 			</form>
-			<ListImages listImagen={imagePlanilla} imagenes={imagenes} />
+			<ListImages listImagen={imagePlanilla} imagenes={imagenes} deleteItemImagenes={deleteItemPlanilla} />
 			<ModalAlert
 				from='valid_planilla'
 				openModal={openModal}

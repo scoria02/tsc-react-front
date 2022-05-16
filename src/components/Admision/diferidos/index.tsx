@@ -101,7 +101,7 @@ const Diferidos: React.FC = () => {
 	useEffect(() => {
 		//console.log('ED1')
 		socket.on('server:loadDiferidos', (data: any) => {
-			//console.log('diferidos', data)
+			console.log('diferidos', data);
 			setDiferidos(data);
 		});
 		if (!modalOpenDiferido) {

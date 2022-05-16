@@ -22,7 +22,7 @@ export default function PasoAccountNumber() {
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [load, setLoad] = useState(false);
 
-	const { fm, handleChange, imagesForm, handleChangeImages, deleteImg, pathImages } =
+	const { fm, disabled, handleChange, imagesForm, handleChangeImages, deleteImg, pathImages } =
 		useContext(FMDiferidoContext);
 
 	const handleOpenModal = () => {
@@ -55,7 +55,7 @@ export default function PasoAccountNumber() {
 		}
 	};
 
-	console.log('lll ', pathImages.rc_ref_bank.path);
+	//console.log('lll ', pathImages.rc_ref_bank.path);
 
 	const imagen = imagesForm.rc_ref_bank
 		? pathImages.rc_ref_bank.path
@@ -97,12 +97,14 @@ export default function PasoAccountNumber() {
 						value={fm.bank_account_num}
 						inputProps={{ maxLength: 20 }}
 						variant='outlined'
+						disabled={disabled}
 					/>
 					<Button
 						className={classes.imgIdent}
 						variant='contained'
+						disabled={disabled}
 						style={{
-							background: imagesForm.rc_ref_bank ? '#5c62c5' : '#f44336',
+							background: imagesForm.rc_ident_card && !disabled ? '#5c62c5' : '#D3D3D3',
 						}}
 						component='label'>
 						{imagesForm.rc_ref_bank !== null ? (

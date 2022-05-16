@@ -97,7 +97,7 @@ const ModalSteps: React.FC<any> = ({
 								className={classes.button}>
 								Siguiente
 							</Button>
-							{activeStep !== steps.length - 1 ? (
+							{completedSteps() !== steps.length - 1 ? (
 								completed.has(activeStep) ? (
 									<Typography variant='caption' className={classes.completed}>
 										Verificado
@@ -108,9 +108,9 @@ const ModalSteps: React.FC<any> = ({
 										className={classes.buttonS}
 										variant='contained'
 										color='primary'
-										disabled={readyStep}
+										//disabled={readyStep}
 										onClick={handleComplete}>
-										{completedSteps() === totalSteps() - 1 ? 'Solicitud Revisada' : 'Verificar'}
+										Verificar
 									</Button>
 								)
 							) : (

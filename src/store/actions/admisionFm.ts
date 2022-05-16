@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios';
 import useAxios, { axiosFiles } from 'config/index';
+import { ImagesInt } from 'context/FM/fmImages/interface';
 import Swal from 'sweetalert2';
 import { ActionType } from '../types/types';
 import { cleanRec } from './accept';
@@ -106,15 +107,50 @@ export const cleanAdmisionFM = () => {
 	}
 };
 
-export const updateStatusFMDiferido = (id_fm: number, formData: any) => {
+export const createFormDataFmDif = (
+	id_fm: number,
+	fm: any,
+	imagePlanilla: FileList | [],
+	imagesForm: ImagesInt,
+	imagesActa: FileList | []
+): FormData => {
+	const formData: FormData = new FormData();
+	formData.append('id_fm', id_fm.toString());
+	formData.append('fm', JSON.stringify(fm));
+	for (const item of Object.entries(imagesForm)) {
+		if (item[1] !== null) {
+			formData.append('images', item[1]);
+		}
+	}
+	for (let i: number = 0; i < imagesActa.length; i++) {
+		formData.append('constitutive_act', imagesActa[i]);
+	}
+	for (let i: number = 0; i < imagePlanilla.length; i++) {
+		formData.append('planilla', imagePlanilla[i]);
+	}
+	return formData;
+};
+
+export const updateStatusFMDiferido = (
+	id_fm: number,
+	fm: any,
+	imagesForm: ImagesInt,
+	imagePlanilla: FileList | [],
+	imagesActa: FileList | []
+) => {
 	return async (dispatch: any) => {
+		console.log('fmmmm', fm);
+		console.log(imagePlanilla);
+		console.log(imagesForm);
+		console.log(imagesActa);
+		const dataFm: any = createFormDataFmDif(id_fm, fm, imagePlanilla, imagesForm, imagesActa);
 		try {
-			await axiosFiles.put(`/1000pagosRC/RC/admition/${id_fm}/diferidos`, formData);
+			const res: any = await useAxios.put(`/FM/admition/${id_fm}/diferido`, dataFm);
 			//console.log('updateimg', res)
-			dispatch(requestSuccess());
+			//dispatch(requestSuccess());
 		} catch (error: any) {
 			//console.log(error.response)
-			dispatch(CloseModalDiferido());
+			//dispatch(CloseModalDiferido());
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}

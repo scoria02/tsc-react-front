@@ -1,26 +1,50 @@
+import { PhotoCamera } from '@mui/icons-material';
 import ImageIcon from '@mui/icons-material/Image';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import { Avatar, Button, FormControlLabel, List, ListItem, ListItemText, Switch } from '@mui/material';
+import {
+	Avatar,
+	Button,
+	FormControlLabel,
+	IconButton,
+	List,
+	ListItem,
+	ListItemText,
+	Switch,
+	TextareaAutosize,
+} from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
-import React, { useEffect } from 'react';
+import ListImages from 'components/utilis/images/ListImages';
+import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
+import React, { useContext, useEffect } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { Valid } from 'store/actions/accept';
 //Url
 import { RootState } from 'store/store';
+import { recaudo } from 'utils/recaudos';
 import './styles/pasos.scss';
 import { sxStyled, useStyles } from './styles/styles';
 
 const PasoActaConst: React.FC = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.diferido);
 	const valid_constitutive_act: any = useSelector(
 		(state: RootState) => state.acceptance.validado.valid_constitutive_act
 	);
 	const [state, setState] = React.useState(valid_constitutive_act);
 	const [openModal, setOpenModal] = React.useState<boolean>(false);
+
+	const {
+		fm,
+		imagesActa,
+		disabled,
+		handleChangeImagesActa,
+		imagePlanilla,
+		handleChangePlanilla,
+		removePlanilla,
+		deleteItemActa,
+	} = useContext(FMDiferidoContext);
 
 	const handleOpenModal = () => {
 		handleCancel();
@@ -60,54 +84,41 @@ const PasoActaConst: React.FC = () => {
 		<>
 			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					{/* <TextField
-						className={classes.btn_medio}
-						id='outlined-basic '
-						label='Acta Constitutiva'
-						variant='outlined'
-						value={`Archivo${imagenes.length ? 's' : ''} de Acta Constitutiva`}
-						disabled
-					/> */}
-					<FormControlLabel
-						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
-						className={classes.checkText}
-						label={state.status ? 'Correcto' : 'Incorrecto'}
-					/>
+					{fm.id_valid_request.id_typedif_consitutive_acta === 2 ? (
+						<TextareaAutosize
+							className={classes.btn_stepText}
+							maxRows={4}
+							disabled
+							defaultValue={fm.id_valid_request.valid_ref_bank}
+							placeholder=''
+						/>
+					) : (
+						<h2 className={classes.btn_stepTextInterno}> Error Interno </h2>
+					)}
 				</div>
-				<List sx={sxStyled.container_ListActa}>
-					{imagenes.map((item: any, index: number) => (
-						<ListItem key={item.id} value={item.id}>
-							<Button
-								className={classes.link}
-								href={url + item.id_photo.path}
-								target='_blank'
-								rel='noreferrer'
-								key={item.id}>
-								<Avatar>
-									{item.id_photo.name.split('.')[item.id_photo.name.split('.').length - 1] === 'pdf' ? (
-										<PictureAsPdfIcon />
-									) : (
-										<ImageIcon />
-									)}
-								</Avatar>
-								<ListItemText
-									className={classes.itemLink}
-									primary={item.id_photo.name.split('@')[item.id_photo.name.split('.').length - 1]}
-									secondary={index + 1}
-								/>
-							</Button>
-						</ListItem>
-					))}
-				</List>
+				<div className={classes.btn_stepM}>
+					<Button
+						className={classes.imgIdent}
+						variant='contained'
+						style={{
+							background: imagesActa.length && !disabled ? '#5c62c5' : '#D3D3D3',
+						}}
+						component='label'>
+						<IconButton aria-label='upload picture' component='span'>
+							<PhotoCamera />
+						</IconButton>
+						<input
+							type='file'
+							multiple
+							hidden
+							name='rc_constitutive_act'
+							accept={recaudo.acc}
+							onChange={handleChangeImagesActa}
+						/>
+					</Button>
+				</div>
 			</form>
-
-			{/*
-			<Rec 
-				load={load}
-				setLoad={setLoad}
-				imagen={imagen}
-			/>
-				*/}
+			<ListImages listImagen={imagesActa} imagenes={imagenes} deleteItemImagenes={deleteItemActa} />
 			<ModalAlert
 				from='valid_constitutive_act'
 				openModal={openModal}

@@ -2,6 +2,9 @@ import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles((styles: Theme) => ({
+	deleteButton: {
+		width: '20',
+	},
 	newImage: {
 		background: styles.palette.primary.main,
 		color: 'red',

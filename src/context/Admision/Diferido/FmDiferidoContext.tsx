@@ -1,83 +1,22 @@
 import useAxios from 'config';
-import { Aci, Activity, base, Distributor, TeleMarket, TypeWallet } from 'context/DataList/interface';
 import { ImagesInt, PathImage, PathImagesInt } from 'context/FM/fmImages/interface';
 import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from 'context/FM/Location/interfaces';
-import {
-	fmClient,
-	fmCommerce,
-	fmError_ClientINT,
-	fmError_CommerceINT,
-	fmError_Interface,
-	fmPos,
-	IdClient_CommerceINT,
-} from 'interfaces/fm';
+import { fmClient, fmCommerce, fmPos } from 'interfaces/fm';
+import Completed from 'pages/Cobranza/views/Completed';
 import React, { createContext, Dispatch, ReactChild, SetStateAction, useEffect, useState } from 'react';
-import Swal from 'sweetalert2';
 import { errorFile } from 'utils/validFormatFile';
-import { validateFormClient, validateFormCommerce } from 'validation/validFm';
-
-const initialImagesFm: ImagesInt = {
-	rc_ident_card: null,
-	rc_rif: null,
-	rc_special_contributor: null,
-	rc_ref_bank: null,
-	rc_comp_dep: null,
-};
-
-const initialImagesPath: PathImagesInt = {
-	rc_ident_card: {
-		path: '',
-		type: '',
-	},
-	rc_rif: {
-		path: '',
-		type: '',
-	},
-	rc_special_contributor: {
-		path: '',
-		type: '',
-	},
-	rc_ref_bank: {
-		path: '',
-		type: '',
-	},
-	rc_comp_dep: {
-		path: '',
-		type: '',
-	},
-};
-
-interface Props {
-	children: ReactChild;
-	value: any;
-}
-
-interface ContextFMD {
-	fm: any;
-	initFm(fmData: any): void;
-	resetFm(): void;
-	handleChange(event: React.ChangeEvent<HTMLInputElement>): void;
-	//images
-	imagePlanilla: FileList | [];
-	imagesActa: FileList | [];
-	imagesForm: ImagesInt;
-	//paths
-	pathImages: PathImagesInt;
-	//
-	handleChangePlanilla(event: React.ChangeEvent<HTMLInputElement>): void;
-	handleChangeImages(event: React.ChangeEvent<HTMLInputElement>): void;
-	handleChangeImagesMulti(event: React.ChangeEvent<HTMLInputElement>): void;
-	deleteImg(name: string): void;
-	deleteImgActa(): void;
-	removePlanilla(): void;
-	resetImages(): void;
-}
+import { ContextFMD, PropsAd } from './interfaces';
+import { initialImagesFm, initialImagesPath } from './state';
 
 const FMDiferidoContext = createContext<ContextFMD>({
+	disabled: false,
+	setDisabled: () => {},
 	fm: null,
 	initFm: () => {},
 	resetFm: () => {},
 	handleChange: () => {},
+	handleChangeClient: () => {},
+	handleChangeCommerce: () => {},
 	imagePlanilla: [],
 	imagesActa: [],
 	imagesForm: initialImagesFm,
@@ -85,15 +24,17 @@ const FMDiferidoContext = createContext<ContextFMD>({
 	pathImages: initialImagesPath,
 	//
 	handleChangePlanilla: () => {},
+	deleteItemPlanilla: () => {},
+	//
 	handleChangeImages: () => {},
-	handleChangeImagesMulti: () => {},
+	handleChangeImagesActa: () => {},
+	deleteItemActa: () => {},
 	deleteImg: () => {},
-	deleteImgActa: () => {},
 	removePlanilla: () => {},
 	resetImages: () => {},
 });
 
-export const FMDiferidoContextProvider = ({ children, value }: Props) => {
+export const FMDiferidoContextProvider = ({ children, value }: PropsAd) => {
 	const [fm, setFm] = useState<any>(value);
 	//
 	const [imagePlanilla, setImagePlanilla] = useState<FileList | []>([]);
@@ -106,9 +47,33 @@ export const FMDiferidoContextProvider = ({ children, value }: Props) => {
 	const [imagesForm, setImagesForm] = useState<ImagesInt>(initialImagesFm);
 	const [pathImages, setPathImages] = useState<PathImagesInt>(initialImagesPath);
 	//
+
+	const [disabled, setDisabled] = useState<boolean>(false);
+
+	const handleChangeClient = (event: React.ChangeEvent<HTMLInputElement>) => {
+		//console.log(event.target.name, event.target.value);
+		setFm({
+			...fm,
+			id_client: {
+				...fm.id_client,
+				[event.target.name]: event.target.value,
+			},
+		});
+	};
+	//
+	const handleChangeCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
+		//console.log(event.target.name, event.target.value);
+		setFm({
+			...fm,
+			id_commerce: {
+				...fm.id_commerce,
+				[event.target.name]: event.target.value,
+			},
+		});
+	};
 	//
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		console.log(event.target);
+		//console.log(event.target.name, event.target.value);
 		setFm({
 			...fm,
 			[event.target.name]: event.target.value,
@@ -138,6 +103,29 @@ export const FMDiferidoContextProvider = ({ children, value }: Props) => {
 		setImagePlanilla([]);
 	};
 
+	const deleteItemPlanilla = (id: number) => {
+		console.log('delete -> ', id);
+		const aux = fm['rc_planilla'].filter((item: any) => item.id !== id);
+		console.log(aux);
+		setFm({
+			...fm,
+			rc_planilla: aux,
+		});
+	};
+
+	const deleteItemActa = (id: number) => {
+		console.log('delete -> ', id);
+		const aux = fm.id_commerce.rc_constitutive_act.filter((item: any) => item.id !== id);
+		console.log(aux);
+		setFm({
+			...fm,
+			id_commerce: {
+				...fm.id_commerce,
+				rc_constitutive_act: aux,
+			},
+		});
+	};
+
 	const handleChangePlanilla = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files) {
 			if (!errorFile(event)) {
@@ -155,6 +143,27 @@ export const FMDiferidoContextProvider = ({ children, value }: Props) => {
 			} else {
 				setImagePlanilla([]);
 				setPathImagePlanilla([]);
+			}
+		}
+	};
+
+	const handleChangeImagesActa = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files) {
+			if (!errorFile(event)) {
+				let files = event.target.files;
+				setImagesActa(files);
+				for (let i: number = 0; i < files.length; i++) {
+					setPathImagesActa([
+						...pathImagePlanilla,
+						{
+							path: URL.createObjectURL(files[i]),
+							type: files[i].type,
+						},
+					]);
+				}
+			} else {
+				setImagesActa([]);
+				setPathImagesActa([]);
 			}
 		}
 	};
@@ -193,50 +202,8 @@ export const FMDiferidoContextProvider = ({ children, value }: Props) => {
 		}
 	};
 
-	const handleChangeImagesMulti = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (event.target.files) {
-			if (!errorFile(event)) {
-				let files = event.target.files;
-				setImagesActa(files);
-			} else deleteImgActa();
-		}
-	};
-
-	const deleteImgActa = () => {
+	const deleteImgsActa = () => {
 		setImagesActa([]);
-	};
-
-	const setEstado = (data: Estado | null, setLocation: Dispatch<SetStateAction<LocationInt>>) => {
-		setLocation({
-			estado: data,
-			municipio: null,
-			ciudad: null,
-			parroquia: null,
-		});
-	};
-
-	const setMunicipio = (data: Municipio | null, setLocation: Dispatch<SetStateAction<LocationInt>>) => {
-		setLocation((prevState) => ({
-			...prevState,
-			municipio: data,
-			ciudad: null,
-			parroquia: null,
-		}));
-	};
-
-	const setCiudad = (data: Ciudad | null, setLocation: Dispatch<SetStateAction<LocationInt>>) => {
-		setLocation((prevState) => ({
-			...prevState,
-			ciudad: data,
-			parroquia: null,
-		}));
-	};
-
-	const setParroquia = (data: Parroquia | null, setLocation: Dispatch<SetStateAction<LocationInt>>) => {
-		setLocation((prevState) => ({
-			...prevState,
-			parroquia: data,
-		}));
 	};
 
 	const deleteImg = (name: string) => {
@@ -246,17 +213,17 @@ export const FMDiferidoContextProvider = ({ children, value }: Props) => {
 		});
 	};
 
-	const copyLocationToCommerce = (stateLocation: LocationInt, state: fmClient | fmCommerce | fmPos): void => {};
-
-	const copyLocationToPos = (stateLocation: LocationInt, state: fmClient | fmCommerce | fmPos): void => {};
-
 	return (
 		<FMDiferidoContext.Provider
 			value={{
+				disabled,
+				setDisabled,
 				fm,
 				initFm,
 				resetFm,
 				handleChange,
+				handleChangeClient,
+				handleChangeCommerce,
 				//images
 				imagePlanilla,
 				imagesActa,
@@ -265,10 +232,12 @@ export const FMDiferidoContextProvider = ({ children, value }: Props) => {
 				pathImages,
 				//
 				handleChangePlanilla,
+				deleteItemPlanilla,
+				//
 				handleChangeImages,
-				handleChangeImagesMulti,
+				handleChangeImagesActa,
 				deleteImg,
-				deleteImgActa,
+				deleteItemActa,
 				removePlanilla,
 				resetImages,
 			}}>

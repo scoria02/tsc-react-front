@@ -22,12 +22,14 @@ import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
 import PasoPlanilla from './pasosComprobacion/PasoPlanilla';
 import { useStyles } from './pasosComprobacion/styles/styles';
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
+import { handleLoading } from 'components/utilis/swals';
 
 const Diferido: React.FC<any> = ({ fmData: any }) => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 
-	const { fm, initFm, resetFm } = useContext(FMDiferidoContext);
+	const { fm, setDisabled, imagePlanilla, imagesForm, imagesActa, initFm, resetFm } =
+		useContext(FMDiferidoContext);
 
 	useLayoutEffect(() => {
 		if (!fm) {
@@ -129,12 +131,6 @@ const Diferido: React.FC<any> = ({ fmData: any }) => {
 	const [nameStep, setNameStep] = useState<string>('');
 
 	useEffect(() => {
-		if (activeStep === steps.length - 1) {
-			setReadyStep(true);
-		} else setReadyStep(false);
-	}, [nameStep, uploadImgs, actaImages, activeStep]);
-
-	useEffect(() => {
 		if (updatedStatus) {
 			Swal.fire({
 				title: 'Formulario Verificado',
@@ -190,12 +186,12 @@ const Diferido: React.FC<any> = ({ fmData: any }) => {
 	};
 
 	const isLastStep = () => {
-		return activeStep === totalSteps() - 1;
+		//console.log(totalSteps() - 1, activeStep);
+		return activeStep === totalSteps();
 	};
 
 	const handleNext = () => {
-		const newActiveStep =
-			isLastStep() && !allStepsCompleted() ? steps.findIndex((step, i) => !completed.has(i)) : activeStep + 1;
+		const newActiveStep = activeStep === steps.length - 1 ? 0 : activeStep + 1;
 		setActiveStep(newActiveStep);
 	};
 
@@ -212,32 +208,6 @@ const Diferido: React.FC<any> = ({ fmData: any }) => {
 		return false;
 		//return index === Object.keys(recaudos).length ? true : false;
 	};
-
-	useEffect(() => {
-		if (allStepsCompleted() && !updatedStatus) {
-			if (validStatusFm()) {
-				console.log('todo listo');
-				const formData: any = new FormData();
-				for (const item of Object.entries(uploadImgs)) {
-					if (item[1] !== null) {
-						formData.append('images', item[1]);
-						console.log('imagen updateada', item[0]);
-					}
-				}
-				for (const item of actaImages) {
-					formData.append('constitutive_act', item);
-				}
-				let text: string = '';
-				for (const item of deleteActa) {
-					if (item) {
-						text = text + (text.length ? ',' : '') + item;
-					}
-				}
-				formData.append('constitutive_act_ids', text);
-				dispatch(updateStatusFMDiferido(fm.id, formData));
-			}
-		}
-	}, [activeStep, allStepsCompleted]);
 
 	const { socket } = useContext(SocketContext);
 
@@ -282,9 +252,30 @@ const Diferido: React.FC<any> = ({ fmData: any }) => {
 		});
 	};
 
-	const handleSend = () => {
-		console.log('Send Diferidos');
+	const handleSend = async () => {
+		Swal.fire({
+			title: 'Confirmar Solicitud',
+			icon: 'warning',
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Verificado',
+			showCancelButton: true,
+			cancelButtonText: 'Atras',
+			showCloseButton: true,
+			customClass: { container: 'swal2-validated' },
+		}).then((result) => {
+			if (result.isConfirmed) {
+				handleLoading();
+				dispatch(updateStatusFMDiferido(fm.id, fm, imagesForm, imagePlanilla, imagesActa));
+				console.log('mandado a administracion');
+			}
+		});
 	};
+
+	useEffect(() => {
+		if (activeStep !== steps.length - 1 && completed.has(activeStep)) setDisabled(true);
+		else setDisabled(false);
+	}, [activeStep]);
 
 	return (
 		<>
