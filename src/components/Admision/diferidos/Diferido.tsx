@@ -31,6 +31,8 @@ const Diferido: React.FC<any> = ({ fmData: any }) => {
 	const { fm, setDisabled, imagePlanilla, imagesForm, imagesActa, initFm, resetFm } =
 		useContext(FMDiferidoContext);
 
+	console.log(fm);
+
 	useLayoutEffect(() => {
 		if (!fm) {
 			initFm(fm);
