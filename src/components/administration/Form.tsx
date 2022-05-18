@@ -281,9 +281,20 @@ export const Form: FC<any> = ({
 							</>
 						)}
 					</div>
-					{path && !fm.pagadero ? (
+					{!fm.pagadero ? (
 						<div className={classes.containerImg}>
-							<Rec load={load} setLoad={setLoad} imagen={imagen} />
+							{console.log(fm)}
+							<Button
+								sx={sxStyled.buttonV}
+								onClick={handleVerificated}
+								variant='contained'
+								disabled={disButton()}
+								color='primary'>
+								Verificar
+							</Button>
+							{fm.id_payment_method.id !== 2 && fm.id_payment_method.id !== 6 && fm.rc_comp_dep !== null ? (
+								<Rec load={load} setLoad={setLoad} imagen={fm.rc_comp_dep} />
+							) : null}
 						</div>
 					) : (
 						<>
