@@ -12,22 +12,25 @@ import { SocketContext } from 'context/SocketContext';
 import { DateTime } from 'luxon';
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getDataFMDiferido } from 'store/actions/admisionFm';
 import { OpenModalDiferido } from 'store/actions/ui';
 import { useStyles } from '../styles/styles';
 import Diferido from './Diferido';
+import { RootState } from 'store/store';
+import { FMDiferidoContextProvider } from 'context/Admision/Diferido/FmDiferidoContext';
 
 const columns: GridColDef[] = [
 	{
 		field: 'code',
 		headerName: 'Cod.',
-		width: 70,
+		width: 140,
 		editable: false,
 		sortable: false,
 	},
 	{
 		field: 'nameComer',
-		headerName: 'Nombre Comercio',
-		width: 150,
+		headerName: 'Comercio',
+		width: 120,
 		editable: false,
 		sortable: false,
 	},
@@ -61,6 +64,9 @@ const Diferidos: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
+
+	const fm: any = useSelector((state: RootState) => state.fmAdmision.diferido);
+
 	// const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
 	const { user } = useSelector((state: any) => state.auth);
 
@@ -95,9 +101,12 @@ const Diferidos: React.FC = () => {
 	useEffect(() => {
 		//console.log('ED1')
 		socket.on('server:loadDiferidos', (data: any) => {
-			//console.log('diferidos', data)
+			console.log('diferidos', data);
 			setDiferidos(data);
 		});
+		if (!modalOpenDiferido) {
+			setRowSelect(null);
+		}
 	}, [socket, modalOpenDiferido]);
 
 	const handleRow = (event: any) => {
@@ -105,14 +114,22 @@ const Diferidos: React.FC = () => {
 		socket.emit('Editar_diferido', event.row.id, (res: any) => {
 			// console.log('editar este', res);
 			setRowSelect({
-				...res,
-				id: event.row.id,
+				...res.id_request,
 			});
+			dispatch(getDataFMDiferido(res.id_request));
 		});
-
+		//dispatch(OpenModalDiferido());
 		socket.emit('cliente:trabanjandoDiferido', user, event.row.id);
-		dispatch(OpenModalDiferido());
 	};
+
+	useEffect(() => {
+		console.log('index', fm);
+		if (Object.keys(fm).length && !modalOpenDiferido) {
+			dispatch(OpenModalDiferido());
+		}
+	}, [fm, modalOpenDiferido]);
+
+	//console.log(modalOpenDiferido);
 
 	return (
 		<div style={{ height: '100%', width: '100%' }}>
@@ -131,7 +148,9 @@ const Diferidos: React.FC = () => {
 				disableColumnMenu
 				getRowId={(row) => row.id}
 			/>
-			{modalOpenDiferido && rowSelected && <Diferido fm={rowSelected} />}
+			<FMDiferidoContextProvider value={rowSelected}>
+				<>{modalOpenDiferido ? <Diferido /> : null}</>
+			</FMDiferidoContextProvider>
 		</div>
 	);
 };

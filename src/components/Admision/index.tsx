@@ -3,8 +3,9 @@ import AddIcon from '@mui/icons-material/Add';
 import LowPriority from '@mui/icons-material/LowPrioritySharp';
 import { Fab } from '@mui/material';
 import classNames from 'classnames';
+import { DataListAdmisionProvider } from 'context/DataList/DatalistAdmisionContext';
 import { SocketContext } from 'context/SocketContext';
-import React, { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDataFM } from 'store/actions/admisionFm';
 import { OpenModal, OpenModalListSolic } from 'store/actions/ui';
@@ -152,57 +153,59 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 	}, [chartData]);
 
 	return (
-		<div className={classes.admision}>
-			<div className={classes.dataGrid}>
-				<Diferidos />
-			</div>
-			<div className={classes.rightContainer}>
-				<div className={classes.row}>
-					<div className={classes.counters}>
-						<div className={classes.status}>
-							<div className={classes.statusTitle}>En Espera:</div>
-							<div className={classes.statusDesc}> {allSolic || 0} </div>
+		<DataListAdmisionProvider>
+			<div className={classes.admision}>
+				<div className={classes.dataGrid}>
+					<Diferidos />
+				</div>
+				<div className={classes.rightContainer}>
+					<div className={classes.row}>
+						<div className={classes.counters}>
+							<div className={classes.status}>
+								<div className={classes.statusTitle}>En Espera:</div>
+								<div className={classes.statusDesc}> {allSolic || 0} </div>
+							</div>
+							<div className={classNames(classes.status, classes.borderLeft)}>
+								<div className={classes.statusTitle}>En Proceso:</div>
+								<div className={classes.statusDesc}>{solictudesTrabajando + diferidosTranbajando || 0}</div>
+							</div>
+							<div className={classNames(classes.status, classes.borderTop)}>
+								<div className={classes.statusTitle}>Diferidos:</div>
+								<div className={classes.statusDesc}>{diferidos || 0}</div>
+							</div>
+							<div className={classNames(classes.status, classes.borderTop, classes.borderLeft)}>
+								<div className={classes.statusTitle}>Terminadas:</div>
+								<div className={classes.statusDesc}>{allTerm || 0}</div>
+							</div>
 						</div>
-						<div className={classNames(classes.status, classes.borderLeft)}>
-							<div className={classes.statusTitle}>En Proceso:</div>
-							<div className={classes.statusDesc}>{solictudesTrabajando + diferidosTranbajando || 0}</div>
-						</div>
-						<div className={classNames(classes.status, classes.borderTop)}>
-							<div className={classes.statusTitle}>Diferidos:</div>
-							<div className={classes.statusDesc}>{diferidos || 0}</div>
-						</div>
-						<div className={classNames(classes.status, classes.borderTop, classes.borderLeft)}>
-							<div className={classes.statusTitle}>Terminadas:</div>
-							<div className={classes.statusDesc}>{allTerm || 0}</div>
+						<div style={{ width: '45%' }}>
+							{/* <ChartTorta /> */}
+							<Dona chartData={valuesChart} colsData={keyChart} />
 						</div>
 					</div>
-					<div style={{ width: '45%' }}>
-						{/* <ChartTorta /> */}
-						<Dona chartData={valuesChart} colsData={keyChart} />
+					<div className={classes.row}>
+						<Barra chartData={valuesChart} colsData={keyChart} />
 					</div>
 				</div>
-				<div className={classes.row}>
-					<Barra chartData={valuesChart} colsData={keyChart} />
-				</div>
+				{allSolic ? (
+					<div className='cmn-divfloat'>
+						<Fab color='primary' aria-label='add' size='medium' variant='extended' onClick={handleClick}>
+							Validar Planilla
+							<AddIcon />
+						</Fab>
+						{modalOpen ? <Comprobacion /> : null}
+					</div>
+				) : null}
+				{!isWorker ? (
+					<div className='cmn2-divfloat'>
+						<Fab color='secondary' aria-label='add' size='large' variant='extended' onClick={handleClickList}>
+							<LowPriority />
+						</Fab>
+						{modalOpenListSolic ? <ListFms /> : null}
+					</div>
+				) : null}
 			</div>
-			{allSolic ? (
-				<div className='cmn-divfloat'>
-					<Fab color='primary' aria-label='add' size='medium' variant='extended' onClick={handleClick}>
-						Validar Planilla
-						<AddIcon />
-					</Fab>
-					{modalOpen ? <Comprobacion /> : null}
-				</div>
-			) : null}
-			{!isWorker ? (
-				<div className='cmn2-divfloat'>
-					<Fab color='secondary' aria-label='add' size='large' variant='extended' onClick={handleClickList}>
-						<LowPriority />
-					</Fab>
-					{modalOpenListSolic ? <ListFms /> : null}
-				</div>
-			) : null}
-		</div>
+		</DataListAdmisionProvider>
 	);
 };
 

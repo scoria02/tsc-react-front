@@ -21,6 +21,8 @@ const ModalSteps: React.FC<any> = ({
 	readyStep,
 	handleNext,
 	handleComplete,
+	handleSend,
+	cleanContext,
 }) => {
 	const classes = useStyles();
 
@@ -53,6 +55,7 @@ const ModalSteps: React.FC<any> = ({
 		// console.log('clean for close');
 		dispatch(CloseModal());
 		dispatch(clean());
+		cleanContext();
 	};
 
 	return (
@@ -94,8 +97,8 @@ const ModalSteps: React.FC<any> = ({
 								className={classes.button}>
 								Siguiente
 							</Button>
-							{activeStep !== steps.length &&
-								(completed.has(activeStep) ? (
+							{completedSteps() !== steps.length - 1 ? (
+								completed.has(activeStep) ? (
 									<Typography variant='caption' className={classes.completed}>
 										Verificado
 									</Typography>
@@ -105,11 +108,21 @@ const ModalSteps: React.FC<any> = ({
 										className={classes.buttonS}
 										variant='contained'
 										color='primary'
-										disabled={readyStep}
+										//disabled={readyStep}
 										onClick={handleComplete}>
-										{completedSteps() === totalSteps() - 1 ? 'Solicitud Revisada' : 'Verificar'}
+										Verificar
 									</Button>
-								))}
+								)
+							) : (
+								<Button
+									sx={sxStyled.button}
+									className={classes.buttonS}
+									variant='contained'
+									color='primary'
+									onClick={handleSend}>
+									Enviar
+								</Button>
+							)}
 						</div>
 					</div>
 				</>

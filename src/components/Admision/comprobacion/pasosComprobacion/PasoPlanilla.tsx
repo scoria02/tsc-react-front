@@ -10,14 +10,14 @@ import { Valid } from 'store/actions/accept';
 //Url
 import { RootState } from 'store/store';
 import './styles/pasos.scss';
-import { useStyles } from './styles/styles';
+import { sxStyled, useStyles } from './styles/styles';
 
 const PasoPlanilla: React.FC = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const rc_planilla: any = useSelector((state: RootState) => state.acceptance.validado.rc_planilla);
-	const [state, setState] = useState(rc_planilla);
+	const valid_planilla: any = useSelector((state: RootState) => state.acceptance.validado.valid_planilla);
+	const [state, setState] = useState(valid_planilla);
 	const [openModal, setOpenModal] = useState<boolean>(false);
 
 	const handleOpenModal = () => {
@@ -35,24 +35,12 @@ const PasoPlanilla: React.FC = () => {
 	};
 
 	useEffect(() => {
-		dispatch(Valid({ rc_planilla: state }));
+		dispatch(Valid({ valid_planilla: state }));
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.status]);
 
-	const handleIncorret = () => {
-		dispatch(Valid({ rc_planilla: state }));
-		handleCloseModal(false);
-	};
-
 	const handleCancel = () => {
 		handleCloseModal(true);
-	};
-
-	const handleChangeI = (event: any) => {
-		setState({
-			...state,
-			[event.target.name]: event.target.value,
-		});
 	};
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +72,7 @@ const PasoPlanilla: React.FC = () => {
 						label={state.status ? 'Correcto' : 'Incorrecto'}
 					/>
 				</div>
-				<List className={classes.container_ListActa}>
+				<List sx={sxStyled.container_ListActa} className={classes.container_ListActa}>
 					{imagenes.map((item: any, index: number) => (
 						<ListItem key={item.id} value={item.id}>
 							<Button
@@ -119,12 +107,11 @@ const PasoPlanilla: React.FC = () => {
 			/>
 				*/}
 			<ModalAlert
+				from='valid_planilla'
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
 				state={state}
-				handleChangeI={handleChangeI}
-				handleIncorret={handleIncorret}
-				handleCancel={handleCancel}
+				setState={setState}
 			/>
 		</>
 	);

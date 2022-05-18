@@ -12,11 +12,10 @@ import { useStyles } from './styles/styles';
 
 export default function PasoAccountNumber() {
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-
-	const rc_ref_bank: any = useSelector((state: RootState) => state.acceptance.validado.rc_ref_bank);
+	const valid_ref_bank: any = useSelector((state: RootState) => state.acceptance.validado.valid_ref_bank);
 	const dispatch = useDispatch();
 	const classes = useStyles();
-	const [state, setState] = useState(rc_ref_bank);
+	const [state, setState] = useState(valid_ref_bank);
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [load, setLoad] = useState(false);
 
@@ -36,25 +35,20 @@ export default function PasoAccountNumber() {
 	};
 
 	useEffect(() => {
-		dispatch(Valid({ rc_ref_bank: state }));
+		dispatch(Valid({ valid_ref_bank: state }));
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.status]);
-
-	const handleIncorret = () => {
-		dispatch(Valid({ rc_ref_bank: state }));
-		handleCloseModal(false);
-	};
 
 	const handleCancel = () => {
 		handleCloseModal(true);
 	};
 
-	const handleChangeI = (event: any) => {
-		setState({
-			...state,
-			[event.target.name]: event.target.value,
-		});
-	};
+	// const handleChangeI = (event: any) => {
+	// 	setState({
+	// 		...state,
+	// 		[event.target.name]: event.target.value,
+	// 	});
+	// };
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setState({
@@ -94,12 +88,11 @@ export default function PasoAccountNumber() {
 				<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 			</form>
 			<ModalAlert
+				from='valid_ref_bank'
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
 				state={state}
-				handleChangeI={handleChangeI}
-				handleIncorret={handleIncorret}
-				handleCancel={handleCancel}
+				setState={setState}
 			/>
 		</>
 	);

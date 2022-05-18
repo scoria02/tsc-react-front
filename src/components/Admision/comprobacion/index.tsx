@@ -20,63 +20,36 @@ import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
 import PasoPlanilla from './pasosComprobacion/PasoPlanilla';
 import PasoSelectAci from './pasosComprobacion/PasoSelectAci';
+import { useStyles } from './pasosComprobacion/styles/styles';
 
 const Comprobacion: FC = () => {
+	const classes = useStyles();
 	function getStepContent(step: number, steps: string[]) {
 		switch (steps[step]) {
 			case 'Cliente':
-				return (
-					<div>
-						<PasoClient />
-					</div>
-				);
+				return <PasoClient />;
 			case 'Comercio':
 				return (
-					<div className='comprobar_container_2'>
-						<div>
-							<PasoCommerce />
-						</div>
+					<div className={classes.wrapperGrid}>
+						<PasoCommerce />
+
 						<div>
 							<PasoCommerce2 />
 						</div>
 					</div>
 				);
 			case 'Referencia Bancaria':
-				return (
-					<div>
-						<PasoAccountNumber />
-					</div>
-				);
+				return <PasoAccountNumber />;
 			case 'Planilla de Solicitud':
-				return (
-					<div>
-						<PasoPlanilla />
-					</div>
-				);
+				return <PasoPlanilla />;
 			case 'Acta Const.':
-				return (
-					<div>
-						<PasoActaConst />
-					</div>
-				);
+				return <PasoActaConst />;
 			case 'Cont. Especial':
-				return (
-					<div>
-						<PasoContriSpecial />
-					</div>
-				);
+				return <PasoContriSpecial />;
 			case 'Comprobante de Pago':
-				return (
-					<div>
-						<PasoPaymentReceipt />
-					</div>
-				);
+				return <PasoPaymentReceipt />;
 			case 'Asignación ACI':
-				return (
-					<div>
-						<PasoSelectAci aci={aci} setAci={setAci} listAci={listAci} />
-					</div>
-				);
+				return <PasoSelectAci aci={aci} setAci={setAci} listAci={listAci} />;
 			default:
 				return 'Invalid step';
 		}
@@ -95,6 +68,7 @@ const Comprobacion: FC = () => {
 
 	//states
 	const [activeStep, setActiveStep] = useState(0);
+	const [send, setSend] = useState(false);
 	const [completed, setCompleted] = useState(new Set<number>());
 
 	const [aci, setAci] = useState<any>(null);
@@ -150,12 +124,10 @@ const Comprobacion: FC = () => {
 	};
 
 	const validStatusFm = (): boolean => {
-		for (const item in validated) {
-			if (item.slice(0, 3) === 'rc_') {
-				const element = validated[item];
-				if (element.status === false) {
-					return true;
-				}
+		for (const item of Object.entries(validated)) {
+			const aux: any = item[1];
+			if (!aux.status) {
+				return true;
 			}
 		}
 		return false;
@@ -163,24 +135,43 @@ const Comprobacion: FC = () => {
 
 	useEffect(() => {
 		if (allStepsCompleted() && !updatedStatus) {
-			if (validStatusFm()) {
-				dispatch(updateStatusFM(fm.id, 4, validated, aci.id));
-				console.log('mandado diferido');
-			} else {
-				dispatch(updateStatusFM(fm.id, 3, validated, aci.id));
-				console.log('fin validacion');
-			}
+			//activar button for enviar
+			setSend(true);
 		}
 		// socket.emit('cliente:loadDiferidos');
 		// socket.emit('cliente:dashdatasiempre');
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [activeStep, dispatch, allStepsCompleted]);
 
+	const handleSend = async () => {
+		Swal.fire({
+			title: 'Confirmar verificación',
+			icon: 'warning',
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Verificado',
+			showCancelButton: true,
+			cancelButtonText: 'Atras',
+			showCloseButton: true,
+			customClass: { container: 'swal2-validated' },
+		}).then((result) => {
+			if (result.isConfirmed) {
+				handleLoading();
+				if (validStatusFm()) {
+					dispatch(updateStatusFM(fm.id, 4, validated, aci.id));
+					console.log('mandado diferido');
+				} else {
+					dispatch(updateStatusFM(fm.id, 3, validated, aci.id));
+					console.log('fin validacion');
+				}
+			}
+		});
+	};
+
 	useEffect(() => {
 		if (id_statusFM !== 0 && updatedStatus) {
 			const idStatus = id_statusFM;
 			//socket.emit('cliente:cleansolic');
-			socket.emit('cliente:disconnect');
 			if (idStatus === 3) {
 				socket.emit('cliente:loadAdministracionTodos');
 			}
@@ -191,6 +182,7 @@ const Comprobacion: FC = () => {
 				showConfirmButton: false,
 				timer: 1500,
 			});
+			socket.emit('cliete:disconnect');
 			dispatch(cleanAdmisionFM());
 		}
 	}, [id_statusFM, updatedStatus]);
@@ -273,6 +265,8 @@ const Comprobacion: FC = () => {
 			readyStep={readyStep}
 			handleNext={handleNext}
 			handleComplete={handleComplete}
+			handleSend={handleSend}
+			cleanContext={() => {}}
 		/>
 	);
 };

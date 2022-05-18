@@ -1,5 +1,6 @@
 import { FormControlLabel, Switch, TextField } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
+import RecPdf from 'components/utilis/images/RecPdf';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 //Url
@@ -7,14 +8,13 @@ import { Valid } from 'store/actions/accept';
 import { RootState } from 'store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
-import RecPdf from 'components/utilis/images/RecPdf';
 
 export default function PasoClient() {
-	const rc_ident_card: any = useSelector((state: RootState) => state.acceptance.validado.rc_ident_card);
+	const valid_cliente: any = useSelector((state: RootState) => state.acceptance.validado.valid_cliente);
 	const dispatch = useDispatch();
 	const classes = useStyles();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const [state, setState] = React.useState(rc_ident_card);
+	const [state, setState] = React.useState(valid_cliente);
 	const [openModal, setOpenModal] = React.useState<boolean>(false);
 
 	const [load, setLoad] = useState(false);
@@ -34,25 +34,12 @@ export default function PasoClient() {
 	};
 
 	useEffect(() => {
-		dispatch(Valid({ rc_ident_card: state }));
+		dispatch(Valid({ valid_cliente: state }));
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.status]);
 
-	const handleIncorret = () => {
-		dispatch(Valid({ rc_ident_card: state }));
-		handleCloseModal(false);
-	};
-
 	const handleCancel = () => {
 		handleCloseModal(true);
-	};
-
-	const handleChangeI = (event: any) => {
-		console.log('first');
-		setState({
-			...state,
-			[event.target.name]: event.target.value,
-		});
 	};
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +57,7 @@ export default function PasoClient() {
 		zoomPosition: recaudo.position,
 		height: recaudo.h,
 		width: recaudo.w,
-		img: `${URL}:${PortFiles}/${fm.rc_ident_card.path}`,
+		img: `${URL}:${PortFiles}/${fm.valid_cliente.path}`,
 	};
 	 */
 
@@ -106,12 +93,11 @@ export default function PasoClient() {
 			</div>
 			<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 			<ModalAlert
+				from='valid_cliente'
 				openModal={openModal}
-				handleCloseModal={handleCloseModal}
 				state={state}
-				handleChangeI={handleChangeI}
-				handleIncorret={handleIncorret}
-				handleCancel={handleCancel}
+				setState={setState}
+				handleCloseModal={handleCloseModal}
 			/>
 		</form>
 	);

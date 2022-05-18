@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FormControlLabel, Switch } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import RecPdf from 'components/utilis/images/RecPdf';
@@ -15,8 +16,8 @@ export default function PasoCommerce2() {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const rc_rif: any = useSelector((state: RootState) => state.acceptance.validado.rc_rif);
-	const [state, setState] = useState(rc_rif);
+	const valid_commerce: any = useSelector((state: RootState) => state.acceptance.validado.valid_commerce);
+	const [state, setState] = useState(valid_commerce);
 	const [openModal, setOpenModal] = useState<boolean>(false);
 
 	const [load, setLoad] = useState(false);
@@ -34,25 +35,13 @@ export default function PasoCommerce2() {
 		}
 		setOpenModal(false);
 	};
-	const handleIncorret = () => {
-		dispatch(Valid({ rc_rif: state }));
-		handleCloseModal(false);
-	};
 
 	const handleCancel = () => {
 		handleCloseModal(true);
 	};
 
-	const handleChangeI = (event: any) => {
-		setState({
-			...state,
-			[event.target.name]: event.target.value,
-		});
-	};
-
 	useEffect(() => {
-		dispatch(Valid({ rc_rif: state }));
-		//eslint-disable-next-line react-hooks/exhaustive-deps
+		dispatch(Valid({ valid_commerce: state }));
 	}, [state]);
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,12 +65,11 @@ export default function PasoCommerce2() {
 			</div>
 			<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 			<ModalAlert
+				from='valid_commerce'
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
 				state={state}
-				handleChangeI={handleChangeI}
-				handleIncorret={handleIncorret}
-				handleCancel={handleCancel}
+				setState={setState}
 			/>
 		</>
 	);

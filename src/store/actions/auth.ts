@@ -24,7 +24,13 @@ export const startLogin = (email: any, password: any, history?: any) => {
 			dispatch(requestSuccess(res.data.info.data));
 			history?.push(baseUrl);
 			dispatch(StartLoading());
-			Swal.fire('¡Éxito!', res.data.message, 'success');
+			Swal.fire({
+				icon: 'success',
+				title: '¡Éxito!',
+				html: `<p>${res.data.message}</p>`,
+				showConfirmButton: false,
+				timer: 2500,
+			});
 		} catch (error: any) {
 			Swal.fire('Error', error.response.data.message, 'error');
 			dispatch(requestError());
@@ -53,12 +59,16 @@ export const refreshLogin = () => {
 		} catch (error: any) {
 			console.log('borrar');
 			localStorage.clear();
-			Swal.fire('Error', 'Sesión expirada, vuelva a iniciar sesión', 'error').then((result) => {
-				if (result.isConfirmed) {
-					dispatch(startLogout());
-					window.location.replace(urlLogin);
-				} else window.location.replace(urlLogin);
+			Swal.fire({
+				icon: 'error',
+				title: 'Sesión expirada',
+				html: '<p>Vuelva a iniciar sesión</p>',
+				showConfirmButton: false,
+				timer: 2000,
 			});
+			//Swal.fire('Error', 'Sesión expirada, vuelva a iniciar sesión', 'error');
+			dispatch(startLogout());
+			window.location.replace(urlLogin);
 		}
 	};
 	function requestSuccess(state: any) {

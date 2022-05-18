@@ -34,11 +34,14 @@ export enum ActionType {
 	//Admision FM
 	getDataFM = '[FM] Get FM',
 	getDataFMError = '[FM] Get FM Error',
+	onChangeDiferido = '[FM] Get FM Onchange Diferido',
 	updateStatusFM = '[FM] update Status FM',
 	updateStatusFMError = '[FM] update Status FM Error',
 	cleanDataFM = '[FM] CleanDataFM',
 
 	//Admision Diferdio
+	getDataFMDiferido = '[FM] Get FM Diferido',
+	getDataFMDiferidoError = '[FM] Get FM Diferido Error',
 	updatedStatusDiferido = '[FM] update Status FM Diferido',
 	updateStatusErrorDiferido = '[FM] update Status FM Error Diferido',
 	cleanDataDiferido = '[FM] CleanDataFM Diferido',
@@ -58,7 +61,7 @@ export enum ActionType {
 	uiOpenModalDiferido = '[ui] Open modal Diferido',
 	uiCloseModalDiferido = '[ui] Close modal Diferido',
 
-	//Modals Solic 
+	//Modals Solic
 	uiOpenModalListSolic = '[ui] Open modal List Solic',
 	uiCloseModalListSolic = '[ui] Close modal List Solic',
 

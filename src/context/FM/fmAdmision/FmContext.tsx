@@ -1,5 +1,5 @@
 import useAxios from 'config';
-import { Aci, Activity, base, TypeWallet } from 'context/DataList/interface';
+import { Aci, Activity, base, Distributor, TeleMarket, TypeWallet } from 'context/DataList/interface';
 import {
 	fmClient,
 	fmCommerce,
@@ -59,11 +59,13 @@ const FMDataContext = createContext<ContextFM>({
 	handleParamsPos: () => {},
 	handleCheckedPos: () => {},
 	handleSourceAci: () => {},
+	handleSourceTelemarket: () => {},
 	resetFm: () => {},
 	//EndPoint
 	validClientAndCommerce: () => {},
 	idsCAndCc: null,
 	aci: null,
+	telemarket: null,
 	typeWallet: null,
 	handleTypeWallet: () => {},
 });
@@ -84,6 +86,7 @@ export const FMContextProvider = ({ children }: Props) => {
 
 	const [idsCAndCc, setIdsCAndCc] = useState<IdClient_CommerceINT | null>(null);
 	const [aci, setAci] = useState<Aci | null>(null);
+	const [telemarket, setTelemarket] = useState<TeleMarket | null>(null);
 
 	const [typeWallet, setTypeWallet] = useState<TypeWallet | null>(null);
 
@@ -222,11 +225,19 @@ export const FMContextProvider = ({ children }: Props) => {
 		});
 	};
 
-	const handleSourceAci = (event: any, value: Aci | null, name: string): void => {
+	const handleSourceAci = (event: any, value: Aci | Distributor | null, name: string): void => {
 		if (value) {
 			setAci(value);
 		} else {
 			setAci(null);
+		}
+	};
+
+	const handleSourceTelemarket = (event: any, value: TeleMarket | null): void => {
+		if (value) {
+			setTelemarket(value);
+		} else {
+			setTelemarket(null);
 		}
 	};
 
@@ -354,6 +365,8 @@ export const FMContextProvider = ({ children }: Props) => {
 				handleChangePos,
 				handleParamsPos,
 				handleCheckedPos,
+				handleSourceAci,
+				handleSourceTelemarket,
 				//Locations
 				setEstado,
 				setMunicipio,
@@ -362,13 +375,13 @@ export const FMContextProvider = ({ children }: Props) => {
 
 				copyLocationToCommerce,
 				copyLocationToPos,
-				handleSourceAci,
 				resetFm,
 
 				//Endpoint
 				validClientAndCommerce,
 				idsCAndCc,
 				aci,
+				telemarket,
 				typeWallet,
 				handleTypeWallet,
 			}}>

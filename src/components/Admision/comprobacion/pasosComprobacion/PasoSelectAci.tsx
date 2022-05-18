@@ -23,7 +23,7 @@ const PasoSelectAci: FC<any> = ({ aci, setAci, listAci }) => {
 	return (
 		<>
 			<form className={classes.containerStep} noValidate autoComplete='off'>
-				<div className='comprobar_container_2'>
+				<div className={classes.wrapperGrid}>
 					<div>
 						<div className={classes.btn_stepM}>
 							<h2

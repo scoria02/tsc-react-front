@@ -19,3 +19,16 @@ export const useStyles = makeStyles(() => ({
 		justifyContent: 'center',
 	},
 }));
+
+export const sxStyledList = {
+	btn_stepM: {
+		m: '8px 0',
+		//margin: '8px 0',
+	},
+	container_ListActa: {
+		margin: '0 auto',
+		display: 'grid',
+		gridColumnGap: '1%',
+		gridTemplateColumns: '1fr 1fr',
+	},
+};

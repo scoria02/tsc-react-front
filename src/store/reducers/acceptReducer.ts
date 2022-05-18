@@ -1,77 +1,85 @@
 import { ActionType } from '../types/types';
 
-interface inState {
+export interface inStateAccept {
 	stepComplete: any[];
 	validado: {
-		rc_ident_card: {
+		valid_cliente: {
 			status: boolean;
+			id_typedif: number;
 			msg: string;
 		};
-		rc_rif: {
+		valid_commerce: {
 			status: boolean;
+			id_typedif: number;
 			msg: string;
 		};
-		rc_ref_bank: {
+		valid_ref_bank: {
 			status: boolean;
+			id_typedif: number;
 			msg: string;
 		};
-		rc_planilla: {
+		valid_planilla: {
 			status: boolean;
+			id_typedif: number;
 			msg: string;
 		};
-		rc_constitutive_act: {
+		valid_constitutive_act: {
 			status: boolean;
+			id_typedif: number;
 			msg: string;
 		};
-		rc_special_contributor: {
+		valid_special_contributor: {
 			status: boolean;
+			id_typedif: number;
 			msg: string;
 		};
-		rc_comp_dep: {
+		valid_comp_dep: {
 			status: boolean;
+			id_typedif: number;
 			msg: string;
 		};
-		contrubuyente: number;
-		localFrente: boolean;
-		localDentro: boolean;
 	};
 	aci: boolean;
 }
 
-const initialState: inState = {
+const initialState: inStateAccept = {
 	stepComplete: [],
 	validado: {
-		rc_ident_card: {
+		valid_cliente: {
 			status: true,
+			id_typedif: 0,
 			msg: '',
 		},
-		rc_rif: {
+		valid_commerce: {
 			status: true,
+			id_typedif: 0,
 			msg: '',
 		},
-		rc_ref_bank: {
+		valid_ref_bank: {
 			status: true,
+			id_typedif: 0,
 			msg: '',
 		},
-		rc_planilla: {
+		valid_planilla: {
 			status: true,
+			id_typedif: 0,
 			msg: '',
 		},
-		rc_constitutive_act: {
+		valid_constitutive_act: {
 			status: true,
+			id_typedif: 0,
 			msg: '',
 		},
-		rc_special_contributor: {
+		valid_special_contributor: {
 			status: true,
+			id_typedif: 0,
 			msg: '',
 		},
-		rc_comp_dep: {
+		valid_comp_dep: {
 			status: true,
+			id_typedif: 0,
 			msg: '',
 		},
-		contrubuyente: 0,
-		localFrente: false,
-		localDentro: false,
 	},
 	aci: false,
 };

@@ -4,8 +4,9 @@ import Administracion from 'pages/Administracion';
 import Cobranza from 'pages/Cobranza';
 import GestionUsuarios from 'pages/GestionUsuarios';
 import Inicio from 'pages/Home';
+import Terminales from 'pages/Terminales';
 import { Route } from '.';
-import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, userAdmin } from '../url';
+import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, urlTerminales, userAdmin } from '../url';
 
 const Private: Route[] = [
 	{
@@ -59,6 +60,15 @@ const Private: Route[] = [
 		meta: {
 			auth: true,
 			dep: ['Administracion'],
+			rol: [1, 2, 3, 4],
+		},
+	},
+	{
+		path: urlTerminales,
+		component: Terminales,
+		meta: {
+			auth: true,
+			dep: ['Activacion'],
 			rol: [1, 2, 3, 4],
 		},
 	},

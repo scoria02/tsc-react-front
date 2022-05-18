@@ -27,6 +27,11 @@ axios.interceptors.response.use((resp: AxiosResponse<any>): AxiosResponse<any> =
 	return resp;
 });
 
+axios.interceptors.request.use(async (config: any) => {
+	console.log('token request', axios.defaults.headers.common['token']);
+	return config;
+});
+
 const cache = new LRU({ max: 10 });
 
 configure({ axios, cache });

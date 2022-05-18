@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import classNames from 'classnames';
 import DataListContext from 'context/DataList/DataListContext';
-import { Aci, TeleMarket, TypeWallet } from 'context/DataList/interface';
+import { Aci, Distributor, TeleMarket, TypeWallet } from 'context/DataList/interface';
 import FMDataContext from 'context/FM/fmAdmision/FmContext';
 import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
 import React, { FC, useContext, useEffect, useState } from 'react';
@@ -27,7 +27,6 @@ const StepPos: FC = () => {
 	//const [isACI, setIsACI] = useState<boolean>(false);
 	const [deleted, setDeleted] = useState<boolean>(false);
 	const [fraccion, setFraccion] = useState<boolean>(false);
-	const [telemark, setTelemark] = useState<TeleMarket | null>(null);
 	const [cuotasTexto, setCuotasTexto] = useState('');
 	const dispatch = useDispatch();
 	// const cuotasText = ['5 cuotas de 50$', '4 cuotas de 50$', '3 cuotas de 50$'];
@@ -38,16 +37,26 @@ const StepPos: FC = () => {
 		client,
 		pos,
 		aci,
+		telemarket,
 		typeWallet,
 		errorsFm,
 		handleParamsPos,
 		handleChangePos,
 		handleCheckedPos,
 		handleSourceAci,
+		handleSourceTelemarket,
 		handleTypeWallet,
 	} = useContext(FMDataContext);
-	const { listPayment, listModelPos, listTypePay, listRequestSource, listAci, listWalletType, listTeleMarket } =
-		useContext(DataListContext);
+	const {
+		listPayment,
+		listModelPos,
+		listTypePay,
+		listRequestSource,
+		listAci,
+		listWalletType,
+		listTeleMarket,
+		listDistributor,
+	} = useContext(DataListContext);
 	const { namesImages, imagesForm, handleChangeImages, deleteImgContributor } = useContext(ImagesFmContext);
 
 	const handleChangeReferido = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -305,32 +314,50 @@ const StepPos: FC = () => {
 						style={{ width: '50%' }}
 						//disabled={} //si el comercio tiene aci traelo
 						onChange={(event, value) => {
-							setTelemark(value ? value : null);
-							//handleTypeWallet(event, value, 'typeWallet');
+							// setTelemark(value ? value : null);
+							handleSourceTelemarket(event, value ? value : null);
 						}}
 						options={listTeleMarket}
-						value={telemark || null}
+						value={telemarket || null}
 						getOptionLabel={(option: TeleMarket | null) => (option ? option.name : '')}
 						// getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
 						renderInput={(params: any) => (
 							<TextField {...params} name='typeWallet' label={`TeleMercadeo`} variant='outlined' />
 						)}
 					/>
+				) : pos.request_origin?.id === 5 ? (
+					<Autocomplete
+						// className='btn_step btn_medio'
+						style={{ width: '50%' }}
+						//disabled={} //si el comercio tiene aci traelo
+						onChange={(event, value) => {
+							handleTypeWallet(event, value, 'typeWallet');
+						}}
+						options={listWalletType}
+						value={typeWallet || null}
+						getOptionLabel={(option: TypeWallet | null) => (option ? option.Nombre_Org : '')}
+						// getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
+						renderInput={(params: any) => (
+							<TextField {...params} name='typeWallet' label={`Tipos de Cartera`} variant='outlined' />
+						)}
+					/>
 				) : (
-					pos.request_origin?.id === 5 && (
+					pos.request_origin?.id === 8 && (
 						<Autocomplete
 							// className='btn_step btn_medio'
 							style={{ width: '50%' }}
 							//disabled={} //si el comercio tiene aci traelo
 							onChange={(event, value) => {
-								handleTypeWallet(event, value, 'typeWallet');
+								handleSourceAci(event, value, 'reqSource_docnum');
 							}}
-							options={listWalletType}
-							value={typeWallet || null}
-							getOptionLabel={(option: TypeWallet | null) => (option ? option.Nombre_Org : '')}
+							options={listDistributor}
+							value={aci || null}
+							getOptionLabel={(option: Distributor | null) =>
+								option ? option.aliTipoIdentificacion + option.aliIdentificacion + ' | ' + option.aliNombres : ''
+							}
 							// getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
 							renderInput={(params: any) => (
-								<TextField {...params} name='typeWallet' label={`Tipos de Cartera`} variant='outlined' />
+								<TextField {...params} name='distributor' label={`Buscar distribuidor`} variant='outlined' />
 							)}
 						/>
 					)

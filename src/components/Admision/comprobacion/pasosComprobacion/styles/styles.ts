@@ -47,8 +47,7 @@ export const useStyles = makeStyles((styles: Theme) => ({
 		width: '100px',
 	},
 	container_ListActa: {
-		marginTop: '1rem',
-		width: '100%',
+		margin: '0 auto',
 		display: 'grid',
 		gridColumnGap: '1%',
 		gridTemplateColumns: '1fr 1fr',
@@ -73,11 +72,26 @@ export const useStyles = makeStyles((styles: Theme) => ({
 	btn_medio: {
 		width: '70%',
 	},
+	wrapper: {
+		display: 'flex',
+		flexDirection: 'column',
+	},
+	wrapperGrid: {
+		display: 'grid',
+		gridTemplateColumns: '1fr 1fr',
+		gridColumnGap: '1%',
+	},
 }));
 
 export const sxStyled = {
 	btn_stepM: {
 		m: '8px 0',
 		//margin: '8px 0',
+	},
+	container_ListActa: {
+		margin: '0 auto',
+		display: 'grid',
+		gridColumnGap: '1%',
+		gridTemplateColumns: '1fr 1fr',
 	},
 };

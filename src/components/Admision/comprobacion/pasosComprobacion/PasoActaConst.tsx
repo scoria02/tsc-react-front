@@ -1,6 +1,5 @@
 import ImageIcon from '@mui/icons-material/Image';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-
 import { Avatar, Button, FormControlLabel, List, ListItem, ListItemText, Switch } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import React, { useEffect } from 'react';
@@ -11,16 +10,16 @@ import { Valid } from 'store/actions/accept';
 //Url
 import { RootState } from 'store/store';
 import './styles/pasos.scss';
-import { useStyles } from './styles/styles';
+import { sxStyled, useStyles } from './styles/styles';
 
 const PasoActaConst: React.FC = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const rc_constitutive_act: any = useSelector(
-		(state: RootState) => state.acceptance.validado.rc_constitutive_act
+	const valid_constitutive_act: any = useSelector(
+		(state: RootState) => state.acceptance.validado.valid_constitutive_act
 	);
-	const [state, setState] = React.useState(rc_constitutive_act);
+	const [state, setState] = React.useState(valid_constitutive_act);
 	const [openModal, setOpenModal] = React.useState<boolean>(false);
 
 	const handleOpenModal = () => {
@@ -38,24 +37,12 @@ const PasoActaConst: React.FC = () => {
 	};
 
 	useEffect(() => {
-		dispatch(Valid({ rc_constitutive_act: state }));
+		dispatch(Valid({ valid_constitutive_act: state }));
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.status]);
 
-	const handleIncorret = () => {
-		dispatch(Valid({ rc_constitutive_act: state }));
-		handleCloseModal(false);
-	};
-
 	const handleCancel = () => {
 		handleCloseModal(true);
-	};
-
-	const handleChangeI = (event: any) => {
-		setState({
-			...state,
-			[event.target.name]: event.target.value,
-		});
 	};
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,7 +74,7 @@ const PasoActaConst: React.FC = () => {
 						label={state.status ? 'Correcto' : 'Incorrecto'}
 					/>
 				</div>
-				<List className={classes.container_ListActa}>
+				<List sx={sxStyled.container_ListActa}>
 					{imagenes.map((item: any, index: number) => (
 						<ListItem key={item.id} value={item.id}>
 							<Button
@@ -122,12 +109,11 @@ const PasoActaConst: React.FC = () => {
 			/>
 				*/}
 			<ModalAlert
+				from='valid_constitutive_act'
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
 				state={state}
-				handleChangeI={handleChangeI}
-				handleIncorret={handleIncorret}
-				handleCancel={handleCancel}
+				setState={setState}
 			/>
 		</>
 	);
