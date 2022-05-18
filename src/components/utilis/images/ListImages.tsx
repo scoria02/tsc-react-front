@@ -1,22 +1,9 @@
 import React from 'react';
-
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import { PhotoCamera } from '@mui/icons-material';
 import ImageIcon from '@mui/icons-material/Image';
 import { useStyles } from '../../Admision/diferidos/pasosComprobacion/styles/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {
-	Avatar,
-	Button,
-	IconButton,
-	FormControlLabel,
-	List,
-	ListItem,
-	ListItemText,
-	Switch,
-	TextareaAutosize,
-	TextField,
-} from '@mui/material';
+import { Avatar, Button, List, ListItem, ListItemText } from '@mui/material';
 import { sxStyledList } from './styles/styles';
 
 interface Props {

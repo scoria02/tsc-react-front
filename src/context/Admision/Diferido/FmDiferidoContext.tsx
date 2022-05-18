@@ -1,9 +1,5 @@
-import useAxios from 'config';
-import { ImagesInt, PathImage, PathImagesInt } from 'context/FM/fmImages/interface';
-import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from 'context/FM/Location/interfaces';
-import { fmClient, fmCommerce, fmPos } from 'interfaces/fm';
-import Completed from 'pages/Cobranza/views/Completed';
-import React, { createContext, Dispatch, ReactChild, SetStateAction, useEffect, useState } from 'react';
+import { ImagesInt, PathImagesInt } from 'context/FM/fmImages/interface';
+import React, { createContext, useEffect, useState } from 'react';
 import { errorFile } from 'utils/validFormatFile';
 import { ContextFMD, PropsAd } from './interfaces';
 import { initialImagesFm, initialImagesPath } from './state';
@@ -36,11 +32,14 @@ const FMDiferidoContext = createContext<ContextFMD>({
 
 export const FMDiferidoContextProvider = ({ children, value }: PropsAd) => {
 	const [fm, setFm] = useState<any>(value);
+	useEffect(() => {
+		setFm(value);
+	}, [value]);
 	//
 	const [imagePlanilla, setImagePlanilla] = useState<FileList | []>([]);
 	//
 	const [imagesActa, setImagesActa] = useState<FileList | []>([]);
-	const [pathImagesActa, setPathImagesActa] = useState<PathImage[]>([]);
+	//const [pathImagesActa, setPathImagesActa] = useState<PathImage[]>([]);
 	//
 	//
 	const [imagesForm, setImagesForm] = useState<ImagesInt>(initialImagesFm);
@@ -87,10 +86,6 @@ export const FMDiferidoContextProvider = ({ children, value }: PropsAd) => {
 		setFm(null);
 		resetImages();
 	};
-
-	useEffect(() => {
-		setFm(value);
-	}, value);
 
 	const resetImages = () => {
 		setImagePlanilla([]);
@@ -143,7 +138,7 @@ export const FMDiferidoContextProvider = ({ children, value }: PropsAd) => {
 				setImagesActa(files);
 			} else {
 				setImagesActa([]);
-				setPathImagesActa([]);
+				//setPathImagesActa([]);
 			}
 		}
 	};
@@ -182,9 +177,11 @@ export const FMDiferidoContextProvider = ({ children, value }: PropsAd) => {
 		}
 	};
 
+	/*
 	const deleteImgsActa = () => {
 		setImagesActa([]);
 	};
+	*/
 
 	const deleteImg = (name: string) => {
 		setImagesForm({

@@ -1,6 +1,5 @@
 import { FormControlLabel, Switch } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
-import Rec from 'components/utilis/images/Rec';
 import RecPdf from 'components/utilis/images/RecPdf';
 import React, { useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';

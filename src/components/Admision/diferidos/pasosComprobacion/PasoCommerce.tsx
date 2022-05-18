@@ -1,7 +1,5 @@
 //Redux
 import { TextField } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store/store';
 import './styles/pasos.scss';
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
 import { useStyles } from './styles/styles';
@@ -10,8 +8,7 @@ import { useContext } from 'react';
 export default function PasoUno() {
 	const classes = useStyles();
 
-	const { fm, disabled, handleChangeCommerce, imagesForm, handleChangeImages, deleteImg, pathImages } =
-		useContext(FMDiferidoContext);
+	const { fm, disabled, handleChangeCommerce } = useContext(FMDiferidoContext);
 
 	return (
 		<>

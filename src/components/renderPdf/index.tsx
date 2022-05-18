@@ -5,11 +5,13 @@ import { useStyles, sxStyled } from './styles';
 import AnimatedModal from 'components/modals/AnimationModal';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
-interface Prop {
+interface Props {
 	url: string;
+	modal: any;
+	handleCloseModal: any;
 }
 
-const RenderCustomPdf: React.FC<any> = ({ url, modal, handleCloseModal }) => {
+const RenderCustomPdf: React.FC<Props> = ({ url, modal, handleCloseModal }) => {
 	pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 	const [numPages, setNumPages] = useState<number>(0);
 	const [pageNumber, setPageNumber] = useState<number>(1);

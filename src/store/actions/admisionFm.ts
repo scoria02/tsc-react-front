@@ -1,5 +1,4 @@
-import { AxiosResponse } from 'axios';
-import useAxios, { axiosFiles } from 'config/index';
+import useAxios from 'config/index';
 import { ImagesInt } from 'context/FM/fmImages/interface';
 import Swal from 'sweetalert2';
 import { ActionType } from '../types/types';
@@ -65,7 +64,7 @@ export const updateStatusFM = (id_fm: number, status: any, validado: any, aci: n
 
 	return async (dispatch: any) => {
 		try {
-			const res: AxiosResponse<any> = await useAxios.put(`/FM/admision/${id_fm}/status`, id_status);
+			await useAxios.put(`/FM/admision/${id_fm}/status`, id_status);
 			//updateToken(res);
 			dispatch(requestSuccess(status));
 		} catch (error: any) {
@@ -145,9 +144,9 @@ export const updateStatusFMDiferido = (
 		console.log(imagesActa);
 		const dataFm: any = createFormDataFmDif(id_fm, fm, imagePlanilla, imagesForm, imagesActa);
 		try {
-			const res: any = await useAxios.put(`/FM/admition/${id_fm}/diferido`, dataFm);
+			await useAxios.put(`/FM/admition/${id_fm}/diferido`, dataFm);
 			//console.log('updateimg', res)
-			//dispatch(requestSuccess());
+			dispatch(requestSuccess());
 		} catch (error: any) {
 			//console.log(error.response)
 			//dispatch(CloseModalDiferido());

@@ -68,7 +68,7 @@ const Comprobacion: FC = () => {
 
 	//states
 	const [activeStep, setActiveStep] = useState(0);
-	const [send, setSend] = useState(false);
+	//const [send, setSend] = useState(false);
 	const [completed, setCompleted] = useState(new Set<number>());
 
 	const [aci, setAci] = useState<any>(null);
@@ -134,13 +134,15 @@ const Comprobacion: FC = () => {
 	};
 
 	useEffect(() => {
+		/*
 		if (allStepsCompleted() && !updatedStatus) {
 			//activar button for enviar
-			setSend(true);
+			//setSend(true);
 		}
 		// socket.emit('cliente:loadDiferidos');
 		// socket.emit('cliente:dashdatasiempre');
 		//eslint-disable-next-line react-hooks/exhaustive-deps
+		*/
 	}, [activeStep, dispatch, allStepsCompleted]);
 
 	const handleSend = async () => {
@@ -183,6 +185,7 @@ const Comprobacion: FC = () => {
 				timer: 1500,
 			});
 			socket.emit('cliete:disconnect');
+			socket.emit('cliente:loadDiferidos');
 			dispatch(cleanAdmisionFM());
 		}
 	}, [id_statusFM, updatedStatus]);

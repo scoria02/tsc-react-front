@@ -129,7 +129,7 @@ const Diferidos: React.FC = () => {
 		}
 	}, [fm, modalOpenDiferido]);
 
-	//console.log(modalOpenDiferido);
+	console.log('s', rowSelected);
 
 	return (
 		<div style={{ height: '100%', width: '100%' }}>

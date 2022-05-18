@@ -1,17 +1,5 @@
 import { PhotoCamera } from '@mui/icons-material';
-import ImageIcon from '@mui/icons-material/Image';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import {
-	Avatar,
-	Button,
-	FormControlLabel,
-	IconButton,
-	List,
-	ListItem,
-	ListItemText,
-	Switch,
-	TextareaAutosize,
-} from '@mui/material';
+import { Button, IconButton, TextareaAutosize } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import ListImages from 'components/utilis/images/ListImages';
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
@@ -24,7 +12,7 @@ import { Valid } from 'store/actions/accept';
 import { RootState } from 'store/store';
 import { recaudo } from 'utils/recaudos';
 import './styles/pasos.scss';
-import { sxStyled, useStyles } from './styles/styles';
+import { useStyles } from './styles/styles';
 
 const PasoActaConst: React.FC = () => {
 	const classes = useStyles();
@@ -35,21 +23,8 @@ const PasoActaConst: React.FC = () => {
 	const [state, setState] = React.useState(valid_constitutive_act);
 	const [openModal, setOpenModal] = React.useState<boolean>(false);
 
-	const {
-		fm,
-		imagesActa,
-		disabled,
-		handleChangeImagesActa,
-		imagePlanilla,
-		handleChangePlanilla,
-		removePlanilla,
-		deleteItemActa,
-	} = useContext(FMDiferidoContext);
+	const { fm, imagesActa, disabled, handleChangeImagesActa, deleteItemActa } = useContext(FMDiferidoContext);
 
-	const handleOpenModal = () => {
-		handleCancel();
-		setOpenModal(true);
-	};
 	const handleCloseModal = (cancel: boolean) => {
 		if (cancel) {
 			setState({
@@ -65,20 +40,7 @@ const PasoActaConst: React.FC = () => {
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.status]);
 
-	const handleCancel = () => {
-		handleCloseModal(true);
-	};
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({
-			...state,
-			[event.target.name]: event.target.checked,
-		});
-		if (!event.target.checked) handleOpenModal();
-	};
-
 	const imagenes: any = fm.id_commerce.rc_constitutive_act;
-	const url: string = process.env.REACT_APP_API_IMAGES + '/';
 
 	return (
 		<>
