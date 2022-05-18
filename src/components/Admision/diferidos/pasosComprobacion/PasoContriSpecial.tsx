@@ -1,7 +1,9 @@
-import { FormControlLabel, Switch } from '@mui/material';
+import { FormControlLabel, Switch, TextareaAutosize } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
+import RecDifPdf from 'components/utilis/images/RecDifPdf';
 import RecPdf from 'components/utilis/images/RecPdf';
-import React, { useEffect, useState } from 'react';
+import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
+import React, { useContext, useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,13 +16,15 @@ import { useStyles } from './styles/styles';
 const PasoContriSpecial: React.FC = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.diferido);
 	const valid_special_contributor: any = useSelector(
 		(state: RootState) => state.acceptance.validado.valid_special_contributor
 	);
 	const [state, setState] = useState(valid_special_contributor);
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [load, setLoad] = useState(false);
+
+	const { fm, disabled, handleChangeClient, imagesForm, handleChangeImages, deleteImg, pathImages } =
+		useContext(FMDiferidoContext);
 
 	const handleOpenModal = () => {
 		handleCancel();
@@ -45,35 +49,29 @@ const PasoContriSpecial: React.FC = () => {
 		handleCloseModal(true);
 	};
 
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({
-			...state,
-			[event.target.name]: event.target.checked,
-		});
-		if (!event.target.checked) handleOpenModal();
-	};
+	const imagen = imagesForm.rc_special_contributor
+		? pathImages.rc_special_contributor.path
+		: `${process.env.REACT_APP_API_IMAGES}/${fm.id_commerce.rc_special_contributor.path}`;
 
-	const imagen: string = `${process.env.REACT_APP_API_IMAGES}/${fm.id_commerce.rc_special_contributor.path}`;
+	const typeImagen = imagesForm.rc_special_contributor ? pathImages.rc_special_contributor.type : null;
 
 	return (
 		<>
 			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					{/* <TextField
-						className={classes.btn_medio}
-						id='outlined-basic '
-						label='Contribuyente Especial'
-						variant='outlined'
-						value='Foto de Contribuyente Especial'
-						disabled
-					/> */}
-					<FormControlLabel
-						className={classes.checkText}
-						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
-						label='Correcto'
-					/>
+					{fm.id_valid_request.id_typedif_special_contributor === 2 ? (
+						<TextareaAutosize
+							className={classes.btn_stepText}
+							maxRows={4}
+							disabled
+							defaultValue={fm.id_valid_request.valid_special_contributor}
+							placeholder=''
+						/>
+					) : (
+						<h2 className={classes.btn_stepTextInterno}> Error Interno </h2>
+					)}
 				</div>
-				<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
+				<RecDifPdf load={load} setLoad={setLoad} imagen={imagen} type={typeImagen} />
 			</form>
 			<ModalAlert
 				from='valid_special_contributor'

@@ -80,6 +80,16 @@ export default function PasoClient() {
 					id='outlined-basic'
 					label='Nombre'
 					variant='outlined'
+					name='email'
+					value={fm.id_client.email}
+					onChange={handleChangeClient}
+				/>
+				<TextField
+					disabled={disabled}
+					className={classes.btn_stepT}
+					id='outlined-basic'
+					label='Nombre'
+					variant='outlined'
 					name='name'
 					value={fm.id_client.name}
 					onChange={handleChangeClient}

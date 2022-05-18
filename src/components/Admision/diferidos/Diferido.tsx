@@ -9,8 +9,6 @@ import { CloseModalDiferido } from 'store/actions/ui';
 import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
 import '../scss/index.scss';
-import StepActaConst from './StepActaConst';
-import StepDiferido from './StepDiferido';
 
 import PasoAccountNumber from './pasosComprobacion/PasoAccountNumber';
 import PasoActaConst from './pasosComprobacion/PasoActaConst';
@@ -169,7 +167,7 @@ const Diferido: React.FC<any> = ({ fmData: any }) => {
 			if (valid.id_typedif_planilla && !list.includes('Planilla de Solicitud')) list.push('Planilla de Solicitud');
 			if (valid.id_typedif_consitutive_acta !== null && !list.includes('Acta Const.')) list.push('Acta Const.');
 			if (valid.id_typedif_special_contributor && !list.includes('Cont. Especial')) list.push('Cont. Especial');
-			if (valid.id_comp_dep && !list.includes('Comprobante de Pago')) list.push('Comprobante de Pago');
+			if (valid.id_typedif_comp_num && !list.includes('Comprobante de Pago')) list.push('Comprobante de Pago');
 		}
 		//
 		return list;

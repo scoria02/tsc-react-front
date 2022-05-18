@@ -38,7 +38,6 @@ export const FMDiferidoContextProvider = ({ children, value }: PropsAd) => {
 	const [fm, setFm] = useState<any>(value);
 	//
 	const [imagePlanilla, setImagePlanilla] = useState<FileList | []>([]);
-	const [pathImagePlanilla, setPathImagePlanilla] = useState<PathImage[]>([]);
 	//
 	const [imagesActa, setImagesActa] = useState<FileList | []>([]);
 	const [pathImagesActa, setPathImagesActa] = useState<PathImage[]>([]);
@@ -131,18 +130,8 @@ export const FMDiferidoContextProvider = ({ children, value }: PropsAd) => {
 			if (!errorFile(event)) {
 				let files = event.target.files;
 				setImagePlanilla(files);
-				for (let i: number = 0; i < files.length; i++) {
-					setPathImagePlanilla([
-						...pathImagePlanilla,
-						{
-							path: URL.createObjectURL(files[i]),
-							type: files[i].type,
-						},
-					]);
-				}
 			} else {
 				setImagePlanilla([]);
-				setPathImagePlanilla([]);
 			}
 		}
 	};
@@ -152,15 +141,6 @@ export const FMDiferidoContextProvider = ({ children, value }: PropsAd) => {
 			if (!errorFile(event)) {
 				let files = event.target.files;
 				setImagesActa(files);
-				for (let i: number = 0; i < files.length; i++) {
-					setPathImagesActa([
-						...pathImagePlanilla,
-						{
-							path: URL.createObjectURL(files[i]),
-							type: files[i].type,
-						},
-					]);
-				}
 			} else {
 				setImagesActa([]);
 				setPathImagesActa([]);
