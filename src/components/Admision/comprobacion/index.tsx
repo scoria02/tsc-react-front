@@ -1,6 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { getAci } from 'components/formMaldito/getData';
+import FullModal from 'components/modals/FullModal';
 import ModalSteps from 'components/modals/ModalSteps';
+import { FMValidContextProvider } from 'context/Admision/Validation/FmContext';
+import { DataListAdmisionProvider } from 'context/DataList/DatalistAdmisionContext';
 import { SocketContext } from 'context/SocketContext';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,51 +21,23 @@ import PasoCommerce from './pasosComprobacion/PasoCommerce';
 import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
 import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
-import PasoPlanilla from './pasosComprobacion/PasoPlanilla';
+import PasoPlanilla from './steps/PasoPlanilla';
 import PasoSelectAci from './pasosComprobacion/PasoSelectAci';
 import { useStyles } from './pasosComprobacion/styles/styles';
+import Validacion from './Validacion';
 
 const Comprobacion: FC = () => {
-	const classes = useStyles();
-	function getStepContent(step: number, steps: string[]) {
-		switch (steps[step]) {
-			case 'Cliente':
-				return <PasoClient />;
-			case 'Comercio':
-				return (
-					<div className={classes.wrapperGrid}>
-						<PasoCommerce />
-
-						<div>
-							<PasoCommerce2 />
-						</div>
-					</div>
-				);
-			case 'Referencia Bancaria':
-				return <PasoAccountNumber />;
-			case 'Planilla de Solicitud':
-				return <PasoPlanilla />;
-			case 'Acta Const.':
-				return <PasoActaConst />;
-			case 'Cont. Especial':
-				return <PasoContriSpecial />;
-			case 'Comprobante de Pago':
-				return <PasoPaymentReceipt />;
-			case 'Asignación ACI':
-				return <PasoSelectAci aci={aci} setAci={setAci} listAci={listAci} />;
-			default:
-				return 'Invalid step';
-		}
-	}
-
 	const dispatch = useDispatch();
+
 	const { socket } = useContext(SocketContext);
-	//selectores
+
 	const { modalOpen } = useSelector((state: any) => state.ui);
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 	const validated: any = useSelector((state: RootState) => state.acceptance.validado);
 	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatus);
 	const id_statusFM: any = useSelector((state: RootState) => state.fmAdmision.id_statusFM);
+
+	console.log(fm);
 
 	//console.log('actual fm', fm);
 
@@ -92,59 +67,7 @@ const Comprobacion: FC = () => {
 		}
 	}, [getDataControl]);
 
-	const steps = getSteps(fm);
-
-	function getSteps(form: any) {
-		const list: string[] = ['Cliente', 'Comercio', 'Referencia Bancaria'];
-		if (form.rc_planilla.length && !list.includes('Planilla de Solicitud')) {
-			list.push('Planilla de Solicitud');
-		}
-		if (form.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')) {
-			list.push('Acta Const.');
-		}
-		if (form.id_commerce.rc_special_contributor && !list.includes('Cont. Especial')) {
-			list.push('Cont. Especial');
-		}
-		if (form.rc_comp_dep && !list.includes('Comprobante de Pago')) {
-			list.push('Comprobante de Pago');
-		}
-		list.push('Asignación ACI');
-		return list;
-	}
-
-	const totalSteps = () => {
-		return getSteps(fm).length;
-	};
-	const completedSteps = () => {
-		return completed.size;
-	};
-
-	const allStepsCompleted = () => {
-		return completedSteps() === totalSteps();
-	};
-
-	const validStatusFm = (): boolean => {
-		for (const item of Object.entries(validated)) {
-			const aux: any = item[1];
-			if (!aux.status) {
-				return true;
-			}
-		}
-		return false;
-	};
-
-	useEffect(() => {
-		/*
-		if (allStepsCompleted() && !updatedStatus) {
-			//activar button for enviar
-			//setSend(true);
-		}
-		// socket.emit('cliente:loadDiferidos');
-		// socket.emit('cliente:dashdatasiempre');
-		//eslint-disable-next-line react-hooks/exhaustive-deps
-		*/
-	}, [activeStep, dispatch, allStepsCompleted]);
-
+	/*
 	const handleSend = async () => {
 		Swal.fire({
 			title: 'Confirmar verificación',
@@ -169,9 +92,11 @@ const Comprobacion: FC = () => {
 			}
 		});
 	};
+	*/
 
+	/*
 	useEffect(() => {
-		if (id_statusFM !== 0 && updatedStatus) {
+		if (updatedStatus && id_statusFM !== 0) {
 			const idStatus = id_statusFM;
 			//socket.emit('cliente:cleansolic');
 			if (idStatus === 3) {
@@ -189,11 +114,9 @@ const Comprobacion: FC = () => {
 			dispatch(cleanAdmisionFM());
 		}
 	}, [id_statusFM, updatedStatus]);
+	*/
 
-	const isLastStep = () => {
-		return activeStep === totalSteps() - 1;
-	};
-
+	/*
 	const handleNext = () => {
 		const newActiveStep =
 			isLastStep() && !allStepsCompleted()
@@ -201,7 +124,9 @@ const Comprobacion: FC = () => {
 				: activeStep + 1;
 		setActiveStep(newActiveStep);
 	};
+	*/
 
+	/*
 	const handleLoading = () => {
 		Swal.fire({
 			icon: 'info',
@@ -213,7 +138,9 @@ const Comprobacion: FC = () => {
 			},
 		});
 	};
+	*/
 
+	/*
 	const handleComplete = async () => {
 		const newCompleted = new Set(completed);
 		Swal.fire({
@@ -239,38 +166,23 @@ const Comprobacion: FC = () => {
 			}
 		});
 	};
+	*/
 
-	const [readyStep, setReadyStep] = useState<boolean>(false);
-
-	useEffect(() => {
-		if (activeStep === steps.length - 1) {
-			if (aci) setReadyStep(false);
-			else setReadyStep(true);
-		} else setReadyStep(false);
-	}, [activeStep, aci]);
+	const handleClose = () => {
+		socket.emit('cliente:disconnect');
+		// console.log('clean for close');
+		dispatch(CloseModal());
+		dispatch(cleanAdmisionFM());
+	};
 
 	return (
-		<ModalSteps
-			stepComplete={stepComplete}
-			clean={cleanAdmisionFM}
-			updatedStatus={updateStatusFM}
-			steps={steps}
-			getStepContent={getStepContent}
-			fm={fm}
-			modalOpen={modalOpen}
-			CloseModal={CloseModal}
-			id_status={id_statusFM}
-			getSteps={getSteps}
-			activeStep={activeStep}
-			setActiveStep={setActiveStep}
-			completed={completed}
-			setCompleted={setCompleted}
-			readyStep={readyStep}
-			handleNext={handleNext}
-			handleComplete={handleComplete}
-			handleSend={handleSend}
-			cleanContext={() => {}}
-		/>
+		<DataListAdmisionProvider>
+			<FMValidContextProvider fm={fm}>
+				<FullModal modalOpen={modalOpen} handleClose={handleClose}>
+					<Validacion />
+				</FullModal>
+			</FMValidContextProvider>
+		</DataListAdmisionProvider>
 	);
 };
 

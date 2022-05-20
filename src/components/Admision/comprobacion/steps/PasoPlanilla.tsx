@@ -10,7 +10,7 @@ import { Valid } from 'store/actions/accept';
 //Url
 import { RootState } from 'store/store';
 import './styles/pasos.scss';
-import { sxStyled, useStyles } from './styles/styles';
+import { sxStyled, useStyles } from '../pasosComprobacion/styles/styles';
 
 const PasoPlanilla: React.FC = () => {
 	const classes = useStyles();

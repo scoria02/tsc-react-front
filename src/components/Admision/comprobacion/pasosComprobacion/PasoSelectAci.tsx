@@ -1,6 +1,6 @@
 import Autocomplete from '@mui/lab/Autocomplete';
 import { TextField } from '@mui/material';
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAci } from 'store/actions/accept';
@@ -8,12 +8,15 @@ import { selectAci } from 'store/actions/accept';
 import { RootState } from 'store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
+import DataListAdmisionContext from 'context/DataList/DatalistAdmisionContext';
 
-const PasoSelectAci: FC<any> = ({ aci, setAci, listAci }) => {
+const PasoSelectAci: FC<any> = ({ aci, setAci }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+
+	const { listAci } = useContext(DataListAdmisionContext);
 
 	const handleSelectAci = (event: any, value: any) => {
 		dispatch(selectAci(value ? true : false));
@@ -31,7 +34,7 @@ const PasoSelectAci: FC<any> = ({ aci, setAci, listAci }) => {
 									marginTop: '10px',
 									fontSize: '20px',
 								}}>
-								Asignacion del ACI
+								Asignacion de Fuerza de Venta
 							</h2>
 						</div>
 						<div className={classes.btn_stepM}>
@@ -49,7 +52,7 @@ const PasoSelectAci: FC<any> = ({ aci, setAci, listAci }) => {
 										: ''
 								}
 								renderInput={(params: any) => (
-									<TextField {...params} name='aci' label={`Buscar Aci`} variant='outlined' />
+									<TextField {...params} name='aci' label={`Buscar Fuerza de Venta`} variant='outlined' />
 								)}
 							/>
 						</div>
