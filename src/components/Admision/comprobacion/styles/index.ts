@@ -113,7 +113,8 @@ export const useStylesFM = makeStyles((styles: Theme) => ({
 		display: 'flex',
 		justifyContent: 'center',
 		width: '100%',
-		bottom: '2rem',
+		bottom: '1rem',
+		//background: 'red',
 	},
 	labels: {
 		maxWidth: 120,

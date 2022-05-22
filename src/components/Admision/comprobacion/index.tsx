@@ -21,7 +21,7 @@ import PasoCommerce from './pasosComprobacion/PasoCommerce';
 import PasoCommerce2 from './pasosComprobacion/PasoCommerce2';
 import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
-import PasoPlanilla from './steps/PasoPlanilla';
+import PasoPlanilla from './steps/StepPlanilla';
 import PasoSelectAci from './pasosComprobacion/PasoSelectAci';
 import { useStyles } from './pasosComprobacion/styles/styles';
 import Validacion from './Validacion';

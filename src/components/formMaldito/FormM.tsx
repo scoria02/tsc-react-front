@@ -396,7 +396,6 @@ const FormM: React.FC = () => {
 										<Typography
 											variant={activeStep === index ? 'body1' : 'body2'}
 											color={activeStep === index ? 'primary' : 'info'}>
-											{console.log(activeStep === index)}
 											<b>{label}</b>
 										</Typography>
 									</StepLabel>

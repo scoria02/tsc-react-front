@@ -16,6 +16,7 @@ export interface ContextFMValidation {
 	listValidated: ValidatedFace;
 	codeFM: string;
 	stepsFM: any;
+	solic: any;
 }
 
 export interface ClientValid {

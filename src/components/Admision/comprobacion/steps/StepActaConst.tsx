@@ -2,7 +2,8 @@ import ImageIcon from '@mui/icons-material/Image';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { Avatar, Button, FormControlLabel, List, ListItem, ListItemText, Switch } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
-import React, { useEffect, useState } from 'react';
+import FMValidDataContext from 'context/Admision/Validation/FmContext';
+import React, { useContext, useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,15 +11,16 @@ import { Valid } from 'store/actions/accept';
 //Url
 import { RootState } from 'store/store';
 import './styles/pasos.scss';
-import { sxStyled, useStyles } from '../pasosComprobacion/styles/styles';
+import { sxStyled, useStyles } from './styles/styles';
 
-const PasoPlanilla: React.FC = () => {
+const StepActaConst: React.FC = () => {
 	const classes = useStyles();
-	const dispatch = useDispatch();
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const valid_planilla: any = useSelector((state: RootState) => state.acceptance.validado.valid_planilla);
-	const [state, setState] = useState(valid_planilla);
-	const [openModal, setOpenModal] = useState<boolean>(false);
+	const [openModal, setOpenModal] = React.useState<boolean>(false);
+
+	const { commerce, handleChangeValid, listValidated } = useContext(FMValidDataContext);
+
+	const { valid_constitutive_act } = listValidated;
+	const [state, setState] = useState(valid_constitutive_act);
 
 	const handleOpenModal = () => {
 		handleCancel();
@@ -35,9 +37,9 @@ const PasoPlanilla: React.FC = () => {
 	};
 
 	useEffect(() => {
-		dispatch(Valid({ valid_planilla: state }));
-		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state.status]);
+		//console.log(state);
+		handleChangeValid('valid_constitutive_act', state);
+	}, [state]);
 
 	const handleCancel = () => {
 		handleCloseModal(true);
@@ -51,7 +53,7 @@ const PasoPlanilla: React.FC = () => {
 		if (!event.target.checked) handleOpenModal();
 	};
 
-	const imagenes: any = fm.rc_planilla;
+	const imagenes: any = commerce.rc_constitutive_act;
 	const url: string = process.env.REACT_APP_API_IMAGES + '/';
 
 	return (
@@ -72,7 +74,7 @@ const PasoPlanilla: React.FC = () => {
 						label={state.status ? 'Correcto' : 'Incorrecto'}
 					/>
 				</div>
-				<List sx={sxStyled.container_ListActa} className={classes.container_ListActa}>
+				<List sx={sxStyled.container_ListActa}>
 					{imagenes.map((item: any, index: number) => (
 						<ListItem key={item.id} value={item.id}>
 							<Button
@@ -107,7 +109,7 @@ const PasoPlanilla: React.FC = () => {
 			/>
 				*/}
 			<ModalAlert
-				from='valid_planilla'
+				from='valid_constitutive_act'
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
 				state={state}
@@ -117,4 +119,4 @@ const PasoPlanilla: React.FC = () => {
 	);
 };
 
-export default PasoPlanilla;
+export default StepActaConst;

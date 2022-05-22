@@ -19,13 +19,15 @@ const baseSteps = [
 function getSteps(fm: any) {
 	const list: string[] = [];
 	if (fm) {
-		if (true && !list.includes('Cliente')) list.push('Cliente');
-		if (true && !list.includes('Comercio')) list.push('Comercio');
-		if (fm.rc_ref_bank !== null && !list.includes('Referencia Bancaria')) list.push('Referencia Bancaria');
+		if (fm.id_client && !list.includes('Cliente')) list.push('Cliente');
+		if (fm.id_commerce && !list.includes('Comercio')) list.push('Comercio');
+		if (fm && !list.includes('Pos')) list.push('Pos');
 		if (fm.rc_planilla.length && !list.includes('Planilla de Solicitud')) list.push('Planilla de Solicitud');
+		if (fm.rc_ref_bank && !list.includes('Referencia Bancaria')) list.push('Referencia Bancaria');
 		if (fm.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')) list.push('Acta Const.');
-		if (fm.id_commercespecial_contributor && !list.includes('Cont. Especial')) list.push('Cont. Especial');
-		if (fm.rc_comp_num !== null && !list.includes('Comprobante de Pago')) list.push('Comprobante de Pago');
+		if (fm.id_commerce.special_contributor && !list.includes('Cont. Especial')) list.push('Cont. Especial');
+		if (fm.rc_comp_num && !list.includes('Comprobante de Pago')) list.push('Comprobante de Pago');
+		if (!list.includes('Fuerza de venta')) list.push('Fuerza de Venta');
 	}
 	//
 	return list;
@@ -46,6 +48,7 @@ const FMValidDataContext = createContext<ContextFMValidation>({
 	listValidated: initValidado,
 	codeFM: '',
 	stepsFM: baseSteps,
+	solic: null,
 });
 
 export const FMValidContextProvider = ({ children, fm }: Props) => {
@@ -57,6 +60,7 @@ export const FMValidContextProvider = ({ children, fm }: Props) => {
 	const [commerce, setCommerce] = useState<any>(null);
 	const [pos, setPos] = useState<any>(null);
 	const [locationClient, setLocationClient] = useState<any>(null);
+	const [solic, setSolic] = useState<any>(null);
 
 	const [locationCommerce, setLocationCommerce] = useState<any>(null);
 	const [locationPos, setLocationPos] = useState<any>(null);
@@ -64,6 +68,7 @@ export const FMValidContextProvider = ({ children, fm }: Props) => {
 	const [aci, setAci] = useState<Aci | null>(null);
 
 	const resetFmValidation = (): void => {
+		setSolic(null);
 		setListValidated(initValidado);
 		setClient(null);
 		setCommerce(null);
@@ -93,7 +98,10 @@ export const FMValidContextProvider = ({ children, fm }: Props) => {
 				});
 				setLocationClient(id_location);
 				setCommerce(id_commerce);
+				setLocationCommerce(id_commerce.id_location);
+				setSolic(fm);
 				setPos(fm);
+				setLocationPos(fm.pos[0].id_location);
 				setCodeFM(fm.code);
 				setStepsFM(getSteps(fm));
 			}
@@ -117,6 +125,7 @@ export const FMValidContextProvider = ({ children, fm }: Props) => {
 				listValidated,
 				codeFM,
 				stepsFM,
+				solic,
 			}}>
 			{children}
 		</FMValidDataContext.Provider>

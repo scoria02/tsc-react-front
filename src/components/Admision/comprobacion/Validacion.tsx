@@ -2,10 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Typography, Button, Step, StepLabel, Stepper } from '@mui/material';
 import DataListAdmisionContext from 'context/DataList/DatalistAdmisionContext';
-import DataListContext from 'context/DataList/DataListContext';
-import FMDataContext from 'context/FM/fmAdmision/FmContext';
-import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
-import LocationsContext from 'context/FM/Location/LocationsContext';
 import { SocketContext } from 'context/SocketContext';
 import React, { ReactElement, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,21 +12,27 @@ import { StateFMInt } from 'store/reducers/fmReducer';
 //Redux
 import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
-import { stepError } from 'utils/fm';
 import LoaderPrimary from '../../loaders/LoaderPrimary';
 //steps
+//Cliente y comercio existente
 import StepClient from './steps/StepClient';
 import StepCommerce from './steps/StepCommerce';
-//Cliente y comercio existente
-import StepExtraPos from './steps/ExtraPos';
-//
-import StepLocationCCandPos from './steps/StepLocationCCandPos';
+import StepRefBank from './steps/StepRefBank';
+import StepPlanilla from './steps/StepPlanilla';
+import StepActaConst from './steps/StepActaConst';
+import StepContribuyenteSpecial from './steps/StepContribuyenteSpecial';
+import StepCompDep from './steps/StepCompDep';
 import StepPos from './steps/StepPos';
 import { useStylesFM } from './styles';
 import FMValidDataContext from 'context/Admision/Validation/FmContext';
+import { setTimeout } from 'timers';
+import { FastRewindTwoTone } from '@mui/icons-material';
+import { updateStatusFM } from 'store/actions/admisionFm';
+import StepSelectAci from './steps/StepSelectAci';
 
 const Validacion: React.FC = () => {
 	const history = useHistory();
+	const dispatch = useDispatch();
 	const classes = useStylesFM();
 
 	const { socket } = useContext(SocketContext);
@@ -41,9 +43,9 @@ const Validacion: React.FC = () => {
 	const [stepsValid, setStepsValid] = useState<number>(0);
 
 	const { listAci } = useContext(DataListAdmisionContext);
-	const { codeFM, pos, stepsFM } = useContext(FMValidDataContext);
+	const { client, commerce, solic, codeFM, pos, stepsFM, aci, listValidated } = useContext(FMValidDataContext);
 
-	console.log('step show', stepsFM);
+	//console.log('step show', stepsFM);
 
 	const handleGetStep = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -69,8 +71,11 @@ const Validacion: React.FC = () => {
 	const handleLoading = () => {
 		Swal.fire({
 			icon: 'info',
-			title: 'Verificando Solicitud...',
+			title: 'Verificando',
 			showConfirmButton: false,
+			customClass: { container: 'swal2-validated' },
+			allowOutsideClick: false,
+			allowEscapeKey: false,
 			//closeOnClickOutside: false,
 			didOpen: () => {
 				Swal.showLoading();
@@ -78,16 +83,53 @@ const Validacion: React.FC = () => {
 		});
 	};
 
-	const handleSend = () => {
+	const handleVerificated = () => {
 		Swal.fire({
 			icon: 'success',
-			title: 'Solicitud Enviada',
+			title: 'Solicitud Verificada',
+			html: `<span>Codigo de Solicitud: <b>${codeFM}</b><span>`,
 			showConfirmButton: false,
-			timer: 2500,
+			allowOutsideClick: false,
+			allowEscapeKey: false,
+			timer: 2000,
 			customClass: { container: 'swal2-validated' },
 		});
 		//history.push(urlFM);
 		//setActiveStep(0);
+	};
+
+	const validStatusFm = () => {
+		return false;
+	};
+
+	const handleSend = async () => {
+		if (aci !== null) {
+			Swal.fire({
+				title: 'Solicitud verificada?',
+				icon: 'warning',
+				showConfirmButton: true,
+				allowOutsideClick: false,
+				allowEscapeKey: false,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Verificado',
+				showCancelButton: true,
+				cancelButtonText: 'Cancelar',
+				showCloseButton: true,
+				customClass: { container: 'swal2-validated' },
+			}).then((result) => {
+				if (result.isConfirmed) {
+					handleLoading();
+					if (validStatusFm()) {
+						dispatch(updateStatusFM(solic.id, 4, listValidated, aci?.id));
+						console.log('mandado diferido');
+					} else {
+						dispatch(updateStatusFM(solic.id, 3, listValidated, aci?.id));
+						console.log('fin validacion');
+					}
+				}
+			});
+		}
 	};
 
 	const handleVerificar = async () => {
@@ -118,14 +160,18 @@ const Validacion: React.FC = () => {
 
 	const getContentSteps = () => {
 		let listSteps: any = [];
-		if (true && !listSteps.includes(<StepClient />)) listSteps.push(<StepClient />);
-		if (true && !listSteps.includes(<StepCommerce />)) listSteps.push(<StepCommerce />);
-		//if (fm.rc_ref_bank !== null && !list.includes(<StepReferencia />)) list.push(<StepReferencia />);
-		//if (fm.rc_planilla.length && !list.includes('Planilla de Solicitud')) list.push('Planilla de Solicitud');
-		//if (fm.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')) list.push('Acta Const.');
-		//if (fm.id_commercespecial_contributor && !list.includes('Cont. Especial')) list.push('Cont. Especial');
-		//if (fm.rc_comp_num !== null && !list.includes('Comprobante de Pago')) list.push('Comprobante de Pago');
-		//[<StepClient />, <StepCommerce />, <StepLocationCCandPos />, <StepPos />]
+		if (client && !listSteps.includes(<StepClient />)) listSteps.push(<StepClient />);
+		if (commerce && !listSteps.includes(<StepCommerce />)) listSteps.push(<StepCommerce />);
+		if (solic && !listSteps.includes(<StepPos />)) listSteps.push(<StepPos />);
+		if (solic.rc_planilla.length && !listSteps.includes('Planilla de Solicitud')) listSteps.push(<StepPlanilla />);
+		if (solic.rc_ref_bank && !listSteps.includes(<StepRefBank />)) listSteps.push(<StepRefBank />);
+		if (commerce.rc_constitutive_act.length && !listSteps.includes(<StepActaConst />))
+			listSteps.push(<StepActaConst />);
+		if (commerce.rc_special_contributor && !listSteps.includes(<StepContribuyenteSpecial />))
+			listSteps.push(<StepContribuyenteSpecial />);
+		if (solic.rc_comp_num && !listSteps.includes(<StepCompDep />)) listSteps.push(<StepCompDep />);
+		if (!listSteps.includes(<StepSelectAci />)) listSteps.push(<StepSelectAci />);
+
 		return listSteps;
 	};
 
@@ -166,6 +212,14 @@ const Validacion: React.FC = () => {
 												color={activeStep === index ? 'primary' : 'info'}>
 												<b>{label}</b>
 											</Typography>
+											<Typography
+												style={{
+													fontSize: '10px',
+												}}
+												variant={activeStep === index ? 'body1' : 'body2'}
+												color={activeStep === index ? 'primary' : 'info'}>
+												<span>{index > stepsValid - 1 ? '' : 'Verificado'}</span>
+											</Typography>
 										</StepLabel>
 									</Step>
 								);
@@ -177,7 +231,8 @@ const Validacion: React.FC = () => {
 								<div className={classes.buttonFixed}>
 									<Button
 										sx={{
-											mr: 60,
+											ml: 20,
+											mr: 20,
 										}}
 										size='large'
 										disabled={activeStep === 0}
@@ -190,10 +245,11 @@ const Validacion: React.FC = () => {
 									{stepsValid === steps.length - 1 && activeStep === steps.length - 1 ? (
 										<Button
 											sx={{
-												mr: 50,
+												mr: 40,
 											}}
 											size='large'
 											variant='contained'
+											disabled={activeStep === steps.length - 1 && !aci ? true : false}
 											color='primary'
 											onClick={handleSend}
 											className={classes.buttonNext}>
@@ -202,14 +258,16 @@ const Validacion: React.FC = () => {
 									) : (
 										<Button
 											sx={{
-												mr: 50,
+												mr: 40,
 											}}
 											size='large'
 											variant='contained'
 											color='primary'
 											onClick={handleClickButton}
 											className={classes.buttonNext}>
-											<span className={classes.textButton}>Validar</span>
+											<span className={classes.textButton}>
+												{activeStep > stepsValid - 1 ? 'Verificar' : 'Siguente'}
+											</span>
 										</Button>
 									)}
 								</div>

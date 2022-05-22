@@ -25,22 +25,7 @@ const StepCommerce: FC = () => {
 
 	const [openModal, setOpenModal] = useState<boolean>(false);
 
-	const { commerce, locationClient, handleChangeValid, listValidated } = useContext(FMValidDataContext);
-
-	console.log(commerce);
-	// id: 5
-	// banks: [{…}]
-	// days: "Lun/Mar/Mie/Jue/Vie/Sab/Dom"
-	// id_aci: null
-	// id_activity: {id: 5422, name: 'Alimentación\tProveedores de cavas y estantes'}
-	// id_ident_type: {id: 3, name: 'J'}
-	// id_location: {id: 10, sector: '1', calle: '2', local: '2', id_estado: {…}, …}
-	// ident_num: "7777777"
-	// name: "backoffice"
-	// rc_constitutive_act: [{…}]
-	// rc_rif: {id: 181, path: 'static/5/5/7c32d082-9fb9-45f7-9562-d4079bd6f504@rc_rif.jpeg', name: '7c32d082-9fb9-45f7-9562-d4079bd6f504@rc_rif.jpeg', id_status: 1, descript: 'rc_rif'}
-	// rc_special_contributor: null
-	// special_contributor: 0
+	const { commerce, locationCommerce, handleChangeValid, listValidated } = useContext(FMValidDataContext);
 
 	const { valid_commerce } = listValidated;
 	const [state, setState] = useState(valid_commerce);
@@ -131,7 +116,7 @@ const StepCommerce: FC = () => {
 							id='standard-required'
 							label='Estado'
 							name='Estado'
-							value={locationClient?.id_estado.estado}
+							value={locationCommerce?.id_estado.estado}
 						/>
 						<TextField
 							className={classNames(classes.inputText)}
@@ -140,7 +125,7 @@ const StepCommerce: FC = () => {
 							id='standard-required'
 							label='Municipio'
 							name='municipio'
-							value={locationClient?.id_municipio.municipio}
+							value={locationCommerce?.id_municipio.municipio}
 						/>
 					</div>
 					<div className={classes.input}>
@@ -152,7 +137,7 @@ const StepCommerce: FC = () => {
 							id='standard-required'
 							label='Ciudad'
 							name='ciudad'
-							value={locationClient?.id_ciudad.ciudad}
+							value={locationCommerce?.id_ciudad.ciudad}
 						/>
 						<TextField
 							className={classNames(classes.inputText)}
@@ -161,7 +146,7 @@ const StepCommerce: FC = () => {
 							id='standard-required'
 							label='Parroquia'
 							name='parroquia'
-							value={locationClient?.id_parroquia.parroquia}
+							value={locationCommerce?.id_parroquia.parroquia}
 						/>
 					</div>
 					<div className={classes.input}>
@@ -173,7 +158,7 @@ const StepCommerce: FC = () => {
 							id='standard-required'
 							label='Cod. Postal'
 							name='codigo_postal'
-							value={locationClient?.id_ciudad?.ciudad}
+							value={locationCommerce?.id_ciudad?.ciudad}
 						/>
 						<TextField
 							className={classes.inputText}
@@ -182,7 +167,7 @@ const StepCommerce: FC = () => {
 							id='standard-required'
 							label='Sector'
 							name='sector'
-							value={locationClient?.sector}
+							value={locationCommerce?.sector}
 						/>
 					</div>
 					<div className={classes.input}>
@@ -194,7 +179,7 @@ const StepCommerce: FC = () => {
 							id='standard-required'
 							label='Calle'
 							name='calle'
-							value={locationClient?.calle}
+							value={locationCommerce?.calle}
 						/>
 						<TextField
 							className={classes.inputText}
@@ -203,7 +188,7 @@ const StepCommerce: FC = () => {
 							id='standard-required'
 							label='Casa/Quinta/Apart'
 							name='local'
-							value={locationClient?.local}
+							value={locationCommerce?.local}
 						/>
 					</div>
 				</div>

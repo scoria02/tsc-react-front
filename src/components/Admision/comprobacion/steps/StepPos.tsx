@@ -1,520 +1,226 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import {
-	Autocomplete,
-	Button,
-	Checkbox,
-	FormControlLabel,
-	IconButton,
-	InputAdornment,
-	TextField,
-} from '@mui/material';
+import Autocomplete from '@mui/lab/Autocomplete';
+import { FormControlLabel, Switch, TextField } from '@mui/material';
+import { Valid } from 'store/actions/accept';
 import classNames from 'classnames';
+import { ModalAlert } from 'components/modals/ModalAlert';
+import RecPdf from 'components/utilis/images/RecPdf';
+import FMValidDataContext from 'context/Admision/Validation/FmContext';
 import DataListContext from 'context/DataList/DataListContext';
-import { Aci, Distributor, TeleMarket, TypeWallet } from 'context/DataList/interface';
 import FMDataContext from 'context/FM/fmAdmision/FmContext';
 import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
+import { Ciudad, Estado, Municipio, Parroquia } from 'context/FM/Location/interfaces';
+import LocationsContext from 'context/FM/Location/LocationsContext';
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { validationNumBank } from 'store/actions/fm';
+import { validationClient } from 'store/actions/fm';
 import { RootState } from 'store/store';
+import { validInputString } from 'utils/fm';
+import { capitalizedFull } from 'utils/formatName';
 import { recaudo } from 'utils/recaudos';
+//sytles
 import { sxStyled, useStylesFM } from '../styles';
 
-//Pedido
 const StepPos: FC = () => {
 	const classes = useStylesFM();
-	//const [isACI, setIsACI] = useState<boolean>(false);
-	const [deleted, setDeleted] = useState<boolean>(false);
-	const [fraccion, setFraccion] = useState<boolean>(false);
-	const [cuotasTexto, setCuotasTexto] = useState('');
-	const dispatch = useDispatch();
-	// const cuotasText = ['5 cuotas de 50$', '4 cuotas de 50$', '3 cuotas de 50$'];
 
-	const fm: any = useSelector((state: RootState) => state.fm);
+	const [openModal, setOpenModal] = useState<boolean>(false);
 
-	const {
-		client,
-		pos,
-		aci,
-		telemarket,
-		typeWallet,
-		errorsFm,
-		handleParamsPos,
-		handleChangePos,
-		handleCheckedPos,
-		handleSourceAci,
-		handleSourceTelemarket,
-		handleTypeWallet,
-	} = useContext(FMDataContext);
-	const {
-		listPayment,
-		listModelPos,
-		listTypePay,
-		listRequestSource,
-		listAci,
-		listWalletType,
-		listTeleMarket,
-		listDistributor,
-	} = useContext(DataListContext);
-	const { namesImages, imagesForm, handleChangeImages, deleteImgContributor } = useContext(ImagesFmContext);
+	const { locationPos, client, solic, handleChangeValid, listValidated } = useContext(FMValidDataContext);
 
-	const handleChangeReferido = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		if (/^[V0-9]+$/.test(event.target.value) || event.target.value === '') {
-			handleChangePos(event);
-		}
+	const { valid_cliente } = listValidated;
+	const [state, setState] = useState(valid_cliente);
+
+	const [load, setLoad] = useState(false);
+
+	const handleOpenModal = () => {
+		handleCancel();
+		setOpenModal(true);
 	};
 
-	const handleSelect = (event: any, value: any, name: string) => {
-		if (value) handleParamsPos(name, value);
-		else handleParamsPos(name, null);
-	};
-
-	const handleCheckedPagadero = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (!event.target.checked && imagesForm.rc_comp_dep) {
-			deleteImgContributor('comp_dep');
-		}
-		handleParamsPos('nro_comp_dep', '');
-		handleCheckedPos(event);
-	};
-
-	const handleChangeBank = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
-			if (event.target.value.length === 20 && client.email !== '') {
-				dispatch(
-					validationNumBank({
-						email: client.email,
-						bank_account_num: event.target.value,
-					})
-				);
-			}
-			handleChangePos(event);
-		}
-	};
-
-	useEffect(() => {
-		if (pos.type_pay) {
-			if (pos.type_pay.id === 2) {
-				setFraccion(true);
-			} else {
-				setFraccion(false);
-			}
-		} else {
-			setFraccion(false);
-		}
-		/*
-		if (pos.request_origin) {
-			switch (pos.request_origin.id) {
-				case 1:
-					setReferido(true);
-					//setIsACI(false);
-					break;
-				case 2:
-					// is ACI
-					//setIsACI(true);
-					setReferido(false);
-					break;
-				default:
-					//setIsACI(false);
-					setReferido(false);
-			}
-		} else {
-			//setIsACI(false);
-			setReferido(false);
-		}
-		*/
-		if (pos.initial && pos.model_post) {
-			// cable pelado para el monto del precio del modelo seleccionado para calcular las cuotas
-			let valor = pos.number_post * (pos.model_post.price - pos.initial);
-			let cuotas = valor / (pos.number_post * 50);
-
-			/*
-			setPos({
-				...pos,
-				cuotas: valor / (pos.number_post * 50),
+	const handleCloseModal = (cancel: boolean) => {
+		if (cancel) {
+			setState({
+				...state,
+				status: !state.status,
 			});
-			*/
-
-			if (valor < 0) {
-				/*
-				setPos({
-					...pos,
-					initial: 100,
-				});
-				*/
-			}
-			if (cuotas % 1 === 0 && cuotas > 0 && cuotas) {
-				setCuotasTexto(`${cuotas} cuota/s de 50$`);
-			} else {
-				/*
-				setPos({
-					...pos,
-					initial: 100,
-				});
-				*/
-			}
 		}
-	}, [pos.number_post, pos.initial, pos.request_origin, pos.type_pay, pos.model_post]);
+		setOpenModal(false);
+	};
 
 	useEffect(() => {
-		if (imagesForm.rc_comp_dep) {
-			setDeleted(true);
-		} else {
-			setDeleted(false);
-		}
-		/* eslint-disable react-hooks/exhaustive-deps */
-	}, [imagesForm.rc_comp_dep]);
+		//console.log(state);
+		handleChangeValid('valid_cliente', state);
+	}, [state]);
+
+	const handleCancel = () => {
+		handleCloseModal(true);
+	};
+
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setState({
+			...state,
+			[event.target.name]: event.target.checked,
+		});
+		if (!event.target.checked) handleOpenModal();
+	};
+
+	const imagen = `${process.env.REACT_APP_API_IMAGES}/${client?.rc_ident_card?.path}`;
+
+	console.log(solic);
 
 	return (
 		<div className={classes.grid}>
-			<div className={classes.input}>
-				<TextField
-					className={classes.inputSelect}
-					style={{ marginRight: '2%' }}
-					variant='outlined'
-					required
-					id='standard-required'
-					label='Numero de Puntos'
-					type='number'
-					name='number_post'
-					onChange={handleChangePos}
-					error={errorsFm.number_post}
-					value={pos.number_post}
-				/>
-				<Autocomplete
-					className={classes.inputText}
-					onChange={(event, value) => handleSelect(event, value, 'model_post')}
-					value={pos.model_post || null}
-					options={listModelPos}
-					getOptionLabel={(option: any) => (option.name ? option.name : '')}
-					renderInput={(params: any) => (
-						<TextField {...params} name='model_post' label='Modelo de los POS' variant='outlined' />
-					)}
-				/>
-			</div>
-			<div className={classes.input}>
-				<TextField
-					sx={sxStyled.inputLeft}
-					// className={classes.inputTextLeft}
-					variant='outlined'
-					required
-					id='standard-required'
-					label={fm.nameBank === '' ? 'Numero de Cuenta' : fm.nameBank}
-					name='text_account_number'
-					onChange={handleChangeBank}
-					value={pos.text_account_number}
-					error={errorsFm.text_account_number || fm.errorNumBank}
-					inputProps={{ maxLength: 20 }}
-				/>
-				<div className={classes.row}>
-					<b className={classes.labels}>Referencia Bancaria</b>
-					<Button
-						className={classes.imgIdent}
-						variant='contained'
-						style={{
-							background: imagesForm.rc_ref_bank ? '#5c62c5' : '#f44336',
-						}}
-						component='label'>
-						{imagesForm.rc_ref_bank !== null ? (
-							<>
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-								<p className='nameImg'>{namesImages.rc_ref_bank.slice(0, 5)}...</p>
-							</>
-						) : (
-							<>
-								{/*<b>Subir</b>*/}
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-							</>
-						)}
-						<input type='file' hidden name='rc_ref_bank' accept={recaudo.acc} onChange={handleChangeImages} />
-					</Button>
-				</div>
-			</div>
-			<div className={classes.input}>
-				<Autocomplete
-					// className={classes.inputTextLeft}
-					sx={sxStyled.inputLeft}
-					onChange={(event, value) => handleSelect(event, value, 'payment_method')}
-					options={listPayment}
-					value={pos.payment_method || null}
-					getOptionLabel={(option: any) => (option.name ? option.name : '')}
-					renderInput={(params: any) => (
-						<TextField {...params} name='payment_method' label='Modalidad de Pago' variant='outlined' />
-					)}
-				/>
-				<Autocomplete
-					className={classes.inputText}
-					onChange={(event, value) => handleSelect(event, value, 'type_pay')}
-					options={listTypePay}
-					value={pos.type_pay || null}
-					getOptionLabel={(option: any) => (option.name ? option.name : '')}
-					renderInput={(params: any) => (
-						<TextField {...params} name='type_pay' label='Tipo de Pago' variant='outlined' />
-					)}
-				/>
-			</div>
-			<div className={classes.input}>
-				<Autocomplete
-					// className={classes.inputTextLeft}
-					sx={sxStyled.inputLeft}
-					style={{ width: '50%' }}
-					onChange={(event, value) => handleSelect(event, value, 'request_origin')}
-					options={listRequestSource}
-					value={pos.request_origin || null}
-					getOptionLabel={(option: any) => (option.name ? option.name : '')}
-					renderInput={(params: any) => (
-						<TextField {...params} name='request_origin' label='Origen de Solicitud' variant='outlined' />
-					)}
-				/>
-				{pos.request_origin?.id === 1 && (
-					<TextField
-						className={classes.inputText}
-						style={{ width: '50%' }}
-						variant='outlined'
-						required
-						id='standard-required'
-						label='Numero de Cédula'
-						name='reqSource_docnum'
-						onChange={handleChangeReferido}
-						inputProps={{
-							maxLength: 9,
-						}}
-						value={pos.reqSource_docnum}
-						InputProps={{
-							startAdornment: <InputAdornment position='start'>V</InputAdornment>,
-						}}
-						error={errorsFm.reqSource_docnum}
-					/>
-				)}
-				{pos.request_origin?.id === 2 ? (
-					<Autocomplete
-						// className='btn_step btn_medio'
-						style={{ width: '50%' }}
-						//disabled={} //si el comercio tiene aci traelo
-						onChange={(event, value) => {
-							handleSourceAci(event, value, 'reqSource_docnum');
-						}}
-						options={listAci}
-						value={aci || null}
-						getOptionLabel={(option: Aci | null) =>
-							option ? option.aliTipoIdentificacion + option.aliIdentificacion + ' | ' + option.aliNombres : ''
-						}
-						// getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
-						renderInput={(params: any) => (
-							<TextField {...params} name='aci' label={`Buscar Aci`} variant='outlined' />
-						)}
-					/>
-				) : pos.request_origin?.id === 3 ? (
-					<Autocomplete
-						// className='btn_step btn_medio'
-						style={{ width: '50%' }}
-						//disabled={} //si el comercio tiene aci traelo
-						onChange={(event, value) => {
-							// setTelemark(value ? value : null);
-							handleSourceTelemarket(event, value ? value : null);
-						}}
-						options={listTeleMarket}
-						value={telemarket || null}
-						getOptionLabel={(option: TeleMarket | null) => (option ? option.name : '')}
-						// getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
-						renderInput={(params: any) => (
-							<TextField {...params} name='typeWallet' label={`TeleMercadeo`} variant='outlined' />
-						)}
-					/>
-				) : pos.request_origin?.id === 5 ? (
-					<Autocomplete
-						// className='btn_step btn_medio'
-						style={{ width: '50%' }}
-						//disabled={} //si el comercio tiene aci traelo
-						onChange={(event, value) => {
-							handleTypeWallet(event, value, 'typeWallet');
-						}}
-						options={listWalletType}
-						value={typeWallet || null}
-						getOptionLabel={(option: TypeWallet | null) => (option ? option.Nombre_Org : '')}
-						// getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
-						renderInput={(params: any) => (
-							<TextField {...params} name='typeWallet' label={`Tipos de Cartera`} variant='outlined' />
-						)}
-					/>
-				) : (
-					pos.request_origin?.id === 8 && (
-						<Autocomplete
-							// className='btn_step btn_medio'
-							style={{ width: '50%' }}
-							//disabled={} //si el comercio tiene aci traelo
-							onChange={(event, value) => {
-								handleSourceAci(event, value, 'reqSource_docnum');
-							}}
-							options={listDistributor}
-							value={aci || null}
-							getOptionLabel={(option: Distributor | null) =>
-								option ? option.aliTipoIdentificacion + option.aliIdentificacion + ' | ' + option.aliNombres : ''
-							}
-							// getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
-							renderInput={(params: any) => (
-								<TextField {...params} name='distributor' label={`Buscar distribuidor`} variant='outlined' />
-							)}
-						/>
-					)
-				)}
-				{pos.request_origin?.id === 6 && (
-					<TextField
-						className={classes.inputText}
-						style={{ width: '50%' }}
-						variant='outlined'
-						required
-						id='standard-required'
-						label='Numero de Cédula'
-						name='reqSource_docnum'
-						onChange={handleChangeReferido}
-						inputProps={{
-							maxLength: 9,
-						}}
-						value={pos.reqSource_docnum}
-						InputProps={{
-							startAdornment: <InputAdornment position='start'>V</InputAdornment>,
-						}}
-						error={errorsFm.reqSource_docnum}
-					/>
-				)}
-			</div>
-			<div className={classes.input}>
-				{fraccion && (
-					<>
+			<div>
+				<div className={classes.grid}>
+					<div className={classes.input}>
 						<TextField
-							sx={sxStyled.inputLeft}
-							id='initial'
-							label='Inicial'
-							type='number'
-							name='initial'
-							variant='outlined'
-							value={pos.initial}
-							onKeyDown={(e) => {
-								e.preventDefault();
-							}}
-							inputProps={{
-								maxLength: 5,
-								step: '50',
-								min: '100',
-							}}
-							onChange={handleChangePos}
-						/>
-						<TextField
-							disabled
-							id='initial'
-							label='Cantidad de cuotas'
 							className={classes.inputText}
 							type='text'
+							sx={sxStyled.inputLeft}
 							variant='outlined'
-							value={cuotasTexto}
+							label='Numero de Pos'
+							autoComplete='off'
+							name='number_post'
+							value={solic.number_post}
 						/>
-					</>
-				)}
+					</div>
+					<div className={classes.input}>
+						<TextField
+							className={classes.inputText}
+							variant='outlined'
+							label='Pos'
+							name='product'
+							value={solic.id_product.name}
+						/>
+					</div>
+					<div className={classes.input}>
+						<TextField
+							className={classNames(classes.inputText, classes.inputTextLeft)}
+							sx={sxStyled.inputLeft}
+							variant='outlined'
+							label='Pagadero Destino'
+							name='pagadero'
+							value={solic?.pagadero ? 'Si' : 'No'}
+						/>
+						<TextField
+							className={classes.inputText}
+							variant='outlined'
+							label='Origen de la Solicitud'
+							name='request_origin'
+							value={solic?.id_request_origin.name}
+						/>
+					</div>
+					<div className={classes.input}>
+						<TextField
+							className={classes.inputText}
+							sx={sxStyled.inputLeft}
+							variant='outlined'
+							label='Metodo de Pago'
+							name='payment_method'
+							value={solic.id_payment_method.name}
+						/>
+						<TextField
+							className={classes.inputText}
+							variant='outlined'
+							label='Tipo de Pago'
+							name='type_payment'
+							value={solic?.id_type_payment.name}
+						/>
+					</div>
+				</div>
+				<h2
+					style={{
+						marginTop: 1,
+						marginBottom: 1,
+						fontSize: '12px',
+					}}>
+					Ubicacion del Pos
+				</h2>
+				<div className={classes.grid}>
+					<div className={classes.input}>
+						<TextField
+							className={classNames(classes.inputText, classes.inputTextLeft)}
+							sx={sxStyled.inputLeft}
+							variant='outlined'
+							label='Estado'
+							name='Estado'
+							value={locationPos?.id_estado.estado}
+						/>
+						<TextField
+							className={classNames(classes.inputText)}
+							variant='outlined'
+							label='Municipio'
+							name='municipio'
+							value={locationPos?.id_municipio.municipio}
+						/>
+					</div>
+					<div className={classes.input}>
+						<TextField
+							className={classNames(classes.inputText, classes.inputTextLeft)}
+							sx={sxStyled.inputLeft}
+							variant='outlined'
+							label='ciudad'
+							name='ciudad'
+							value={locationPos?.id_ciudad.ciudad}
+						/>
+						<TextField
+							className={classNames(classes.inputText)}
+							variant='outlined'
+							label='Parroquia'
+							name='parroquia'
+							value={locationPos?.id_parroquia.parroquia}
+						/>
+					</div>
+					<div className={classes.input}>
+						<TextField
+							className={classNames(classes.inputText, classes.inputTextLeft)}
+							sx={sxStyled.inputLeft}
+							variant='outlined'
+							label='Cod. Postal'
+							name='codigo_postal'
+							value={locationPos?.id_ciudad?.ciudad}
+						/>
+						<TextField
+							className={classes.inputText}
+							variant='outlined'
+							label='Sector'
+							name='sector'
+							value={locationPos?.sector}
+						/>
+					</div>
+					<div className={classes.input}>
+						<TextField
+							className={classNames(classes.inputText, classes.inputTextLeft)}
+							sx={sxStyled.inputLeft}
+							variant='outlined'
+							label='Calle'
+							name='calle'
+							value={locationPos?.calle}
+						/>
+						<TextField
+							className={classes.inputText}
+							variant='outlined'
+							label='Casa/Quinta/Apart'
+							name='local'
+							value={locationPos?.local}
+						/>
+					</div>
+				</div>
 			</div>
-			<div className={classes.input}>
+			<div className={classes.validRecaudo}>
 				<FormControlLabel
-					className={classNames(classes.inputText, classes.containerCheckBox)}
-					label=''
-					control={
-						<>
-							<Checkbox
-								name='pagadero'
-								checked={pos.pagadero}
-								onChange={handleCheckedPagadero}
-								color='primary'
-								inputProps={{ 'aria-label': 'secondary checkbox' }}
-							/>
-							<b
-								style={{
-									fontSize: '1rem',
-								}}>
-								Pagadero en Destino
-							</b>
-						</>
-					}
+					control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
+					className={classes.checkText}
+					label={state.status ? 'Correcto' : 'Incorrecto'}
 				/>
-			</div>
-			<FormControlLabel
-				sx={sxStyled.inputLeft}
-				className={classes.containerCheckBox}
-				label=''
-				control={
-					<>
-						<Checkbox
-							name='discount'
-							checked={pos.discount}
-							onChange={handleCheckedPos}
-							color='primary'
-							inputProps={{ 'aria-label': 'secondary checkbox' }}
-						/>
-						<b
-							style={{
-								fontSize: '1rem',
-							}}>
-							Entrega de punto como parte de pago
-						</b>
-					</>
-				}
-			/>
-			<div
-				className={classes.input}
-				style={{
-					visibility: pos.pagadero || pos.payment_method?.id === 2 ? 'hidden' : 'visible',
-				}}>
-				<div className={classNames(classes.row, classes.inputTextLeft)}>
-					<b className={classes.labels}>Comprobante de pago</b>
-					<Button
-						className={classes.imgIdent}
-						variant='contained'
-						style={{ background: imagesForm.rc_comp_dep ? '#5c62c5' : '#f44336' }}
-						onClick={() => {
-							deleted && deleteImgContributor('comp_dep');
-						}}
-						component='label'>
-						{imagesForm.rc_comp_dep !== null ? (
-							<>
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-								<p className='nameImg'>{namesImages.rc_comp_dep.slice(0, 5)}...</p>
-							</>
-						) : (
-							<>
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-							</>
-						)}
-						<input
-							type='file'
-							hidden
-							name='rc_comp_dep'
-							accept={recaudo.acc}
-							disabled={deleted}
-							onChange={handleChangeImages}
-						/>
-					</Button>
-				</div>
-				<div className={classes.inputText}>
-					<TextField
-						className={classes.inputText}
-						variant='outlined'
-						required
-						id='standard-required'
-						label='Referencia'
-						placeholder='Numero de comprobante'
-						name='nro_comp_dep'
-						onChange={handleChangePos}
-						value={pos.nro_comp_dep}
-						inputProps={{ maxLength: 20 }}
-						//error={erorr.reqSource_docnum}
-					/>
-				</div>
+				<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
+				<ModalAlert
+					from='valid_cliente'
+					openModal={openModal}
+					state={state}
+					setState={setState}
+					handleCloseModal={handleCloseModal}
+				/>
 			</div>
 		</div>
 	);
