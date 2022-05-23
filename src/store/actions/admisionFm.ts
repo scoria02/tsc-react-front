@@ -1,4 +1,5 @@
 import useAxios from 'config/index';
+import { ValidatedFace } from 'context/Admision/Validation/interface';
 import { ImagesInt } from 'context/FM/fmImages/interface';
 import Swal from 'sweetalert2';
 import { ActionType } from '../types/types';
@@ -35,29 +36,52 @@ export const getDataFM = (fm: any) => {
 	}
 };
 
-export const updateStatusFM = (id_fm: number, status: any, validado: any, aci: number) => {
+export const updateStatusFM = (id_fm: number, status: any, validado: ValidatedFace, aci: number) => {
 	console.log('aqui', validado);
 	const id_status: any = {
 		id_status_request: status,
 		id_aci: aci,
 		valids: {
-			id_typedif_pos: null,
-			id_typedif_client: validado.valid_cliente.id_typedif || null,
-			id_typedif_commerce: validado.valid_commerce.id_typedif || null,
-			id_typedif_ref_bank: validado.valid_ref_bank.id_typedif || null,
-			id_typedif_comp_num: validado.valid_comp_dep.id_typedif || null,
-			//falta en base de datos
-			id_typedif_consitutive_acta: validado.valid_ref_bank.id_typedif || null,
-			id_typedif_planilla: validado.valid_planilla.id_typedif || null,
-			id_typedif_special_contributor: validado.valid_special_contributor.id_typedif || null,
+			id_typedif_client: !validado.valid_cliente.status ? validado.valid_cliente.id_typedif : null,
+			id_typedif_commerce: !validado.valid_commerce.status ? validado.valid_commerce.id_typedif : null,
+			id_typedif_consitutive_acta: !validado.valid_ref_bank.status ? validado.valid_ref_bank.id_typedif : null,
+			id_typedif_special_contributor: !validado.valid_special_contributor.status
+				? validado.valid_special_contributor.id_typedif
+				: null,
+			id_typedif_pos: !validado.valid_pos.status ? validado.valid_pos.id_typedif : null,
+			id_typedif_planilla: !validado.valid_planilla.status ? validado.valid_planilla.id_typedif : null,
+			id_typedif_ref_bank: !validado.valid_ref_bank.status ? validado.valid_ref_bank.id_typedif : null,
+			id_typedif_comp_num: !validado.valid_comp_dep.status ? validado.valid_comp_dep.id_typedif : null,
 			//msg
-			valid_ident_card: validado.valid_cliente.msg,
-			valid_rif: validado.valid_commerce.msg,
-			valid_planilla: validado.valid_planilla.msg,
-			valid_constitutive_act: validado.valid_constitutive_act.msg,
-			valid_special_contributor: validado.valid_special_contributor.msg,
-			valid_ref_bank: validado.valid_ref_bank.msg,
-			valid_comp_dep: validado.valid_comp_dep.msg,
+			valid_client:
+				!validado.valid_cliente.status && validado.valid_cliente.id_typedif === 2
+					? validado.valid_cliente.msg
+					: '',
+			valid_commerce:
+				!validado.valid_commerce.status && validado.valid_commerce.id_typedif === 2
+					? validado.valid_commerce.msg
+					: '',
+			valid_constitutive_act:
+				!validado.valid_constitutive_act.status && validado.valid_constitutive_act.id_typedif === 2
+					? validado.valid_constitutive_act.msg
+					: '',
+			valid_special_contributor:
+				!validado.valid_special_contributor.status && validado.valid_special_contributor.id_typedif === 2
+					? validado.valid_special_contributor.msg
+					: '',
+			valid_planilla:
+				!validado.valid_planilla.status && validado.valid_planilla.id_typedif === 2
+					? validado.valid_planilla.msg
+					: '',
+			valid_comp_dep:
+				!validado.valid_comp_dep.status && validado.valid_comp_dep.id_typedif === 2
+					? validado.valid_comp_dep.msg
+					: '',
+			valid_ref_bank:
+				!validado.valid_ref_bank.status && validado.valid_ref_bank.id_typedif === 2
+					? validado.valid_ref_bank.msg
+					: '',
+			valid_pos: !validado.valid_pos.status && validado.valid_pos.id_typedif === 2 ? validado.valid_pos.msg : '',
 		},
 	};
 	console.log('aquix', id_status);

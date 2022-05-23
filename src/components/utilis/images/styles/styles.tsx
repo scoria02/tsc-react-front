@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 export const useStyles = makeStyles(() => ({
 	img_zoom: {
 		width: 'auto',
-		height: '350px',
+		height: '300px',
 	},
 	container_zoom: {
 		border: 'solid 1.5px rgba(0, 0, 0, 0.3)',

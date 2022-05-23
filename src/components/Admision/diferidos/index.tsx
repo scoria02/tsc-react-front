@@ -148,9 +148,7 @@ const Diferidos: React.FC = () => {
 				disableColumnMenu
 				getRowId={(row) => row.id}
 			/>
-			<FMDiferidoContextProvider value={rowSelected}>
-				<>{modalOpenDiferido ? <Diferido /> : null}</>
-			</FMDiferidoContextProvider>
+			{modalOpenDiferido && rowSelected ? <Diferido fmData={rowSelected} /> : null}
 		</div>
 	);
 };

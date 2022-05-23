@@ -21,12 +21,12 @@ function getSteps(fm: any) {
 	if (fm) {
 		if (fm.id_client && !list.includes('Cliente')) list.push('Cliente');
 		if (fm.id_commerce && !list.includes('Comercio')) list.push('Comercio');
+		if (fm.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')) list.push('Acta Const.');
+		if (fm.id_commerce.special_contributor && !list.includes('Cont. Especial')) list.push('Cont. Especial');
 		if (fm && !list.includes('Pos')) list.push('Pos');
 		if (fm.rc_planilla.length && !list.includes('Planilla de Solicitud')) list.push('Planilla de Solicitud');
 		if (fm.rc_ref_bank && !list.includes('Referencia Bancaria')) list.push('Referencia Bancaria');
-		if (fm.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')) list.push('Acta Const.');
-		if (fm.id_commerce.special_contributor && !list.includes('Cont. Especial')) list.push('Cont. Especial');
-		if (fm.rc_comp_num && !list.includes('Comprobante de Pago')) list.push('Comprobante de Pago');
+		if (fm.rc_comp_dep && !list.includes('Comprobante de Pago')) list.push('Comprobante de Pago');
 		if (!list.includes('Fuerza de venta')) list.push('Fuerza de Venta');
 	}
 	//
@@ -77,6 +77,7 @@ export const FMValidContextProvider = ({ children, fm }: Props) => {
 	};
 
 	const handleChangeValid = (op: string, status: any) => {
+		console.log(op, status);
 		setListValidated({
 			...listValidated,
 			[op]: status,

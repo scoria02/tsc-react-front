@@ -12,10 +12,9 @@ import { StateFMInt } from 'store/reducers/fmReducer';
 //Redux
 import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
-import LoaderPrimary from '../../loaders/LoaderPrimary';
 //steps
 //Cliente y comercio existente
-import StepClient from './steps/StepClient';
+import DifStepClient from './steps/DifStepClient';
 import StepCommerce from './steps/StepCommerce';
 import StepRefBank from './steps/StepRefBank';
 import StepPlanilla from './steps/StepPlanilla';
@@ -29,8 +28,9 @@ import { setTimeout } from 'timers';
 import { FastRewindTwoTone } from '@mui/icons-material';
 import { updateStatusFM } from 'store/actions/admisionFm';
 import StepSelectAci from './steps/StepSelectAci';
+import LoaderPrimary from 'components/loaders/LoaderPrimary';
 
-const Validacion: React.FC = () => {
+const DiferidoValid: React.FC = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const classes = useStylesFM();
@@ -87,7 +87,6 @@ const Validacion: React.FC = () => {
 			timer: 2000,
 			customClass: { container: 'swal2-validated' },
 		});
-		//history.push(urlFM);
 		//setActiveStep(0);
 	};
 
@@ -161,7 +160,7 @@ const Validacion: React.FC = () => {
 
 	const getContentSteps = () => {
 		let listSteps: any = [];
-		if (client && !listSteps.includes(<StepClient />)) listSteps.push(<StepClient />);
+		if (client && !listSteps.includes(<DifStepClient />)) listSteps.push(<DifStepClient />);
 		if (commerce && !listSteps.includes(<StepCommerce />)) listSteps.push(<StepCommerce />);
 		if (commerce.rc_constitutive_act.length && !listSteps.includes(<StepActaConst />))
 			listSteps.push(<StepActaConst />);
@@ -281,4 +280,4 @@ const Validacion: React.FC = () => {
 	);
 };
 
-export default Validacion;
+export default DiferidoValid;

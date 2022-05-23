@@ -94,11 +94,4 @@ export const sxStyled = {
 		gridColumnGap: '1%',
 		gridTemplateColumns: '1fr 1fr',
 	},
-	inputLeft: {
-		width: '100%',
-		mr: '2%',
-	},
-	inputSelect: {
-		mr: '2%',
-	},
 };

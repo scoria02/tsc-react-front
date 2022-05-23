@@ -9,17 +9,17 @@ import { RootState } from 'store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 import DataListAdmisionContext from 'context/DataList/DatalistAdmisionContext';
+import FMValidDataContext from 'context/Admision/Validation/FmContext';
 
-const PasoSelectAci: FC<any> = ({ aci, setAci }) => {
+const StepSelectAci: FC = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 
 	const { listAci } = useContext(DataListAdmisionContext);
+	const { setAci, aci } = useContext(FMValidDataContext);
 
 	const handleSelectAci = (event: any, value: any) => {
-		dispatch(selectAci(value ? true : false));
 		setAci(value);
 	};
 
@@ -63,4 +63,4 @@ const PasoSelectAci: FC<any> = ({ aci, setAci }) => {
 	);
 };
 
-export default PasoSelectAci;
+export default StepSelectAci;

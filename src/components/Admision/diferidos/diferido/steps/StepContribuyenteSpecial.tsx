@@ -1,29 +1,34 @@
-import { FormControlLabel, Switch, TextField } from '@mui/material';
+import { FormControlLabel, Switch } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import RecPdf from 'components/utilis/images/RecPdf';
-import React, { useEffect, useState } from 'react';
+import FMValidDataContext from 'context/Admision/Validation/FmContext';
+import React, { useContext, useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { Valid } from 'store/actions/accept';
 //Url
 import { RootState } from 'store/store';
+import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 
-export default function PasoAccountNumber() {
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const valid_ref_bank: any = useSelector((state: RootState) => state.acceptance.validado.valid_ref_bank);
-	const dispatch = useDispatch();
+const StepContribuyenteSpecial: React.FC = () => {
 	const classes = useStyles();
-	const [state, setState] = useState(valid_ref_bank);
+	const dispatch = useDispatch();
+	//const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [load, setLoad] = useState(false);
+
+	const { commerce, handleChangeValid, listValidated } = useContext(FMValidDataContext);
+
+	const { valid_special_contributor } = listValidated;
+	const [state, setState] = useState(valid_special_contributor);
 
 	const handleOpenModal = () => {
 		handleCancel();
 		setOpenModal(true);
 	};
-
 	const handleCloseModal = (cancel: boolean) => {
 		if (cancel) {
 			setState({
@@ -35,20 +40,13 @@ export default function PasoAccountNumber() {
 	};
 
 	useEffect(() => {
-		dispatch(Valid({ valid_ref_bank: state }));
-		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state.status]);
+		//console.log(state);
+		handleChangeValid('valid_special_contributor', state);
+	}, [state]);
 
 	const handleCancel = () => {
 		handleCloseModal(true);
 	};
-
-	// const handleChangeI = (event: any) => {
-	// 	setState({
-	// 		...state,
-	// 		[event.target.name]: event.target.value,
-	// 	});
-	// };
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setState({
@@ -58,37 +56,30 @@ export default function PasoAccountNumber() {
 		if (!event.target.checked) handleOpenModal();
 	};
 
-	const imagen = `${process.env.REACT_APP_API_IMAGES}/${fm.rc_ref_bank.path}`;
-
-	/*
-	const props = {
-		zoomPosition: recaudo.position,
-		height: recaudo.h,
-		width: recaudo.w,
-		img: ,
-	};
-	 */
+	const imagen: string = `${process.env.REACT_APP_API_IMAGES}/${commerce.rc_special_contributor.path}`;
 
 	return (
 		<>
 			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					<TextField
-						className={classes.btn_stepNro}
-						label='Numero de Cuenta'
-						value={fm.bank_account_num}
+					{/* <TextField
+						className={classes.btn_medio}
+						id='outlined-basic '
+						label='Contribuyente Especial'
 						variant='outlined'
-					/>
+						value='Foto de Contribuyente Especial'
+						disabled
+					/> */}
 					<FormControlLabel
-						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
 						className={classes.checkText}
-						label={state.status ? 'Correcto' : 'Incorrecto'}
+						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
+						label='Correcto'
 					/>
 				</div>
 				<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 			</form>
 			<ModalAlert
-				from='valid_ref_bank'
+				from='valid_special_contributor'
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
 				state={state}
@@ -96,4 +87,6 @@ export default function PasoAccountNumber() {
 			/>
 		</>
 	);
-}
+};
+
+export default StepContribuyenteSpecial;

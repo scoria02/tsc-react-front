@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import ModalSteps from 'components/modals/ModalSteps';
 import { SocketContext } from 'context/SocketContext';
 import React, { useContext, useEffect, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,17 +18,25 @@ import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
 import PasoPlanilla from './pasosComprobacion/PasoPlanilla';
 import { useStyles } from './pasosComprobacion/styles/styles';
-import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
+import FMDiferidoContext, { FMDiferidoContextProvider } from 'context/Admision/Diferido/FmDiferidoContext';
 import { handleLoading } from 'components/utilis/swals';
+import DiferidoValid from './diferido/DiferidoValid';
+import { DataListAdmisionProvider } from 'context/DataList/DatalistAdmisionContext';
+import FullModal from 'components/modals/FullModal';
 
-const Diferido: React.FC<any> = ({ fmData: any }) => {
+interface Prop {
+	fmData: any;
+}
+
+const Diferido: React.FC<Prop> = ({ fmData }) => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 
+	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
+	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
+
 	const { fm, setDisabled, imagePlanilla, imagesForm, imagesActa, initFm, resetFm } =
 		useContext(FMDiferidoContext);
-
-	console.log(fm);
 
 	useLayoutEffect(() => {
 		if (!fm) {
@@ -64,10 +71,6 @@ const Diferido: React.FC<any> = ({ fmData: any }) => {
 				return 'Invalid step';
 		}
 	}
-
-	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
-
-	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
 
 	//const [actaImages, setActaImages] = useState<any>([]);
 	//const [actaPaths, setActaPaths] = useState<any>([]);
@@ -195,30 +198,22 @@ const Diferido: React.FC<any> = ({ fmData: any }) => {
 		else setDisabled(false);
 	}, [activeStep]);
 
+	const handleClose = () => {
+		socket.emit('cliente:disconnect');
+		dispatch(CloseModalDiferido());
+		dispatch(cleanDataFmDiferido());
+	};
+
 	return (
 		<>
 			{fm ? (
-				<ModalSteps
-					stepComplete={stepComplete}
-					clean={cleanDataFmDiferido}
-					updatedStatus={updateStatusFMDiferido}
-					steps={steps}
-					getStepContent={getStepContent}
-					fm={fm}
-					modalOpen={modalOpenDiferido}
-					CloseModal={CloseModalDiferido}
-					id_status={0}
-					getSteps={getSteps}
-					activeStep={activeStep}
-					setActiveStep={setActiveStep}
-					completed={completed}
-					setCompleted={setCompleted}
-					readyStep={true}
-					handleNext={handleNext}
-					handleComplete={handleComplete}
-					handleSend={handleSend}
-					cleanContext={resetFm}
-				/>
+				<DataListAdmisionProvider>
+					<FMDiferidoContextProvider value={fmData}>
+						<FullModal modalOpen={modalOpenDiferido} handleClose={handleClose}>
+							<DiferidoValid />
+						</FullModal>
+					</FMDiferidoContextProvider>
+				</DataListAdmisionProvider>
 			) : null}
 		</>
 	);

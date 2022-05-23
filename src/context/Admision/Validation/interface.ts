@@ -57,6 +57,11 @@ export interface ValidatedFace {
 		id_typedif: number;
 		msg: string;
 	};
+	valid_pos: {
+		status: boolean;
+		id_typedif: number;
+		msg: string;
+	};
 	valid_ref_bank: {
 		status: boolean;
 		id_typedif: number;

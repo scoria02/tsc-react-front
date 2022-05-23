@@ -316,6 +316,8 @@ const FormM: React.FC = () => {
 		Swal.fire({
 			icon: 'info',
 			title: 'Enviando Solicitud...',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
 			showConfirmButton: false,
 			didOpen: () => {
 				Swal.showLoading();
@@ -328,6 +330,8 @@ const FormM: React.FC = () => {
 		Swal.fire({
 			icon: 'success',
 			title: 'Solicitud Enviada',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
 			html: text,
 			showConfirmButton: false,
 			timer: 2500,

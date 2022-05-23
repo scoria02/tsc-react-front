@@ -1,31 +1,33 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { FormControlLabel, Switch, TextField } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import RecPdf from 'components/utilis/images/RecPdf';
-import React, { useEffect, useState } from 'react';
+import FMValidDataContext from 'context/Admision/Validation/FmContext';
+import React, { useContext, useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
+//Redux
 import { useDispatch, useSelector } from 'react-redux';
-//Url
 import { Valid } from 'store/actions/accept';
+//Url
 import { RootState } from 'store/store';
-import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 
-export default function PasoPaymentReceipt() {
-	//falta
-	const valid_comp_dep: any = useSelector((state: RootState) => state.acceptance.validado.valid_comp_dep);
-
-	const dispatch = useDispatch();
+const StepCompDep: React.FC = () => {
+	//const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 	const classes = useStyles();
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const [state, setState] = useState(valid_comp_dep); //falta
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [load, setLoad] = useState(false);
+
+	const { solic, handleChangeValid, listValidated } = useContext(FMValidDataContext);
+	console.log(solic);
+
+	const { valid_comp_dep } = listValidated;
+	const [state, setState] = useState(valid_comp_dep);
 
 	const handleOpenModal = () => {
 		handleCancel();
 		setOpenModal(true);
 	};
+
 	const handleCloseModal = (cancel: boolean) => {
 		if (cancel) {
 			setState({
@@ -37,12 +39,20 @@ export default function PasoPaymentReceipt() {
 	};
 
 	useEffect(() => {
-		dispatch(Valid({ valid_comp_dep: state }));
-	}, [state.status]);
+		//console.log(state);
+		handleChangeValid('valid_comp_dep', state);
+	}, [state]);
 
 	const handleCancel = () => {
 		handleCloseModal(true);
 	};
+
+	// const handleChangeI = (event: any) => {
+	// 	setState({
+	// 		...state,
+	// 		[event.target.name]: event.target.value,
+	// 	});
+	// };
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setState({
@@ -52,27 +62,30 @@ export default function PasoPaymentReceipt() {
 		if (!event.target.checked) handleOpenModal();
 	};
 
-	const imagen: string = `${process.env.REACT_APP_API_IMAGES}/${fm.rc_comp_dep.path}`;
+	const imagen = `${process.env.REACT_APP_API_IMAGES}/${solic.rc_ref_bank.path}`;
+
+	/*
+	const props = {
+		zoomPosition: recaudo.position,
+		height: recaudo.h,
+		width: recaudo.w,
+		img: ,
+	};
+	 */
 
 	return (
 		<>
 			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					<TextField
-						className={classes.btn_stepNro}
-						id='outlined-basic '
-						label='Nro comprobante'
-						value={fm.nro_comp_dep}
-						variant='outlined'
-					/>
+					<TextField className={classes.btn_stepNro} label='Numero de Cuenta' value={solic.nro_comp_dep} />
 					<FormControlLabel
-						className={classes.checkText}
 						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
-						label='Correcto'
+						className={classes.checkText}
+						label={state.status ? 'Correcto' : 'Incorrecto'}
 					/>
 				</div>
+				<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 			</form>
-			<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 			<ModalAlert
 				from='valid_comp_dep'
 				openModal={openModal}
@@ -82,4 +95,6 @@ export default function PasoPaymentReceipt() {
 			/>
 		</>
 	);
-}
+};
+
+export default StepCompDep;

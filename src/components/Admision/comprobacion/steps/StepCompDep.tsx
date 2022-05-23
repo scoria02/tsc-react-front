@@ -77,12 +77,7 @@ const StepCompDep: React.FC = () => {
 		<>
 			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					<TextField
-						className={classes.btn_stepNro}
-						label='Numero de Cuenta'
-						value={solic.comp_dep}
-						variant='outlined'
-					/>
+					<TextField className={classes.btn_stepNro} label='Numero de Cuenta' value={solic.nro_comp_dep} />
 					<FormControlLabel
 						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
 						className={classes.checkText}

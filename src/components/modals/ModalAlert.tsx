@@ -23,11 +23,16 @@ interface Props {
 export const ModalAlert: React.FC<Props> = ({ from, openModal, handleCloseModal, state, setState }) => {
 	const dispatch = useDispatch();
 	const classes = useStylesModalAlert();
-	const [razon, setRazon] = useState(1);
+	const [razon, setRazon] = useState(state.id_typedif);
 	const { listRazon } = useContext(DataListAdmisionContext);
 
 	const handleChange = (event: any) => {
 		setRazon(event.target.value as number);
+		//console.log(event.target.name, event.target.value);
+		setState({
+			...state,
+			[event.target.name]: event.target.value,
+		});
 	};
 
 	const handleChangeI = (event: any) => {
@@ -42,6 +47,7 @@ export const ModalAlert: React.FC<Props> = ({ from, openModal, handleCloseModal,
 	};
 
 	const handleIncorret = () => {
+		/*
 		dispatch(
 			Valid({
 				[`${from}`]: {
@@ -50,6 +56,7 @@ export const ModalAlert: React.FC<Props> = ({ from, openModal, handleCloseModal,
 				},
 			})
 		);
+		*/
 		handleCloseModal(false);
 	};
 
@@ -62,7 +69,7 @@ export const ModalAlert: React.FC<Props> = ({ from, openModal, handleCloseModal,
 							width: '200px',
 						}}>
 						<InputLabel>Razon</InputLabel>
-						<Select value={razon} label='Razon' onChange={handleChange}>
+						<Select value={razon} label='Razon' name='id_typedif' onChange={handleChange}>
 							{listRazon.map((item: any) => (
 								<MenuItem key={item.id} value={item.id}>
 									{item.name}
