@@ -187,7 +187,7 @@ const Administracion: FC<AdministracionProp> = () => {
 	};
 
 	const handleRow = (event: any) => {
-		socket.emit('cliente:disconnect');
+		socket.emit('cliente:disconnectAdministracion');
 		setUploadImg(null);
 		setNameImage('');
 		setPayment(event.row.id_request.id_payment_method);
@@ -203,7 +203,7 @@ const Administracion: FC<AdministracionProp> = () => {
 	};
 
 	const handleCloseRow = () => {
-		socket.emit('cliente:disconnect');
+		socket.emit('cliente:disconnectAdministracion');
 		setSelected(false);
 		dispatch(cleanAdmisionFMAdministration());
 	};
