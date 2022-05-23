@@ -3,7 +3,7 @@ import Autocomplete from '@mui/lab/Autocomplete';
 import { TextField } from '@mui/material';
 import classnames from 'classnames';
 import FMDataContext from 'context/FM/fmAdmision/FmContext';
-import { Ciudad, Estado, Municipio, Parroquia } from 'context/FM/Location/interfaces';
+import { Ciudad, Estado, Municipio, Parroquia, Sector } from 'context/FM/Location/interfaces';
 import LocationsContext from 'context/FM/Location/LocationsContext';
 import React, { FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
@@ -21,6 +21,7 @@ const StepLocationCCandPos: FC = () => {
 		handleListMunicipio,
 		handleListCiudad,
 		handleListParroquia,
+		handleListSector,
 	} = useContext(LocationsContext);
 
 	const fm: any = useSelector((state: RootState) => state.fm);
@@ -36,12 +37,14 @@ const StepLocationCCandPos: FC = () => {
 		setMunicipio,
 		setCiudad,
 		setParroquia,
+		setSector,
 		handleChangeCommerce,
 		handleChangePos,
+		setIdLocationCommerce,
+		setIdLocationPos,
 	} = useContext(FMDataContext);
 
 	const handleLocationCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
-		//setAutoCompleteCommerce(false);
 		handleChangeCommerce(event);
 	};
 
@@ -147,6 +150,13 @@ const StepLocationCCandPos: FC = () => {
 						className={classes.inputText}
 						onChange={(event, value: Parroquia | null) => {
 							setParroquia(value, setLocationCommerce);
+							handleListSector(
+								locationCommerce.estado,
+								locationCommerce.municipio,
+								locationCommerce.ciudad,
+								value,
+								setListLocationCommerce
+							);
 						}}
 						value={locationCommerce.parroquia || null}
 						disabled={fm.mashCommerce}
@@ -159,6 +169,7 @@ const StepLocationCCandPos: FC = () => {
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
 					<TextField
+						disabled
 						className={classes.inputTextLeft}
 						sx={sxStyled.inputSelect}
 						variant='outlined'
@@ -166,19 +177,27 @@ const StepLocationCCandPos: FC = () => {
 						id='standard-required'
 						label='Codigo Postal'
 						name='codigo_postal'
-						//value={locationCommerce.ciudad?.postal_code || ''}
-						disabled
+						value={locationCommerce.parroquia?.codigoPostal || ''}
 					/>
-					<TextField
-						className={classes.inputText}
-						variant='outlined'
-						required
-						id='standard-required'
+					<Autocomplete
 						disabled={fm.mashCommerce}
-						label='Sector'
-						name='sector'
-						onChange={handleLocationCommerce}
-						//value={commerce.sector}
+						className={classes.inputText}
+						onChange={(event, value: Sector | null) => {
+							setSector(value, setLocationCommerce);
+							setIdLocationCommerce(value ? value.id : null);
+						}}
+						value={locationCommerce.sector || null}
+						options={listLocationCommerce.sector}
+						getOptionLabel={(option: Sector) => (option.sector ? option.sector : '')}
+						renderInput={(params: any) => (
+							<TextField
+								{...params}
+								name='sector'
+								label='Sector'
+								variant='outlined'
+								inputProps={{ ...params.inputProps, autoComplete: 'sector' }}
+							/>
+						)}
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
@@ -235,7 +254,7 @@ const StepLocationCCandPos: FC = () => {
 						className={classes.inputText}
 						onChange={(event, value: Municipio | null) => {
 							setMunicipio(value, setLocationPos);
-							///handleListCiudad(locationPos.estado!.id, setListLocationPos);
+							handleListCiudad(locationPos.estado, value, setListLocationPos);
 						}}
 						value={locationPos.municipio || null}
 						options={listLocationPos.municipio}
@@ -257,7 +276,7 @@ const StepLocationCCandPos: FC = () => {
 						sx={sxStyled.inputSelect}
 						onChange={(event, value: Ciudad | null) => {
 							setCiudad(value, setLocationPos);
-							//handleListParroquia(locationPos.municipio!.id, setListLocationPos);
+							handleListParroquia(locationPos.estado, locationPos.municipio, value, setListLocationPos);
 						}}
 						options={listLocationPos.ciudad}
 						value={locationPos.ciudad || null}
@@ -276,6 +295,13 @@ const StepLocationCCandPos: FC = () => {
 						className={classes.inputText}
 						onChange={(event, value: Parroquia | null) => {
 							setParroquia(value, setLocationPos);
+							handleListSector(
+								locationPos.estado,
+								locationPos.municipio,
+								locationPos.ciudad,
+								value,
+								setListLocationPos
+							);
 						}}
 						options={listLocationPos.parroquia}
 						value={locationPos.parroquia || null}
@@ -299,19 +325,29 @@ const StepLocationCCandPos: FC = () => {
 						required
 						id='standard-required'
 						label='Codigo Postal'
-						name='codigo_postal_pos'
-						//value={locationPos.ciudad?.postal_code || ''}
+						name='codigoPostal'
+						value={locationPos.parroquia?.codigoPostal || ''}
 						disabled
 					/>
-					<TextField
+					<Autocomplete
+						disabled={fm.mashClient}
 						className={classes.inputText}
-						variant='outlined'
-						required
-						id='standard-required'
-						label='Sector'
-						name='sector'
-						onChange={handleLocationPos}
-						//value={pos.sector}
+						onChange={(event, value: Sector | null) => {
+							setSector(value, setLocationPos);
+							setIdLocationPos(value ? value.id : null);
+						}}
+						value={locationPos.sector || null}
+						options={listLocationPos.sector}
+						getOptionLabel={(option: Sector) => (option.sector ? option.sector : '')}
+						renderInput={(params: any) => (
+							<TextField
+								{...params}
+								name='sector'
+								label='Sector'
+								variant='outlined'
+								inputProps={{ ...params.inputProps, autoComplete: 'sector' }}
+							/>
+						)}
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>

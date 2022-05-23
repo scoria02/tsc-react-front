@@ -361,7 +361,7 @@ const StepClient: FC = () => {
 								required
 								id='standard-required'
 								label='Cod. Postal'
-								name='codigo_postal'
+								name='codigoPostal'
 								value={locationClient.parroquia?.codigoPostal || ''}
 							/>
 							<Autocomplete
