@@ -1,26 +1,26 @@
 import ImageIcon from '@mui/icons-material/Image';
+import FMValidDataContext from 'context/Admision/Validation/FmContext';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import { Avatar, Button, FormControlLabel, List, ListItem, ListItemText, Switch } from '@mui/material';
+import { TextField, Avatar, Button, FormControlLabel, List, ListItem, ListItemText, Switch } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { Valid } from 'store/actions/accept';
+import classNames from 'classnames';
 //Url
 import { RootState } from 'store/store';
-import './styles/pasos.scss';
-import { sxStyled, useStyles } from './styles/styles';
+import { sxStyled, useStylesFM } from '../styles';
 
-const PasoActaConst: React.FC = () => {
-	const classes = useStyles();
-	const dispatch = useDispatch();
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const valid_constitutive_act: any = useSelector(
-		(state: RootState) => state.acceptance.validado.valid_constitutive_act
-	);
-	const [state, setState] = React.useState(valid_constitutive_act);
-	const [openModal, setOpenModal] = React.useState<boolean>(false);
+const StepPlanilla: React.FC = () => {
+	const classes = useStylesFM();
+
+	const { solic, handleChangeValid, listValidated } = useContext(FMValidDataContext);
+
+	const { valid_planilla } = listValidated;
+	const [state, setState] = useState(valid_planilla);
+	const [openModal, setOpenModal] = useState<boolean>(false);
 
 	const handleOpenModal = () => {
 		handleCancel();
@@ -37,9 +37,8 @@ const PasoActaConst: React.FC = () => {
 	};
 
 	useEffect(() => {
-		dispatch(Valid({ valid_constitutive_act: state }));
-		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state.status]);
+		handleChangeValid('valid_planilla', state);
+	}, [state]);
 
 	const handleCancel = () => {
 		handleCloseModal(true);
@@ -53,28 +52,28 @@ const PasoActaConst: React.FC = () => {
 		if (!event.target.checked) handleOpenModal();
 	};
 
-	const imagenes: any = fm.id_commerce.rc_constitutive_act;
+	const imagenes: any = solic.rc_planilla;
 	const url: string = process.env.REACT_APP_API_IMAGES + '/';
 
 	return (
 		<>
 			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					{/* <TextField
-						className={classes.btn_medio}
-						id='outlined-basic '
-						label='Acta Constitutiva'
+					<TextField
+						sx={sxStyled.inputSelect}
 						variant='outlined'
-						value={`Archivo${imagenes.length ? 's' : ''} de Acta Constitutiva`}
-						disabled
-					/> */}
+						required
+						label='Tipo de Solicitud'
+						name='typeSolict'
+						value={solic?.id_type_request.name}
+					/>
 					<FormControlLabel
 						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
 						className={classes.checkText}
 						label={state.status ? 'Correcto' : 'Incorrecto'}
 					/>
 				</div>
-				<List sx={sxStyled.container_ListActa}>
+				<List sx={sxStyled.container_ListActa} className={classes.container_ListActa}>
 					{imagenes.map((item: any, index: number) => (
 						<ListItem key={item.id} value={item.id}>
 							<Button
@@ -100,16 +99,8 @@ const PasoActaConst: React.FC = () => {
 					))}
 				</List>
 			</form>
-
-			{/*
-			<Rec 
-				load={load}
-				setLoad={setLoad}
-				imagen={imagen}
-			/>
-				*/}
 			<ModalAlert
-				from='valid_constitutive_act'
+				from='valid_planilla'
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
 				state={state}
@@ -119,4 +110,4 @@ const PasoActaConst: React.FC = () => {
 	);
 };
 
-export default PasoActaConst;
+export default StepPlanilla;

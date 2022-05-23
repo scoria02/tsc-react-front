@@ -1,7 +1,8 @@
 import { FormControlLabel, Switch, TextField } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import RecPdf from 'components/utilis/images/RecPdf';
-import React, { useEffect, useState } from 'react';
+import FMValidDataContext from 'context/Admision/Validation/FmContext';
+import React, { useContext, useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,14 +11,16 @@ import { Valid } from 'store/actions/accept';
 import { RootState } from 'store/store';
 import { useStyles } from './styles/styles';
 
-export default function PasoAccountNumber() {
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const valid_ref_bank: any = useSelector((state: RootState) => state.acceptance.validado.valid_ref_bank);
+const StepRefBank: React.FC = () => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
-	const [state, setState] = useState(valid_ref_bank);
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [load, setLoad] = useState(false);
+
+	const { solic, handleChangeValid, listValidated } = useContext(FMValidDataContext);
+
+	const { valid_ref_bank } = listValidated;
+	const [state, setState] = useState(valid_ref_bank);
 
 	const handleOpenModal = () => {
 		handleCancel();
@@ -35,9 +38,9 @@ export default function PasoAccountNumber() {
 	};
 
 	useEffect(() => {
-		dispatch(Valid({ valid_ref_bank: state }));
-		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state.status]);
+		//console.log(state);
+		handleChangeValid('valid_ref_bank', state);
+	}, [state]);
 
 	const handleCancel = () => {
 		handleCloseModal(true);
@@ -58,7 +61,7 @@ export default function PasoAccountNumber() {
 		if (!event.target.checked) handleOpenModal();
 	};
 
-	const imagen = `${process.env.REACT_APP_API_IMAGES}/${fm.rc_ref_bank.path}`;
+	const imagen = `${process.env.REACT_APP_API_IMAGES}/${solic.rc_ref_bank.path}`;
 
 	/*
 	const props = {
@@ -76,7 +79,7 @@ export default function PasoAccountNumber() {
 					<TextField
 						className={classes.btn_stepNro}
 						label='Numero de Cuenta'
-						value={fm.bank_account_num}
+						value={solic.bank_account_num}
 						variant='outlined'
 					/>
 					<FormControlLabel
@@ -96,4 +99,6 @@ export default function PasoAccountNumber() {
 			/>
 		</>
 	);
-}
+};
+
+export default StepRefBank;

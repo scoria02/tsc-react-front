@@ -22,7 +22,7 @@ const RecDifPdf: React.FC<any> = ({ load, setLoad, imagen, type }) => {
 		} else {
 			setPdf(imagen.split('.')[imagen.split('.').length - 1] === 'pdf' ? true : false);
 		}
-	}, [type]);
+	}, [type, imagen]);
 
 	console.log('img', imagen, type);
 

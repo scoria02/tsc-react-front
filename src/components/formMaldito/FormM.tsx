@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Button, Step, StepLabel, Stepper } from '@mui/material';
+import { Typography, Button, Step, StepLabel, Stepper } from '@mui/material';
 import DataListContext from 'context/DataList/DataListContext';
 import FMDataContext from 'context/FM/fmAdmision/FmContext';
 import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
@@ -316,6 +316,8 @@ const FormM: React.FC = () => {
 		Swal.fire({
 			icon: 'info',
 			title: 'Enviando Solicitud...',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
 			showConfirmButton: false,
 			didOpen: () => {
 				Swal.showLoading();
@@ -328,6 +330,8 @@ const FormM: React.FC = () => {
 		Swal.fire({
 			icon: 'success',
 			title: 'Solicitud Enviada',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
 			html: text,
 			showConfirmButton: false,
 			timer: 2500,
@@ -393,7 +397,11 @@ const FormM: React.FC = () => {
 							return !activeStep ? null : (
 								<Step key={label} {...stepProps}>
 									<StepLabel error={stepError(index, fm)}>
-										<b>{label}</b>
+										<Typography
+											variant={activeStep === index ? 'body1' : 'body2'}
+											color={activeStep === index ? 'primary' : 'info'}>
+											<b>{label}</b>
+										</Typography>
 									</StepLabel>
 								</Step>
 							);

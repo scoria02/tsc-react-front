@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import ModalSteps from 'components/modals/ModalSteps';
 import { SocketContext } from 'context/SocketContext';
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { stepComplete } from 'store/actions/accept';
 import { cleanDataFmDiferido, updateStatusFMDiferido } from 'store/actions/admisionFm';
@@ -19,17 +18,25 @@ import PasoContriSpecial from './pasosComprobacion/PasoContriSpecial';
 import PasoPaymentReceipt from './pasosComprobacion/PasoPaymentReceipt';
 import PasoPlanilla from './pasosComprobacion/PasoPlanilla';
 import { useStyles } from './pasosComprobacion/styles/styles';
-import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
+import FMDiferidoContext, { FMDiferidoContextProvider } from 'context/Admision/Diferido/FmDiferidoContext';
 import { handleLoading } from 'components/utilis/swals';
+import DiferidoValid from './diferido/DiferidoValid';
+import { DataListAdmisionProvider } from 'context/DataList/DatalistAdmisionContext';
+import FullModal from 'components/modals/FullModal';
 
-const Diferido: React.FC<any> = ({ fmData: any }) => {
+interface Prop {
+	fmData: any;
+}
+
+const Diferido: React.FC<Prop> = ({ fmData }) => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 
+	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
+	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
+
 	const { fm, setDisabled, imagePlanilla, imagesForm, imagesActa, initFm, resetFm } =
 		useContext(FMDiferidoContext);
-
-	console.log(fm);
 
 	useLayoutEffect(() => {
 		if (!fm) {
@@ -65,70 +72,15 @@ const Diferido: React.FC<any> = ({ fmData: any }) => {
 		}
 	}
 
-	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
-
-	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
-
-	const [deleteActa, setDeleteActa] = useState<any>([]);
-
-	const [actaImages, setActaImages] = useState<any>([]);
-	const [actaPaths, setActaPaths] = useState<any>([]);
+	//const [actaImages, setActaImages] = useState<any>([]);
+	//const [actaPaths, setActaPaths] = useState<any>([]);
 
 	//const [planillas, setPlanilla] = useState<any>([]);
 	//const [planillasPath, setPlanillaPaths] = useState<any>([]);
 
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [completed, setCompleted] = React.useState(new Set<number>());
-	const [readyStep, setReadyStep] = useState<boolean>(true);
-
-	const [uploadImgs, setUploadImgs] = useState<any>({
-		rc_ident_card: null,
-		rc_rif: null,
-		rc_special_contributor: null,
-		rc_ref_bank: null,
-		rc_comp_dep: null,
-	});
-
-	const [paths, setPaths] = useState<any>({
-		rc_ident_card: '',
-		rc_rif: '',
-		rc_special_contributor: '',
-		rc_ref_bank: '',
-		rc_comp_dep: '',
-	});
-
-	const handleChangeImages = (event: any) => {
-		if (event.target.files[0]) {
-			let file = event.target.files[0];
-			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: file.type });
-			const path = URL.createObjectURL(newFile);
-			//Save img
-			setUploadImgs({
-				...uploadImgs,
-				[event.target.name]: newFile,
-			});
-			//prueba
-			setPaths({
-				...paths,
-				[event.target.name]: path,
-			});
-		}
-	};
-
-	const handleChangeImagesActa = (event: any) => {
-		if (event.target.files[0]) {
-			let files = event.target.files;
-			let path: string[] = [];
-			Object.keys(files).map((item: any, index: number) => {
-				path.push(URL.createObjectURL(files[index]));
-				return item;
-			});
-			setActaImages(files);
-			setActaPaths(path);
-		}
-	};
-
-	const [nameStep, setNameStep] = useState<string>('');
+	//const [readyStep, setReadyStep] = useState<boolean>(true);
 
 	useEffect(() => {
 		if (updatedStatus) {
@@ -146,15 +98,6 @@ const Diferido: React.FC<any> = ({ fmData: any }) => {
 		resetFm();
 	};
 
-	const validStep = (item: any, list: any) => {
-		for (const element of Object.entries(list)) {
-			if (item.slice(3, item.length) === element[0].slice(6, element[0].length)) {
-				return element[1];
-			}
-		}
-		return '';
-	};
-
 	const steps = !fm ? [] : getSteps(fm.id_valid_request);
 
 	function getSteps(valid: any) {
@@ -164,49 +107,26 @@ const Diferido: React.FC<any> = ({ fmData: any }) => {
 			if (valid.id_typedif_commerce !== null && !list.includes('Comercio')) list.push('Comercio');
 			if (valid.id_typedif_ref_bank !== null && !list.includes('Referencia Bancaria'))
 				list.push('Referencia Bancaria');
-			if (valid.id_typedif_planilla && !list.includes('Planilla de Solicitud')) list.push('Planilla de Solicitud');
+			if (valid.id_typedif_planilla !== null && !list.includes('Planilla de Solicitud'))
+				list.push('Planilla de Solicitud');
 			if (valid.id_typedif_consitutive_acta !== null && !list.includes('Acta Const.')) list.push('Acta Const.');
 			if (valid.id_typedif_special_contributor && !list.includes('Cont. Especial')) list.push('Cont. Especial');
-			if (valid.id_typedif_comp_num && !list.includes('Comprobante de Pago')) list.push('Comprobante de Pago');
+			if (valid.id_typedif_comp_num !== null && !list.includes('Comprobante de Pago'))
+				list.push('Comprobante de Pago');
 		}
 		//
 		return list;
 	}
 
 	const totalSteps = () => {
+		console.log('total', getSteps(fm).length);
 		return getSteps(fm).length;
 	};
 
-	const completedSteps = () => {
-		return completed.size;
-	};
-
-	const allStepsCompleted = () => {
-		return completedSteps() === totalSteps();
-	};
-
-	const isLastStep = () => {
-		//console.log(totalSteps() - 1, activeStep);
-		return activeStep === totalSteps();
-	};
-
 	const handleNext = () => {
+		console.log(steps.length);
 		const newActiveStep = activeStep === steps.length - 1 ? 0 : activeStep + 1;
 		setActiveStep(newActiveStep);
-	};
-
-	const validStatusFm = (): boolean => {
-		let index: number = 0;
-		for (const item of Object.entries(uploadImgs)) {
-			if (item[1]) {
-				index++;
-			}
-		}
-		if (Object.keys(actaImages).length) {
-			index++;
-		}
-		return false;
-		//return index === Object.keys(recaudos).length ? true : false;
 	};
 
 	const { socket } = useContext(SocketContext);
@@ -245,7 +165,8 @@ const Diferido: React.FC<any> = ({ fmData: any }) => {
 				newCompleted.add(activeStep);
 				dispatch(stepComplete(newCompleted));
 				setCompleted(newCompleted);
-				if (completed.size !== totalSteps()) {
+				console.log('bug1', completed.size, totalSteps() - 1, steps[activeStep], activeStep);
+				if (completed.size !== totalSteps() - 1) {
 					handleNext();
 				}
 			}
@@ -277,30 +198,22 @@ const Diferido: React.FC<any> = ({ fmData: any }) => {
 		else setDisabled(false);
 	}, [activeStep]);
 
+	const handleClose = () => {
+		socket.emit('cliente:disconnect');
+		dispatch(CloseModalDiferido());
+		dispatch(cleanDataFmDiferido());
+	};
+
 	return (
 		<>
 			{fm ? (
-				<ModalSteps
-					stepComplete={stepComplete}
-					clean={cleanDataFmDiferido}
-					updatedStatus={updateStatusFMDiferido}
-					steps={steps}
-					getStepContent={getStepContent}
-					fm={fm}
-					modalOpen={modalOpenDiferido}
-					CloseModal={CloseModalDiferido}
-					id_status={0}
-					getSteps={getSteps}
-					activeStep={activeStep}
-					setActiveStep={setActiveStep}
-					completed={completed}
-					setCompleted={setCompleted}
-					readyStep={readyStep}
-					handleNext={handleNext}
-					handleComplete={handleComplete}
-					handleSend={handleSend}
-					cleanContext={resetFm}
-				/>
+				<DataListAdmisionProvider>
+					<FMDiferidoContextProvider value={fmData}>
+						<FullModal modalOpen={modalOpenDiferido} handleClose={handleClose}>
+							<DiferidoValid />
+						</FullModal>
+					</FMDiferidoContextProvider>
+				</DataListAdmisionProvider>
 			) : null}
 		</>
 	);

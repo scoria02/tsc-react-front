@@ -1,8 +1,8 @@
 import { FormControlLabel, Switch } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
-import Rec from 'components/utilis/images/Rec';
 import RecPdf from 'components/utilis/images/RecPdf';
-import React, { useEffect, useState } from 'react';
+import FMValidDataContext from 'context/Admision/Validation/FmContext';
+import React, { useContext, useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,16 +12,18 @@ import { RootState } from 'store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 
-const PasoContriSpecial: React.FC = () => {
+const StepContribuyenteSpecial: React.FC = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const valid_special_contributor: any = useSelector(
-		(state: RootState) => state.acceptance.validado.valid_special_contributor
-	);
-	const [state, setState] = useState(valid_special_contributor);
+	//const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [load, setLoad] = useState(false);
+
+	const { commerce, handleChangeValid, listValidated } = useContext(FMValidDataContext);
+
+	const { valid_special_contributor } = listValidated;
+	const [state, setState] = useState(valid_special_contributor);
 
 	const handleOpenModal = () => {
 		handleCancel();
@@ -38,9 +40,9 @@ const PasoContriSpecial: React.FC = () => {
 	};
 
 	useEffect(() => {
-		dispatch(Valid({ valid_special_contributor: state }));
-		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state.status]);
+		//console.log(state);
+		handleChangeValid('valid_special_contributor', state);
+	}, [state]);
 
 	const handleCancel = () => {
 		handleCloseModal(true);
@@ -54,7 +56,7 @@ const PasoContriSpecial: React.FC = () => {
 		if (!event.target.checked) handleOpenModal();
 	};
 
-	const imagen: string = `${process.env.REACT_APP_API_IMAGES}/${fm.id_commerce.rc_special_contributor.path}`;
+	const imagen: string = `${process.env.REACT_APP_API_IMAGES}/${commerce.rc_special_contributor.path}`;
 
 	return (
 		<>
@@ -87,4 +89,4 @@ const PasoContriSpecial: React.FC = () => {
 	);
 };
 
-export default PasoContriSpecial;
+export default StepContribuyenteSpecial;

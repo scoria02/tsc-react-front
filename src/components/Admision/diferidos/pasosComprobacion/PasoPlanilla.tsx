@@ -1,16 +1,5 @@
 import { PhotoCamera } from '@mui/icons-material';
-import {
-	Avatar,
-	Button,
-	IconButton,
-	FormControlLabel,
-	List,
-	ListItem,
-	ListItemText,
-	Switch,
-	TextareaAutosize,
-	TextField,
-} from '@mui/material';
+import { Button, IconButton, TextareaAutosize } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import React, { useContext, useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
@@ -20,7 +9,7 @@ import { Valid } from 'store/actions/accept';
 //Url
 import { RootState } from 'store/store';
 import './styles/pasos.scss';
-import { sxStyled, useStyles } from './styles/styles';
+import { useStyles } from './styles/styles';
 
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
 import { recaudo } from 'utils/recaudos';
@@ -33,13 +22,8 @@ const PasoPlanilla: React.FC = () => {
 	const [state, setState] = useState(valid_planilla);
 	const [openModal, setOpenModal] = useState<boolean>(false);
 
-	const { fm, disabled, handleChange, imagePlanilla, handleChangePlanilla, removePlanilla, deleteItemPlanilla } =
-		useContext(FMDiferidoContext);
+	const { fm, disabled, imagePlanilla, handleChangePlanilla, deleteItemPlanilla } = useContext(FMDiferidoContext);
 
-	const handleOpenModal = () => {
-		handleCancel();
-		setOpenModal(true);
-	};
 	const handleCloseModal = (cancel: boolean) => {
 		if (cancel) {
 			setState({
@@ -55,12 +39,7 @@ const PasoPlanilla: React.FC = () => {
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.status]);
 
-	const handleCancel = () => {
-		handleCloseModal(true);
-	};
-
 	const imagenes: any[] = fm.rc_planilla;
-	const url: string = process.env.REACT_APP_API_IMAGES + '/';
 
 	return (
 		<>

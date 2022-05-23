@@ -190,10 +190,10 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 				{allSolic ? (
 					<div className='cmn-divfloat'>
 						<Fab color='primary' aria-label='add' size='medium' variant='extended' onClick={handleClick}>
-							Validar Planilla
+							Validar Solicitud
 							<AddIcon />
 						</Fab>
-						{modalOpen ? <Comprobacion /> : null}
+						{modalOpen && fm ? <Comprobacion /> : null}
 					</div>
 				) : null}
 				{!isWorker ? (

@@ -1,5 +1,5 @@
 import { PhotoCamera } from '@mui/icons-material';
-import { Button, IconButton, Switch, TextareaAutosize, TextField } from '@mui/material';
+import { Button, IconButton, TextareaAutosize, TextField } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
 import React, { useContext, useEffect, useState } from 'react';
@@ -22,13 +22,7 @@ export default function PasoAccountNumber() {
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [load, setLoad] = useState(false);
 
-	const { fm, disabled, handleChange, imagesForm, handleChangeImages, deleteImg, pathImages } =
-		useContext(FMDiferidoContext);
-
-	const handleOpenModal = () => {
-		handleCancel();
-		setOpenModal(true);
-	};
+	const { fm, disabled, handleChange, imagesForm, handleChangeImages, pathImages } = useContext(FMDiferidoContext);
 
 	const handleCloseModal = (cancel: boolean) => {
 		if (cancel) {
@@ -44,10 +38,6 @@ export default function PasoAccountNumber() {
 		dispatch(Valid({ valid_ref_bank: state }));
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.status]);
-
-	const handleCancel = () => {
-		handleCloseModal(true);
-	};
 
 	const handleChangeBank = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {

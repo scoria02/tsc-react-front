@@ -1,7 +1,6 @@
-import { PermDeviceInformationRounded, PhotoCamera } from '@mui/icons-material';
+import { PhotoCamera } from '@mui/icons-material';
 import { Button, IconButton, TextareaAutosize, TextField } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
-import RecPdf from 'components/utilis/images/RecPdf';
 import React, { useEffect, useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,15 +20,11 @@ export default function PasoClient() {
 	const [state, setState] = React.useState(valid_cliente);
 	const [openModal, setOpenModal] = React.useState<boolean>(false);
 
-	const { fm, disabled, handleChangeClient, imagesForm, handleChangeImages, deleteImg, pathImages } =
+	const { fm, disabled, handleChangeClient, imagesForm, handleChangeImages, pathImages } =
 		useContext(FMDiferidoContext);
 
 	const [load, setLoad] = useState(false);
 
-	const handleOpenModal = () => {
-		handleCancel();
-		setOpenModal(true);
-	};
 	const handleCloseModal = (cancel: boolean) => {
 		if (cancel) {
 			setState({
@@ -44,10 +39,6 @@ export default function PasoClient() {
 		dispatch(Valid({ valid_cliente: state }));
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.status]);
-
-	const handleCancel = () => {
-		handleCloseModal(true);
-	};
 
 	console.log(imagesForm);
 	console.log(pathImages);

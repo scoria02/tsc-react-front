@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		modalFull: {
 			// width: '100%',
-			margin: '1.5rem',
+			//margin: '1.5rem',
 			padding: '1rem',
 			display: 'flex',
 			flexDirection: 'column',

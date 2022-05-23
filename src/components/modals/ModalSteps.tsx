@@ -97,7 +97,7 @@ const ModalSteps: React.FC<any> = ({
 								className={classes.button}>
 								Siguiente
 							</Button>
-							{completedSteps() !== steps.length - 1 ? (
+							{completedSteps() !== steps.length ? (
 								completed.has(activeStep) ? (
 									<Typography variant='caption' className={classes.completed}>
 										Verificado

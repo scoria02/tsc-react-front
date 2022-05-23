@@ -9,7 +9,7 @@ import { cleanAdmisionFM } from 'store/actions/admisionFm';
 import { CloseModal } from 'store/actions/ui';
 import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
-import Validacion from './Validacion';
+import Validacion from './DiferidoValid';
 
 const Comprobacion: FC = () => {
 	const dispatch = useDispatch();
@@ -31,6 +31,7 @@ const Comprobacion: FC = () => {
 			Swal.fire({
 				icon: `${idStatus === 3 ? 'success' : 'warning'}`,
 				title: `${idStatus === 3 ? 'Formulario Verificado' : 'Formulario Diferido'}`,
+				html: `<span>Codigo de Solicitud: <b>${fm.code}</b><span>`,
 				customClass: { container: 'swal2-validated' },
 				showConfirmButton: false,
 				allowOutsideClick: false,

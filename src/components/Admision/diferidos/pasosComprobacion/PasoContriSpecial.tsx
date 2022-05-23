@@ -1,15 +1,13 @@
-import { FormControlLabel, Switch, TextareaAutosize } from '@mui/material';
+import { PhotoCamera } from '@mui/icons-material';
+import { Button, IconButton, TextareaAutosize } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import RecDifPdf from 'components/utilis/images/RecDifPdf';
-import RecPdf from 'components/utilis/images/RecPdf';
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
 import React, { useContext, useEffect, useState } from 'react';
-//import ReactImageZoom from 'react-image-zoom';
-//Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { Valid } from 'store/actions/accept';
-//Url
 import { RootState } from 'store/store';
+import { recaudo } from 'utils/recaudos';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 
@@ -23,13 +21,8 @@ const PasoContriSpecial: React.FC = () => {
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [load, setLoad] = useState(false);
 
-	const { fm, disabled, handleChangeClient, imagesForm, handleChangeImages, deleteImg, pathImages } =
-		useContext(FMDiferidoContext);
+	const { fm, disabled, imagesForm, handleChangeImages, pathImages } = useContext(FMDiferidoContext);
 
-	const handleOpenModal = () => {
-		handleCancel();
-		setOpenModal(true);
-	};
 	const handleCloseModal = (cancel: boolean) => {
 		if (cancel) {
 			setState({
@@ -44,10 +37,6 @@ const PasoContriSpecial: React.FC = () => {
 		dispatch(Valid({ valid_special_contributor: state }));
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.status]);
-
-	const handleCancel = () => {
-		handleCloseModal(true);
-	};
 
 	const imagen = imagesForm.rc_special_contributor
 		? pathImages.rc_special_contributor.path
@@ -70,6 +59,21 @@ const PasoContriSpecial: React.FC = () => {
 					) : (
 						<h2 className={classes.btn_stepTextInterno}> Error Interno </h2>
 					)}
+				</div>
+				<div className={classes.btn_stepM}>
+					<Button
+						className={classes.imgIdent}
+						variant='contained'
+						disabled={disabled}
+						style={{
+							background: imagesForm.rc_comp_dep && !disabled ? '#5c62c5' : '#D3D3D3',
+						}}
+						component='label'>
+						<IconButton aria-label='upload picture' component='span'>
+							<PhotoCamera />
+						</IconButton>
+						<input type='file' hidden name='rc_comp_dep' accept={recaudo.acc} onChange={handleChangeImages} />
+					</Button>
 				</div>
 				<RecDifPdf load={load} setLoad={setLoad} imagen={imagen} type={typeImagen} />
 			</form>

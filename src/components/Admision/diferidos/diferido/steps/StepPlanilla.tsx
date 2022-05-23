@@ -1,22 +1,24 @@
 import ImageIcon from '@mui/icons-material/Image';
+import FMValidDataContext from 'context/Admision/Validation/FmContext';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import { Avatar, Button, FormControlLabel, List, ListItem, ListItemText, Switch } from '@mui/material';
+import { TextField, Avatar, Button, FormControlLabel, List, ListItem, ListItemText, Switch } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { Valid } from 'store/actions/accept';
+import classNames from 'classnames';
 //Url
 import { RootState } from 'store/store';
-import './styles/pasos.scss';
-import { sxStyled, useStyles } from './styles/styles';
+import { sxStyled, useStylesFM } from '../styles';
 
-const PasoPlanilla: React.FC = () => {
-	const classes = useStyles();
-	const dispatch = useDispatch();
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
-	const valid_planilla: any = useSelector((state: RootState) => state.acceptance.validado.valid_planilla);
+const StepPlanilla: React.FC = () => {
+	const classes = useStylesFM();
+
+	const { solic, handleChangeValid, listValidated } = useContext(FMValidDataContext);
+
+	const { valid_planilla } = listValidated;
 	const [state, setState] = useState(valid_planilla);
 	const [openModal, setOpenModal] = useState<boolean>(false);
 
@@ -35,9 +37,8 @@ const PasoPlanilla: React.FC = () => {
 	};
 
 	useEffect(() => {
-		dispatch(Valid({ valid_planilla: state }));
-		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state.status]);
+		handleChangeValid('valid_planilla', state);
+	}, [state]);
 
 	const handleCancel = () => {
 		handleCloseModal(true);
@@ -51,21 +52,21 @@ const PasoPlanilla: React.FC = () => {
 		if (!event.target.checked) handleOpenModal();
 	};
 
-	const imagenes: any = fm.rc_planilla;
+	const imagenes: any = solic.rc_planilla;
 	const url: string = process.env.REACT_APP_API_IMAGES + '/';
 
 	return (
 		<>
 			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					{/* <TextField
-						className={classes.btn_medio}
-						id='outlined-basic '
-						label='Acta Constitutiva'
+					<TextField
+						sx={sxStyled.inputSelect}
 						variant='outlined'
-						value={`Archivo${imagenes.length ? 's' : ''} de Acta Constitutiva`}
-						disabled
-					/> */}
+						required
+						label='Tipo de Solicitud'
+						name='typeSolict'
+						value={solic?.id_type_request.name}
+					/>
 					<FormControlLabel
 						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
 						className={classes.checkText}
@@ -98,14 +99,6 @@ const PasoPlanilla: React.FC = () => {
 					))}
 				</List>
 			</form>
-
-			{/*
-			<Rec 
-				load={load}
-				setLoad={setLoad}
-				imagen={imagen}
-			/>
-				*/}
 			<ModalAlert
 				from='valid_planilla'
 				openModal={openModal}
@@ -117,4 +110,4 @@ const PasoPlanilla: React.FC = () => {
 	);
 };
 
-export default PasoPlanilla;
+export default StepPlanilla;

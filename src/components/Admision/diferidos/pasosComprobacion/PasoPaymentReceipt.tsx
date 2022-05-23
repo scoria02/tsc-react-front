@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { FormControlLabel, Switch, TextareaAutosize, TextField } from '@mui/material';
+import { Button, IconButton, TextareaAutosize, TextField } from '@mui/material';
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
 import { ModalAlert } from 'components/modals/ModalAlert';
-import RecPdf from 'components/utilis/images/RecPdf';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 import { useDispatch, useSelector } from 'react-redux';
 //Url
@@ -12,6 +11,8 @@ import { RootState } from 'store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 import RecDifPdf from 'components/utilis/images/RecDifPdf';
+import { PhotoCamera } from '@mui/icons-material';
+import { recaudo } from 'utils/recaudos';
 
 export default function PasoPaymentReceipt() {
 	//falta
@@ -23,13 +24,8 @@ export default function PasoPaymentReceipt() {
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [load, setLoad] = useState(false);
 
-	const { fm, disabled, handleChangeClient, imagesForm, handleChangeImages, deleteImg, pathImages } =
-		useContext(FMDiferidoContext);
+	const { fm, disabled, handleChange, imagesForm, handleChangeImages, pathImages } = useContext(FMDiferidoContext);
 
-	const handleOpenModal = () => {
-		handleCancel();
-		setOpenModal(true);
-	};
 	const handleCloseModal = (cancel: boolean) => {
 		if (cancel) {
 			setState({
@@ -44,26 +40,18 @@ export default function PasoPaymentReceipt() {
 		dispatch(Valid({ valid_comp_dep: state }));
 	}, [state.status]);
 
-	const handleCancel = () => {
-		handleCloseModal(true);
-	};
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({
-			...state,
-			[event.target.name]: event.target.checked,
-		});
-		if (!event.target.checked) handleOpenModal();
-	};
-
 	/*const imagen = imagesForm.rc_comp_dep
 		? pathImages.rc_comp_dep.path
 		: `${process.env.REACT_APP_API_IMAGES}/${fm.rc_comp_dep.path}`;
 		*/
 
-	const imagen = `${process.env.REACT_APP_API_IMAGES}/${fm.rc_comp_dep.path}`;
+	const imagen = imagesForm.rc_comp_dep
+		? pathImages.rc_comp_dep.path
+		: `${process.env.REACT_APP_API_IMAGES}/${fm.rc_comp_dep.path}/${fm.rc_comp_dep.path}`;
 
 	const typeImagen = imagesForm.rc_comp_dep ? pathImages.rc_comp_dep.type : null;
+
+	console.log(imagesForm);
 
 	return (
 		<>
@@ -88,7 +76,22 @@ export default function PasoPaymentReceipt() {
 						label='Nro comprobante'
 						value={fm.nro_comp_dep}
 						variant='outlined'
+						name='nro_comp_dep'
+						onChange={handleChange}
 					/>
+					<Button
+						className={classes.imgIdent}
+						variant='contained'
+						disabled={disabled}
+						style={{
+							background: imagesForm.rc_comp_dep && !disabled ? '#5c62c5' : '#D3D3D3',
+						}}
+						component='label'>
+						<IconButton aria-label='upload picture' component='span'>
+							<PhotoCamera />
+						</IconButton>
+						<input type='file' hidden name='rc_comp_dep' accept={recaudo.acc} onChange={handleChangeImages} />
+					</Button>
 				</div>
 			</form>
 			<RecDifPdf load={load} setLoad={setLoad} imagen={imagen} type={typeImagen} />
