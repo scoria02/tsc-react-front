@@ -101,10 +101,10 @@ export const validNumBank = (value: string): boolean => {
 	else return false;
 };
 
-const step1 = 10;
+const step1 = 9;
 const step2 = 8;
 const step3 = 5;
-const step4 = 8;
+const step4 = 6;
 const step5 = 10;
 
 //Extras
@@ -157,6 +157,7 @@ export const inputNotNull = (last: number, form: fmClient | fmCommerce | fmPos):
 		index++;
 		if (typeof item[1] === 'string' && item[1].trim() === '') {
 			if (item[0] !== 'phone2') {
+				console.log('bug1', item);
 				return true;
 			}
 		} else if (typeof item[1] === 'number' && item[1] === 0) {
@@ -477,6 +478,13 @@ export const validReadyStep = (
 					else return false;
 				}
 			} else {
+				console.log(
+					'xd',
+					!checkErrorAllInput(sizeStepError(activeStep), errorsClient),
+					!inputNotNullLocation(locationClient),
+					!inputNotNull(sizeStep(activeStep), client),
+					!inputFileNotNull(1, imagesForm)
+				);
 				if (fm.mashClient) {
 					return true;
 				} else if (
@@ -485,6 +493,7 @@ export const validReadyStep = (
 					!inputNotNull(sizeStep(activeStep), client) &&
 					!inputFileNotNull(1, imagesForm)
 				) {
+					console.log('error');
 					return true;
 				}
 			}

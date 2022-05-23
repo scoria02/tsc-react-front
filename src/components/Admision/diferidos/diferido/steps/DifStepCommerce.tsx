@@ -1,11 +1,19 @@
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Autocomplete from '@mui/lab/Autocomplete';
-import { FormControlLabel, Switch, TextField } from '@mui/material';
+import {
+	InputAdornment,
+	Alert,
+	Button,
+	FormControlLabel,
+	IconButton,
+	Stack,
+	Switch,
+	TextField,
+} from '@mui/material';
 import { Valid } from 'store/actions/accept';
 import classNames from 'classnames';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import RecPdf from 'components/utilis/images/RecPdf';
-import FMValidDataContext from 'context/Admision/Validation/FmContext';
 import DataListContext from 'context/DataList/DataListContext';
 import FMDataContext from 'context/FM/fmAdmision/FmContext';
 import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
@@ -19,59 +27,50 @@ import { capitalizedFull } from 'utils/formatName';
 import { recaudo } from 'utils/recaudos';
 //sytles
 import { sxStyled, useStylesFM } from '../styles';
+import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
+import RecDifPdf from 'components/utilis/images/RecDifPdf';
 
-const StepCommerce: FC = () => {
+const DifStepCommerce: FC = () => {
 	const classes = useStylesFM();
 
 	const [openModal, setOpenModal] = useState<boolean>(false);
 
-	const { commerce, locationCommerce, handleChangeValid, listValidated } = useContext(FMValidDataContext);
-
-	const { valid_commerce } = listValidated;
-	const [state, setState] = useState(valid_commerce);
+	const {
+		solic,
+		commerce,
+		locationCommerce,
+		disabled,
+		handleChangeCommerce,
+		imagesForm,
+		handleChangeImages,
+		pathImages,
+		handleChangeRefClient,
+	} = useContext(FMDiferidoContext);
 
 	const [load, setLoad] = useState(false);
 
-	const handleOpenModal = () => {
-		handleCancel();
-		setOpenModal(true);
-	};
+	const imagen = imagesForm.rc_rif
+		? pathImages.rc_rif.path
+		: `${process.env.REACT_APP_API_IMAGES}/${commerce.rc_rif.path}`;
 
-	const handleCloseModal = (cancel: boolean) => {
-		if (cancel) {
-			setState({
-				...state,
-				status: !state.status,
-			});
-		}
-		setOpenModal(false);
-	};
-
-	useEffect(() => {
-		//console.log(state);
-		handleChangeValid('valid_commerce', state);
-	}, [state]);
-
-	const handleCancel = () => {
-		handleCloseModal(true);
-	};
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({
-			...state,
-			[event.target.name]: event.target.checked,
-		});
-		if (!event.target.checked) handleOpenModal();
-	};
-
-	const imagen = `${process.env.REACT_APP_API_IMAGES}/${commerce?.rc_rif?.path}`;
+	const typeImagen = imagesForm.rc_rif ? pathImages.rc_rif.type : null;
 
 	return (
 		<div className={classes.grid}>
 			<div>
+				<div className={classes.btn_stepM}>
+					<Stack sx={{ width: '50%' }} spacing={2}>
+						<Alert severity={disabled ? 'success' : 'error'}>
+							{solic.id_valid_request.id_typedif_commerce === 2
+								? solic.id_valid_request.valid_commerce
+								: 'Error Interno'}
+						</Alert>
+					</Stack>
+				</div>
 				<div className={classes.grid}>
 					<div className={classes.input}>
 						<TextField
+							disabled={disabled}
 							required
 							className={classes.inputText}
 							type='text'
@@ -79,24 +78,32 @@ const StepCommerce: FC = () => {
 							variant='outlined'
 							label='Nombre del Comercio'
 							autoComplete='off'
-							name='email'
+							name='name'
+							onChange={handleChangeCommerce}
 							value={commerce?.name}
 						/>
 					</div>
 					<div className={classes.input}>
 						<TextField
+							disabled={disabled}
 							className={classes.inputText}
 							variant='outlined'
 							required
 							label='Rif'
 							autoComplete='off'
 							name='ident_num'
-							value={`${commerce?.id_ident_type.name} ${commerce?.ident_num}`}
+							value={commerce?.ident_num}
+							onChange={handleChangeCommerce}
+							inputProps={{ maxLength: 10 }}
+							InputProps={{
+								startAdornment: <InputAdornment position='start'>{commerce?.id_ident_type.name}</InputAdornment>,
+							}}
 						/>
 					</div>
 				</div>
 				<div className={classes.input}>
 					<TextField
+						disabled={disabled}
 						className={classes.inputText}
 						variant='outlined'
 						label='Actividad Comercial'
@@ -107,6 +114,7 @@ const StepCommerce: FC = () => {
 				<div className={classes.grid}>
 					<div className={classes.input}>
 						<TextField
+							disabled
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
@@ -117,6 +125,7 @@ const StepCommerce: FC = () => {
 							value={locationCommerce?.id_estado.estado}
 						/>
 						<TextField
+							disabled
 							className={classNames(classes.inputText)}
 							variant='outlined'
 							required
@@ -128,6 +137,7 @@ const StepCommerce: FC = () => {
 					</div>
 					<div className={classes.input}>
 						<TextField
+							disabled
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
@@ -138,6 +148,7 @@ const StepCommerce: FC = () => {
 							value={locationCommerce?.id_ciudad.ciudad}
 						/>
 						<TextField
+							disabled
 							className={classNames(classes.inputText)}
 							variant='outlined'
 							required
@@ -149,6 +160,7 @@ const StepCommerce: FC = () => {
 					</div>
 					<div className={classes.input}>
 						<TextField
+							disabled
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
@@ -159,6 +171,7 @@ const StepCommerce: FC = () => {
 							value={locationCommerce?.id_ciudad?.ciudad}
 						/>
 						<TextField
+							disabled
 							className={classes.inputText}
 							variant='outlined'
 							required
@@ -170,6 +183,7 @@ const StepCommerce: FC = () => {
 					</div>
 					<div className={classes.input}>
 						<TextField
+							disabled
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
@@ -180,6 +194,7 @@ const StepCommerce: FC = () => {
 							value={locationCommerce?.calle}
 						/>
 						<TextField
+							disabled
 							className={classes.inputText}
 							variant='outlined'
 							required
@@ -192,22 +207,23 @@ const StepCommerce: FC = () => {
 				</div>
 			</div>
 			<div className={classes.validRecaudo}>
-				<FormControlLabel
-					control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
-					className={classes.checkText}
-					label={state.status ? 'Correcto' : 'Incorrecto'}
-				/>
-				<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
-				<ModalAlert
-					from='valid_commerce'
-					openModal={openModal}
-					state={state}
-					setState={setState}
-					handleCloseModal={handleCloseModal}
-				/>
+				<Button
+					className={classes.imgIdent}
+					variant='contained'
+					disabled={disabled}
+					style={{
+						background: imagesForm.rc_rif && !disabled ? '#5c62c5' : '#D3D3D3',
+					}}
+					component='label'>
+					<IconButton aria-label='upload picture' component='span'>
+						<PhotoCamera />
+					</IconButton>
+					<input type='file' hidden name='rc_rif' accept={recaudo.acc} onChange={handleChangeImages} />
+				</Button>
+				<RecDifPdf load={load} setLoad={setLoad} imagen={imagen} type={typeImagen} />
 			</div>
 		</div>
 	);
 };
 
-export default StepCommerce;
+export default DifStepCommerce;

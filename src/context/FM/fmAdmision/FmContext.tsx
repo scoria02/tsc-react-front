@@ -16,7 +16,7 @@ import { fmErrorClient, initFmClient } from '../initialStates/stateClient';
 import { fmErrorCommerce, initFmCommerce } from '../initialStates/stateCommerce';
 import { initFmPos } from '../initialStates/statePos';
 import { fmErrorFormat, initLocation } from '../initialStates/states';
-import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
+import { Ciudad, Estado, LocationInt, Municipio, Parroquia, Sector } from '../Location/interfaces';
 import { ContextFM } from './interface';
 
 interface Props {
@@ -48,6 +48,7 @@ const FMDataContext = createContext<ContextFM>({
 	setMunicipio: () => {},
 	setCiudad: () => {},
 	setParroquia: () => {},
+	setSector: () => {},
 	copyLocationToCommerce: () => {},
 	copyLocationToPos: () => {},
 	handleChangeClient: () => {},
@@ -68,6 +69,12 @@ const FMDataContext = createContext<ContextFM>({
 	telemarket: null,
 	typeWallet: null,
 	handleTypeWallet: () => {},
+	idLocationClient: null,
+	idLocationCommerce: null,
+	idLocationPos: null,
+	setIdLocationClient: () => {},
+	setIdLocationCommerce: () => {},
+	setIdLocationPos: () => {},
 });
 
 export const FMContextProvider = ({ children }: Props) => {
@@ -80,6 +87,10 @@ export const FMContextProvider = ({ children }: Props) => {
 	const [locationClient, setLocationClient] = useState<LocationInt>(initLocation);
 	const [locationCommerce, setLocationCommerce] = useState<LocationInt>(initLocation);
 	const [locationPos, setLocationPos] = useState<LocationInt>(initLocation);
+
+	const [idLocationClient, setIdLocationClient] = useState<number | null>(null);
+	const [idLocationCommerce, setIdLocationCommerce] = useState<number | null>(null);
+	const [idLocationPos, setIdLocationPos] = useState<number | null>(null);
 
 	const [errorsClient, setErrorsClient] = useState<fmError_ClientINT>(fmErrorClient);
 	const [errorsCommerce, setErrorsCommerce] = useState<fmError_CommerceINT>(fmErrorCommerce);
@@ -247,6 +258,7 @@ export const FMContextProvider = ({ children }: Props) => {
 			municipio: null,
 			ciudad: null,
 			parroquia: null,
+			sector: null,
 		});
 	};
 
@@ -256,6 +268,7 @@ export const FMContextProvider = ({ children }: Props) => {
 			municipio: data,
 			ciudad: null,
 			parroquia: null,
+			sector: null,
 		}));
 	};
 
@@ -264,6 +277,7 @@ export const FMContextProvider = ({ children }: Props) => {
 			...prevState,
 			ciudad: data,
 			parroquia: null,
+			sector: null,
 		}));
 	};
 
@@ -271,6 +285,14 @@ export const FMContextProvider = ({ children }: Props) => {
 		setLocation((prevState) => ({
 			...prevState,
 			parroquia: data,
+			sector: null,
+		}));
+	};
+
+	const setSector = (data: Sector | null, setLocation: Dispatch<SetStateAction<LocationInt>>) => {
+		setLocation((prevState) => ({
+			...prevState,
+			sector: data,
 		}));
 	};
 
@@ -278,7 +300,6 @@ export const FMContextProvider = ({ children }: Props) => {
 		setLocationCommerce(stateLocation);
 		setCommerce({
 			...commerce,
-			sector: state.sector,
 			calle: state.calle,
 			local: state.calle,
 		});
@@ -288,7 +309,6 @@ export const FMContextProvider = ({ children }: Props) => {
 		setLocationPos(stateLocation);
 		setPos({
 			...pos,
-			sector: state.sector,
 			calle: state.calle,
 			local: state.local,
 		});
@@ -372,6 +392,7 @@ export const FMContextProvider = ({ children }: Props) => {
 				setMunicipio,
 				setCiudad,
 				setParroquia,
+				setSector,
 
 				copyLocationToCommerce,
 				copyLocationToPos,
@@ -384,6 +405,12 @@ export const FMContextProvider = ({ children }: Props) => {
 				telemarket,
 				typeWallet,
 				handleTypeWallet,
+				idLocationClient,
+				idLocationCommerce,
+				idLocationPos,
+				setIdLocationClient,
+				setIdLocationCommerce,
+				setIdLocationPos,
 			}}>
 			{children}
 		</FMDataContext.Provider>

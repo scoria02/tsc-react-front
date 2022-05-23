@@ -1,103 +1,55 @@
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import Autocomplete from '@mui/lab/Autocomplete';
-import { FormControlLabel, Switch, TextField } from '@mui/material';
-import { Valid } from 'store/actions/accept';
+import { TextField, Stack, Alert } from '@mui/material';
 import classNames from 'classnames';
-import { ModalAlert } from 'components/modals/ModalAlert';
-import RecPdf from 'components/utilis/images/RecPdf';
-import FMValidDataContext from 'context/Admision/Validation/FmContext';
-import DataListContext from 'context/DataList/DataListContext';
-import FMDataContext from 'context/FM/fmAdmision/FmContext';
-import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
-import { Ciudad, Estado, Municipio, Parroquia } from 'context/FM/Location/interfaces';
-import LocationsContext from 'context/FM/Location/LocationsContext';
-import React, { FC, useContext, useEffect, useState } from 'react';
-import { validationClient } from 'store/actions/fm';
-import { RootState } from 'store/store';
-import { validInputString } from 'utils/fm';
-import { capitalizedFull } from 'utils/formatName';
-import { recaudo } from 'utils/recaudos';
+import { FC, useContext, useState } from 'react';
 //sytles
 import { sxStyled, useStylesFM } from '../styles';
+import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
+import RecDifPdf from 'components/utilis/images/RecDifPdf';
 
-const StepPos: FC = () => {
+const DifStepPos: FC = () => {
 	const classes = useStylesFM();
 
-	const [openModal, setOpenModal] = useState<boolean>(false);
-
-	const { locationPos, client, solic, handleChangeValid, listValidated } = useContext(FMValidDataContext);
-
-	const { valid_pos } = listValidated;
-	const [state, setState] = useState(valid_pos);
+	const {
+		solic,
+		client,
+		locationPos,
+		phones,
+		handleChangeClientPhone,
+		disabled,
+		handleChangeClient,
+		imagesForm,
+		handleChangeImages,
+		pathImages,
+		handleChange,
+		handleChangeRefClient,
+		listValidated,
+	} = useContext(FMDiferidoContext);
 
 	const [load, setLoad] = useState(false);
 
-	const handleOpenModal = () => {
-		handleCancel();
-		setOpenModal(true);
-	};
-
-	const handleCloseModal = (cancel: boolean) => {
-		if (cancel) {
-			setState({
-				...state,
-				status: !state.status,
-			});
-		}
-		setOpenModal(false);
-	};
-
-	useEffect(() => {
-		//console.log(state);
-		handleChangeValid('valid_pos', state);
-	}, [state]);
-
-	const handleCancel = () => {
-		handleCloseModal(true);
-	};
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({
-			...state,
-			[event.target.name]: event.target.checked,
-		});
-		if (!event.target.checked) handleOpenModal();
-	};
-
-	const imagen = `${process.env.REACT_APP_API_IMAGES}/${client?.rc_ident_card?.path}`;
-
-	console.log(solic);
-
 	return (
-		<div className={classes.grid}>
+		<>
 			<div>
+				<div className={classes.btn_stepM}>
+					<Stack sx={{ width: '50%' }} spacing={2}>
+						<Alert severity={disabled ? 'success' : 'error'}>
+							{listValidated.id_typedif_pos === 2 ? listValidated.valid_pos : 'Error Interno'}
+						</Alert>
+					</Stack>
+				</div>
 				<div className={classes.grid}>
 					<div className={classes.input}>
 						<TextField
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
-							type='text'
+							disabled={disabled}
+							required
+							type='number'
 							variant='outlined'
 							label='Numero de Pos'
 							name='number_post'
 							value={solic.number_post}
-						/>
-						<TextField
-							className={classes.inputText}
-							variant='outlined'
-							label='Pos'
-							name='product'
-							value={solic.id_product.name}
-						/>
-					</div>
-					<div className={classes.input}>
-						<TextField
-							className={classNames(classes.inputText, classes.inputTextLeft)}
-							sx={sxStyled.inputLeft}
-							variant='outlined'
-							label='Pagadero Destino'
-							name='pagadero'
-							value={solic?.pagadero ? 'Si' : 'No'}
+							onChange={handleChange}
 						/>
 						<TextField
 							className={classes.inputText}
@@ -109,8 +61,25 @@ const StepPos: FC = () => {
 					</div>
 					<div className={classes.input}>
 						<TextField
+							disabled
+							className={classes.inputText}
+							variant='outlined'
+							label='Pos'
+							name='product'
+							value={solic.id_product.name}
+						/>
+					</div>
+					<div className={classes.input}>
+						<TextField
 							className={classes.inputText}
 							sx={sxStyled.inputLeft}
+							variant='outlined'
+							label='Entrega Punto'
+							name='discount'
+							value={solic.discount ? 'Si' : 'No'}
+						/>
+						<TextField
+							className={classes.inputText}
 							variant='outlined'
 							label='Metodo de Pago'
 							name='payment_method'
@@ -120,68 +89,90 @@ const StepPos: FC = () => {
 					<div className={classes.input}>
 						<TextField
 							className={classes.inputText}
+							sx={sxStyled.inputLeft}
 							variant='outlined'
 							label='Tipo de Pago'
 							name='type_payment'
 							value={solic?.id_type_payment.name}
 						/>
+						<TextField
+							className={classNames(classes.inputText, classes.inputTextLeft)}
+							variant='outlined'
+							label='Pagadero Destino'
+							name='pagadero'
+							value={solic?.pagadero ? 'Si' : 'No'}
+						/>
 					</div>
 				</div>
-				<h2
-					style={{
-						marginTop: 1,
-						marginBottom: 1,
-						fontSize: '12px',
-					}}>
-					Ubicacion del Pos
-				</h2>
 				<div className={classes.grid}>
 					<div className={classes.input}>
 						<TextField
+							disabled
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
+							required
+							id='standard-required'
 							label='Estado'
 							name='Estado'
 							value={locationPos?.id_estado.estado}
+							//value={locationPos.ciudad?.postal_code || ''}
 						/>
 						<TextField
+							disabled
 							className={classNames(classes.inputText)}
 							variant='outlined'
+							required
+							id='standard-required'
 							label='Municipio'
 							name='municipio'
 							value={locationPos?.id_municipio.municipio}
+							//value={locationPos.ciudad?.postal_code || ''}
 						/>
 					</div>
 					<div className={classes.input}>
 						<TextField
+							disabled
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
+							required
+							id='standard-required'
 							label='ciudad'
 							name='ciudad'
 							value={locationPos?.id_ciudad.ciudad}
+							//value={locationPos.ciudad?.postal_code || ''}
 						/>
 						<TextField
+							disabled
 							className={classNames(classes.inputText)}
 							variant='outlined'
+							required
+							id='standard-required'
 							label='Parroquia'
 							name='parroquia'
 							value={locationPos?.id_parroquia.parroquia}
+							//value={locationPos.ciudad?.postal_code || ''}
 						/>
 					</div>
 					<div className={classes.input}>
 						<TextField
+							disabled
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
+							required
+							id='standard-required'
 							label='Cod. Postal'
 							name='codigo_postal'
 							value={locationPos?.id_ciudad?.ciudad}
 						/>
 						<TextField
+							disabled
 							className={classes.inputText}
 							variant='outlined'
+							required
+							id='standard-required'
 							label='Sector'
 							name='sector'
 							value={locationPos?.sector}
@@ -189,16 +180,22 @@ const StepPos: FC = () => {
 					</div>
 					<div className={classes.input}>
 						<TextField
+							disabled
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
+							required
+							id='standard-required'
 							label='Calle'
 							name='calle'
 							value={locationPos?.calle}
 						/>
 						<TextField
+							disabled
 							className={classes.inputText}
 							variant='outlined'
+							required
+							id='standard-required'
 							label='Casa/Quinta/Apart'
 							name='local'
 							value={locationPos?.local}
@@ -206,23 +203,8 @@ const StepPos: FC = () => {
 					</div>
 				</div>
 			</div>
-			<div className={classes.validRecaudo}>
-				<FormControlLabel
-					control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
-					className={classes.checkText}
-					label={state.status ? 'Correcto' : 'Incorrecto'}
-				/>
-				<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
-				<ModalAlert
-					from='valid_pos'
-					openModal={openModal}
-					state={state}
-					setState={setState}
-					handleCloseModal={handleCloseModal}
-				/>
-			</div>
-		</div>
+		</>
 	);
 };
 
-export default StepPos;
+export default DifStepPos;

@@ -2,6 +2,13 @@ import { Theme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 
 export const useStylesFM = makeStyles((styles: Theme) => ({
+	btn_stepText: {
+		width: 500,
+	},
+	btn_stepTextInterno: {
+		fontSize: '1rem',
+		color: styles.palette.secondary.main,
+	},
 	btn_stepM: {
 		width: '100%',
 		display: 'flex',

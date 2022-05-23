@@ -95,6 +95,7 @@ export const DataListProvider = ({ children }: Props) => {
 			`/type_pay`,
 			`/request_source`,
 		];
+
 		getters(routes)
 			.then((responses) => {
 				initList(responses);

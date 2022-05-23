@@ -1,7 +1,7 @@
 import React from 'react';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ImageIcon from '@mui/icons-material/Image';
-import { useStyles } from '../../Admision/diferidos/pasosComprobacion/styles/styles';
+import { useStylesImg } from './styles/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Avatar, Button, List, ListItem, ListItemText } from '@mui/material';
 import { sxStyledList } from './styles/styles';
@@ -10,16 +10,16 @@ interface Props {
 	listImagen: FileList | [];
 	imagenes: any[];
 	deleteItemImagenes(id: number): void;
+	disabled: boolean;
 }
 
-const ListImages: React.FC<Props> = ({ listImagen, imagenes, deleteItemImagenes }) => {
-	const classes = useStyles();
+const ListImages: React.FC<Props> = ({ listImagen, imagenes, deleteItemImagenes, disabled }) => {
+	const classes = useStylesImg();
 	const url: string = process.env.REACT_APP_API_IMAGES + '/';
 
 	return (
-		<List sx={sxStyledList.container_ListActa} className={classes.container_ListActa}>
+		<List sx={sxStyledList.container_ListActa}>
 			{Array.from(listImagen).map((item, index) => {
-				//console.log(item);
 				return (
 					<ListItem key={item.name} value={item.name}>
 						<Button
@@ -61,13 +61,16 @@ const ListImages: React.FC<Props> = ({ listImagen, imagenes, deleteItemImagenes 
 							secondary={index + 1}
 						/>
 					</Button>
-					<Button
-						onClick={() => deleteItemImagenes(item.id)}
-						size='small'
-						className={classes.deleteButton}
-						color='error'>
-						<DeleteIcon sx={{ width: 20 }} />
-					</Button>
+					{disabled ? null : (
+						<Button
+							disabled={disabled}
+							onClick={() => deleteItemImagenes(item.id)}
+							size='small'
+							className={classes.deleteButton}
+							color='error'>
+							<DeleteIcon sx={{ width: 20 }} />
+						</Button>
+					)}
 				</ListItem>
 			))}
 		</List>

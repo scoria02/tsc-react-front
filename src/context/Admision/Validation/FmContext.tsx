@@ -61,10 +61,8 @@ export const FMValidContextProvider = ({ children, fm }: Props) => {
 	const [pos, setPos] = useState<any>(null);
 	const [locationClient, setLocationClient] = useState<any>(null);
 	const [solic, setSolic] = useState<any>(null);
-
 	const [locationCommerce, setLocationCommerce] = useState<any>(null);
 	const [locationPos, setLocationPos] = useState<any>(null);
-
 	const [aci, setAci] = useState<Aci | null>(null);
 
 	const resetFmValidation = (): void => {

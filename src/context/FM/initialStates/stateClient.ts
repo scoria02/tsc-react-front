@@ -10,7 +10,6 @@ export const initFmClient: fmClient = {
 	ident_num: '222222222',
 	phone1: '4242456154',
 	phone2: '4242457631',
-	sector: 'hola',
 	calle: 'pera',
 	local: 'manzna',
 	//Step2 Referencias Personales
@@ -34,7 +33,6 @@ export const initFmClient: fmClient = {
 	ident_num: '',
 	phone1: '',
 	phone2: '',
-	sector: '',
 	calle: '',
 	local: '',
 	//Step2 Referencias Personales
@@ -56,7 +54,6 @@ export const fmErrorClient: fmError_ClientINT = {
 	ident_num: false,
 	phone1: false,
 	phone2: false,
-	sector: false,
 	calle: false,
 	local: false,
 	name_ref1: false,

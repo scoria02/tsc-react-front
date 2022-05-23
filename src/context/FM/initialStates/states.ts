@@ -10,7 +10,6 @@ export const fmErrorFormat: fmError_Interface = {
 	ident_num: false,
 	phone1: false,
 	phone2: false,
-	sector_client: false,
 	calle_client: false,
 	local_client: false,
 	//Step2 Referencias Personales
@@ -30,11 +29,9 @@ export const fmErrorFormat: fmError_Interface = {
 	special_contributor: false,
 	//Step4 Location
 	//Commerce
-	sector: false,
 	calle: false,
 	local: false,
 	//Pos
-	sector_pos: false,
 	calle_pos: false,
 	local_pos: false,
 	//Step5 Post
@@ -67,6 +64,7 @@ export const location: LocationInt = {
 	ciudad: null,
 	municipio: null,
 	parroquia: null,
+	sector: null,
 };
 
 export const initLocation: LocationInt = {
@@ -74,4 +72,5 @@ export const initLocation: LocationInt = {
 	ciudad: null,
 	municipio: null,
 	parroquia: null,
+	sector: null,
 };

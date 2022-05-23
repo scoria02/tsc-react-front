@@ -79,6 +79,7 @@ const FormM: React.FC = () => {
 		telemarket,
 		typeWallet,
 		handleTypeSolict,
+		idLocationClient,
 	} = useContext(FMDataContext);
 
 	const {
@@ -176,12 +177,12 @@ const FormM: React.FC = () => {
 	useEffect(() => {
 		copyListLocationToCommerce(listLocationClient);
 		copyLocationToCommerce(locationClient, client);
-	}, [locationClient, listLocationClient, client.sector, client.calle, client.local]);
+	}, [locationClient, listLocationClient, client.calle, client.local]);
 
 	useEffect(() => {
 		copyListLocationToPos(listLocationCommerce);
 		copyLocationToPos(locationCommerce, commerce);
-	}, [locationCommerce, listLocationCommerce, commerce.sector, commerce.calle, commerce.local]);
+	}, [locationCommerce, listLocationCommerce, commerce.calle, commerce.local]);
 
 	useEffect(() => {
 		if (fm.loadedFM) {
@@ -262,7 +263,8 @@ const FormM: React.FC = () => {
 				imagePlanilla,
 				imagesForm,
 				imagesActa,
-				fm.id_client
+				fm.id_client,
+				idLocationClient
 			)
 		);
 	};

@@ -133,12 +133,16 @@ export const cleanAdmisionFM = () => {
 export const createFormDataFmDif = (
 	id_fm: number,
 	fm: any,
+	client: any,
+	commerce: any,
 	imagePlanilla: FileList | [],
 	imagesForm: ImagesInt,
 	imagesActa: FileList | []
 ): FormData => {
 	const formData: FormData = new FormData();
 	formData.append('id_fm', id_fm.toString());
+	formData.append('client', JSON.stringify(client));
+	formData.append('commerce', JSON.stringify(commerce));
 	formData.append('fm', JSON.stringify(fm));
 	for (const item of Object.entries(imagesForm)) {
 		if (item[1] !== null) {
@@ -157,18 +161,22 @@ export const createFormDataFmDif = (
 export const updateStatusFMDiferido = (
 	id_fm: number,
 	fm: any,
+	client: any,
+	commerce: any,
 	imagesForm: ImagesInt,
 	imagePlanilla: FileList | [],
 	imagesActa: FileList | []
 ) => {
 	return async (dispatch: any) => {
-		console.log('fmmmm', fm);
+		console.log('c', client);
+		console.log('cc', commerce);
+		console.log('fm', fm);
 		console.log(imagePlanilla);
 		console.log(imagesForm);
 		console.log(imagesActa);
-		const dataFm: any = createFormDataFmDif(id_fm, fm, imagePlanilla, imagesForm, imagesActa);
+		const dataFm: any = createFormDataFmDif(id_fm, fm, client, commerce, imagePlanilla, imagesForm, imagesActa);
 		try {
-			await useAxios.put(`/FM/admition/${id_fm}/diferido`, dataFm);
+			//await useAxios.put(`/FM/admition/${id_fm}/diferido`, dataFm);
 			//console.log('updateimg', res)
 			dispatch(requestSuccess());
 		} catch (error: any) {

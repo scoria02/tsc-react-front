@@ -11,7 +11,6 @@ export const initFmCommerce: fmCommerce = {
 	days: daysWork,
 	//Step4 Location
 	//Commerce
-	sector: '',
 	calle: '',
 	local: '',
 };
@@ -26,7 +25,6 @@ export const initFmCommerce: fmCommerce = {
 	days: daysWork,
 	//Step4 Location
 	//Commerce
-	sector: '',
 	calle: '',
 	local: '',
 };
@@ -40,7 +38,6 @@ export const fmErrorCommerce: fmError_CommerceINT = {
 	special_contributor: false,
 	//Step4 Location
 	//Commerce
-	sector: false,
 	calle: false,
 	local: false,
 };

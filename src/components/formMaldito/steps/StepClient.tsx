@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import DataListContext from 'context/DataList/DataListContext';
 import FMDataContext from 'context/FM/fmAdmision/FmContext';
 import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
-import { Ciudad, Estado, Municipio, Parroquia } from 'context/FM/Location/interfaces';
+import { Ciudad, Estado, Municipio, Parroquia, Sector } from 'context/FM/Location/interfaces';
 import LocationsContext from 'context/FM/Location/LocationsContext';
 import React, { FC, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,14 +32,22 @@ const StepClient: FC = () => {
 		setMunicipio,
 		setCiudad,
 		setParroquia,
+		setSector,
 		handleChangeClient,
 		handleSelectIdentClient,
+		setIdLocationClient,
 	} = useContext(FMDataContext);
 
 	const { listIdentType } = useContext(DataListContext);
 
-	const { listLocationClient, setListLocationClient, handleListMunicipio, handleListCiudad, handleListParroquia } =
-		useContext(LocationsContext);
+	const {
+		listLocationClient,
+		setListLocationClient,
+		handleListMunicipio,
+		handleListCiudad,
+		handleListParroquia,
+		handleListSector,
+	} = useContext(LocationsContext);
 
 	const { namesImages, imagesForm, handleChangeImages } = useContext(ImagesFmContext);
 
@@ -253,7 +261,7 @@ const StepClient: FC = () => {
 								sx={sxStyled.inputLeft}
 								onChange={(event, value: Estado | null) => {
 									setEstado(value, setLocationClient);
-									handleListMunicipio(value ? value.id : 0, setListLocationClient);
+									handleListMunicipio(value, setListLocationClient);
 								}}
 								value={locationClient.estado || null}
 								options={listLocationClient.estado}
@@ -274,7 +282,7 @@ const StepClient: FC = () => {
 								className={classes.inputText}
 								onChange={(event, value: Municipio | null) => {
 									setMunicipio(value, setLocationClient);
-									handleListCiudad(locationClient.estado!.id, setListLocationClient);
+									handleListCiudad(locationClient.estado, value, setListLocationClient);
 								}}
 								value={locationClient.municipio || null}
 								options={listLocationClient.municipio}
@@ -297,7 +305,12 @@ const StepClient: FC = () => {
 								sx={sxStyled.inputLeft}
 								onChange={(event, value: Ciudad | null) => {
 									setCiudad(value, setLocationClient);
-									handleListParroquia(locationClient.municipio!.id, setListLocationClient);
+									handleListParroquia(
+										locationClient.estado,
+										locationClient.municipio,
+										value,
+										setListLocationClient
+									);
 								}}
 								value={locationClient.ciudad || null}
 								options={listLocationClient.ciudad}
@@ -317,6 +330,13 @@ const StepClient: FC = () => {
 								className={classes.inputText}
 								onChange={(event, value: Parroquia | null) => {
 									setParroquia(value, setLocationClient);
+									handleListSector(
+										locationClient.estado,
+										locationClient.municipio,
+										locationClient.ciudad,
+										value,
+										setListLocationClient
+									);
 								}}
 								value={locationClient.parroquia || null}
 								options={listLocationClient.parroquia}
@@ -342,18 +362,27 @@ const StepClient: FC = () => {
 								id='standard-required'
 								label='Cod. Postal'
 								name='codigo_postal'
-								value={locationClient.ciudad?.postal_code || ''}
+								value={locationClient.parroquia?.codigoPostal || ''}
 							/>
-							<TextField
+							<Autocomplete
 								disabled={fm.mashClient}
 								className={classes.inputText}
-								variant='outlined'
-								required
-								id='standard-required'
-								label='Sector'
-								name='sector'
-								onChange={handleChangeClient}
-								value={client.sector}
+								onChange={(event, value: Sector | null) => {
+									setSector(value, setLocationClient);
+									setIdLocationClient(value ? value.id : null);
+								}}
+								value={locationClient.sector || null}
+								options={listLocationClient.sector}
+								getOptionLabel={(option: Sector) => (option.sector ? option.sector : '')}
+								renderInput={(params: any) => (
+									<TextField
+										{...params}
+										name='sector'
+										label='Sector'
+										variant='outlined'
+										inputProps={{ ...params.inputProps, autoComplete: 'sector' }}
+									/>
+								)}
 							/>
 						</div>
 						<div className={classes.input}>

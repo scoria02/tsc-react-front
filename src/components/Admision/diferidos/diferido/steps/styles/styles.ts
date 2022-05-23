@@ -2,6 +2,22 @@ import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles((styles: Theme) => ({
+	imgIdent: {
+		padding: '0',
+		fontSize: '.7rem',
+		textTransform: 'none',
+		width: '100%',
+		maxWidth: 100,
+		maxHeight: 56,
+		height: '100%',
+	},
+	btn_stepTextInterno: {
+		fontSize: '1rem',
+		color: styles.palette.secondary.main,
+	},
+	btn_stepText: {
+		width: 500,
+	},
 	btn_stepM: {
 		width: '100%',
 		display: 'flex',

@@ -9,7 +9,7 @@ import {
 	IdClient_CommerceINT,
 } from 'interfaces/fm';
 import { Dispatch, SetStateAction } from 'react';
-import { Ciudad, Estado, LocationInt, Municipio, Parroquia } from '../Location/interfaces';
+import { Ciudad, Estado, LocationInt, Municipio, Parroquia, Sector } from '../Location/interfaces';
 
 export interface ContextFM {
 	typeSolict: number;
@@ -34,6 +34,7 @@ export interface ContextFM {
 	setMunicipio(data: Municipio | null, setLocation: Dispatch<SetStateAction<LocationInt>>): void;
 	setCiudad(data: Ciudad | null, setLocation: Dispatch<SetStateAction<LocationInt>>): void;
 	setParroquia(data: Parroquia | null, setLocation: Dispatch<SetStateAction<LocationInt>>): void;
+	setSector(data: Sector | null, setLocation: Dispatch<SetStateAction<LocationInt>>): void;
 	copyLocationToCommerce(stateLocation: LocationInt, state: fmClient | fmCommerce | fmPos): void;
 	copyLocationToPos(stateLocation: LocationInt, state: fmClient | fmCommerce | fmPos): void;
 	handleTypeSolict(id: number): void;
@@ -55,4 +56,10 @@ export interface ContextFM {
 	handleSourceTelemarket(event: any, value: TeleMarket | null): void;
 	typeWallet: TypeWallet | null;
 	handleTypeWallet(event: any, value: TypeWallet | null, name: string): void;
+	idLocationClient: number | null;
+	idLocationCommerce: number | null;
+	idLocationPos: number | null;
+	setIdLocationClient: Dispatch<SetStateAction<number | null>>;
+	setIdLocationCommerce: Dispatch<SetStateAction<number | null>>;
+	setIdLocationPos: Dispatch<SetStateAction<number | null>>;
 }

@@ -3,7 +3,6 @@ import { fmPos } from 'interfaces/fm';
 export const initFmPos: fmPos = {
 	//Step4 Location
 	//Location Pos
-	sector: '',
 	calle: '',
 	local: '',
 	//Step5 Post

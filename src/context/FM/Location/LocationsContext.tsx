@@ -9,7 +9,7 @@ import {
 	useLayoutEffect,
 	useState,
 } from 'react';
-import { Estado, ListLocation } from './interfaces';
+import { Ciudad, Estado, ListLocation, Municipio, Parroquia } from './interfaces';
 
 interface Props {
 	children: ReactChild | ReactChildren;
@@ -20,24 +20,43 @@ const initialListLocation: ListLocation = {
 	municipio: [],
 	ciudad: [],
 	parroquia: [],
+	sector: [],
 };
 
 interface ContextLocations {
+	listDirecciones: any;
 	listLocationClient: ListLocation;
 	listLocationCommerce: ListLocation;
 	listLocationPos: ListLocation;
 	setListLocationClient: Dispatch<SetStateAction<ListLocation>>;
 	setListLocationCommerce: Dispatch<SetStateAction<ListLocation>>;
 	setListLocationPos: Dispatch<SetStateAction<ListLocation>>;
-	handleListMunicipio(id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>): void;
-	handleListCiudad(id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>): void;
-	handleListParroquia(id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>): void;
+	handleListMunicipio(value: Estado | null, setListLocation: Dispatch<SetStateAction<ListLocation>>): void;
+	handleListCiudad(
+		xEstado: Estado | null,
+		xMunicpio: Municipio | null,
+		setListLocation: Dispatch<SetStateAction<ListLocation>>
+	): void;
+	handleListParroquia(
+		xEstado: Estado | null,
+		xMunicpio: Municipio | null,
+		xCiudad: Ciudad | null,
+		setListLocation: Dispatch<SetStateAction<ListLocation>>
+	): void;
+	handleListSector(
+		xEstado: Estado | null,
+		xMunicpio: Municipio | null,
+		xCiudad: Ciudad | null,
+		xParroquia: Parroquia | null,
+		setListLocation: Dispatch<SetStateAction<ListLocation>>
+	): void;
 	copyListLocationToCommerce(stateListLocation: ListLocation): void;
 	copyListLocationToPos(stateListLocation: ListLocation): void;
 	resetListLocaitons(): void;
 }
 
 const LocationsContext = createContext<ContextLocations>({
+	listDirecciones: [],
 	listLocationClient: initialListLocation,
 	listLocationCommerce: initialListLocation,
 	listLocationPos: initialListLocation,
@@ -47,12 +66,14 @@ const LocationsContext = createContext<ContextLocations>({
 	handleListMunicipio: () => {},
 	handleListCiudad: () => {},
 	handleListParroquia: () => {},
+	handleListSector: () => {},
 	copyListLocationToCommerce: () => {},
 	copyListLocationToPos: () => {},
 	resetListLocaitons: () => {},
 });
 
 export const LocationsProvider = ({ children }: Props) => {
+	const [listDirecciones, setListDirecciones] = useState<any>([]);
 	const [listLocationClient, setListLocationClient] = useState<ListLocation>(initialListLocation);
 	const [listLocationCommerce, setListLocationCommerce] = useState<ListLocation>(initialListLocation);
 	const [listLocationPos, setListLocationPos] = useState<ListLocation>(initialListLocation);
@@ -82,15 +103,21 @@ export const LocationsProvider = ({ children }: Props) => {
 	};
 
 	//Municipio
-	const handleListMunicipio = async (id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>) => {
-		if (id) {
+	const handleListMunicipio = async (
+		value: Estado | null,
+		setListLocation: Dispatch<SetStateAction<ListLocation>>
+	) => {
+		console.log('Buscar', value);
+		if (value) {
 			try {
-				await axios.get(`/Location/${id}/municipio`).then((res: any) => {
+				await axios.get(`/direccion/${value.estado}/municipio`).then((res: any) => {
+					console.log(res.data.info);
 					setListLocation((prevState) => ({
 						...prevState,
 						municipio: res.data.info,
 						ciudad: [],
 						parroquia: [],
+						sector: [],
 					}));
 				});
 			} catch (e) {
@@ -103,19 +130,25 @@ export const LocationsProvider = ({ children }: Props) => {
 				municipio: [],
 				ciudad: [],
 				parroquia: [],
+				sector: [],
 			}));
 		}
 	};
 
 	//Ciudad
-	const handleListCiudad = async (id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>) => {
-		if (id) {
+	const handleListCiudad = async (
+		xEstado: Estado | null,
+		xMunicpio: Municipio | null,
+		setListLocation: Dispatch<SetStateAction<ListLocation>>
+	) => {
+		if (xEstado && xMunicpio) {
 			try {
-				await axios.get(`/Location/${id}/ciudad`).then((res: any) => {
+				await axios.get(`/direccion/${xEstado.estado}/${xMunicpio.municipio}/ciudad`).then((res: any) => {
 					setListLocation((prevState) => ({
 						...prevState,
 						ciudad: res.data.info,
 						parroquia: [],
+						sector: [],
 					}));
 				});
 			} catch (e) {
@@ -126,23 +159,73 @@ export const LocationsProvider = ({ children }: Props) => {
 				...prevState,
 				ciudad: [],
 				parroquia: [],
+				sector: [],
 			}));
 		}
 	};
 
 	//Parroquia
-	const handleListParroquia = async (id: number, setListLocation: Dispatch<SetStateAction<ListLocation>>) => {
-		try {
-			await axios.get(`/Location/${id}/parroquia`).then((res: any) => {
+	const handleListParroquia = async (
+		xEstado: Estado | null,
+		xMunicpio: Municipio | null,
+		xCiudad: Ciudad | null,
+		setListLocation: Dispatch<SetStateAction<ListLocation>>
+	) => {
+		if (xEstado && xMunicpio && xCiudad) {
+			try {
+				await axios
+					.get(`/direccion/${xEstado.estado}/${xMunicpio.municipio}/${xCiudad.ciudad}/parroquia`)
+					.then((res: any) => {
+						setListLocation((prevState) => ({
+							...prevState,
+							parroquia: res.data.info,
+							sector: [],
+						}));
+					});
+			} catch (e) {
 				setListLocation((prevState) => ({
 					...prevState,
-					parroquia: res.data.info,
+					parroquia: [],
+					sector: [],
 				}));
-			});
-		} catch (e) {
+			}
+		} else {
 			setListLocation((prevState) => ({
 				...prevState,
 				parroquia: [],
+			}));
+		}
+	};
+
+	const handleListSector = async (
+		xEstado: Estado | null,
+		xMunicpio: Municipio | null,
+		xCiudad: Ciudad | null,
+		xParroquia: Parroquia | null,
+		setListLocation: Dispatch<SetStateAction<ListLocation>>
+	) => {
+		if (xEstado && xMunicpio && xCiudad && xParroquia) {
+			try {
+				await axios
+					.get(
+						`/direccion/${xEstado.estado}/${xMunicpio.municipio}/${xCiudad.ciudad}/${xParroquia.parroquia}/sector`
+					)
+					.then((res: any) => {
+						setListLocation((prevState) => ({
+							...prevState,
+							sector: res.data.info,
+						}));
+					});
+			} catch (e) {
+				setListLocation((prevState) => ({
+					...prevState,
+					sector: [],
+				}));
+			}
+		} else {
+			setListLocation((prevState) => ({
+				...prevState,
+				sector: [],
 			}));
 		}
 	};
@@ -154,16 +237,16 @@ export const LocationsProvider = ({ children }: Props) => {
 	};
 
 	useLayoutEffect(() => {
-		const getEstados = async () => {
+		const getDirecciones = async () => {
 			try {
-				await axios.get('/Location/estado').then((res: any) => {
+				await axios.get('/direccion/estado').then((res: any) => {
 					saveEstados(res.data.info);
 				});
 			} catch (e) {
 				console.log(e);
 			}
 		};
-		getEstados();
+		getDirecciones();
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -191,12 +274,14 @@ export const LocationsProvider = ({ children }: Props) => {
 				handleListMunicipio,
 				handleListCiudad,
 				handleListParroquia,
+				handleListSector,
 
 				//Copy List Locations
 				copyListLocationToCommerce,
 				copyListLocationToPos,
 
 				resetListLocaitons,
+				listDirecciones,
 			}}>
 			{children}
 		</LocationsContext.Provider>

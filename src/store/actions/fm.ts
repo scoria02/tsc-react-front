@@ -15,7 +15,6 @@ export const updateToken = (token: any) => {
 };
 
 export const validationClient = (client: any) => {
-	//console.log(client);
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
@@ -101,7 +100,7 @@ export const validationNumBank = (clientBank: any) => {
 	}
 };
 
-export const dataFormatClient = (client: fmClient, locationClient: LocationInt) => ({
+export const dataFormatClient = (client: fmClient, idLocationClient: number | null) => ({
 	email: client.email,
 	name: client.name.trim(),
 	last_name: client.last_name.trim(),
@@ -110,11 +109,12 @@ export const dataFormatClient = (client: fmClient, locationClient: LocationInt) 
 	phone1: '58' + client.phone1,
 	phone2: '+58' + client.phone2,
 	location: {
-		id_estado: locationClient.estado?.id,
-		id_municipio: locationClient.municipio?.id,
-		id_parroquia: locationClient.parroquia?.id,
-		id_ciudad: locationClient.ciudad?.id,
-		sector: client.sector,
+		//id_estado: locationClient.estado?.id,
+		//id_municipio: locationClient.municipio?.id,
+		//id_parroquia: locationClient.parroquia?.id,
+		//id_ciudad: locationClient.ciudad?.id,
+		//sector: client.sector,
+		id_direccion: idLocationClient,
 		calle: client.calle,
 		local: client.local,
 	},
@@ -143,11 +143,11 @@ export const dataFormatCommerce = (
 	bank_account_num: pos.text_account_number,
 	id_activity: activity?.id,
 	location: {
-		id_estado: locationCommerce.estado?.id,
-		id_municipio: locationCommerce.municipio?.id,
-		id_parroquia: locationCommerce.parroquia?.id,
-		id_ciudad: locationCommerce.ciudad?.id,
-		sector: commerce.sector,
+		//id_estado: locationCommerce.estado?.id,
+		//id_municipio: locationCommerce.municipio?.id,
+		//id_parroquia: locationCommerce.parroquia?.id,
+		//id_ciudad: locationCommerce.ciudad?.id,
+		//sector: commerce.sector,
 		calle: commerce.calle,
 		local: commerce.local,
 	},
@@ -183,11 +183,11 @@ export const dataFormatPos = (
 		number_post: pos.number_post,
 		id_payment_method: pos.payment_method?.id,
 		pos: {
-			id_estado: locationPos.estado?.id,
-			id_municipio: locationPos.municipio?.id,
-			id_parroquia: locationPos.parroquia?.id,
-			id_ciudad: locationPos.ciudad?.id,
-			sector: pos.sector,
+			//id_estado: locationPos.estado?.id,
+			//id_municipio: locationPos.municipio?.id,
+			//id_parroquia: locationPos.parroquia?.id,
+			//id_ciudad: locationPos.ciudad?.id,
+			//sector: pos.sector,
 			calle: pos.calle,
 			local: pos.local,
 		},
@@ -254,11 +254,11 @@ export const dataForPos = (
 		number_post: pos.number_post,
 		id_payment_method: pos.payment_method?.id,
 		pos: {
-			id_estado: locationPos.estado?.id,
-			id_municipio: locationPos.municipio?.id,
-			id_parroquia: locationPos.parroquia?.id,
-			id_ciudad: locationPos.ciudad?.id,
-			sector: pos.sector,
+			//id_estado: locationPos.estado?.id,
+			//id_municipio: locationPos.municipio?.id,
+			//id_parroquia: locationPos.parroquia?.id,
+			//id_ciudad: locationPos.ciudad?.id,
+			//sector: pos.sector,
 			calle: pos.calle,
 			local: pos.local,
 		},
@@ -348,10 +348,11 @@ export const sendCompleteFM = (
 	imagePlanilla: FileList | [],
 	imagesForm: ImagesInt,
 	imagesActa: FileList | [],
-	id_client: number
+	id_client: number,
+	idLocationClient: number | null
 ) => {
 	//Crear formart
-	const dataClient = id_client ? null : dataFormatClient(client, locationClient);
+	const dataClient = id_client ? null : dataFormatClient(client, idLocationClient);
 	const dataCommerce = dataFormatCommerce(commerce, locationCommerce, activity, pos);
 	const dataPost = dataForPos(typeSolict, pos, aci, telemarket, typeWallet, locationPos);
 	console.log('cliente: ', dataClient, ' id ', id_client);

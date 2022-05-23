@@ -45,8 +45,6 @@ const Validacion: React.FC = () => {
 	const { listAci } = useContext(DataListAdmisionContext);
 	const { client, commerce, solic, codeFM, pos, stepsFM, aci, listValidated } = useContext(FMValidDataContext);
 
-	console.log(solic);
-
 	//console.log('step show', stepsFM);
 
 	useLayoutEffect(() => {
@@ -99,8 +97,6 @@ const Validacion: React.FC = () => {
 		}
 		return false;
 	};
-
-	console.log(solic);
 
 	const handleSend = async () => {
 		if (aci !== null) {

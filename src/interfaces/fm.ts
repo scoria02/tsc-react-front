@@ -8,7 +8,6 @@ export interface fmClient {
 	ident_num: string;
 	phone1: string;
 	phone2: string;
-	sector: string;
 	calle: string;
 	local: string;
 	name_ref1: string;
@@ -27,13 +26,11 @@ export interface fmCommerce {
 	name: string;
 	special_contributor: boolean;
 	days: Days;
-	sector: string;
 	calle: string;
 	local: string;
 }
 
 export interface fmPos {
-	sector: string;
 	calle: string;
 	local: string;
 	number_post: number;
@@ -68,7 +65,6 @@ export interface fmError_ClientINT {
 	ident_num: boolean;
 	phone1: boolean;
 	phone2: boolean;
-	sector: boolean;
 	calle: boolean;
 	local: boolean;
 	//Step2 Referencias Personales
@@ -91,7 +87,6 @@ export interface fmError_CommerceINT {
 	special_contributor: boolean;
 	//Step4 Location
 	//Commerce
-	sector: boolean;
 	calle: boolean;
 	local: boolean;
 }
@@ -105,7 +100,6 @@ export interface fmError_Interface {
 	ident_num: boolean;
 	phone1: boolean;
 	phone2: boolean;
-	sector_client: boolean;
 	calle_client: boolean;
 	local_client: boolean;
 	//Step2 Referencias Personales
@@ -125,11 +119,9 @@ export interface fmError_Interface {
 	special_contributor: boolean;
 	//Step4 Location
 	//Commerce
-	sector: boolean;
 	calle: boolean;
 	local: boolean;
 	//Pos
-	sector_pos: boolean;
 	calle_pos: boolean;
 	local_pos: boolean;
 	//Step5 Post

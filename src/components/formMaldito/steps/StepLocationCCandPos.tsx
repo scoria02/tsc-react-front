@@ -78,7 +78,7 @@ const StepLocationCCandPos: FC = () => {
 						sx={sxStyled.inputSelect}
 						onChange={(event, value: Estado | null) => {
 							setEstado(value, setLocationCommerce);
-							handleListMunicipio(value ? value.id : 0, setListLocationCommerce);
+							handleListMunicipio(value, setListLocationCommerce);
 						}}
 						value={locationCommerce.estado || null}
 						disabled={fm.mashCommerce}
@@ -99,7 +99,7 @@ const StepLocationCCandPos: FC = () => {
 						className={classes.inputText}
 						onChange={(event, value: Municipio | null) => {
 							setMunicipio(value, setLocationCommerce);
-							handleListCiudad(locationCommerce.estado!.id, setListLocationCommerce);
+							handleListCiudad(locationCommerce.estado, value, setListLocationCommerce);
 						}}
 						value={locationCommerce.municipio || null}
 						disabled={fm.mashCommerce}
@@ -120,7 +120,12 @@ const StepLocationCCandPos: FC = () => {
 					<Autocomplete
 						onChange={(event, value: Ciudad | null) => {
 							setCiudad(value, setLocationCommerce);
-							handleListParroquia(locationCommerce.municipio!.id, setListLocationCommerce);
+							handleListParroquia(
+								locationCommerce.estado,
+								locationCommerce.municipio,
+								value,
+								setListLocationCommerce
+							);
 						}}
 						className={classes.inputTextLeft}
 						sx={sxStyled.inputSelect}
@@ -161,7 +166,7 @@ const StepLocationCCandPos: FC = () => {
 						id='standard-required'
 						label='Codigo Postal'
 						name='codigo_postal'
-						value={locationCommerce.ciudad?.postal_code || ''}
+						//value={locationCommerce.ciudad?.postal_code || ''}
 						disabled
 					/>
 					<TextField
@@ -173,7 +178,7 @@ const StepLocationCCandPos: FC = () => {
 						label='Sector'
 						name='sector'
 						onChange={handleLocationCommerce}
-						value={commerce.sector}
+						//value={commerce.sector}
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
@@ -210,7 +215,7 @@ const StepLocationCCandPos: FC = () => {
 						sx={sxStyled.inputSelect}
 						onChange={(event, value: Estado | null) => {
 							setEstado(value, setLocationPos);
-							handleListMunicipio(value ? value.id : 0, setListLocationPos);
+							//handleListMunicipio(value ? value.id : 0, setListLocationPos);
 						}}
 						options={listLocationPos.estado}
 						value={locationPos.estado || null}
@@ -230,7 +235,7 @@ const StepLocationCCandPos: FC = () => {
 						className={classes.inputText}
 						onChange={(event, value: Municipio | null) => {
 							setMunicipio(value, setLocationPos);
-							handleListCiudad(locationPos.estado!.id, setListLocationPos);
+							///handleListCiudad(locationPos.estado!.id, setListLocationPos);
 						}}
 						value={locationPos.municipio || null}
 						options={listLocationPos.municipio}
@@ -252,7 +257,7 @@ const StepLocationCCandPos: FC = () => {
 						sx={sxStyled.inputSelect}
 						onChange={(event, value: Ciudad | null) => {
 							setCiudad(value, setLocationPos);
-							handleListParroquia(locationPos.municipio!.id, setListLocationPos);
+							//handleListParroquia(locationPos.municipio!.id, setListLocationPos);
 						}}
 						options={listLocationPos.ciudad}
 						value={locationPos.ciudad || null}
@@ -295,7 +300,7 @@ const StepLocationCCandPos: FC = () => {
 						id='standard-required'
 						label='Codigo Postal'
 						name='codigo_postal_pos'
-						value={locationPos.ciudad?.postal_code || ''}
+						//value={locationPos.ciudad?.postal_code || ''}
 						disabled
 					/>
 					<TextField
@@ -306,7 +311,7 @@ const StepLocationCCandPos: FC = () => {
 						label='Sector'
 						name='sector'
 						onChange={handleLocationPos}
-						value={pos.sector}
+						//value={pos.sector}
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>

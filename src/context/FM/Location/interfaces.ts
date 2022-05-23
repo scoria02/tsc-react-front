@@ -1,24 +1,29 @@
 export interface Estado {
 	estado: string;
-	id: number;
-	iso_3166: string;
+	//id: number;
 }
 
 export interface Municipio {
-	id: number;
+	//id: number;
 	municipio: string;
 }
 
 export interface Ciudad {
-	area_code: string;
+	//area_code: string;
 	ciudad: string;
-	id: number;
-	postal_code: string;
+	//id: number;
+	//postal_code: string;
 }
 
 export interface Parroquia {
-	id: number;
+	//id: number;
 	parroquia: string;
+	codigoPostal: string;
+}
+
+export interface Sector {
+	id: number;
+	sector: string;
 }
 
 export interface LocationInt {
@@ -26,6 +31,7 @@ export interface LocationInt {
 	ciudad: Ciudad | null;
 	municipio: Municipio | null;
 	parroquia: Parroquia | null;
+	sector: Sector | null;
 }
 
 export interface ListLocation {
@@ -33,4 +39,5 @@ export interface ListLocation {
 	municipio: Municipio[];
 	ciudad: Ciudad[];
 	parroquia: Parroquia[];
+	sector: Sector[];
 }
