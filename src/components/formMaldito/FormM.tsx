@@ -205,8 +205,8 @@ const FormM: React.FC = () => {
 		if (fm.loadedFM) {
 			console.log('Ready All FM');
 			//socket.emit('cliente:disconnect');
+			dispatch(cleanFM());
 			handleSendForm();
-			//dispatch(cleanFM());
 		}
 	}, [fm.loadedFM, dispatch]);
 
@@ -354,7 +354,7 @@ const FormM: React.FC = () => {
 			showConfirmButton: false,
 			timer: 2500,
 		});
-		//history.push(urlFM);
+		history.push(urlFM);
 		setActiveStep(0);
 	};
 
