@@ -1,14 +1,9 @@
 import { FormControlLabel, Switch, TextField } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import RecPdf from 'components/utilis/images/RecPdf';
-import FMValidDataContext from 'context/Admision/Validation/FmContext';
+import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
 import React, { useContext, useEffect, useState } from 'react';
-//import ReactImageZoom from 'react-image-zoom';
 //Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { Valid } from 'store/actions/accept';
-//Url
-import { RootState } from 'store/store';
 import { useStyles } from './styles/styles';
 
 const StepCompDep: React.FC = () => {
@@ -39,8 +34,8 @@ const StepCompDep: React.FC = () => {
 	};
 
 	useEffect(() => {
-		//console.log(state);
 		handleChangeValid('valid_comp_dep', state);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state]);
 
 	const handleCancel = () => {

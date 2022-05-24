@@ -121,13 +121,13 @@ const DiferidoValid: React.FC = () => {
 			customClass: { container: 'swal2-validated' },
 		}).then((result) => {
 			if (result.isConfirmed) {
-				//handleLoading();
+				handleLoading();
 				let phone = {
 					phone1: '+58' + phones.phone1,
 					phone2: '+58' + phones.phone2,
 				};
-				console.log(solic);
-				console.log({ ...client, phone });
+				//console.log(solic);
+				//console.log({ ...client, phone });
 				dispatch(
 					updateStatusFMDiferido(
 						solic.id,
@@ -169,8 +169,6 @@ const DiferidoValid: React.FC = () => {
 	};
 
 	//console.log('validados:', stepsValid, ' steps', steps.length - 1);
-
-	console.log('p', solic);
 
 	const getContentSteps = () => {
 		let list: any = [];

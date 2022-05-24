@@ -15,8 +15,6 @@ const RecPdf: React.FC<any> = ({ load, setLoad, imagen }) => {
 		setModal(false);
 	};
 
-	console.log('img', imagen);
-
 	return (
 		<>
 			{imagen.split('.')[imagen.split('.').length - 1] === 'pdf' ? (

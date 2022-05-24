@@ -6,7 +6,7 @@ import FMDataContext from 'context/FM/fmAdmision/FmContext';
 import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
 import LocationsContext from 'context/FM/Location/LocationsContext';
 import { SocketContext } from 'context/SocketContext';
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import React, { ReactElement, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { urlFM } from 'routers/url';
@@ -56,7 +56,7 @@ const FormM: React.FC = () => {
 
 	const [titleNextButton, setTitleNextButton] = useState('Comenzar');
 
-	const { listIdentType, listActivity, listPayment } = useContext(DataListContext);
+	const { listIdentType, listActivity, listPayment, listTypesSolicts } = useContext(DataListContext);
 
 	const {
 		typeSolict,
@@ -80,6 +80,9 @@ const FormM: React.FC = () => {
 		typeWallet,
 		handleTypeSolict,
 		idLocationClient,
+		idLocationCommerce,
+		idLocationPos,
+		resetFm,
 	} = useContext(FMDataContext);
 
 	const {
@@ -88,9 +91,10 @@ const FormM: React.FC = () => {
 		listLocationPos,
 		copyListLocationToCommerce,
 		copyListLocationToPos,
+		resetListLocaitons,
 	} = useContext(LocationsContext);
 
-	const { imagePlanilla, imagesForm, imagesActa, namesImages } = useContext(ImagesFmContext);
+	const { imagePlanilla, imagesForm, imagesActa, namesImages, resetImages } = useContext(ImagesFmContext);
 
 	useEffect(() => {
 		if (
@@ -168,28 +172,31 @@ const FormM: React.FC = () => {
 		} else setTitleNextButton('Comenzar');
 	}, [activeStep]);
 
-	useEffect(() => {
-		dispatch(cleanFM());
+	useLayoutEffect(() => {
+		//resetFm();
+		//resetListLocaitons();
+		//resetImages();
+		//setActiveStep(1);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	//AutoComplete Locaitons
 	useEffect(() => {
 		copyListLocationToCommerce(listLocationClient);
-		copyLocationToCommerce(locationClient, client);
-	}, [locationClient, listLocationClient, client.calle, client.local]);
+		copyLocationToCommerce(locationClient, client, idLocationClient);
+	}, [locationClient, listLocationClient, client.calle, client.local, idLocationClient]);
 
 	useEffect(() => {
 		copyListLocationToPos(listLocationCommerce);
-		copyLocationToPos(locationCommerce, commerce);
-	}, [locationCommerce, listLocationCommerce, commerce.calle, commerce.local]);
+		copyLocationToPos(locationCommerce, commerce, idLocationCommerce);
+	}, [locationCommerce, listLocationCommerce, commerce.calle, commerce.local, idLocationCommerce]);
 
 	useEffect(() => {
 		if (fm.loadedFM) {
 			console.log('Ready All FM');
-			socket.emit('cliente:disconnect');
+			//socket.emit('cliente:disconnect');
 			handleSendForm();
-			dispatch(cleanFM());
+			//dispatch(cleanFM());
 		}
 	}, [fm.loadedFM, dispatch]);
 
@@ -251,20 +258,19 @@ const FormM: React.FC = () => {
 			sendCompleteFM(
 				typeSolict,
 				client,
-				locationClient,
 				commerce,
-				locationCommerce,
 				activity,
 				pos,
 				aci,
 				telemarket,
 				typeWallet,
-				locationPos,
 				imagePlanilla,
 				imagesForm,
 				imagesActa,
 				fm.id_client,
-				idLocationClient
+				idLocationClient,
+				idLocationCommerce,
+				idLocationPos
 			)
 		);
 	};
@@ -307,9 +313,9 @@ const FormM: React.FC = () => {
 				aci,
 				telemarket,
 				typeWallet,
-				locationPos,
 				imagePlanilla,
-				imagesForm
+				imagesForm,
+				idLocationPos
 			)
 		);
 	};
@@ -338,7 +344,7 @@ const FormM: React.FC = () => {
 			showConfirmButton: false,
 			timer: 2500,
 		});
-		history.push(urlFM);
+		//history.push(urlFM);
 		setActiveStep(0);
 	};
 
@@ -384,7 +390,8 @@ const FormM: React.FC = () => {
 
 	return (
 		<div>
-			{!listIdentType.length ||
+			{!listTypesSolicts.length ||
+			!listIdentType.length ||
 			!listActivity.length ||
 			!listPayment.length ||
 			!listLocationCommerce.estado.length ||

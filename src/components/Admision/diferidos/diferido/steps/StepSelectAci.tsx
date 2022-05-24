@@ -2,18 +2,13 @@ import Autocomplete from '@mui/lab/Autocomplete';
 import { TextField } from '@mui/material';
 import { FC, useContext } from 'react';
 //Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { selectAci } from 'store/actions/accept';
-//Url
-import { RootState } from 'store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 import DataListAdmisionContext from 'context/DataList/DatalistAdmisionContext';
-import FMValidDataContext from 'context/Admision/Validation/FmContext';
+import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
 
 const StepSelectAci: FC = () => {
 	const classes = useStyles();
-	const dispatch = useDispatch();
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 	const { listAci } = useContext(DataListAdmisionContext);

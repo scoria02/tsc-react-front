@@ -8,6 +8,7 @@ import {
 	IconButton,
 	InputAdornment,
 	TextField,
+	Tooltip,
 } from '@mui/material';
 import classNames from 'classnames';
 import DataListContext from 'context/DataList/DataListContext';
@@ -208,30 +209,32 @@ const StepPos: FC = () => {
 				/>
 				<div className={classes.row}>
 					<b className={classes.labels}>Referencia Bancaria</b>
-					<Button
-						className={classes.imgIdent}
-						variant='contained'
-						style={{
-							background: imagesForm.rc_ref_bank ? '#5c62c5' : '#f44336',
-						}}
-						component='label'>
-						{imagesForm.rc_ref_bank !== null ? (
-							<>
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-								<p className='nameImg'>{namesImages.rc_ref_bank.slice(0, 5)}...</p>
-							</>
-						) : (
-							<>
-								{/*<b>Subir</b>*/}
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-							</>
-						)}
-						<input type='file' hidden name='rc_ref_bank' accept={recaudo.acc} onChange={handleChangeImages} />
-					</Button>
+					<Tooltip title='Cargar imagen de la Referencia Bancaria (Numero de cuenta)'>
+						<Button
+							className={classes.imgIdent}
+							variant='contained'
+							style={{
+								background: imagesForm.rc_ref_bank ? '#5c62c5' : '#f44336',
+							}}
+							component='label'>
+							{imagesForm.rc_ref_bank !== null ? (
+								<>
+									<IconButton aria-label='upload picture' component='span'>
+										<PhotoCamera />
+									</IconButton>
+									<p className='nameImg'>{namesImages.rc_ref_bank.slice(0, 5)}...</p>
+								</>
+							) : (
+								<>
+									{/*<b>Subir</b>*/}
+									<IconButton aria-label='upload picture' component='span'>
+										<PhotoCamera />
+									</IconButton>
+								</>
+							)}
+							<input type='file' hidden name='rc_ref_bank' accept={recaudo.acc} onChange={handleChangeImages} />
+						</Button>
+					</Tooltip>
 				</div>
 			</div>
 			<div className={classes.input}>
@@ -468,37 +471,39 @@ const StepPos: FC = () => {
 				}}>
 				<div className={classNames(classes.row, classes.inputTextLeft)}>
 					<b className={classes.labels}>Comprobante de pago</b>
-					<Button
-						className={classes.imgIdent}
-						variant='contained'
-						style={{ background: imagesForm.rc_comp_dep ? '#5c62c5' : '#f44336' }}
-						onClick={() => {
-							deleted && deleteImgContributor('comp_dep');
-						}}
-						component='label'>
-						{imagesForm.rc_comp_dep !== null ? (
-							<>
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-								<p className='nameImg'>{namesImages.rc_comp_dep.slice(0, 5)}...</p>
-							</>
-						) : (
-							<>
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-							</>
-						)}
-						<input
-							type='file'
-							hidden
-							name='rc_comp_dep'
-							accept={recaudo.acc}
-							disabled={deleted}
-							onChange={handleChangeImages}
-						/>
-					</Button>
+					<Tooltip title='Cargar imagen del Comprobante de Pago (Numero de Referencia)'>
+						<Button
+							className={classes.imgIdent}
+							variant='contained'
+							style={{ background: imagesForm.rc_comp_dep ? '#5c62c5' : '#f44336' }}
+							onClick={() => {
+								deleted && deleteImgContributor('comp_dep');
+							}}
+							component='label'>
+							{imagesForm.rc_comp_dep !== null ? (
+								<>
+									<IconButton aria-label='upload picture' component='span'>
+										<PhotoCamera />
+									</IconButton>
+									<p className='nameImg'>{namesImages.rc_comp_dep.slice(0, 5)}...</p>
+								</>
+							) : (
+								<>
+									<IconButton aria-label='upload picture' component='span'>
+										<PhotoCamera />
+									</IconButton>
+								</>
+							)}
+							<input
+								type='file'
+								hidden
+								name='rc_comp_dep'
+								accept={recaudo.acc}
+								disabled={deleted}
+								onChange={handleChangeImages}
+							/>
+						</Button>
+					</Tooltip>
 				</div>
 				<div className={classes.inputText}>
 					<TextField

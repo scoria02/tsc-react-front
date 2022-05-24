@@ -2,7 +2,6 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { Button, IconButton, InputAdornment, TextField, Stack, Alert } from '@mui/material';
 import classNames from 'classnames';
 import { FC, useContext, useState } from 'react';
-import { capitalizedFull } from 'utils/formatName';
 import { recaudo } from 'utils/recaudos';
 //sytles
 import { sxStyled, useStylesFM } from '../styles';
@@ -13,7 +12,6 @@ const DifStepClient: FC = () => {
 	const classes = useStylesFM();
 
 	const {
-		solic,
 		client,
 		locationClient,
 		phones,
@@ -23,7 +21,6 @@ const DifStepClient: FC = () => {
 		imagesForm,
 		handleChangeImages,
 		pathImages,
-		handleChangeRefClient,
 		listValidated,
 	} = useContext(FMDiferidoContext);
 
@@ -143,8 +140,7 @@ const DifStepClient: FC = () => {
 								id='standard-required'
 								label='Estado'
 								name='Estado'
-								value={locationClient?.id_estado.estado}
-								//value={locationClient.ciudad?.postal_code || ''}
+								value={locationClient?.id_direccion.estado}
 							/>
 							<TextField
 								disabled
@@ -154,8 +150,7 @@ const DifStepClient: FC = () => {
 								id='standard-required'
 								label='Municipio'
 								name='municipio'
-								value={locationClient?.id_municipio.municipio}
-								//value={locationClient.ciudad?.postal_code || ''}
+								value={locationClient?.id_direccion.municipio}
 							/>
 						</div>
 						<div className={classes.input}>
@@ -168,8 +163,7 @@ const DifStepClient: FC = () => {
 								id='standard-required'
 								label='ciudad'
 								name='ciudad'
-								value={locationClient?.id_ciudad.ciudad}
-								//value={locationClient.ciudad?.postal_code || ''}
+								value={locationClient?.id_direccion.ciudad}
 							/>
 							<TextField
 								disabled
@@ -179,8 +173,7 @@ const DifStepClient: FC = () => {
 								id='standard-required'
 								label='Parroquia'
 								name='parroquia'
-								value={locationClient?.id_parroquia.parroquia}
-								//value={locationClient.ciudad?.postal_code || ''}
+								value={locationClient?.id_direccion.parroquia}
 							/>
 						</div>
 						<div className={classes.input}>
@@ -193,7 +186,7 @@ const DifStepClient: FC = () => {
 								id='standard-required'
 								label='Cod. Postal'
 								name='codigo_postal'
-								value={locationClient?.id_ciudad?.ciudad}
+								value={locationClient?.id_direccion.codigoPostal}
 							/>
 							<TextField
 								disabled
@@ -203,7 +196,7 @@ const DifStepClient: FC = () => {
 								id='standard-required'
 								label='Sector'
 								name='sector'
-								value={locationClient?.sector}
+								value={locationClient?.id_direccion.sector}
 							/>
 						</div>
 						<div className={classes.input}>

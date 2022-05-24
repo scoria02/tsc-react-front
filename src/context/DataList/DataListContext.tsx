@@ -53,7 +53,7 @@ export const DataListProvider = ({ children }: Props) => {
 			const stop = routes.map(async (route: string) => {
 				return await axios.get(route, {
 					baseURL: process.env.REACT_APP_API_API,
-					headers: { common: { token: localStorage.getItem('token') } },
+					headers: { Authorization: `${localStorage.getItem('token')}` },
 				});
 			});
 

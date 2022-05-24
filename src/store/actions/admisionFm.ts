@@ -14,7 +14,6 @@ export const getDataFM = (fm: any) => {
 	return async (dispatch: any) => {
 		try {
 			//const res: AxiosResponse<any> = await useAxios.get(`/FM`);
-			//updateToken(res);
 			dispatch(requestSuccess(fm));
 		} catch (error: any) {
 			//console.log(error.response)
@@ -37,7 +36,6 @@ export const getDataFM = (fm: any) => {
 };
 
 export const updateStatusFM = (id_fm: number, status: any, validado: ValidatedFace, aci: number) => {
-	console.log('aqui', validado);
 	const id_status: any = {
 		id_status_request: status,
 		id_aci: aci,
@@ -84,12 +82,11 @@ export const updateStatusFM = (id_fm: number, status: any, validado: ValidatedFa
 			valid_pos: !validado.valid_pos.status && validado.valid_pos.id_typedif === 2 ? validado.valid_pos.msg : '',
 		},
 	};
-	console.log('aquix', id_status);
+	//console.log('aquix', id_status);
 
 	return async (dispatch: any) => {
 		try {
 			await useAxios.put(`/FM/admision/${id_fm}/status`, id_status);
-			//updateToken(res);
 			dispatch(requestSuccess(status));
 		} catch (error: any) {
 			console.log(error.response);
@@ -118,7 +115,7 @@ export const updateStatusFM = (id_fm: number, status: any, validado: ValidatedFa
 
 export const cleanAdmisionFM = () => {
 	return async (dispatch: any) => {
-		// console.log('Clean data FM & accept');
+		//console.log('Clean data FM & accept');
 		dispatch(cleanRec());
 		dispatch(CloseModal());
 		dispatch(request());
@@ -168,20 +165,13 @@ export const updateStatusFMDiferido = (
 	imagesActa: FileList | []
 ) => {
 	return async (dispatch: any) => {
-		console.log('c', client);
-		console.log('cc', commerce);
-		console.log('fm', fm);
-		console.log(imagePlanilla);
-		console.log(imagesForm);
-		console.log(imagesActa);
 		const dataFm: any = createFormDataFmDif(id_fm, fm, client, commerce, imagePlanilla, imagesForm, imagesActa);
 		try {
-			//await useAxios.put(`/FM/admition/${id_fm}/diferido`, dataFm);
+			await useAxios.put(`/FM/admition/${id_fm}/diferido`, dataFm);
 			//console.log('updateimg', res)
 			dispatch(requestSuccess());
 		} catch (error: any) {
 			//console.log(error.response)
-			//dispatch(CloseModalDiferido());
 			dispatch(requestError());
 			Swal.fire('Error', error.response.data.message, 'error');
 		}
@@ -200,7 +190,7 @@ export const updateStatusFMDiferido = (
 
 export const cleanDataFmDiferido = () => {
 	return async (dispatch: any) => {
-		//	console.log('Clean data Diferido')
+		//console.log('Clean data Diferido')
 		dispatch(CloseModalDiferido());
 		dispatch(request());
 	};

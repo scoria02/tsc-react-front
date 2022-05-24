@@ -1,20 +1,15 @@
 import { FormControlLabel, Switch } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import RecPdf from 'components/utilis/images/RecPdf';
-import FMValidDataContext from 'context/Admision/Validation/FmContext';
+import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
 import React, { useContext, useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { Valid } from 'store/actions/accept';
-//Url
-import { RootState } from 'store/store';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
 
 const StepContribuyenteSpecial: React.FC = () => {
 	const classes = useStyles();
-	const dispatch = useDispatch();
 	//const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 
 	const [openModal, setOpenModal] = useState<boolean>(false);
@@ -40,8 +35,8 @@ const StepContribuyenteSpecial: React.FC = () => {
 	};
 
 	useEffect(() => {
-		//console.log(state);
 		handleChangeValid('valid_special_contributor', state);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state]);
 
 	const handleCancel = () => {

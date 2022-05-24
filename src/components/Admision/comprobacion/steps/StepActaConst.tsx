@@ -2,14 +2,8 @@ import ImageIcon from '@mui/icons-material/Image';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { Avatar, Button, FormControlLabel, List, ListItem, ListItemText, Switch } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
-import FMValidDataContext from 'context/Admision/Validation/FmContext';
+import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
 import React, { useContext, useEffect, useState } from 'react';
-//import ReactImageZoom from 'react-image-zoom';
-//Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { Valid } from 'store/actions/accept';
-//Url
-import { RootState } from 'store/store';
 import './styles/pasos.scss';
 import { sxStyled, useStyles } from './styles/styles';
 
@@ -39,6 +33,7 @@ const StepActaConst: React.FC = () => {
 	useEffect(() => {
 		//console.log(state);
 		handleChangeValid('valid_constitutive_act', state);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state]);
 
 	const handleCancel = () => {

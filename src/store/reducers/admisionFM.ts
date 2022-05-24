@@ -29,7 +29,7 @@ const initialState: inState = {
 };
 
 export const admisionFM = (state = initialState, action: any) => {
-	console.log(action.payload);
+	//console.log(action.payload);
 	switch (action.type) {
 		//FM
 		case ActionType.getDataFM:

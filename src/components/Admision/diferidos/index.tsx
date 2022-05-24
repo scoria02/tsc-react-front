@@ -16,8 +16,7 @@ import { getDataFMDiferido } from 'store/actions/admisionFm';
 import { OpenModalDiferido } from 'store/actions/ui';
 import { useStyles } from '../styles/styles';
 import Diferido from './Diferido';
-import { RootState } from 'store/store';
-import { FMDiferidoContextProvider } from 'context/Admision/Diferido/FmDiferidoContext';
+//import { RootState } from 'store/store';
 
 const columns: GridColDef[] = [
 	{
@@ -65,7 +64,7 @@ const Diferidos: React.FC = () => {
 
 	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
 
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.diferido);
+	//const fm: any = useSelector((state: RootState) => state.fmAdmision.diferido);
 
 	// const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
 	const { user } = useSelector((state: any) => state.auth);
@@ -93,15 +92,13 @@ const Diferidos: React.FC = () => {
 	const [diferidos, setDiferidos] = useState([]);
 
 	useLayoutEffect(() => {
-		//console.log('(L1)')
 		socket.emit('cliente:loadDiferidos');
 	}, []);
 
 	//socket io (todos)
 	useEffect(() => {
-		//console.log('ED1')
 		socket.on('server:loadDiferidos', (data: any) => {
-			console.log('diferidos', data);
+			//console.log('diferidos', data);
 			setDiferidos(data);
 		});
 		if (!modalOpenDiferido) {
@@ -112,7 +109,7 @@ const Diferidos: React.FC = () => {
 	const handleRow = (event: any) => {
 		//setRowSelect(null);
 		socket.emit('Editar_diferido', event.row.id, (res: any) => {
-			// console.log('editar este', res);
+			//console.log('editar este', res);
 			setRowSelect({
 				...res.id_request,
 			});
@@ -123,13 +120,13 @@ const Diferidos: React.FC = () => {
 	};
 
 	useEffect(() => {
-		console.log('index', fm);
-		if (Object.keys(fm).length && !modalOpenDiferido) {
+		//console.log('index', rowSelected);
+		if (rowSelected && !modalOpenDiferido) {
 			dispatch(OpenModalDiferido());
 		}
-	}, [fm, modalOpenDiferido]);
+	}, [rowSelected, modalOpenDiferido]);
 
-	console.log('s', rowSelected);
+	//console.log('s', rowSelected);
 
 	return (
 		<div style={{ height: '100%', width: '100%' }}>

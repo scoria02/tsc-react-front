@@ -38,7 +38,6 @@ const StepBase: FC = () => {
 						<InputLabel>Solicitudes</InputLabel>
 						<Select
 							value={typeSolict}
-							//defaultValue={''}
 							onChange={(e) => handleTypeSolict(e.target.value as number)}
 							name='typeSolict'
 							label='TipoSolict'>

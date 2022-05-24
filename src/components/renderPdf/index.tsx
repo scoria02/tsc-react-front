@@ -31,8 +31,8 @@ const RenderCustomPdf: React.FC<Props> = ({ url, modal, handleCloseModal }) => {
 		else setPageNumber(1);
 	};
 
-	console.log(numPages);
-	console.log('actual', pageNumber);
+	//console.log(numPages);
+	//console.log('actual', pageNumber);
 
 	const classes = useStyles();
 	return (

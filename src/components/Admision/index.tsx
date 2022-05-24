@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import AddIcon from '@mui/icons-material/Add';
 import LowPriority from '@mui/icons-material/LowPrioritySharp';
-import { Fab } from '@mui/material';
+import { Fab, Button } from '@mui/material';
 import classNames from 'classnames';
 import { DataListAdmisionProvider } from 'context/DataList/DatalistAdmisionContext';
 import { SocketContext } from 'context/SocketContext';
 import { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getDataFM } from 'store/actions/admisionFm';
+//import { getDataFM } from 'store/actions/admisionFm';
 import { OpenModal, OpenModalListSolic } from 'store/actions/ui';
-import { RootState } from 'store/store';
+//import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
 import Barra from '../diagramas/Barra';
 import Dona from '../diagramas/Dona';
@@ -29,10 +29,11 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 
 	const { modalOpen } = useSelector((state: any) => state.ui);
 
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 	const { modalOpenListSolic } = useSelector((state: any) => state.ui);
 	const { user } = useSelector((state: any) => state.auth);
 	const { socket } = useContext(SocketContext);
+
+	const [fm, setFm] = useState(null);
 
 	const [valuesChart, setvaluesChart] = useState<number[]>([]);
 	const [keyChart, setkeyChart] = useState<string[]>([]);
@@ -42,46 +43,37 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 	const { solictudesTrabajando, diferidosTranbajando, diferidos } = todos;
 	const { allSolic, allTerm } = todostodos;
 
-	//socket 1 a 1
+	const [selectModal, setSelectModal] = useState<boolean>(false);
+
 	useLayoutEffect(() => {
 		//Este solo se debe ejecutar para obtener la data tras ver el fm
-		//console.log('(L1)')
 		socket.emit('cliente:dashdata', (data: any) => {
-			//console.log('L2',data)
 			setChartData(data);
 			setTodo(data);
 		});
 		socket.emit('cliente:todo', (todo: any) => {
-			//console.log('L3', todo)
 			setTodoTodos(todo);
 		});
 	}, []);
 
 	//socket io (todos)
 	useEffect(() => {
-		//console.log('(E1)')
-
 		socket.on('server:dashdata', (data: any) => {
-			//console.log('E2',data)
 			setChartData(data);
 			setTodo(data);
 		});
 
 		socket.on('server:todos', (todo: any) => {
-			//console.log('E3', todo)
 			setTodoTodos(todo);
 		});
 	}, [socket, user]);
 
-	const [selectModal, setSelectModal] = useState<boolean>(false);
-
 	const handleClick = () => {
 		if (!selectModal) {
+			setSelectModal(true);
 			socket.emit('client:atrabajar', user);
-			// let index = 0;
+			//
 			socket.on('server:atrabajar', (data: any) => {
-				// console.log('solic', index, data);
-				// Si la respuesta del socket es 400 es que no hay data
 				if (data.code === 400) {
 					setSelectModal(false);
 					Swal.fire({
@@ -94,8 +86,6 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 					return;
 				}
 
-				setSelectModal(true);
-				// index++;
 				if (data?.status === true) {
 					Swal.fire({
 						icon: 'warning',
@@ -106,8 +96,8 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 					});
 					setSelectModal(false);
 				} else {
-					console.log('fm', data);
-					dispatch(getDataFM(data));
+					//dispatch(getDataFM(data));
+					setFm(data);
 					if (data.length === 0) {
 						setSelectModal(false);
 						Swal.fire({
@@ -124,11 +114,13 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 	};
 
 	useEffect(() => {
-		if (Object.keys(fm).length && !modalOpen) {
+		if (fm && !modalOpen) {
 			dispatch(OpenModal());
 		}
-		if (!modalOpen) {
-			setSelectModal(false);
+		if (!fm) {
+			setTimeout(() => {
+				setSelectModal(false);
+			}, 1500);
 		}
 	}, [fm, modalOpen]);
 
@@ -188,13 +180,20 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 					</div>
 				</div>
 				{allSolic ? (
-					<div className='cmn-divfloat'>
-						<Fab color='primary' aria-label='add' size='medium' variant='extended' onClick={handleClick}>
-							Validar Solicitud
-							<AddIcon />
-						</Fab>
-						{modalOpen && fm ? <Comprobacion /> : null}
-					</div>
+					<Button
+						variant='contained'
+						sx={{
+							position: 'absolute',
+							borderRadius: '1rem',
+							padding: '10px',
+							right: '2rem',
+							bottom: '1rem',
+						}}
+						onClick={handleClick}
+						disabled={selectModal}>
+						<span style={{ textTransform: 'none', fontSize: 15 }}>Validar Solicitud</span>
+						<AddIcon />
+					</Button>
 				) : null}
 				{!isWorker ? (
 					<div className='cmn2-divfloat'>
@@ -204,6 +203,7 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 						{modalOpenListSolic ? <ListFms /> : null}
 					</div>
 				) : null}
+				{fm ? <Comprobacion fm={fm} setFm={setFm} /> : null}
 			</div>
 		</DataListAdmisionProvider>
 	);

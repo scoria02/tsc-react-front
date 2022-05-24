@@ -1,22 +1,9 @@
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import Autocomplete from '@mui/lab/Autocomplete';
 import { FormControlLabel, Switch, TextField } from '@mui/material';
-import { Valid } from 'store/actions/accept';
 import classNames from 'classnames';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import RecPdf from 'components/utilis/images/RecPdf';
-import FMValidDataContext from 'context/Admision/Validation/FmContext';
-import DataListContext from 'context/DataList/DataListContext';
-import FMDataContext from 'context/FM/fmAdmision/FmContext';
-import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
-import { Ciudad, Estado, Municipio, Parroquia } from 'context/FM/Location/interfaces';
-import LocationsContext from 'context/FM/Location/LocationsContext';
+import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { validationClient } from 'store/actions/fm';
-import { RootState } from 'store/store';
-import { validInputString } from 'utils/fm';
-import { capitalizedFull } from 'utils/formatName';
-import { recaudo } from 'utils/recaudos';
 //sytles
 import { sxStyled, useStylesFM } from '../styles';
 
@@ -48,8 +35,8 @@ const StepPos: FC = () => {
 	};
 
 	useEffect(() => {
-		//console.log(state);
 		handleChangeValid('valid_pos', state);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state]);
 
 	const handleCancel = () => {
@@ -143,14 +130,14 @@ const StepPos: FC = () => {
 							variant='outlined'
 							label='Estado'
 							name='Estado'
-							value={locationPos?.id_estado.estado}
+							value={locationPos?.id_direccion.estado}
 						/>
 						<TextField
 							className={classNames(classes.inputText)}
 							variant='outlined'
 							label='Municipio'
 							name='municipio'
-							value={locationPos?.id_municipio.municipio}
+							value={locationPos?.id_direccion.municipio}
 						/>
 					</div>
 					<div className={classes.input}>
@@ -160,14 +147,14 @@ const StepPos: FC = () => {
 							variant='outlined'
 							label='ciudad'
 							name='ciudad'
-							value={locationPos?.id_ciudad.ciudad}
+							value={locationPos?.id_direccion.ciudad}
 						/>
 						<TextField
 							className={classNames(classes.inputText)}
 							variant='outlined'
 							label='Parroquia'
 							name='parroquia'
-							value={locationPos?.id_parroquia.parroquia}
+							value={locationPos?.id_direccion.parroquia}
 						/>
 					</div>
 					<div className={classes.input}>
@@ -177,14 +164,14 @@ const StepPos: FC = () => {
 							variant='outlined'
 							label='Cod. Postal'
 							name='codigo_postal'
-							value={locationPos?.id_ciudad?.ciudad}
+							value={locationPos?.id_direccion?.codigoPostal}
 						/>
 						<TextField
 							className={classes.inputText}
 							variant='outlined'
 							label='Sector'
 							name='sector'
-							value={locationPos?.sector}
+							value={locationPos?.id_direccion.sector}
 						/>
 					</div>
 					<div className={classes.input}>

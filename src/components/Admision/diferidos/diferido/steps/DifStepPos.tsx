@@ -1,31 +1,14 @@
 import { TextField, Stack, Alert } from '@mui/material';
 import classNames from 'classnames';
-import { FC, useContext, useState } from 'react';
+import { FC, useContext } from 'react';
 //sytles
 import { sxStyled, useStylesFM } from '../styles';
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
-import RecDifPdf from 'components/utilis/images/RecDifPdf';
 
 const DifStepPos: FC = () => {
 	const classes = useStylesFM();
 
-	const {
-		solic,
-		client,
-		locationPos,
-		phones,
-		handleChangeClientPhone,
-		disabled,
-		handleChangeClient,
-		imagesForm,
-		handleChangeImages,
-		pathImages,
-		handleChange,
-		handleChangeRefClient,
-		listValidated,
-	} = useContext(FMDiferidoContext);
-
-	const [load, setLoad] = useState(false);
+	const { solic, locationPos, disabled, handleChange, listValidated } = useContext(FMDiferidoContext);
 
 	return (
 		<>
@@ -115,8 +98,7 @@ const DifStepPos: FC = () => {
 							id='standard-required'
 							label='Estado'
 							name='Estado'
-							value={locationPos?.id_estado.estado}
-							//value={locationPos.ciudad?.postal_code || ''}
+							value={locationPos?.id_direccion.estado}
 						/>
 						<TextField
 							disabled
@@ -126,8 +108,7 @@ const DifStepPos: FC = () => {
 							id='standard-required'
 							label='Municipio'
 							name='municipio'
-							value={locationPos?.id_municipio.municipio}
-							//value={locationPos.ciudad?.postal_code || ''}
+							value={locationPos?.id_direccion.municipio}
 						/>
 					</div>
 					<div className={classes.input}>
@@ -140,8 +121,7 @@ const DifStepPos: FC = () => {
 							id='standard-required'
 							label='ciudad'
 							name='ciudad'
-							value={locationPos?.id_ciudad.ciudad}
-							//value={locationPos.ciudad?.postal_code || ''}
+							value={locationPos?.id_direccion.ciudad}
 						/>
 						<TextField
 							disabled
@@ -151,8 +131,7 @@ const DifStepPos: FC = () => {
 							id='standard-required'
 							label='Parroquia'
 							name='parroquia'
-							value={locationPos?.id_parroquia.parroquia}
-							//value={locationPos.ciudad?.postal_code || ''}
+							value={locationPos?.id_direccion.parroquia}
 						/>
 					</div>
 					<div className={classes.input}>
@@ -165,7 +144,7 @@ const DifStepPos: FC = () => {
 							id='standard-required'
 							label='Cod. Postal'
 							name='codigo_postal'
-							value={locationPos?.id_ciudad?.ciudad}
+							value={locationPos?.id_direccion.codigoPostal}
 						/>
 						<TextField
 							disabled
@@ -175,7 +154,7 @@ const DifStepPos: FC = () => {
 							id='standard-required'
 							label='Sector'
 							name='sector'
-							value={locationPos?.sector}
+							value={locationPos?.id_direccion.sector}
 						/>
 					</div>
 					<div className={classes.input}>

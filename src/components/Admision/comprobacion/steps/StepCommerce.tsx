@@ -1,22 +1,9 @@
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import Autocomplete from '@mui/lab/Autocomplete';
 import { FormControlLabel, Switch, TextField } from '@mui/material';
-import { Valid } from 'store/actions/accept';
 import classNames from 'classnames';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import RecPdf from 'components/utilis/images/RecPdf';
-import FMValidDataContext from 'context/Admision/Validation/FmContext';
-import DataListContext from 'context/DataList/DataListContext';
-import FMDataContext from 'context/FM/fmAdmision/FmContext';
-import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
-import { Ciudad, Estado, Municipio, Parroquia } from 'context/FM/Location/interfaces';
-import LocationsContext from 'context/FM/Location/LocationsContext';
+import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { validationClient } from 'store/actions/fm';
-import { RootState } from 'store/store';
-import { validInputString } from 'utils/fm';
-import { capitalizedFull } from 'utils/formatName';
-import { recaudo } from 'utils/recaudos';
 //sytles
 import { sxStyled, useStylesFM } from '../styles';
 
@@ -50,6 +37,7 @@ const StepCommerce: FC = () => {
 	useEffect(() => {
 		//console.log(state);
 		handleChangeValid('valid_commerce', state);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state]);
 
 	const handleCancel = () => {
@@ -72,7 +60,6 @@ const StepCommerce: FC = () => {
 				<div className={classes.grid}>
 					<div className={classes.input}>
 						<TextField
-							required
 							className={classes.inputText}
 							type='text'
 							sx={sxStyled.inputLeft}
@@ -87,7 +74,6 @@ const StepCommerce: FC = () => {
 						<TextField
 							className={classes.inputText}
 							variant='outlined'
-							required
 							label='Rif'
 							autoComplete='off'
 							name='ident_num'
@@ -110,20 +96,16 @@ const StepCommerce: FC = () => {
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='Estado'
 							name='Estado'
-							value={locationCommerce?.id_estado.estado}
+							value={locationCommerce?.id_direccion.estado}
 						/>
 						<TextField
 							className={classNames(classes.inputText)}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='Municipio'
 							name='municipio'
-							value={locationCommerce?.id_municipio.municipio}
+							value={locationCommerce?.id_direccion.municipio}
 						/>
 					</div>
 					<div className={classes.input}>
@@ -131,20 +113,16 @@ const StepCommerce: FC = () => {
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='Ciudad'
 							name='ciudad'
-							value={locationCommerce?.id_ciudad.ciudad}
+							value={locationCommerce?.id_direccion.ciudad}
 						/>
 						<TextField
 							className={classNames(classes.inputText)}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='Parroquia'
 							name='parroquia'
-							value={locationCommerce?.id_parroquia.parroquia}
+							value={locationCommerce?.id_direccion.parroquia}
 						/>
 					</div>
 					<div className={classes.input}>
@@ -152,20 +130,16 @@ const StepCommerce: FC = () => {
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='Cod. Postal'
 							name='codigo_postal'
-							value={locationCommerce?.id_ciudad?.ciudad}
+							value={locationCommerce?.id_direccion?.codigoPostal}
 						/>
 						<TextField
 							className={classes.inputText}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='Sector'
 							name='sector'
-							value={locationCommerce?.sector}
+							value={locationCommerce?.id_direccion?.sector}
 						/>
 					</div>
 					<div className={classes.input}>
@@ -173,8 +147,6 @@ const StepCommerce: FC = () => {
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='Calle'
 							name='calle'
 							value={locationCommerce?.calle}
@@ -182,8 +154,6 @@ const StepCommerce: FC = () => {
 						<TextField
 							className={classes.inputText}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='Casa/Quinta/Apart'
 							name='local'
 							value={locationCommerce?.local}

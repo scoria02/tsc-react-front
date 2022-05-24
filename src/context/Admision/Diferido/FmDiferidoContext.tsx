@@ -50,10 +50,10 @@ const FMDiferidoContext = createContext<ContextFMD>({
 	handleChangeRefClient: () => {},
 });
 
-function getSteps(validate: any) {
+function getSteps(validate: any, validateClient: number, validateCommerce: number) {
 	const list: string[] = [];
-	if (validate.id_typedif_client && !list.includes('Cliente')) list.push('Cliente');
-	if (validate.id_typedif_commerce && !list.includes('Comercio')) list.push('Comercio');
+	if (!validateClient && validate.id_typedif_client && !list.includes('Cliente')) list.push('Cliente');
+	if (!validateCommerce && validate.id_typedif_commerce && !list.includes('Comercio')) list.push('Comercio');
 	if (validate.id_typedif_consitutive_acta && !list.includes('Acta Const.')) list.push('Acta Const.');
 	if (validate.id_typedif_special_contributor && !list.includes('Cont. Especial')) list.push('Cont. Especial');
 	if (validate.id_typedif_pos && !list.includes('Pos')) list.push('Pos');
@@ -75,19 +75,17 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 	const [solic, setSolic] = useState<any>(null);
 	const [locationCommerce, setLocationCommerce] = useState<any>(null);
 	const [locationPos, setLocationPos] = useState<any>(null);
+
 	const [phones, setPhones] = useState({
 		phone1: '',
 		phone2: '',
 	});
 
-	console.log(fm);
 	useEffect(() => {
-		console.log(fm);
 		if (fm) {
 			if (!client || !commerce || !pos || locationClient || !locationCommerce || !locationPos || !stepsFM.length) {
 				const { id_client, id_commerce } = fm;
-				console.log('cargar data');
-				console.log('fm context', fm);
+				console.log('Diferido context', fm);
 				if (id_client) {
 					const { phones, id_location, ref_person_1, ref_person_2, ...clientData } = id_client;
 					setClient({
@@ -106,7 +104,7 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 				}
 				if (id_commerce) {
 					const { id_location, ...commerceData } = id_commerce;
-					setCommerce(commerce);
+					setCommerce(commerceData);
 					setLocationCommerce(id_commerce.id_location);
 				}
 				setSolic(fm);
@@ -114,11 +112,12 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 				setLocationPos(fm.pos[0].id_location);
 				setCodeFM(fm.code);
 				setListValidated(fm.id_valid_request);
-				setStepsFM(getSteps(fm.id_valid_request));
+				setStepsFM(getSteps(fm.id_valid_request, fm.id_client.validate, fm.id_commerce.validate));
 			}
 		} else {
 			resetFm();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [fm]);
 	//
 	const [imagePlanilla, setImagePlanilla] = useState<FileList | []>([]);
@@ -151,7 +150,6 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 	};
 
 	const handleChangeRefClient = (param: string, value: any) => {
-		console.log(param, value);
 		if (client) {
 			setClient({
 				...client,
@@ -202,9 +200,7 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 	};
 
 	const deleteItemPlanilla = (id: number) => {
-		//console.log('delete -> ', id);
 		const aux = solic['rc_planilla'].filter((item: any) => item.id !== id);
-		//console.log(aux);
 		setSolic({
 			...solic,
 			rc_planilla: aux,
@@ -212,9 +208,7 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 	};
 
 	const deleteItemActa = (id: number) => {
-		//console.log('delete -> ', id);
 		const aux = commerce.rc_constitutive_act.filter((item: any) => item.id !== id);
-		//console.log(aux);
 		setCommerce({
 			...commerce,
 			rc_constitutive_act: aux,
@@ -249,9 +243,7 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 			let file = event.target.files[0];
 			let newFile = new File([file], `${event.target.name}.${file.type.split('/')[1]}`, { type: file.type });
 			const path2 = URL.createObjectURL(file);
-			//console.log('xd', path2);
 			//const path = URL.createObjectURL(newFile);
-			//console.log('xd', path);
 			if (!errorFile(event)) {
 				//Save img
 				setImagesForm({

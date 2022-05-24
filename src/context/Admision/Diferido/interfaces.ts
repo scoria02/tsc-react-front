@@ -50,6 +50,7 @@ export interface ContextFMD {
 
 export interface ClientDif {
 	id: number;
+	validate: number;
 	id_roles: number;
 	ident_num: string;
 	last_name: string;

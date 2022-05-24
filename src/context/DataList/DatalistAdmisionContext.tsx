@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { createContext, ReactChild, ReactChildren, useLayoutEffect, useState } from 'react';
-import axios, { AxiosResponse } from 'axios';
-import useAxios from 'config/index';
+import axios from 'axios';
 import { Aci, base } from './interface';
 
 interface Props {
@@ -27,7 +26,7 @@ export const DataListAdmisionProvider = ({ children }: Props) => {
 			const stop = routes.map(async (route: string) => {
 				return await axios.get(route, {
 					baseURL: process.env.REACT_APP_API_API,
-					headers: { common: { token: localStorage.getItem('token') } },
+					headers: { Authorization: `${localStorage.getItem('token')}` },
 				});
 			});
 

@@ -21,6 +21,7 @@ export interface ContextFMValidation {
 
 export interface ClientValid {
 	id: number;
+	validate: number;
 	id_roles: number;
 	ident_num: string;
 	last_name: string;
