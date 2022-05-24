@@ -115,6 +115,16 @@ const FormM: React.FC = () => {
 				name: fm.clientMash.name,
 				last_name: fm.clientMash.last_name,
 			});
+		} else if (
+			(!fm.mashClient && client.name !== '' && client.last_name !== '' && typeSolict === 1) ||
+			typeSolict === 2 ||
+			typeSolict === 3
+		) {
+			setClient({
+				...client,
+				name: '',
+				last_name: '',
+			});
 		}
 	}, [fm]);
 

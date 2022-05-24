@@ -21,7 +21,7 @@ export const validationClient = (client: any, errValid: boolean) => {
 				Swal.fire({
 					position: 'center',
 					icon: 'success',
-					title: 'Pase al siguente Paso',
+					title: 'Siguente Paso',
 					html: `<span>El cliente: <b>${dataClient.name} ${dataClient.last_name}</b>  ya fue registrado</span>`,
 					showConfirmButton: true,
 				});
