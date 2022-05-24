@@ -94,10 +94,10 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 						ref_person_2: JSON.parse(ref_person_2),
 					});
 					setPhones({
-						phone1: fm.id_client.phones[0].phone.slice(2, fm.id_client.phones[0].phone.length),
+						phone1: fm.id_client.phones[0].phone.slice(3, fm.id_client.phones[0].phone.length),
 						phone2:
 							fm.id_client.phones[1].phone.length > 10
-								? fm.id_client.phones[1].phone.slice(2, fm.id_client.phones[1].phone.length)
+								? fm.id_client.phones[1].phone.slice(3, fm.id_client.phones[1].phone.length)
 								: '',
 					});
 					setLocationClient(id_location);

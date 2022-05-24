@@ -17,13 +17,15 @@ export const validationClient = (client: any) => {
 			//console.log(res);
 			dispatch(requestSuccess(res.data.info));
 			const dataClient = res.data.info.client;
-			Swal.fire({
-				position: 'center',
-				icon: 'success',
-				title: 'Pase al siguente Paso',
-				html: `<span>El cliente: <b>${dataClient.name} ${dataClient.last_name}</b>  ya fue registrado</span>`,
-				showConfirmButton: true,
-			});
+			if (dataClient) {
+				Swal.fire({
+					position: 'center',
+					icon: 'success',
+					title: 'Pase al siguente Paso',
+					html: `<span>El cliente: <b>${dataClient.name} ${dataClient.last_name}</b>  ya fue registrado</span>`,
+					showConfirmButton: true,
+				});
+			}
 			//return res.data.info;
 		} catch (error: any) {
 			//console.log(error.response);
@@ -107,7 +109,7 @@ export const dataFormatClient = (client: fmClient, idLocationClient: number | nu
 	last_name: client.last_name.trim(),
 	id_ident_type: client.id_ident_type,
 	ident_num: client.ident_num,
-	phone1: '58' + client.phone1,
+	phone1: '+58' + client.phone1,
 	phone2: '+58' + client.phone2,
 	location: {
 		//id_estado: locationClient.estado?.id,

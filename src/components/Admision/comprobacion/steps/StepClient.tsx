@@ -106,7 +106,7 @@ const StepClient: FC = () => {
 							label='Telefono'
 							name='phone1'
 							autoComplete='telefono1'
-							value={client?.phones[0].phone.slice(2, client?.phones[0].phone.length)}
+							value={client?.phones[0].phone.slice(3, client?.phones[0].phone.length)}
 						/>
 						<TextField
 							className={classes.inputText}
@@ -114,7 +114,11 @@ const StepClient: FC = () => {
 							label='Telefono'
 							name='phone2'
 							autoComplete='telefono2'
-							value={(client?.phones[1].phone as string).length > 11 ? client?.phones[1].phone : 'NT'}
+							value={
+								(client?.phones[1].phone as string).length > 11
+									? client?.phones[1].phone.slice(3, client?.phones[1].phone.length)
+									: 'NT'
+							}
 						/>
 					</div>
 				</div>

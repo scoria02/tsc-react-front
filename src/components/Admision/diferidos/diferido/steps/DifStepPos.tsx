@@ -35,6 +35,7 @@ const DifStepPos: FC = () => {
 							onChange={handleChange}
 						/>
 						<TextField
+							disabled
 							className={classes.inputText}
 							variant='outlined'
 							label='Origen de la Solicitud'
@@ -54,6 +55,7 @@ const DifStepPos: FC = () => {
 					</div>
 					<div className={classes.input}>
 						<TextField
+							disabled
 							className={classes.inputText}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
@@ -62,6 +64,7 @@ const DifStepPos: FC = () => {
 							value={solic.discount ? 'Si' : 'No'}
 						/>
 						<TextField
+							disabled
 							className={classes.inputText}
 							variant='outlined'
 							label='Metodo de Pago'
@@ -71,6 +74,7 @@ const DifStepPos: FC = () => {
 					</div>
 					<div className={classes.input}>
 						<TextField
+							disabled
 							className={classes.inputText}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
@@ -79,6 +83,7 @@ const DifStepPos: FC = () => {
 							value={solic?.id_type_payment.name}
 						/>
 						<TextField
+							disabled
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							variant='outlined'
 							label='Pagadero Destino'
