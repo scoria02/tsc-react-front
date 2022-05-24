@@ -42,7 +42,9 @@ export const updateStatusFM = (id_fm: number, status: any, validado: ValidatedFa
 		valids: {
 			id_typedif_client: !validado.valid_cliente.status ? validado.valid_cliente.id_typedif : null,
 			id_typedif_commerce: !validado.valid_commerce.status ? validado.valid_commerce.id_typedif : null,
-			id_typedif_consitutive_acta: !validado.valid_ref_bank.status ? validado.valid_ref_bank.id_typedif : null,
+			id_typedif_consitutive_acta: !validado.valid_constitutive_act.status
+				? validado.valid_constitutive_act.id_typedif
+				: null,
 			id_typedif_special_contributor: !validado.valid_special_contributor.status
 				? validado.valid_special_contributor.id_typedif
 				: null,
