@@ -65,11 +65,14 @@ const StepClient: FC = () => {
 	const handleBlurEmailIdent = (): void => {
 		if (client.email !== '' && client.id_ident_type !== 0 && client.ident_num !== '') {
 			dispatch(
-				validationClient({
-					email: client.email,
-					id_ident_type: client.id_ident_type,
-					ident_num: client.ident_num,
-				})
+				validationClient(
+					{
+						email: client.email,
+						id_ident_type: client.id_ident_type,
+						ident_num: client.ident_num,
+					},
+					fm.errorClient
+				)
 			);
 		}
 	};

@@ -10,7 +10,7 @@ import { daysToString } from 'validation/validFm';
 import { ActionType } from '../types/types';
 import { TeleMarket } from './../../context/DataList/interface';
 
-export const validationClient = (client: any) => {
+export const validationClient = (client: any, errValid: boolean) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
@@ -30,7 +30,9 @@ export const validationClient = (client: any) => {
 		} catch (error: any) {
 			//console.log(error.response);
 			dispatch(requestError());
-			Swal.fire('Error', error.response.data.message, 'error');
+			if (!errValid) {
+				Swal.fire('Error', error.response.data.message, 'error');
+			}
 		}
 	};
 	function requestSuccess(state: boolean) {
