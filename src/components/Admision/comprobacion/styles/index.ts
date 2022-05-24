@@ -2,6 +2,9 @@ import { Theme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 
 export const useStylesFM = makeStyles((styles: Theme) => ({
+	containerSolic: {
+		marginTop: '10px',
+	},
 	btn_stepM: {
 		width: '100%',
 		display: 'flex',
@@ -51,7 +54,7 @@ export const useStylesFM = makeStyles((styles: Theme) => ({
 	containerFM: {
 		position: 'relative',
 		marginTop: '1rem',
-		width: '95%',
+		width: '100%',
 		// height: '440px',
 	},
 	containerLocation: {

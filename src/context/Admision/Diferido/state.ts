@@ -1,4 +1,4 @@
-import { ImagesInt, PathImagesInt } from 'context/FM/fmImages/interface';
+import { ImagesInt, PathImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
 
 export const initialImagesFm: ImagesInt = {
 	rc_ident_card: null,

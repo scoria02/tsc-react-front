@@ -8,13 +8,7 @@ interface Props {
 	fm: any;
 }
 
-const baseSteps = [
-	//'Información Personal del Cliente',
-	//'Información del Comercio',
-	'Pos',
-	'Referencia Bancaria',
-	'Fuerza de Venta',
-];
+const baseSteps = ['Pos', 'Referencia Bancaria', 'Fuerza de Venta'];
 
 function getSteps(fm: any) {
 	const list: string[] = [];

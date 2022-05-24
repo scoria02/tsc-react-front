@@ -1,7 +1,7 @@
 import { DataListProvider } from 'context/DataList/DataListContext';
-import { FMContextProvider } from 'context/FM/fmAdmision/FmContext';
-import { ImagesFmProvider } from 'context/FM/fmImages/ImagesFmContext';
-import { LocationsProvider } from 'context/FM/Location/LocationsContext';
+import { FMContextProvider } from 'context/Admision/CreationFM/fmAdmision/FmContext';
+import { ImagesFmProvider } from 'context/Admision/CreationFM/fmImages/ImagesFmContext';
+import { LocationsProvider } from 'context/Admision/CreationFM/Location/LocationsContext';
 import React from 'react';
 import FormM from './FormM';
 

@@ -1,6 +1,6 @@
 import useAxios from 'config/index';
 import { ValidatedFace } from 'context/Admision/Validation/interface';
-import { ImagesInt } from 'context/FM/fmImages/interface';
+import { ImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
 import Swal from 'sweetalert2';
 import { ActionType } from '../types/types';
 import { cleanRec } from './accept';

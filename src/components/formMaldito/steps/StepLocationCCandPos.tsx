@@ -1,9 +1,9 @@
 //Materail
 import { Autocomplete, TextField } from '@mui/material';
 import classnames from 'classnames';
-import FMDataContext from 'context/FM/fmAdmision/FmContext';
-import { Ciudad, Estado, Municipio, Parroquia, Sector } from 'context/FM/Location/interfaces';
-import LocationsContext from 'context/FM/Location/LocationsContext';
+import FMDataContext from 'context/Admision/CreationFM/fmAdmision/FmContext';
+import { Ciudad, Estado, Municipio, Parroquia, Sector } from 'context/Admision/CreationFM/Location/interfaces';
+import LocationsContext from 'context/Admision/CreationFM/Location/LocationsContext';
 import React, { FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';

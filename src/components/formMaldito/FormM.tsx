@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Typography, Button, Step, StepLabel, Stepper } from '@mui/material';
 import DataListContext from 'context/DataList/DataListContext';
-import FMDataContext from 'context/FM/fmAdmision/FmContext';
-import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
-import LocationsContext from 'context/FM/Location/LocationsContext';
+import FMDataContext from 'context/Admision/CreationFM/fmAdmision/FmContext';
+import ImagesFmContext from 'context/Admision/CreationFM/fmImages/ImagesFmContext';
+import LocationsContext from 'context/Admision/CreationFM/Location/LocationsContext';
 import { SocketContext } from 'context/SocketContext';
 import React, { ReactElement, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -115,10 +115,15 @@ const FormM: React.FC = () => {
 				name: fm.clientMash.name,
 				last_name: fm.clientMash.last_name,
 			});
-		} else if (
-			(!fm.mashClient && client.name !== '' && client.last_name !== '' && typeSolict === 1) ||
-			typeSolict === 2 ||
-			typeSolict === 3
+		}
+	}, [fm]);
+
+	useEffect(() => {
+		if (
+			!fm.mashClient &&
+			client.name !== '' &&
+			client.last_name !== '' &&
+			(typeSolict === 1 || typeSolict === 2 || typeSolict === 3)
 		) {
 			setClient({
 				...client,
@@ -126,7 +131,7 @@ const FormM: React.FC = () => {
 				last_name: '',
 			});
 		}
-	}, [fm]);
+	}, [fm.mashClient]);
 
 	useEffect(() => {
 		setReadyStep(

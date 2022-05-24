@@ -1,5 +1,5 @@
-import { ImagesInt, PathImagesInt } from 'context/FM/fmImages/interface';
-import { ReactChild, Dispatch, SetStateAction } from 'react';
+import { ImagesInt, PathImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
+import { ReactChild } from 'react';
 
 export interface PropsAd {
 	children: ReactChild;
@@ -18,7 +18,6 @@ export interface ContextFMD {
 	imagePlanilla: FileList | [];
 	imagesActa: FileList | [];
 	imagesForm: ImagesInt;
-	//setImagenes: Dispatch<SetStateAction<ArrayImagenes>>;
 	//paths
 	pathImages: PathImagesInt;
 	//

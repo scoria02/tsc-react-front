@@ -12,10 +12,10 @@ import {
 } from '@mui/material';
 import classNames from 'classnames';
 import DataListContext from 'context/DataList/DataListContext';
-import FMDataContext from 'context/FM/fmAdmision/FmContext';
-import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
-import { Ciudad, Estado, Municipio, Parroquia, Sector } from 'context/FM/Location/interfaces';
-import LocationsContext from 'context/FM/Location/LocationsContext';
+import FMDataContext from 'context/Admision/CreationFM/fmAdmision/FmContext';
+import ImagesFmContext from 'context/Admision/CreationFM/fmImages/ImagesFmContext';
+import { Ciudad, Estado, Municipio, Parroquia, Sector } from 'context/Admision/CreationFM/Location/interfaces';
+import LocationsContext from 'context/Admision/CreationFM/Location/LocationsContext';
 import React, { FC, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { validationClient } from 'store/actions/fm';

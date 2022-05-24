@@ -1,4 +1,4 @@
-import { ImagesInt, PathImagesInt } from 'context/FM/fmImages/interface';
+import { ImagesInt, PathImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
 import React, { createContext, useEffect, useState } from 'react';
 import { errorFile } from 'utils/validFormatFile';
 import { ClientDif, ContextFMD, PropsAd } from './interfaces';

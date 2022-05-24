@@ -13,8 +13,8 @@ import {
 import classNames from 'classnames';
 import DataListContext from 'context/DataList/DataListContext';
 import { Aci, Distributor, TeleMarket, TypeWallet } from 'context/DataList/interface';
-import FMDataContext from 'context/FM/fmAdmision/FmContext';
-import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
+import FMDataContext from 'context/Admision/CreationFM/fmAdmision/FmContext';
+import ImagesFmContext from 'context/Admision/CreationFM/fmImages/ImagesFmContext';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { validationNumBank } from 'store/actions/fm';

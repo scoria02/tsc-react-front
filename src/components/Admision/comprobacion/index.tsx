@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import FullModal from 'components/modals/FullModal';
 import { FMValidContextProvider } from 'context/Admision/Validation/FMValidDataContext';
 import { DataListAdmisionProvider } from 'context/DataList/DatalistAdmisionContext';
@@ -50,6 +49,7 @@ const Comprobacion: FC<Prop> = ({ fm, setFm }) => {
 			setModelOpen(false);
 			dispatch(cleanAdmisionFM());
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id_statusFM, updatedStatus]);
 
 	const handleClose = () => {
