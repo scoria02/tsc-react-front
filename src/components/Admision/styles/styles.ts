@@ -8,6 +8,13 @@ export const useStyles = makeStyles((styles: Theme) => ({
 		gridColumnGap: '2rem',
 		gridTemplateColumns: '1fr 1fr',
 	},
+	buttonSolic: {
+		background: styles.palette.primary.main,
+		position: 'fixed',
+		bottom: '20px',
+		left: '5rem',
+		borderRadius: '2',
+	},
 	dataGrid: {
 		width: '100%',
 		height: '75vh',

@@ -24,8 +24,6 @@ const RecDifPdf: React.FC<any> = ({ load, setLoad, imagen, type }) => {
 		}
 	}, [type, imagen]);
 
-	console.log('img', imagen, type);
-
 	return (
 		<>
 			{pdf ? (

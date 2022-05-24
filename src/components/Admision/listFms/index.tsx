@@ -36,9 +36,9 @@ const ListFms: React.FC = () => {
 
 	const handleSearching = (e: any) => {
 		e.preventDefault();
-		console.log(search);
+		//console.log(search);
 		socket.emit('cliente:coleado', search, (data: any) => {
-			console.log('data del boton', data);
+			//console.log('data del boton', data);
 			if (data) {
 				setFm({
 					email: data.email,

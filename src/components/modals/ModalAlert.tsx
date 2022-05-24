@@ -1,13 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-//modal
-
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutlineSharp';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import DataListAdmisionContext from 'context/DataList/DatalistAdmisionContext';
 import { useContext, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Valid } from 'store/actions/accept';
 import AnimationModal from './AnimationModal';
 import './scss/modalAlert.scss';
 import { useStylesModalAlert } from './styles';
@@ -21,7 +17,6 @@ interface Props {
 }
 
 export const ModalAlert: React.FC<Props> = ({ from, openModal, handleCloseModal, state, setState }) => {
-	const dispatch = useDispatch();
 	const classes = useStylesModalAlert();
 	const [razon, setRazon] = useState(state.id_typedif);
 	const { listRazon } = useContext(DataListAdmisionContext);

@@ -157,7 +157,6 @@ export const inputNotNull = (last: number, form: fmClient | fmCommerce | fmPos):
 		index++;
 		if (typeof item[1] === 'string' && item[1].trim() === '') {
 			if (item[0] !== 'phone2') {
-				console.log('bug1', item);
 				return true;
 			}
 		} else if (typeof item[1] === 'number' && item[1] === 0) {
@@ -193,11 +192,9 @@ export const inputNotNullPos = (
 			return false;
 		}
 		index++;
-		//console.log(item[0], typeof item[1]);
 		if (typeof item[1] === 'string') {
 			if (item[0] === 'reqSource_docnum') {
-				//console.log('llegue');
-				if (form['request_origin']?.id === 1) {
+				if (form['request_origin']?.id === 1 || form['request_origin']?.id === 6) {
 					if (item[1] === '') return true;
 				}
 				if (form['request_origin']?.id === 3) {
@@ -206,7 +203,7 @@ export const inputNotNullPos = (
 				if (form['request_origin']?.id === 2 || form['request_origin']?.id === 8) {
 					if (!aci) return true;
 				}
-				if (form['request_origin']?.id === 6) {
+				if (form['request_origin']?.id === 5) {
 					if (!typeWallet) return true;
 				}
 			} else if (item[1].trim() === '') {
@@ -388,20 +385,16 @@ const checkInputForExtraPosDataPos = (
 	aci: Aci | Distributor | null,
 	typeWallet: TypeWallet | null
 ) => {
-	//console.log(form);
 	let index: number = 0;
 	for (const item of Object.entries(form)) {
 		if (index === last) {
-			//console.log('index', index);
 			return false;
 		} else if (index >= min) {
 			if (typeof item[1] === 'string') {
 				if (item[0] === 'reqSource_docnum') {
-					//console.log('llegue');
 					if (form['request_origin']?.id === 1) {
 						if (item[1] === '') return true;
 					} else if (form['request_origin']?.id === 2 || form['request_origin']?.id === 8) {
-						//console.log('aci');
 						if (!aci) return true;
 					} else if (form['request_origin']?.id === 6) {
 						if (!typeWallet) return true;
@@ -465,7 +458,6 @@ export const validReadyStep = (
 			return true;
 		case 1: //Cliente
 		case 2:
-			//console.log(errorClient);
 			if (errorClient) return false;
 			if (typeSolict === 4) {
 				if (activeStep === 1) {
@@ -478,13 +470,6 @@ export const validReadyStep = (
 					else return false;
 				}
 			} else {
-				console.log(
-					'xd',
-					!checkErrorAllInput(sizeStepError(activeStep), errorsClient),
-					!inputNotNullLocation(locationClient),
-					!inputNotNull(sizeStep(activeStep), client),
-					!inputFileNotNull(1, imagesForm)
-				);
 				if (fm.mashClient) {
 					return true;
 				} else if (
@@ -493,7 +478,6 @@ export const validReadyStep = (
 					!inputNotNull(sizeStep(activeStep), client) &&
 					!inputFileNotNull(1, imagesForm)
 				) {
-					console.log('error');
 					return true;
 				}
 			}

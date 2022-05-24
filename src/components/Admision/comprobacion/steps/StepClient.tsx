@@ -1,22 +1,9 @@
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import Autocomplete from '@mui/lab/Autocomplete';
 import { FormControlLabel, Switch, TextField } from '@mui/material';
-import { Valid } from 'store/actions/accept';
 import classNames from 'classnames';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import RecPdf from 'components/utilis/images/RecPdf';
-import FMValidDataContext from 'context/Admision/Validation/FmContext';
-import DataListContext from 'context/DataList/DataListContext';
-import FMDataContext from 'context/FM/fmAdmision/FmContext';
-import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
-import { Ciudad, Estado, Municipio, Parroquia } from 'context/FM/Location/interfaces';
-import LocationsContext from 'context/FM/Location/LocationsContext';
+import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { validationClient } from 'store/actions/fm';
-import { RootState } from 'store/store';
-import { validInputString } from 'utils/fm';
-import { capitalizedFull } from 'utils/formatName';
-import { recaudo } from 'utils/recaudos';
 //sytles
 import { sxStyled, useStylesFM } from '../styles';
 
@@ -49,6 +36,7 @@ const StepClient: FC = () => {
 
 	useEffect(() => {
 		handleChangeValid('valid_cliente', state);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state]);
 
 	const handleCancel = () => {
@@ -71,7 +59,6 @@ const StepClient: FC = () => {
 				<div className={classes.grid}>
 					<div className={classes.input}>
 						<TextField
-							required
 							className={classes.inputText}
 							type='email'
 							sx={sxStyled.inputLeft}
@@ -86,8 +73,7 @@ const StepClient: FC = () => {
 						<TextField
 							className={classes.inputText}
 							variant='outlined'
-							required
-							label='C.I.'
+							label='CI'
 							autoComplete='off'
 							name='ident_num'
 							value={`${client?.id_ident_type.name} ${client?.ident_num}`}
@@ -98,7 +84,6 @@ const StepClient: FC = () => {
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
-							required
 							label='Nombre'
 							autoComplete='nombre'
 							name='name'
@@ -107,7 +92,6 @@ const StepClient: FC = () => {
 						<TextField
 							className={classes.inputText}
 							variant='outlined'
-							required
 							label='Apellido'
 							autoComplete='last_name'
 							name='last_name'
@@ -119,7 +103,6 @@ const StepClient: FC = () => {
 							className={classes.inputText}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
-							required
 							label='Telefono'
 							name='phone1'
 							autoComplete='telefono1'
@@ -128,7 +111,6 @@ const StepClient: FC = () => {
 						<TextField
 							className={classes.inputText}
 							variant='outlined'
-							required
 							label='Telefono'
 							name='phone2'
 							autoComplete='telefono2'
@@ -142,21 +124,17 @@ const StepClient: FC = () => {
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='Estado'
 							name='Estado'
-							value={locationClient?.id_estado.estado}
+							value={locationClient?.id_direccion.estado}
 							//value={locationClient.ciudad?.postal_code || ''}
 						/>
 						<TextField
 							className={classNames(classes.inputText)}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='Municipio'
 							name='municipio'
-							value={locationClient?.id_municipio.municipio}
+							value={locationClient?.id_direccion.municipio}
 							//value={locationClient.ciudad?.postal_code || ''}
 						/>
 					</div>
@@ -165,21 +143,17 @@ const StepClient: FC = () => {
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='ciudad'
 							name='ciudad'
-							value={locationClient?.id_ciudad.ciudad}
+							value={locationClient?.id_direccion.ciudad}
 							//value={locationClient.ciudad?.postal_code || ''}
 						/>
 						<TextField
 							className={classNames(classes.inputText)}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='Parroquia'
 							name='parroquia'
-							value={locationClient?.id_parroquia.parroquia}
+							value={locationClient?.id_direccion.parroquia}
 							//value={locationClient.ciudad?.postal_code || ''}
 						/>
 					</div>
@@ -188,20 +162,16 @@ const StepClient: FC = () => {
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='Cod. Postal'
 							name='codigo_postal'
-							value={locationClient?.id_ciudad?.ciudad}
+							value={locationClient?.id_direccion.codigoPostal}
 						/>
 						<TextField
 							className={classes.inputText}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='Sector'
 							name='sector'
-							value={locationClient?.sector}
+							value={locationClient?.id_direccion.sector}
 						/>
 					</div>
 					<div className={classes.input}>
@@ -209,8 +179,6 @@ const StepClient: FC = () => {
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='Calle'
 							name='calle'
 							value={locationClient?.calle}
@@ -218,8 +186,6 @@ const StepClient: FC = () => {
 						<TextField
 							className={classes.inputText}
 							variant='outlined'
-							required
-							id='standard-required'
 							label='Casa/Quinta/Apart'
 							name='local'
 							value={locationClient?.local}
@@ -238,8 +204,6 @@ const StepClient: FC = () => {
 						className={classNames(classes.inputText, classes.inputTextLeft)}
 						sx={sxStyled.inputLeft}
 						variant='outlined'
-						required
-						id='standard-required'
 						label='Nombre Completo'
 						name='name_ref1'
 						value={client?.ref_person_1?.fullName}
@@ -248,8 +212,6 @@ const StepClient: FC = () => {
 						className={classNames(classes.inputText, classes.inputTextLeft)}
 						sx={sxStyled.inputLeft}
 						variant='outlined'
-						required
-						id='standard-required'
 						label='Doc. de Identidad'
 						placeholder='Ej: 12345678'
 						name='doc_ident_ref1'
@@ -259,7 +221,6 @@ const StepClient: FC = () => {
 						className={classNames(classes.inputText, classes.inputTextLeft)}
 						sx={sxStyled.inputLeft}
 						variant='outlined'
-						required
 						label='Telefono'
 						name='phone_ref1'
 						autoComplete='telefono'
@@ -271,8 +232,6 @@ const StepClient: FC = () => {
 						className={classNames(classes.inputText, classes.inputTextLeft)}
 						sx={sxStyled.inputLeft}
 						variant='outlined'
-						required
-						id='standard-required'
 						label='Nombre Completo'
 						name='name_ref2'
 						value={client?.ref_person_2?.fullName}
@@ -281,8 +240,6 @@ const StepClient: FC = () => {
 						className={classNames(classes.inputText, classes.inputTextLeft)}
 						sx={sxStyled.inputLeft}
 						variant='outlined'
-						required
-						id='standard-required'
 						label='Doc. de Identidad'
 						placeholder='Ej: 87654321'
 						name='doc_ident_ref2'
@@ -292,7 +249,6 @@ const StepClient: FC = () => {
 						className={classNames(classes.inputText, classes.inputTextLeft)}
 						sx={sxStyled.inputLeft}
 						variant='outlined'
-						required
 						label='Telefono'
 						name='phone_ref2'
 						autoComplete='telefono'

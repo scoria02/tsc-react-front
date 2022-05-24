@@ -10,18 +10,21 @@ import { daysToString } from 'validation/validFm';
 import { ActionType } from '../types/types';
 import { TeleMarket } from './../../context/DataList/interface';
 
-export const updateToken = (token: any) => {
-	localStorage.setItem('token', token.data.token);
-};
-
 export const validationClient = (client: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
-			updateToken(res);
-			console.log(res);
+			//console.log(res);
 			dispatch(requestSuccess(res.data.info));
-			return res.data.info;
+			const dataClient = res.data.info.client;
+			Swal.fire({
+				position: 'center',
+				icon: 'success',
+				title: 'Pase al siguente Paso',
+				html: `<span>El cliente: <b>${dataClient.name} ${dataClient.last_name}</b>  ya fue registrado</span>`,
+				showConfirmButton: true,
+			});
+			//return res.data.info;
 		} catch (error: any) {
 			//console.log(error.response);
 			dispatch(requestError());
@@ -46,7 +49,6 @@ export const validationCommerce = (id_client: number, commerce: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce/valid`, commerce);
 			if (res.data.info) {
-				updateToken(res);
 				dispatch(requestSuccess(res.data.info));
 			} else {
 				dispatch(requestSuccessOk());
@@ -79,7 +81,6 @@ export const validationNumBank = (clientBank: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res = await useAxios.post(`/FM/bank/valid`, clientBank);
-			updateToken(res);
 			dispatch(requestSuccess(res.data.info.name));
 		} catch (error: any) {
 			//console.log(error.response);
@@ -132,9 +133,9 @@ export const dataFormatClient = (client: fmClient, idLocationClient: number | nu
 
 export const dataFormatCommerce = (
 	commerce: fmCommerce,
-	locationCommerce: LocationInt,
 	activity: Activity | null,
-	pos: fmPos
+	pos: fmPos,
+	idLocationCommerce: number | null
 ) => ({
 	id_ident_type: commerce.id_ident_type,
 	ident_num: commerce.ident_num,
@@ -148,6 +149,7 @@ export const dataFormatCommerce = (
 		//id_parroquia: locationCommerce.parroquia?.id,
 		//id_ciudad: locationCommerce.ciudad?.id,
 		//sector: commerce.sector,
+		id_direccion: idLocationCommerce,
 		calle: commerce.calle,
 		local: commerce.local,
 	},
@@ -160,9 +162,9 @@ export const dataFormatPos = (
 	aci: Aci | null,
 	telemarket: TeleMarket | null,
 	typeWallet: TypeWallet | null,
-	locationPos: LocationInt,
 	idClient: number,
-	idCommerce: number
+	idCommerce: number,
+	idLocationPos: number | null
 ) => {
 	//pos.request_origin?.id === 2 ? (aci ? aci : '') | ''
 	let auxOrigen: string = '';
@@ -188,6 +190,7 @@ export const dataFormatPos = (
 			//id_parroquia: locationPos.parroquia?.id,
 			//id_ciudad: locationPos.ciudad?.id,
 			//sector: pos.sector,
+			id_direccion: idLocationPos,
 			calle: pos.calle,
 			local: pos.local,
 		},
@@ -235,7 +238,7 @@ export const dataForPos = (
 	aci: Aci | null,
 	telemarket: TeleMarket | null,
 	typeWallet: TypeWallet | null,
-	locationPos: LocationInt
+	idLocationPos: number | null
 ) => {
 	//pos.request_origin?.id === 2 ? (aci ? aci : '') | ''
 	let auxOrigen: string = '';
@@ -259,6 +262,8 @@ export const dataForPos = (
 			//id_parroquia: locationPos.parroquia?.id,
 			//id_ciudad: locationPos.ciudad?.id,
 			//sector: pos.sector,
+
+			id_direccion: idLocationPos,
 			calle: pos.calle,
 			local: pos.local,
 		},
@@ -336,26 +341,25 @@ export const createFMExtraPos = (
 export const sendCompleteFM = (
 	typeSolict: number,
 	client: fmClient,
-	locationClient: LocationInt,
 	commerce: fmCommerce,
-	locationCommerce: LocationInt,
 	activity: Activity | null,
 	pos: fmPos,
 	aci: Aci | null,
 	telemarket: TeleMarket | null,
 	typeWallet: TypeWallet | null,
-	locationPos: LocationInt,
 	imagePlanilla: FileList | [],
 	imagesForm: ImagesInt,
 	imagesActa: FileList | [],
 	id_client: number,
-	idLocationClient: number | null
+	idLocationClient: number | null,
+	idLocationCommerce: number | null,
+	idLocationPos: number | null
 ) => {
 	//Crear formart
 	const dataClient = id_client ? null : dataFormatClient(client, idLocationClient);
-	const dataCommerce = dataFormatCommerce(commerce, locationCommerce, activity, pos);
-	const dataPost = dataForPos(typeSolict, pos, aci, telemarket, typeWallet, locationPos);
-	console.log('cliente: ', dataClient, ' id ', id_client);
+	const dataCommerce = dataFormatCommerce(commerce, activity, pos, idLocationCommerce);
+	const dataPost = dataForPos(typeSolict, pos, aci, telemarket, typeWallet, idLocationPos);
+	//console.log('cliente: ', dataClient, ' id ', id_client);
 	return async (dispatch: any) => {
 		try {
 			const fm: any = createFM(
@@ -373,7 +377,7 @@ export const sendCompleteFM = (
 				id_client
 			);
 			const resFM: AxiosResponse<any> = await useAxios.post(`/FM`, fm);
-			console.log('creado fm id: ', resFM);
+			//console.log('creado fm id: ', resFM);
 			dispatch(requestSuccess(resFM.data.info.code));
 		} catch (error: any) {
 			//console.log(error.reponse)
@@ -401,9 +405,9 @@ export const sendCompleteFMExtraPos = (
 	aci: Aci | null,
 	telemarket: TeleMarket | null,
 	typeWallet: TypeWallet | null,
-	locationPos: LocationInt,
 	imagePlanilla: FileList | [],
-	imagesForm: ImagesInt
+	imagesForm: ImagesInt,
+	idLocationPos: number | null
 ) => {
 	return async (dispatch: any) => {
 		const dataPos = dataFormatPos(
@@ -412,9 +416,9 @@ export const sendCompleteFMExtraPos = (
 			aci,
 			telemarket,
 			typeWallet,
-			locationPos,
 			idsCAndCc.idClient,
-			idsCAndCc.idCommerce
+			idsCAndCc.idCommerce,
+			idLocationPos
 		);
 		const fmExtraPos = createFMExtraPos(
 			idsCAndCc.idClient,
@@ -425,8 +429,7 @@ export const sendCompleteFMExtraPos = (
 		);
 		try {
 			const resFM: AxiosResponse<any> = await useAxios.post(`/FM/extraPos`, fmExtraPos);
-			console.log('fm cargado', resFM.data);
-			//updateToken(res);
+			//console.log('fm cargado', resFM.data);
 			dispatch(requestSuccess(resFM.data.info.code));
 		} catch (error: any) {
 			//console.log(error.reponse)

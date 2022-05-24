@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 import LoaderPrimary from '../../loaders/LoaderPrimary';
 //steps
 //Cliente y comercio existente
+import StepDataPreValidate from './steps/StepDataPreValidate';
 import StepClient from './steps/StepClient';
 import StepCommerce from './steps/StepCommerce';
 import StepRefBank from './steps/StepRefBank';
@@ -24,7 +25,7 @@ import StepContribuyenteSpecial from './steps/StepContribuyenteSpecial';
 import StepCompDep from './steps/StepCompDep';
 import StepPos from './steps/StepPos';
 import { useStylesFM } from './styles';
-import FMValidDataContext from 'context/Admision/Validation/FmContext';
+import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
 import { setTimeout } from 'timers';
 import { FastRewindTwoTone } from '@mui/icons-material';
 import { updateStatusFM } from 'store/actions/admisionFm';
@@ -44,8 +45,6 @@ const Validacion: React.FC = () => {
 
 	const { listAci } = useContext(DataListAdmisionContext);
 	const { client, commerce, solic, codeFM, pos, stepsFM, aci, listValidated } = useContext(FMValidDataContext);
-
-	//console.log('step show', stepsFM);
 
 	useLayoutEffect(() => {
 		setSteps(stepsFM);
@@ -116,7 +115,6 @@ const Validacion: React.FC = () => {
 			}).then((result) => {
 				if (result.isConfirmed) {
 					handleLoading();
-					console.log(listValidated);
 					if (validStatusFm()) {
 						dispatch(updateStatusFM(solic.id, 4, listValidated, aci?.id));
 						console.log('mandado diferido');
@@ -153,18 +151,22 @@ const Validacion: React.FC = () => {
 		});
 	};
 
-	console.log('validados:', stepsValid, ' steps', steps.length - 1);
+	//console.log('validados:', stepsValid, ' steps', steps.length - 1);
 
 	const getContentSteps = () => {
 		let listSteps: any = [];
-		if (client && !listSteps.includes(<StepClient />)) listSteps.push(<StepClient />);
-		if (commerce && !listSteps.includes(<StepCommerce />)) listSteps.push(<StepCommerce />);
-		if (commerce.rc_constitutive_act.length && !listSteps.includes(<StepActaConst />))
-			listSteps.push(<StepActaConst />);
-		if (commerce.rc_special_contributor && !listSteps.includes(<StepContribuyenteSpecial />))
-			listSteps.push(<StepContribuyenteSpecial />);
+		if (client?.validate || commerce.valid_cliente)
+			if (!listSteps.includes(<StepDataPreValidate />)) listSteps.push(<StepDataPreValidate />);
+		if (solic.rc_planilla.length && !listSteps.includes(<StepPlanilla />)) listSteps.push(<StepPlanilla />);
+		if (client && !client.validate && !listSteps.includes(<StepClient />)) listSteps.push(<StepClient />);
+		if (commerce && !commerce.validate) {
+			if (!listSteps.includes(<StepCommerce />)) listSteps.push(<StepCommerce />);
+			if (commerce.rc_constitutive_act.length && !listSteps.includes(<StepActaConst />))
+				listSteps.push(<StepActaConst />);
+			if (commerce.rc_special_contributor && !listSteps.includes(<StepContribuyenteSpecial />))
+				listSteps.push(<StepContribuyenteSpecial />);
+		}
 		if (solic && !listSteps.includes(<StepPos />)) listSteps.push(<StepPos />);
-		if (solic.rc_planilla.length && !listSteps.includes('Planilla de Solicitud')) listSteps.push(<StepPlanilla />);
 		if (solic.rc_ref_bank && !listSteps.includes(<StepRefBank />)) listSteps.push(<StepRefBank />);
 		if (solic.rc_comp_dep && !listSteps.includes(<StepCompDep />)) listSteps.push(<StepCompDep />);
 		if (!listSteps.includes(<StepSelectAci />)) listSteps.push(<StepSelectAci />);
@@ -173,8 +175,6 @@ const Validacion: React.FC = () => {
 	};
 
 	const getStep: ReactElement[] = getContentSteps();
-
-	console.log(activeStep, stepsValid);
 
 	const handleClickButton = () => {
 		if (activeStep > stepsValid - 1) {

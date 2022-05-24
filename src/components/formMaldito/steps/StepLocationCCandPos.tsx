@@ -1,6 +1,5 @@
 //Materail
-import Autocomplete from '@mui/lab/Autocomplete';
-import { TextField } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import classnames from 'classnames';
 import FMDataContext from 'context/FM/fmAdmision/FmContext';
 import { Ciudad, Estado, Municipio, Parroquia, Sector } from 'context/FM/Location/interfaces';
@@ -77,6 +76,7 @@ const StepLocationCCandPos: FC = () => {
 				<h2>Dirección Fiscal</h2>
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
+						noOptionsText={'Cargando...'}
 						className={classes.inputTextLeft}
 						sx={sxStyled.inputSelect}
 						onChange={(event, value: Estado | null) => {
@@ -99,6 +99,7 @@ const StepLocationCCandPos: FC = () => {
 						)}
 					/>
 					<Autocomplete
+						noOptionsText={'Cargando...'}
 						className={classes.inputText}
 						onChange={(event, value: Municipio | null) => {
 							setMunicipio(value, setLocationCommerce);
@@ -121,6 +122,7 @@ const StepLocationCCandPos: FC = () => {
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
+						noOptionsText={'Cargando...'}
 						onChange={(event, value: Ciudad | null) => {
 							setCiudad(value, setLocationCommerce);
 							handleListParroquia(
@@ -147,6 +149,7 @@ const StepLocationCCandPos: FC = () => {
 						)}
 					/>
 					<Autocomplete
+						noOptionsText={'Cargando...'}
 						className={classes.inputText}
 						onChange={(event, value: Parroquia | null) => {
 							setParroquia(value, setLocationCommerce);
@@ -180,6 +183,7 @@ const StepLocationCCandPos: FC = () => {
 						value={locationCommerce.parroquia?.codigoPostal || ''}
 					/>
 					<Autocomplete
+						noOptionsText={'Cargando...'}
 						disabled={fm.mashCommerce}
 						className={classes.inputText}
 						onChange={(event, value: Sector | null) => {
@@ -230,11 +234,12 @@ const StepLocationCCandPos: FC = () => {
 				<h2>Dirección POS</h2>
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
+						noOptionsText={'Cargando...'}
 						className={classes.inputTextLeft}
 						sx={sxStyled.inputSelect}
 						onChange={(event, value: Estado | null) => {
 							setEstado(value, setLocationPos);
-							//handleListMunicipio(value ? value.id : 0, setListLocationPos);
+							handleListMunicipio(value, setListLocationPos);
 						}}
 						options={listLocationPos.estado}
 						value={locationPos.estado || null}
@@ -251,6 +256,7 @@ const StepLocationCCandPos: FC = () => {
 						)}
 					/>
 					<Autocomplete
+						noOptionsText={'Cargando...'}
 						className={classes.inputText}
 						onChange={(event, value: Municipio | null) => {
 							setMunicipio(value, setLocationPos);
@@ -272,6 +278,7 @@ const StepLocationCCandPos: FC = () => {
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
 					<Autocomplete
+						noOptionsText={'Cargando...'}
 						className={classes.inputTextLeft}
 						sx={sxStyled.inputSelect}
 						onChange={(event, value: Ciudad | null) => {
@@ -292,6 +299,7 @@ const StepLocationCCandPos: FC = () => {
 						)}
 					/>
 					<Autocomplete
+						noOptionsText={'Cargando...'}
 						className={classes.inputText}
 						onChange={(event, value: Parroquia | null) => {
 							setParroquia(value, setLocationPos);
@@ -330,7 +338,7 @@ const StepLocationCCandPos: FC = () => {
 						disabled
 					/>
 					<Autocomplete
-						disabled={fm.mashClient}
+						noOptionsText={'Cargando...'}
 						className={classes.inputText}
 						onChange={(event, value: Sector | null) => {
 							setSector(value, setLocationPos);

@@ -121,6 +121,14 @@ export const FMContextProvider = ({ children }: Props) => {
 	};
 
 	useEffect(() => {
+		setAci(null);
+		if (pos.reqSource_docnum !== '') {
+			handleParamsPos('reqSource_docnum', '');
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [pos.request_origin]);
+
+	useEffect(() => {
 		if (typeSolict === 1 || typeSolict === 3) {
 			setCommerce((prevState) => {
 				return {
@@ -296,8 +304,13 @@ export const FMContextProvider = ({ children }: Props) => {
 		}));
 	};
 
-	const copyLocationToCommerce = (stateLocation: LocationInt, state: fmClient | fmCommerce | fmPos): void => {
+	const copyLocationToCommerce = (
+		stateLocation: LocationInt,
+		state: fmClient | fmCommerce | fmPos,
+		idLocation: number | null
+	): void => {
 		setLocationCommerce(stateLocation);
+		setIdLocationCommerce(idLocation);
 		setCommerce({
 			...commerce,
 			calle: state.calle,
@@ -305,8 +318,13 @@ export const FMContextProvider = ({ children }: Props) => {
 		});
 	};
 
-	const copyLocationToPos = (stateLocation: LocationInt, state: fmClient | fmCommerce | fmPos): void => {
+	const copyLocationToPos = (
+		stateLocation: LocationInt,
+		state: fmClient | fmCommerce | fmPos,
+		idLocation: number | null
+	): void => {
 		setLocationPos(stateLocation);
+		setIdLocationPos(idLocation);
 		setPos({
 			...pos,
 			calle: state.calle,

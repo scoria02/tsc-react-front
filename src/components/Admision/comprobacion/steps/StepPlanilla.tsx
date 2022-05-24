@@ -1,16 +1,11 @@
 import ImageIcon from '@mui/icons-material/Image';
-import FMValidDataContext from 'context/Admision/Validation/FmContext';
+import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { TextField, Avatar, Button, FormControlLabel, List, ListItem, ListItemText, Switch } from '@mui/material';
 import { ModalAlert } from 'components/modals/ModalAlert';
 import React, { useContext, useEffect, useState } from 'react';
 //import ReactImageZoom from 'react-image-zoom';
 //Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { Valid } from 'store/actions/accept';
-import classNames from 'classnames';
-//Url
-import { RootState } from 'store/store';
 import { sxStyled, useStylesFM } from '../styles';
 
 const StepPlanilla: React.FC = () => {
@@ -38,6 +33,7 @@ const StepPlanilla: React.FC = () => {
 
 	useEffect(() => {
 		handleChangeValid('valid_planilla', state);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state]);
 
 	const handleCancel = () => {
@@ -62,7 +58,6 @@ const StepPlanilla: React.FC = () => {
 					<TextField
 						sx={sxStyled.inputSelect}
 						variant='outlined'
-						required
 						label='Tipo de Solicitud'
 						name='typeSolict'
 						value={solic?.id_type_request.name}

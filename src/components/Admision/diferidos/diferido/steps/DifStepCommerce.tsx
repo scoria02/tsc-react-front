@@ -1,29 +1,7 @@
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import Autocomplete from '@mui/lab/Autocomplete';
-import {
-	InputAdornment,
-	Alert,
-	Button,
-	FormControlLabel,
-	IconButton,
-	Stack,
-	Switch,
-	TextField,
-} from '@mui/material';
-import { Valid } from 'store/actions/accept';
+import { InputAdornment, Alert, Button, IconButton, Stack, TextField } from '@mui/material';
 import classNames from 'classnames';
-import { ModalAlert } from 'components/modals/ModalAlert';
-import RecPdf from 'components/utilis/images/RecPdf';
-import DataListContext from 'context/DataList/DataListContext';
-import FMDataContext from 'context/FM/fmAdmision/FmContext';
-import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
-import { Ciudad, Estado, Municipio, Parroquia } from 'context/FM/Location/interfaces';
-import LocationsContext from 'context/FM/Location/LocationsContext';
-import React, { FC, useContext, useEffect, useState } from 'react';
-import { validationClient } from 'store/actions/fm';
-import { RootState } from 'store/store';
-import { validInputString } from 'utils/fm';
-import { capitalizedFull } from 'utils/formatName';
+import React, { FC, useContext, useState } from 'react';
 import { recaudo } from 'utils/recaudos';
 //sytles
 import { sxStyled, useStylesFM } from '../styles';
@@ -32,8 +10,6 @@ import RecDifPdf from 'components/utilis/images/RecDifPdf';
 
 const DifStepCommerce: FC = () => {
 	const classes = useStylesFM();
-
-	const [openModal, setOpenModal] = useState<boolean>(false);
 
 	const {
 		solic,
@@ -44,7 +20,6 @@ const DifStepCommerce: FC = () => {
 		imagesForm,
 		handleChangeImages,
 		pathImages,
-		handleChangeRefClient,
 	} = useContext(FMDiferidoContext);
 
 	const [load, setLoad] = useState(false);
@@ -122,7 +97,7 @@ const DifStepCommerce: FC = () => {
 							id='standard-required'
 							label='Estado'
 							name='Estado'
-							value={locationCommerce?.id_estado.estado}
+							value={locationCommerce?.id_direccion.estado}
 						/>
 						<TextField
 							disabled
@@ -132,7 +107,7 @@ const DifStepCommerce: FC = () => {
 							id='standard-required'
 							label='Municipio'
 							name='municipio'
-							value={locationCommerce?.id_municipio.municipio}
+							value={locationCommerce?.id_direccion.municipio}
 						/>
 					</div>
 					<div className={classes.input}>
@@ -145,7 +120,7 @@ const DifStepCommerce: FC = () => {
 							id='standard-required'
 							label='Ciudad'
 							name='ciudad'
-							value={locationCommerce?.id_ciudad.ciudad}
+							value={locationCommerce?.id_direccion.ciudad}
 						/>
 						<TextField
 							disabled
@@ -155,7 +130,7 @@ const DifStepCommerce: FC = () => {
 							id='standard-required'
 							label='Parroquia'
 							name='parroquia'
-							value={locationCommerce?.id_parroquia.parroquia}
+							value={locationCommerce?.id_direccion.parroquia}
 						/>
 					</div>
 					<div className={classes.input}>
@@ -168,7 +143,7 @@ const DifStepCommerce: FC = () => {
 							id='standard-required'
 							label='Cod. Postal'
 							name='codigo_postal'
-							value={locationCommerce?.id_ciudad?.ciudad}
+							value={locationCommerce?.id_direccion?.codigoPostal}
 						/>
 						<TextField
 							disabled
@@ -178,7 +153,7 @@ const DifStepCommerce: FC = () => {
 							id='standard-required'
 							label='Sector'
 							name='sector'
-							value={locationCommerce?.sector}
+							value={locationCommerce?.id_direccion.sector}
 						/>
 					</div>
 					<div className={classes.input}>

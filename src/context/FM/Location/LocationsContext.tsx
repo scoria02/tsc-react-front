@@ -24,7 +24,6 @@ const initialListLocation: ListLocation = {
 };
 
 interface ContextLocations {
-	listDirecciones: any;
 	listLocationClient: ListLocation;
 	listLocationCommerce: ListLocation;
 	listLocationPos: ListLocation;
@@ -56,7 +55,6 @@ interface ContextLocations {
 }
 
 const LocationsContext = createContext<ContextLocations>({
-	listDirecciones: [],
 	listLocationClient: initialListLocation,
 	listLocationCommerce: initialListLocation,
 	listLocationPos: initialListLocation,
@@ -73,7 +71,6 @@ const LocationsContext = createContext<ContextLocations>({
 });
 
 export const LocationsProvider = ({ children }: Props) => {
-	const [listDirecciones, setListDirecciones] = useState<any>([]);
 	const [listLocationClient, setListLocationClient] = useState<ListLocation>(initialListLocation);
 	const [listLocationCommerce, setListLocationCommerce] = useState<ListLocation>(initialListLocation);
 	const [listLocationPos, setListLocationPos] = useState<ListLocation>(initialListLocation);
@@ -107,11 +104,11 @@ export const LocationsProvider = ({ children }: Props) => {
 		value: Estado | null,
 		setListLocation: Dispatch<SetStateAction<ListLocation>>
 	) => {
-		console.log('Buscar', value);
+		//console.log('Buscar', value);
 		if (value) {
 			try {
 				await axios.get(`/direccion/${value.estado}/municipio`).then((res: any) => {
-					console.log(res.data.info);
+					//console.log(res.data.info);
 					setListLocation((prevState) => ({
 						...prevState,
 						municipio: res.data.info,
@@ -281,7 +278,6 @@ export const LocationsProvider = ({ children }: Props) => {
 				copyListLocationToPos,
 
 				resetListLocaitons,
-				listDirecciones,
 			}}>
 			{children}
 		</LocationsContext.Provider>

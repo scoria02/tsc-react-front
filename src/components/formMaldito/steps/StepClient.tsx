@@ -1,6 +1,15 @@
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import Autocomplete from '@mui/lab/Autocomplete';
-import { Button, FormControl, IconButton, InputAdornment, MenuItem, Select, TextField } from '@mui/material';
+import {
+	Autocomplete,
+	Button,
+	FormControl,
+	IconButton,
+	InputAdornment,
+	MenuItem,
+	Select,
+	TextField,
+	Tooltip,
+} from '@mui/material';
 import classNames from 'classnames';
 import DataListContext from 'context/DataList/DataListContext';
 import FMDataContext from 'context/FM/fmAdmision/FmContext';
@@ -150,26 +159,28 @@ const StepClient: FC = () => {
 							maxLength: client.id_ident_type === 5 ? 20 : 9,
 						}}
 					/>
-					<Button
-						className={classes.imgIdent}
-						variant='contained'
-						disabled={fm.imagesClient}
-						style={{
-							opacity: fm.imagesClient ? 0 : 1,
-							background: imagesForm.rc_ident_card ? '#5c62c5' : '#f44336',
-						}}
-						component='label'>
-						{imagesForm.rc_ident_card !== null ? (
-							<p className='nameImg'>{namesImages.rc_ident_card.slice(0, 7)} ...</p>
-						) : (
-							<>
-								<IconButton aria-label='upload picture' component='span'>
-									<PhotoCamera />
-								</IconButton>
-							</>
-						)}
-						<input type='file' hidden name='rc_ident_card' accept={recaudo.acc} onChange={handleChangeImages} />
-					</Button>
+					<Tooltip title='Cargar imagen de la Cedula de Identidad del cliente'>
+						<Button
+							className={classes.imgIdent}
+							variant='contained'
+							disabled={fm.imagesClient}
+							style={{
+								opacity: fm.imagesClient ? 0 : 1,
+								background: imagesForm.rc_ident_card ? '#5c62c5' : '#f44336',
+							}}
+							component='label'>
+							{imagesForm.rc_ident_card !== null ? (
+								<p className='nameImg'>{namesImages.rc_ident_card.slice(0, 7)} ...</p>
+							) : (
+								<>
+									<IconButton aria-label='upload picture' component='span'>
+										<PhotoCamera />
+									</IconButton>
+								</>
+							)}
+							<input type='file' hidden name='rc_ident_card' accept={recaudo.acc} onChange={handleChangeImages} />
+						</Button>
+					</Tooltip>
 				</div>
 				{!fm.mashClient ? (
 					<>
@@ -256,6 +267,7 @@ const StepClient: FC = () => {
 					<div className={classes.grid}>
 						<div className={classes.input}>
 							<Autocomplete
+								noOptionsText={'Cargando...'}
 								disabled={fm.mashClient}
 								className={classNames(classes.inputText, classes.inputTextLeft)}
 								sx={sxStyled.inputLeft}
@@ -278,6 +290,7 @@ const StepClient: FC = () => {
 								)}
 							/>
 							<Autocomplete
+								noOptionsText={'Cargando...'}
 								disabled={fm.mashClient}
 								className={classes.inputText}
 								onChange={(event, value: Municipio | null) => {
@@ -300,6 +313,7 @@ const StepClient: FC = () => {
 						</div>
 						<div className={classes.input}>
 							<Autocomplete
+								noOptionsText={'Cargando...'}
 								disabled={fm.mashClient}
 								className={classNames(classes.inputText, classes.inputTextLeft)}
 								sx={sxStyled.inputLeft}
@@ -326,6 +340,7 @@ const StepClient: FC = () => {
 								)}
 							/>
 							<Autocomplete
+								noOptionsText={'Cargando...'}
 								disabled={fm.mashClient}
 								className={classes.inputText}
 								onChange={(event, value: Parroquia | null) => {
@@ -365,6 +380,7 @@ const StepClient: FC = () => {
 								value={locationClient.parroquia?.codigoPostal || ''}
 							/>
 							<Autocomplete
+								noOptionsText={'Cargando...'}
 								disabled={fm.mashClient}
 								className={classes.inputText}
 								onChange={(event, value: Sector | null) => {

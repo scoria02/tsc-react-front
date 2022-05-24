@@ -1,15 +1,13 @@
 import { PhotoCamera } from '@mui/icons-material';
-import { Alert, Button, FormControlLabel, IconButton, Stack, Switch, TextField } from '@mui/material';
-import { ModalAlert } from 'components/modals/ModalAlert';
+import { Alert, Button, IconButton, Stack, TextField } from '@mui/material';
 import RecDifPdf from 'components/utilis/images/RecDifPdf';
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useStyles } from './styles/styles';
 import { recaudo } from 'utils/recaudos';
 
 const DifStepRefBank: React.FC = () => {
 	const classes = useStyles();
-	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [load, setLoad] = useState(false);
 
 	const { solic, listValidated, disabled, handleChange, imagesForm, handleChangeImages, pathImages } =

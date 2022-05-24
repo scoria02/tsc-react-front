@@ -1,14 +1,8 @@
 import { PhotoCamera } from '@mui/icons-material';
-import { Button, FormControlLabel, IconButton, Switch, Stack, Alert } from '@mui/material';
+import { Button, IconButton, Stack, Alert } from '@mui/material';
 import RecDifPdf from 'components/utilis/images/RecDifPdf';
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
-import React, { useContext, useEffect, useState } from 'react';
-//import ReactImageZoom from 'react-image-zoom';
-//Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { Valid } from 'store/actions/accept';
-//Url
-import { RootState } from 'store/store';
+import React, { useContext, useState } from 'react';
 import { recaudo } from 'utils/recaudos';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';

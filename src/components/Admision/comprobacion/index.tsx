@@ -1,25 +1,32 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import FullModal from 'components/modals/FullModal';
-import { FMValidContextProvider } from 'context/Admision/Validation/FmContext';
+import { FMValidContextProvider } from 'context/Admision/Validation/FMValidDataContext';
 import { DataListAdmisionProvider } from 'context/DataList/DatalistAdmisionContext';
 import { SocketContext } from 'context/SocketContext';
-import { FC, useContext, useEffect } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { cleanAdmisionFM } from 'store/actions/admisionFm';
-import { CloseModal } from 'store/actions/ui';
 import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
 import Validacion from './Validacion';
 
-const Comprobacion: FC = () => {
+interface Prop {
+	fm: any;
+	setFm: any;
+}
+
+const Comprobacion: FC<Prop> = ({ fm, setFm }) => {
+	//console.log('solic', fm);
 	const dispatch = useDispatch();
 
 	const { socket } = useContext(SocketContext);
 
-	const { modalOpen } = useSelector((state: any) => state.ui);
-	const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+	//const { modalOpen } = useSelector((state: any) => state.ui);
+	//const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
 	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatus);
 	const id_statusFM: any = useSelector((state: RootState) => state.fmAdmision.id_statusFM);
+
+	const [modalOpen, setModelOpen] = useState(true);
 
 	useEffect(() => {
 		if (updatedStatus && id_statusFM !== 0) {
@@ -39,13 +46,17 @@ const Comprobacion: FC = () => {
 			});
 			socket.emit('cliente:loadDiferidos');
 			socket.emit('cliente:disconnect');
+			setFm(null);
+			setModelOpen(false);
 			dispatch(cleanAdmisionFM());
 		}
 	}, [id_statusFM, updatedStatus]);
 
 	const handleClose = () => {
 		socket.emit('cliente:disconnect');
-		dispatch(CloseModal());
+		setFm(null);
+		setModelOpen(false);
+		//dispatch(CloseModal());
 		dispatch(cleanAdmisionFM());
 	};
 
