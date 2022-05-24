@@ -20,6 +20,7 @@ import { getPayMent } from '../components/formMaldito/getData';
 import { SocketContext } from '../context/SocketContext';
 import { cleanAdmisionFMAdministration } from '../store/actions/administration';
 import { RootState } from '../store/store';
+import Swal from 'sweetalert2';
 
 interface AdministracionProp {}
 
@@ -211,6 +212,15 @@ const Administracion: FC<AdministracionProp> = () => {
 	useEffect(() => {
 		if (administration.updatedStatusAd) {
 			socket.emit('cliente:cleansolicadminis');
+			Swal.fire({
+				icon: 'success',
+				title: 'Formulario Verificado',
+				customClass: { container: 'swal2-validated' },
+				showConfirmButton: false,
+				allowOutsideClick: false,
+				allowEscapeKey: false,
+				timer: 1500,
+			});
 			handleCloseRow();
 		}
 	}, [administration.updatedStatusAd]);

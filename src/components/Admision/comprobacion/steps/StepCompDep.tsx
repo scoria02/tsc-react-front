@@ -42,13 +42,6 @@ const StepCompDep: React.FC = () => {
 		handleCloseModal(true);
 	};
 
-	// const handleChangeI = (event: any) => {
-	// 	setState({
-	// 		...state,
-	// 		[event.target.name]: event.target.value,
-	// 	});
-	// };
-
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setState({
 			...state,
@@ -57,7 +50,7 @@ const StepCompDep: React.FC = () => {
 		if (!event.target.checked) handleOpenModal();
 	};
 
-	const imagen = `${process.env.REACT_APP_API_IMAGES}/${solic.rc_ref_bank.path}`;
+	const imagen = `${process.env.REACT_APP_API_IMAGES}/${solic.rc_comp_dep.path}`;
 
 	/*
 	const props = {

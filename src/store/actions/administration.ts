@@ -7,32 +7,6 @@ export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
 };
 
-/*
-export const getDataFMAdministration = () => {
-	return async (dispatch: any) => {
-		try {
-			const res: AxiosResponse<any> = await useAxios.get(`/FM/administration`);
-			updateToken(res);
-			dispatch(requestSuccess(res.data.info));
-		} catch (error) {
-			dispatch(requestError());
-			//Swal.fire('Error', error.response.data.message, 'error');
-		}
-	};
-	function requestSuccess(state: any) {
-		return {
-			type: ActionType.getDataFMAdministration,
-			payload: state,
-		};
-	}
-	function requestError() {
-		return {
-			type: ActionType.getDataFMErrorAdministration,
-		};
-	}
-};
-*/
-
 export const updateStatusFMAdministration = (id_fm: number, id_statusFMAd: number, newP: any) => {
 	const data = {
 		...newP,

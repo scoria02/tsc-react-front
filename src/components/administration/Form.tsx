@@ -6,7 +6,8 @@ import Autocomplete from '@mui/lab/Autocomplete';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
-import { FC, useEffect, useLayoutEffect, useState } from 'react';
+import RecPdf from 'components/utilis/images/RecPdf';
+import { FC, useEffect, useState } from 'react';
 //Redux
 import { useDispatch } from 'react-redux';
 import { updateStatusFMAdministration } from 'store/actions/administration';
@@ -104,7 +105,19 @@ export const Form: FC<any> = ({
 		}
 	};
 
-	const imagen: string = path;
+	const handleLoading = () => {
+		Swal.fire({
+			icon: 'info',
+			title: 'Verificando...',
+			showConfirmButton: false,
+			customClass: { container: 'swal2-validated' },
+			allowOutsideClick: false,
+			allowEscapeKey: false,
+			didOpen: () => {
+				Swal.showLoading();
+			},
+		});
+	};
 
 	const handleVerificated = () => {
 		Swal.fire({
@@ -119,7 +132,7 @@ export const Form: FC<any> = ({
 			customClass: { container: 'swal2-validated' },
 		}).then((result) => {
 			if (result.isConfirmed) {
-				//console.log(payment, typePay);
+				handleLoading();
 				const data: any = !fm.pagadero
 					? {}
 					: {
@@ -176,9 +189,17 @@ export const Form: FC<any> = ({
 		}
 	}, [payment]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		console.log('form admin', fm);
 	}, []);
+
+	const imagen: any = path
+		? path
+		: fm.rc_comp_dep
+		? `${process.env.REACT_APP_API_IMAGES}/${fm.rc_comp_dep?.path}`
+		: '';
+
+	//console.log(imagen);
 
 	return (
 		<>
@@ -293,7 +314,7 @@ export const Form: FC<any> = ({
 								Verificar
 							</Button>
 							{fm.id_payment_method.id !== 2 && fm.id_payment_method.id !== 6 && fm.rc_comp_dep !== null ? (
-								<Rec load={load} setLoad={setLoad} imagen={fm.rc_comp_dep} />
+								<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 							) : null}
 						</div>
 					) : (
