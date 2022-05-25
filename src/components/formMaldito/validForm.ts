@@ -470,7 +470,7 @@ export const validReadyStep = (
 					else return false;
 				}
 			} else {
-				if (fm.mashClient) {
+				if (fm.mashClient && !errorsClient.ident_num) {
 					return true;
 				} else if (
 					!checkErrorAllInput(sizeStepError(activeStep), errorsClient) &&

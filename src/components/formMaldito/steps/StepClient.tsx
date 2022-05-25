@@ -18,7 +18,7 @@ import { Ciudad, Estado, Municipio, Parroquia, Sector } from 'context/Admision/C
 import LocationsContext from 'context/Admision/CreationFM/Location/LocationsContext';
 import React, { FC, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { validationClient } from 'store/actions/fm';
+import { validationClient, resetClientValid } from 'store/actions/fm';
 import { RootState } from 'store/store';
 import { validInputString } from 'utils/fm';
 import { capitalizedFull } from 'utils/formatName';
@@ -63,12 +63,28 @@ const StepClient: FC = () => {
 	const codePhone = '+58';
 
 	const handleBlurEmailIdent = (): void => {
-		if (client.email !== '' && client.id_ident_type !== 0 && client.ident_num !== '') {
+		if (client.id_ident_type !== 0 && client.ident_num !== '' && !errorsClient.ident_num) {
 			dispatch(
 				validationClient(
 					{
 						email: client.email,
 						id_ident_type: client.id_ident_type,
+						ident_num: client.ident_num,
+					},
+					fm.errorClient
+				)
+			);
+		}
+	};
+
+	const handleChangeIdenType = (value: number): void => {
+		dispatch(resetClientValid());
+		if (client.id_ident_type !== 0 && client.ident_num !== '' && !errorsClient.ident_num) {
+			dispatch(
+				validationClient(
+					{
+						email: client.email,
+						id_ident_type: value,
 						ident_num: client.ident_num,
 					},
 					fm.errorClient
@@ -99,41 +115,19 @@ const StepClient: FC = () => {
 		}
 	};
 
-	/*
-	useEffect(() => {
-		if (activeStep === 3 && autoCompleteCommerce && !fm.mashCommerce) {
-			copyListLocationCToCC();
-			copyLocationCToCC();
-		}
-	}, [activeStep, fm.commerceMash]);
-	*/
-
 	return (
 		<>
 			<div className={classes.grid}>
 				<div className={classes.input}>
-					<TextField
-						required
-						className={classes.inputText}
-						type='email'
-						variant='outlined'
-						label='Correo'
-						autoComplete='off'
-						name='email'
-						onChange={handleChangeClient}
-						onBlur={handleBlurEmailIdent}
-						value={client.email}
-						error={errorsClient.email || fm.errorClient}
-					/>
-				</div>
-				<div className={classes.input}>
 					<FormControl sx={sxStyled.inputSelect} className={classes.inputSelect}>
 						<Select
 							variant='outlined'
-							onChange={(event: any) => handleSelectIdentClient('id_ident_type', event.target.value)}
-							value={client.id_ident_type}
-							onBlur={handleBlurEmailIdent}
 							name='id_ident_type'
+							onChange={(event: any) => {
+								handleChangeIdenType(event.target.value);
+								handleSelectIdentClient('id_ident_type', event.target.value);
+							}}
+							value={client.id_ident_type}
 							error={fm.errorClient}
 							label='Tipo'>
 							{listIdentType.map((item: any) => {
@@ -154,7 +148,10 @@ const StepClient: FC = () => {
 						label='C.I.'
 						autoComplete='off'
 						name='ident_num'
-						onChange={handleIdentNum}
+						onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+							dispatch(resetClientValid());
+							handleIdentNum(event);
+						}}
 						onBlur={handleBlurEmailIdent}
 						value={client.ident_num}
 						error={errorsClient.ident_num || fm.errorClient}
@@ -187,6 +184,21 @@ const StepClient: FC = () => {
 				</div>
 				{!fm.mashClient ? (
 					<>
+						<div className={classes.input}>
+							<TextField
+								required
+								className={classes.inputText}
+								type='email'
+								variant='outlined'
+								label='Correo'
+								autoComplete='off'
+								name='email'
+								onChange={handleChangeClient}
+								onBlur={handleBlurEmailIdent}
+								value={client.email}
+								error={errorsClient.email || fm.errorClient}
+							/>
+						</div>
 						<div className={classes.input}>
 							<TextField
 								className={classNames(classes.inputText, classes.inputTextLeft)}

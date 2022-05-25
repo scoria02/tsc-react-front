@@ -72,6 +72,16 @@ export const fmReducer = (state = initialState, action: any) => {
 				errorClient: true,
 				validMashClient: false,
 			};
+		case ActionType.validResetClient:
+			return {
+				...state,
+				id_client: 0,
+				clientMash: {},
+				mashClient: false,
+				validMashClient: false,
+				errorClient: false,
+				imagesClient: false,
+			};
 		case ActionType.validCommerce:
 			return {
 				...state,

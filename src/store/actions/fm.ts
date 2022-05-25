@@ -48,12 +48,30 @@ export const validationClient = (client: any, errValid: boolean) => {
 	}
 };
 
+export const resetClientValid = () => {
+	return async (dispatch: any) => {
+		dispatch({
+			type: ActionType.validResetClient,
+		});
+	};
+};
+
 export const validationCommerce = (id_client: number, commerce: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce/valid`, commerce);
 			if (res.data.info) {
 				dispatch(requestSuccess(res.data.info));
+				console.log(res.data.info);
+				if (res.data.info) {
+					Swal.fire({
+						position: 'center',
+						icon: 'success',
+						title: 'Extra Pos',
+						html: `<span>El Comercio: <b>${res?.data?.info?.name}</b> ya fue registrado</span>`,
+						showConfirmButton: true,
+					});
+				}
 			} else {
 				dispatch(requestSuccessOk());
 			}
@@ -79,6 +97,14 @@ export const validationCommerce = (id_client: number, commerce: any) => {
 			type: ActionType.validCommerceError,
 		};
 	}
+};
+
+export const resetCommerceValid = () => {
+	return async (dispatch: any) => {
+		dispatch({
+			type: ActionType.validCommerceOk,
+		});
+	};
 };
 
 export const validationNumBank = (clientBank: any) => {

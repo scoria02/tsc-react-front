@@ -27,6 +27,7 @@ import StepPos from './steps/StepPos';
 import StepReferencias from './steps/StepReferencias';
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
+import { setTimeout } from 'timers';
 
 const initStep = ['Tipo de Solicitud'];
 
@@ -104,19 +105,27 @@ const FormM: React.FC = () => {
 			commerce.ident_num !== '' &&
 			typeSolict !== 4
 		) {
-			handleTypeSolict(4);
-			setActiveStep(1);
-			const newSteps = [...initStep, ...PosExtraSteps];
-			setSteps(newSteps);
+			setTimeout(() => {
+				handleTypeSolict(4);
+				setActiveStep(2);
+				const newSteps = [...initStep, ...PosExtraSteps];
+				setSteps(newSteps);
+			}, 2000);
 		}
-		if ((fm.mashClient && client.name === '' && client.last_name === '' && typeSolict === 1) || typeSolict === 3) {
+		if (
+			fm.mashClient &&
+			client.name === '' &&
+			client.last_name === '' &&
+			//
+			(typeSolict === 1 || typeSolict === 3)
+		) {
 			setClient({
 				...client,
 				name: fm.clientMash.name,
 				last_name: fm.clientMash.last_name,
 			});
 		}
-	}, [fm]);
+	}, [fm.mashClient, fm.mashCommerce]);
 
 	useEffect(() => {
 		if (
@@ -174,6 +183,9 @@ const FormM: React.FC = () => {
 		aci,
 		telemarket,
 		typeWallet,
+		errorsClient,
+		errorsCommerce,
+		errorsFm,
 	]);
 
 	useEffect(() => {
@@ -187,13 +199,15 @@ const FormM: React.FC = () => {
 		} else setTitleNextButton('Comenzar');
 	}, [activeStep]);
 
-	useLayoutEffect(() => {
-		//resetFm();
-		//resetListLocaitons();
-		//resetImages();
-		//setActiveStep(1);
+	useEffect(() => {
+		if (activeStep === 0) {
+			dispatch(cleanFM());
+			resetFm();
+			resetListLocaitons();
+			resetImages();
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [activeStep]);
 
 	//AutoComplete Locaitons
 	useEffect(() => {
@@ -211,6 +225,9 @@ const FormM: React.FC = () => {
 			console.log('Ready All FM');
 			//socket.emit('cliente:disconnect');
 			dispatch(cleanFM());
+			resetFm();
+			resetListLocaitons();
+			resetImages();
 			handleSendForm();
 		}
 	}, [fm.loadedFM, dispatch]);

@@ -347,13 +347,16 @@ export const FMContextProvider = ({ children }: Props) => {
 				...client,
 				email: emailClient,
 			});
+			setCommerce({
+				...commerce,
+				name: nameCommerce,
+			});
 			Swal.fire({
 				position: 'center',
 				icon: 'success',
-				title: 'Cliente',
-				text: ` ${nameClient}`,
-				showConfirmButton: false,
-				timer: 2000,
+				title: 'Comercio ya esta registrado',
+				html: `<span>Nombre del Comercio: <b>${nameCommerce}</b></span>`,
+				showConfirmButton: true,
 			});
 			return true;
 		} catch (error: any) {

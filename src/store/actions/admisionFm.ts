@@ -175,7 +175,12 @@ export const updateStatusFMDiferido = (
 		} catch (error: any) {
 			//console.log(error.response)
 			dispatch(requestError());
-			Swal.fire('Error', error.response.data.message, 'error');
+			Swal.fire({
+				icon: 'error',
+				title: 'Error',
+				customClass: { container: 'swal2-validated' },
+				text: error.response?.data?.message,
+			});
 		}
 	};
 	function requestSuccess() {
