@@ -6,7 +6,7 @@ export const useStylesModal = makeStyles(() => ({
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
-		zIndex: 9999,
+		//zIndex: 9999,
 	},
 }));
 

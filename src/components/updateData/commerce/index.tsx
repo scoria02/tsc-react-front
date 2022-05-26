@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import HideImageIcon from '@mui/icons-material/HideImage';
+import EditIcon from '@mui/icons-material/Edit';
 import ImageIcon from '@mui/icons-material/Image';
 import {
 	DataGrid,
@@ -13,12 +13,11 @@ import {
 	GridToolbarFilterButton,
 	GridValueGetterParams,
 } from '@mui/x-data-grid';
-import classNames from 'classnames';
-import { CobranzaContext } from 'context/CobranzaContext';
 import { DateTime } from 'luxon';
 import { FC, useState } from 'react';
 import { useStyles } from '..';
 import DataCommerce from './DataCommerce';
+import { DataListProvider } from 'context/DataList/DataListContext';
 
 export const columns: GridColDef[] = [
 	{
@@ -74,6 +73,17 @@ export const columns: GridColDef[] = [
 			return fechaFormateada;
 		},
 	},
+	{
+		field: 'opciones',
+		headerName: 'Opciones',
+		width: 180,
+		disableColumnMenu: true,
+		renderCell: (params: GridValueGetterParams) => (
+			<Button sx={{ cursor: 'pointer' }} variant='contained'>
+				<EditIcon /> <span>Editar</span>
+			</Button>
+		),
+	},
 ];
 
 const Comercio: FC = () => {
@@ -113,6 +123,15 @@ const Comercio: FC = () => {
 					estado: 'Distrito Capital',
 				},
 			},
+			id_activity: {
+				id: '15422',
+				name: `Alimentación\tProveedores de cavas y estantes`,
+				id_afiliado: {
+					id: 720008172,
+					bank_account_number: '01040107160107199659',
+					name: 'TRANRED BIENES Y SERVICIOS (BVC) ',
+				},
+			},
 			fecha: DateTime.fromISO(DateTime.now().minus({ days: 26 }).toISO()),
 		},
 		{
@@ -135,6 +154,15 @@ const Comercio: FC = () => {
 					estado: 'Vargas',
 				},
 			},
+			id_activity: {
+				id: '15422',
+				name: `Alimentación\tProveedores de cavas y estantes`,
+				id_afiliado: {
+					id: 720008172,
+					bank_account_number: '01040107160107199659',
+					name: 'TRANRED BIENES Y SERVICIOS (BVC) ',
+				},
+			},
 			fecha: DateTime.fromISO(DateTime.now().minus({ days: 24 }).toISO()),
 		},
 	]);
@@ -142,10 +170,12 @@ const Comercio: FC = () => {
 	const [click, setClick] = useState(false);
 
 	const handleRow = (event: any) => {
-		setClick(!click);
-		setSelected(null);
-		setSelected(event.row);
-		console.log(event.row);
+		if (event.field === 'opciones') {
+			setClick(!click);
+			setSelected(null);
+			setSelected(event.row);
+			console.log(event);
+		}
 	};
 
 	return (
@@ -175,7 +205,9 @@ const Comercio: FC = () => {
 					</div>
 				</Grid>
 			</Grid>
-			{selected && <DataCommerce commerce={selected} click={click} />}
+			<DataListProvider>
+				<>{selected && <DataCommerce commerce={selected} click={click} />}</>
+			</DataListProvider>
 		</>
 	);
 };

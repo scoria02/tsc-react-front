@@ -3,7 +3,6 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { Tab, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { CobranzaContext } from 'context/CobranzaContext';
 import { FC, useState } from 'react';
 import Commerce from './commerce';
 
@@ -53,43 +52,36 @@ export const useStyles = makeStyles((theme: Theme) => ({
 const UpdataData: FC = () => {
 	const classes = useStyles();
 	const [tab, setTab] = useState('commerce');
-	const [rowSelected, setRow] = useState({});
 
 	const handleChange = (event: any, newValue: any) => {
 		setTab(newValue);
 	};
 
-	// useEffect(() => {
-	// 	console.log('rowSelected 1', rowSelected);
-	// }, [rowSelected]);
-
 	return (
-		<CobranzaContext.Provider value={{ rowSelected, setRow }}>
-			<div className={classes.wrapper}>
-				<TabContext value={tab}>
-					<TabList
-						// centered
-						onChange={handleChange}
-						aria-label='lab API tabs example'
-						indicatorColor='primary'
-						textColor='primary'>
-						<Tab
-							sx={{
-								textTransform: 'none',
-								fontSize: '1rem',
-							}}
-							label='Comercios'
-							value={'commerce'}
-							wrapped
-							classes={{ root: classes.tabLabel }}
-						/>
-					</TabList>
-					<TabPanel value={'commerce'} classes={{ root: classes.tabPanel }}>
-						<Commerce />
-					</TabPanel>
-				</TabContext>
-			</div>
-		</CobranzaContext.Provider>
+		<div className={classes.wrapper}>
+			<TabContext value={tab}>
+				<TabList
+					// centered
+					onChange={handleChange}
+					aria-label='lab API tabs example'
+					indicatorColor='primary'
+					textColor='primary'>
+					<Tab
+						sx={{
+							textTransform: 'none',
+							fontSize: '1rem',
+						}}
+						label='Comercios'
+						value={'commerce'}
+						wrapped
+						classes={{ root: classes.tabLabel }}
+					/>
+				</TabList>
+				<TabPanel value={'commerce'} classes={{ root: classes.tabPanel }}>
+					<Commerce />
+				</TabPanel>
+			</TabContext>
+		</div>
 	);
 };
 

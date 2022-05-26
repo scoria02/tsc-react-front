@@ -1,15 +1,16 @@
 import { PathImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
+import { Activity } from 'context/DataList/interface';
 import { ReactChild } from 'react';
 
 export interface PropsCommerceContext {
 	children: ReactChild;
 	data: any;
+	closeModal: boolean;
 }
 
 export interface ContextCommerceUpdata {
 	disabled: boolean;
 	setDisabled: any;
-	initFm(): void;
 	reset(): void;
 	handleChangeCommerce(event: React.ChangeEvent<HTMLInputElement>): void;
 	//images
@@ -26,4 +27,7 @@ export interface ContextCommerceUpdata {
 	//
 	commerce: any;
 	locationCommerce: any;
+	//
+	handleChange(name: string, event: Activity | any): void;
+	handleChangeIdenType(value: number): void;
 }

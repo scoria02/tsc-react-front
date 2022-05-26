@@ -2,6 +2,21 @@ import { Theme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles((styles: Theme) => ({
+	containerModalUpdate: {
+		position: 'fixed',
+		flexDirection: 'column',
+		display: 'flex',
+		top: '50%',
+		left: '50%',
+		width: '80%',
+		height: '60%',
+		maxHeight: '400px',
+		transform: 'translate(-50%, -50%)',
+		background: '#fff',
+		padding: '4rem',
+		borderRadius: '1rem',
+		outline: 'none',
+	},
 	containerSolic: {
 		marginTop: '10px',
 	},

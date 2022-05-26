@@ -1,4 +1,7 @@
 import { PathImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
+import { ListLocation } from 'context/Admision/CreationFM/Location/interfaces';
+import { initialListLocation } from 'context/Admision/CreationFM/Location/LocationsContext';
+import { Activity } from 'context/DataList/interface';
 import React, { createContext, useEffect, useState } from 'react';
 import { errorFile } from 'utils/validFormatFile';
 import { ContextCommerceUpdata, PropsCommerceContext } from './interfaces';
@@ -7,7 +10,6 @@ import { initialImagesFm, initialImagesPath } from './state';
 const UpdateCommerceContext = createContext<ContextCommerceUpdata>({
 	disabled: false,
 	setDisabled: () => {},
-	initFm: () => {},
 	reset: () => {},
 	handleChangeCommerce: () => {},
 	//imagenes
@@ -24,31 +26,52 @@ const UpdateCommerceContext = createContext<ContextCommerceUpdata>({
 	//
 	commerce: null,
 	locationCommerce: null,
+	//
+	handleChange: () => {},
+	handleChangeIdenType: () => {},
 });
 
-export const UpdateCommerceContextProvider = ({ children, data }: PropsCommerceContext) => {
+export const UpdateCommerceContextProvider = ({ children, data, closeModal }: PropsCommerceContext) => {
 	const [commerce, setCommerce] = useState<any>(null);
 	const [locationCommerce, setLocationCommerce] = useState<any>(null);
 	const [imagesActa, setImagesActa] = useState<FileList | []>([]);
 	const [imagen, setImagen] = useState<any>({
 		rc_rif: null,
 	});
+	const [listLocationCommerce, setListLocationCommerce] = useState<ListLocation>(initialListLocation);
 
 	const [pathImages, setPathImages] = useState<PathImagesInt>(initialImagesPath);
 	const [disabled, setDisabled] = useState<boolean>(false);
 
-	console.log('data', data);
+	console.log('data', commerce);
+
+	const handleChange = (name: string, value: Activity | any) => {
+		setCommerce({
+			...commerce,
+			[name]: value,
+		});
+	};
+
+	const handleChangeIdenType = (value: number) => {
+		setCommerce({
+			...commerce,
+			id_ident_type: {
+				...commerce.id_ident_type,
+				id: value,
+			},
+		});
+	};
 
 	useEffect(() => {
+		if (!closeModal) {
+			reset();
+		}
 		if (data) {
 			const { id_location, ...commerceData } = data;
 			setCommerce(commerceData);
 			setLocationCommerce(id_location);
-		} else {
-			reset();
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data]);
+		} // eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [data, closeModal]);
 
 	const handleChangeCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.name && commerce) {
@@ -58,13 +81,20 @@ export const UpdateCommerceContextProvider = ({ children, data }: PropsCommerceC
 			});
 		}
 	};
-	const initFm = (): void => {
-		reset();
-	};
 
 	const reset = (): void => {
-		resetImages();
+		console.log('reset data commerce');
 		setCommerce(null);
+		resetImages();
+		resetListLocaitons();
+	};
+
+	const resetListLocaitons = (): void => {
+		const { estado, ...extra } = initialListLocation;
+		setListLocationCommerce({
+			estado: listLocationCommerce.estado,
+			...extra,
+		});
 	};
 
 	const resetImages = () => {
@@ -135,7 +165,6 @@ export const UpdateCommerceContextProvider = ({ children, data }: PropsCommerceC
 			value={{
 				disabled,
 				setDisabled,
-				initFm,
 				reset,
 				handleChangeCommerce,
 				//images
@@ -152,6 +181,8 @@ export const UpdateCommerceContextProvider = ({ children, data }: PropsCommerceC
 				//
 				commerce,
 				locationCommerce,
+				handleChange,
+				handleChangeIdenType,
 			}}>
 			{children}
 		</UpdateCommerceContext.Provider>

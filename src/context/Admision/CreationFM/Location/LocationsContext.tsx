@@ -15,7 +15,7 @@ interface Props {
 	children: ReactChild | ReactChildren;
 }
 
-const initialListLocation: ListLocation = {
+export const initialListLocation: ListLocation = {
 	estado: [],
 	municipio: [],
 	ciudad: [],
@@ -82,11 +82,11 @@ export const LocationsProvider = ({ children }: Props) => {
 			...extra,
 		});
 		setListLocationPos({
-			estado: listLocationCommerce.estado,
+			estado: listLocationPos.estado,
 			...extra,
 		});
 		setListLocationCommerce({
-			estado: listLocationPos.estado,
+			estado: listLocationCommerce.estado,
 			...extra,
 		});
 	};

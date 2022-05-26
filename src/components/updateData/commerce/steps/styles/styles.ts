@@ -2,6 +2,15 @@ import { Theme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles((styles: Theme) => ({
+	contanerSaveButton: {
+		marginTop: '2rem',
+		textAlign: 'center',
+	},
+	buttonImage: {
+		padding: '0',
+		fontSize: '.7rem',
+		textTransform: 'none',
+	},
 	containerSolic: {
 		marginTop: '10px',
 	},
@@ -199,5 +208,14 @@ export const sxStyled = {
 		display: 'grid',
 		gridColumnGap: '1%',
 		gridTemplateColumns: '1fr 1fr',
+	},
+	buttonSave: {
+		position: 'absolute',
+		marginLeft: 'auto',
+		marginRight: 'auto',
+		left: 0,
+		right: 0,
+		textAlign: 'center',
+		bottom: '1.5rem',
 	},
 };
