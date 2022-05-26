@@ -1,20 +1,12 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Typography, Button, Step, StepLabel, Stepper } from '@mui/material';
 import DataListAdmisionContext from 'context/DataList/DatalistAdmisionContext';
-import { SocketContext } from 'context/SocketContext';
-import React, { ReactElement, useContext, useEffect, useLayoutEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { urlFM } from 'routers/url';
-import { cleanFM, sendCompleteFM, sendCompleteFMExtraPos } from 'store/actions/fm';
-import { StateFMInt } from 'store/reducers/fmReducer';
-//Redux
-import { RootState } from 'store/store';
+import React, { ReactElement, useContext, useLayoutEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import LoaderPrimary from '../../loaders/LoaderPrimary';
 //steps
 //Cliente y comercio existente
+import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
 import StepDataPreValidate from './steps/StepDataPreValidate';
 import StepClient from './steps/StepClient';
 import StepCommerce from './steps/StepCommerce';
@@ -25,18 +17,13 @@ import StepContribuyenteSpecial from './steps/StepContribuyenteSpecial';
 import StepCompDep from './steps/StepCompDep';
 import StepPos from './steps/StepPos';
 import { useStylesFM } from './styles';
-import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
-import { setTimeout } from 'timers';
-import { FastRewindTwoTone } from '@mui/icons-material';
 import { updateStatusFM } from 'store/actions/admisionFm';
 import StepSelectAci from './steps/StepSelectAci';
 
 const Validacion: React.FC = () => {
-	const history = useHistory();
 	const dispatch = useDispatch();
 	const classes = useStylesFM();
 
-	const { socket } = useContext(SocketContext);
 	const [steps, setSteps] = useState<string[]>([]);
 
 	const [activeStep, setActiveStep] = useState<number>(0);
@@ -44,7 +31,7 @@ const Validacion: React.FC = () => {
 	const [stepsValid, setStepsValid] = useState<number>(0);
 
 	const { listAci } = useContext(DataListAdmisionContext);
-	const { client, commerce, solic, codeFM, pos, stepsFM, aci, listValidated } = useContext(FMValidDataContext);
+	const { client, commerce, solic, codeFM, stepsFM, aci, listValidated } = useContext(FMValidDataContext);
 
 	useLayoutEffect(() => {
 		setSteps(stepsFM);
@@ -71,21 +58,6 @@ const Validacion: React.FC = () => {
 				Swal.showLoading();
 			},
 		});
-	};
-
-	const handleVerificated = () => {
-		Swal.fire({
-			icon: 'success',
-			title: 'Solicitud Verificada',
-			html: `<span>Codigo de Solicitud: <b>${codeFM}</b><span>`,
-			showConfirmButton: false,
-			allowOutsideClick: false,
-			allowEscapeKey: false,
-			timer: 2000,
-			customClass: { container: 'swal2-validated' },
-		});
-		//history.push(urlFM);
-		//setActiveStep(0);
 	};
 
 	const validStatusFm = () => {
@@ -185,7 +157,7 @@ const Validacion: React.FC = () => {
 	};
 
 	return (
-		<div style={{ marginTop: '2rem' }}>
+		<div className={classes.containerSolic}>
 			{!listAci.length ? (
 				<LoaderPrimary />
 			) : (
@@ -197,7 +169,7 @@ const Validacion: React.FC = () => {
 						}}>
 						Code: <span style={{ color: 'red' }}>{codeFM}</span>
 					</h2>
-					<form className={classes.containerSteps}>
+					<div className={classes.containerSteps}>
 						<Stepper alternativeLabel activeStep={activeStep} style={{ background: 'none', width: '100%' }}>
 							{steps.map((label, index) => {
 								const stepProps: { completed?: boolean } = {};
@@ -270,7 +242,7 @@ const Validacion: React.FC = () => {
 								</div>
 							</div>
 						</div>
-					</form>
+					</div>
 				</div>
 			)}
 		</div>

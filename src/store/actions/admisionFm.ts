@@ -1,6 +1,6 @@
 import useAxios from 'config/index';
 import { ValidatedFace } from 'context/Admision/Validation/interface';
-import { ImagesInt } from 'context/FM/fmImages/interface';
+import { ImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
 import Swal from 'sweetalert2';
 import { ActionType } from '../types/types';
 import { cleanRec } from './accept';
@@ -175,7 +175,12 @@ export const updateStatusFMDiferido = (
 		} catch (error: any) {
 			//console.log(error.response)
 			dispatch(requestError());
-			Swal.fire('Error', error.response.data.message, 'error');
+			Swal.fire({
+				icon: 'error',
+				title: 'Error',
+				customClass: { container: 'swal2-validated' },
+				text: error.response?.data?.message,
+			});
 		}
 	};
 	function requestSuccess() {

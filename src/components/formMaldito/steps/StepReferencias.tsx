@@ -1,7 +1,7 @@
 //Material
 import { FormControl, InputAdornment, MenuItem, Select, TextField } from '@mui/material';
 import classNames from 'classnames';
-import FMDataContext from 'context/FM/fmAdmision/FmContext';
+import FMDataContext from 'context/Admision/CreationFM/fmAdmision/FmContext';
 import { ChangeEvent, FC, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';

@@ -2,25 +2,37 @@
 import { AxiosResponse } from 'axios';
 import useAxios, { axiosFiles } from 'config/index';
 import { Aci, Activity, TypeWallet } from 'context/DataList/interface';
-import { ImagesInt } from 'context/FM/fmImages/interface';
-import { LocationInt } from 'context/FM/Location/interfaces';
+import { ImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
+import { LocationInt } from 'context/Admision/CreationFM/Location/interfaces';
 import { fmClient, fmCommerce, fmPos, IdClient_CommerceINT } from 'interfaces/fm';
 import Swal from 'sweetalert2';
 import { daysToString } from 'validation/validFm';
 import { ActionType } from '../types/types';
 import { TeleMarket } from './../../context/DataList/interface';
 
-export const validationClient = (client: any) => {
+export const validationClient = (client: any, errValid: boolean) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
 			//console.log(res);
 			dispatch(requestSuccess(res.data.info));
-			return res.data.info;
+			const dataClient = res.data.info.client;
+			if (dataClient) {
+				Swal.fire({
+					position: 'center',
+					icon: 'success',
+					title: 'Siguente Paso',
+					html: `<span>El cliente: <b>${dataClient.name} ${dataClient.last_name}</b>  ya fue registrado</span>`,
+					showConfirmButton: true,
+				});
+			}
+			//return res.data.info;
 		} catch (error: any) {
 			//console.log(error.response);
 			dispatch(requestError());
-			Swal.fire('Error', error.response.data.message, 'error');
+			if (!errValid) {
+				Swal.fire('Error', error.response.data.message, 'error');
+			}
 		}
 	};
 	function requestSuccess(state: boolean) {
@@ -36,12 +48,30 @@ export const validationClient = (client: any) => {
 	}
 };
 
+export const resetClientValid = () => {
+	return async (dispatch: any) => {
+		dispatch({
+			type: ActionType.validResetClient,
+		});
+	};
+};
+
 export const validationCommerce = (id_client: number, commerce: any) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce/valid`, commerce);
 			if (res.data.info) {
 				dispatch(requestSuccess(res.data.info));
+				console.log(res.data.info);
+				if (res.data.info) {
+					Swal.fire({
+						position: 'center',
+						icon: 'success',
+						title: 'Extra Pos',
+						html: `<span>El Comercio: <b>${res?.data?.info?.name}</b> ya fue registrado</span>`,
+						showConfirmButton: true,
+					});
+				}
 			} else {
 				dispatch(requestSuccessOk());
 			}
@@ -67,6 +97,14 @@ export const validationCommerce = (id_client: number, commerce: any) => {
 			type: ActionType.validCommerceError,
 		};
 	}
+};
+
+export const resetCommerceValid = () => {
+	return async (dispatch: any) => {
+		dispatch({
+			type: ActionType.validCommerceOk,
+		});
+	};
 };
 
 export const validationNumBank = (clientBank: any) => {
@@ -99,7 +137,7 @@ export const dataFormatClient = (client: fmClient, idLocationClient: number | nu
 	last_name: client.last_name.trim(),
 	id_ident_type: client.id_ident_type,
 	ident_num: client.ident_num,
-	phone1: '58' + client.phone1,
+	phone1: '+58' + client.phone1,
 	phone2: '+58' + client.phone2,
 	location: {
 		//id_estado: locationClient.estado?.id,

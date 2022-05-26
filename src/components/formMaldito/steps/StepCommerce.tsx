@@ -15,12 +15,12 @@ import {
 } from '@mui/material';
 import DataListContext from 'context/DataList/DataListContext';
 import { Activity } from 'context/DataList/interface';
-import FMDataContext from 'context/FM/fmAdmision/FmContext';
-import ImagesFmContext from 'context/FM/fmImages/ImagesFmContext';
+import FMDataContext from 'context/Admision/CreationFM/fmAdmision/FmContext';
+import ImagesFmContext from 'context/Admision/CreationFM/fmImages/ImagesFmContext';
 import { Days } from 'interfaces/fm';
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { validationCommerce } from 'store/actions/fm';
+import { resetCommerceValid, validationCommerce } from 'store/actions/fm';
 import { RootState } from 'store/store';
 import { recaudo } from 'utils/recaudos';
 import { sxStyled, useStylesFM } from '../styles';
@@ -58,8 +58,36 @@ const StepCommerce: FC = () => {
 		deleteImgActa,
 	} = useContext(ImagesFmContext);
 
+	useLayoutEffect(() => {
+		if (
+			//typeSolict === 1
+			commerce.id_ident_type !== 0 &&
+			commerce.ident_num !== '' &&
+			!errorsCommerce.ident_num
+		) {
+			dispatch(
+				validationCommerce(fm.id_client, {
+					id_ident_type: commerce.id_ident_type,
+					ident_num: commerce.ident_num,
+				})
+			);
+		}
+	}, []);
+
 	const handleBlurCommerce = (): void => {
-		if (commerce.id_ident_type !== 0 && commerce.ident_num !== '') {
+		if (commerce.id_ident_type !== 0 && commerce.ident_num !== '' && !errorsCommerce.ident_num) {
+			dispatch(
+				validationCommerce(fm.id_client, {
+					id_ident_type: commerce.id_ident_type,
+					ident_num: commerce.ident_num,
+				})
+			);
+		}
+	};
+
+	const handleChangeIdenType = (value: number): void => {
+		dispatch(resetCommerceValid());
+		if (commerce.id_ident_type !== 0 && commerce.ident_num !== '' && !errorsCommerce.ident_num) {
 			dispatch(
 				validationCommerce(fm.id_client, {
 					id_ident_type: commerce.id_ident_type,
@@ -116,7 +144,10 @@ const StepCommerce: FC = () => {
 							disabled={typeSolict === 1 || typeSolict === 2}
 							variant='outlined'
 							value={commerce.id_ident_type}
-							onChange={(event: any) => handleSelectIdentCommerce('id_ident_type', event.target.value)}
+							onChange={(event: any) => {
+								handleChangeIdenType(event.target.value);
+								handleSelectIdentCommerce('id_ident_type', event.target.value);
+							}}
 							name='id_ident_type'
 							label='Tipo'
 							onBlur={handleBlurCommerce}
@@ -141,7 +172,10 @@ const StepCommerce: FC = () => {
 						id='standard-required'
 						label={commerce.id_ident_type === 3 ? 'Numero de Rif' : 'C.I.'}
 						name='ident_num'
-						onChange={handleIdentNum}
+						onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+							dispatch(resetCommerceValid());
+							handleIdentNum(event);
+						}}
 						onBlur={handleBlurCommerce}
 						value={commerce.ident_num}
 						error={fm.errorCommerce || errorsCommerce.ident_num}

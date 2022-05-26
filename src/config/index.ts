@@ -9,7 +9,7 @@ export const configAxios: AxiosRequestConfig = {
 
 const configAxiosFiles: AxiosRequestConfig = {
 	baseURL: process.env.REACT_APP_API_IMAGES,
-	//headers: { Authorization: `${localStorage.get('token')}` },
+	headers: { Authorization: `${localStorage.getItem('token')}` },
 };
 
 Axios.defaults.headers['Common-Type'] = 'application/json';

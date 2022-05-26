@@ -1,6 +1,6 @@
 import { Aci, Activity, Distributor, TypeWallet } from 'context/DataList/interface';
-import { ImagesInt } from 'context/FM/fmImages/interface';
-import { LocationInt } from 'context/FM/Location/interfaces';
+import { ImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
+import { LocationInt } from 'context/Admision/CreationFM/Location/interfaces';
 import {
 	fmClient,
 	fmCommerce,
@@ -470,7 +470,7 @@ export const validReadyStep = (
 					else return false;
 				}
 			} else {
-				if (fm.mashClient) {
+				if (fm.mashClient && !errorsClient.ident_num) {
 					return true;
 				} else if (
 					!checkErrorAllInput(sizeStepError(activeStep), errorsClient) &&

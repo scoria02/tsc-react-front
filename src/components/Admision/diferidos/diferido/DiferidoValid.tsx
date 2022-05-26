@@ -1,20 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Typography, Button, Step, StepLabel, Stepper } from '@mui/material';
-import { cleanDataFmDiferido, updateStatusFMDiferido } from 'store/actions/admisionFm';
-import DataListAdmisionContext from 'context/DataList/DatalistAdmisionContext';
-import { SocketContext } from 'context/SocketContext';
 import React, { ReactElement, useContext, useEffect, useLayoutEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { urlFM } from 'routers/url';
-import { cleanFM, sendCompleteFM, sendCompleteFMExtraPos } from 'store/actions/fm';
-import { StateFMInt } from 'store/reducers/fmReducer';
-//Redux
-import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
-//steps
-//Cliente y comercio existente
+import { Typography, Button, Step, StepLabel, Stepper } from '@mui/material';
+import { updateStatusFMDiferido } from 'store/actions/admisionFm';
+import { useDispatch } from 'react-redux';
 import DifStepClient from './steps/DifStepClient';
 import DifStepCommerce from './steps/DifStepCommerce';
 import { useStylesFM } from './styles';
@@ -30,7 +18,6 @@ const DiferidoValid: React.FC = () => {
 	const dispatch = useDispatch();
 	const classes = useStylesFM();
 
-	const { socket } = useContext(SocketContext);
 	const [steps, setSteps] = useState<string[]>([]);
 
 	const [activeStep, setActiveStep] = useState<number>(0);
@@ -58,6 +45,7 @@ const DiferidoValid: React.FC = () => {
 		} else {
 			setDisabled(true);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [disabled, activeStep, stepsValid]);
 
 	useLayoutEffect(() => {
@@ -85,24 +73,6 @@ const DiferidoValid: React.FC = () => {
 				Swal.showLoading();
 			},
 		});
-	};
-
-	const handleVerificated = () => {
-		Swal.fire({
-			icon: 'success',
-			title: 'Solicitud Verificada',
-			html: `<span>Codigo de Solicitud: <b>${codeFM}</b><span>`,
-			showConfirmButton: false,
-			allowOutsideClick: false,
-			allowEscapeKey: false,
-			timer: 2000,
-			customClass: { container: 'swal2-validated' },
-		});
-		//setActiveStep(0);
-	};
-
-	const validStatusFm = () => {
-		return false;
 	};
 
 	const handleSend = async () => {
@@ -196,7 +166,7 @@ const DiferidoValid: React.FC = () => {
 	};
 
 	return (
-		<div style={{ marginTop: '2rem' }}>
+		<div className={classes.containerSolic}>
 			<div>
 				<h2
 					style={{

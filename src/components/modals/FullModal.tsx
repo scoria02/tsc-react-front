@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
 			// width: '100%',
 			//margin: '1.5rem',
 			padding: '1rem',
+			paddingTop: '10px',
 			display: 'flex',
 			flexDirection: 'column',
 		},
