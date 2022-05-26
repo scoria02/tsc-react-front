@@ -82,7 +82,7 @@ const Comercio: FC = () => {
 	const [sortModel, setSortModel] = useState<GridSortModel>([
 		{
 			field: 'id',
-			sort: 'desc' as GridSortDirection,
+			sort: 'asc' as GridSortDirection,
 		},
 	]);
 	const [modalOpen, setModelOpen] = useState(true);
