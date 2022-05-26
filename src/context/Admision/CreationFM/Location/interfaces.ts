@@ -18,12 +18,12 @@ export interface Ciudad {
 export interface Parroquia {
 	//id: number;
 	parroquia: string;
-	codigoPostal: string;
 }
 
 export interface Sector {
 	id: number;
 	sector: string;
+	codigoPostal: string;
 }
 
 export interface LocationInt {

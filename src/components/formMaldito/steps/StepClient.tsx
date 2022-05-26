@@ -383,21 +383,11 @@ const StepClient: FC = () => {
 							/>
 						</div>
 						<div className={classes.input}>
-							<TextField
-								disabled
-								className={classNames(classes.inputText, classes.inputTextLeft)}
-								sx={sxStyled.inputLeft}
-								variant='outlined'
-								required
-								id='standard-required'
-								label='Cod. Postal'
-								name='codigoPostal'
-								value={locationClient.parroquia?.codigoPostal || ''}
-							/>
 							<Autocomplete
 								noOptionsText={'Cargando...'}
 								disabled={fm.mashClient}
-								className={classes.inputText}
+								className={classNames(classes.inputText, classes.inputTextLeft)}
+								sx={sxStyled.inputLeft}
 								onChange={(event, value: Sector | null) => {
 									setSector(value, setLocationClient);
 									setIdLocationClient(value ? value.id : null);
@@ -414,6 +404,16 @@ const StepClient: FC = () => {
 										inputProps={{ ...params.inputProps, autoComplete: 'sector' }}
 									/>
 								)}
+							/>
+							<TextField
+								disabled
+								className={classes.inputText}
+								variant='outlined'
+								required
+								id='standard-required'
+								label='Cod. Postal'
+								name='codigoPostal'
+								value={locationClient.sector?.codigoPostal || ''}
 							/>
 						</div>
 						<div className={classes.input}>

@@ -1,5 +1,6 @@
 import { default as AccountCircle } from '@mui/icons-material/AccountCircle';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
@@ -36,7 +37,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { ApprouterContext } from 'routers/AppRouter';
 //Redux
-import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, urlLogin, userAdmin } from 'routers/url';
+import {
+	baseUrl,
+	urlAdministracion,
+	urlAdmision,
+	urlCobr,
+	urlFM,
+	urlLogin,
+	userAdmin,
+	urlUpdateClient,
+} from 'routers/url';
 import { refreshLogin, startLogout } from 'store/actions/auth';
 import { FinishLoading } from 'store/actions/ui';
 import { RootState } from 'store/store';
@@ -56,6 +66,7 @@ const MainMenu: FC = () => {
 	const [seguridad, setSeguridad] = useState(false);
 	const [admision, setAdmision] = useState(false);
 	const [cobranza, setCobranza] = useState(false);
+	const [updateClient, setUpdateClient] = useState(false);
 	const { menu } = useContext(ApprouterContext);
 	const [open, setOpen] = useState(false); //Nav Left
 	const [fm, setFm] = useState(false);
@@ -71,13 +82,16 @@ const MainMenu: FC = () => {
 			setUser(userDB);
 		}
 		if (menu) {
-			switch (menu) {
+			switch (
+				menu //agreagar esta lista a base de datos para ser perfiles de rutas que puede ver
+			) {
 				case 'God':
 					setAdmision(true);
 					setCobranza(true);
 					setAdministracion(true);
 					setSeguridad(true);
 					setFm(true);
+					setUpdateClient(true);
 					break;
 				case 'Presidencia':
 					setFm(true);
@@ -85,6 +99,7 @@ const MainMenu: FC = () => {
 					setCobranza(true);
 					setAdministracion(true);
 					setSeguridad(true);
+					setUpdateClient(true);
 					break;
 
 				case 'Admision':
@@ -93,6 +108,7 @@ const MainMenu: FC = () => {
 					setCobranza(false);
 					setAdministracion(false);
 					setSeguridad(false);
+					setUpdateClient(false);
 					break;
 
 				case 'Administracion':
@@ -101,6 +117,7 @@ const MainMenu: FC = () => {
 					setCobranza(false);
 					setAdministracion(true);
 					setSeguridad(false);
+					setUpdateClient(false);
 					break;
 
 				case 'Cobranza':
@@ -109,6 +126,7 @@ const MainMenu: FC = () => {
 					setCobranza(true);
 					setAdministracion(false);
 					setSeguridad(false);
+					setUpdateClient(false);
 					break;
 
 				case 'Seguridad':
@@ -117,6 +135,7 @@ const MainMenu: FC = () => {
 					setCobranza(false);
 					setAdministracion(false);
 					setSeguridad(true);
+					setUpdateClient(false);
 					break;
 
 				default:
@@ -125,6 +144,7 @@ const MainMenu: FC = () => {
 					setCobranza(false);
 					setAdministracion(false);
 					setSeguridad(false);
+					setUpdateClient(false);
 					break;
 			}
 		}
@@ -392,6 +412,14 @@ const MainMenu: FC = () => {
 								<CreditCardIcon />
 							</ListItemIcon>
 							<ListItemText primary='Cobranza' />
+						</ListItem>
+					)}
+					{updateClient && (
+						<ListItem button onClick={(event) => handleListItemClick(event, urlUpdateClient)}>
+							<ListItemIcon classes={{ root: classes.icon }}>
+								<SettingsSuggestIcon />
+							</ListItemIcon>
+							<ListItemText primary='Actualizar Informacion' />
 						</ListItem>
 					)}
 				</List>

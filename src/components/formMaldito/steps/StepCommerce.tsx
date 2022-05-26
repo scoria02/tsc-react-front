@@ -72,6 +72,7 @@ const StepCommerce: FC = () => {
 				})
 			);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleBlurCommerce = (): void => {

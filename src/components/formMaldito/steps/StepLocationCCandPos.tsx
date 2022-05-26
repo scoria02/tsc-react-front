@@ -52,24 +52,6 @@ const StepLocationCCandPos: FC = () => {
 		handleChangePos(event);
 	};
 
-	/*
-	//Copyrighter Commerce to pos
-	useEffect(() => {
-		if (activeStep === 3 && autoCompletePos) {
-			copyListLocationCCToP();
-			copyLocationCCToP();
-		}
-	}, [
-		activeStep,
-		locationCommerce,
-		fmData.sector,
-		fmData.calle,
-		fmData.local,
-		fmData.codigo_postal,
-		fm.commerceMash,
-	]);
-	*/
-
 	return (
 		<div className={classes.containerLocation}>
 			<div>
@@ -171,21 +153,11 @@ const StepLocationCCandPos: FC = () => {
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
-					<TextField
-						disabled
-						className={classes.inputTextLeft}
-						sx={sxStyled.inputSelect}
-						variant='outlined'
-						required
-						id='standard-required'
-						label='Codigo Postal'
-						name='codigo_postal'
-						value={locationCommerce.parroquia?.codigoPostal || ''}
-					/>
 					<Autocomplete
 						noOptionsText={'Cargando...'}
 						disabled={fm.mashCommerce}
-						className={classes.inputText}
+						className={classes.inputTextLeft}
+						sx={sxStyled.inputSelect}
 						onChange={(event, value: Sector | null) => {
 							setSector(value, setLocationCommerce);
 							setIdLocationCommerce(value ? value.id : null);
@@ -202,6 +174,16 @@ const StepLocationCCandPos: FC = () => {
 								inputProps={{ ...params.inputProps, autoComplete: 'sector' }}
 							/>
 						)}
+					/>
+					<TextField
+						disabled
+						variant='outlined'
+						className={classes.inputText}
+						required
+						id='standard-required'
+						label='Codigo Postal'
+						name='codigo_postal'
+						value={locationCommerce.sector?.codigoPostal || ''}
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
@@ -326,20 +308,10 @@ const StepLocationCCandPos: FC = () => {
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
-					<TextField
-						className={classes.inputTextLeft}
-						sx={sxStyled.inputSelect}
-						variant='outlined'
-						required
-						id='standard-required'
-						label='Codigo Postal'
-						name='codigoPostal'
-						value={locationPos.parroquia?.codigoPostal || ''}
-						disabled
-					/>
 					<Autocomplete
 						noOptionsText={'Cargando...'}
-						className={classes.inputText}
+						className={classes.inputTextLeft}
+						sx={sxStyled.inputSelect}
 						onChange={(event, value: Sector | null) => {
 							setSector(value, setLocationPos);
 							setIdLocationPos(value ? value.id : null);
@@ -356,6 +328,16 @@ const StepLocationCCandPos: FC = () => {
 								inputProps={{ ...params.inputProps, autoComplete: 'sector' }}
 							/>
 						)}
+					/>
+					<TextField
+						variant='outlined'
+						className={classes.inputText}
+						required
+						id='standard-required'
+						label='Codigo Postal'
+						name='codigoPostal'
+						value={locationPos.sector?.codigoPostal || ''}
+						disabled
 					/>
 				</div>
 				<div className={classnames(classes.row, classes.input)}>
