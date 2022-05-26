@@ -75,6 +75,14 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 	const [solic, setSolic] = useState<any>(null);
 	const [locationCommerce, setLocationCommerce] = useState<any>(null);
 	const [locationPos, setLocationPos] = useState<any>(null);
+	const [imagePlanilla, setImagePlanilla] = useState<FileList | []>([]);
+	//
+	const [imagesActa, setImagesActa] = useState<FileList | []>([]);
+	//
+	const [imagesForm, setImagesForm] = useState<ImagesInt>(initialImagesFm);
+	const [pathImages, setPathImages] = useState<PathImagesInt>(initialImagesPath);
+	//
+	const [disabled, setDisabled] = useState<boolean>(false);
 
 	const [phones, setPhones] = useState({
 		phone1: '',
@@ -120,18 +128,6 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [fm]);
 	//
-	const [imagePlanilla, setImagePlanilla] = useState<FileList | []>([]);
-	//
-	const [imagesActa, setImagesActa] = useState<FileList | []>([]);
-	//const [pathImagesActa, setPathImagesActa] = useState<PathImage[]>([]);
-	//
-	//
-	const [imagesForm, setImagesForm] = useState<ImagesInt>(initialImagesFm);
-	const [pathImages, setPathImages] = useState<PathImagesInt>(initialImagesPath);
-	//
-
-	const [disabled, setDisabled] = useState<boolean>(false);
-
 	//
 	const handleChangeClient = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.name && client) {

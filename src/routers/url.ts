@@ -6,8 +6,18 @@ export const userAdmin = `${baseUrl}GestionUsuarios`;
 export const urlAdministracion = `${baseUrl}Administracion`;
 export const urlCobr = `${baseUrl}Cobranza`;
 export const urlTerminales = `${baseUrl}Terminales`;
+export const urlUpdateClient = `${baseUrl}update`;
 
-export const urlPrivate = [baseUrl, urlAdmision, urlFM, userAdmin, urlAdministracion, urlCobr, urlTerminales];
+export const urlPrivate = [
+	baseUrl,
+	urlAdmision,
+	urlFM,
+	userAdmin,
+	urlAdministracion,
+	urlCobr,
+	urlTerminales,
+	urlUpdateClient,
+];
 
 // Public Routes
 export const urlLogin = `${baseUrl}auth/login`;
