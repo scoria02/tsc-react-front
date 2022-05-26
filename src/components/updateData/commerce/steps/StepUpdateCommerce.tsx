@@ -1,5 +1,5 @@
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { InputAdornment, Alert, Button, IconButton, Stack, TextField } from '@mui/material';
+import { InputAdornment, Button, IconButton, TextField } from '@mui/material';
 import classNames from 'classnames';
 import React, { FC, useContext, useState } from 'react';
 import { recaudo } from 'utils/recaudos';
@@ -11,7 +11,7 @@ import UpdateCommerceContext from 'context/UpdateData/Commerce/UpdateCommerceCon
 const StepUpdateCommerce: FC = () => {
 	const classes = useStyles();
 
-	const { commerce, locationCommerce, disabled, handleChangeCommerce, imagen, handleChangeImages, pathImages } =
+	const { commerce, disabled, handleChangeCommerce, imagen, handleChangeImages, pathImages } =
 		useContext(UpdateCommerceContext);
 
 	const [load, setLoad] = useState(false);
