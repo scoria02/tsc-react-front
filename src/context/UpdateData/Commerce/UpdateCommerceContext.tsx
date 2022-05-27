@@ -12,10 +12,8 @@ import {
 } from 'context/Admision/CreationFM/Location/interfaces';
 import { initialListLocation } from 'context/Admision/CreationFM/Location/LocationsContext';
 import { Activity } from 'context/DataList/interface';
-import { loadavg } from 'os';
-import React, { createContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { errorFile } from 'utils/validFormatFile';
-import { validateFormClient } from 'validation/validFm';
 import { ContextCommerceUpdata, PropsCommerceContext } from './interfaces';
 import { ErrorCommerceData, initialImagesFm, initialImagesPath } from './state';
 import * as valid from './validCommerce';
@@ -69,6 +67,7 @@ export const UpdateCommerceContextProvider = ({ children, data, closeModal }: Pr
 		rc_rif: null,
 	});
 	const [listLocations, setListLocations] = useState<ListLocation>(initialListLocation);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [activeStep, setActiveStep] = useState(0);
 
 	const [pathImages, setPathImages] = useState<PathImagesInt>(initialImagesPath);
@@ -187,8 +186,6 @@ export const UpdateCommerceContextProvider = ({ children, data, closeModal }: Pr
 				});
 	};
 
-	console.log(error);
-
 	const handleChange = (name: string, value: Activity | any) => {
 		setCommerce({
 			...commerce,
@@ -197,7 +194,11 @@ export const UpdateCommerceContextProvider = ({ children, data, closeModal }: Pr
 	};
 
 	const handleChangeCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setError(valid.errorObject(commerce, error, event.target.name, event.target.value));
+		if (event.target.name === 'name') {
+			setError(valid.errorObject(commerce, error, 'nameCommerce', event.target.value));
+		} else {
+			setError(valid.errorObject(commerce, error, event.target.name, event.target.value));
+		}
 		if (event.target.name) {
 			setCommerce({
 				...commerce,
@@ -241,9 +242,10 @@ export const UpdateCommerceContextProvider = ({ children, data, closeModal }: Pr
 
 	useEffect(() => {
 		if (location.estado) {
-			console.log('validarlocaiton');
+			//console.log('validarlocaiton');
 			setError(valid.errorObject(location, error, 'location', ''));
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location]);
 
 	const setMunicipio = (data: Municipio | null) => {

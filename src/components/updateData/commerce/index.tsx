@@ -1,27 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button, Grid } from '@mui/material';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import EditIcon from '@mui/icons-material/Edit';
-import ImageIcon from '@mui/icons-material/Image';
-import {
-	DataGrid,
-	GridColDef,
-	GridRowParams,
-	GridSortDirection,
-	GridSortModel,
-	GridToolbarContainer,
-	GridToolbarFilterButton,
-	GridValueGetterParams,
-} from '@mui/x-data-grid';
-import { DateTime } from 'luxon';
+import { DataGrid, GridSortModel, GridToolbarContainer, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { FC, useLayoutEffect, useState } from 'react';
 import { useStyles } from '..';
 import DataCommerce from './DataCommerce';
 import { DataListProvider } from 'context/DataList/DataListContext';
 import LoaderLine from 'components/loaders/LoaderLine';
 import { columnsGridCommerce } from './dataGridColumn';
-import { getAllCommerces } from 'services/edit/commerce';
-import { LocationsProvider } from 'context/Admision/CreationFM/Location/LocationsContext';
+import { editCommerce, getAllCommerces } from 'services/edit/commerce';
+import { handleLoadingSearch } from 'utils/handleSwal';
 
 const ComercioList: FC = () => {
 	const classes = useStyles();
@@ -33,7 +20,6 @@ const ComercioList: FC = () => {
 		},
 	]);
 	const [rows, setRows] = useState<any[]>([]);
-	console.log(rows);
 
 	const customToolbar: () => JSX.Element = () => {
 		return (
@@ -55,77 +41,24 @@ const ComercioList: FC = () => {
 		getCommerces();
 	}, []);
 
-	/*
-		{
-			id: 1,
-			name: 'Armando Trand',
-			id_ident_type: {
-				id: 1,
-				name: 'V',
-			},
-			ident_num: '123456',
-			special_contributor: 0,
-			rc_rif: null, // or data
-			id_location: {
-				id: 1,
-				id_direccion: {
-					id: 1,
-					estado: 'Distrito Capital',
-				},
-			},
-			id_activity: {
-				id: '15422',
-				name: `Alimentación\tProveedores de cavas y estantes`,
-				id_afiliado: {
-					id: 720008172,
-					bank_account_number: '01040107160107199659',
-					name: 'TRANRED BIENES Y SERVICIOS (BVC) ',
-				},
-			},
-			fecha: DateTime.fromISO(DateTime.now().minus({ days: 26 }).toISO()),
-		},
-		{
-			id: 2,
-			name: 'Jesus Twen',
-			id_ident_type: {
-				id: 1,
-				name: 'J',
-			},
-			ident_num: '123457',
-			special_contributor: 0,
-			rc_rif: {
-				id: 1,
-				algo: 'algo',
-			},
-			id_location: {
-				id: 1,
-				id_direccion: {
-					id: 1,
-					estado: 'Vargas',
-				},
-			},
-			id_activity: {
-				id: '15422',
-				name: `Alimentación\tProveedores de cavas y estantes`,
-				id_afiliado: {
-					id: 720008172,
-					bank_account_number: '01040107160107199659',
-					name: 'TRANRED BIENES Y SERVICIOS (BVC) ',
-				},
-			},
-			fecha: DateTime.fromISO(DateTime.now().minus({ days: 24 }).toISO()),
-		},
-	]);
-	*/
-
 	const [click, setClick] = useState(false);
 
+	const getCommerce = async (id: number) => {
+		const res: any = await editCommerce.getDataCommerce(id);
+		if (res?.ok) {
+			setSelected(res.commerce);
+		} else {
+			setSelected(null);
+		}
+	};
+
 	const handleRow = (event: any) => {
+		setSelected(null);
 		if (event.field === 'opciones') {
 			setClick(!click);
-			setSelected(null);
-			setSelected(event.row);
-			console.log(event);
+			handleLoadingSearch();
+			getCommerce(event.row.id);
+			//console.log(event);
 		}
 	};
 
@@ -137,7 +70,6 @@ const ComercioList: FC = () => {
 				</>
 			) : (
 				<>
-					{console.log('not show')}
 					<Grid>
 						<Grid xs={12} item>
 							<div style={{ height: '70vh', width: '100%' }}>

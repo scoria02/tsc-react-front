@@ -27,7 +27,7 @@ export const validFullName = (value: string): boolean => {
 };
 
 export const validNameCommere = (value: string): boolean => {
-	if (3 < value.length && value.length < 255) {
+	if (0 < value.length && value.length < 30) {
 		return false;
 	}
 	return true;
@@ -433,10 +433,9 @@ export const validReadyStep = (
 	//imagesActa: FileList | [],
 	//errorNumBank: boolean,
 ): boolean => {
-	console.log('valid');
 	switch (activeStep) {
 		case 0: //Tipo de Solicitud
-			console.log(!inputNotNull(commerce), !checkErrorInputs(error));
+			//console.log(!inputNotNull(commerce), !checkErrorInputs(error));
 			if (!inputNotNull(commerce) && !checkErrorInputs(error)) {
 				return true;
 			}
@@ -467,7 +466,9 @@ export const errorObject = (data: any, error: any, name: string, value: any): an
 		case 'calle':
 		case 'last_name':
 			temp[name] = validFullName(value as string);
-			console.log('aqui esnae');
+			break;
+		case 'nameCommerce':
+			temp.name = validNameCommere(value as string);
 			break;
 		case 'id_ident_type':
 			if (data.ident_num.trim() !== '') {
