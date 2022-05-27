@@ -157,21 +157,83 @@ export const createFormDataFmDif = (
 	return formData;
 };
 
+const dataFormatClient = (client: any, idLocationClient: number) => ({
+	id: client.id,
+	email: client.email,
+	name: client.name.trim(),
+	last_name: client.last_name.trim(),
+	id_ident_type: client.id_ident_type.id,
+	ident_num: client.ident_num,
+	phone1: '+58' + client.phone1,
+	phone2: '+58' + client.phone2,
+	location: {
+		id_direccion: idLocationClient ? idLocationClient : null,
+		calle: client.calle,
+		local: client.local,
+	},
+	/*
+	ref_person_1: {
+		fullName: client.name_ref1.trim(),
+		document: client.doc_ident_type_ref1 + client.doc_ident_ref1,
+		phone: '+58' + client.phone_ref1,
+	},
+	ref_person_2: {
+		fullName: client.name_ref1.trim(),
+		document: client.doc_ident_type_ref2 + client.doc_ident_ref2,
+		phone: '+58' + client.phone_ref2,
+	},
+	*/
+});
+
+export const dataFormatCommerce = (commerce: any, idLocationCommerce: number | null) => ({
+	id_ident_type: commerce.id_ident_type.id,
+	ident_num: commerce.ident_num,
+	//special_contributor: commerce.special_contributor ? 1 : 0,
+	name: commerce.name.trim(),
+	id_activity: commerce.id_activity.id,
+	location: {
+		id_direccion: idLocationCommerce,
+		calle: commerce.calle,
+		local: commerce.local,
+	},
+	days: commerce.days,
+});
+
 export const updateStatusFMDiferido = (
 	id_fm: number,
 	fm: any,
 	client: any,
 	commerce: any,
+	idLocationClient: number,
+	idLocationCommerce: number,
+	idLocationPos: number,
 	imagesForm: ImagesInt,
 	imagePlanilla: FileList | [],
 	imagesActa: FileList | []
 ) => {
 	return async (dispatch: any) => {
-		const dataFm: any = createFormDataFmDif(id_fm, fm, client, commerce, imagePlanilla, imagesForm, imagesActa);
+		console.log('Client:old', client);
+		console.log('Commerce:old', commerce);
+		const clientData: any = client ? dataFormatClient(client, idLocationClient) : null;
+		const commerceData: any = commerce ? dataFormatCommerce(client, idLocationCommerce) : null;
+		console.log('Client:', clientData);
+		console.log('Commerce:', commerceData);
+		const dataFm: any = createFormDataFmDif(
+			id_fm,
+			fm,
+			clientData,
+			commerceData,
+			imagePlanilla,
+			imagesForm,
+			imagesActa
+		);
 		try {
 			await useAxios.put(`/FM/admition/${id_fm}/diferido`, dataFm);
 			//console.log('updateimg', res)
 			dispatch(requestSuccess());
+			return {
+				ok: true,
+			};
 		} catch (error: any) {
 			//console.log(error.response)
 			dispatch(requestError());

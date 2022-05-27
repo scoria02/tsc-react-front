@@ -1,12 +1,19 @@
 import { ImagesInt, PathImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
-import { ReactChild } from 'react';
+import { Activity } from 'context/DataList/interface';
+import { ReactChild, Dispatch, SetStateAction } from 'react';
+import { LocationInt } from '../CreationFM/Location/interfaces';
+import { fmErrorDif_ClientINT } from './interfaces/client_interface';
+import { fmErrorDif_CommerceINT } from './interfaces/commerce_intercae';
 
 export interface PropsAd {
 	children: ReactChild;
 	fm: any;
 }
 
-export interface ContextFMD {
+export interface ContextFMDif {
+	activeStep: number;
+	setActiveStep: any;
+	ready: boolean;
 	disabled: boolean;
 	setDisabled: any;
 	initFm(fmData: any): void;
@@ -24,6 +31,8 @@ export interface ContextFMD {
 	handleChangePlanilla(event: React.ChangeEvent<HTMLInputElement>): void;
 	deleteItemPlanilla(id: number): void;
 	//
+	handleChangeIdenType(event: any): void;
+	//
 	handleChangeImages(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleChangeImagesActa(event: React.ChangeEvent<HTMLInputElement>): void;
 	deleteItemActa(id: number): void;
@@ -36,40 +45,30 @@ export interface ContextFMD {
 	listValidated: any;
 	stepsFM: any;
 	solic: any;
-	client: ClientDif | null;
-	commerce: any;
-	pos: any;
+	//
+	client: any;
+	errorClient: fmErrorDif_ClientINT;
 	locationClient: any;
+	//
+	commerce: any;
+	errorCommerce: fmErrorDif_CommerceINT;
 	locationCommerce: any;
+	handleChangeActivity(name: string, value: Activity): void;
+	//
+	pos: any;
 	locationPos: any;
 	phones: any;
 	handleChangeClientPhone(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleChangeRefClient(param: string, value: any): void;
-}
-
-export interface ClientDif {
-	id: number;
-	validate: number;
-	id_roles: number;
-	ident_num: string;
-	last_name: string;
-	name: string;
-	email: string;
-	id_ident_type: {
-		id: number;
-		name: string;
-	};
-	id_location: {
-		id: number;
-		sector: string;
-		calle: string;
-		local: string;
-		id_estado: any;
-		id_ciudad: any;
-		id_municipio: any;
-		id_parroquia: any;
-	};
-	rc_ident_card: any;
-	ref_person_1: any;
-	ref_person_2: any;
+	//locations
+	setLocationClient: Dispatch<SetStateAction<LocationInt>>;
+	setLocationCommerce: Dispatch<SetStateAction<LocationInt>>;
+	setLocationPos: Dispatch<SetStateAction<LocationInt>>;
+	//
+	setIdLocationClient: Dispatch<SetStateAction<number>>;
+	setIdLocationCommerce: Dispatch<SetStateAction<number>>;
+	setIdLocationPos: Dispatch<SetStateAction<number>>;
+	idLocationClient: number;
+	idLocationCommerce: number;
+	idLocationPos: number;
 }

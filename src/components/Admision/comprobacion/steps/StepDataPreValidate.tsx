@@ -19,7 +19,7 @@ const StepDataPreValidate: FC = () => {
 						fontSize: '20px',
 						marginRight: '10px',
 					}}>
-					Cliente
+					El ya fue validado
 				</h2>
 				<div className={classes.input}>
 					<TextField
@@ -60,7 +60,7 @@ const StepDataPreValidate: FC = () => {
 								marginBottom: '5px',
 								marginRight: '10px',
 							}}>
-							Comercio
+							El comercio ya fue validado
 						</h2>
 						<div className={classes.input}>
 							<TextField

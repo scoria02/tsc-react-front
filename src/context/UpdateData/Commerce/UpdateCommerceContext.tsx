@@ -118,26 +118,6 @@ export const UpdateCommerceContextProvider = ({ children, data, closeModal }: Pr
 		} // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, closeModal]);
 
-	useEffect(() => {
-		if (
-			listLocations.estado.length &&
-			listLocations.municipio.length &&
-			listLocations.ciudad.length &&
-			listLocations.parroquia &&
-			listLocations.sector
-		) {
-		}
-	}, [location, listLocations]);
-
-	/*
-	const saveEstados = (estados: Estado[]): void => {
-		setListLocations((prevState) => ({
-			...prevState,
-			estado: estados,
-		}));
-	};
-	*/
-
 	const getters = async (routes: string[]) => {
 		try {
 			const stop = routes.map(async (route: string) => {

@@ -390,7 +390,7 @@ const StepClient: FC = () => {
 								sx={sxStyled.inputLeft}
 								onChange={(event, value: Sector | null) => {
 									setSector(value, setLocationClient);
-									setIdLocationClient(value ? value.id : null);
+									setIdLocationClient(value ? value.id : 0);
 								}}
 								value={locationClient.sector || null}
 								options={listLocationClient.sector}

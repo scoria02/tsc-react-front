@@ -11,6 +11,8 @@ import { FMDiferidoContextProvider } from 'context/Admision/Diferido/FmDiferidoC
 import { DataListAdmisionProvider } from 'context/DataList/DatalistAdmisionContext';
 import DiferidoValid from './diferido/DiferidoValid';
 import FullModal from 'components/modals/FullModal';
+import { DataListProvider } from 'context/DataList/DataListContext';
+import { LocationsProvider } from 'context/Admision/CreationFM/Location/LocationsContext';
 
 interface Prop {
 	fmData: any;
@@ -47,7 +49,9 @@ const Diferido: React.FC<Prop> = ({ fmData }) => {
 		<DataListAdmisionProvider>
 			<FMDiferidoContextProvider fm={fmData}>
 				<FullModal modalOpen={modalOpenDiferido} handleClose={handleClose}>
-					<DiferidoValid />
+					<LocationsProvider>
+						<DiferidoValid />
+					</LocationsProvider>
 				</FullModal>
 			</FMDiferidoContextProvider>
 		</DataListAdmisionProvider>

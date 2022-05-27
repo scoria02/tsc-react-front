@@ -163,21 +163,14 @@ export const dataFormatClient = (client: fmClient, idLocationClient: number | nu
 export const dataFormatCommerce = (
 	commerce: fmCommerce,
 	activity: Activity | null,
-	pos: fmPos,
 	idLocationCommerce: number | null
 ) => ({
 	id_ident_type: commerce.id_ident_type,
 	ident_num: commerce.ident_num,
 	special_contributor: commerce.special_contributor ? 1 : 0,
 	name: commerce.name.trim(),
-	bank_account_num: pos.text_account_number,
 	id_activity: activity?.id,
 	location: {
-		//id_estado: locationCommerce.estado?.id,
-		//id_municipio: locationCommerce.municipio?.id,
-		//id_parroquia: locationCommerce.parroquia?.id,
-		//id_ciudad: locationCommerce.ciudad?.id,
-		//sector: commerce.sector,
 		id_direccion: idLocationCommerce,
 		calle: commerce.calle,
 		local: commerce.local,
@@ -386,7 +379,7 @@ export const sendCompleteFM = (
 ) => {
 	//Crear formart
 	const dataClient = id_client ? null : dataFormatClient(client, idLocationClient);
-	const dataCommerce = dataFormatCommerce(commerce, activity, pos, idLocationCommerce);
+	const dataCommerce = dataFormatCommerce(commerce, activity, idLocationCommerce);
 	const dataPost = dataForPos(typeSolict, pos, aci, telemarket, typeWallet, idLocationPos);
 	//console.log('cliente: ', dataClient, ' id ', id_client);
 	return async (dispatch: any) => {

@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from 'config';
+import { gettersAxios } from 'context/utilitis/multiPromisesAxios';
 import {
 	createContext,
 	Dispatch,
@@ -52,6 +53,7 @@ interface ContextLocations {
 	copyListLocationToCommerce(stateListLocation: ListLocation): void;
 	copyListLocationToPos(stateListLocation: ListLocation): void;
 	resetListLocaitons(): void;
+	initListLocation(direccion: any, setListLocation: Dispatch<SetStateAction<ListLocation>>): void;
 }
 
 const LocationsContext = createContext<ContextLocations>({
@@ -68,6 +70,7 @@ const LocationsContext = createContext<ContextLocations>({
 	copyListLocationToCommerce: () => {},
 	copyListLocationToPos: () => {},
 	resetListLocaitons: () => {},
+	initListLocation: () => {},
 });
 
 export const LocationsProvider = ({ children }: Props) => {
@@ -90,6 +93,37 @@ export const LocationsProvider = ({ children }: Props) => {
 			...extra,
 		});
 	};
+
+	const initList = (array: any[], setListLocation: Dispatch<SetStateAction<ListLocation>>) => {
+		console.log('array', array);
+		setListLocation((prevState: any) => ({
+			...prevState,
+			municipio: array[0].data.info,
+			ciudad: array[1].data.info,
+			parroquia: array[2].data.info,
+			sector: array[3].data.info,
+		}));
+	};
+
+	const initListLocation = (direccion: any, setListLocation: Dispatch<SetStateAction<ListLocation>>) => {
+		console.log('buscar paraxd', direccion);
+		const routes = [
+			`/direccion/${direccion.estado}/municipio`,
+			`/direccion/${direccion.estado}/${direccion.municipio}/ciudad`,
+			`/direccion/${direccion.estado}/${direccion.municipio}/${direccion.ciudad}/parroquia`,
+			`/direccion/${direccion.estado}/${direccion.municipio}/${direccion.ciudad}/${direccion.parroquia}/sector`,
+		];
+
+		if (direccion.estado && direccion.municipio && direccion.ciudad && direccion.ciudad)
+			gettersAxios(routes)
+				.then((responses) => {
+					initList(responses, setListLocation);
+				})
+				.catch((errors) => {
+					console.log('error multi axos', errors);
+				});
+	};
+	//-------------Init lIstas
 
 	//Estado
 	const setListEstado = (estados: Estado[], setListLocation: Dispatch<SetStateAction<ListLocation>>) => {
@@ -278,6 +312,7 @@ export const LocationsProvider = ({ children }: Props) => {
 				copyListLocationToPos,
 
 				resetListLocaitons,
+				initListLocation,
 			}}>
 			{children}
 		</LocationsContext.Provider>

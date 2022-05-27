@@ -13,6 +13,8 @@ import DifStepSpecialContributor from './steps/DifStepSpecialContributor';
 import DifStepPos from './steps/DifStepPos';
 import DifStepRefBank from './steps/DifStepRefBank';
 import DifStepCompDep from './steps/DifStepCompDep';
+import LocationsContext from 'context/Admision/CreationFM/Location/LocationsContext';
+import { setMunicipio } from 'context/utilitis/setLocation';
 
 const DiferidoValid: React.FC = () => {
 	const dispatch = useDispatch();
@@ -20,12 +22,24 @@ const DiferidoValid: React.FC = () => {
 
 	const [steps, setSteps] = useState<string[]>([]);
 
-	const [activeStep, setActiveStep] = useState<number>(0);
-
 	const [stepsValid, setStepsValid] = useState<number>(0);
 
 	const {
+		initListLocation,
+		setListLocationClient,
+		setListLocationCommerce,
+		setListLocationPos,
+		//
+		listLocationClient,
+		listLocationCommerce,
+		listLocationPos,
+	} = useContext(LocationsContext);
+
+	const {
 		disabled,
+		activeStep,
+		setActiveStep,
+		ready,
 		setDisabled,
 		client,
 		codeFM,
@@ -37,6 +51,12 @@ const DiferidoValid: React.FC = () => {
 		imagesForm,
 		imagePlanilla,
 		imagesActa,
+		locationClient,
+		locationCommerce,
+		locationPos,
+		idLocationClient,
+		idLocationCommerce,
+		idLocationPos,
 	} = useContext(FMDiferidoContext);
 
 	useEffect(() => {
@@ -53,11 +73,11 @@ const DiferidoValid: React.FC = () => {
 	}, [stepsFM]);
 
 	const handleNext = () => {
-		setActiveStep((prevActiveStep) => prevActiveStep + 1);
+		setActiveStep((prevActiveStep: number) => prevActiveStep + 1);
 	};
 
 	const handleBack = () => {
-		setActiveStep((prevActiveStep) => prevActiveStep - 1);
+		setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
 	};
 
 	const handleLoading = () => {
@@ -104,6 +124,9 @@ const DiferidoValid: React.FC = () => {
 						solic,
 						{ ...client, phone },
 						commerce,
+						idLocationClient,
+						idLocationCommerce,
+						idLocationPos,
 						imagesForm,
 						imagePlanilla,
 						imagesActa
@@ -140,22 +163,87 @@ const DiferidoValid: React.FC = () => {
 
 	//console.log('validados:', stepsValid, ' steps', steps.length - 1);
 
-	const getContentSteps = () => {
-		let list: any = [];
-		if (listValidated.id_typedif_client && !list.includes(<DifStepClient />)) list.push(<DifStepClient />);
-		if (listValidated.id_typedif_commerce && !list.includes(<DifStepCommerce />)) list.push(<DifStepCommerce />);
+	const getContentSteps = (): ReactElement[] => {
+		let list: ReactElement[] = [];
+		if (listValidated.id_typedif_client && !list.includes(<DifStepClient />)) {
+			if (
+				locationClient.estado &&
+				locationClient.municipio &&
+				locationClient.ciudad &&
+				locationClient.parroquia &&
+				!listLocationClient.municipio.length &&
+				!listLocationClient.ciudad.length &&
+				!listLocationClient.parroquia.length &&
+				!listLocationClient.sector.length
+			) {
+				console.log('getLoction clientx');
+				initListLocation(
+					{
+						estado: locationClient.estado.estado,
+						municipio: locationClient.municipio.municipio,
+						ciudad: locationClient.ciudad.ciudad,
+						parroquia: locationClient.parroquia.parroquia,
+					},
+					setListLocationClient
+				);
+			}
+			list.push(<DifStepClient />);
+		}
+		if (listValidated.id_typedif_commerce && !list.includes(<DifStepCommerce />)) {
+			if (
+				locationCommerce &&
+				locationCommerce.estado &&
+				locationCommerce.municipio &&
+				locationCommerce.ciudad &&
+				locationCommerce.parroquia &&
+				!listLocationCommerce.municipio.length &&
+				!listLocationCommerce.ciudad.length &&
+				!listLocationCommerce.parroquia.length &&
+				!listLocationCommerce.sector.length
+			) {
+				initListLocation(
+					{
+						estado: locationCommerce.estado.estado,
+						municipio: locationCommerce.municipio.municipio,
+						ciudad: locationCommerce.ciudad.ciudad,
+						parroquia: locationCommerce.parroquia.parroquia,
+					},
+					setListLocationCommerce
+				);
+			}
+			list.push(<DifStepCommerce />);
+		}
 		if (listValidated.id_typedif_consitutive_acta && !list.includes(<DifStepActaConst />))
 			list.push(<DifStepActaConst />);
 		if (listValidated.id_typedif_special_contributor && !list.includes(<DifStepSpecialContributor />))
 			list.push(<DifStepSpecialContributor />);
-		if (listValidated.id_typedif_pos && !list.includes(<DifStepPos />)) list.push(<DifStepPos />);
+		if (listValidated.id_typedif_pos && !list.includes(<DifStepPos />)) {
+			if (false) {
+				//if (locationPos) {
+				initListLocation(
+					{
+						estado: locationPos.estado.estado,
+						municipio: locationPos.municipio.municipio,
+						ciudad: locationPos.ciudad.ciudad,
+						parroquia: locationPos.parroquia.parroquia,
+					},
+					setListLocationPos
+				);
+			}
+			list.push(<DifStepCommerce />);
+			list.push(<DifStepPos />);
+		}
 		if (listValidated.id_typedif_planilla && !list.includes(<DifStepPlanilla />)) list.push(<DifStepPlanilla />);
 		if (listValidated.id_typedif_ref_bank && !list.includes(<DifStepRefBank />)) list.push(<DifStepRefBank />);
 		if (listValidated.id_typedif_comp_num && !list.includes(<DifStepCompDep />)) list.push(<DifStepCompDep />);
 		return list;
 	};
 
-	const getStep: ReactElement[] = getContentSteps();
+	const [step, setStep] = useState<ReactElement[]>([]);
+
+	useLayoutEffect(() => {
+		setStep(getContentSteps());
+	}, []);
 
 	const handleClickButton = () => {
 		if (activeStep > stepsValid - 1) {
@@ -202,7 +290,7 @@ const DiferidoValid: React.FC = () => {
 					</Stepper>
 					<div className={classes.containerFM}>
 						<div>
-							{getStep[activeStep]}
+							{step[activeStep]}
 							<div className={classes.buttonFixed}>
 								<Button
 									sx={{
@@ -234,6 +322,7 @@ const DiferidoValid: React.FC = () => {
 										sx={{
 											mr: 40,
 										}}
+										disabled={ready}
 										size='large'
 										variant='contained'
 										color='primary'

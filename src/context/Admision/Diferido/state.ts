@@ -1,4 +1,6 @@
 import { ImagesInt, PathImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
+import { fmErrorDif_ClientINT } from './interfaces/client_interface';
+import { fmErrorDif_CommerceINT } from './interfaces/commerce_intercae';
 
 export const initialImagesFm: ImagesInt = {
 	rc_ident_card: null,
@@ -29,4 +31,43 @@ export const initialImagesPath: PathImagesInt = {
 		path: '',
 		type: '',
 	},
+};
+
+export const fmErrorDifClient: fmErrorDif_ClientINT = {
+	email: false,
+	name: false,
+	last_name: false,
+	id_ident_type: false,
+	ident_num: false,
+	phone1: false,
+	phone2: false,
+	name_ref1: false,
+	doc_ident_type_ref1: false,
+	doc_ident_ref1: false,
+	phone_ref1: false,
+	name_ref2: false,
+	doc_ident_type_ref2: false,
+	doc_ident_ref2: false,
+	phone_ref2: false,
+	estado: false,
+	municipio: false,
+	ciudad: false,
+	parroquia: false,
+	sector: false,
+	calle: false,
+	local: false,
+};
+
+export const fmErrorDifCommerce: fmErrorDif_CommerceINT = {
+	name: false,
+	id_ident_type: false,
+	ident_num: false,
+	id_activity: false,
+	estado: false,
+	municipio: false,
+	ciudad: false,
+	parroquia: false,
+	sector: false,
+	calle: false,
+	local: false,
 };

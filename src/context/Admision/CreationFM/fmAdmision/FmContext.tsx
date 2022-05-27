@@ -9,6 +9,7 @@ import {
 	fmPos,
 	IdClient_CommerceINT,
 } from 'interfaces/fm';
+import { Ciudad, Estado, LocationInt, Municipio, Parroquia, Sector } from '../Location/interfaces';
 import React, { createContext, Dispatch, ReactChild, SetStateAction, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { validateFormClient, validateFormCommerce } from 'validation/validFm';
@@ -16,7 +17,6 @@ import { fmErrorClient, initFmClient } from '../initialStates/stateClient';
 import { fmErrorCommerce, initFmCommerce } from '../initialStates/stateCommerce';
 import { initFmPos } from '../initialStates/statePos';
 import { fmErrorFormat, initLocation } from '../initialStates/states';
-import { Ciudad, Estado, LocationInt, Municipio, Parroquia, Sector } from '../Location/interfaces';
 import { ContextFM } from './interface';
 
 interface Props {

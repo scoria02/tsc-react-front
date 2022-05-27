@@ -1,5 +1,16 @@
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { Button, IconButton, InputAdornment, TextField, Stack, Alert } from '@mui/material';
+import {
+	Button,
+	IconButton,
+	InputAdornment,
+	TextField,
+	Stack,
+	Alert,
+	Autocomplete,
+	FormControl,
+	Select,
+	MenuItem,
+} from '@mui/material';
 import classNames from 'classnames';
 import { FC, useContext, useState } from 'react';
 import { recaudo } from 'utils/recaudos';
@@ -7,22 +18,44 @@ import { recaudo } from 'utils/recaudos';
 import { sxStyled, useStylesFM } from '../styles';
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
 import RecDifPdf from 'components/utilis/images/RecDifPdf';
+import { Ciudad, Estado, Municipio, Parroquia, Sector } from 'context/Admision/CreationFM/Location/interfaces';
+import { setCiudad, setEstado, setMunicipio, setParroquia, setSector } from 'context/utilitis/setLocation';
+import LocationsContext from 'context/Admision/CreationFM/Location/LocationsContext';
+import DataListContext from 'context/DataList/DataListContext';
+import { handleFullName, handleIdentNum } from 'utils/validateChange';
 
 const DifStepClient: FC = () => {
 	const classes = useStylesFM();
 
+	const { listIdentType } = useContext(DataListContext);
+
 	const {
 		client,
-		locationClient,
 		phones,
-		handleChangeClientPhone,
 		disabled,
+		handleChangeClientPhone,
 		handleChangeClient,
-		imagesForm,
 		handleChangeImages,
+		handleChangeIdenType,
+		imagesForm,
 		pathImages,
 		listValidated,
+		//
+		errorClient,
+		//location
+		locationClient,
+		setLocationClient,
+		setIdLocationClient,
 	} = useContext(FMDiferidoContext);
+
+	const {
+		listLocationClient,
+		setListLocationClient,
+		handleListMunicipio,
+		handleListCiudad,
+		handleListParroquia,
+		handleListSector,
+	} = useContext(LocationsContext);
 
 	const [load, setLoad] = useState(false);
 
@@ -52,6 +85,7 @@ const DifStepClient: FC = () => {
 								className={classes.inputText}
 								type='email'
 								label='Correo'
+								error={errorClient.email}
 								autoComplete='off'
 								variant='outlined'
 								name='email'
@@ -61,18 +95,41 @@ const DifStepClient: FC = () => {
 						</div>
 						<div className={classes.input}>
 							<TextField
-								disabled={disabled}
 								className={classes.inputText}
+								sx={sxStyled.inputLeft}
 								variant='outlined'
 								required
-								label='C.I.'
+								label='Rif'
 								autoComplete='off'
 								name='ident_num'
-								value={client?.ident_num}
-								onChange={handleChangeClient}
-								inputProps={{ maxLength: 9 }}
+								error={errorClient.ident_num}
+								value={client.ident_num}
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+									handleIdentNum(event, handleChangeClient)
+								}
+								inputProps={{
+									maxLength: client.id_ident_type === 'P' ? 20 : 9,
+								}}
 								InputProps={{
-									startAdornment: <InputAdornment position='start'>{client?.id_ident_type.name}</InputAdornment>,
+									startAdornment: (
+										<InputAdornment position='start'>
+											<FormControl variant='standard'>
+												<Select
+													//onBlur={handleBlurCommerce}
+													//error={fm.errorCommerce}>
+													name='client_type'
+													onChange={handleChangeIdenType}
+													value={client.id_ident_type.id}
+													label='Tipo'>
+													{listIdentType.map((item: any) => (
+														<MenuItem key={item.id} value={item.id}>
+															{item.name}
+														</MenuItem>
+													))}
+												</Select>
+											</FormControl>
+										</InputAdornment>
+									),
 								}}
 							/>
 						</div>
@@ -86,8 +143,11 @@ const DifStepClient: FC = () => {
 								label='Nombre'
 								autoComplete='nombre'
 								name='name'
+								error={errorClient.name}
 								value={client?.name}
-								onChange={handleChangeClient}
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+									handleFullName(event, handleChangeClient)
+								}
 							/>
 							<TextField
 								disabled={disabled}
@@ -96,9 +156,12 @@ const DifStepClient: FC = () => {
 								required
 								label='Apellido'
 								autoComplete='last_name'
+								error={errorClient.last_name}
 								name='last_name'
 								value={client?.last_name}
-								onChange={handleChangeClient}
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+									handleFullName(event, handleChangeClient)
+								}
 							/>
 						</div>
 						<div className={classes.input}>
@@ -110,6 +173,7 @@ const DifStepClient: FC = () => {
 								required
 								label='Telefono'
 								name='phone1'
+								error={errorClient.phone1}
 								autoComplete='telefono1'
 								onChange={handleChangeClientPhone}
 								inputProps={{ maxLength: 10 }}
@@ -122,6 +186,7 @@ const DifStepClient: FC = () => {
 								required
 								label='Telefono'
 								name='phone2'
+								error={errorClient.phone2}
 								autoComplete='telefono2'
 								onChange={handleChangeClientPhone}
 								inputProps={{ maxLength: 10 }}
@@ -131,95 +196,174 @@ const DifStepClient: FC = () => {
 					</div>
 					<div className={classes.grid}>
 						<div className={classes.input}>
-							<TextField
-								disabled
+							<Autocomplete
+								noOptionsText={'Cargando...'}
 								className={classNames(classes.inputText, classes.inputTextLeft)}
 								sx={sxStyled.inputLeft}
-								variant='outlined'
-								required
-								id='standard-required'
-								label='Estado'
-								name='Estado'
-								value={locationClient?.id_direccion.estado}
+								onChange={(event, value: Estado | null) => {
+									if (value) {
+										setEstado(value, setLocationClient);
+										handleListMunicipio(value, setListLocationClient);
+									}
+								}}
+								options={listLocationClient.estado}
+								getOptionLabel={(estado: any) => estado.estado}
+								isOptionEqualToValue={(option: Estado | null, value: any) => option?.estado === value.estado}
+								value={locationClient.estado}
+								renderInput={(params: any) => (
+									<TextField
+										{...params}
+										error={errorClient.estado}
+										name='estado'
+										label='Estado'
+										inputProps={{ ...params.inputProps, autoComplete: 'estado' }}
+										variant='outlined'
+									/>
+								)}
 							/>
-							<TextField
-								disabled
-								className={classNames(classes.inputText)}
-								variant='outlined'
-								required
-								id='standard-required'
-								label='Municipio'
-								name='municipio'
-								value={locationClient?.id_direccion.municipio}
+							<Autocomplete
+								noOptionsText={'Cargando...'}
+								className={classes.inputText}
+								onChange={(event, value: Municipio | null) => {
+									setMunicipio(value, setLocationClient);
+									handleListCiudad(locationClient.estado, value, setListLocationClient);
+								}}
+								options={listLocationClient.municipio}
+								getOptionLabel={(value: any) => value.municipio}
+								isOptionEqualToValue={(option: Municipio | null, value: any) =>
+									option?.municipio === value.municipio
+								}
+								value={locationClient.municipio}
+								renderInput={(params: any) => (
+									<TextField
+										{...params}
+										name='municipio'
+										error={errorClient.municipio}
+										label='Municipio'
+										inputProps={{ ...params.inputProps, autoComplete: 'municipio' }}
+										variant='outlined'
+									/>
+								)}
 							/>
 						</div>
 						<div className={classes.input}>
-							<TextField
-								disabled
+							<Autocomplete
+								noOptionsText={'Cargando...'}
 								className={classNames(classes.inputText, classes.inputTextLeft)}
 								sx={sxStyled.inputLeft}
-								variant='outlined'
-								required
-								id='standard-required'
-								label='ciudad'
-								name='ciudad'
-								value={locationClient?.id_direccion.ciudad}
+								onChange={(event, value: Ciudad | null) => {
+									setCiudad(value, setLocationClient);
+									handleListParroquia(
+										locationClient.estado,
+										locationClient.municipio,
+										value,
+										setListLocationClient
+									);
+								}}
+								value={locationClient.ciudad}
+								options={listLocationClient.ciudad}
+								getOptionLabel={(value: any) => value.ciudad}
+								isOptionEqualToValue={(option: Ciudad | null, value: any) => option?.ciudad === value.ciudad}
+								renderInput={(params: any) => (
+									<TextField
+										{...params}
+										name='ciudad'
+										error={errorClient.ciudad}
+										label='Ciudad'
+										variant='outlined'
+										inputProps={{ ...params.inputProps, autoComplete: 'ciudad' }}
+									/>
+								)}
 							/>
-							<TextField
-								disabled
-								className={classNames(classes.inputText)}
-								variant='outlined'
-								required
-								id='standard-required'
-								label='Parroquia'
-								name='parroquia'
-								value={locationClient?.id_direccion.parroquia}
+							<Autocomplete
+								noOptionsText={'Cargando...'}
+								className={classes.inputText}
+								onChange={(event, value: Parroquia | null) => {
+									setParroquia(value, setLocationClient);
+									handleListSector(
+										locationClient.estado,
+										locationClient.municipio,
+										locationClient.ciudad,
+										value,
+										setListLocationClient
+									);
+								}}
+								value={locationClient.parroquia}
+								options={listLocationClient.parroquia}
+								getOptionLabel={(option: Parroquia) => option.parroquia}
+								isOptionEqualToValue={(option: Parroquia | null, value: any) =>
+									option?.parroquia === value.parroquia
+								}
+								renderInput={(params: any) => (
+									<TextField
+										{...params}
+										name='parroquia'
+										error={errorClient.parroquia}
+										label='Parroquia'
+										variant='outlined'
+										inputProps={{ ...params.inputProps, autoComplete: 'parroquia' }}
+									/>
+								)}
 							/>
 						</div>
 						<div className={classes.input}>
-							<TextField
-								disabled
+							<Autocomplete
+								noOptionsText={'Cargando...'}
 								className={classNames(classes.inputText, classes.inputTextLeft)}
 								sx={sxStyled.inputLeft}
+								onChange={(event, value: Sector | null) => {
+									setSector(value, setLocationClient);
+									setIdLocationClient(value ? value.id : 0);
+								}}
+								value={locationClient.sector}
+								options={listLocationClient.sector}
+								getOptionLabel={(option: Sector) => option.sector}
+								isOptionEqualToValue={(option: Sector | null, value: any) => option?.sector === value.sector}
+								renderInput={(params: any) => (
+									<TextField
+										{...params}
+										name='sector'
+										error={errorClient.sector}
+										label='Sector'
+										variant='outlined'
+										inputProps={{ ...params.inputProps, autoComplete: 'sector' }}
+									/>
+								)}
+							/>
+							<TextField
+								disabled
+								className={classes.inputText}
 								variant='outlined'
 								required
 								id='standard-required'
 								label='Cod. Postal'
-								name='codigo_postal'
-								value={locationClient?.id_direccion.codigoPostal}
-							/>
-							<TextField
-								disabled
-								className={classes.inputText}
-								variant='outlined'
-								required
-								id='standard-required'
-								label='Sector'
-								name='sector'
-								value={locationClient?.id_direccion.sector}
+								name='codigoPostal'
+								value={locationClient.sector?.codigoPostal || ''}
 							/>
 						</div>
 						<div className={classes.input}>
 							<TextField
-								disabled
 								className={classNames(classes.inputText, classes.inputTextLeft)}
 								sx={sxStyled.inputLeft}
 								variant='outlined'
 								required
 								id='standard-required'
+								error={errorClient.calle}
 								label='Calle'
 								name='calle'
-								value={locationClient?.calle}
+								onChange={handleChangeClient}
+								value={client.calle}
 							/>
 							<TextField
-								disabled
 								className={classes.inputText}
 								variant='outlined'
 								required
 								id='standard-required'
+								error={errorClient.local}
 								label='Casa/Quinta/Apart'
 								name='local'
-								value={locationClient?.local}
+								onChange={handleChangeClient}
+								value={client.local}
 							/>
 						</div>
 					</div>

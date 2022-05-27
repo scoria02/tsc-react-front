@@ -8,6 +8,7 @@ import {
 	GridToolbarFilterButton,
 	GridValueGetterParams,
 } from '@mui/x-data-grid';
+import { DataListProvider } from 'context/DataList/DataListContext';
 import { SocketContext } from 'context/SocketContext';
 import { DateTime } from 'luxon';
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
@@ -145,7 +146,9 @@ const Diferidos: React.FC = () => {
 				disableColumnMenu
 				getRowId={(row) => row.id}
 			/>
-			{modalOpenDiferido && rowSelected ? <Diferido fmData={rowSelected} /> : null}
+			<DataListProvider>
+				<>{modalOpenDiferido && rowSelected ? <Diferido fmData={rowSelected} /> : null}</>
+			</DataListProvider>
 		</div>
 	);
 };

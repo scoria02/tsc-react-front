@@ -1,8 +1,15 @@
 import { ImagesInt, PathImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
+import { fmError_ClientINT } from 'interfaces/fm';
 import React, { createContext, useEffect, useState } from 'react';
 import { errorFile } from 'utils/validFormatFile';
-import { ClientDif, ContextFMD, PropsAd } from './interfaces';
-import { initialImagesFm, initialImagesPath } from './state';
+import { ClientDif, fmErrorDif_ClientINT } from './interfaces/client_interface';
+import { ContextFMDif, PropsAd } from './interfaces';
+import { fmErrorDifClient, fmErrorDifCommerce, initialImagesFm, initialImagesPath } from './state';
+import { fmErrorClient } from 'context/Admision/CreationFM/initialStates/stateClient';
+import { fmErrorCommerce } from '../CreationFM/initialStates/stateCommerce';
+import * as valid from 'context/UpdateData/Commerce/validCommerce';
+import { fmErrorDif_CommerceINT } from './interfaces/commerce_intercae';
+import { Activity } from 'context/DataList/interface';
 
 const baseSteps = [
 	'Información Personal del Cliente',
@@ -11,7 +18,10 @@ const baseSteps = [
 	'Solicitud de POS',
 ];
 
-const FMDiferidoContext = createContext<ContextFMD>({
+const FMDiferidoContext = createContext<ContextFMDif>({
+	activeStep: 0,
+	setActiveStep: () => {},
+	ready: false,
 	disabled: false,
 	setDisabled: () => {},
 	initFm: () => {},
@@ -35,19 +45,37 @@ const FMDiferidoContext = createContext<ContextFMD>({
 	removePlanilla: () => {},
 	resetImages: () => {},
 	//
+	handleChangeIdenType: () => {},
+	//
 	codeFM: '',
 	listValidated: null,
 	stepsFM: baseSteps,
 	solic: null,
+	//
 	client: null,
+	errorClient: fmErrorDifClient,
+	errorCommerce: fmErrorDifCommerce,
+	locationClient: null,
+	handleChangeActivity: () => {},
+	//
 	commerce: null,
 	pos: null,
-	locationClient: null,
 	locationCommerce: null,
 	locationPos: null,
 	phones: null,
 	handleChangeClientPhone: () => {},
 	handleChangeRefClient: () => {},
+	//edit
+	setLocationClient: () => {},
+	setLocationCommerce: () => {},
+	setLocationPos: () => {},
+	//
+	idLocationClient: 0,
+	idLocationCommerce: 0,
+	idLocationPos: 0,
+	setIdLocationClient: () => {},
+	setIdLocationCommerce: () => {},
+	setIdLocationPos: () => {},
 });
 
 function getSteps(validate: any, validateClient: number, validateCommerce: number) {
@@ -66,15 +94,28 @@ function getSteps(validate: any, validateClient: number, validateCommerce: numbe
 
 export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 	const [listValidated, setListValidated] = useState<any>(null);
+	const [solic, setSolic] = useState<any>(null);
+	//
+	const [activeStep, setActiveStep] = useState<number>(0);
+	const [ready, setReady] = useState<boolean>(false);
+	//
 	const [stepsFM, setStepsFM] = useState(baseSteps);
 	const [codeFM, setCodeFM] = useState<string>('');
-	const [client, setClient] = useState<ClientDif | null>(null);
-	const [commerce, setCommerce] = useState<any>(null);
-	const [pos, setPos] = useState<any>(null);
+	//
+	const [client, setClient] = useState<any>(null);
 	const [locationClient, setLocationClient] = useState<any>(null);
-	const [solic, setSolic] = useState<any>(null);
+	const [idLocationClient, setIdLocationClient] = useState<number>(0);
+	const [errorClient, setErrorClient] = useState<fmErrorDif_ClientINT>(fmErrorDifClient);
+	//
+	const [commerce, setCommerce] = useState<any>(null);
 	const [locationCommerce, setLocationCommerce] = useState<any>(null);
+	const [idLocationCommerce, setIdLocationCommerce] = useState<number>(0);
+	const [errorCommerce, setErrorCommerce] = useState<fmErrorDif_CommerceINT>(fmErrorDifCommerce);
+	//
+	const [pos, setPos] = useState<any>(null);
 	const [locationPos, setLocationPos] = useState<any>(null);
+	const [idLocationPos, setIdLocationPos] = useState<number>(0);
+	//
 	const [imagePlanilla, setImagePlanilla] = useState<FileList | []>([]);
 	//
 	const [imagesActa, setImagesActa] = useState<FileList | []>([]);
@@ -89,47 +130,178 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 		phone2: '',
 	});
 
+	//nuevooo
 	useEffect(() => {
-		if (fm) {
-			if (!client || !commerce || !pos || locationClient || !locationCommerce || !locationPos || !stepsFM.length) {
-				const { id_client, id_commerce } = fm;
-				console.log('Diferido context', fm);
-				if (id_client) {
-					const { phones, id_location, ref_person_1, ref_person_2, ...clientData } = id_client;
-					setClient({
-						...clientData,
-						ref_person_1: JSON.parse(ref_person_1),
-						ref_person_2: JSON.parse(ref_person_2),
-					});
-					setPhones({
-						phone1: fm.id_client.phones[0].phone.slice(3, fm.id_client.phones[0].phone.length),
-						phone2:
-							fm.id_client.phones[1].phone.length > 10
-								? fm.id_client.phones[1].phone.slice(3, fm.id_client.phones[1].phone.length)
-								: '',
-					});
-					setLocationClient(id_location);
-				}
-				if (id_commerce) {
-					const { id_location, ...commerceData } = id_commerce;
-					setCommerce(commerceData);
-					setLocationCommerce(id_commerce.id_location);
-				}
-				setSolic(fm);
-				setPos(fm);
-				setLocationPos(fm.pos[0].id_location);
-				setCodeFM(fm.code);
-				setListValidated(fm.id_valid_request);
-				setStepsFM(getSteps(fm.id_valid_request, fm.id_client.validate, fm.id_commerce.validate));
+		const validStep = () => {
+			console.log('step actual', stepsFM[activeStep]);
+			switch (stepsFM[activeStep]) {
+				case 'Cliente':
+					return !valid.validReadyStepBO(client, locationClient, errorClient);
+				case 'Comercio':
+					return !valid.validReadyStepBO(commerce, locationCommerce, errorCommerce);
+				default:
+					return false;
 			}
+		};
+		if (fm) {
+			console.log('validar', validStep());
+			setReady(validStep());
+		}
+	}, [activeStep, client, errorClient, commerce, locationClient, locationCommerce, errorCommerce]);
+
+	const handleChangeCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setErrorClient(valid.errorObject(commerce, errorCommerce, event.target.name, event.target.value));
+		if (event.target.name && commerce) {
+			//setError(valid.errorObject(commerce, error, name, value));
+			setCommerce({
+				...commerce,
+				[event.target.name]: event.target.value,
+			});
+		}
+	};
+
+	const handleChangeActivity = (name: string, value: Activity) => {
+		setCommerce({
+			...commerce,
+			id_activity: value,
+		});
+	};
+
+	const handleChangeIdenType = (event: any) => {
+		if (event.target.name === 'client_type') {
+			setClient({
+				...client,
+				id_ident_type: {
+					...client.id_ident_type,
+					id: event.target.value,
+				},
+			});
+		} else if (event.target.name === 'commerce_type')
+			setCommerce({
+				...commerce,
+				id_ident_type: {
+					...commerce.id_ident_type,
+					id: event.target.value,
+				},
+			});
+	};
+
+	//---------------------------------------------------------------
+
+	useEffect(() => {
+		if (
+			fm &&
+			(!client || !commerce || !pos || locationClient || !locationCommerce || !locationPos || !stepsFM.length)
+		) {
+			const { id_client, id_commerce } = fm;
+			console.log('Diferido context', fm);
+			if (id_client) {
+				const { validate, phones, id_location, ref_person_1, ref_person_2, ...clientData } = id_client;
+				const { id_direccion } = id_location;
+				setClient({
+					...clientData,
+					ref_person_1: JSON.parse(ref_person_1),
+					ref_person_2: JSON.parse(ref_person_2),
+					id_direccion: id_direccion.id,
+					calle: id_location.calle,
+					local: id_location.local,
+				});
+				setIdLocationClient(id_direccion.id);
+				setPhones({
+					phone1: fm.id_client.phones[0].phone.slice(3, fm.id_client.phones[0].phone.length),
+					phone2:
+						fm.id_client.phones[1].phone.length > 10
+							? fm.id_client.phones[1].phone.slice(3, fm.id_client.phones[1].phone.length)
+							: '',
+				});
+				setLocationClient(
+					!id_direccion
+						? null
+						: {
+								estado: {
+									estado: id_direccion.estado,
+								},
+								municipio: {
+									municipio: id_direccion.municipio,
+								},
+								ciudad: {
+									ciudad: id_direccion.ciudad,
+								},
+								parroquia: {
+									parroquia: id_direccion.parroquia,
+								},
+								sector: {
+									sector: id_direccion.sector,
+									id: id_direccion.id,
+									codigoPostal: id_direccion.codigoPostal,
+								},
+						  }
+				);
+			}
+			if (id_commerce) {
+				const { special_contributor, validate, id_location, ...commerceData } = id_commerce;
+				const { id_direccion } = id_location;
+				setCommerce({
+					...commerceData,
+					id_direccion: id_direccion.id,
+					calle: id_location.calle,
+					local: id_location.local,
+				});
+				setIdLocationCommerce(id_direccion.id);
+				setLocationCommerce(
+					!id_direccion
+						? null
+						: {
+								estado: {
+									estado: id_direccion.estado,
+								},
+								municipio: {
+									municipio: id_direccion.municipio,
+								},
+								ciudad: {
+									ciudad: id_direccion.ciudad,
+								},
+								parroquia: {
+									parroquia: id_direccion.parroquia,
+								},
+								sector: {
+									sector: id_direccion.sector,
+									id: id_direccion.id,
+									codigoPostal: id_direccion.codigoPostal,
+								},
+						  }
+				);
+			}
+			setPos(fm);
+			setSolic(fm);
+			setLocationPos(fm.pos[0].id_location);
+			setCodeFM(fm.code);
+			setListValidated(fm.id_valid_request);
+			setStepsFM(getSteps(fm.id_valid_request, fm.id_client.validate, fm.id_commerce.validate));
 		} else {
 			resetFm();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [fm]);
+
+	useEffect(() => {
+		if (locationClient?.estado) {
+			setErrorClient(valid.errorObject(locationClient, errorClient, 'location', ''));
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [locationClient]);
+
+	useEffect(() => {
+		if (locationCommerce?.estado) {
+			console.log('validar commerce');
+			setErrorCommerce(valid.errorObject(locationCommerce, errorCommerce, 'location', ''));
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [locationCommerce]);
 	//
 	//
 	const handleChangeClient = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setErrorClient(valid.errorObject(client, errorClient, event.target.name, event.target.value));
 		if (event.target.name && client) {
 			setClient({
 				...client,
@@ -137,6 +309,7 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 			});
 		}
 	};
+
 	//
 	const handleChangeClientPhone = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setPhones({
@@ -155,14 +328,6 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 	};
 
 	//
-	const handleChangeCommerce = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (event.target.name && commerce) {
-			setCommerce({
-				...commerce,
-				[event.target.name]: event.target.value,
-			});
-		}
-	};
 	//
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setSolic({
@@ -282,6 +447,9 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 	return (
 		<FMDiferidoContext.Provider
 			value={{
+				activeStep,
+				setActiveStep,
+				ready,
 				disabled,
 				setDisabled,
 				initFm,
@@ -310,15 +478,35 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 				listValidated,
 				stepsFM,
 				solic,
+				//
 				client,
-				commerce,
-				pos,
 				locationClient,
+				errorClient,
+				//
+				commerce,
 				locationCommerce,
+				errorCommerce,
+				handleChangeActivity,
+				//
+				pos,
 				locationPos,
 				phones,
 				handleChangeClientPhone,
 				handleChangeRefClient,
+				//
+				handleChangeIdenType,
+				//
+				//location
+				setLocationClient,
+				setLocationCommerce,
+				setLocationPos,
+				//
+				setIdLocationClient,
+				setIdLocationCommerce,
+				setIdLocationPos,
+				idLocationClient,
+				idLocationCommerce,
+				idLocationPos,
 			}}>
 			{children}
 		</FMDiferidoContext.Provider>

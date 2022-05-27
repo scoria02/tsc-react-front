@@ -445,6 +445,23 @@ export const validReadyStep = (
 	}
 };
 
+export const validReadyStepBO = (
+	commerce: any,
+	location: LocationInt,
+	error: any
+	//activity: Activity | null,
+	//imagesForm: ImagesInt,
+	//imagesActa: FileList | [],
+	//errorNumBank: boolean,
+): boolean => {
+	console.log('input vacio: ', inputNotNull(commerce));
+	console.log('error en input:', checkErrorInputs(error));
+	if (!inputNotNull(commerce) && !checkErrorInputs(error)) {
+		return true;
+	}
+	return false;
+};
+
 const validLocation = (name: string, data: any, error: any) => {
 	return {
 		...error,
