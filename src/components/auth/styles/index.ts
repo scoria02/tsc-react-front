@@ -20,6 +20,11 @@ export const useStylesModalUser = makeStyles((styles: Theme) => ({
 	containerLogin: {
 		margin: '2rem',
 	},
+	containerNewPass: {
+		margin: '2rem',
+		display: 'flex',
+		flexDirection: 'column',
+	},
 	containerRight: {
 		margin: 0,
 		//position: 'relative',
@@ -112,6 +117,11 @@ export const useStylesModalUser = makeStyles((styles: Theme) => ({
 		position: 'absolute',
 		bottom: '.5rem',
 		left: '1rem',
+	},
+	buttonRight: {
+		position: 'absolute',
+		bottom: '.5rem',
+		right: '1rem',
 	},
 	inputButton: {
 		display: 'flex',

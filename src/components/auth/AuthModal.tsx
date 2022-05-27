@@ -1,7 +1,8 @@
 import { Button, Card, CardContent, Typography } from '@mui/material';
 import Logo from 'img/logo_1000pagos_blanco.svg';
-import React from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { urlLogin, urlNewPassword } from 'routers/url';
 import { useStylesModalUser } from './styles';
 
 const sxStyles = {
@@ -14,6 +15,17 @@ const AuthModal: React.FC<any> = ({ children, name, register }) => {
 	const classes = useStylesModalUser();
 
 	const history = useHistory();
+
+	const [newpass, setNewPass] = useState<boolean>(false);
+	const [url, setUrl] = useState('');
+
+	useLayoutEffect(() => {
+		const urlUser = history.location.pathname;
+		urlUser === urlNewPassword ? setNewPass(true) : setNewPass(false);
+		setUrl(history.location.pathname);
+
+		// setUrl(history);
+	}, [history.location.pathname, url]);
 
 	return (
 		<>
@@ -43,10 +55,23 @@ const AuthModal: React.FC<any> = ({ children, name, register }) => {
 								size='small'
 								color='primary'
 								variant='contained'
-								onClick={() => history.push(`/auth/${!register ? 'register' : 'login'}`)}>
-								<span className={classes.buttonText}>{!register ? 'Registrarme ' : 'Volver al Inicio'}</span>
+								onClick={() => history.push(`/auth/${newpass ? 'login' : !register ? 'register' : 'login'}`)}>
+								<span className={classes.buttonText}>
+									{newpass ? 'Volver al Inicio' : !register ? 'Registrarme ' : 'Volver al Inicio'}
+								</span>
 							</Button>
 						</div>
+						{url === urlLogin && (
+							<div className={classes.buttonRight}>
+								<Button
+									size='small'
+									color='primary'
+									variant='contained'
+									onClick={() => history.push(urlNewPassword)}>
+									<span className={classes.buttonText}>Olvide Contraseña</span>
+								</Button>
+							</div>
+						)}
 					</div>
 				</CardContent>
 			</Card>

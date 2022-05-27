@@ -22,3 +22,5 @@ export const urlPrivate = [
 // Public Routes
 export const urlLogin = `${baseUrl}auth/login`;
 export const urlRegister = `${baseUrl}auth/register`;
+export const urlNewPassword = `${baseUrl}auth/new-password/`;
+export const urlRestorePassword = `${urlNewPassword}/?token`;
