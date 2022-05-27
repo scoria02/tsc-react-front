@@ -190,7 +190,7 @@ export const dataFormatCommerce = (commerce: any, idLocationCommerce: number | n
 	ident_num: commerce.ident_num,
 	//special_contributor: commerce.special_contributor ? 1 : 0,
 	name: commerce.name.trim(),
-	id_activity: commerce.id_activity.id,
+	id_activity: commerce?.id_activity.id,
 	location: {
 		id_direccion: idLocationCommerce,
 		calle: commerce.calle,
@@ -215,7 +215,7 @@ export const updateStatusFMDiferido = (
 		console.log('Client:old', client);
 		console.log('Commerce:old', commerce);
 		const clientData: any = client ? dataFormatClient(client, idLocationClient) : null;
-		const commerceData: any = commerce ? dataFormatCommerce(client, idLocationCommerce) : null;
+		const commerceData: any = commerce ? dataFormatCommerce(commerce, idLocationCommerce) : null;
 		console.log('Client:', clientData);
 		console.log('Commerce:', commerceData);
 		const dataFm: any = createFormDataFmDif(

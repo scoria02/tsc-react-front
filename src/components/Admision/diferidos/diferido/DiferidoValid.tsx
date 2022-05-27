@@ -111,18 +111,17 @@ const DiferidoValid: React.FC = () => {
 			customClass: { container: 'swal2-validated' },
 		}).then((result) => {
 			if (result.isConfirmed) {
-				handleLoading();
+				//handleLoading();
 				let phone = {
-					phone1: '+58' + phones.phone1,
-					phone2: '+58' + phones.phone2,
+					phone1: phones.phone1,
+					phone2: phones.phone2,
 				};
-				//console.log(solic);
-				//console.log({ ...client, phone });
+				console.log(phone);
 				dispatch(
 					updateStatusFMDiferido(
 						solic.id,
 						solic,
-						{ ...client, phone },
+						{ ...client, ...phone }, //client
 						commerce,
 						idLocationClient,
 						idLocationCommerce,
@@ -176,7 +175,7 @@ const DiferidoValid: React.FC = () => {
 				!listLocationClient.parroquia.length &&
 				!listLocationClient.sector.length
 			) {
-				console.log('getLoction clientx');
+				//console.log('getLoction clientx');
 				initListLocation(
 					{
 						estado: locationClient.estado.estado,
@@ -230,7 +229,6 @@ const DiferidoValid: React.FC = () => {
 					setListLocationPos
 				);
 			}
-			list.push(<DifStepCommerce />);
 			list.push(<DifStepPos />);
 		}
 		if (listValidated.id_typedif_planilla && !list.includes(<DifStepPlanilla />)) list.push(<DifStepPlanilla />);

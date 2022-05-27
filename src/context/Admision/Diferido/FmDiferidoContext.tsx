@@ -133,7 +133,7 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 	//nuevooo
 	useEffect(() => {
 		const validStep = () => {
-			console.log('step actual', stepsFM[activeStep]);
+			//console.log('step actual', stepsFM[activeStep]);
 			switch (stepsFM[activeStep]) {
 				case 'Cliente':
 					return !valid.validReadyStepBO(client, locationClient, errorClient);
@@ -144,7 +144,7 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 			}
 		};
 		if (fm) {
-			console.log('validar', validStep());
+			//console.log('validar', validStep());
 			setReady(validStep());
 		}
 	}, [activeStep, client, errorClient, commerce, locationClient, locationCommerce, errorCommerce]);
@@ -207,11 +207,12 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 					local: id_location.local,
 				});
 				setIdLocationClient(id_direccion.id);
+				console.log(id_client);
 				setPhones({
-					phone1: fm.id_client.phones[0].phone.slice(3, fm.id_client.phones[0].phone.length),
+					phone1: id_client.phones[0].phone.slice(3, fm.id_client.phones[0].phone.length),
 					phone2:
-						fm.id_client.phones[1].phone.length > 10
-							? fm.id_client.phones[1].phone.slice(3, fm.id_client.phones[1].phone.length)
+						id_client.phones[1].phone.length > 10
+							? id_client.phones[1].phone.slice(3, fm.id_client.phones[1].phone.length)
 							: '',
 				});
 				setLocationClient(
@@ -293,7 +294,7 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 
 	useEffect(() => {
 		if (locationCommerce?.estado) {
-			console.log('validar commerce');
+			//console.log('validar commerce');
 			setErrorCommerce(valid.errorObject(locationCommerce, errorCommerce, 'location', ''));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
