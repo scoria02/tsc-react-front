@@ -23,6 +23,7 @@ import { handleChangeNameCommerce, handleIdentNum } from 'utils/validateChange';
 import { Ciudad, Estado, Municipio, Parroquia, Sector } from 'context/Admision/CreationFM/Location/interfaces';
 import { setCiudad, setEstado, setMunicipio, setParroquia, setSector } from 'context/utilitis/setLocation';
 import { Activity } from 'context/DataList/interface';
+import AlertDiferido from 'components/alert/AlertDiferido';
 
 const DifStepCommerce: FC = () => {
 	const classes = useStylesFM();
@@ -67,11 +68,10 @@ const DifStepCommerce: FC = () => {
 		<div className={classes.grid}>
 			<div>
 				<div className={classes.btn_stepM}>
-					<Stack sx={{ width: '50%' }} spacing={2}>
-						<Alert severity={disabled ? 'success' : 'error'}>
-							{listValidated.id_typedif_commerce === 2 ? listValidated.valid_commerce : 'Error Interno'}
-						</Alert>
-					</Stack>
+					<AlertDiferido
+						disabled={disabled}
+						msg={listValidated.id_typedif_commerce === 2 ? listValidated.valid_commerce : 'Error Interno'}
+					/>
 				</div>
 				<div className={classes.grid}>
 					<div className={classes.input}>
@@ -93,6 +93,7 @@ const DifStepCommerce: FC = () => {
 					</div>
 					<div className={classes.input}>
 						<TextField
+							disabled={disabled}
 							className={classes.inputText}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
@@ -115,6 +116,7 @@ const DifStepCommerce: FC = () => {
 											<Select
 												//onBlur={handleBlurCommerce}
 												//error={fm.errorCommerce}>
+												disabled={disabled}
 												name='commerce_type'
 												onChange={handleChangeIdenType}
 												value={commerce.id_ident_type.id}
@@ -134,6 +136,7 @@ const DifStepCommerce: FC = () => {
 				</div>
 				<div className={classes.input}>
 					<Autocomplete
+						disabled={disabled}
 						className={classes.input}
 						onChange={(event, value: Activity | null) =>
 							value ? handleChangeActivity('id_activity', value) : null
@@ -150,6 +153,7 @@ const DifStepCommerce: FC = () => {
 				<div className={classes.grid}>
 					<div className={classes.input}>
 						<Autocomplete
+							disabled={disabled}
 							noOptionsText={'Cargando...'}
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
@@ -175,6 +179,7 @@ const DifStepCommerce: FC = () => {
 							)}
 						/>
 						<Autocomplete
+							disabled={disabled}
 							noOptionsText={'Cargando...'}
 							className={classes.inputText}
 							onChange={(event, value: Municipio | null) => {
@@ -201,6 +206,7 @@ const DifStepCommerce: FC = () => {
 					</div>
 					<div className={classes.input}>
 						<Autocomplete
+							disabled={disabled}
 							noOptionsText={'Cargando...'}
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
@@ -229,6 +235,7 @@ const DifStepCommerce: FC = () => {
 							)}
 						/>
 						<Autocomplete
+							disabled={disabled}
 							noOptionsText={'Cargando...'}
 							className={classes.inputText}
 							onChange={(event, value: Parroquia | null) => {
@@ -261,6 +268,7 @@ const DifStepCommerce: FC = () => {
 					</div>
 					<div className={classes.input}>
 						<Autocomplete
+							disabled={disabled}
 							noOptionsText={'Cargando...'}
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
@@ -296,6 +304,7 @@ const DifStepCommerce: FC = () => {
 					</div>
 					<div className={classes.input}>
 						<TextField
+							disabled={disabled}
 							className={classNames(classes.inputText, classes.inputTextLeft)}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
@@ -308,6 +317,7 @@ const DifStepCommerce: FC = () => {
 							value={commerce.calle}
 						/>
 						<TextField
+							disabled={disabled}
 							className={classes.inputText}
 							variant='outlined'
 							required
@@ -322,19 +332,21 @@ const DifStepCommerce: FC = () => {
 				</div>
 			</div>
 			<div className={classes.validRecaudo}>
-				<Button
-					className={classes.imgIdent}
-					variant='contained'
-					disabled={disabled}
-					style={{
-						background: imagesForm.rc_rif && !disabled ? '#5c62c5' : '#D3D3D3',
-					}}
-					component='label'>
-					<IconButton aria-label='upload picture' component='span'>
-						<PhotoCamera />
-					</IconButton>
-					<input type='file' hidden name='rc_rif' accept={recaudo.acc} onChange={handleChangeImages} />
-				</Button>
+				{!disabled && (
+					<Button
+						className={classes.imgIdent}
+						variant='contained'
+						disabled={disabled}
+						style={{
+							background: imagesForm.rc_rif && !disabled ? '#5c62c5' : '#D3D3D3',
+						}}
+						component='label'>
+						<IconButton aria-label='upload picture' component='span'>
+							<PhotoCamera />
+						</IconButton>
+						<input type='file' hidden name='rc_rif' accept={recaudo.acc} onChange={handleChangeImages} />
+					</Button>
+				)}
 				<RecDifPdf load={load} setLoad={setLoad} imagen={imagen} type={typeImagen} />
 			</div>
 		</div>
