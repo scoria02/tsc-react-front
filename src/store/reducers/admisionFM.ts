@@ -9,6 +9,8 @@ interface inState {
 	id_statusFM: number;
 
 	diferido: any;
+	errorClientValid: boolean;
+	errorCommerceValid: boolean;
 	id_statusDiferido: number;
 	updatedStatusDiferido: boolean;
 	errorStatusDiferido: boolean;
@@ -22,7 +24,10 @@ const initialState: inState = {
 	errorStatusFM: false,
 	id_statusFM: 0,
 
+	//Diferido
 	diferido: {},
+	errorClientValid: false,
+	errorCommerceValid: false,
 	id_statusDiferido: 0,
 	updatedStatusDiferido: false,
 	errorStatusDiferido: false,
@@ -75,6 +80,27 @@ export const admisionFM = (state = initialState, action: any) => {
 				updatedStatusDiferido: false,
 				errorStatusDiferido: true,
 			};
+		case ActionType.succesClientDiferido:
+			return {
+				...state,
+				errorClientValid: false,
+			};
+		case ActionType.errorClientDiferido:
+			return {
+				...state,
+				errorClientValid: true,
+			};
+		case ActionType.succesCommerceDiferido:
+			return {
+				...state,
+				errorCommerceValid: false,
+			};
+		case ActionType.errorCommerceDiferido:
+			return {
+				...state,
+				errorCommerceValid: true,
+			};
+
 		//
 		case ActionType.onChangeDiferido:
 			return {

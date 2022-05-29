@@ -1,10 +1,8 @@
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import {
 	InputAdornment,
-	Alert,
 	Button,
 	IconButton,
-	Stack,
 	TextField,
 	FormControl,
 	Select,
@@ -24,11 +22,19 @@ import { Ciudad, Estado, Municipio, Parroquia, Sector } from 'context/Admision/C
 import { setCiudad, setEstado, setMunicipio, setParroquia, setSector } from 'context/utilitis/setLocation';
 import { Activity } from 'context/DataList/interface';
 import AlertDiferido from 'components/alert/AlertDiferido';
+//redux
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store/store';
+import { validationCommerceDiferido } from 'store/actions/admision/diferido';
 
 const DifStepCommerce: FC = () => {
 	const classes = useStylesFM();
+	const dispatch = useDispatch();
 
 	const { listIdentType, listActivity } = useContext(DataListContext);
+
+	const { errorCommerceValid }: any = useSelector((state: RootState) => state.fmAdmision);
+
 	const {
 		disabled,
 		commerce,
@@ -57,6 +63,36 @@ const DifStepCommerce: FC = () => {
 	} = useContext(LocationsContext);
 
 	const [load, setLoad] = useState(false);
+
+	const handleBlurEmailIdent = (): void => {
+		if (commerce.id_ident_type !== 0 && commerce.ident_num !== '' && !errorCommerce.ident_num) {
+			dispatch(
+				validationCommerceDiferido(
+					{
+						id_commerce: commerce.id,
+						id_ident_type: commerce.id_ident_type.id,
+						ident_num: commerce.ident_num,
+					},
+					errorCommerceValid
+				)
+			);
+		}
+	};
+
+	const handleChangeIdenTypeValid = (value: number): void => {
+		if (commerce.id_ident_type !== 0 && commerce.ident_num !== '' && !errorCommerce.ident_num) {
+			dispatch(
+				validationCommerceDiferido(
+					{
+						id_commerce: commerce.id,
+						id_ident_type: value,
+						ident_num: commerce.ident_num,
+					},
+					errorCommerceValid
+				)
+			);
+		}
+	};
 
 	const imagen = imagesForm.rc_rif
 		? pathImages.rc_rif.path
@@ -100,6 +136,7 @@ const DifStepCommerce: FC = () => {
 							required
 							label='Rif'
 							autoComplete='off'
+							onBlur={handleBlurEmailIdent}
 							name='ident_num'
 							error={errorCommerce.ident_num}
 							value={commerce.ident_num}
@@ -118,8 +155,11 @@ const DifStepCommerce: FC = () => {
 												//error={fm.errorCommerce}>
 												disabled={disabled}
 												name='commerce_type'
-												onChange={handleChangeIdenType}
 												value={commerce.id_ident_type.id}
+												onChange={(event: any) => {
+													handleChangeIdenType(event);
+													handleChangeIdenTypeValid(event.target.value);
+												}}
 												label='Tipo'>
 												{listIdentType.map((item: any) => (
 													<MenuItem key={item.id} value={item.id}>

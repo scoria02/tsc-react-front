@@ -2,7 +2,7 @@ import { PhotoCamera } from '@mui/icons-material';
 import { Alert, Button, IconButton, Stack, TextField } from '@mui/material';
 import RecDifPdf from 'components/utilis/images/RecDifPdf';
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useLayoutEffect, useState } from 'react';
 import { useStyles } from './styles/styles';
 import { recaudo } from 'utils/recaudos';
 
@@ -13,9 +13,17 @@ const DifStepRefBank: React.FC = () => {
 	const { solic, listValidated, disabled, handleChange, imagesForm, handleChangeImages, pathImages } =
 		useContext(FMDiferidoContext);
 
-	const imagen = imagesForm.rc_ref_bank
-		? pathImages.rc_ref_bank.path
-		: `${process.env.REACT_APP_API_IMAGES}/${solic.rc_ref_bank.path}`;
+	const [imagen, setImagen] = useState('');
+
+	useLayoutEffect(() => {
+		if (solic) {
+			setImagen(
+				imagesForm.rc_ref_bank
+					? pathImages.rc_ref_bank.path
+					: `${process.env.REACT_APP_API_IMAGES}/${solic?.rc_ref_bank?.path}`
+			);
+		}
+	}, [solic?.rc_ref_bank, pathImages.rc_ref_bank]);
 
 	const typeImagen = imagesForm.rc_ref_bank ? pathImages.rc_ref_bank.type : null;
 
@@ -36,21 +44,23 @@ const DifStepRefBank: React.FC = () => {
 						name='bank_account_num'
 						inputProps={{ maxLength: 20 }}
 						onChange={handleChange}
-						value={solic.bank_account_num}
+						value={solic?.bank_account_num}
 					/>
-					<Button
-						className={classes.imgIdent}
-						variant='contained'
-						disabled={disabled}
-						style={{
-							background: imagesForm.rc_ref_bank && !disabled ? '#5c62c5' : '#D3D3D3',
-						}}
-						component='label'>
-						<IconButton aria-label='upload picture' component='span'>
-							<PhotoCamera />
-						</IconButton>
-						<input type='file' hidden name='rc_ref_bank' accept={recaudo.acc} onChange={handleChangeImages} />
-					</Button>
+					{disabled ? null : (
+						<Button
+							className={classes.imgIdent}
+							variant='contained'
+							disabled={disabled}
+							style={{
+								background: imagesForm.rc_ref_bank && !disabled ? '#5c62c5' : '#D3D3D3',
+							}}
+							component='label'>
+							<IconButton aria-label='upload picture' component='span'>
+								<PhotoCamera />
+							</IconButton>
+							<input type='file' hidden name='rc_ref_bank' accept={recaudo.acc} onChange={handleChangeImages} />
+						</Button>
+					)}
 				</div>
 				<RecDifPdf load={load} setLoad={setLoad} imagen={imagen} type={typeImagen} />
 			</form>

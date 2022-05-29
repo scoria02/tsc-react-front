@@ -1,22 +1,18 @@
+import { base } from 'context/DataList/interface';
+import { Photo, Ref_Personal } from 'interfaces/global';
+
 export interface ClientDif {
 	id: number;
-	id_roles: number;
+	email: string;
 	ident_num: string;
 	last_name: string;
-	name: string;
-	email: string;
-	id_ident_type: {
-		id: number;
-		name: string;
-	};
-	id_location: {
-		id_direccion: number;
-		calle: string;
-		local: string;
-	};
-	rc_ident_card: any;
-	ref_person_1: any;
-	ref_person_2: any;
+	id_ident_type: base;
+	id_direccion: number;
+	local: string;
+	calle: string;
+	rc_ident_card: Photo;
+	ref_person_1: Ref_Personal;
+	ref_person_2: Ref_Personal;
 }
 
 export interface fmErrorDif_ClientINT {

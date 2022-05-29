@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { Typography, Button, Step, StepLabel, Stepper } from '@mui/material';
-import { updateStatusFMDiferido } from 'store/actions/admisionFm';
+import { updateStatusFMDiferido } from 'store/actions/admision/diferido';
 import { useDispatch } from 'react-redux';
 import DifStepClient from './steps/DifStepClient';
 import DifStepCommerce from './steps/DifStepCommerce';
@@ -14,7 +14,6 @@ import DifStepPos from './steps/DifStepPos';
 import DifStepRefBank from './steps/DifStepRefBank';
 import DifStepCompDep from './steps/DifStepCompDep';
 import LocationsContext from 'context/Admision/CreationFM/Location/LocationsContext';
-import { setMunicipio } from 'context/utilitis/setLocation';
 
 const DiferidoValid: React.FC = () => {
 	const dispatch = useDispatch();
@@ -59,6 +58,8 @@ const DiferidoValid: React.FC = () => {
 		idLocationPos,
 	} = useContext(FMDiferidoContext);
 
+	console.log('aqui', solic);
+
 	useEffect(() => {
 		if (activeStep > stepsValid - 1) {
 			setDisabled(false);
@@ -96,6 +97,7 @@ const DiferidoValid: React.FC = () => {
 	};
 
 	const handleSend = async () => {
+		if (!solic) return;
 		Swal.fire({
 			title: 'Solicitud verificada?',
 			icon: 'warning',
@@ -217,7 +219,16 @@ const DiferidoValid: React.FC = () => {
 		if (listValidated.id_typedif_special_contributor && !list.includes(<DifStepSpecialContributor />))
 			list.push(<DifStepSpecialContributor />);
 		if (listValidated.id_typedif_pos && !list.includes(<DifStepPos />)) {
-			if (false) {
+			if (
+				locationPos.estado &&
+				locationPos.municipio &&
+				locationPos.ciudad &&
+				locationPos.parroquia &&
+				!listLocationPos.municipio.length &&
+				!listLocationPos.ciudad.length &&
+				!listLocationPos.parroquia.length &&
+				!listLocationPos.sector.length
+			) {
 				//if (locationPos) {
 				initListLocation(
 					{

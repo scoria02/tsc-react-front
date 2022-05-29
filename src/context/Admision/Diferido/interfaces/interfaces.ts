@@ -1,9 +1,10 @@
 import { ImagesInt, PathImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
 import { Activity } from 'context/DataList/interface';
 import { ReactChild, Dispatch, SetStateAction } from 'react';
-import { LocationInt } from '../CreationFM/Location/interfaces';
-import { fmErrorDif_ClientINT } from './interfaces/client_interface';
-import { fmErrorDif_CommerceINT } from './interfaces/commerce_intercae';
+import { LocationInt } from '../../CreationFM/Location/interfaces';
+import { fmErrorDif_ClientINT } from './client_interface';
+import { fmErrorDif_CommerceINT } from './commerce_intercae';
+import { PosDif, SolicDif } from './pos_interface';
 
 export interface PropsAd {
 	children: ReactChild;
@@ -21,6 +22,7 @@ export interface ContextFMDif {
 	handleChange(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleChangeClient(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleChangeCommerce(event: React.ChangeEvent<HTMLInputElement>): void;
+	handleChangePos(event: React.ChangeEvent<HTMLInputElement>): void;
 	//images
 	imagePlanilla: FileList | [];
 	imagesActa: FileList | [];
@@ -44,7 +46,7 @@ export interface ContextFMDif {
 	codeFM: string;
 	listValidated: any;
 	stepsFM: any;
-	solic: any;
+	solic: SolicDif | null;
 	//
 	client: any;
 	errorClient: fmErrorDif_ClientINT;
@@ -55,8 +57,11 @@ export interface ContextFMDif {
 	locationCommerce: any;
 	handleChangeActivity(name: string, value: Activity): void;
 	//
-	pos: any;
+	pos: PosDif | null;
 	locationPos: any;
+	errorPos: any;
+	handleParamsPos(name: string, value: any): void;
+	//
 	phones: any;
 	handleChangeClientPhone(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleChangeRefClient(param: string, value: any): void;

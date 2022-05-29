@@ -24,11 +24,14 @@ import LocationsContext from 'context/Admision/CreationFM/Location/LocationsCont
 import DataListContext from 'context/DataList/DataListContext';
 import { handleFullName, handleIdentNum } from 'utils/validateChange';
 import AlertDiferido from 'components/alert/AlertDiferido';
+//redux
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store/store';
+import { validationClientDiferido } from 'store/actions/admision/diferido';
 
 const DifStepClient: FC = () => {
 	const classes = useStylesFM();
-
-	const { listIdentType } = useContext(DataListContext);
+	const dispatch = useDispatch();
 
 	const {
 		client,
@@ -60,6 +63,42 @@ const DifStepClient: FC = () => {
 
 	const [load, setLoad] = useState(false);
 
+	const { listIdentType } = useContext(DataListContext);
+
+	const { errorClientValid }: any = useSelector((state: RootState) => state.fmAdmision);
+
+	const handleBlurEmailIdent = (): void => {
+		if (client.id_ident_type !== 0 && client.ident_num !== '' && !errorClient.ident_num) {
+			dispatch(
+				validationClientDiferido(
+					{
+						id_client: client.id,
+						email: client.email,
+						id_ident_type: client.id_ident_type.id,
+						ident_num: client.ident_num,
+					},
+					errorClientValid
+				)
+			);
+		}
+	};
+
+	const handleChangeIdenTypeValid = (value: number): void => {
+		if (client.id_ident_type !== 0 && client.ident_num !== '' && !errorClient.ident_num) {
+			dispatch(
+				validationClientDiferido(
+					{
+						id_client: client.id,
+						email: client.email,
+						id_ident_type: value,
+						ident_num: client.ident_num,
+					},
+					errorClientValid
+				)
+			);
+		}
+	};
+
 	const imagen = imagesForm.rc_ident_card
 		? pathImages.rc_ident_card.path
 		: `${process.env.REACT_APP_API_IMAGES}/${client?.rc_ident_card.path}`;
@@ -83,8 +122,9 @@ const DifStepClient: FC = () => {
 								required
 								className={classes.inputText}
 								type='email'
+								onBlur={handleBlurEmailIdent}
 								label='Correo'
-								error={errorClient.email}
+								error={errorClient.email || errorClientValid}
 								autoComplete='off'
 								variant='outlined'
 								name='email'
@@ -101,7 +141,8 @@ const DifStepClient: FC = () => {
 								label='Rif'
 								autoComplete='off'
 								name='ident_num'
-								error={errorClient.ident_num}
+								error={errorClient.ident_num || errorClientValid}
+								onBlur={handleBlurEmailIdent}
 								value={client.ident_num}
 								onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
 									handleIdentNum(event, handleChangeClient)
@@ -114,11 +155,13 @@ const DifStepClient: FC = () => {
 										<InputAdornment position='start'>
 											<FormControl variant='standard'>
 												<Select
-													//onBlur={handleBlurCommerce}
-													//error={fm.errorCommerce}>
+													error={errorClient.id_ident_type || errorClientValid}
 													disabled={disabled}
 													name='client_type'
-													onChange={handleChangeIdenType}
+													onChange={(event: any) => {
+														handleChangeIdenType(event);
+														handleChangeIdenTypeValid(event.target.value);
+													}}
 													value={client.id_ident_type.id}
 													label='Tipo'>
 													{listIdentType.map((item: any) => (

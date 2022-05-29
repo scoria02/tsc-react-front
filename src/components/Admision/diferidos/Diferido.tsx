@@ -2,7 +2,7 @@
 import { SocketContext } from 'context/SocketContext';
 import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { cleanDataFmDiferido } from 'store/actions/admisionFm';
+import { cleanDataFmDiferido } from 'store/actions/admision/diferido';
 import { CloseModalDiferido } from 'store/actions/ui';
 import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
@@ -11,7 +11,6 @@ import { FMDiferidoContextProvider } from 'context/Admision/Diferido/FmDiferidoC
 import { DataListAdmisionProvider } from 'context/DataList/DatalistAdmisionContext';
 import DiferidoValid from './diferido/DiferidoValid';
 import FullModal from 'components/modals/FullModal';
-import { DataListProvider } from 'context/DataList/DataListContext';
 import { LocationsProvider } from 'context/Admision/CreationFM/Location/LocationsContext';
 
 interface Prop {

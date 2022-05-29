@@ -13,7 +13,7 @@ import { SocketContext } from 'context/SocketContext';
 import { DateTime } from 'luxon';
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getDataFMDiferido } from 'store/actions/admisionFm';
+import { getDataFMDiferido } from 'store/actions/admision/diferido';
 import { OpenModalDiferido } from 'store/actions/ui';
 import { useStyles } from '../styles/styles';
 import Diferido from './Diferido';

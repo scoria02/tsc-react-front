@@ -17,8 +17,10 @@ import ImagesFmContext from 'context/Admision/CreationFM/fmImages/ImagesFmContex
 import { Ciudad, Estado, Municipio, Parroquia, Sector } from 'context/Admision/CreationFM/Location/interfaces';
 import LocationsContext from 'context/Admision/CreationFM/Location/LocationsContext';
 import React, { FC, useContext } from 'react';
+//redux
 import { useDispatch, useSelector } from 'react-redux';
 import { validationClient, resetClientValid } from 'store/actions/fm';
+//
 import { RootState } from 'store/store';
 import { validInputString } from 'utils/fm';
 import { capitalizedFull } from 'utils/formatName';

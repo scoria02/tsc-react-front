@@ -5,10 +5,11 @@ import { useStylesImg } from './styles/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Avatar, Button, List, ListItem, ListItemText } from '@mui/material';
 import { sxStyledList } from './styles/styles';
+import { Photo } from 'interfaces';
 
 interface Props {
 	listImagen: FileList | [];
-	imagenes: any[];
+	imagenes: Photo[] | [];
 	deleteItemImagenes(id: number): void;
 	disabled: boolean;
 }

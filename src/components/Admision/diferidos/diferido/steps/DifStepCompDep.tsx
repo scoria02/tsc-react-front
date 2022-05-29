@@ -2,7 +2,7 @@ import { PhotoCamera } from '@mui/icons-material';
 import { Alert, Button, IconButton, Stack, TextField } from '@mui/material';
 import RecDifPdf from 'components/utilis/images/RecDifPdf';
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useStyles } from './styles/styles';
 import { recaudo } from 'utils/recaudos';
 
@@ -13,9 +13,17 @@ const DifStepCompDep: React.FC = () => {
 	const { solic, listValidated, disabled, handleChange, imagesForm, handleChangeImages, pathImages } =
 		useContext(FMDiferidoContext);
 
-	const imagen = imagesForm.rc_comp_dep
-		? pathImages.rc_comp_dep.path
-		: `${process.env.REACT_APP_API_IMAGES}/${solic.rc_comp_dep.path}`;
+	const [imagen, setImagen] = useState('');
+
+	useLayoutEffect(() => {
+		if (solic) {
+			setImagen(
+				imagesForm.rc_comp_dep
+					? pathImages.rc_comp_dep.path
+					: `${process.env.REACT_APP_API_IMAGES}/${solic?.rc_comp_dep?.path}`
+			);
+		}
+	}, [solic?.rc_comp_dep, pathImages.rc_comp_dep]);
 
 	const typeImagen = imagesForm.rc_comp_dep ? pathImages.rc_comp_dep.type : null;
 
@@ -36,7 +44,7 @@ const DifStepCompDep: React.FC = () => {
 						name='nro_comp_dep'
 						inputProps={{ maxLength: 15 }}
 						onChange={handleChange}
-						value={solic.nro_comp_dep}
+						value={solic?.nro_comp_dep || 'No tiene numero'}
 					/>
 					<Button
 						className={classes.imgIdent}

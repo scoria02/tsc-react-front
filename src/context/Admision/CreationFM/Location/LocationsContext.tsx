@@ -84,12 +84,12 @@ export const LocationsProvider = ({ children }: Props) => {
 			estado: listLocationClient.estado,
 			...extra,
 		});
-		setListLocationPos({
-			estado: listLocationPos.estado,
-			...extra,
-		});
 		setListLocationCommerce({
 			estado: listLocationCommerce.estado,
+			...extra,
+		});
+		setListLocationPos({
+			estado: listLocationPos.estado,
 			...extra,
 		});
 	};

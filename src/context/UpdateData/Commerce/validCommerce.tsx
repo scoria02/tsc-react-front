@@ -448,7 +448,8 @@ export const validReadyStep = (
 export const validReadyStepBO = (
 	commerce: any,
 	location: LocationInt,
-	error: any
+	error: any,
+	errorValid: boolean
 	//activity: Activity | null,
 	//imagesForm: ImagesInt,
 	//imagesActa: FileList | [],
@@ -456,6 +457,7 @@ export const validReadyStepBO = (
 ): boolean => {
 	console.log('input vacio: ', inputNotNull(commerce));
 	console.log('error en input:', checkErrorInputs(error));
+	if (errorValid) return false; //false no activar button
 	if (!inputNotNull(commerce) && !checkErrorInputs(error)) {
 		return true;
 	}
@@ -479,8 +481,6 @@ export const errorObject = (data: any, error: any, name: string, value: any): an
 			temp.email = validEmail(value as string);
 			break;
 		case 'name':
-		case 'local':
-		case 'calle':
 		case 'last_name':
 			temp[name] = validFullName(value as string);
 			break;
@@ -537,6 +537,9 @@ export const errorObject = (data: any, error: any, name: string, value: any): an
 				data.doc_ident_type_ref1 + data.doc_ident_ref1,
 				value + data.doc_ident_ref2
 			);
+			break;
+		case 'calle':
+		case 'local':
 			break;
 		default:
 			break;
