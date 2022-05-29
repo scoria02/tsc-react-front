@@ -197,7 +197,7 @@ export const dataFormatPos = (
 		auxOrigen = telemarket!.id.toString();
 	}
 	if (pos.request_origin?.id === 6) {
-		auxOrigen = typeWallet!.Id.toString();
+		auxOrigen = typeWallet!.id.toString();
 	}
 	return {
 		id_client: idClient,
@@ -220,7 +220,6 @@ export const dataFormatPos = (
 		id_request_origin: pos.request_origin?.id,
 		id_type_payment: pos.type_pay?.id,
 		id_product: pos.model_post?.id,
-		//requestSource_docnum: auxOrigen,
 		ci_referred: auxOrigen,
 		discount: pos.discount,
 		nro_comp_dep: pos.pagadero ? '' : pos.nro_comp_dep,
@@ -254,7 +253,7 @@ export const createFormDataFm = (
 	return formData;
 };
 
-export const dataForPos = (
+export const dataFormatPos_FM = (
 	typeSolict: number,
 	pos: fmPos,
 	aci: Aci | null,
@@ -268,8 +267,8 @@ export const dataForPos = (
 		auxOrigen = aci!.id.toString();
 	} else if (pos.request_origin?.id === 3) {
 		auxOrigen = telemarket!.id.toString();
-	} else if (pos.request_origin?.id === 6) {
-		auxOrigen = typeWallet!.Id.toString();
+	} else if (pos.request_origin?.id === 5) {
+		auxOrigen = typeWallet!.id.toString();
 	} else {
 		auxOrigen = pos.reqSource_docnum;
 	}
@@ -279,12 +278,6 @@ export const dataForPos = (
 		number_post: pos.number_post,
 		id_payment_method: pos.payment_method?.id,
 		pos: {
-			//id_estado: locationPos.estado?.id,
-			//id_municipio: locationPos.municipio?.id,
-			//id_parroquia: locationPos.parroquia?.id,
-			//id_ciudad: locationPos.ciudad?.id,
-			//sector: pos.sector,
-
 			id_direccion: idLocationPos,
 			calle: pos.calle,
 			local: pos.local,
@@ -380,7 +373,7 @@ export const sendCompleteFM = (
 	//Crear formart
 	const dataClient = id_client ? null : dataFormatClient(client, idLocationClient);
 	const dataCommerce = dataFormatCommerce(commerce, activity, idLocationCommerce);
-	const dataPost = dataForPos(typeSolict, pos, aci, telemarket, typeWallet, idLocationPos);
+	const dataPost = dataFormatPos_FM(typeSolict, pos, aci, telemarket, typeWallet, idLocationPos);
 	//console.log('cliente: ', dataClient, ' id ', id_client);
 	return async (dispatch: any) => {
 		try {

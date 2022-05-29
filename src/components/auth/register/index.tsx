@@ -6,7 +6,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SendIcon from '@mui/icons-material/Send';
 //Material UI
 import { Button, MobileStepper, useMediaQuery } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { baseUrl } from 'routers/url';
@@ -22,20 +22,28 @@ import { Step1 } from './steps/Step1';
 import { Step2 } from './steps/Step2';
 //valids
 import * as valids from './validationForm';
+//context
+import { SocketContext } from 'context/SocketContext';
 
 const Register: React.FC = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const classes = useStylesModalUser();
 
+	const { socket } = useContext(SocketContext);
+
 	//Dispatch
 	const auth: any = useSelector((state: RootState) => state.auth);
 	const registrationUser = (user: Interface_RegisterUser) => {
-		dispatch(registerUser(user));
-		history.push(baseUrl);
+		dispatch(registerUser(user, history));
 	};
 
 	const isMediumScreen: boolean = useMediaQuery('(max-width:800px)');
+
+	useEffect(() => {
+		if (auth.registered) socket.emit('client:registered', auth.user.data.email);
+		// history.push(baseUrl);
+	}, [auth.registered]);
 
 	//States
 	const [readyStep, setReadyStep] = useState<boolean>(false);
@@ -56,7 +64,6 @@ const Register: React.FC = () => {
 		ident_num: '',
 		phone: '',
 		id_company: 1,
-		id_department: 1,
 		code: '+58',
 	});
 

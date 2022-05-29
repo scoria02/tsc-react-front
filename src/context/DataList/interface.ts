@@ -5,15 +5,16 @@ export interface base {
 }
 
 export interface TypeWallet {
-	Id: number;
-	Cod_Cartera: string;
-	Nombre_Org: string;
+	id: number;
+	name: string;
+	net_id: number;
+	id_cartera: number;
+	active: number;
 }
 
 export interface TeleMarket {
 	id: number;
 	name: string;
-	id_types_telemarket: number;
 }
 
 export interface Distributor {

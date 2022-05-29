@@ -32,9 +32,10 @@ export const handleError = (error: any) => {
 	Swal.fire({
 		icon: 'error',
 		title: 'Error',
-		text: error.response?.data?.message || 'Error access',
+		text: error.response?.data?.message || 'Error Access',
 		customClass: { container: 'swal2-validated' },
-		timer: 2500,
+		showConfirmButton: true,
+		//timer: 2500,
 	});
 };
 

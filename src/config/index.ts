@@ -20,7 +20,7 @@ export const axiosFiles = Axios.create(configAxiosFiles);
 axios.interceptors.response.use((resp: AxiosResponse<any>): AxiosResponse<any> => {
 	if (resp.data.token) {
 		localStorage.setItem('token', resp.data.token);
-		resp.headers.Authorization = resp?.data.token && '';
+		resp.headers.Authorization = resp.data.token;
 	}
 	return resp;
 });

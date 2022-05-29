@@ -5,6 +5,7 @@ import { Fab, Button } from '@mui/material';
 import classNames from 'classnames';
 import { DataListAdmisionProvider } from 'context/DataList/DatalistAdmisionContext';
 import { SocketContext } from 'context/SocketContext';
+//
 import { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 //import { getDataFM } from 'store/actions/admisionFm';
@@ -56,7 +57,6 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 		});
 	}, []);
 
-	//socket io (todos)
 	useEffect(() => {
 		socket.on('server:dashdata', (data: any) => {
 			setChartData(data);

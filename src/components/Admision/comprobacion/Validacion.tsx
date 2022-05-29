@@ -5,8 +5,6 @@ import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import LoaderPrimary from '../../loaders/LoaderPrimary';
 //steps
-//Cliente y comercio existente
-import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
 import StepDataPreValidate from './steps/StepDataPreValidate';
 import StepClient from './steps/StepClient';
 import StepCommerce from './steps/StepCommerce';
@@ -19,6 +17,8 @@ import StepPos from './steps/StepPos';
 import { useStylesFM } from './styles';
 import { updateStatusFM } from 'store/actions/admisionFm';
 import StepSelectAci from './steps/StepSelectAci';
+//context
+import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
 
 const Validacion: React.FC = () => {
 	const dispatch = useDispatch();

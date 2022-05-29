@@ -20,14 +20,16 @@ export const startLogin = (email: any, password: any, history?: any) => {
 				email,
 				password,
 			});
-			updateToken(res);
-			dispatch(requestSuccess(res.data.info.data));
+			//updateToken(res);
+			//console.log('login', res.data.info);
+			const user = res.data.info;
+			dispatch(requestSuccess(user));
 			history?.push(baseUrl);
 			dispatch(StartLoading());
 			Swal.fire({
 				icon: 'success',
 				title: '¡Éxito!',
-				html: `<p>${res.data.message}</p>`,
+				html: `<p>Bienvenido <b>${user.data.name} ${user.data.last_name}</b></p>`,
 				showConfirmButton: false,
 				timer: 2500,
 			});
@@ -53,22 +55,40 @@ export const refreshLogin = () => {
 	return async (dispatch: any) => {
 		try {
 			const res = await useAxios.get('/worker');
-			updateToken(res);
-			dispatch(StartLoading());
+			//console.log('refresh', res.data.info);
 			dispatch(requestSuccess(res.data.info));
+			dispatch(StartLoading());
 		} catch (error: any) {
-			console.log('borrar');
+			console.log('borrar data user');
 			localStorage.clear();
-			Swal.fire({
-				icon: 'error',
-				title: 'Sesión expirada',
-				html: '<p>Vuelva a iniciar sesión</p>',
-				showConfirmButton: false,
-				timer: 2000,
-			});
-			//Swal.fire('Error', 'Sesión expirada, vuelva a iniciar sesión', 'error');
-			dispatch(startLogout());
-			window.location.replace(urlLogin);
+			console.log(error.response);
+			if (error.response.data.code === 401) {
+				//Error de que algo cambio en el usuario
+				Swal.fire({
+					icon: 'info', //'error',
+					title: 'Vuelva a iniciar sesión',
+					confirmButtonText: 'Ok',
+					allowOutsideClick: false,
+					allowEscapeKey: false,
+					//timer: 3000,
+				}).then((confirm) => {
+					if (confirm.isConfirmed) {
+						dispatch(startLogout());
+						window.location.replace(urlLogin);
+					}
+				});
+			} else {
+				//Error de exp token
+				Swal.fire({
+					icon: 'info',
+					title: 'Sesión expirada',
+					html: '<p>Vuelva a iniciar sesión</p>',
+					timer: 2000,
+				});
+				//Swal.fire('Error', 'Sesión expirada, vuelva a iniciar sesión', 'error');
+				dispatch(startLogout());
+				window.location.replace(urlLogin);
+			}
 		}
 	};
 	function requestSuccess(state: any) {
@@ -79,7 +99,7 @@ export const refreshLogin = () => {
 	}
 };
 
-export const registerUser = (user: any) => {
+export const registerUser = (user: any, history?: any) => {
 	return async (dispatch: any) => {
 		const newUser = {
 			email: user.email.trim(),
@@ -91,15 +111,20 @@ export const registerUser = (user: any) => {
 			ident_num: user.ident_num,
 			phone: user.code + user.phone,
 			id_company: user.id_company,
-			id_department: user.id_department,
 		};
 		try {
 			const res = await useAxios.post('/auth/register', newUser);
 			updateToken(res);
-			//Swal.fire('Success', res.data.message, 'success');
-			dispatch(requestSuccess(res));
-			const { email, password } = user;
-			dispatch(startLogin(email, password));
+			dispatch(requestSuccess(res.data.info));
+			dispatch(StartLoading());
+			history?.push(baseUrl);
+			Swal.fire({
+				icon: 'success',
+				title: 'Usuario Registrado con exito',
+				//html: `<p>${res.data.message}</p>`,
+				showConfirmButton: false,
+				timer: 2500,
+			});
 		} catch (error: any) {
 			console.log(error);
 			dispatch(requestFailure());

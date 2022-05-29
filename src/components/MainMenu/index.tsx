@@ -79,75 +79,17 @@ const MainMenu: FC = () => {
 
 	useEffect(() => {
 		if (userDB) {
-			setUser(userDB);
+			setUser(userDB.data);
 		}
-		if (menu) {
-			switch (
-				menu //agreagar esta lista a base de datos para ser perfiles de rutas que puede ver
-			) {
-				case 'God':
-					setAdmision(true);
-					setCobranza(true);
-					setAdministracion(true);
-					setSeguridad(true);
-					setFm(true);
-					setUpdateClient(true);
-					break;
-				case 'Presidencia':
-					setFm(true);
-					setAdmision(true);
-					setCobranza(true);
-					setAdministracion(true);
-					setSeguridad(true);
-					setUpdateClient(true);
-					break;
 
-				case 'Admision':
-					setFm(true);
-					setAdmision(true);
-					setCobranza(false);
-					setAdministracion(false);
-					setSeguridad(false);
-					setUpdateClient(false);
-					break;
+		setFm(menu['Solicitud'] ? true : false);
+		setAdmision(menu['Admision'] ? true : false);
+		setAdministracion(menu['Administracion'] ? true : false);
+		setCobranza(menu['Cobranza'] ? true : false);
+		setUpdateClient(menu['EditarComercio'] ? true : false);
+		setSeguridad(menu['GestionUsuarios'] ? true : false);
+		//console.log(menu);
 
-				case 'Administracion':
-					setFm(false);
-					setAdmision(false);
-					setCobranza(false);
-					setAdministracion(true);
-					setSeguridad(false);
-					setUpdateClient(false);
-					break;
-
-				case 'Cobranza':
-					setFm(false);
-					setAdmision(false);
-					setCobranza(true);
-					setAdministracion(false);
-					setSeguridad(false);
-					setUpdateClient(false);
-					break;
-
-				case 'Seguridad':
-					setFm(false);
-					setAdmision(false);
-					setCobranza(false);
-					setAdministracion(false);
-					setSeguridad(true);
-					setUpdateClient(false);
-					break;
-
-				default:
-					setFm(false);
-					setAdmision(false);
-					setCobranza(false);
-					setAdministracion(false);
-					setSeguridad(false);
-					setUpdateClient(false);
-					break;
-			}
-		}
 		if (history) {
 			switch (history.location.pathname) {
 				case urlAdministracion:
@@ -193,7 +135,8 @@ const MainMenu: FC = () => {
 	};
 
 	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, url: string) => {
-		dispatch(refreshLogin());
+		//dispatch(refreshLogin());
+		console.log('aquiero ir a ', url);
 		history.push(url);
 		handleDrawerClose();
 	};
@@ -247,6 +190,7 @@ const MainMenu: FC = () => {
 			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
 			open={isMobileMenuOpen}
 			onClose={handleMobileMenuClose}>
+			{/*
 			<MenuItem>
 				<IconButton aria-label='show 4 new mails' color='inherit'>
 					<Badge badgeContent={4} color='secondary'>
@@ -273,6 +217,7 @@ const MainMenu: FC = () => {
 				</IconButton>
 				<p>Perfil</p>
 			</MenuItem>
+			 */}
 			<MenuItem onClick={handleMenuLogout}>
 				<IconButton
 					style={{ paddingTop: 0 }}

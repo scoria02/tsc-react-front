@@ -338,7 +338,7 @@ const StepPos: FC = () => {
 						}}
 						options={listWalletType}
 						value={typeWallet || null}
-						getOptionLabel={(option: TypeWallet | null) => (option ? option.Nombre_Org : '')}
+						getOptionLabel={(option: TypeWallet | null) => (option ? option.name : '')}
 						// getOptionSelected={(option: Aci | null, value: Aci | null) => option?.id === value?.id}
 						renderInput={(params: any) => (
 							<TextField {...params} name='typeWallet' label={`Tipos de Cartera`} variant='outlined' />

@@ -6,6 +6,7 @@ import { createContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 import { GuardedRoute, GuardProvider } from 'react-router-guards';
+import { Views } from 'store/reducers/interfaceAuth';
 import LoaderPrimary from '../components/loaders/LoaderPrimary';
 import MainMenu from '../components/MainMenu';
 //Redux
@@ -36,12 +37,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 	},
 }));
 
-export interface CobranzaContextProps {
-	menu: any;
-	setMenu: React.Dispatch<React.SetStateAction<{}>>;
+export interface AppRouterContext_Int {
+	menu: Views;
+	setMenu: React.Dispatch<React.SetStateAction<Views>>;
 }
-export const ApprouterContext = createContext<CobranzaContextProps>({
-	menu: '',
+export const ApprouterContext = createContext<AppRouterContext_Int>({
+	menu: {},
 	setMenu: () => {},
 });
 
@@ -52,7 +53,7 @@ export const AppRouter = () => {
 	const { loading } = useSelector((state: any) => state.ui);
 	const { user } = useSelector((state: any) => state.auth);
 	const [checking, setChecking] = useState<boolean>(true);
-	const [menu, setMenu] = useState<any>('');
+	const [menu, setMenu] = useState<Views>({});
 
 	useLayoutEffect(() => {
 		dispatch(FinishLoading());
@@ -68,9 +69,8 @@ export const AppRouter = () => {
 	}, []);
 
 	useEffect(() => {
-		if (user !== undefined && Object.keys(user).length) {
-			const { id_department } = user;
-			setMenu(`${id_department.name}`);
+		if (user) {
+			setMenu(user.views);
 		}
 	}, [user]);
 
@@ -83,7 +83,7 @@ export const AppRouter = () => {
 			<ApprouterContext.Provider value={{ menu, setMenu }}>
 				<GuardProvider guards={[Auth]}>
 					<Switch>
-						{loading && Object.keys(user).length ? (
+						{loading && user ? (
 							<>
 								<div className={classes.root}>
 									<MainMenu />

@@ -1,6 +1,6 @@
 import { GuardFunction } from 'react-router-guards';
 import { GuardFunctionRouteProps, GuardToRoute, Next } from 'react-router-guards/dist/types';
-import { baseUrl, urlAdministracion, urlAdmision, urlCobr, urlFM, urlLogin, userAdmin } from '../url';
+import { baseUrl, urlLogin } from '../url';
 
 export const Auth: GuardFunction = (to, from, next) => {
 	if (to.meta.auth) {
@@ -20,55 +20,24 @@ export const Auth: GuardFunction = (to, from, next) => {
 };
 
 export const PrivGuard: any = (to: GuardToRoute, from: GuardFunctionRouteProps, next: Next, user: any) => {
-	const { roles, id_department } = user;
-	let isWorker = roles.find((rol: any) => rol.name === 'worker') !== undefined;
-	let userDep = to.meta.dep.find((department: any) => department === id_department.name);
+	const { id_rol, views, id_department } = user;
+	let isWorker = id_rol === '2';
+	//views['']
+	//console.log(to.location.pathname.includes('Administracion'));
+	console.log(to.location.pathname.split('/')[1]);
+	let userDep = views[to.location.pathname.split('/')[1]];
+	//let userDep = to.meta.dep.find((department: any) => department === id_department.name);
 
-	if (id_department.name === 'Presidencia' || id_department.name === 'God') {
+	//Solo para God
+	if (id_department === 8) {
 		next.props({ isWorker: false });
 	}
 
-	switch (to.match.path) {
-		case baseUrl:
-			next();
-			break;
-		case urlFM:
-			if (userDep) {
-				next.props({ isWorker });
-			} else {
-				next.redirect(from.match.path);
-			}
-			break;
-		case urlAdmision:
-			if (userDep) {
-				next.props({ isWorker });
-			} else {
-				next.redirect(from.match.path);
-			}
-			break;
-		case urlAdministracion:
-			if (userDep) {
-				next.props({ isWorker });
-			} else {
-				next.redirect(from.match.path);
-			}
-			break;
-		case urlCobr:
-			if (userDep) {
-				next.props({ isWorker });
-			} else {
-				next.redirect(from.match.path);
-			}
-			break;
-		case userAdmin:
-			if (userDep) {
-				next.props({ isWorker });
-			} else {
-				next.redirect(from.match.path);
-			}
-			break;
-		default:
-			next.redirect(baseUrl);
-			break;
+	if (userDep) {
+		console.log('Tiene acceso worker', to.location.pathname.split('/')[1]);
+		next.props({ isWorker });
+	} else {
+		console.log('reditrec to', from.match.path);
+		next.redirect(from.match.path);
 	}
 };

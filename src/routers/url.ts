@@ -6,7 +6,7 @@ export const userAdmin = `${baseUrl}GestionUsuarios`;
 export const urlAdministracion = `${baseUrl}Administracion`;
 export const urlCobr = `${baseUrl}Cobranza`;
 export const urlTerminales = `${baseUrl}Terminales`;
-export const urlUpdateClient = `${baseUrl}update`;
+export const urlUpdateClient = `${baseUrl}EditarComercio`;
 
 export const urlPrivate = [
 	baseUrl,

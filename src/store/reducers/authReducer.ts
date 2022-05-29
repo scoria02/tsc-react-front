@@ -1,21 +1,16 @@
 import { ActionType } from '../types/types';
 import { deleteError, updataError } from '../utils';
+import { inStateAuth } from './interfaceAuth';
 
-interface inState {
-	user: any;
-	error: any[];
-	registered: boolean;
-	loginError: boolean;
-}
-
-const initialState: inState = {
-	user: {},
+const initialState: inStateAuth = {
+	user: null,
 	error: [],
 	registered: false,
 	loginError: false,
 };
 
 export const authReducer = (state = initialState, action: any) => {
+	console.log('action', action.type, ' -- ', action.payload);
 	switch (action.type) {
 		case ActionType.login:
 			return {
@@ -37,7 +32,7 @@ export const authReducer = (state = initialState, action: any) => {
 		case ActionType.registerUser:
 			return {
 				...state,
-				user: action.payload.data.data,
+				user: action.payload,
 				registered: true,
 			};
 		case ActionType.registerUserError:

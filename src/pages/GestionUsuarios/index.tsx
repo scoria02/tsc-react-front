@@ -10,9 +10,7 @@ import {
 	Grid,
 	Paper,
 	TextField,
-	Theme,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import {
 	DataGrid,
 	GridColDef,
@@ -22,13 +20,17 @@ import {
 } from '@mui/x-data-grid';
 import classnames from 'classnames';
 import axios from 'config';
-import { useLayoutEffect, useState } from 'react';
+import { SocketContext } from 'context/SocketContext';
+import { useLayoutEffect, useState, useContext, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import './scss/index.scss';
+import { sxStyled, useStyles } from './styles';
+import { handleError } from 'utils/handleSwal';
 
 interface GestionUsuariosProps {}
 
 const columns: GridColDef[] = [
+	/*
 	{
 		field: 'id',
 		headerName: 'ID',
@@ -36,6 +38,7 @@ const columns: GridColDef[] = [
 		disableColumnMenu: true,
 		sortable: false,
 	},
+	*/
 	{
 		field: 'email',
 		headerName: 'Correo',
@@ -43,20 +46,6 @@ const columns: GridColDef[] = [
 		sortable: false,
 		disableColumnMenu: true,
 	},
-	// {
-	// 	field: 'name',
-	// 	width: 120,
-	// 	headerName: 'Nombre',
-	// 	sortable: false,
-	// 	disableColumnMenu: true,
-	// },
-	// {
-	// 	field: 'last_name',
-	// 	width: 120,
-	// 	headerName: 'Apellido',
-	// 	sortable: false,
-	// 	disableColumnMenu: true,
-	// },
 	{
 		field: 'fullName',
 		headerName: 'Nombre Completo',
@@ -67,143 +56,31 @@ const columns: GridColDef[] = [
 			return `${params.row.name || ''} ${params.row.last_name || ''}`;
 		},
 	},
+	{
+		field: 'block',
+		headerName: 'Bloqueado',
+		sortable: false,
+		disableColumnMenu: true,
+		valueGetter: (params: GridValueGetterParams) => {
+			return params.row.block ? 'Si' : 'No';
+		},
+	},
 ];
-
-const useStyles = makeStyles((styles: Theme) => ({
-	layout: {
-		padding: '0 1rem',
-	},
-	grid: {
-		display: 'grid',
-		gridTemplateColumns: '1fr 4fr',
-		gridColumnGap: '1rem',
-	},
-	tableTitle: {
-		fontSize: 32,
-		fontWeight: 'bold',
-		padding: '0 8px',
-	},
-	text: {
-		fontSize: 28,
-		padding: '0 8px',
-	},
-	img: {
-		width: 170,
-		height: 170,
-		alignSelf: 'center',
-		'& div': {
-			width: '100%',
-			height: '100%',
-			borderRadius: '50%',
-			objectFit: 'cover',
-		},
-	},
-	form: {
-		padding: 0,
-		display: 'flex',
-		flexDirection: 'column',
-		marginBottom: 0,
-	},
-	row: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		margin: '16px 0',
-	},
-	column: {
-		flexDirection: 'column',
-	},
-	cardTitles: {
-		fontSize: 16,
-		fontWeight: 'bold',
-		position: 'relative',
-	},
-	card: {
-		alignItems: 'center',
-		padding: '2rem',
-		position: 'relative',
-	},
-	inputText: {
-		width: '100%',
-	},
-	textFields: {
-		width: '100%',
-		display: 'grid',
-		gridTemplateColumns: '1fr 1fr',
-		gridRowGap: 8,
-		gridColumnGap: 8,
-	},
-	blockedButton: {
-		fontWeight: 'bold',
-	},
-	blockedButtonOn: {
-		backgroundColor: styles.palette.success.main,
-		color: styles.palette.secondary.contrastText,
-		'&:hover': {
-			backgroundColor: `${styles.palette.success.light} !important`,
-		},
-	},
-	blockedButtonOff: {
-		backgroundColor: styles.palette.error.main,
-		color: styles.palette.secondary.contrastText,
-		'&:hover': {
-			backgroundColor: `${styles.palette.error.light} !important`,
-		},
-	},
-}));
-
-const sxStyled = {
-	closeBtn: {
-		width: 40,
-		height: 40,
-		position: 'absolute',
-		top: 0,
-		right: 0,
-		padding: 0,
-		minWidth: 'unset',
-		borderRadius: '50%',
-	},
-	blockedButtonOn: (styles: Theme) => ({
-		fontWeight: 'bold',
-		backgroundColor: styles.palette.success.light,
-		color: styles.palette.secondary.contrastText,
-		'&:hover': {
-			backgroundColor: `${styles.palette.success.main} !important`,
-		},
-	}),
-	blockedButtonOff: (styles: Theme) => ({
-		fontWeight: 'bold',
-		backgroundColor: styles.palette.error.light,
-		color: styles.palette.secondary.contrastText,
-		'&:hover': {
-			backgroundColor: `${styles.palette.error.main} !important`,
-		},
-	}),
-	avatarLetter: (styles: Theme) => ({
-		textTransform: 'uppercase',
-		backgroundColor: styles.palette.primary.light,
-		fontSize: 56,
-	}),
-	buttonSaveData: (styles: Theme) => ({
-		backgroundColor: styles.palette.primary.light,
-		color: styles.palette.primary.contrastText,
-		'&:hover': {
-			backgroundColor: styles.palette.primary.main,
-		},
-	}),
-};
 
 const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	const classes = useStyles();
 
-	const [allUserRoles, setAllUserRoles] = useState<any[]>([]);
+	const { socket } = useContext(SocketContext);
+
 	const [userBlocked, setUserBlocked] = useState<boolean>(false);
 	const [openUserView, setUserView] = useState<boolean>();
+	const [roles, setRoles] = useState<any[]>([]);
 	const [department, setDepartment] = useState<any[]>([
 		{ id: 0, name: 'Admision' },
 		{ id: 1, name: 'Administracion' },
 	]);
 	// const [loading, setLoading] = useState<boolean>(true);
-	const [userRol, setUserRol] = useState<any[]>([]);
+	const [userRol, setUserRol] = useState<any>(null);
 	const [userDep, setUserDep] = useState<any>(null);
 	const [allUser, setUsers] = useState<any[]>([]);
 	const [userID, setUserID] = useState<number>(0);
@@ -220,23 +97,30 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 		);
 	};
 
-	useLayoutEffect(() => {
-		const getData = async () => {
-			try {
-				await axios.get('/roles/all').then((data: any) => {
-					setAllUserRoles(data.data.info);
-				});
-				await axios.get('/department/all').then((data: any) => {
-					setDepartment(data.data.info);
-				});
-				await axios.get('worker/all').then((data: any) => {
-					setUsers(data.data.info);
-				});
-			} catch (error) {}
-		};
+	const getData = async () => {
+		try {
+			await axios.get('/roles/all').then((data: any) => {
+				setRoles(data.data.info);
+			});
+			await axios.get('/department/all').then((data: any) => {
+				setDepartment(data.data.info);
+			});
+			await axios.get('worker/all').then((data: any) => {
+				setUsers(data.data.info);
+			});
+		} catch (error) {}
+	};
 
+	useLayoutEffect(() => {
 		getData();
 	}, []);
+
+	useEffect(() => {
+		socket.on('server:reloadWorkers', () => {
+			getData();
+			//setUsers([...allUser, newUser]);
+		});
+	}, [socket]);
 
 	const handleCloseRow = (event: any) => {
 		setUserView(false);
@@ -262,6 +146,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	// };
 
 	const isInUserRol = (id: number) => {
+		/*
 		let ret = false;
 		userRol.map((val) => {
 			if (val.id === id) {
@@ -270,9 +155,11 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 			return val;
 		});
 		return ret;
+		*/
 	};
 
 	const updateCB = (array: any[], item: any, value: boolean) => {
+		/*
 		const index: number = array.findIndex((i: any) => i.name === item);
 		if (index !== -1) {
 			array[index].valid = value;
@@ -280,6 +167,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 		} else {
 			return array;
 		}
+		*/
 	};
 
 	const getuserRol = async (id: number) => {
@@ -288,9 +176,9 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 			const data = resp.data.info;
 			setUserBlocked(data.block === 0 ? false : true);
 			setLName(data.last_name);
-			setUserRol(data.roles);
 			setEmail(data.email);
 			setUserDep(data.id_department);
+			setUserRol(data.id_rol);
 			setUserID(data.id);
 			setName(data.name);
 		} catch (error) {
@@ -303,14 +191,18 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 			case 'department':
 				setUserDep(value);
 				break;
+			case 'rol':
+				setUserRol(value);
+				break;
 			default:
 				break;
 		}
 	};
 
 	const handleCheckbox = async (event: React.ChangeEvent<HTMLInputElement>) => {
+		/*
 		const id = parseInt(event.target.id, 10);
-		setAllUserRoles((prev) => {
+		setpermiss((prev) => {
 			return updateCB(prev, event.target.name, event.target.checked);
 		});
 		switch (event.target.checked) {
@@ -329,6 +221,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 				});
 				break;
 		}
+		*/
 	};
 
 	const handleSaveData = () => {
@@ -346,13 +239,15 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 			if (result.isConfirmed) {
 				try {
 					await axios.put(`/worker/${userID}`, {
-						roles: userRol,
-						id_department: userDep?.id,
+						//update
+						id_rol: userRol.id,
+						id_department: userDep.id,
 						block: userBlocked ? 1 : 0,
 					});
 					Swal.fire('Cambios Guardados', '', 'success');
+					getData();
 				} catch (error) {
-					Swal.fire('Hubo un error guardando sus cambios', '', 'info');
+					handleError(error);
 				}
 			} else if (result.isDenied) {
 				// Swal.fire('Changes are not saved', '', 'info');
@@ -416,16 +311,28 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 												/>
 												<Autocomplete
 													className={classes.inputText}
-													onChange={(event, value) => handleSelect(event, value, 'department')}
+													onChange={(event, value) => (value ? handleSelect(event, value, 'department') : null)}
 													value={userDep}
 													isOptionEqualToValue={(option: any) => {
 														return option.name === userDep.name;
 													}}
 													options={department}
 													getOptionLabel={(option: any) => (option.name ? option.name : '')}
-													// getOptionSelected={(option, value) => value.id === option.id}}
 													renderInput={(params: any) => (
 														<TextField {...params} name='department' label='Departamento' variant='outlined' />
+													)}
+												/>
+												<Autocomplete
+													className={classes.inputText}
+													onChange={(event, value) => (value ? handleSelect(event, value, 'rol') : null)}
+													value={userRol}
+													isOptionEqualToValue={(option: any) => {
+														return option.name === userDep.name;
+													}}
+													options={roles}
+													getOptionLabel={(option: any) => (option.name ? option.name : '')}
+													renderInput={(params: any) => (
+														<TextField {...params} name='rol' label='Cargo' variant='outlined' />
 													)}
 												/>
 												<Button
@@ -436,9 +343,10 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 											</div>
 											<div className={classnames(classes.row, classes.column)}>
 												<div className={classes.cardTitles}>Permisos</div>
+												{/*
 												<FormGroup>
 													<Grid container>
-														{allUserRoles.map((rol, i) => {
+														{roles.map((rol, i) => {
 															return (
 																<Grid item xs={3} key={`${i}`}>
 																	<FormControlLabel
@@ -459,6 +367,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 														})}
 													</Grid>
 												</FormGroup>
+												*/}
 											</div>
 										</div>
 										<div className=''></div>
