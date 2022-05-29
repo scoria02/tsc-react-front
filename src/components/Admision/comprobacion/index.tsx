@@ -1,20 +1,22 @@
 import FullModal from 'components/modals/FullModal';
 import { FMValidContextProvider } from 'context/Admision/Validation/FMValidDataContext';
-import { DataListAdmisionProvider } from 'context/DataList/DatalistAdmisionContext';
 import { SocketContext } from 'context/SocketContext';
 import { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { cleanAdmisionFM } from 'store/actions/admisionFm';
 import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
+import { getFM_solic } from '../getFmData';
 import Validacion from './Validacion';
 
 interface Prop {
 	fm: any;
 	setFm: any;
+	id: number;
+	setId: any;
 }
 
-const Comprobacion: FC<Prop> = ({ fm, setFm }) => {
+const Comprobacion: FC<Prop> = ({ fm, setFm, id, setId }) => {
 	//console.log('solic', fm);
 	const dispatch = useDispatch();
 
@@ -27,12 +29,39 @@ const Comprobacion: FC<Prop> = ({ fm, setFm }) => {
 
 	const [modalOpen, setModelOpen] = useState(true);
 
+	const getFmInfo = async (id_fm: number) => {
+		if (!fm) {
+			console.log('buscar', id);
+			const data: any = await getFM_solic(id_fm);
+			if (data.ok) {
+				setFm(data.fm);
+				console.log('fm', data);
+			} else {
+				setFm(null);
+				socket.emit('cliente:disconnect');
+				console.log('No hay info del fm');
+			}
+		}
+	};
+
+	useEffect(() => {
+		console.log('tiene', fm);
+		console.log('tiene2', id);
+		if (!fm && id) {
+			console.log('buscar -> ', id);
+			getFmInfo(id);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [id]);
+
 	useEffect(() => {
 		if (updatedStatus && id_statusFM !== 0) {
 			const idStatus = id_statusFM;
 			//socket.emit('cliente:cleansolic');
 			if (idStatus === 3) {
 				socket.emit('cliente:loadAdministracionTodos');
+			} else {
+				socket.emit('cliente:loadDiferidos');
 			}
 			Swal.fire({
 				icon: `${idStatus === 3 ? 'success' : 'warning'}`,
@@ -43,7 +72,6 @@ const Comprobacion: FC<Prop> = ({ fm, setFm }) => {
 				allowEscapeKey: false,
 				timer: 1500,
 			});
-			socket.emit('cliente:loadDiferidos');
 			socket.emit('cliente:disconnect');
 			setFm(null);
 			setModelOpen(false);
@@ -54,6 +82,7 @@ const Comprobacion: FC<Prop> = ({ fm, setFm }) => {
 
 	const handleClose = () => {
 		socket.emit('cliente:disconnect');
+		setId(0);
 		setFm(null);
 		setModelOpen(false);
 		//dispatch(CloseModal());
@@ -61,13 +90,11 @@ const Comprobacion: FC<Prop> = ({ fm, setFm }) => {
 	};
 
 	return (
-		<DataListAdmisionProvider>
+		<FullModal modalOpen={modalOpen} handleClose={handleClose}>
 			<FMValidContextProvider fm={fm}>
-				<FullModal modalOpen={modalOpen} handleClose={handleClose}>
-					<Validacion />
-				</FullModal>
+				<>{fm ? <Validacion /> : null}</>
 			</FMValidContextProvider>
-		</DataListAdmisionProvider>
+		</FullModal>
 	);
 };
 

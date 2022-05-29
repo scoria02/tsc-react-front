@@ -3,15 +3,17 @@ import AddIcon from '@mui/icons-material/Add';
 import LowPriority from '@mui/icons-material/LowPrioritySharp';
 import { Fab, Button } from '@mui/material';
 import classNames from 'classnames';
+//Context
 import { DataListAdmisionProvider } from 'context/DataList/DatalistAdmisionContext';
 import { SocketContext } from 'context/SocketContext';
-//
 import { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
+//
 import { useDispatch, useSelector } from 'react-redux';
 //import { getDataFM } from 'store/actions/admisionFm';
 import { OpenModal, OpenModalListSolic } from 'store/actions/ui';
 //import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
+import { handleLoadingSearch } from 'utils/handleSwal';
 import Barra from '../diagramas/Barra';
 import Dona from '../diagramas/Dona';
 import Comprobacion from './comprobacion';
@@ -29,12 +31,14 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 	const classes = useStyles();
 
 	const { modalOpen } = useSelector((state: any) => state.ui);
-
 	const { modalOpenListSolic } = useSelector((state: any) => state.ui);
-	const { user } = useSelector((state: any) => state.auth);
-	const { socket } = useContext(SocketContext);
 
 	const [fm, setFm] = useState(null);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [idFM, setIdFm] = useState(0);
+
+	const { user } = useSelector((state: any) => state.auth);
+	const { socket } = useContext(SocketContext);
 
 	const [valuesChart, setvaluesChart] = useState<number[]>([]);
 	const [keyChart, setkeyChart] = useState<string[]>([]);
@@ -69,7 +73,9 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 	}, [socket, user]);
 
 	const handleClick = () => {
-		if (!selectModal) {
+		setFm(null);
+		if (!selectModal && !fm) {
+			handleLoadingSearch();
 			setSelectModal(true);
 			socket.emit('client:atrabajar', user);
 			//
@@ -96,8 +102,10 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 					});
 					setSelectModal(false);
 				} else {
-					//dispatch(getDataFM(data));
-					setFm(data);
+					console.log('data', data);
+					if (data.id) {
+						setIdFm(data.id);
+					}
 					if (data.length === 0) {
 						setSelectModal(false);
 						Swal.fire({
@@ -120,7 +128,7 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 		if (!fm) {
 			setTimeout(() => {
 				setSelectModal(false);
-			}, 1500);
+			}, 2500);
 		}
 	}, [fm, modalOpen]);
 
@@ -203,7 +211,7 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 						{modalOpenListSolic ? <ListFms /> : null}
 					</div>
 				) : null}
-				{fm ? <Comprobacion fm={fm} setFm={setFm} /> : null}
+				{idFM ? <Comprobacion fm={fm} setFm={setFm} id={idFM} setId={setIdFm} /> : null}
 			</div>
 		</DataListAdmisionProvider>
 	);

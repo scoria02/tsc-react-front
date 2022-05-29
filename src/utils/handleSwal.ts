@@ -48,3 +48,15 @@ export const handleComercioUpdated = () => {
 		customClass: { container: 'swal2-validated' },
 	});
 };
+
+export const handleSucessTime = (text: string) => {
+	Swal.fire({
+		position: 'center',
+		icon: 'success',
+		title: `Verifica la solicitud`,
+		html: `<p>Codigo Solic: <b>${text}</b><p/>`,
+		showConfirmButton: true,
+		customClass: { container: 'swal2-validated' },
+		timer: 1500,
+	});
+};

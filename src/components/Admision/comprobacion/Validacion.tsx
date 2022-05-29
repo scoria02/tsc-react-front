@@ -19,6 +19,7 @@ import { updateStatusFM } from 'store/actions/admisionFm';
 import StepSelectAci from './steps/StepSelectAci';
 //context
 import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
+import LoaderLine from 'components/loaders/LoaderLine';
 
 const Validacion: React.FC = () => {
 	const dispatch = useDispatch();
@@ -33,9 +34,13 @@ const Validacion: React.FC = () => {
 	const { listAci } = useContext(DataListAdmisionContext);
 	const { client, commerce, solic, codeFM, stepsFM, aci, listValidated } = useContext(FMValidDataContext);
 
+	const [step, setStep] = useState([]);
+
 	useLayoutEffect(() => {
-		setSteps(stepsFM);
-	}, [stepsFM]);
+		if (stepsFM) setSteps(stepsFM);
+		if (solic) setStep(getContentSteps());
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [stepsFM, solic]);
 
 	const handleNext = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -89,10 +94,10 @@ const Validacion: React.FC = () => {
 					handleLoading();
 					if (validStatusFm()) {
 						dispatch(updateStatusFM(solic.id, 4, listValidated, aci?.id));
-						console.log('mandado diferido');
+						console.log('Enviado a diferido');
 					} else {
 						dispatch(updateStatusFM(solic.id, 3, listValidated, aci?.id));
-						console.log('fin validacion');
+						console.log('Enviado al siguente Modulo (Pagadero: Tms7 & 1000pagos)');
 					}
 				}
 			});
@@ -146,8 +151,6 @@ const Validacion: React.FC = () => {
 		return listSteps;
 	};
 
-	const getStep: ReactElement[] = getContentSteps();
-
 	const handleClickButton = () => {
 		if (activeStep > stepsValid - 1) {
 			handleVerificar();
@@ -158,8 +161,8 @@ const Validacion: React.FC = () => {
 
 	return (
 		<div className={classes.containerSolic}>
-			{!listAci.length ? (
-				<LoaderPrimary />
+			{!listAci.length || !solic ? (
+				<LoaderLine />
 			) : (
 				<div>
 					<h2
@@ -196,7 +199,7 @@ const Validacion: React.FC = () => {
 						</Stepper>
 						<div className={classes.containerFM}>
 							<div>
-								{getStep[activeStep]}
+								{step[activeStep]}
 								<div className={classes.buttonFixed}>
 									<Button
 										sx={{
