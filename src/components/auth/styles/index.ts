@@ -203,4 +203,15 @@ export const styledMui = {
 		mr: 'auto',
 		ml: 'auto',
 	},
+	buttonLogin: {
+		textTransform: 'none',
+		fontSize: '1rem',
+		color: '#ffffff',
+		// padding: '.6rem 4rem',
+		borderRadius: '0.25rem',
+		//backgroundColor: styles.palette.success.main,
+		'&:hover': {
+			//backgroundColor: styles.palette.success.light,
+		},
+	},
 };

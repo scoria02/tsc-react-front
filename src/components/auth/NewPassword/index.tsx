@@ -16,12 +16,15 @@ const NewPassword: FC = () => {
 	};
 	const handleNewPass = async (e: any) => {
 		e.preventDefault();
-
-		await useAxios
-			.post(`/auth/newpass/`, {
-				email,
-			})
-			.then((resp) => setMessage(resp.data.info));
+		try {
+			await useAxios
+				.post(`/auth/newpass/`, {
+					email,
+				})
+				.then((resp) => setMessage(resp.data.info));
+		} catch (error: any) {
+			setMessage(error.response?.data?.message);
+		}
 		// setMessage(resp)
 
 		// history.push(baseUrl);
