@@ -6,6 +6,7 @@ import { ImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
 import { handleError } from 'utils/handleSwal';
 import { CloseModalDiferido } from '../ui';
 import { PosDif, SolicDif } from 'context/Admision/Diferido/interfaces/pos_interface';
+import { ClientDif } from 'context/Admision/Diferido/interfaces/client_interface';
 
 export const createFormDataFmDif = (
 	id_fm: number,
@@ -100,9 +101,12 @@ export const dataFormatSolic = (solic: SolicDif | null) => ({
 //Diferido
 export const updateStatusFMDiferido = (
 	id_fm: number,
-	fm: any,
-	client: any,
+	solic: SolicDif | null,
+	client: ClientDif | null,
+	phones: any,
 	commerce: any,
+	pos: PosDif | null,
+	locationPos: any,
 	idLocationClient: number,
 	idLocationCommerce: number,
 	idLocationPos: number,
@@ -113,9 +117,10 @@ export const updateStatusFMDiferido = (
 	return async (dispatch: any) => {
 		//console.log('Client:old', client);
 		//console.log('Commerce:old', commerce);
-		const clientData: any = client ? dataFormatClient(client, idLocationClient) : null;
+		const client_phones = { ...client, ...phones };
+		const clientData: any = client ? dataFormatClient(client_phones, idLocationClient) : null;
 		const commerceData: any = commerce ? dataFormatCommerce(commerce, idLocationCommerce) : null;
-		const posData: any = pos ? dataFormatPos(pos, ,idLocationPos) : null;
+		const posData: any = pos ? dataFormatPos(pos, locationPos, idLocationPos) : null;
 		const solicData: any = solic ? dataFormatSolic(solic) : null;
 		//console.log('Client:', clientData);
 		//console.log('Commerce:', commerceData);

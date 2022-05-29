@@ -1,21 +1,44 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { IconButton, InputAdornment, Snackbar, SnackbarContent, TextField, Typography } from '@mui/material';
+import {
+	Button,
+	IconButton,
+	InputAdornment,
+	Snackbar,
+	SnackbarContent,
+	TextField,
+	Typography,
+} from '@mui/material';
 import Alert from 'components/alert/Alert1';
-import { FC, useState } from 'react';
+import useAxios from 'config/index';
+import { FC, useLayoutEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { baseUrl } from 'routers/url';
+import { refreshLogin, updateToken } from 'store/actions/auth';
+import { StartLoading } from 'store/actions/ui';
+import Swal from 'sweetalert2';
 import { capitalizedFull } from 'utils/formatName';
 import AuthModal from '../AuthModal';
 import { Interface_ErrorPass, Interface_RegisterUserError } from '../interfaceAuth';
 import { validSamePass } from '../register/validationForm';
 import { styledMui, useStylesModalUser } from '../styles';
 
-const RestorePassword: FC = () => {
+interface IRestorePassword {
+	token: string;
+}
+
+const RestorePassword: FC<IRestorePassword> = ({ token }) => {
 	const classes = useStylesModalUser();
+	const history = useHistory();
+	const dispatch = useDispatch();
 	const [userForm, setUserForm] = useState({
 		password: '',
 		confirmPassword: '',
 	});
-	const [email, setEmail] = useState<string>('');
+	const [tokenURL, setToken] = useState('');
 	const [open, setOpen] = useState(false); //Show errors Password
+	const [isSamePass, setIsSamePass] = useState<boolean>(false);
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [errorPassword, setErrorPassword] = useState<Interface_ErrorPass>({
 		rango: true,
@@ -90,22 +113,33 @@ const RestorePassword: FC = () => {
 		});
 	};
 
-	const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-		e.preventDefault();
-		setEmail(e.target.value);
-	};
 	const handleNewPass = async (e: any) => {
 		e.preventDefault();
-
-		// await useAxios
-		// 	.post(`/auth/newpass/`, {
-		// 		email,
-		// 	})
-		// 	.then((resp) => setMessage(resp.data.info));
-		// setMessage(resp)
-
-		// history.push(baseUrl);
+		const { password } = userForm;
+		const payload = { token: tokenURL, password };
+		try {
+			const resp = await useAxios.post(`/auth/passrenew/`, payload);
+			console.log('resp', resp.data.info.token);
+			updateToken(resp);
+			dispatch(refreshLogin());
+			history.push(baseUrl);
+			dispatch(StartLoading());
+			Swal.fire({
+				icon: 'success',
+				title: '¡Éxito!',
+				html: `<p>Bienvenido nuevamente</p>`,
+				showConfirmButton: false,
+				timer: 2500,
+			});
+			// .then((resp) => setMessage(resp.data.info));
+		} catch (error) {}
 	};
+
+	useLayoutEffect(() => {
+		setToken(token.split('?token=')[1]);
+		setIsSamePass(userForm.password === '' || !validSamePass(userForm.password, userForm.confirmPassword));
+	}, [token, userFormError]);
+
 	return (
 		<>
 			<AuthModal register={false} name='Nueva Contraseña'>
@@ -188,6 +222,11 @@ const RestorePassword: FC = () => {
 					variant='outlined'
 					error={userFormError.confirmPassword}
 				/>
+				<div className={classes.inputButton}>
+					<Button sx={styledMui.buttonLogin} onClick={handleNewPass} variant='contained' disabled={isSamePass}>
+						Guardar e Ingresar
+					</Button>
+				</div>
 			</AuthModal>
 		</>
 	);

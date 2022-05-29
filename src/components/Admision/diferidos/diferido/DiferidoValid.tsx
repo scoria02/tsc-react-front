@@ -40,9 +40,10 @@ const DiferidoValid: React.FC = () => {
 		setActiveStep,
 		ready,
 		setDisabled,
-		client,
 		codeFM,
 		solic,
+		client,
+		pos,
 		listValidated,
 		stepsFM,
 		phones,
@@ -118,13 +119,18 @@ const DiferidoValid: React.FC = () => {
 					phone1: phones.phone1,
 					phone2: phones.phone2,
 				};
-				console.log(phone);
+				//console.log(phones);
 				dispatch(
 					updateStatusFMDiferido(
 						solic.id,
 						solic,
-						{ ...client, ...phone }, //client
+						client,
+						phone,
 						commerce,
+						//
+						pos,
+						locationPos,
+						//
 						idLocationClient,
 						idLocationCommerce,
 						idLocationPos,

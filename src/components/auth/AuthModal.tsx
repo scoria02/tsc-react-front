@@ -2,7 +2,7 @@ import { Button, Card, CardContent, Typography } from '@mui/material';
 import Logo from 'img/logo_1000pagos_blanco.svg';
 import React, { useLayoutEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { urlLogin, urlNewPassword } from 'routers/url';
+import { urlLogin, urlNewPassword, urlRestorePassword } from 'routers/url';
 import { useStylesModalUser } from './styles';
 
 const sxStyles = {
@@ -21,7 +21,11 @@ const AuthModal: React.FC<any> = ({ children, name, register }) => {
 
 	useLayoutEffect(() => {
 		const urlUser = history.location.pathname;
-		urlUser === urlNewPassword ? setNewPass(true) : setNewPass(false);
+		urlUser === urlNewPassword
+			? setNewPass(true)
+			: urlUser === urlRestorePassword
+			? setNewPass(true)
+			: setNewPass(false);
 		setUrl(history.location.pathname);
 
 		// setUrl(history);
@@ -51,15 +55,23 @@ const AuthModal: React.FC<any> = ({ children, name, register }) => {
 						</Typography>
 						<div>{children}</div>
 						<div className={classes.buttonLeft}>
-							<Button
-								size='small'
-								color='primary'
-								variant='contained'
-								onClick={() => history.push(`/auth/${newpass ? 'login' : !register ? 'register' : 'login'}`)}>
-								<span className={classes.buttonText}>
-									{newpass ? 'Volver al Inicio' : !register ? 'Registrarme ' : 'Volver al Inicio'}
-								</span>
-							</Button>
+							{newpass ? (
+								<Button
+									size='small'
+									color='primary'
+									variant='contained'
+									onClick={() => history.push(`/auth/${newpass ? 'login' : !register ? 'register' : 'login'}`)}>
+									<span className={classes.buttonText}>{'Volver al Inicio'}</span>
+								</Button>
+							) : (
+								<Button
+									size='small'
+									color='primary'
+									variant='contained'
+									onClick={() => history.push(`/auth/${newpass ? 'login' : !register ? 'register' : 'login'}`)}>
+									<span className={classes.buttonText}>{!register ? 'Registrarme ' : 'Volver al Inicio'}</span>
+								</Button>
+							)}
 						</div>
 						{url === urlLogin && (
 							<div className={classes.buttonRight}>
