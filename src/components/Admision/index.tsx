@@ -11,6 +11,7 @@ import { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 //import { getDataFM } from 'store/actions/admisionFm';
 import { OpenModal, OpenModalListSolic } from 'store/actions/ui';
+import { RootState } from 'store/store';
 //import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
 import { handleLoadingSearch } from 'utils/handleSwal';
@@ -27,6 +28,7 @@ interface AdmisionInt {
 }
 
 const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
+	const { permiss }: any = useSelector((state: RootState) => state.auth.user);
 	const dispatch = useDispatch();
 	const classes = useStyles();
 
@@ -187,7 +189,7 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 						<Barra chartData={valuesChart} colsData={keyChart} />
 					</div>
 				</div>
-				{allSolic ? (
+				{allSolic && permiss['Validacion FM'] ? (
 					<Button
 						variant='contained'
 						sx={{
@@ -203,7 +205,7 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 						<AddIcon />
 					</Button>
 				) : null}
-				{!isWorker ? (
+				{permiss['Mover FM'] ? (
 					<div className='cmn2-divfloat'>
 						<Fab color='secondary' aria-label='add' size='large' variant='extended' onClick={handleClickList}>
 							<LowPriority />

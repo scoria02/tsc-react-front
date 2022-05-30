@@ -540,6 +540,7 @@ export const errorObject = (data: any, error: any, name: string, value: any): an
 			break;
 		case 'calle':
 		case 'local':
+			temp[name] = value === '';
 			break;
 		default:
 			break;

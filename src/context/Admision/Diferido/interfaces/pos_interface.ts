@@ -75,6 +75,10 @@ export interface PosDif {
 	rc_comp_dep: Photo | null;
 	rc_planilla: Photo[] | [];
 	rc_ref_bank: Photo | null;
+	id_location: number;
+	id_direccion: number;
+	calle: string;
+	local: string;
 }
 
 export interface SolicDif {

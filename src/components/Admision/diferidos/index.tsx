@@ -17,7 +17,8 @@ import { getDataFMDiferido } from 'store/actions/admision/diferido';
 import { OpenModalDiferido } from 'store/actions/ui';
 import { useStyles } from '../styles/styles';
 import Diferido from './Diferido';
-//import { RootState } from 'store/store';
+import { RootState } from 'store/store';
+import { handleInfoText } from 'utils/handleSwal';
 
 const columns: GridColDef[] = [
 	{
@@ -60,6 +61,7 @@ const columns: GridColDef[] = [
 ];
 
 const Diferidos: React.FC = () => {
+	const { permiss }: any = useSelector((state: RootState) => state.auth.user);
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
@@ -108,6 +110,10 @@ const Diferidos: React.FC = () => {
 	}, [socket, modalOpenDiferido]);
 
 	const handleRow = (event: any) => {
+		if (!permiss['Diferido FM']) {
+			handleInfoText('No tienes acceso', 'Necesitas permisos');
+			return;
+		}
 		//setRowSelect(null);
 		socket.emit('Editar_diferido', event.row.id, (res: any) => {
 			//console.log('editar este', res);

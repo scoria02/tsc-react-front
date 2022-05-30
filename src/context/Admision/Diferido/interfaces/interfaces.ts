@@ -23,6 +23,7 @@ export interface ContextFMDif {
 	handleChangeClient(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleChangeCommerce(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleChangePos(event: React.ChangeEvent<HTMLInputElement>): void;
+	handleChangeLocationPos(event: React.ChangeEvent<HTMLInputElement>): void;
 	//images
 	imagePlanilla: FileList | [];
 	imagesActa: FileList | [];
@@ -61,6 +62,7 @@ export interface ContextFMDif {
 	locationPos: any;
 	errorPos: any;
 	handleParamsPos(name: string, value: any): void;
+	handleParamsSolic(name: string, value: any): void;
 	//
 	phones: any;
 	handleChangeClientPhone(event: React.ChangeEvent<HTMLInputElement>): void;

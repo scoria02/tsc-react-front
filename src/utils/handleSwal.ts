@@ -60,3 +60,14 @@ export const handleSucessTime = (text: string) => {
 		timer: 1500,
 	});
 };
+
+export const handleInfoText = (title: string, text: string) => {
+	Swal.fire({
+		icon: 'info',
+		title: title,
+		text: text || 'Error Access',
+		customClass: { container: 'swal2-validated' },
+		showConfirmButton: true,
+		//timer: 2500,
+	});
+};
