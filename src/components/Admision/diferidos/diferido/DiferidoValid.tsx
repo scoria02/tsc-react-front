@@ -255,6 +255,7 @@ const DiferidoValid: React.FC = () => {
 
 	useLayoutEffect(() => {
 		setStep(getContentSteps());
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleClickButton = () => {

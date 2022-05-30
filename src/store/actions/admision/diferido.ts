@@ -7,7 +7,6 @@ import { handleError } from 'utils/handleSwal';
 import { CloseModalDiferido } from '../ui';
 import { PosDif, SolicDif } from 'context/Admision/Diferido/interfaces/pos_interface';
 import { ClientDif } from 'context/Admision/Diferido/interfaces/client_interface';
-import { SocialDistance } from '@mui/icons-material';
 
 export const createFormDataFmDif = (
 	id_fm: number,
