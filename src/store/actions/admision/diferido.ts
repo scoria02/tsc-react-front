@@ -67,6 +67,7 @@ const dataFormatClient = (client: any, idLocationClient: number) => ({
 });
 
 export const dataFormatCommerce = (commerce: any, idLocationCommerce: number | null) => ({
+	id: commerce?.id,
 	id_ident_type: commerce.id_ident_type.id,
 	ident_num: commerce.ident_num,
 	//special_contributor: commerce.special_contributor ? 1 : 0,
@@ -81,6 +82,7 @@ export const dataFormatCommerce = (commerce: any, idLocationCommerce: number | n
 });
 
 export const dataFormatPos = (pos: PosDif | null, locationPos: any, idLocationPos: number | null) => ({
+	//id: pos?.id || null,
 	model_post: pos?.id_product.id || null,
 	location: {
 		id_direccion: idLocationPos ? idLocationPos : null,
@@ -90,6 +92,7 @@ export const dataFormatPos = (pos: PosDif | null, locationPos: any, idLocationPo
 });
 
 export const dataFormatSolic = (solic: SolicDif | null) => ({
+	id: solic?.id || null,
 	bank_account_num: solic?.bank_account_num || null,
 	nro_comp_dep: solic?.nro_comp_dep,
 	discount: solic?.discount,
