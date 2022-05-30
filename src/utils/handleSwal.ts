@@ -71,3 +71,17 @@ export const handleInfoText = (title: string, text: string) => {
 		//timer: 2500,
 	});
 };
+
+export const handleErrorProvider = (error: any) => {
+	const text = error.response?.data?.message.text || 'Error Access';
+	const provider = error.response?.data?.message.provider || 'Error Acess';
+	const html = `<p><b>${text}</b> </br><small>${provider}</small></p>`;
+	Swal.fire({
+		icon: 'error',
+		title: 'Error',
+		text: text,
+		html: html,
+		customClass: { container: 'swal2-validated' },
+		showConfirmButton: true,
+	});
+};

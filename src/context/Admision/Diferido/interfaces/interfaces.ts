@@ -5,6 +5,7 @@ import { LocationInt } from '../../CreationFM/Location/interfaces';
 import { fmErrorDif_ClientINT } from './client_interface';
 import { fmErrorDif_CommerceINT } from './commerce_intercae';
 import { PosDif, SolicDif } from './pos_interface';
+import { fmErrorDif_SolicINT } from './solic_interface';
 
 export interface PropsAd {
 	children: ReactChild;
@@ -61,6 +62,7 @@ export interface ContextFMDif {
 	pos: PosDif | null;
 	locationPos: any;
 	errorPos: any;
+	errorSolic: fmErrorDif_SolicINT;
 	handleParamsPos(name: string, value: any): void;
 	handleParamsSolic(name: string, value: any): void;
 	//

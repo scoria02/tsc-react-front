@@ -38,6 +38,7 @@ const DifStepCommerce: FC = () => {
 	const {
 		disabled,
 		commerce,
+		solic,
 		handleChangeImages,
 		handleChangeCommerce,
 		handleChangeIdenType,
@@ -115,6 +116,7 @@ const DifStepCommerce: FC = () => {
 							disabled={disabled}
 							required
 							className={classes.inputText}
+							error={errorCommerce.name}
 							type='text'
 							sx={sxStyled.inputLeft}
 							variant='outlined'
@@ -129,7 +131,7 @@ const DifStepCommerce: FC = () => {
 					</div>
 					<div className={classes.input}>
 						<TextField
-							disabled={disabled}
+							disabled={disabled || solic?.id_type_request?.id !== 2}
 							className={classes.inputText}
 							sx={sxStyled.inputLeft}
 							variant='outlined'
@@ -151,15 +153,14 @@ const DifStepCommerce: FC = () => {
 									<InputAdornment position='start'>
 										<FormControl variant='standard'>
 											<Select
-												//onBlur={handleBlurCommerce}
-												//error={fm.errorCommerce}>
-												disabled={disabled}
+												disabled={disabled || solic?.id_type_request?.id !== 2}
 												name='commerce_type'
 												value={commerce.id_ident_type.id}
 												onChange={(event: any) => {
 													handleChangeIdenType(event);
 													handleChangeIdenTypeValid(event.target.value);
 												}}
+												error={errorCommerceValid}
 												label='Tipo'>
 												{listIdentType.map((item: any) => (
 													<MenuItem key={item.id} value={item.id}>

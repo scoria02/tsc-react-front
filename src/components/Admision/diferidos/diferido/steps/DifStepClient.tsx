@@ -136,7 +136,7 @@ const DifStepClient: FC = () => {
 								className={classes.inputText}
 								variant='outlined'
 								required
-								label='Rif'
+								label='C.I'
 								autoComplete='off'
 								name='ident_num'
 								error={errorClient.ident_num || errorClientValid}
@@ -207,6 +207,7 @@ const DifStepClient: FC = () => {
 						</div>
 						<div className={classes.input}>
 							<TextField
+								error={errorClient.phone1}
 								disabled={disabled}
 								className={classes.inputText}
 								sx={sxStyled.inputLeft}
@@ -214,20 +215,18 @@ const DifStepClient: FC = () => {
 								required
 								label='Telefono'
 								name='phone1'
-								error={errorClient.phone1}
 								autoComplete='telefono1'
 								onChange={handleChangeClientPhone}
 								inputProps={{ maxLength: 10 }}
 								value={phones.phone1}
 							/>
 							<TextField
+								error={errorClient.phone2}
 								disabled={disabled}
 								className={classes.inputText}
 								variant='outlined'
-								required
 								label='Telefono'
 								name='phone2'
-								error={errorClient.phone2}
 								autoComplete='telefono2'
 								onChange={handleChangeClientPhone}
 								inputProps={{ maxLength: 10 }}

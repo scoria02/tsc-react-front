@@ -85,7 +85,6 @@ const Comprobacion: FC<Prop> = ({ fm, setFm, id, setId }) => {
 		setId(0);
 		setFm(null);
 		setModelOpen(false);
-		//dispatch(CloseModal());
 		dispatch(cleanAdmisionFM());
 	};
 

@@ -3,7 +3,7 @@ import useAxios from 'config/index';
 import { AxiosResponse } from 'axios';
 import Swal from 'sweetalert2';
 import { ImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
-import { handleError } from 'utils/handleSwal';
+import { handleError, handleErrorProvider } from 'utils/handleSwal';
 import { CloseModalDiferido } from '../ui';
 import { PosDif, SolicDif } from 'context/Admision/Diferido/interfaces/pos_interface';
 import { ClientDif } from 'context/Admision/Diferido/interfaces/client_interface';
@@ -157,12 +157,8 @@ export const updateStatusFMDiferido = (
 		} catch (error: any) {
 			//console.log(error.response)
 			dispatch(requestError());
-			Swal.fire({
-				icon: 'error',
-				title: 'Error',
-				customClass: { container: 'swal2-validated' },
-				text: error.response?.data?.message,
-			});
+			console.log(error.response);
+			handleErrorProvider(error);
 		}
 	};
 	function requestSuccess() {

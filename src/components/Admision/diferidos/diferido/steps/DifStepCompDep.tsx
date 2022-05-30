@@ -11,7 +11,7 @@ const DifStepCompDep: React.FC = () => {
 	const classes = useStyles();
 	const [load, setLoad] = useState(false);
 
-	const { solic, listValidated, disabled, handleChange, imagesForm, handleChangeImages, pathImages } =
+	const { solic, errorSolic, listValidated, disabled, handleChange, imagesForm, handleChangeImages, pathImages } =
 		useContext(FMDiferidoContext);
 
 	const [imagen, setImagen] = useState('');
@@ -45,6 +45,7 @@ const DifStepCompDep: React.FC = () => {
 						name='nro_comp_dep'
 						inputProps={{ maxLength: 15 }}
 						onChange={handleChange}
+						error={errorSolic.nro_comp_dep}
 						value={solic?.nro_comp_dep || 'No tiene numero'}
 					/>
 					<Button

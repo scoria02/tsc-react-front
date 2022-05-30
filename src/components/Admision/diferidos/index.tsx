@@ -12,13 +12,12 @@ import { DataListProvider } from 'context/DataList/DataListContext';
 import { SocketContext } from 'context/SocketContext';
 import { DateTime } from 'luxon';
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getDataFMDiferido } from 'store/actions/admision/diferido';
-import { OpenModalDiferido } from 'store/actions/ui';
+import { useSelector } from 'react-redux';
+//import { getDataFMDiferido } from 'store/actions/admision/diferido';
 import { useStyles } from '../styles/styles';
 import Diferido from './Diferido';
 import { RootState } from 'store/store';
-import { handleInfoText } from 'utils/handleSwal';
+import { handleInfoText, handleLoadingSearch } from 'utils/handleSwal';
 
 const columns: GridColDef[] = [
 	{
@@ -63,16 +62,13 @@ const columns: GridColDef[] = [
 const Diferidos: React.FC = () => {
 	const { permiss }: any = useSelector((state: RootState) => state.auth.user);
 	const classes = useStyles();
-	const dispatch = useDispatch();
 
 	const { modalOpenDiferido } = useSelector((state: any) => state.ui);
 
-	//const fm: any = useSelector((state: RootState) => state.fmAdmision.diferido);
-
-	// const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
 	const { user } = useSelector((state: any) => state.auth);
 
-	const [rowSelected, setRowSelect] = useState(null);
+	const [fm, setFm] = useState(null);
+	const [idFM, setIdFm] = useState(0);
 
 	const customToolbar: () => JSX.Element = () => {
 		return (
@@ -105,7 +101,6 @@ const Diferidos: React.FC = () => {
 			setDiferidos(data);
 		});
 		if (!modalOpenDiferido) {
-			setRowSelect(null);
 		}
 	}, [socket, modalOpenDiferido]);
 
@@ -114,26 +109,17 @@ const Diferidos: React.FC = () => {
 			handleInfoText('No tienes acceso', 'Necesitas permisos');
 			return;
 		}
-		//setRowSelect(null);
+		handleLoadingSearch();
 		socket.emit('Editar_diferido', event.row.id, (res: any) => {
 			//console.log('editar este', res);
-			setRowSelect({
-				...res.id_request,
-			});
-			dispatch(getDataFMDiferido(res.id_request));
+			if (res.id_request) {
+				setIdFm(res.id_request.id);
+			}
+			//dispatch(getDataFMDiferido(res.id_request));
 		});
 		//dispatch(OpenModalDiferido());
 		socket.emit('cliente:trabanjandoDiferido', user, event.row.id);
 	};
-
-	useEffect(() => {
-		//console.log('index', rowSelected);
-		if (rowSelected && !modalOpenDiferido) {
-			dispatch(OpenModalDiferido());
-		}
-	}, [rowSelected, modalOpenDiferido]);
-
-	//console.log('s', rowSelected);
 
 	return (
 		<div style={{ height: '100%', width: '100%' }}>
@@ -153,7 +139,7 @@ const Diferidos: React.FC = () => {
 				getRowId={(row) => row.id}
 			/>
 			<DataListProvider>
-				<>{modalOpenDiferido && rowSelected ? <Diferido fmData={rowSelected} /> : null}</>
+				<>{idFM ? <Diferido fm={fm} setFm={setFm} id={idFM} setId={setIdFm} /> : null}</>
 			</DataListProvider>
 		</div>
 	);

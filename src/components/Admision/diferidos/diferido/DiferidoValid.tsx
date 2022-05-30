@@ -14,6 +14,7 @@ import DifStepPos from './steps/DifStepPos';
 import DifStepRefBank from './steps/DifStepRefBank';
 import DifStepCompDep from './steps/DifStepCompDep';
 import LocationsContext from 'context/Admision/CreationFM/Location/LocationsContext';
+import LoaderLine from 'components/loaders/LoaderLine';
 
 const DiferidoValid: React.FC = () => {
 	const dispatch = useDispatch();
@@ -59,7 +60,7 @@ const DiferidoValid: React.FC = () => {
 		idLocationPos,
 	} = useContext(FMDiferidoContext);
 
-	console.log('aqui', solic);
+	//console.log('aqui', solic);
 
 	useEffect(() => {
 		if (activeStep > stepsValid - 1) {
@@ -100,8 +101,11 @@ const DiferidoValid: React.FC = () => {
 	const handleSend = async () => {
 		if (!solic) return;
 		Swal.fire({
-			title: 'Solicitud verificada?',
 			icon: 'warning',
+			title: 'Enviar verificacion',
+			html: solic.pagadero
+				? `<p>Esta solictud puede tardar unos minutos</p>`
+				: `<p>Esta solicitud se enviara a administracion</p>`,
 			showConfirmButton: true,
 			allowOutsideClick: false,
 			allowEscapeKey: false,
@@ -122,7 +126,7 @@ const DiferidoValid: React.FC = () => {
 				//console.log(phones);
 				dispatch(
 					updateStatusFMDiferido(
-						solic.id,
+						solic?.id,
 						solic,
 						client,
 						phone,
@@ -155,11 +159,9 @@ const DiferidoValid: React.FC = () => {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				//setList()
+				setStepsValid(stepsValid + 1);
 				if (stepsValid !== steps.length - 1) {
-					setStepsValid(stepsValid + 1);
 					handleNext();
-				} else {
-					handleLoading();
 				}
 			}
 		});
@@ -268,89 +270,93 @@ const DiferidoValid: React.FC = () => {
 
 	return (
 		<div className={classes.containerSolic}>
-			<div>
-				<h2
-					style={{
-						marginTop: 1,
-						fontSize: '12px',
-					}}>
-					Code: <span style={{ color: 'red' }}>{codeFM}</span>
-				</h2>
-				<form className={classes.containerSteps}>
-					<Stepper alternativeLabel activeStep={activeStep} style={{ background: 'none', width: '100%' }}>
-						{steps.map((label, index) => {
-							const stepProps: { completed?: boolean } = {};
-							return (
-								<Step key={label} {...stepProps}>
-									<StepLabel>
-										<Typography
-											variant={activeStep === index ? 'body1' : 'body2'}
-											color={activeStep === index ? 'primary' : 'info'}>
-											<b>{label}</b>
-										</Typography>
-										<Typography
-											style={{
-												fontSize: '10px',
+			{!solic ? (
+				<LoaderLine />
+			) : (
+				<div>
+					<h2
+						style={{
+							marginTop: 1,
+							fontSize: '12px',
+						}}>
+						Code: <span style={{ color: 'red' }}>{codeFM}</span>
+					</h2>
+					<form className={classes.containerSteps}>
+						<Stepper alternativeLabel activeStep={activeStep} style={{ background: 'none', width: '100%' }}>
+							{steps.map((label, index) => {
+								const stepProps: { completed?: boolean } = {};
+								return (
+									<Step key={label} {...stepProps}>
+										<StepLabel>
+											<Typography
+												variant={activeStep === index ? 'body1' : 'body2'}
+												color={activeStep === index ? 'primary' : 'info'}>
+												<b>{label}</b>
+											</Typography>
+											<Typography
+												style={{
+													fontSize: '10px',
+												}}
+												variant={activeStep === index ? 'body1' : 'body2'}
+												color={activeStep === index ? 'primary' : 'info'}>
+												<span>{index > stepsValid - 1 ? '' : 'Verificado'}</span>
+											</Typography>
+										</StepLabel>
+									</Step>
+								);
+							})}
+						</Stepper>
+						<div className={classes.containerFM}>
+							<div>
+								{step[activeStep]}
+								<div className={classes.buttonFixed}>
+									<Button
+										sx={{
+											ml: 20,
+											mr: 20,
+										}}
+										size='large'
+										disabled={activeStep === 0}
+										variant='contained'
+										style={{ opacity: activeStep ? 1 : 0 }}
+										onClick={handleBack}
+										className={classes.buttonBack}>
+										<span className={classes.textButton}>Volver</span>
+									</Button>
+									{stepsValid === steps.length ? (
+										<Button
+											sx={{
+												mr: 40,
 											}}
-											variant={activeStep === index ? 'body1' : 'body2'}
-											color={activeStep === index ? 'primary' : 'info'}>
-											<span>{index > stepsValid - 1 ? '' : 'Verificado'}</span>
-										</Typography>
-									</StepLabel>
-								</Step>
-							);
-						})}
-					</Stepper>
-					<div className={classes.containerFM}>
-						<div>
-							{step[activeStep]}
-							<div className={classes.buttonFixed}>
-								<Button
-									sx={{
-										ml: 20,
-										mr: 20,
-									}}
-									size='large'
-									disabled={activeStep === 0}
-									variant='contained'
-									style={{ opacity: activeStep ? 1 : 0 }}
-									onClick={handleBack}
-									className={classes.buttonBack}>
-									<span className={classes.textButton}>Volver</span>
-								</Button>
-								{activeStep === steps.length - 1 ? (
-									<Button
-										sx={{
-											mr: 40,
-										}}
-										size='large'
-										variant='contained'
-										color='primary'
-										onClick={handleSend}
-										className={classes.buttonNext}>
-										<span className={classes.textButton}>Enviar</span>
-									</Button>
-								) : (
-									<Button
-										sx={{
-											mr: 40,
-										}}
-										disabled={ready}
-										size='large'
-										variant='contained'
-										color='primary'
-										onClick={handleClickButton}
-										className={classes.buttonNext}>
-										<span className={classes.textButton}>
-											{activeStep > stepsValid - 1 ? 'Verificar' : 'Siguente'}
-										</span>
-									</Button>
-								)}
+											size='large'
+											variant='contained'
+											color='primary'
+											onClick={handleSend}
+											className={classes.buttonNext}>
+											<span className={classes.textButton}>Enviar</span>
+										</Button>
+									) : (
+										<Button
+											sx={{
+												mr: 40,
+											}}
+											disabled={ready}
+											size='large'
+											variant='contained'
+											color='primary'
+											onClick={handleClickButton}
+											className={classes.buttonNext}>
+											<span className={classes.textButton}>
+												{activeStep > stepsValid - 1 ? 'Verificar' : 'Siguente'}
+											</span>
+										</Button>
+									)}
+								</div>
 							</div>
 						</div>
-					</div>
-				</form>
-			</div>
+					</form>
+				</div>
+			)}
 		</div>
 	);
 };

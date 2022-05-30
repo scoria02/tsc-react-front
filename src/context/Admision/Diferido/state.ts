@@ -1,6 +1,8 @@
 import { ImagesInt, PathImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
 import { fmErrorDif_ClientINT } from './interfaces/client_interface';
 import { fmErrorDif_CommerceINT } from './interfaces/commerce_intercae';
+import { fmErrorDif_PosINT } from './interfaces/pos_interface';
+import { fmErrorDif_SolicINT } from './interfaces/solic_interface';
 
 export const initialImagesFm: ImagesInt = {
 	rc_ident_card: null,
@@ -70,4 +72,11 @@ export const fmErrorDifCommerce: fmErrorDif_CommerceINT = {
 	sector: false,
 	calle: false,
 	local: false,
+};
+
+export const fmErrorPos: fmErrorDif_PosINT = {};
+
+export const fmErrorDifSolic: fmErrorDif_SolicINT = {
+	bank_account_num: false,
+	nro_comp_dep: false,
 };

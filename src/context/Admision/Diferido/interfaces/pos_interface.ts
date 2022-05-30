@@ -108,3 +108,5 @@ export interface SolicDif {
 	rc_planilla: Photo[] | [];
 	rc_ref_bank: Photo | null;
 }
+
+export interface fmErrorDif_PosINT {}

@@ -83,6 +83,7 @@ export const refreshLogin = () => {
 					icon: 'info',
 					title: 'Sesión expirada',
 					html: '<p>Vuelva a iniciar sesión</p>',
+					showConfirmButton: false,
 					timer: 2000,
 				});
 				//Swal.fire('Error', 'Sesión expirada, vuelva a iniciar sesión', 'error');

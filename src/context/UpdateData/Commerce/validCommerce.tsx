@@ -535,6 +535,12 @@ export const errorObject = (data: any, error: any, name: string, value: any): an
 				value + data.doc_ident_ref2
 			);
 			break;
+		case 'bank_account_num':
+			temp.bank_account_num = value.length < 20;
+			break;
+		case 'nro_comp_dep':
+			temp.nro_comp_dep = value.length < 4;
+			break;
 		case 'calle':
 		case 'local':
 			temp[name] = value === '';
