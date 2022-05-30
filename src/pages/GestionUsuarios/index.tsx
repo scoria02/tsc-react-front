@@ -1,16 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import CloseIcon from '@mui/icons-material/Close';
-import {
-	Autocomplete,
-	Avatar,
-	Button,
-	Checkbox,
-	FormControlLabel,
-	FormGroup,
-	Grid,
-	Paper,
-	TextField,
-} from '@mui/material';
+import { Autocomplete, Avatar, Button, Grid, Paper, TextField } from '@mui/material';
 import {
 	DataGrid,
 	GridColDef,
@@ -145,8 +135,8 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	// 	}
 	// };
 
+	/*
 	const isInUserRol = (id: number) => {
-		/*
 		let ret = false;
 		userRol.map((val) => {
 			if (val.id === id) {
@@ -155,11 +145,11 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 			return val;
 		});
 		return ret;
-		*/
 	};
+		*/
 
+	/*
 	const updateCB = (array: any[], item: any, value: boolean) => {
-		/*
 		const index: number = array.findIndex((i: any) => i.name === item);
 		if (index !== -1) {
 			array[index].valid = value;
@@ -167,8 +157,8 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 		} else {
 			return array;
 		}
-		*/
 	};
+		*/
 
 	const getuserRol = async (id: number) => {
 		try {
@@ -199,8 +189,8 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 		}
 	};
 
+	/*
 	const handleCheckbox = async (event: React.ChangeEvent<HTMLInputElement>) => {
-		/*
 		const id = parseInt(event.target.id, 10);
 		setpermiss((prev) => {
 			return updateCB(prev, event.target.name, event.target.checked);
@@ -221,8 +211,8 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 				});
 				break;
 		}
-		*/
 	};
+		*/
 
 	const handleSaveData = () => {
 		Swal.fire({

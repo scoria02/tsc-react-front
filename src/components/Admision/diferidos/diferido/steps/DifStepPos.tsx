@@ -1,4 +1,4 @@
-import { TextField, Stack, Alert, Autocomplete, FormControl, Select, MenuItem, InputLabel } from '@mui/material';
+import { TextField, Autocomplete, FormControl, Select, MenuItem, InputLabel } from '@mui/material';
 import { Ciudad, Estado, Municipio, Parroquia, Sector } from 'context/Admision/CreationFM/Location/interfaces';
 import classNames from 'classnames';
 import { FC, useContext } from 'react';
@@ -16,8 +16,8 @@ const DifStepPos: FC = () => {
 	const classes = useStylesFM();
 
 	const {
-		listPayment,
 		listModelPos,
+		listPayment,
 		listTypePay,
 		/*
 		listRequestSource,
@@ -34,12 +34,13 @@ const DifStepPos: FC = () => {
 		errorPos,
 		disabled,
 		handleChangePos,
+		handleChange,
 		listValidated,
-		handleParamsPos,
+		handleParamsSolic,
 		//location
 		locationPos,
 		setLocationPos,
-		setIdLocationClient,
+		setIdLocationPos,
 	} = useContext(FMDiferidoContext);
 	//
 	console.log(solic);
@@ -54,7 +55,7 @@ const DifStepPos: FC = () => {
 	} = useContext(LocationsContext);
 
 	const handleSelect = (event: any, value: any, name: string) => {
-		if (value) handleParamsPos(name, value);
+		if (value) handleParamsSolic(name, value);
 	};
 
 	console.log('step posss', solic, pos);
@@ -80,7 +81,7 @@ const DifStepPos: FC = () => {
 							label='Numero de Pos'
 							name='number_post'
 							value={solic?.number_post || 1}
-							onChange={handleChangePos}
+							onChange={handleChange}
 						/>
 						<TextField
 							disabled
@@ -114,9 +115,9 @@ const DifStepPos: FC = () => {
 								name='discount'
 								onChange={(event) => {
 									console.log('data', event.target.value);
-									handleParamsPos('discount', event.target.value === 'Si' ? true : false);
+									handleParamsSolic('discount', event.target.value === 'Si' ? true : false);
 								}}
-								value={pos?.discount ? 'Si' : 'No'}
+								value={solic?.discount ? 'Si' : 'No'}
 								label='Entrego Punto'>
 								<MenuItem key={1} value={'Si'}>
 									Si
@@ -126,14 +127,25 @@ const DifStepPos: FC = () => {
 								</MenuItem>
 							</Select>
 						</FormControl>
-						<TextField
-							disabled
-							className={classNames(classes.inputText, classes.inputTextLeft)}
-							variant='outlined'
-							label='Pagadero Destino'
-							name='pagadero'
-							value={solic?.pagadero ? 'Si' : 'No'}
-						/>
+						<FormControl sx={sxStyled.inputLeft}>
+							<InputLabel>Pagadero Destino</InputLabel>
+							<Select
+								disabled={disabled}
+								name='pagadero'
+								onChange={(event) => {
+									console.log('data', event.target.value);
+									handleParamsSolic('pagadero', event.target.value === 'Si' ? true : false);
+								}}
+								value={solic?.pagadero ? 'Si' : 'No'}
+								label='Pagadero Destino'>
+								<MenuItem key={1} value={'Si'}>
+									Si
+								</MenuItem>
+								<MenuItem key={2} value={'No'}>
+									No
+								</MenuItem>
+							</Select>
+						</FormControl>
 					</div>
 					<div className={classes.input}>
 						<Autocomplete
@@ -141,7 +153,7 @@ const DifStepPos: FC = () => {
 							sx={sxStyled.inputLeft}
 							className={classes.inputText}
 							onChange={(event, value) => handleSelect(event, value, 'id_payment_method')}
-							options={listTypePay}
+							options={listPayment}
 							value={solic?.id_payment_method || null}
 							getOptionLabel={(option: any) => (option.name ? option.name : '')}
 							isOptionEqualToValue={(option, value: base | null) => option?.id === value?.id}
@@ -153,8 +165,8 @@ const DifStepPos: FC = () => {
 							disabled={disabled}
 							className={classes.inputText}
 							onChange={(event, value) => handleSelect(event, value, 'id_type_payment')}
-							options={listPayment}
 							value={solic?.id_type_payment || null}
+							options={listTypePay}
 							getOptionLabel={(option: any) => (option.name ? option.name : '')}
 							isOptionEqualToValue={(option, value: base | null) => option?.id === value?.id}
 							renderInput={(params: any) => (
@@ -282,7 +294,7 @@ const DifStepPos: FC = () => {
 							sx={sxStyled.inputLeft}
 							onChange={(event, value: Sector | null) => {
 								setSector(value, setLocationPos);
-								setIdLocationClient(value ? value.id : 0);
+								setIdLocationPos(value ? value.id : 0);
 							}}
 							value={locationPos.sector}
 							options={listLocationPos.sector}
@@ -322,7 +334,7 @@ const DifStepPos: FC = () => {
 							label='Calle'
 							name='calle'
 							onChange={handleChangePos}
-							value={locationPos.calle}
+							value={pos?.calle}
 						/>
 						<TextField
 							disabled={disabled}
@@ -334,7 +346,7 @@ const DifStepPos: FC = () => {
 							label='Casa/Quinta/Apart'
 							name='local'
 							onChange={handleChangePos}
-							value={locationPos.local}
+							value={pos?.local}
 						/>
 					</div>
 				</div>

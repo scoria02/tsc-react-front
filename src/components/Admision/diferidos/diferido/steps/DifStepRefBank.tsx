@@ -1,10 +1,11 @@
 import { PhotoCamera } from '@mui/icons-material';
-import { Alert, Button, IconButton, Stack, TextField } from '@mui/material';
+import { Button, IconButton, TextField } from '@mui/material';
 import RecDifPdf from 'components/utilis/images/RecDifPdf';
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
 import React, { useContext, useLayoutEffect, useState } from 'react';
 import { useStyles } from './styles/styles';
 import { recaudo } from 'utils/recaudos';
+import AlertDiferido from 'components/alert/AlertDiferido';
 
 const DifStepRefBank: React.FC = () => {
 	const classes = useStyles();
@@ -23,7 +24,7 @@ const DifStepRefBank: React.FC = () => {
 					: `${process.env.REACT_APP_API_IMAGES}/${solic?.rc_ref_bank?.path}`
 			);
 		}
-	}, [solic?.rc_ref_bank, pathImages.rc_ref_bank]);
+	}, [solic?.rc_ref_bank, pathImages.rc_ref_bank, solic, imagesForm.rc_ref_bank]);
 
 	const typeImagen = imagesForm.rc_ref_bank ? pathImages.rc_ref_bank.type : null;
 
@@ -31,11 +32,10 @@ const DifStepRefBank: React.FC = () => {
 		<>
 			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					<Stack sx={{ width: '40%', mr: '1rem' }} spacing={2}>
-						<Alert severity={disabled ? 'success' : 'error'}>
-							{listValidated.id_typedif_ref_bank === 2 ? listValidated.valid_ref_bank : 'Error Interno'}
-						</Alert>
-					</Stack>
+					<AlertDiferido
+						disabled={disabled}
+						msg={listValidated.id_typedif_ref_bank === 2 ? listValidated.valid_ref_bank : 'Error Interno'}
+					/>
 					<TextField
 						disabled={disabled}
 						className={classes.btn_stepNro}

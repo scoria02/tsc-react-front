@@ -6,7 +6,7 @@ import {
 	Sector,
 	LocationInt,
 } from 'context/Admision/CreationFM/Location/interfaces';
-import React, { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 export const setEstado = (data: Estado | null, setLocation: Dispatch<SetStateAction<LocationInt>>) => {
 	setLocation({

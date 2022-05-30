@@ -1,9 +1,8 @@
 import { Typography, Button, Step, StepLabel, Stepper } from '@mui/material';
 import DataListAdmisionContext from 'context/DataList/DatalistAdmisionContext';
-import React, { ReactElement, useContext, useLayoutEffect, useState } from 'react';
+import React, { useContext, useLayoutEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
-import LoaderPrimary from '../../loaders/LoaderPrimary';
 //steps
 import StepDataPreValidate from './steps/StepDataPreValidate';
 import StepClient from './steps/StepClient';

@@ -6,16 +6,16 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import FolderIcon from '@mui/icons-material/Folder';
 import HomeIcon from '@mui/icons-material/Home';
-import MailIcon from '@mui/icons-material/Mail';
+//import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+//import NotificationsIcon from '@mui/icons-material/Notifications';
 import PeopleIcon from '@mui/icons-material/PeopleAlt';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import {
 	AppBar,
 	Avatar,
-	Badge,
+	//Badge,
 	Divider,
 	Drawer,
 	IconButton,
@@ -47,7 +47,7 @@ import {
 	userAdmin,
 	urlUpdateClient,
 } from 'routers/url';
-import { refreshLogin, startLogout } from 'store/actions/auth';
+import { startLogout } from 'store/actions/auth';
 import { FinishLoading } from 'store/actions/ui';
 import { RootState } from 'store/store';
 import './index.scss';

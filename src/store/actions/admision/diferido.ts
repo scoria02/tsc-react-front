@@ -45,9 +45,12 @@ const dataFormatClient = (client: any, idLocationClient: number) => ({
 	last_name: client.last_name.trim(),
 	id_ident_type: client.id_ident_type.id,
 	ident_num: client.ident_num,
-	phone1: '+58' + client.phone1,
-	phone2: '+58' + client.phone2,
+	phones: {
+		phone1: '+58' + client.phone1,
+		phone2: '+58' + client.phone2,
+	},
 	location: {
+		id: client.id_location,
 		id_direccion: idLocationClient ? idLocationClient : null,
 		calle: client.calle,
 		local: client.local,
@@ -74,31 +77,39 @@ export const dataFormatCommerce = (commerce: any, idLocationCommerce: number | n
 	name: commerce.name.trim(),
 	id_activity: commerce?.id_activity.id,
 	location: {
+		id: commerce.id_location,
 		id_direccion: idLocationCommerce,
 		calle: commerce.calle,
 		local: commerce.local,
 	},
 	days: commerce.days,
+	rc_constitutive_act: commerce.rc_constitutive_act,
+	rc_rif: commerce.rc_rif,
+	rc_special_contributor: commerce.rc_special_contributor,
 });
 
-export const dataFormatPos = (pos: PosDif | null, locationPos: any, idLocationPos: number | null) => ({
-	//id: pos?.id || null,
+export const dataFormatPos = (pos: PosDif | null, idLocationPos: number | null) => ({
 	model_post: pos?.id_product.id || null,
 	location: {
+		id: pos?.id_location,
 		id_direccion: idLocationPos ? idLocationPos : null,
-		calle: locationPos.calle,
-		local: locationPos.local,
+		calle: pos?.calle,
+		local: pos?.local,
 	},
 });
 
 export const dataFormatSolic = (solic: SolicDif | null) => ({
-	id: solic?.id || null,
+	id: solic?.id,
 	bank_account_num: solic?.bank_account_num || null,
+	number_post: solic?.number_post,
 	nro_comp_dep: solic?.nro_comp_dep,
 	discount: solic?.discount,
 	pagadero: solic?.pagadero,
 	id_payment_method: solic?.id_payment_method.id || null,
 	id_type_payment: solic?.id_type_payment.id || null,
+	rc_comp_dep: solic?.rc_comp_dep,
+	rc_planilla: solic?.rc_planilla,
+	rc_ref_bank: solic?.rc_ref_bank,
 });
 
 //Diferido
@@ -109,7 +120,6 @@ export const updateStatusFMDiferido = (
 	phones: any,
 	commerce: any,
 	pos: PosDif | null,
-	locationPos: any,
 	idLocationClient: number,
 	idLocationCommerce: number,
 	idLocationPos: number,
@@ -123,7 +133,7 @@ export const updateStatusFMDiferido = (
 		const client_phones = { ...client, ...phones };
 		const clientData: any = client ? dataFormatClient(client_phones, idLocationClient) : null;
 		const commerceData: any = commerce ? dataFormatCommerce(commerce, idLocationCommerce) : null;
-		const posData: any = pos ? dataFormatPos(pos, locationPos, idLocationPos) : null;
+		const posData: any = pos ? dataFormatPos(pos, idLocationPos) : null;
 		const solicData: any = solic ? dataFormatSolic(solic) : null;
 		//console.log('Client:', clientData);
 		//console.log('Commerce:', commerceData);

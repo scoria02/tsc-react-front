@@ -3,8 +3,6 @@ import { errorFile } from 'utils/validFormatFile';
 import { ClientDif, fmErrorDif_ClientINT } from './interfaces/client_interface';
 import { ContextFMDif, PropsAd } from './interfaces/interfaces';
 import { fmErrorDifClient, fmErrorDifCommerce, initialImagesFm, initialImagesPath } from './state';
-import { fmErrorClient } from 'context/Admision/CreationFM/initialStates/stateClient';
-import { fmErrorCommerce } from '../CreationFM/initialStates/stateCommerce';
 import * as valid from 'context/UpdateData/Commerce/validCommerce';
 import { Activity } from 'context/DataList/interface';
 //redux
@@ -13,7 +11,6 @@ import { RootState } from 'store/store';
 //interface
 import { PosDif, SolicDif } from './interfaces/pos_interface';
 import { fmErrorDif_CommerceINT } from './interfaces/commerce_intercae';
-import { fmError_ClientINT } from 'interfaces/fm';
 import { ImagesInt, PathImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
 
 const baseSteps = [
@@ -35,6 +32,7 @@ const FMDiferidoContext = createContext<ContextFMDif>({
 	handleChangeClient: () => {},
 	handleChangeCommerce: () => {},
 	handleChangePos: () => {},
+	handleChangeLocationPos: () => {},
 	imagePlanilla: [],
 	imagesActa: [],
 	imagesForm: initialImagesFm,
@@ -76,6 +74,7 @@ const FMDiferidoContext = createContext<ContextFMDif>({
 	handleChangeRefClient: () => {},
 	//
 	handleParamsPos: () => {},
+	handleParamsSolic: () => {},
 	//
 	//edit
 	setLocationClient: () => {},
@@ -167,9 +166,9 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 					id_direccion: id_direccion.id,
 					calle: id_location.calle,
 					local: id_location.local,
+					id_location: id_location.id,
 				});
 				setIdLocationClient(id_direccion.id);
-				console.log(id_client);
 				setPhones({
 					phone1: id_client.phones[0].phone.slice(3, fm.id_client.phones[0].phone.length),
 					phone2:
@@ -209,6 +208,7 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 					id_direccion: id_direccion.id,
 					calle: id_location.calle,
 					local: id_location.local,
+					id_location: id_location.id,
 				});
 				setIdLocationCommerce(id_direccion.id);
 				setLocationCommerce(
@@ -237,16 +237,23 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 			}
 			//create pos data
 			const { code, nro_comp_dep, discount, pos, ...fmData } = fm;
+			const { id_direccion, ...locationData } = pos[0].id_location;
 			console.log(fm);
-			setPos(fmData);
+			setPos({
+				...fmData,
+				id_location: pos[0].id_location.id,
+				id_direccion: id_direccion.id,
+				calle: locationData.calle,
+				local: locationData.local,
+			});
 			setSolic(fm);
 			//setCode
 			setIdLocationPos(pos[0].id_location.id_direccion.id);
-			const { id_direccion, ...locationData } = pos[0].id_location;
 			setLocationPos(
 				!id_direccion
 					? null
 					: {
+							id: pos[0].id_location.id,
 							estado: {
 								estado: id_direccion.estado,
 							},
@@ -264,9 +271,6 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 								id: id_direccion.id,
 								codigoPostal: id_direccion.codigoPostal,
 							},
-							id_direccion: id_direccion.id,
-							calle: locationData.calle,
-							local: locationData.local,
 					  }
 			);
 			setCodeFM(fm.code);
@@ -297,7 +301,9 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 			//console.log('validar', validStep());
 			setReady(validStep());
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
+		solic,
 		activeStep,
 		client,
 		errorClient,
@@ -317,6 +323,16 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 		if (event.target.name && pos) {
 			setPos({
 				...pos,
+				[event.target.name]: event.target.value,
+			});
+		}
+	};
+
+	const handleChangeLocationPos = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setErrorPos(valid.errorObject(pos, errorPos, event.target.name, event.target.value));
+		if (event.target.name && pos) {
+			setLocationPos({
+				...locationPos,
 				[event.target.name]: event.target.value,
 			});
 		}
@@ -367,6 +383,16 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 		if (pos) {
 			setPos({
 				...pos,
+				[name]: value,
+			});
+		}
+	};
+
+	const handleParamsSolic = (name: string, value: any): void => {
+		console.log(name, value);
+		if (solic) {
+			setSolic({
+				...solic,
 				[name]: value,
 			});
 		}
@@ -594,6 +620,8 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 				handleParamsPos,
 				errorPos,
 				//
+				handleParamsSolic,
+				//
 				phones,
 				handleChangeClientPhone,
 				handleChangeRefClient,
@@ -604,6 +632,7 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 				setLocationClient,
 				setLocationCommerce,
 				setLocationPos,
+				handleChangeLocationPos,
 				//
 				setIdLocationClient,
 				setIdLocationCommerce,

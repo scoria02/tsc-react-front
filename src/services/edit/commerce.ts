@@ -46,12 +46,14 @@ export async function getAllCommerces() {
 		if (res.data.info) return res.data.info;
 	} catch (error: any) {
 		//console.log(err);
-		const data = error.response?.data;
+		//const data = error.response?.data;
+		/*
 		const resError = {
 			type: 'Error',
 			message: data?.message || 'Error: Api',
 			code: data?.code || error?.response?.status || '400',
 		};
+		*/
 		//console.log(resError);
 		Swal.fire('Error', error.response.data.message, 'error');
 		return [];

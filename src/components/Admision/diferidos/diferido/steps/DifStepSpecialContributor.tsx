@@ -1,11 +1,12 @@
 import { PhotoCamera } from '@mui/icons-material';
-import { Button, IconButton, Stack, Alert } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import RecDifPdf from 'components/utilis/images/RecDifPdf';
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
 import React, { useContext, useState } from 'react';
 import { recaudo } from 'utils/recaudos';
 import './styles/pasos.scss';
 import { useStyles } from './styles/styles';
+import AlertDiferido from 'components/alert/AlertDiferido';
 
 const DifStepSpecialContributor: React.FC = () => {
 	const classes = useStyles();
@@ -24,13 +25,14 @@ const DifStepSpecialContributor: React.FC = () => {
 		<>
 			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					<Stack sx={{ width: '50%' }} spacing={2}>
-						<Alert severity={disabled ? 'success' : 'error'}>
-							{listValidated.id_typedif_special_contributor === 2
-								? listValidated.valid_special_contributor
-								: 'Error Interno'}
-						</Alert>
-					</Stack>
+					<AlertDiferido
+						disabled={disabled}
+						msg={
+							listValidated.id_typedif_special_contributor === 2
+								? listValidated.valid_speid_typedif_special_contributor
+								: 'Error Interno'
+						}
+					/>
 				</div>
 				<div className={classes.btn_stepM}>
 					<Button

@@ -1,10 +1,11 @@
 import { PhotoCamera } from '@mui/icons-material';
-import { Alert, Button, IconButton, Stack, TextField } from '@mui/material';
+import { Button, IconButton, TextField } from '@mui/material';
 import RecDifPdf from 'components/utilis/images/RecDifPdf';
 import FMDiferidoContext from 'context/Admision/Diferido/FmDiferidoContext';
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useContext, useLayoutEffect, useState } from 'react';
 import { useStyles } from './styles/styles';
 import { recaudo } from 'utils/recaudos';
+import AlertDiferido from 'components/alert/AlertDiferido';
 
 const DifStepCompDep: React.FC = () => {
 	const classes = useStyles();
@@ -23,6 +24,7 @@ const DifStepCompDep: React.FC = () => {
 					: `${process.env.REACT_APP_API_IMAGES}/${solic?.rc_comp_dep?.path}`
 			);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [solic?.rc_comp_dep, pathImages.rc_comp_dep]);
 
 	const typeImagen = imagesForm.rc_comp_dep ? pathImages.rc_comp_dep.type : null;
@@ -31,11 +33,10 @@ const DifStepCompDep: React.FC = () => {
 		<>
 			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					<Stack sx={{ width: '40%', mr: '1rem' }} spacing={2}>
-						<Alert severity={disabled ? 'success' : 'error'}>
-							{listValidated.id_typedif_comp_num === 2 ? listValidated.valid_comp_dep : 'Error Interno'}
-						</Alert>
-					</Stack>
+					<AlertDiferido
+						disabled={disabled}
+						msg={listValidated.id_typedif_comp_num === 2 ? listValidated.valid_comp_dep : 'Error Interno'}
+					/>
 					<TextField
 						disabled={disabled}
 						className={classes.btn_stepNro}

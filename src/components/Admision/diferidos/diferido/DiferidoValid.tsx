@@ -114,7 +114,7 @@ const DiferidoValid: React.FC = () => {
 			customClass: { container: 'swal2-validated' },
 		}).then((result) => {
 			if (result.isConfirmed) {
-				//handleLoading();
+				handleLoading();
 				let phone = {
 					phone1: phones.phone1,
 					phone2: phones.phone2,
@@ -127,10 +127,7 @@ const DiferidoValid: React.FC = () => {
 						client,
 						phone,
 						commerce,
-						//
 						pos,
-						locationPos,
-						//
 						idLocationClient,
 						idLocationCommerce,
 						idLocationPos,
@@ -258,6 +255,7 @@ const DiferidoValid: React.FC = () => {
 
 	useLayoutEffect(() => {
 		setStep(getContentSteps());
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleClickButton = () => {

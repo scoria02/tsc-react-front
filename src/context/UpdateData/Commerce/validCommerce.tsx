@@ -1,14 +1,7 @@
-import { Aci, Activity, Distributor, TypeWallet } from 'context/DataList/interface';
+import { Aci, Distributor, TypeWallet } from 'context/DataList/interface';
 import { ImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
 import { LocationInt } from 'context/Admision/CreationFM/Location/interfaces';
-import {
-	fmClient,
-	fmCommerce,
-	fmError_ClientINT,
-	fmError_CommerceINT,
-	fmError_Interface,
-	fmPos,
-} from 'interfaces/fm';
+//import { fmClient, fmCommerce, fmError_ClientINT, fmError_CommerceINT, fmPos } from 'interfaces/fm';
 
 export const validEmail = (value: string): boolean => {
 	let validatedEmail = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i.test(value);
@@ -329,6 +322,7 @@ export const validMashes = (activeStep: number, mashClient: boolean, mashCommerc
 	}
 };
 
+/*
 const imagesCommerceForTS = (
 	typeS: number,
 	imagesForm: ImagesInt,
@@ -357,7 +351,9 @@ const imagesCommerceForTS = (
 			return false;
 	}
 };
+*/
 
+/*
 const imagesForPos = (imagesForm: ImagesInt, pos: fmPos) => {
 	if (!imagesForm.rc_ref_bank) {
 		return true;
@@ -422,6 +418,7 @@ const checkErrorExtraPosInput = (errorsClient: fmError_ClientINT, errorsCommerce
 		return true;
 	return false;
 };
+*/
 
 export const validReadyStep = (
 	activeStep: number,
@@ -540,6 +537,7 @@ export const errorObject = (data: any, error: any, name: string, value: any): an
 			break;
 		case 'calle':
 		case 'local':
+			temp[name] = value === '';
 			break;
 		default:
 			break;
