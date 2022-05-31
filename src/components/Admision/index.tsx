@@ -11,8 +11,6 @@ import { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 //import { getDataFM } from 'store/actions/admisionFm';
 import { OpenModal, OpenModalListSolic } from 'store/actions/ui';
-import { RootState } from 'store/store';
-//import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
 import { handleLoadingSearch } from 'utils/handleSwal';
 import Barra from '../diagramas/Barra';
@@ -28,7 +26,8 @@ interface AdmisionInt {
 }
 
 const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
-	const { permiss }: any = useSelector((state: RootState) => state.auth.user);
+	const { user } = useSelector((state: any) => state.auth);
+	const { permiss }: any = user;
 	const dispatch = useDispatch();
 	const classes = useStyles();
 
@@ -39,7 +38,6 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [idFM, setIdFm] = useState(0);
 
-	const { user } = useSelector((state: any) => state.auth);
 	const { socket } = useContext(SocketContext);
 
 	const [valuesChart, setvaluesChart] = useState<number[]>([]);
@@ -79,7 +77,7 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 		if (!selectModal && !fm) {
 			handleLoadingSearch();
 			setSelectModal(true);
-			socket.emit('client:atrabajar', user);
+			socket.emit('client:atrabajar', user.data);
 			//
 			socket.on('server:atrabajar', (data: any) => {
 				if (data.code === 400) {
@@ -93,7 +91,13 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 					});
 					return;
 				}
-
+				//console.log(typeof data === 'number');
+				//if (typeof data === 'number') {
+				if (data.id) {
+					console.log('idFM', data);
+					setIdFm(data.id);
+					return;
+				}
 				if (data?.status === true) {
 					Swal.fire({
 						icon: 'warning',
@@ -104,10 +108,6 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 					});
 					setSelectModal(false);
 				} else {
-					console.log('data', data);
-					if (data.id) {
-						setIdFm(data.id);
-					}
 					if (data.length === 0) {
 						setSelectModal(false);
 						Swal.fire({
@@ -128,9 +128,11 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 			dispatch(OpenModal());
 		}
 		if (!fm) {
+			setSelectModal(false);
+			/*
 			setTimeout(() => {
-				setSelectModal(false);
 			}, 2500);
+			*/
 		}
 	}, [fm, modalOpen]);
 

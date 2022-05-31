@@ -330,7 +330,7 @@ const DiferidoValid: React.FC = () => {
 											}}
 											size='large'
 											variant='contained'
-											color='primary'
+											color='success'
 											onClick={handleSend}
 											className={classes.buttonNext}>
 											<span className={classes.textButton}>Enviar</span>

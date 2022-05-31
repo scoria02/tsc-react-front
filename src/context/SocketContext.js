@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { createContext } from 'react';
+import { createContext, useEffect } from 'react';
 import { useSocket } from '../hooks/useSocket';
 
 export const SocketContext = createContext();

@@ -73,8 +73,10 @@ export const handleInfoText = (title: string, text: string) => {
 };
 
 export const handleErrorProvider = (error: any) => {
-	const text = error.response?.data?.message.text || 'Error Access';
-	const provider = error.response?.data?.message.provider || 'Error Acess';
+	const item = error.response?.data?.message.text;
+	const item2 = error.response?.data?.message.provider;
+	const text = typeof item === 'string' ? item : 'Error Access';
+	const provider = typeof item2 === 'string' ? item2 : 'Error Acess';
 	const html = `<p><b>${text}</b> </br><small>${provider}</small></p>`;
 	Swal.fire({
 		icon: 'error',

@@ -30,13 +30,13 @@ const theme = createTheme(
 
 function App() {
 	return (
-		<SocketProvider>
-			<Provider store={store}>
+		<Provider store={store}>
+			<SocketProvider>
 				<ThemeProvider theme={theme}>
 					<AppRouter />
 				</ThemeProvider>
-			</Provider>
-		</SocketProvider>
+			</SocketProvider>
+		</Provider>
 	);
 }
 

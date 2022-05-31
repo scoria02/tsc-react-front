@@ -294,14 +294,14 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 	//nuevooo
 	useEffect(() => {
 		const validStep = () => {
-			//console.log('step actual', stepsFM[activeStep]);
+			console.log('step actual', stepsFM[activeStep]);
 			switch (stepsFM[activeStep]) {
 				case 'Cliente':
-					return !valid.validReadyStepBO(client, locationClient, errorClient, errorClientValid);
+					return !valid.validReadyStepBO(client, errorClient, errorClientValid);
 				case 'Comercio':
-					return !valid.validReadyStepBO(commerce, locationCommerce, errorCommerce, errorCommerceValid);
+					return !valid.validReadyStepBO(commerce, errorCommerce, errorCommerceValid);
 				case 'Pos':
-					return !valid.validReadyStepBO(pos, locationPos, errorPos, false);
+					return !valid.validReadyStepBO(pos, errorPos, false);
 				case 'Referencia Bancaria':
 					return solic?.bank_account_num === '' || errorSolic.bank_account_num;
 				case 'Comprobante de Pago':
@@ -316,8 +316,8 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
-		solic,
 		activeStep,
+		solic,
 		client,
 		phones,
 		commerce,

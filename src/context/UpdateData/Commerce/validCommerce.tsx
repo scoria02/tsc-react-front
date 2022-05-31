@@ -1,4 +1,3 @@
-import { Aci, Distributor, TypeWallet } from 'context/DataList/interface';
 import { ImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
 import { LocationInt } from 'context/Admision/CreationFM/Location/interfaces';
 //import { fmClient, fmCommerce, fmError_ClientINT, fmError_CommerceINT, fmPos } from 'interfaces/fm';
@@ -130,8 +129,11 @@ export const sizeStepError = (active: number): number => {
 export const inputNotNull = (data: any): boolean => {
 	for (const item of Object.entries(data)) {
 		if (typeof item[1] === 'string' && item[1].trim() === '') {
-			console.log('Esta vacio error:', item[0]);
-			return true;
+			if (item[0] === 'ci_referred') {
+			} else {
+				console.log('Esta vacio error:', item[0]);
+				return true;
+			}
 		} else if (!item[1]) {
 			if (item[0].slice(0, 3) !== 'rc_') {
 				console.log('Esta vacio error:', item[0]);
@@ -159,53 +161,6 @@ export const inputFileNotNull = (last: number, form: ImagesInt): boolean => {
 		}
 		index++;
 		if (!item[1]) {
-			return true;
-		}
-	}
-	return false;
-};
-
-export const inputNotNullPos = (
-	last: number,
-	form: any,
-	aci: Aci | Distributor | null,
-	telemarket: any,
-	typeWallet: TypeWallet | null
-): boolean => {
-	let index: number = 0;
-	for (const item of Object.entries(form)) {
-		if (index === last) {
-			return false;
-		}
-		index++;
-		if (typeof item[1] === 'string') {
-			if (item[0] === 'reqSource_docnum') {
-				if (form['request_origin']?.id === 1 || form['request_origin']?.id === 6) {
-					if (item[1] === '') return true;
-				}
-				if (form['request_origin']?.id === 3) {
-					if (!telemarket) return true;
-				}
-				if (form['request_origin']?.id === 2 || form['request_origin']?.id === 8) {
-					if (!aci) return true;
-				}
-				if (form['request_origin']?.id === 5) {
-					if (!typeWallet) return true;
-				}
-			} else if (item[1].trim() === '') {
-				if (item[0] === 'nro_comp_dep') {
-					if (!form['pagadero'] && form['payment_method'].id !== 2) {
-						return true;
-					}
-				} else {
-					return true;
-				}
-			}
-		}
-		if (typeof item[1] === 'number' && item[1] === 0) {
-			return true;
-		}
-		if (typeof item[1] === 'object' && !item[1]) {
 			return true;
 		}
 	}
@@ -444,7 +399,6 @@ export const validReadyStep = (
 
 export const validReadyStepBO = (
 	commerce: any,
-	location: LocationInt,
 	error: any,
 	errorValid: boolean
 	//activity: Activity | null,
@@ -452,8 +406,8 @@ export const validReadyStepBO = (
 	//imagesActa: FileList | [],
 	//errorNumBank: boolean,
 ): boolean => {
-	console.log('input vacio: ', inputNotNull(commerce));
-	console.log('error en input:', checkErrorInputs(error));
+	console.log('inputx vacio: ', inputNotNull(commerce));
+	console.log('errorx en input:', checkErrorInputs(error));
 	if (errorValid) return false; //false no activar button
 	if (!inputNotNull(commerce) && !checkErrorInputs(error)) {
 		return true;

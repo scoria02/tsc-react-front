@@ -17,7 +17,7 @@ const DifStepActaConst: React.FC = () => {
 
 	return (
 		<>
-			<form className={classes.containerStep} noValidate autoComplete='off'>
+			<div className={classes.containerStep}>
 				<div className={classes.btn_stepM}>
 					<AlertDiferido
 						disabled={disabled}
@@ -56,7 +56,7 @@ const DifStepActaConst: React.FC = () => {
 					deleteItemImagenes={deleteItemActa}
 					disabled={disabled}
 				/>
-			</form>
+			</div>
 		</>
 	);
 };

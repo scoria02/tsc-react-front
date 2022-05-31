@@ -58,13 +58,14 @@ const Diferido: React.FC<Prop> = ({ fm, setFm, id, setId }) => {
 	useEffect(() => {
 		if (updatedStatus) {
 			console.log('Clean fm from diferdio');
+			socket.emit('cliente:disconnet');
 			Swal.fire({
 				title: 'Formulario Verificado',
 				icon: 'success',
 				customClass: { container: 'swal2-validated' },
 			});
-			socket.emit('cliente:disconnet');
 			setFm(null);
+			handleClose();
 			setModelOpen(false);
 			dispatch(cleanDataFmDiferido());
 		}

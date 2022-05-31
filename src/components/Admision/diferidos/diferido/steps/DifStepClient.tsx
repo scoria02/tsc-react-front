@@ -146,7 +146,7 @@ const DifStepClient: FC = () => {
 									handleIdentNum(event, handleChangeClient)
 								}
 								inputProps={{
-									maxLength: client.id_ident_type === 'P' ? 20 : 9,
+									maxLength: client.id_ident_type === 'P' ? 20 : 8,
 								}}
 								InputProps={{
 									startAdornment: (
