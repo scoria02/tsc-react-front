@@ -9,9 +9,10 @@ import TextField from '@mui/material/TextField';
 import RecPdf from 'components/utilis/images/RecPdf';
 import { FC, useEffect, useState } from 'react';
 //Redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateStatusFMAdministration } from 'store/actions/administration';
 import Swal from 'sweetalert2';
+import { handleNotAccess } from 'utils/handleSwal';
 import { recaudo } from 'utils/recaudos';
 import Rec from '../utilis/images/Rec';
 //Url
@@ -36,6 +37,8 @@ export const Form: FC<any> = ({
 }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
+	const { user } = useSelector((state: any) => state.auth);
+	const { permiss }: any = user;
 
 	const [load, setLoad] = useState<boolean>(false);
 	const [cuotasTexto, setCuotasTexto] = useState('');
@@ -120,6 +123,10 @@ export const Form: FC<any> = ({
 	};
 
 	const handleVerificated = () => {
+		if (!permiss['Validar Pago']) {
+			handleNotAccess();
+			return;
+		}
 		Swal.fire({
 			title: 'Confirmar verificación',
 			icon: 'warning',
@@ -330,20 +337,11 @@ export const Form: FC<any> = ({
 							{uploadImg && (
 								<div className={classes.containerImg}>
 									{uploadImg && uploadImg.name.split('.')[uploadImg.name.split('.').length - 1] === 'pdf' ? (
-										<div
-										//	className={classes.btn_stepM}
-										>
+										<div>
 											<a target='_blank' rel='noreferrer' href={path}>
-												<Button
-													sx={sxStyled.buttonPdf}
-													variant='contained'
-													component='label'
-													//disabled={ready}
-												>
+												<Button sx={sxStyled.buttonPdf} variant='contained' component='label'>
 													<IconButton aria-label='upload picture' component='span'>
-														<PictureAsPdfIcon
-														//className={classes.iconUpload}
-														/>
+														<PictureAsPdfIcon />
 													</IconButton>
 												</Button>
 											</a>

@@ -61,6 +61,17 @@ export const handleSucessTime = (text: string) => {
 	});
 };
 
+export const handleNotAccess = () => {
+	Swal.fire({
+		icon: 'info',
+		title: 'No tienes acceso',
+		text: 'Necesitas permisos',
+		customClass: { container: 'swal2-validated' },
+		showConfirmButton: true,
+		//timer: 2500,
+	});
+};
+
 export const handleInfoText = (title: string, text: string) => {
 	Swal.fire({
 		icon: 'info',

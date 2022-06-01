@@ -44,7 +44,7 @@ import {
 	urlCobr,
 	urlFM,
 	urlLogin,
-	userAdmin,
+	urlSeguridad,
 	urlUpdateClient,
 } from 'routers/url';
 import { startLogout } from 'store/actions/auth';
@@ -87,7 +87,7 @@ const MainMenu: FC = () => {
 		setAdministracion(menu['Administracion'] ? true : false);
 		setCobranza(menu['Cobranza'] ? true : false);
 		setUpdateClient(menu['EditarComercio'] ? true : false);
-		setSeguridad(menu['GestionUsuarios'] ? true : false);
+		setSeguridad(menu['Seguridad'] ? true : false);
 		//console.log(menu);
 
 		if (history) {
@@ -98,7 +98,7 @@ const MainMenu: FC = () => {
 				case urlAdmision:
 					setSection('Admisión');
 					break;
-				case userAdmin:
+				case urlSeguridad:
 					setSection('Gestión de Usuarios');
 					break;
 				case urlFM:
@@ -374,11 +374,11 @@ const MainMenu: FC = () => {
 						<ListItem
 							button
 							key={'Gestion de Usuarios'}
-							onClick={(event) => handleListItemClick(event, userAdmin)}>
+							onClick={(event) => handleListItemClick(event, urlSeguridad)}>
 							<ListItemIcon classes={{ root: classes.icon }}>
 								<PeopleIcon />
 							</ListItemIcon>
-							<ListItemText primary={'Gestion de Usuarios'} />
+							<ListItemText primary={'Gestion de Seguridad'} />
 						</ListItem>
 					)}
 				</List>

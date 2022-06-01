@@ -1,63 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import CloseIcon from '@mui/icons-material/Close';
 import { Autocomplete, Avatar, Button, Grid, Paper, TextField } from '@mui/material';
-import {
-	DataGrid,
-	GridColDef,
-	GridToolbarContainer,
-	GridToolbarFilterButton,
-	GridValueGetterParams,
-} from '@mui/x-data-grid';
+import { DataGrid, GridToolbarContainer, GridToolbarFilterButton } from '@mui/x-data-grid';
 import classnames from 'classnames';
 import axios from 'config';
 import { SocketContext } from 'context/SocketContext';
 import { useLayoutEffect, useState, useContext, useEffect } from 'react';
 import Swal from 'sweetalert2';
-import './scss/index.scss';
-import { sxStyled, useStyles } from './styles';
-import { handleError } from 'utils/handleSwal';
+import { sxStyled, useStyles } from '../../../pages/Seguridad/styles';
+import { handleError, handleNotAccess } from 'utils/handleSwal';
+import { columnsGestionUsuario } from './columnsGrid';
+import { useSelector } from 'react-redux';
+//import './scss/index.scss';
 
-interface GestionUsuariosProps {}
-
-const columns: GridColDef[] = [
-	/*
-	{
-		field: 'id',
-		headerName: 'ID',
-		width: 60,
-		disableColumnMenu: true,
-		sortable: false,
-	},
-	*/
-	{
-		field: 'email',
-		headerName: 'Correo',
-		width: 180,
-		sortable: false,
-		disableColumnMenu: true,
-	},
-	{
-		field: 'fullName',
-		headerName: 'Nombre Completo',
-		// description: 'This column has a value getter and is not sortable.',
-		sortable: false,
-		width: 160,
-		valueGetter: (params: GridValueGetterParams) => {
-			return `${params.row.name || ''} ${params.row.last_name || ''}`;
-		},
-	},
-	{
-		field: 'block',
-		headerName: 'Bloqueado',
-		sortable: false,
-		disableColumnMenu: true,
-		valueGetter: (params: GridValueGetterParams) => {
-			return params.row.block ? 'Si' : 'No';
-		},
-	},
-];
-
-const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
+const GestionUsuarios: React.FC = () => {
+	const { user } = useSelector((state: any) => state.auth);
+	const { permiss }: any = user;
 	const classes = useStyles();
 
 	const { socket } = useContext(SocketContext);
@@ -117,6 +75,10 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	};
 
 	const handleRow = (event: any) => {
+		if (!permiss['Ver Usuarios']) {
+			handleNotAccess();
+			return;
+		}
 		getuserRol(event.row.id);
 		setUserView(true);
 	};
@@ -246,7 +208,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	};
 	return (
 		<>
-			<Grid container spacing={4} className={classes.layout}>
+			<Grid container spacing={4}>
 				<Grid item xs={5}>
 					<div style={{ height: '80vh', width: '100%' }}>
 						{
@@ -256,7 +218,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 									Toolbar: customToolbar,
 								}}
 								rows={allUser}
-								columns={columns}
+								columns={columnsGestionUsuario}
 								rowsPerPageOptions={[25, 100]}
 								onCellClick={handleRow}
 							/>
@@ -333,31 +295,6 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 											</div>
 											<div className={classnames(classes.row, classes.column)}>
 												<div className={classes.cardTitles}>Permisos</div>
-												{/*
-												<FormGroup>
-													<Grid container>
-														{roles.map((rol, i) => {
-															return (
-																<Grid item xs={3} key={`${i}`}>
-																	<FormControlLabel
-																		label={rol.name}
-																		control={
-																			<Checkbox
-																				id={`${rol.id}`}
-																				checked={isInUserRol(rol.id)}
-																				onChange={handleCheckbox}
-																				name={rol.name}
-																				color={'primary'}
-																				inputProps={{ 'aria-label': 'primary checkbox' }}
-																			/>
-																		}
-																	/>
-																</Grid>
-															);
-														})}
-													</Grid>
-												</FormGroup>
-												*/}
 											</div>
 										</div>
 										<div className=''></div>

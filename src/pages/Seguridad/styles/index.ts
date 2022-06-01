@@ -2,9 +2,51 @@ import { makeStyles } from '@mui/styles';
 import { Theme } from '@mui/material';
 
 export const useStyles = makeStyles((styles: Theme) => ({
-	layout: {
-		padding: '0 1rem',
+	tab: {
+		textTransform: 'none',
+		fontSize: '.5rem',
 	},
+	red: {
+		backgroundColor: styles.palette.error.main,
+		color: styles.palette.secondary.contrastText,
+		'&:hover': {
+			backgroundColor: `${styles.palette.error.light} !important`,
+		},
+	},
+	yellow: {
+		backgroundColor: styles.palette.warning.main,
+		color: styles.palette.secondary.contrastText,
+		'&:hover': {
+			backgroundColor: `${styles.palette.warning.light} !important`,
+		},
+	},
+	green: {
+		backgroundColor: styles.palette.success.main,
+		color: styles.palette.secondary.contrastText,
+		'&:hover': {
+			backgroundColor: `${styles.palette.success.light} !important`,
+		},
+	},
+	selected: {
+		backgroundColor: `${styles.palette.info.main} !important`,
+		color: styles.palette.info.contrastText,
+		'&:hover': {
+			backgroundColor: `${styles.palette.info.light} !important`,
+		},
+	},
+	wrapper: {
+		marginTop: '-1rem',
+		flexGrow: 1,
+	},
+	tabPanel: {
+		padding: '16px 16px 0',
+	},
+	tabLabel: {
+		fontWeight: 'bold',
+		textTransform: 'none',
+		fontSize: '0.85rem',
+	},
+	containerFlex: {},
 	grid: {
 		display: 'grid',
 		gridTemplateColumns: '1fr 4fr',
@@ -84,6 +126,10 @@ export const useStyles = makeStyles((styles: Theme) => ({
 }));
 
 export const sxStyled = {
+	tabName: {
+		textTransform: 'none',
+		fontSize: '1rem',
+	},
 	closeBtn: {
 		width: 40,
 		height: 40,
