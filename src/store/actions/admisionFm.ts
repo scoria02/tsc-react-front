@@ -4,6 +4,7 @@ import { ActionType } from '../types/types';
 import { cleanRec } from './accept';
 import Swal from 'sweetalert2';
 import { CloseModal } from './ui';
+import { handleErrorProvider } from 'utils/handleSwal';
 
 export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
@@ -93,12 +94,7 @@ export const updateStatusFM = (id_fm: number, status: any, validado: ValidatedFa
 			console.log(error.response);
 			//dispatch(CloseModal());
 			dispatch(requestError());
-			Swal.fire({
-				icon: 'error',
-				title: 'Error',
-				customClass: { container: 'swal2-validated' },
-				text: error.response?.data?.message,
-			});
+			handleErrorProvider(error);
 		}
 	};
 	function requestSuccess(status: number) {

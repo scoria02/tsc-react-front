@@ -15,6 +15,20 @@ export const handleLoading = () => {
 	});
 };
 
+export const handleLoadingSave = () => {
+	Swal.fire({
+		icon: 'info',
+		title: 'Guardando...',
+		showConfirmButton: false,
+		customClass: { container: 'swal2-validated' },
+		allowOutsideClick: false,
+		allowEscapeKey: false,
+		didOpen: () => {
+			Swal.showLoading();
+		},
+	});
+};
+
 export const handleLoadingSearch = () => {
 	Swal.fire({
 		title: 'Cargando...',

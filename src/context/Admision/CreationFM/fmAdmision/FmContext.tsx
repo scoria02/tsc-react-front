@@ -214,16 +214,21 @@ export const FMContextProvider = ({ children }: Props) => {
 		});
 	};
 
-	const handleParamsPos = (name: string, value: base | string | null): void => {
+	const handleParamsPos = (name: string, value: base | string | null | number): void => {
 		//console.log(value);
+		//console.log(name, value);
 		setPos({
 			...pos,
 			[name]: value,
 		});
 	};
 	const handleCheckedPos = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		let sumar = 0;
+		if (pos?.model_post?.price && event.target.checked && pos.initial + 50 < pos.model_post.price) sumar = 50;
+		else if (pos?.model_post?.price && pos.initial - 50 >= 50) sumar = -50;
 		setPos({
 			...pos,
+			initial: Number(pos.initial) + sumar,
 			[event.target.name]: event.target.checked,
 		});
 	};

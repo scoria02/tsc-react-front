@@ -21,6 +21,7 @@ import { validationNumBank } from 'store/actions/fm';
 import { RootState } from 'store/store';
 import { recaudo } from 'utils/recaudos';
 import { sxStyled, useStylesFM } from '../styles';
+import Swal from 'sweetalert2';
 
 //Pedido
 const StepPos: FC = () => {
@@ -33,6 +34,17 @@ const StepPos: FC = () => {
 	// const cuotasText = ['5 cuotas de 50$', '4 cuotas de 50$', '3 cuotas de 50$'];
 
 	const fm: any = useSelector((state: RootState) => state.fm);
+
+	const handleInitalError = () => {
+		Swal.fire({
+			icon: 'error',
+			title: 'Error',
+			text: 'El monto es mayor o igual al precio del producto',
+			customClass: { container: 'swal2-validated' },
+			showConfirmButton: true,
+			//timer: 2500,
+		});
+	};
 
 	const {
 		client,
@@ -59,6 +71,24 @@ const StepPos: FC = () => {
 		listDistributor,
 	} = useContext(DataListContext);
 	const { namesImages, imagesForm, handleChangeImages, deleteImgContributor } = useContext(ImagesFmContext);
+
+	const handleChangeInitial = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		if (pos.model_post) {
+			if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
+				if (Number(event.target.value) < pos.model_post?.price) {
+					//console.log(event.target.value);
+					handleParamsPos(event.target.name, Number(event.target.value));
+				}
+			}
+		}
+	};
+
+	const handleBlurInitial = (): void => {
+		if (Number(pos.initial) < 50) {
+			//console.log('es menor');
+			handleParamsPos('initial', 50);
+		}
+	};
 
 	const handleChangeReferido = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		if (/^[V0-9]+$/.test(event.target.value) || event.target.value === '') {
@@ -103,56 +133,19 @@ const StepPos: FC = () => {
 		} else {
 			setFraccion(false);
 		}
-		/*
-		if (pos.request_origin) {
-			switch (pos.request_origin.id) {
-				case 1:
-					setReferido(true);
-					//setIsACI(false);
-					break;
-				case 2:
-					// is ACI
-					//setIsACI(true);
-					setReferido(false);
-					break;
-				default:
-					//setIsACI(false);
-					setReferido(false);
-			}
-		} else {
-			//setIsACI(false);
-			setReferido(false);
-		}
-		*/
 		if (pos.initial && pos.model_post) {
 			// cable pelado para el monto del precio del modelo seleccionado para calcular las cuotas
 			let valor = pos.number_post * (pos.model_post.price - pos.initial);
 			let cuotas = valor / (pos.number_post * 50);
-
-			/*
-			setPos({
-				...pos,
-				cuotas: valor / (pos.number_post * 50),
-			});
-			*/
-
+			handleParamsPos('coutas', valor / (pos.number_post * 50));
 			if (valor < 0) {
-				/*
-				setPos({
-					...pos,
-					initial: 100,
-				});
-				*/
+				handleParamsPos('initial', 100);
 			}
-			if (cuotas % 1 === 0 && cuotas > 0 && cuotas) {
-				setCuotasTexto(`${cuotas} cuota/s de 50$`);
-			} else {
-				/*
-				setPos({
-					...pos,
-					initial: 100,
-				});
-				*/
+			if (cuotas > 0 && cuotas) {
+				setCuotasTexto(`${Math.ceil(cuotas)} cuota/s`);
+			}
+			if (pos.initial >= pos.model_post?.price) {
+				handleParamsPos('initial', 100);
 			}
 		}
 	}, [pos.number_post, pos.initial, pos.request_origin, pos.type_pay, pos.model_post]);
@@ -181,6 +174,12 @@ const StepPos: FC = () => {
 					onChange={handleChangePos}
 					error={errorsFm.number_post}
 					value={pos.number_post}
+					InputProps={{
+						inputProps: {
+							max: 100,
+							min: 1,
+						},
+					}}
 				/>
 				<Autocomplete
 					className={classes.inputText}
@@ -393,19 +392,18 @@ const StepPos: FC = () => {
 							sx={sxStyled.inputLeft}
 							id='initial'
 							label='Inicial'
-							type='number'
+							type='text'
 							name='initial'
 							variant='outlined'
 							value={pos.initial}
-							onKeyDown={(e) => {
-								e.preventDefault();
+							InputProps={{
+								inputProps: {
+									max: pos.number_post * (pos?.model_post?.price || 100),
+									min: 50,
+								},
 							}}
-							inputProps={{
-								maxLength: 5,
-								step: '50',
-								min: '100',
-							}}
-							onChange={handleChangePos}
+							onBlur={handleBlurInitial}
+							onChange={handleChangeInitial}
 						/>
 						<TextField
 							disabled
@@ -451,7 +449,25 @@ const StepPos: FC = () => {
 						<Checkbox
 							name='discount'
 							checked={pos.discount}
-							onChange={handleCheckedPos}
+							onChange={(event) => {
+								if (pos?.model_post?.price) {
+									if (event.target.checked) {
+										if (pos.initial + 50 < pos.model_post.price) handleCheckedPos(event);
+										else handleInitalError();
+									} else {
+										if (pos.initial >= 50) {
+											handleCheckedPos(event);
+										} else
+											Swal.fire({
+												icon: 'error',
+												title: 'Error',
+												text: 'El monto no esta en el rango',
+												customClass: { container: 'swal2-validated' },
+												showConfirmButton: true,
+											});
+									}
+								}
+							}}
 							color='primary'
 							inputProps={{ 'aria-label': 'secondary checkbox' }}
 						/>
