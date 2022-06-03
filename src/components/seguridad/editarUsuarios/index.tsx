@@ -11,9 +11,13 @@ import { sxStyled, useStyles } from '../../../pages/Seguridad/styles';
 import { handleError, handleNotAccess } from 'utils/handleSwal';
 import { columnsGestionUsuario } from './columnsGrid';
 import { useSelector } from 'react-redux';
-//import './scss/index.scss';
 
-const GestionUsuarios: React.FC = () => {
+interface Props {
+	listDepartment: any[];
+	listRoles: any[];
+}
+
+const GestionUsuarios: React.FC<Props> = ({ listDepartment, listRoles }) => {
 	const { user } = useSelector((state: any) => state.auth);
 	const { permiss }: any = user;
 	const classes = useStyles();
@@ -22,15 +26,14 @@ const GestionUsuarios: React.FC = () => {
 
 	const [userBlocked, setUserBlocked] = useState<boolean>(false);
 	const [openUserView, setUserView] = useState<boolean>();
-	const [roles, setRoles] = useState<any[]>([]);
-	const [department, setDepartment] = useState<any[]>([
-		{ id: 0, name: 'Admision' },
-		{ id: 1, name: 'Administracion' },
-	]);
 	// const [loading, setLoading] = useState<boolean>(true);
 	const [userRol, setUserRol] = useState<any>(null);
 	const [userDep, setUserDep] = useState<any>(null);
 	const [allUser, setUsers] = useState<any[]>([]);
+
+	console.log(userRol);
+	console.log(userDep);
+
 	const [userID, setUserID] = useState<number>(0);
 	const [email, setEmail] = useState<string>('');
 	const [lname, setLName] = useState<string>('');
@@ -47,12 +50,6 @@ const GestionUsuarios: React.FC = () => {
 
 	const getData = async () => {
 		try {
-			await axios.get('/roles/all').then((data: any) => {
-				setRoles(data.data.info);
-			});
-			await axios.get('/department/all').then((data: any) => {
-				setDepartment(data.data.info);
-			});
 			await axios.get('worker/all').then((data: any) => {
 				setUsers(data.data.info);
 			});
@@ -259,34 +256,35 @@ const GestionUsuarios: React.FC = () => {
 													variant='outlined'
 													type='text'
 													value={name + ' ' + lname}
-													// onChange={handleInputChanges}
 												/>
-												<Autocomplete
-													className={classes.inputText}
-													onChange={(event, value) => (value ? handleSelect(event, value, 'department') : null)}
-													value={userDep}
-													isOptionEqualToValue={(option: any) => {
-														return option.name === userDep.name;
-													}}
-													options={department}
-													getOptionLabel={(option: any) => (option.name ? option.name : '')}
-													renderInput={(params: any) => (
-														<TextField {...params} name='department' label='Departamento' variant='outlined' />
-													)}
-												/>
-												<Autocomplete
-													className={classes.inputText}
-													onChange={(event, value) => (value ? handleSelect(event, value, 'rol') : null)}
-													value={userRol}
-													isOptionEqualToValue={(option: any) => {
-														return option.name === userDep.name;
-													}}
-													options={roles}
-													getOptionLabel={(option: any) => (option.name ? option.name : '')}
-													renderInput={(params: any) => (
-														<TextField {...params} name='rol' label='Cargo' variant='outlined' />
-													)}
-												/>
+												{userDep && userRol ? (
+													<>
+														<Autocomplete
+															className={classes.inputText}
+															onChange={(event, value) =>
+																value ? handleSelect(event, value, 'department') : null
+															}
+															value={userDep}
+															getOptionLabel={(option: any) => (option.name ? option.name : '')}
+															isOptionEqualToValue={(option: any) => option.id === userDep.id}
+															options={listDepartment}
+															renderInput={(params: any) => (
+																<TextField {...params} name='department' label='Departamento' variant='outlined' />
+															)}
+														/>
+														<Autocomplete
+															className={classes.inputText}
+															onChange={(event, value) => (value ? handleSelect(event, value, 'rol') : null)}
+															value={userRol}
+															getOptionLabel={(option: any) => (option.name ? option.name : '')}
+															isOptionEqualToValue={(option: any) => option.id === userDep.id}
+															options={listRoles}
+															renderInput={(params: any) => (
+																<TextField {...params} name='rol' label='Cargo' variant='outlined' />
+															)}
+														/>
+													</>
+												) : null}
 												<Button
 													onClick={() => setUserBlocked(!userBlocked)}
 													sx={!userBlocked ? sxStyled.blockedButtonOff : sxStyled.blockedButtonOn}>

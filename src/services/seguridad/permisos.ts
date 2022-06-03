@@ -6,7 +6,9 @@ import { multiGetterAxios } from 'utils/multiGetterAxios';
 export const editPermisos = {
 	getAllListSeguridad,
 	getAllListPermiss,
-	getSavePermiss,
+	savePermiss,
+	getAllListViews,
+	saveViews,
 };
 
 export async function getAllListSeguridad() {
@@ -56,10 +58,43 @@ export async function getAllListPermiss(dep: number, rol: number) {
 	}
 }
 
-export async function getSavePermiss(dep: number, rol: number, permiss: any[]) {
+export async function savePermiss(dep: number, rol: number, permiss: any[]) {
 	console.log('newPerms', permiss);
 	try {
 		const res: AxiosResponse<any> = await useAxios.post(`/seguridad/permissions/${dep}/${rol}`, permiss);
+		return {
+			ok: true,
+			permiss: res.data.info,
+		};
+	} catch (err: any) {
+		Swal.fire('Error', err.response.data.message, 'error');
+		return {
+			ok: false,
+			err,
+		};
+	}
+}
+
+export async function getAllListViews(dep: number) {
+	try {
+		const res: AxiosResponse<any> = await useAxios.get(`/seguridad/views/${dep}`);
+		return {
+			ok: true,
+			permiss: res.data.info,
+		};
+	} catch (err: any) {
+		Swal.fire('Error', err.response.data.message, 'error');
+		return {
+			ok: false,
+			err,
+		};
+	}
+}
+
+export async function saveViews(dep: number, views: any[]) {
+	console.log('newPerms', views);
+	try {
+		const res: AxiosResponse<any> = await useAxios.post(`/seguridad/views/${dep}`, views);
 		return {
 			ok: true,
 			permiss: res.data.info,

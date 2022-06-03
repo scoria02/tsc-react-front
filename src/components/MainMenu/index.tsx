@@ -45,7 +45,7 @@ import {
 	urlFM,
 	urlLogin,
 	urlSeguridad,
-	urlUpdateClient,
+	urlUpdateCommerce,
 } from 'routers/url';
 import { startLogout } from 'store/actions/auth';
 import { FinishLoading } from 'store/actions/ui';
@@ -66,7 +66,7 @@ const MainMenu: FC = () => {
 	const [seguridad, setSeguridad] = useState(false);
 	const [admision, setAdmision] = useState(false);
 	const [cobranza, setCobranza] = useState(false);
-	const [updateClient, setUpdateClient] = useState(false);
+	const [updateCommerce, setUpdateCommerce] = useState(false);
 	const { menu } = useContext(ApprouterContext);
 	const [open, setOpen] = useState(false); //Nav Left
 	const [fm, setFm] = useState(false);
@@ -82,12 +82,12 @@ const MainMenu: FC = () => {
 			setUser(userDB.data);
 		}
 
-		setFm(menu['Solicitud'] ? true : false);
-		setAdmision(menu['Admision'] ? true : false);
-		setAdministracion(menu['Administracion'] ? true : false);
-		setCobranza(menu['Cobranza'] ? true : false);
-		setUpdateClient(menu['EditarComercio'] ? true : false);
-		setSeguridad(menu['Seguridad'] ? true : false);
+		setFm(menu['solicitud'] ? true : false);
+		setAdmision(menu['admision'] ? true : false);
+		setAdministracion(menu['administracion'] ? true : false);
+		setCobranza(menu['cobranza'] ? true : false);
+		setUpdateCommerce(menu['editar_commerce'] ? true : false);
+		setSeguridad(menu['seguridad'] ? true : false);
 		//console.log(menu);
 
 		if (history) {
@@ -359,8 +359,8 @@ const MainMenu: FC = () => {
 							<ListItemText primary='Cobranza' />
 						</ListItem>
 					)}
-					{updateClient && (
-						<ListItem button onClick={(event) => handleListItemClick(event, urlUpdateClient)}>
+					{updateCommerce && (
+						<ListItem button onClick={(event) => handleListItemClick(event, urlUpdateCommerce)}>
 							<ListItemIcon classes={{ root: classes.icon }}>
 								<SettingsSuggestIcon />
 							</ListItemIcon>

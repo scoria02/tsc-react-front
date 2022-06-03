@@ -15,6 +15,7 @@ import DifStepRefBank from './steps/DifStepRefBank';
 import DifStepCompDep from './steps/DifStepCompDep';
 import LocationsContext from 'context/Admision/CreationFM/Location/LocationsContext';
 import LoaderLine from 'components/loaders/LoaderLine';
+import { handleLoading, handleLoadingProvider } from 'utils/handleSwal';
 
 const DiferidoValid: React.FC = () => {
 	const dispatch = useDispatch();
@@ -61,7 +62,6 @@ const DiferidoValid: React.FC = () => {
 	} = useContext(FMDiferidoContext);
 
 	//console.log('aqui', solic);
-
 	useEffect(() => {
 		if (activeStep > stepsValid - 1) {
 			setDisabled(false);
@@ -83,29 +83,14 @@ const DiferidoValid: React.FC = () => {
 		setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
 	};
 
-	const handleLoading = () => {
-		Swal.fire({
-			icon: 'info',
-			title: 'Verificando',
-			showConfirmButton: false,
-			customClass: { container: 'swal2-validated' },
-			allowOutsideClick: false,
-			allowEscapeKey: false,
-			//closeOnClickOutside: false,
-			didOpen: () => {
-				Swal.showLoading();
-			},
-		});
-	};
-
 	const handleSend = async () => {
 		if (!solic) return;
 		Swal.fire({
 			icon: 'warning',
-			title: 'Enviar verificacion',
+			title: 'Enviar solicitud corregida',
 			html: solic.pagadero
-				? `<p>Esta solictud puede tardar unos minutos</p>`
-				: `<p>Esta solicitud se enviara a administracion</p>`,
+				? `<p>Esto puede tardar <b>unos minutos</b></p>`
+				: `<p>Esta solicitud se enviara al siguente departamento</p>`,
 			showConfirmButton: true,
 			allowOutsideClick: false,
 			allowEscapeKey: false,
@@ -118,7 +103,11 @@ const DiferidoValid: React.FC = () => {
 			customClass: { container: 'swal2-validated' },
 		}).then((result) => {
 			if (result.isConfirmed) {
-				handleLoading();
+				if (solic.pagadero) {
+					handleLoadingProvider();
+				} else {
+					handleLoading();
+				}
 				let phone = {
 					phone1: phones.phone1,
 					phone2: phones.phone2,

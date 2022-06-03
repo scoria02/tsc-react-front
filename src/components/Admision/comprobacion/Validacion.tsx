@@ -1,7 +1,6 @@
 import { Typography, Button, Step, StepLabel, Stepper } from '@mui/material';
 import DataListAdmisionContext from 'context/DataList/DatalistAdmisionContext';
 import React, { useContext, useLayoutEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 //steps
 import StepDataPreValidate from './steps/StepDataPreValidate';
@@ -14,14 +13,18 @@ import StepContribuyenteSpecial from './steps/StepContribuyenteSpecial';
 import StepCompDep from './steps/StepCompDep';
 import StepPos from './steps/StepPos';
 import { useStylesFM } from './styles';
-import { updateStatusFM } from 'store/actions/admisionFm';
+//import { updateStatusFM } from 'store/actions/admisionFm';
 import StepSelectAci from './steps/StepSelectAci';
 //context
 import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
 import LoaderLine from 'components/loaders/LoaderLine';
+import { handleLoading, handleLoadingProvider } from 'utils/handleSwal';
 
-const Validacion: React.FC = () => {
-	const dispatch = useDispatch();
+interface Props {
+	validatedFM: any;
+}
+
+const Validacion: React.FC<Props> = ({ validatedFM }) => {
 	const classes = useStylesFM();
 
 	const [steps, setSteps] = useState<string[]>([]);
@@ -49,21 +52,6 @@ const Validacion: React.FC = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
 	};
 
-	const handleLoading = () => {
-		Swal.fire({
-			icon: 'info',
-			title: 'Verificando',
-			showConfirmButton: false,
-			customClass: { container: 'swal2-validated' },
-			allowOutsideClick: false,
-			allowEscapeKey: false,
-			//closeOnClickOutside: false,
-			didOpen: () => {
-				Swal.showLoading();
-			},
-		});
-	};
-
 	const validStatusFm = () => {
 		for (const item of Object.entries(listValidated)) {
 			if (!item[1].status) {
@@ -73,11 +61,14 @@ const Validacion: React.FC = () => {
 		return false;
 	};
 
-	const handleSend = async () => {
+	const handleSend = () => {
 		if (aci !== null) {
 			Swal.fire({
-				title: 'Solicitud verificada?',
 				icon: 'warning',
+				title: 'Enviar solicitud verificada',
+				html: solic.pagadero
+					? `<p>Esto puede tardar <b>unos minutos</b></p>`
+					: `<p>Esta solicitud se enviara al siguente departamento</p>`,
 				showConfirmButton: true,
 				allowOutsideClick: false,
 				allowEscapeKey: false,
@@ -90,13 +81,19 @@ const Validacion: React.FC = () => {
 				customClass: { container: 'swal2-validated' },
 			}).then((result) => {
 				if (result.isConfirmed) {
-					handleLoading();
-					if (validStatusFm()) {
-						dispatch(updateStatusFM(solic.id, 4, listValidated, aci?.id));
-						console.log('Enviado a diferido');
+					if (solic.pagadero) {
+						handleLoadingProvider();
 					} else {
-						dispatch(updateStatusFM(solic.id, 3, listValidated, aci?.id));
-						console.log('Enviado al siguente Modulo (Pagadero: Tms7 & 1000pagos)');
+						handleLoading();
+					}
+					if (aci?.id) {
+						if (!validStatusFm()) {
+							validatedFM(3, listValidated, aci!.id);
+							console.log('Enviado al siguente Modulo (Pagadero: Tms7 & 1000pagos)');
+						} else {
+							validatedFM(4, listValidated, aci!.id);
+							console.log('Enviado a diferido');
+						}
 					}
 				}
 			});
@@ -221,7 +218,7 @@ const Validacion: React.FC = () => {
 											size='large'
 											variant='contained'
 											disabled={activeStep === steps.length - 1 && !aci ? true : false}
-											color='primary'
+											color='success'
 											onClick={handleSend}
 											className={classes.buttonNext}>
 											<span className={classes.textButton}>Enviar</span>

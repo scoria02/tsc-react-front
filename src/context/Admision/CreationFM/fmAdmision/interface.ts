@@ -58,6 +58,7 @@ export interface ContextFM {
 	resetFm(): void;
 	validClientAndCommerce(): void | Promise<boolean>;
 	idsCAndCc: IdClient_CommerceINT | null;
+	setIdsCAndCc: Dispatch<SetStateAction<IdClient_CommerceINT | null>>;
 	aci: Aci | null;
 	handleSourceAci(event: any, value: Aci | null, name: string): void;
 	telemarket: TeleMarket | null;

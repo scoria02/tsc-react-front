@@ -9,7 +9,7 @@ import {
 	fmError_Interface,
 	fmPos,
 } from 'interfaces/fm';
-import { TeleMarket } from './../../context/DataList/interface';
+import { TeleMarket } from '../../../context/DataList/interface';
 
 export const validEmail = (value: string): boolean => {
 	let validatedEmail = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i.test(value);

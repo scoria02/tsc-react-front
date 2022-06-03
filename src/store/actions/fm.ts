@@ -8,13 +8,13 @@ import Swal from 'sweetalert2';
 import { daysToString } from 'validation/validFm';
 import { ActionType } from '../types/types';
 import { TeleMarket } from './../../context/DataList/interface';
+import { handleLoadingSendFm } from 'utils/handleSwal';
 
 export const validationClient = (client: any, errValid: boolean) => {
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/valid`, client);
 			//console.log(res);
-			dispatch(requestSuccess(res.data.info));
 			const dataClient = res.data.info.client;
 			if (dataClient) {
 				Swal.fire({
@@ -25,6 +25,7 @@ export const validationClient = (client: any, errValid: boolean) => {
 					showConfirmButton: true,
 				});
 			}
+			dispatch(requestSuccess(res.data.info));
 			//return res.data.info;
 		} catch (error: any) {
 			//console.log(error.response);
@@ -61,7 +62,7 @@ export const validationCommerce = (id_client: number, commerce: any) => {
 			const res: AxiosResponse<any> = await useAxios.post(`/FM/${id_client}/commerce/valid`, commerce);
 			if (res.data.info) {
 				dispatch(requestSuccess(res.data.info));
-				console.log(res.data.info);
+				//console.log(res.data.info);
 				if (res.data.info) {
 					Swal.fire({
 						position: 'center',
@@ -370,12 +371,13 @@ export const sendCompleteFM = (
 	idLocationCommerce: number | null,
 	idLocationPos: number | null
 ) => {
-	//Crear formart
 	const dataClient = id_client ? null : dataFormatClient(client, idLocationClient);
 	const dataCommerce = dataFormatCommerce(commerce, activity, idLocationCommerce);
 	const dataPost = dataFormatPos_FM(typeSolict, pos, aci, telemarket, typeWallet, idLocationPos);
 	//console.log('cliente: ', dataClient, ' id ', id_client);
 	return async (dispatch: any) => {
+		handleLoadingSendFm();
+
 		try {
 			const fm: any = createFM(
 				//Client
@@ -443,13 +445,14 @@ export const sendCompleteFMExtraPos = (
 			dataPos
 		);
 		try {
+			console.log('entre extrapos redux');
 			const resFM: AxiosResponse<any> = await useAxios.post(`/FM/extraPos`, fmExtraPos);
-			//console.log('fm cargado', resFM.data);
+			Swal.close();
 			dispatch(requestSuccess(resFM.data.info.code));
 		} catch (error: any) {
-			//console.log(error.reponse)
-			dispatch(requestError());
+			Swal.close();
 			Swal.fire('Error', error.response?.data.message, 'error');
+			dispatch(requestError());
 		}
 	};
 	function requestSuccess(code: string) {

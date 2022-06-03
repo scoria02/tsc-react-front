@@ -1,12 +1,12 @@
 // Private Routes
 export const baseUrl = '/';
-export const urlAdmision = `${baseUrl}Admision`;
-export const urlFM = `${baseUrl}Solicitud`;
-export const urlAdministracion = `${baseUrl}Administracion`;
-export const urlCobr = `${baseUrl}Cobranza`;
-export const urlTerminales = `${baseUrl}Terminales`;
-export const urlUpdateClient = `${baseUrl}EditarComercio`;
-export const urlSeguridad = `${baseUrl}Seguridad`;
+export const urlAdmision = `${baseUrl}admision`;
+export const urlFM = `${baseUrl}solicitud`;
+export const urlAdministracion = `${baseUrl}administracion`;
+export const urlCobr = `${baseUrl}cobranza`;
+export const urlTerminales = `${baseUrl}terminales`;
+export const urlUpdateCommerce = `${baseUrl}editar_commerce`;
+export const urlSeguridad = `${baseUrl}seguridad`;
 
 export const urlPrivate = [
 	baseUrl,
@@ -16,7 +16,7 @@ export const urlPrivate = [
 	urlAdministracion,
 	urlCobr,
 	urlTerminales,
-	urlUpdateClient,
+	urlUpdateCommerce,
 ];
 
 // Public Routes

@@ -65,6 +65,7 @@ const FMDataContext = createContext<ContextFM>({
 	//EndPoint
 	validClientAndCommerce: () => {},
 	idsCAndCc: null,
+	setIdsCAndCc: () => {},
 	aci: null,
 	telemarket: null,
 	typeWallet: null,
@@ -427,6 +428,7 @@ export const FMContextProvider = ({ children }: Props) => {
 				//Endpoint
 				validClientAndCommerce,
 				idsCAndCc,
+				setIdsCAndCc,
 				aci,
 				telemarket,
 				typeWallet,

@@ -14,7 +14,6 @@ import { updateStatusFMAdministration } from 'store/actions/administration';
 import Swal from 'sweetalert2';
 import { handleNotAccess } from 'utils/handleSwal';
 import { recaudo } from 'utils/recaudos';
-import Rec from '../utilis/images/Rec';
 //Url
 import './styles/index.scss';
 import { sxStyled, useStyles } from './styles/styles';
@@ -335,7 +334,11 @@ export const Form: FC<any> = ({
 								Verificar
 							</Button>
 							{uploadImg && (
-								<div className={classes.containerImg}>
+								<div
+									className={classes.containerImg}
+									style={{
+										marginTop: '1rem',
+									}}>
 									{uploadImg && uploadImg.name.split('.')[uploadImg.name.split('.').length - 1] === 'pdf' ? (
 										<div>
 											<a target='_blank' rel='noreferrer' href={path}>
@@ -345,26 +348,17 @@ export const Form: FC<any> = ({
 													</IconButton>
 												</Button>
 											</a>
-											<div>
-												<h2>Solo se guardara la primera pagina</h2>
-											</div>
 										</div>
 									) : (
-										<Rec load={load} setLoad={setLoad} imagen={imagen} />
+										<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 									)}
 								</div>
 							)}
 							{payment && payment.id !== 2 && (
 								<Button sx={sxStyled.uploadImg} variant='contained' component='label'>
-									{uploadImg !== null ? (
-										<IconButton aria-label='upload picture' component='span'>
-											<p className={classes.nameImg}>{nameImg.slice(0, 10)} ...</p>
-										</IconButton>
-									) : (
-										<IconButton aria-label='upload picture' component='span'>
-											<CloudUploadIcon className={classes.iconUpload} />
-										</IconButton>
-									)}
+									<IconButton aria-label='upload picture' component='span'>
+										<CloudUploadIcon className={classes.iconUpload} />
+									</IconButton>
 									<input
 										type='file'
 										hidden

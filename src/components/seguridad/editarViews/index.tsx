@@ -9,57 +9,51 @@ import LoaderLine from 'components/loaders/LoaderLine';
 
 interface Props {
 	listDepartment: any[];
-	listRoles: any[];
 }
 
-const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
+const EditarViews: React.FC<Props> = ({ listDepartment }) => {
 	const classes = useStyles();
-	// const { user } = useSelector((state: any) => state.auth);
-	// const { permiss }: any = user;
 
 	const [department, setDepartment] = useState<any>(null);
-	const [role, setRole] = useState<any>(null);
 
-	const [listPermisos, setListPermisos] = useState<any[]>([]);
+	const [listViews, setListViews] = useState<any[]>([]);
 
 	const [loading, setLoading] = useState(false);
 
-	//const [role, setRole] = useState(null);
+	console.log('per', listViews);
 
-	console.log('per', listPermisos);
-
-	const handleSavePermiss = async () => {
+	const handleSaveViews = async () => {
 		handleLoadingSave();
-		if (department && role && listPermisos.length) {
-			console.log('buscar', department?.id, role?.id);
-			const res: any = await editPermisos.savePermiss(department.id, role.id, listPermisos);
+		if (department && listViews.length) {
+			console.log('buscar', department?.id);
+			const res: any = await editPermisos.saveViews(department.id, listViews);
 			if (res.ok) {
-				handleInfoText('Guardado', `Se guardo el cambio de ${department?.name} / ${role?.name}`);
-				setListPermisos([]);
+				handleInfoText('Guardado', `Se guardo el cambio de ${department?.name}`);
+				setListViews([]);
 			}
 		}
 	};
 
 	const handleChange = (index: number) => {
-		let aux: any[] = listPermisos;
+		let aux: any[] = listViews;
 		aux[index] = {
 			...aux[index],
 			status: !aux[index].status,
 		};
 		console.log(index, aux);
-		setListPermisos([...listPermisos]);
+		setListViews([...listViews]);
 	};
 
-	const handleSearchPermisos = async () => {
+	const handleSearchViews = async () => {
 		//handleLoadingSearch();
 		setLoading(true);
-		setListPermisos([]);
-		if (department && role) {
-			console.log('buscar', department?.id, role?.id);
-			const res: any = await editPermisos.getAllListPermiss(department.id, role.id);
+		setListViews([]);
+		if (department) {
+			console.log('buscar', department?.id);
+			const res: any = await editPermisos.getAllListViews(department.id);
 			if (res.ok) {
 				if (res.permiss.length) {
-					setListPermisos(res.permiss);
+					setListViews(res.permiss);
 				} else handleInfoText('Permisos', 'No existen permisos');
 			}
 			setLoading(false);
@@ -78,7 +72,7 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 								}}
 								className={classes.btn_medio}
 								onChange={(event, value) => {
-									setListPermisos([]);
+									setListViews([]);
 									setDepartment(value ? value : null);
 									//handleSelectAci(event, value);
 								}}
@@ -90,26 +84,9 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 									<TextField {...params} name='department' label={`Departamentos`} variant='outlined' />
 								)}
 							/>
-							<Autocomplete
-								sx={{
-									mr: 1,
-								}}
-								className={classes.btn_medio}
-								onChange={(event, value) => {
-									setListPermisos([]);
-									setRole(value ? value : null);
-								}}
-								options={listRoles}
-								getOptionLabel={(value: any) => value.name}
-								isOptionEqualToValue={(option: any | null, value: any) => option?.id === value.id}
-								value={role || null}
-								renderInput={(params: any) => (
-									<TextField {...params} name='roles' label={`Cargo`} variant='outlined' />
-								)}
-							/>
 							<Button
-								onClick={handleSearchPermisos}
-								disabled={department && role && !loading ? false : true}
+								onClick={handleSearchViews}
+								disabled={department && !loading ? false : true}
 								sx={{
 									textTransform: 'none',
 									fontSize: '1rem',
@@ -122,7 +99,7 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 					</div>
 				</div>
 				<div style={{ marginTop: '1rem' }}>
-					{!listPermisos.length ? (
+					{!listViews.length ? (
 						loading ? (
 							<LoaderLine />
 						) : null
@@ -130,7 +107,7 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 						<>
 							<FormGroup>
 								<div className={classes.containerListItem}>
-									{listPermisos.map((item: any, index) => (
+									{listViews.map((item: any, index) => (
 										<FormControlLabel
 											key={item.id}
 											control={<Checkbox checked={item.status} onChange={() => handleChange(index)} />}
@@ -141,8 +118,8 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 							</FormGroup>
 							<div className={classes.btn_stepM}>
 								<Button
-									onClick={handleSavePermiss}
-									disabled={department && role ? false : true}
+									onClick={handleSaveViews}
+									disabled={department ? false : true}
 									sx={{
 										mt: '1rem',
 										textTransform: 'none',
@@ -161,4 +138,4 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 	);
 };
 
-export default EditarPermisos;
+export default EditarViews;

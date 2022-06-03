@@ -111,13 +111,22 @@ const StepPos: FC = () => {
 
 	const handleChangeBank = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (/^[0-9]+$/.test(event.target.value) || event.target.value === '') {
-			if (event.target.value.length === 20 && client.email !== '') {
-				dispatch(
-					validationNumBank({
-						email: client.email,
-						bank_account_num: event.target.value,
-					})
-				);
+			if (event.target.value.length === 20) {
+				if (fm.clientMash && fm.clientMash.email) {
+					dispatch(
+						validationNumBank({
+							email: fm.clientMash.email,
+							bank_account_num: event.target.value,
+						})
+					);
+				} else if (client.email !== '') {
+					dispatch(
+						validationNumBank({
+							email: client.email,
+							bank_account_num: event.target.value,
+						})
+					);
+				}
 			}
 			handleChangePos(event);
 		}

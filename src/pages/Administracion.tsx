@@ -15,7 +15,7 @@ import { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form } from '../components/administration/Form';
 import '../components/administration/styles/index.scss';
-import { getPayMent } from '../components/formMaldito/getData';
+import { getPayMent } from '../components/Admision/formMaldito/getData';
 import { SocketContext } from '../context/SocketContext';
 import { cleanAdmisionFMAdministration } from '../store/actions/administration';
 import { RootState } from '../store/store';
