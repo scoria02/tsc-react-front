@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import CloseIcon from '@mui/icons-material/Close';
-import { Button, Paper, Theme } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { Button, Paper } from '@mui/material';
 import {
 	DataGrid,
 	GridColDef,
@@ -16,102 +15,15 @@ import { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form } from '../components/administration/Form';
 import '../components/administration/styles/index.scss';
-import { getPayMent } from '../components/formMaldito/getData';
+import { getPayMent } from '../components/Admision/formMaldito/getData';
 import { SocketContext } from '../context/SocketContext';
 import { cleanAdmisionFMAdministration } from '../store/actions/administration';
 import { RootState } from '../store/store';
 import Swal from 'sweetalert2';
+import { handleNotAccess } from 'utils/handleSwal';
+import { sxStyled, useStyles } from './Administracion/styles';
 
 interface AdministracionProp {}
-
-const useStyles = makeStyles((theme: Theme) => ({
-	administracion: {
-		flexGrow: 1,
-		display: 'grid',
-		gridColumnGap: '2rem',
-		gridTemplateColumns: '1fr 1fr',
-		height: '80vh',
-	},
-	button: {
-		width: 200,
-		height: 70,
-		background: theme.palette.primary.main,
-		color: theme.palette.primary.contrastText,
-	},
-	tableTitle: {
-		fontSize: 32,
-		fontWeight: 'bold',
-		padding: '0 8px',
-	},
-	view: {
-		padding: '1rem',
-		display: 'flex',
-		flexDirection: 'column',
-		position: 'relative',
-	},
-	red: {
-		backgroundColor: theme.palette.error.main,
-		color: theme.palette.secondary.contrastText,
-		'&:hover': {
-			backgroundColor: `${theme.palette.error.light} !important`,
-		},
-	},
-	yellow: {
-		backgroundColor: theme.palette.warning.main,
-		color: theme.palette.secondary.contrastText,
-		'&:hover': {
-			backgroundColor: `${theme.palette.warning.light} !important`,
-		},
-	},
-	green: {
-		backgroundColor: theme.palette.success.main,
-		color: theme.palette.secondary.contrastText,
-		'&:hover': {
-			backgroundColor: `${theme.palette.success.light} !important`,
-		},
-	},
-	wrapper: {
-		padding: '16px 0',
-		height: '100%',
-	},
-	img_zoom: {
-		position: 'fixed',
-		display: 'flex',
-		justifyContent: 'center',
-	},
-	content: {
-		display: 'flex',
-		height: '100%',
-		flexDirection: 'column',
-	},
-	row: {
-		display: 'flex',
-		width: '100%',
-		marginBottom: 8,
-		justifyContent: 'space-around',
-	},
-	textfieldLeft: {
-		marginRight: 8,
-	},
-	switchControl: {
-		position: 'absolute',
-		bottom: 0,
-		left: '35%',
-	},
-}));
-
-export const sxStyled = {
-	closeBtn: {
-		width: 40,
-		height: 40,
-		position: 'absolute',
-		top: 8,
-		right: 8,
-		padding: 0,
-		minWidth: 'unset',
-		borderRadius: 20,
-	},
-};
 
 const columns: GridColDef[] = [
 	{
@@ -148,6 +60,8 @@ const columns: GridColDef[] = [
 ];
 
 const Administracion: FC<AdministracionProp> = () => {
+	const { user } = useSelector((state: any) => state.auth);
+	const { permiss }: any = user;
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
@@ -175,7 +89,6 @@ const Administracion: FC<AdministracionProp> = () => {
 	]);
 
 	const { socket } = useContext(SocketContext);
-	const { user } = useSelector((state: any) => state.auth);
 	const administration: any = useSelector((state: RootState) => state.administration);
 
 	const customToolbar: () => JSX.Element = () => {
@@ -188,6 +101,10 @@ const Administracion: FC<AdministracionProp> = () => {
 	};
 
 	const handleRow = (event: any) => {
+		if (!permiss['Ver Pago']) {
+			handleNotAccess();
+			return;
+		}
 		socket.emit('cliente:disconnectAdministracion');
 		setUploadImg(null);
 		setNameImage('');

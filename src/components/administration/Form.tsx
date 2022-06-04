@@ -9,11 +9,11 @@ import TextField from '@mui/material/TextField';
 import RecPdf from 'components/utilis/images/RecPdf';
 import { FC, useEffect, useState } from 'react';
 //Redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateStatusFMAdministration } from 'store/actions/administration';
 import Swal from 'sweetalert2';
+import { handleNotAccess } from 'utils/handleSwal';
 import { recaudo } from 'utils/recaudos';
-import Rec from '../utilis/images/Rec';
 //Url
 import './styles/index.scss';
 import { sxStyled, useStyles } from './styles/styles';
@@ -36,6 +36,8 @@ export const Form: FC<any> = ({
 }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
+	const { user } = useSelector((state: any) => state.auth);
+	const { permiss }: any = user;
 
 	const [load, setLoad] = useState<boolean>(false);
 	const [cuotasTexto, setCuotasTexto] = useState('');
@@ -120,6 +122,10 @@ export const Form: FC<any> = ({
 	};
 
 	const handleVerificated = () => {
+		if (!permiss['Validar Pago']) {
+			handleNotAccess();
+			return;
+		}
 		Swal.fire({
 			title: 'Confirmar verificación',
 			icon: 'warning',
@@ -328,45 +334,31 @@ export const Form: FC<any> = ({
 								Verificar
 							</Button>
 							{uploadImg && (
-								<div className={classes.containerImg}>
+								<div
+									className={classes.containerImg}
+									style={{
+										marginTop: '1rem',
+									}}>
 									{uploadImg && uploadImg.name.split('.')[uploadImg.name.split('.').length - 1] === 'pdf' ? (
-										<div
-										//	className={classes.btn_stepM}
-										>
+										<div>
 											<a target='_blank' rel='noreferrer' href={path}>
-												<Button
-													sx={sxStyled.buttonPdf}
-													variant='contained'
-													component='label'
-													//disabled={ready}
-												>
+												<Button sx={sxStyled.buttonPdf} variant='contained' component='label'>
 													<IconButton aria-label='upload picture' component='span'>
-														<PictureAsPdfIcon
-														//className={classes.iconUpload}
-														/>
+														<PictureAsPdfIcon />
 													</IconButton>
 												</Button>
 											</a>
-											<div>
-												<h2>Solo se guardara la primera pagina</h2>
-											</div>
 										</div>
 									) : (
-										<Rec load={load} setLoad={setLoad} imagen={imagen} />
+										<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 									)}
 								</div>
 							)}
 							{payment && payment.id !== 2 && (
 								<Button sx={sxStyled.uploadImg} variant='contained' component='label'>
-									{uploadImg !== null ? (
-										<IconButton aria-label='upload picture' component='span'>
-											<p className={classes.nameImg}>{nameImg.slice(0, 10)} ...</p>
-										</IconButton>
-									) : (
-										<IconButton aria-label='upload picture' component='span'>
-											<CloudUploadIcon className={classes.iconUpload} />
-										</IconButton>
-									)}
+									<IconButton aria-label='upload picture' component='span'>
+										<CloudUploadIcon className={classes.iconUpload} />
+									</IconButton>
 									<input
 										type='file'
 										hidden

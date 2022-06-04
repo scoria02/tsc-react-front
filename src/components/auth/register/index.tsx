@@ -24,6 +24,7 @@ import { Step2 } from './steps/Step2';
 import * as valids from './validationForm';
 //context
 import { SocketContext } from 'context/SocketContext';
+import { handleLoading } from 'utils/handleSwal';
 
 const Register: React.FC = () => {
 	const history = useHistory();
@@ -249,6 +250,7 @@ const Register: React.FC = () => {
 			console.log('Debe llenear todos los campos');
 			return;
 		}
+		handleLoading();
 		registrationUser(userForm);
 	};
 

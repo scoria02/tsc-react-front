@@ -1,12 +1,12 @@
+import { Route } from '.';
+import Inicio from 'pages/Home';
 import Admision from 'components/Admision';
-import { FormMaldito } from 'components/formMaldito';
-import UpdataData from 'components/updateData';
+import FormMaldito from 'components/Admision/formMaldito';
 import Administracion from 'pages/Administracion';
 import Cobranza from 'pages/Cobranza';
-import GestionUsuarios from 'pages/GestionUsuarios';
-import Inicio from 'pages/Home';
+import UpdataData from 'components/updateData';
 import Terminales from 'pages/Terminales';
-import { Route } from '.';
+import Seguridad from 'pages/Seguridad';
 import {
 	baseUrl,
 	urlAdministracion,
@@ -14,8 +14,8 @@ import {
 	urlCobr,
 	urlFM,
 	urlTerminales,
-	userAdmin,
-	urlUpdateClient,
+	urlUpdateCommerce,
+	urlSeguridad,
 } from '../url';
 
 const Private: Route[] = [
@@ -29,8 +29,8 @@ const Private: Route[] = [
 		},
 	},
 	{
-		path: userAdmin,
-		component: GestionUsuarios,
+		path: urlSeguridad,
+		component: Seguridad,
 		meta: {
 			auth: true,
 			dep: ['Seguridad'],
@@ -83,7 +83,7 @@ const Private: Route[] = [
 		},
 	},
 	{
-		path: urlUpdateClient,
+		path: urlUpdateCommerce,
 		component: UpdataData,
 		meta: {
 			auth: true,

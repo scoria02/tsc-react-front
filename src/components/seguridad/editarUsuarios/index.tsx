@@ -1,78 +1,39 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import CloseIcon from '@mui/icons-material/Close';
 import { Autocomplete, Avatar, Button, Grid, Paper, TextField } from '@mui/material';
-import {
-	DataGrid,
-	GridColDef,
-	GridToolbarContainer,
-	GridToolbarFilterButton,
-	GridValueGetterParams,
-} from '@mui/x-data-grid';
+import { DataGrid, GridToolbarContainer, GridToolbarFilterButton } from '@mui/x-data-grid';
 import classnames from 'classnames';
 import axios from 'config';
 import { SocketContext } from 'context/SocketContext';
 import { useLayoutEffect, useState, useContext, useEffect } from 'react';
 import Swal from 'sweetalert2';
-import './scss/index.scss';
-import { sxStyled, useStyles } from './styles';
-import { handleError } from 'utils/handleSwal';
+import { sxStyled, useStyles } from '../../../pages/Seguridad/styles';
+import { handleError, handleNotAccess } from 'utils/handleSwal';
+import { columnsGestionUsuario } from './columnsGrid';
+import { useSelector } from 'react-redux';
 
-interface GestionUsuariosProps {}
+interface Props {
+	listDepartment: any[];
+	listRoles: any[];
+}
 
-const columns: GridColDef[] = [
-	/*
-	{
-		field: 'id',
-		headerName: 'ID',
-		width: 60,
-		disableColumnMenu: true,
-		sortable: false,
-	},
-	*/
-	{
-		field: 'email',
-		headerName: 'Correo',
-		width: 180,
-		sortable: false,
-		disableColumnMenu: true,
-	},
-	{
-		field: 'fullName',
-		headerName: 'Nombre Completo',
-		// description: 'This column has a value getter and is not sortable.',
-		sortable: false,
-		width: 160,
-		valueGetter: (params: GridValueGetterParams) => {
-			return `${params.row.name || ''} ${params.row.last_name || ''}`;
-		},
-	},
-	{
-		field: 'block',
-		headerName: 'Bloqueado',
-		sortable: false,
-		disableColumnMenu: true,
-		valueGetter: (params: GridValueGetterParams) => {
-			return params.row.block ? 'Si' : 'No';
-		},
-	},
-];
-
-const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
+const GestionUsuarios: React.FC<Props> = ({ listDepartment, listRoles }) => {
+	const { user } = useSelector((state: any) => state.auth);
+	const { permiss }: any = user;
 	const classes = useStyles();
 
 	const { socket } = useContext(SocketContext);
 
 	const [userBlocked, setUserBlocked] = useState<boolean>(false);
 	const [openUserView, setUserView] = useState<boolean>();
-	const [roles, setRoles] = useState<any[]>([]);
-	const [department, setDepartment] = useState<any[]>([
-		{ id: 0, name: 'Admision' },
-		{ id: 1, name: 'Administracion' },
-	]);
 	// const [loading, setLoading] = useState<boolean>(true);
 	const [userRol, setUserRol] = useState<any>(null);
 	const [userDep, setUserDep] = useState<any>(null);
 	const [allUser, setUsers] = useState<any[]>([]);
+
+	console.log(userRol);
+	console.log(userDep);
+
 	const [userID, setUserID] = useState<number>(0);
 	const [email, setEmail] = useState<string>('');
 	const [lname, setLName] = useState<string>('');
@@ -89,12 +50,6 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 
 	const getData = async () => {
 		try {
-			await axios.get('/roles/all').then((data: any) => {
-				setRoles(data.data.info);
-			});
-			await axios.get('/department/all').then((data: any) => {
-				setDepartment(data.data.info);
-			});
 			await axios.get('worker/all').then((data: any) => {
 				setUsers(data.data.info);
 			});
@@ -117,6 +72,10 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	};
 
 	const handleRow = (event: any) => {
+		if (!permiss['Ver Usuarios']) {
+			handleNotAccess();
+			return;
+		}
 		getuserRol(event.row.id);
 		setUserView(true);
 	};
@@ -246,7 +205,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 	};
 	return (
 		<>
-			<Grid container spacing={4} className={classes.layout}>
+			<Grid container spacing={4}>
 				<Grid item xs={5}>
 					<div style={{ height: '80vh', width: '100%' }}>
 						{
@@ -256,7 +215,7 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 									Toolbar: customToolbar,
 								}}
 								rows={allUser}
-								columns={columns}
+								columns={columnsGestionUsuario}
 								rowsPerPageOptions={[25, 100]}
 								onCellClick={handleRow}
 							/>
@@ -297,34 +256,35 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 													variant='outlined'
 													type='text'
 													value={name + ' ' + lname}
-													// onChange={handleInputChanges}
 												/>
-												<Autocomplete
-													className={classes.inputText}
-													onChange={(event, value) => (value ? handleSelect(event, value, 'department') : null)}
-													value={userDep}
-													isOptionEqualToValue={(option: any) => {
-														return option.name === userDep.name;
-													}}
-													options={department}
-													getOptionLabel={(option: any) => (option.name ? option.name : '')}
-													renderInput={(params: any) => (
-														<TextField {...params} name='department' label='Departamento' variant='outlined' />
-													)}
-												/>
-												<Autocomplete
-													className={classes.inputText}
-													onChange={(event, value) => (value ? handleSelect(event, value, 'rol') : null)}
-													value={userRol}
-													isOptionEqualToValue={(option: any) => {
-														return option.name === userDep.name;
-													}}
-													options={roles}
-													getOptionLabel={(option: any) => (option.name ? option.name : '')}
-													renderInput={(params: any) => (
-														<TextField {...params} name='rol' label='Cargo' variant='outlined' />
-													)}
-												/>
+												{userDep && userRol ? (
+													<>
+														<Autocomplete
+															className={classes.inputText}
+															onChange={(event, value) =>
+																value ? handleSelect(event, value, 'department') : null
+															}
+															value={userDep}
+															getOptionLabel={(option: any) => (option.name ? option.name : '')}
+															isOptionEqualToValue={(option: any) => option.id === userDep.id}
+															options={listDepartment}
+															renderInput={(params: any) => (
+																<TextField {...params} name='department' label='Departamento' variant='outlined' />
+															)}
+														/>
+														<Autocomplete
+															className={classes.inputText}
+															onChange={(event, value) => (value ? handleSelect(event, value, 'rol') : null)}
+															value={userRol}
+															getOptionLabel={(option: any) => (option.name ? option.name : '')}
+															isOptionEqualToValue={(option: any) => option.id === userDep.id}
+															options={listRoles}
+															renderInput={(params: any) => (
+																<TextField {...params} name='rol' label='Cargo' variant='outlined' />
+															)}
+														/>
+													</>
+												) : null}
 												<Button
 													onClick={() => setUserBlocked(!userBlocked)}
 													sx={!userBlocked ? sxStyled.blockedButtonOff : sxStyled.blockedButtonOn}>
@@ -333,31 +293,6 @@ const GestionUsuarios: React.FC<GestionUsuariosProps> = () => {
 											</div>
 											<div className={classnames(classes.row, classes.column)}>
 												<div className={classes.cardTitles}>Permisos</div>
-												{/*
-												<FormGroup>
-													<Grid container>
-														{roles.map((rol, i) => {
-															return (
-																<Grid item xs={3} key={`${i}`}>
-																	<FormControlLabel
-																		label={rol.name}
-																		control={
-																			<Checkbox
-																				id={`${rol.id}`}
-																				checked={isInUserRol(rol.id)}
-																				onChange={handleCheckbox}
-																				name={rol.name}
-																				color={'primary'}
-																				inputProps={{ 'aria-label': 'primary checkbox' }}
-																			/>
-																		}
-																	/>
-																</Grid>
-															);
-														})}
-													</Grid>
-												</FormGroup>
-												*/}
 											</div>
 										</div>
 										<div className=''></div>

@@ -5,7 +5,7 @@ import { LocationsProvider } from 'context/Admision/CreationFM/Location/Location
 import React from 'react';
 import FormM from './FormM';
 
-export const FormMaldito: React.FC = () => {
+const FormMaldito: React.FC = () => {
 	return (
 		<DataListProvider>
 			<ImagesFmProvider>
@@ -18,3 +18,5 @@ export const FormMaldito: React.FC = () => {
 		</DataListProvider>
 	);
 };
+
+export default FormMaldito;

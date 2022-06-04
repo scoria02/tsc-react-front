@@ -16,7 +16,7 @@ import { StateFMInt } from 'store/reducers/fmReducer';
 import { RootState } from 'store/store';
 import Swal from 'sweetalert2';
 import { stepError } from 'utils/fm';
-import LoaderPrimary from '../loaders/LoaderPrimary';
+import LoaderPrimary from '../../loaders/LoaderPrimary';
 //steps
 import StepBase from './steps';
 import StepExtraPos from './steps/ExtraPos';
@@ -28,6 +28,7 @@ import StepReferencias from './steps/StepReferencias';
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
 import { setTimeout } from 'timers';
+import { handleLoadingSendFm } from 'utils/handleSwal';
 
 const initStep = ['Tipo de Solicitud'];
 
@@ -76,6 +77,7 @@ const FormM: React.FC = () => {
 		errorsCommerce,
 		validClientAndCommerce,
 		idsCAndCc,
+		setIdsCAndCc,
 		aci,
 		telemarket,
 		typeWallet,
@@ -105,6 +107,10 @@ const FormM: React.FC = () => {
 			commerce.ident_num !== '' &&
 			typeSolict !== 4
 		) {
+			setIdsCAndCc({
+				idClient: fm.id_client || 0,
+				idCommerce: fm.id_commerce || 0,
+			});
 			setTimeout(() => {
 				handleTypeSolict(4);
 				setActiveStep(2);
@@ -197,7 +203,7 @@ const FormM: React.FC = () => {
 				else setTitleNextButton('Siguiente');
 			}
 		} else setTitleNextButton('Comenzar');
-	}, [activeStep]);
+	}, [activeStep, steps]);
 
 	useEffect(() => {
 		if (activeStep === 0) {
@@ -222,7 +228,7 @@ const FormM: React.FC = () => {
 
 	useEffect(() => {
 		if (fm.loadedFM) {
-			console.log('Ready All FM');
+			//console.log('Ready All FM');
 			//socket.emit('cliente:disconnect');
 			dispatch(cleanFM());
 			resetFm();
@@ -257,7 +263,8 @@ const FormM: React.FC = () => {
 		}
 	};
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
+		//console.log('entre send complete fmx');
 		if (
 			!valids.validReadyStep(
 				typeSolict,
@@ -284,8 +291,8 @@ const FormM: React.FC = () => {
 			)
 		)
 			return;
+		handleLoadingSendFm();
 		//Send FM
-		handleLoading();
 		dispatch(
 			sendCompleteFM(
 				typeSolict,
@@ -307,36 +314,12 @@ const FormM: React.FC = () => {
 		);
 	};
 
-	const handleSubmitExtraPos = () => {
-		if (
-			!valids.validReadyStep(
-				typeSolict,
-				activeStep,
-				errorsFm,
-				errorsClient,
-				errorsCommerce,
-				client,
-				commerce,
-				pos,
-				aci,
-				telemarket,
-				typeWallet,
-				activity,
-				locationClient,
-				locationCommerce,
-				locationPos,
-				imagesForm,
-				imagesActa,
-				fm.errorClient,
-				fm.errorCommerce,
-				fm.errorNumBank,
-				fm
-			)
-		)
-			return;
+	const handleSubmitExtraPos = async () => {
+		//console.log('entre extrapos');
+		if (!idsCAndCc?.idClient || !idsCAndCc.idCommerce) return;
+		handleLoadingSendFm();
+		//console.log('todo ok');
 		//Send FM
-		handleLoading();
-
 		dispatch(
 			sendCompleteFMExtraPos(
 				typeSolict,
@@ -350,19 +333,6 @@ const FormM: React.FC = () => {
 				idLocationPos
 			)
 		);
-	};
-
-	const handleLoading = () => {
-		Swal.fire({
-			icon: 'info',
-			title: 'Enviando Solicitud...',
-			allowOutsideClick: false,
-			allowEscapeKey: false,
-			showConfirmButton: false,
-			didOpen: () => {
-				Swal.showLoading();
-			},
-		});
 	};
 
 	const handleSendForm = () => {
@@ -400,6 +370,7 @@ const FormM: React.FC = () => {
 	const getStepExtraPos: ReactElement[] = [<StepBase />, <StepExtraPos />, <StepPos />];
 
 	const handleClickButton = () => {
+		//console.log('on button');
 		if (activeStep) {
 			if (activeStep === steps.length - 1) {
 				if (typeSolict === 4) handleSubmitExtraPos();

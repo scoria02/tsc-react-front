@@ -29,7 +29,12 @@ const FullModal: FC<any> = ({ modalOpen, handleClose, children }) => {
 	const classes = useStyles();
 
 	return (
-		<Dialog fullScreen open={modalOpen} onClose={handleClose} TransitionComponent={Transition}>
+		<Dialog
+			disableEscapeKeyDown
+			fullScreen
+			open={modalOpen}
+			onClose={handleClose}
+			TransitionComponent={Transition}>
 			<div className='button-close'>
 				<div className='close-container' onClick={handleClose}>
 					<div className='leftright'></div>

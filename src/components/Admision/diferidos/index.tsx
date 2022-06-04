@@ -17,7 +17,7 @@ import { useSelector } from 'react-redux';
 import { useStyles } from '../styles/styles';
 import Diferido from './Diferido';
 import { RootState } from 'store/store';
-import { handleInfoText, handleLoadingSearch } from 'utils/handleSwal';
+import { handleLoadingSearch, handleNotAccess } from 'utils/handleSwal';
 
 const columns: GridColDef[] = [
 	{
@@ -106,7 +106,7 @@ const Diferidos: React.FC = () => {
 
 	const handleRow = (event: any) => {
 		if (!permiss['Diferido FM']) {
-			handleInfoText('No tienes acceso', 'Necesitas permisos');
+			handleNotAccess();
 			return;
 		}
 		handleLoadingSearch();

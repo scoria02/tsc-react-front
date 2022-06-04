@@ -15,6 +15,20 @@ export const handleLoading = () => {
 	});
 };
 
+export const handleLoadingSave = () => {
+	Swal.fire({
+		icon: 'info',
+		title: 'Guardando...',
+		showConfirmButton: false,
+		customClass: { container: 'swal2-validated' },
+		allowOutsideClick: false,
+		allowEscapeKey: false,
+		didOpen: () => {
+			Swal.showLoading();
+		},
+	});
+};
+
 export const handleLoadingSearch = () => {
 	Swal.fire({
 		title: 'Cargando...',
@@ -61,6 +75,17 @@ export const handleSucessTime = (text: string) => {
 	});
 };
 
+export const handleNotAccess = () => {
+	Swal.fire({
+		icon: 'info',
+		title: 'No tienes acceso',
+		text: 'Necesitas permisos',
+		customClass: { container: 'swal2-validated' },
+		showConfirmButton: true,
+		//timer: 2500,
+	});
+};
+
 export const handleInfoText = (title: string, text: string) => {
 	Swal.fire({
 		icon: 'info',
@@ -85,5 +110,40 @@ export const handleErrorProvider = (error: any) => {
 		html: html,
 		customClass: { container: 'swal2-validated' },
 		showConfirmButton: true,
+	});
+};
+
+export const handleLoadingProvider = () => {
+	Swal.fire({
+		title: 'Por favor Espere',
+		html: `Creando en <b>1000Pagos</b>`,
+		timerProgressBar: true,
+		allowOutsideClick: false,
+		allowEscapeKey: false,
+		showConfirmButton: true,
+		customClass: { container: 'swal2-validated' },
+		//timer: 40000,
+		didOpen: () => {
+			Swal.showLoading();
+			const b: any = Swal.getHtmlContainer()!.querySelector('b');
+			setInterval(() => {
+				b.textContent = b.textContent.trim() === '1000Pagos' ? 'TMS7' : '1000Pagos';
+				console.log('interval');
+			}, 3000);
+		},
+	});
+};
+
+export const handleLoadingSendFm = () => {
+	Swal.fire({
+		icon: 'info',
+		title: 'Enviando Solicitud...',
+		//allowOutsideClick: false,
+		//allowEscapeKey: false,
+		customClass: { container: 'swal2-validated' },
+		showConfirmButton: false,
+		didOpen: () => {
+			Swal.showLoading();
+		},
 	});
 };

@@ -53,11 +53,12 @@ export interface ContextFM {
 	handleChangeCheckedCommerce(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleChangeDay(event: React.ChangeEvent<HTMLInputElement>): void;
 	handleChangePos(event: React.ChangeEvent<HTMLInputElement>): void;
-	handleParamsPos(name: string, value: base | null | string): void;
+	handleParamsPos(name: string, value: base | null | string | number): void;
 	handleCheckedPos(event: React.ChangeEvent<HTMLInputElement>): void;
 	resetFm(): void;
 	validClientAndCommerce(): void | Promise<boolean>;
 	idsCAndCc: IdClient_CommerceINT | null;
+	setIdsCAndCc: Dispatch<SetStateAction<IdClient_CommerceINT | null>>;
 	aci: Aci | null;
 	handleSourceAci(event: any, value: Aci | null, name: string): void;
 	telemarket: TeleMarket | null;
