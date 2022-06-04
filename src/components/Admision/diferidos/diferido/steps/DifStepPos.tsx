@@ -43,7 +43,7 @@ const DifStepPos: FC = () => {
 		setIdLocationPos,
 	} = useContext(FMDiferidoContext);
 	//
-	console.log(solic);
+	//console.log(solic);
 
 	const {
 		listLocationPos,
@@ -58,7 +58,7 @@ const DifStepPos: FC = () => {
 		if (value) handleParamsSolic(name, value);
 	};
 
-	console.log('step posss', solic, pos);
+	//console.log('step posss', solic, pos);
 
 	return (
 		<>
@@ -106,7 +106,6 @@ const DifStepPos: FC = () => {
 							)}
 						/>
 					</div>
-					{console.log('entrego', solic?.discount)}
 					<div className={classes.input}>
 						<FormControl sx={sxStyled.inputLeft}>
 							<InputLabel>Entrego Punto</InputLabel>
@@ -114,7 +113,7 @@ const DifStepPos: FC = () => {
 								disabled={disabled}
 								name='discount'
 								onChange={(event) => {
-									console.log('data', event.target.value);
+									//console.log('data', event.target.value);
 									handleParamsSolic('discount', event.target.value === 'Si' ? true : false);
 								}}
 								value={solic?.discount ? 'Si' : 'No'}
@@ -133,7 +132,7 @@ const DifStepPos: FC = () => {
 								disabled={disabled}
 								name='pagadero'
 								onChange={(event) => {
-									console.log('data', event.target.value);
+									//console.log('data', event.target.value);
 									handleParamsSolic('pagadero', event.target.value === 'Si' ? true : false);
 								}}
 								value={solic?.pagadero ? 'Si' : 'No'}

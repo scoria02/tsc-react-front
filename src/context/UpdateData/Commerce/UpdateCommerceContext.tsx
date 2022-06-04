@@ -263,7 +263,7 @@ export const UpdateCommerceContextProvider = ({ children, data, closeModal }: Pr
 	};
 
 	const reset = (): void => {
-		console.log('reset data commerce');
+		//console.log('reset data commerce');
 		setCommerce(null);
 		resetImages();
 		resetListLocaitons();

@@ -6,8 +6,8 @@ import { ImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
 import { fmClient, fmCommerce, fmPos, IdClient_CommerceINT } from 'interfaces/fm';
 import Swal from 'sweetalert2';
 import { daysToString } from 'validation/validFm';
-import { ActionType } from '../types/types';
-import { TeleMarket } from './../../context/DataList/interface';
+import { ActionType } from '../../types/types';
+import { TeleMarket } from '../../../context/DataList/interface';
 import { handleLoadingSendFm } from 'utils/handleSwal';
 
 export const validationClient = (client: any, errValid: boolean) => {
@@ -445,7 +445,6 @@ export const sendCompleteFMExtraPos = (
 			dataPos
 		);
 		try {
-			console.log('entre extrapos redux');
 			const resFM: AxiosResponse<any> = await useAxios.post(`/FM/extraPos`, fmExtraPos);
 			Swal.close();
 			dispatch(requestSuccess(resFM.data.info.code));

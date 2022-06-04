@@ -24,7 +24,7 @@ export const Auth: GuardFunction = (to, from, next) => {
 
 export const PrivGuard: any = (to: GuardToRoute, from: GuardFunctionRouteProps, next: Next, user: any) => {
 	const { id_rol, views, id_department } = user;
-	console.log(to.location.pathname.split('/')[1]);
+	//console.log(to.location.pathname.split('/')[1]);
 	let isWorker = id_rol;
 	let userDep = views[to.location.pathname.split('/')[1]];
 	//let userDep = to.meta.dep.find((department: any) => department === id_department.name);
@@ -38,7 +38,6 @@ export const PrivGuard: any = (to: GuardToRoute, from: GuardFunctionRouteProps, 
 		// console.log('Tiene acceso worker', to.location.pathname.split('/')[1]);
 		next.props({ isWorker });
 	} else {
-		// console.log('reditrec to', from.match.path);
 		next.redirect(from.match.path);
 	}
 };

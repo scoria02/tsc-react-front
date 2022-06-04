@@ -17,7 +17,7 @@ import { Form } from '../components/administration/Form';
 import '../components/administration/styles/index.scss';
 import { getPayMent } from '../components/Admision/formMaldito/getData';
 import { SocketContext } from '../context/SocketContext';
-import { cleanAdmisionFMAdministration } from '../store/actions/administration';
+import { cleanAdmisionFMAdministration } from '../store/actions/administration/administration';
 import { RootState } from '../store/store';
 import Swal from 'sweetalert2';
 import { handleNotAccess } from 'utils/handleSwal';

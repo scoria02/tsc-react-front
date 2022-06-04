@@ -88,8 +88,10 @@ const StepUpdateCommerce: FC = () => {
 		handleLoading();
 		const res = await editCommerce.updateCommerce(commerce, imagen);
 		if (res.ok) {
+			console.log(res);
+		} else {
 			console.log('error');
-		} else console.log('error');
+		}
 	};
 
 	return (

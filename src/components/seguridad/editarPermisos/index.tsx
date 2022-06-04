@@ -26,12 +26,12 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 
 	//const [role, setRole] = useState(null);
 
-	console.log('per', listPermisos);
+	//console.log('per', listPermisos);
 
 	const handleSavePermiss = async () => {
 		handleLoadingSave();
 		if (department && role && listPermisos.length) {
-			console.log('buscar', department?.id, role?.id);
+			//console.log('buscar', department?.id, role?.id);
 			const res: any = await editPermisos.savePermiss(department.id, role.id, listPermisos);
 			if (res.ok) {
 				handleInfoText('Guardado', `Se guardo el cambio de ${department?.name} / ${role?.name}`);
@@ -46,7 +46,7 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 			...aux[index],
 			status: !aux[index].status,
 		};
-		console.log(index, aux);
+		//console.log(index, aux);
 		setListPermisos([...listPermisos]);
 	};
 
@@ -55,7 +55,7 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 		setLoading(true);
 		setListPermisos([]);
 		if (department && role) {
-			console.log('buscar', department?.id, role?.id);
+			//console.log('buscar', department?.id, role?.id);
 			const res: any = await editPermisos.getAllListPermiss(department.id, role.id);
 			if (res.ok) {
 				if (res.permiss.length) {

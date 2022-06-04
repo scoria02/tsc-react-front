@@ -1,6 +1,6 @@
-import { ActionType } from '../types/types';
-import { deleteError, updataError } from '../utils';
-import { inStateAuth } from './interfaceAuth';
+import { ActionType } from '../../types/types';
+import { deleteError, updataError } from '../../utils';
+import { inStateAuth } from '../interfaceAuth';
 
 const initialState: inStateAuth = {
 	user: null,

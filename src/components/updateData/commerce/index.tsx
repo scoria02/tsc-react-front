@@ -31,7 +31,7 @@ const ComercioList: FC = () => {
 
 	const getCommerces = async () => {
 		const commerces: any = await getAllCommerces();
-		console.log(commerces);
+		//console.log(commerces);
 		if (commerces.length) {
 			setRows(commerces);
 		}
@@ -85,12 +85,6 @@ const ComercioList: FC = () => {
 									columns={columnsGridCommerce}
 									rowsPerPageOptions={[25, 50, 100]}
 									onCellClick={handleRow}
-									/*
-						onSelectionModelChange={(item) => {
-							console.log(rows[item]);
-							//console.log('item', rows[item]);
-						}}
-						*/
 								/>
 							</div>
 						</Grid>

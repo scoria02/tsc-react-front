@@ -95,7 +95,6 @@ export const LocationsProvider = ({ children }: Props) => {
 	};
 
 	const initList = (array: any[], setListLocation: Dispatch<SetStateAction<ListLocation>>) => {
-		console.log('array', array);
 		setListLocation((prevState: any) => ({
 			...prevState,
 			municipio: array[0].data.info,
@@ -106,7 +105,6 @@ export const LocationsProvider = ({ children }: Props) => {
 	};
 
 	const initListLocation = (direccion: any, setListLocation: Dispatch<SetStateAction<ListLocation>>) => {
-		console.log('buscar paraxd', direccion);
 		const routes = [
 			`/direccion/${direccion.estado}/municipio`,
 			`/direccion/${direccion.estado}/${direccion.municipio}/ciudad`,

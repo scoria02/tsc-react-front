@@ -31,9 +31,6 @@ const GestionUsuarios: React.FC<Props> = ({ listDepartment, listRoles }) => {
 	const [userDep, setUserDep] = useState<any>(null);
 	const [allUser, setUsers] = useState<any[]>([]);
 
-	console.log(userRol);
-	console.log(userDep);
-
 	const [userID, setUserID] = useState<number>(0);
 	const [email, setEmail] = useState<string>('');
 	const [lname, setLName] = useState<string>('');
@@ -276,8 +273,8 @@ const GestionUsuarios: React.FC<Props> = ({ listDepartment, listRoles }) => {
 															className={classes.inputText}
 															onChange={(event, value) => (value ? handleSelect(event, value, 'rol') : null)}
 															value={userRol}
-															getOptionLabel={(option: any) => (option.name ? option.name : '')}
-															isOptionEqualToValue={(option: any) => option.id === userDep.id}
+															getOptionLabel={(option: any) => option.name}
+															isOptionEqualToValue={(option, value) => option.id === value.id}
 															options={listRoles}
 															renderInput={(params: any) => (
 																<TextField {...params} name='rol' label='Cargo' variant='outlined' />

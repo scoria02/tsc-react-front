@@ -94,7 +94,7 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 				//console.log(typeof data === 'number');
 				//if (typeof data === 'number') {
 				if (data.id) {
-					console.log('idFM', data);
+					//console.log('idFM', data);
 					setIdFm(data.id);
 					return;
 				}

@@ -10,8 +10,8 @@ import React, { ReactElement, useContext, useEffect, useLayoutEffect, useState }
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { urlFM } from 'routers/url';
-import { cleanFM, sendCompleteFM, sendCompleteFMExtraPos } from 'store/actions/fm';
-import { StateFMInt } from 'store/reducers/fmReducer';
+import { cleanFM, sendCompleteFM, sendCompleteFMExtraPos } from 'store/actions/admision/fm';
+import { StateFMInt } from 'store/reducers/admision/fmReducer';
 //Redux
 import { RootState } from 'store/store';
 import Swal from 'sweetalert2';

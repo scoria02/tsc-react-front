@@ -165,7 +165,7 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 			(!client || !commerce || !pos || locationClient || !locationCommerce || !locationPos || !stepsFM.length)
 		) {
 			const { id_client, id_commerce } = fm;
-			console.log('Diferido context', fm);
+			//console.log('Diferido context', fm);
 			if (id_client) {
 				const { validate, phones, id_location, ref_person_1, ref_person_2, ...clientData } = id_client;
 				const { id_direccion } = id_location;
@@ -294,7 +294,7 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 	//nuevooo
 	useEffect(() => {
 		const validStep = () => {
-			console.log('step actual', stepsFM[activeStep]);
+			//console.log('step actual', stepsFM[activeStep]);
 			switch (stepsFM[activeStep]) {
 				case 'Cliente':
 					return !valid.validReadyStepBO(client, errorClient, errorClientValid);

@@ -20,7 +20,7 @@ import ImagesFmContext from 'context/Admision/CreationFM/fmImages/ImagesFmContex
 import { Days } from 'interfaces/fm';
 import { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetCommerceValid, validationCommerce } from 'store/actions/fm';
+import { resetCommerceValid, validationCommerce } from 'store/actions/admision/fm';
 import { RootState } from 'store/store';
 import { recaudo } from 'utils/recaudos';
 import { sxStyled, useStylesFM } from '../styles';
@@ -128,7 +128,7 @@ const StepCommerce: FC = () => {
 			setActaFlag(true);
 		} else {
 			if (imagesActa.length) {
-				console.log('delete');
+				//console.log('delete');
 				deleteImgActa();
 			}
 		}

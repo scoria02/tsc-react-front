@@ -13,7 +13,7 @@ const StepCompDep: React.FC = () => {
 	const [load, setLoad] = useState(false);
 
 	const { solic, handleChangeValid, listValidated } = useContext(FMValidDataContext);
-	console.log(solic);
+	//console.log(solic);
 
 	const { valid_comp_dep } = listValidated;
 	const [state, setState] = useState(valid_comp_dep);

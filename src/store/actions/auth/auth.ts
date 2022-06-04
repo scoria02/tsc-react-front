@@ -2,8 +2,8 @@ import { AxiosResponse } from 'axios';
 import useAxios from 'config';
 import { baseUrl, urlLogin } from 'routers/url';
 import Swal from 'sweetalert2';
-import { ActionType } from '../types/types';
-import { StartLoading } from './ui';
+import { ActionType } from '../../types/types';
+import { StartLoading } from '../ui';
 
 export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
@@ -59,9 +59,7 @@ export const refreshLogin = () => {
 			dispatch(requestSuccess(res.data.info));
 			dispatch(StartLoading());
 		} catch (error: any) {
-			console.log('borrar data user');
 			localStorage.clear();
-			console.log(error.response);
 			if (error.response.data.code === 401) {
 				//Error de que algo cambio en el usuario
 				Swal.fire({

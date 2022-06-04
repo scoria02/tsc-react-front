@@ -10,7 +10,7 @@ import { Views } from 'store/reducers/interfaceAuth';
 import LoaderPrimary from '../components/loaders/LoaderPrimary';
 import MainMenu from '../components/MainMenu';
 //Redux
-import { refreshLogin } from '../store/actions/auth';
+import { refreshLogin } from '../store/actions/auth/auth';
 import { FinishLoading } from '../store/actions/ui';
 import { Auth, PrivGuard } from './guards';
 import Private from './routes/private';

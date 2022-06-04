@@ -1,16 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { FC, useEffect, useState } from 'react';
+//
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import Autocomplete from '@mui/lab/Autocomplete';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
+import { Autocomplete, Button, IconButton, TextField } from '@mui/material';
 import RecPdf from 'components/utilis/images/RecPdf';
-import { FC, useEffect, useState } from 'react';
+//
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { updateStatusFMAdministration } from 'store/actions/administration';
+import { updateStatusFMAdministration } from 'store/actions/administration/administration';
 import Swal from 'sweetalert2';
 import { handleNotAccess } from 'utils/handleSwal';
 import { recaudo } from 'utils/recaudos';
@@ -196,7 +195,7 @@ export const Form: FC<any> = ({
 	}, [payment]);
 
 	useEffect(() => {
-		console.log('form admin', fm);
+		//console.log('form admin', fm);
 	}, []);
 
 	const imagen: any = path

@@ -7,6 +7,6 @@ export const getDiferidos = async () => {
 	});
 	const data = await resp.json();
 
-	console.log(data);
+	//console.log(data);
 	return data;
 };

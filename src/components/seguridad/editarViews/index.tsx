@@ -20,12 +20,12 @@ const EditarViews: React.FC<Props> = ({ listDepartment }) => {
 
 	const [loading, setLoading] = useState(false);
 
-	console.log('per', listViews);
+	//console.log('per', listViews);
 
 	const handleSaveViews = async () => {
 		handleLoadingSave();
 		if (department && listViews.length) {
-			console.log('buscar', department?.id);
+			//console.log('buscar', department?.id);
 			const res: any = await editPermisos.saveViews(department.id, listViews);
 			if (res.ok) {
 				handleInfoText('Guardado', `Se guardo el cambio de ${department?.name}`);
@@ -40,7 +40,7 @@ const EditarViews: React.FC<Props> = ({ listDepartment }) => {
 			...aux[index],
 			status: !aux[index].status,
 		};
-		console.log(index, aux);
+		//console.log(index, aux);
 		setListViews([...listViews]);
 	};
 
@@ -49,7 +49,7 @@ const EditarViews: React.FC<Props> = ({ listDepartment }) => {
 		setLoading(true);
 		setListViews([]);
 		if (department) {
-			console.log('buscar', department?.id);
+			//console.log('buscar', department?.id);
 			const res: any = await editPermisos.getAllListViews(department.id);
 			if (res.ok) {
 				if (res.permiss.length) {

@@ -128,7 +128,7 @@ export const handleLoadingProvider = () => {
 			const b: any = Swal.getHtmlContainer()!.querySelector('b');
 			setInterval(() => {
 				b.textContent = b.textContent.trim() === '1000Pagos' ? 'TMS7' : '1000Pagos';
-				console.log('interval');
+				//console.log('interval');
 			}, 3000);
 		},
 	});

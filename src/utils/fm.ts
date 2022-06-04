@@ -1,4 +1,4 @@
-import { StateFMInt } from '../store/reducers/fmReducer';
+import { StateFMInt } from '../store/reducers/admision/fmReducer';
 
 export const stepError = (key: number, fm: StateFMInt) => {
 	if (key === 1 && fm.errorClient) {

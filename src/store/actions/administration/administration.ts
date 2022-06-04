@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import useAxios from 'config/index';
 import Swal from 'sweetalert2';
-import { ActionType } from '../types/types';
+import { ActionType } from '../../types/types';
 
 export const updateToken = (token: any) => {
 	localStorage.setItem('token', token.data.token);
@@ -15,7 +15,6 @@ export const updateStatusFMAdministration = (id_fm: number, id_statusFMAd: numbe
 	return async (dispatch: any) => {
 		try {
 			const res: AxiosResponse<any> = await useAxios.put(`/FM/administration/${id_fm}/status`, data);
-			console.log(res);
 			updateToken(res);
 			dispatch(requestSuccess(id_statusFMAd));
 		} catch (error: any) {

@@ -2,7 +2,7 @@
 import { FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { validationIdentDoc } from 'store/actions/auth';
+import { validationIdentDoc } from 'store/actions/auth/auth';
 //Redux
 import { RootState } from 'store/store';
 //Interfaces

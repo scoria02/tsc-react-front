@@ -25,7 +25,7 @@ const DataCommerce: React.FC<Prop> = ({ commerce, click }) => {
 
 	const handleClose = () => {
 		reset();
-		console.log('deberia reset');
+		//console.log('deberia reset');
 		setModelOpen(false);
 	};
 

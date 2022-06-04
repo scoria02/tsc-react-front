@@ -46,7 +46,7 @@ const Terminales: FC = () => {
 	];
 	const handleSearchChange = (e: any) => {
 		const value = e.target.value;
-		console.log(typeof value);
+		//console.log(typeof value);
 		setSearch(value);
 	};
 
@@ -55,7 +55,7 @@ const Terminales: FC = () => {
 		event: MuiEvent<React.MouseEvent>,
 		details: GridCallbackDetails
 	) => {
-		console.log('valor seleccionado en la fila', params.row);
+		//console.log('valor seleccionado en la fila', params.row);
 	};
 
 	return (

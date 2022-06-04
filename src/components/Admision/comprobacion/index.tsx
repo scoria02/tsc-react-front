@@ -3,7 +3,7 @@ import { FMValidContextProvider } from 'context/Admision/Validation/FMValidDataC
 import { SocketContext } from 'context/SocketContext';
 import { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { cleanAdmisionFM, updateStatusFM } from 'store/actions/admisionFm';
+import { cleanAdmisionFM, updateStatusFM } from 'store/actions/admision/validation';
 import { RootState } from 'store/store';
 import { getFM_solic } from '../getFmData';
 import Validacion from './Validacion';

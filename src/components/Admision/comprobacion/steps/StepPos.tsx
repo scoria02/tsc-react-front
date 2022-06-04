@@ -53,7 +53,7 @@ const StepPos: FC = () => {
 
 	const imagen = `${process.env.REACT_APP_API_IMAGES}/${client?.rc_ident_card?.path}`;
 
-	console.log(solic);
+	//console.log(solic);
 
 	return (
 		<div className={classes.grid}>

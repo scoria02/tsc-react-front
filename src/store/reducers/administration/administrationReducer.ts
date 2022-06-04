@@ -1,11 +1,11 @@
-import { ActionType } from '../types/types';
+import { ActionType } from '../../types/types';
 
 interface inState {
-	fmAd: any[],
-	errorGetDataAd: boolean,
-	updatedStatusAd: boolean,
-	errorStatusFMAd: boolean,
-	id_statusFMAd: number,
+	fmAd: any[];
+	errorGetDataAd: boolean;
+	updatedStatusAd: boolean;
+	errorStatusFMAd: boolean;
+	id_statusFMAd: number;
 }
 
 const initialState: inState = {
@@ -50,4 +50,4 @@ export const administrationReducer = (state = initialState, action: any) => {
 		default:
 			return state;
 	}
-}
+};

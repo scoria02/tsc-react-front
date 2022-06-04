@@ -47,7 +47,7 @@ import {
 	urlSeguridad,
 	urlUpdateCommerce,
 } from 'routers/url';
-import { startLogout } from 'store/actions/auth';
+import { startLogout } from 'store/actions/auth/auth';
 import { FinishLoading } from 'store/actions/ui';
 import { RootState } from 'store/store';
 import './index.scss';
@@ -108,6 +108,8 @@ const MainMenu: FC = () => {
 					setSection('Cobranza');
 					break;
 				default:
+					console.log('ruta no existe');
+					history.push(baseUrl);
 					setSection('1000Pagos C.A.');
 					break;
 			}
@@ -136,7 +138,7 @@ const MainMenu: FC = () => {
 
 	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, url: string) => {
 		//dispatch(refreshLogin());
-		console.log('aquiero ir a ', url);
+		//console.log('aquiero ir a ', url);
 		history.push(url);
 		handleDrawerClose();
 	};
@@ -150,7 +152,7 @@ const MainMenu: FC = () => {
 	};
 
 	const handleMenuClose = () => {
-		console.log('close');
+		//console.log('close');
 		setAnchorEl(null);
 		handleMobileMenuClose();
 	};

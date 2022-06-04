@@ -42,7 +42,7 @@ async function getDataCommerce(id_commerce: number) {
 export async function getAllCommerces() {
 	try {
 		const res: AxiosResponse<any> = await useAxios.get('/edit/listCommerces');
-		console.log(res);
+		//console.log(res);
 		if (res.data.info) return res.data.info;
 	} catch (error: any) {
 		//console.log(err);
@@ -98,9 +98,8 @@ const dataFormatCommerce = (commerce: any) => ({
 });
 
 export async function updateCommerce(commerce: any, imagen: any) {
-	console.log('crear para', commerce);
 	const dataCommerce = dataFormatCommerce(commerce);
-	console.log('creacion', dataCommerce);
+	//console.log('creacion', dataCommerce);
 	const data = formatData(dataCommerce, imagen);
 	try {
 		const res: AxiosResponse<any> = await useAxios.post('/edit/commerce', data);

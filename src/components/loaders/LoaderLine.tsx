@@ -16,7 +16,7 @@ const useStyles = makeStyles((styles: Theme) => ({
 
 const LoaderLine: React.FC = () => {
 	const classes = useStyles();
-	console.log('show in loader');
+	//console.log('show in loader');
 	return (
 		<Box sx={{ width: '100%' }}>
 			<LinearProgress />

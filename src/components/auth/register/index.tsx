@@ -10,7 +10,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { baseUrl } from 'routers/url';
-import { registerUser } from 'store/actions/auth';
+import { registerUser } from 'store/actions/auth/auth';
 //Redux
 import { RootState } from 'store/store';
 import { capitalizedFull } from 'utils/formatName';
@@ -178,7 +178,7 @@ const Register: React.FC = () => {
 				 */
 			}
 		} else if (getDataControl === 1) {
-			console.log('entre');
+			//console.log('entre');
 			if (listCompany.length === 0) {
 				setListCompany([
 					{ id: 1, name: 'Tranred' },
@@ -197,7 +197,7 @@ const Register: React.FC = () => {
 				 */
 			}
 		} else if (getDataControl === 2) {
-			console.log('Todo correcto');
+			//console.log('Todo correcto');
 		}
 	}, [getDataControl]);
 
@@ -247,7 +247,7 @@ const Register: React.FC = () => {
 
 	const handleSubmit = () => {
 		if (valids.allInputNotNUll(activeStep, userForm) || valids.checkErrorAllInput(activeStep, userFormError)) {
-			console.log('Debe llenear todos los campos');
+			//console.log('Debe llenear todos los campos');
 			return;
 		}
 		handleLoading();

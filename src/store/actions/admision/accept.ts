@@ -1,4 +1,4 @@
-import { ActionType } from '../types/types';
+import { ActionType } from '../../types/types';
 
 export const stepComplete = (step: any) => ({
 	type: ActionType.stepComplete,
@@ -12,9 +12,9 @@ export const Valid = (valid: any) => ({
 
 export const cleanRec = () => ({
 	type: ActionType.cleanAcceptRec,
-})
+});
 
 export const selectAci = (state: boolean) => ({
 	type: ActionType.acceptAci,
-	payload: state
-})
+	payload: state,
+});

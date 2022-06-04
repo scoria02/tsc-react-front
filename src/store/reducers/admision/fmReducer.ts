@@ -1,4 +1,4 @@
-import { ActionType } from '../types/types';
+import { ActionType } from '../../types/types';
 
 export interface StateFMInt {
 	id_client: number;

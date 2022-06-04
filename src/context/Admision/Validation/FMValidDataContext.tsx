@@ -84,7 +84,7 @@ export const FMValidContextProvider = ({ children, fm }: Props) => {
 		if (fm) {
 			if (!client || !commerce || !pos || locationClient || !locationCommerce || !locationPos || !stepsFM.length) {
 				const { id_client, id_commerce } = fm;
-				console.log('fm context', fm);
+				//console.log('fm context', fm);
 				const { id_location, ref_person_1, ref_person_2, ...clientData } = id_client;
 				setClient({
 					...clientData,

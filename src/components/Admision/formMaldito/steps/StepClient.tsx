@@ -19,7 +19,7 @@ import LocationsContext from 'context/Admision/CreationFM/Location/LocationsCont
 import React, { FC, useContext } from 'react';
 //redux
 import { useDispatch, useSelector } from 'react-redux';
-import { validationClient, resetClientValid } from 'store/actions/fm';
+import { validationClient, resetClientValid } from 'store/actions/admision/fm';
 //
 import { RootState } from 'store/store';
 import { validInputString } from 'utils/fm';

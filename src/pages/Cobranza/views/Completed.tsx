@@ -11,13 +11,6 @@ const columns: GridColDef[] = [
 		disableColumnMenu: true,
 		sortable: false,
 	},
-	// {
-	// 	field: 'name',
-	// 	width: 180,
-	// 	headerName: 'Nombre',
-	// 	sortable: false,
-	// 	disableColumnMenu: true,
-	// },
 	{
 		field: 'fullName',
 		headerName: 'Nombre',

@@ -15,7 +15,7 @@ import { FC, useLayoutEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { baseUrl } from 'routers/url';
-import { refreshLogin, updateToken } from 'store/actions/auth';
+import { refreshLogin, updateToken } from 'store/actions/auth/auth';
 import { StartLoading } from 'store/actions/ui';
 import Swal from 'sweetalert2';
 import { capitalizedFull } from 'utils/formatName';
@@ -119,7 +119,7 @@ const RestorePassword: FC<IRestorePassword> = ({ token }) => {
 		const payload = { token: tokenURL, password };
 		try {
 			const resp = await useAxios.post(`/auth/passrenew/`, payload);
-			console.log('resp', resp.data.info.token);
+			//console.log('resp', resp.data.info.token);
 			updateToken(resp);
 			dispatch(refreshLogin());
 			history.push(baseUrl);

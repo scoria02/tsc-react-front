@@ -261,13 +261,13 @@ export const daysToString = (value: any) => {
 
 export const validMashes = (activeStep: number, mashClient: boolean, mashCommerce: boolean): boolean => {
 	if (activeStep >= 0 && mashClient) {
-		console.log('cliente no validado aun');
+		//console.log('cliente no validado aun');
 		return true;
 	} else if (activeStep >= 2 && mashCommerce) {
-		console.log('commercio no validado');
+		//console.log('commercio no validado');
 		return true;
 	} else {
-		console.log('cliente y comercio validado');
+		//console.log('cliente y comercio validado');
 		return false;
 	}
 };

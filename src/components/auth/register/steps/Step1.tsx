@@ -5,7 +5,7 @@ import { IconButton, InputAdornment, Snackbar, SnackbarContent, TextField, Typog
 import Alert from 'components/alert/Alert1';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { validationEmail } from 'store/actions/auth';
+import { validationEmail } from 'store/actions/auth/auth';
 //Redux
 import { RootState } from 'store/store';
 import { Interface_ErrorPass, Interface_RegisterUser, Interface_RegisterUserError } from '../../interfaceAuth';

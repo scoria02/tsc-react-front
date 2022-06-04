@@ -22,7 +22,7 @@ interface Prop {
 
 const Diferido: React.FC<Prop> = ({ fm, setFm, id, setId }) => {
 	const dispatch = useDispatch();
-	console.log('fm', fm);
+	//console.log('fm', fm);
 	//const { modalOpenDiferido } = useSelector((state: any) => state.ui);
 	const updatedStatus: any = useSelector((state: RootState) => state.fmAdmision.updatedStatusDiferido);
 
@@ -32,24 +32,24 @@ const Diferido: React.FC<Prop> = ({ fm, setFm, id, setId }) => {
 
 	const getFmInfo = async (id_fm: number) => {
 		if (!fm) {
-			console.log('buscar', id);
+			//console.log('buscar', id);
 			const data: any = await getFM_solic(id_fm);
-			console.log('data', data.fm);
+			//console.log('data', data.fm);
 			if (data.ok) {
 				setFm(data.fm);
-				console.log('fm', data);
+				//console.log('fm', data);
 			} else {
 				setFm(null);
 				socket.emit('cliente:disconnect');
-				console.log('No hay info del fm');
+				//console.log('No hay info del fm');
 			}
 		}
 	};
 
 	useEffect(() => {
-		console.log('tiene', fm);
+		//console.log('tiene', fm);
 		if (!fm && id) {
-			console.log('buscar -> ', id);
+			//console.log('buscar -> ', id);
 			getFmInfo(id);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,7 +57,7 @@ const Diferido: React.FC<Prop> = ({ fm, setFm, id, setId }) => {
 
 	useEffect(() => {
 		if (updatedStatus) {
-			console.log('Clean fm from diferdio');
+			//console.log('Clean fm from diferdio');
 			socket.emit('cliente:disconnet');
 			Swal.fire({
 				title: 'Formulario Verificado',
@@ -86,7 +86,6 @@ const Diferido: React.FC<Prop> = ({ fm, setFm, id, setId }) => {
 				<>
 					{fm ? (
 						<FullModal modalOpen={modalOpen} handleClose={handleClose}>
-							{console.log('listo cargar', fm)}
 							<LocationsProvider>
 								<DiferidoValid />
 							</LocationsProvider>

@@ -59,7 +59,6 @@ export async function getAllListPermiss(dep: number, rol: number) {
 }
 
 export async function savePermiss(dep: number, rol: number, permiss: any[]) {
-	console.log('newPerms', permiss);
 	try {
 		const res: AxiosResponse<any> = await useAxios.post(`/seguridad/permissions/${dep}/${rol}`, permiss);
 		return {
@@ -92,7 +91,6 @@ export async function getAllListViews(dep: number) {
 }
 
 export async function saveViews(dep: number, views: any[]) {
-	console.log('newPerms', views);
 	try {
 		const res: AxiosResponse<any> = await useAxios.post(`/seguridad/views/${dep}`, views);
 		return {

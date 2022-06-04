@@ -131,12 +131,12 @@ export const inputNotNull = (data: any): boolean => {
 		if (typeof item[1] === 'string' && item[1].trim() === '') {
 			if (item[0] === 'ci_referred') {
 			} else {
-				console.log('Esta vacio error:', item[0]);
+				//console.log('Esta vacio error:', item[0]);
 				return true;
 			}
 		} else if (!item[1]) {
 			if (item[0].slice(0, 3) !== 'rc_') {
-				console.log('Esta vacio error:', item[0]);
+				//console.log('Esta vacio error:', item[0]);
 				return true;
 			}
 		}
@@ -266,13 +266,13 @@ export const notNullImagenActa = (activeStep: number, imagesActa: any, isActa: n
 
 export const validMashes = (activeStep: number, mashClient: boolean, mashCommerce: boolean): boolean => {
 	if (activeStep >= 1 && mashClient) {
-		console.log('cliente no validado aun');
+		//console.log('cliente no validado aun');
 		return true;
 	} else if (activeStep >= 3 && mashCommerce) {
-		console.log('commercio no validado');
+		//console.log('commercio no validado');
 		return true;
 	} else {
-		console.log('cliente y comercio validado');
+		//console.log('cliente y comercio validado');
 		return false;
 	}
 };
@@ -448,7 +448,6 @@ export const errorObject = (data: any, error: any, name: string, value: any): an
 			break;
 		case 'location':
 			temp = validLocation(name, data, temp);
-			console.log('location', temp);
 			break;
 		case 'phone1':
 			temp.phone1 = validPhone(value as string);

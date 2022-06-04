@@ -17,7 +17,7 @@ import FMDataContext from 'context/Admision/CreationFM/fmAdmision/FmContext';
 import ImagesFmContext from 'context/Admision/CreationFM/fmImages/ImagesFmContext';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { validationNumBank } from 'store/actions/fm';
+import { validationNumBank } from 'store/actions/admision/fm';
 import { RootState } from 'store/store';
 import { recaudo } from 'utils/recaudos';
 import { sxStyled, useStylesFM } from '../styles';

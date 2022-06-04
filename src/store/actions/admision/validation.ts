@@ -1,11 +1,11 @@
 import useAxios from 'config/index';
 import { ValidatedFace } from 'context/Admision/Validation/interface';
-import { ActionType } from '../types/types';
+import { ActionType } from '../../types/types';
 import { cleanRec } from './accept';
 import Swal from 'sweetalert2';
-import { CloseModal } from './ui';
+import { CloseModal } from '../ui';
 import { handleErrorProvider } from 'utils/handleSwal';
-import { successValidationFM } from './admision/utils/verificationFM';
+import { successValidationFM } from './utils/verificationFM';
 import { Socket } from 'socket.io-client';
 
 export const updateToken = (token: any) => {

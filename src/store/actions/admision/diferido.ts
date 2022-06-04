@@ -1,6 +1,5 @@
 import { ActionType } from 'store/types/types';
 import useAxios from 'config/index';
-import { AxiosResponse } from 'axios';
 import Swal from 'sweetalert2';
 import { ImagesInt } from 'context/Admision/CreationFM/fmImages/interface';
 import { handleError, handleErrorProvider } from 'utils/handleSwal';
@@ -220,9 +219,7 @@ export const onChangeFmDiferito = (event: any) => async (dispatch: any) => {
 export const validationClientDiferido = (client: any, errValid: boolean) => {
 	return async (dispatch: any) => {
 		try {
-			console.log('validar', client);
-			const res: AxiosResponse<any> = await useAxios.post(`/FM/client/diferido/valid`, client);
-			console.log('validado', res.data);
+			await useAxios.post(`/FM/client/diferido/valid`, client);
 			dispatch(requestSuccess());
 		} catch (error: any) {
 			dispatch(requestError());
@@ -246,9 +243,7 @@ export const validationClientDiferido = (client: any, errValid: boolean) => {
 export const validationCommerceDiferido = (commerce: any, errValid: boolean) => {
 	return async (dispatch: any) => {
 		try {
-			console.log('validar commerce', commerce);
-			const res: AxiosResponse<any> = await useAxios.post(`/FM/commerce/diferido/valid`, commerce);
-			console.log('validado', res.data);
+			await useAxios.post(`/FM/commerce/diferido/valid`, commerce);
 			dispatch(requestSuccess());
 		} catch (error: any) {
 			dispatch(requestError());
