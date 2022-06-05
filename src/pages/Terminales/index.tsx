@@ -1,77 +1,120 @@
-import { TextField } from '@mui/material';
-import { GridCallbackDetails, GridCellParams, GridColDef, GridRowData, MuiEvent } from '@mui/x-data-grid';
-import Table from 'components/table';
-import { FC, useState } from 'react';
-import { useStyles } from './styles';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import LoaderLine from 'components/loaders/LoaderLine';
+import TabPanel from '@mui/lab/TabPanel';
+import { Tab } from '@mui/material';
+import { FC, useState, useLayoutEffect, useEffect } from 'react';
+import { sxStyled, useStyles } from './styles/styles';
+import ListTerminals from './components/ListTerminals';
+import ListCommerce from './components/ListCommerce';
+import Swal from 'sweetalert2';
+import { handleLoadingSearch } from 'utils/handleSwal';
+import { activacion } from './services';
 
-const Terminales: FC = () => {
+const Seguridad: FC = () => {
 	const classes = useStyles();
-	const [searchInput, setSearch] = useState<string>('');
-	const columns: GridColDef[] = [
-		{ field: 'terminal', headerName: 'Terminal', type: 'string', width: 240, editable: false },
-		{ field: 'comercio', headerName: 'Comercio', type: 'string', width: 240, editable: false },
-		{ field: 'estatus', headerName: 'Estatus', type: 'string', width: 240, editable: false },
-	];
-	const rows: GridRowData[] = [
-		{
-			id: 11,
-			terminal: '10101010',
-			comercio: 'Dame 2',
-			estatus: 'Activo',
-		},
-		{
-			id: 12,
-			terminal: '10101010',
-			comercio: 'Dame 2',
-			estatus: 'Activo',
-		},
-		{
-			id: 13,
-			terminal: '10101010',
-			comercio: 'Dame 2',
-			estatus: 'Activo',
-		},
-		{
-			id: 14,
-			terminal: '10101010',
-			comercio: 'Dame 2',
-			estatus: 'Activo',
-		},
-		{
-			id: 15,
-			terminal: '10101010',
-			comercio: 'Dame 2',
-			estatus: 'Activo',
-		},
-	];
-	const handleSearchChange = (e: any) => {
-		const value = e.target.value;
-		//console.log(typeof value);
-		setSearch(value);
+	const [tab, setTab] = useState('');
+	const [listTerminales, setListTerminales] = useState([]);
+	const [listCommerces, setListCommerces] = useState([]);
+
+	const getListTerminals = async () => {
+		const res: any = await activacion.getAllListTerminals();
+		console.log(res.terminals);
+		//Swal.close();
+		if (res.ok && res.terminals.length) {
+			Swal.close();
+			setListTerminales(res.terminals);
+		}
 	};
 
-	const DoubleClickTable = (
-		params: GridCellParams,
-		event: MuiEvent<React.MouseEvent>,
-		details: GridCallbackDetails
-	) => {
-		//console.log('valor seleccionado en la fila', params.row);
+	const getListCommerces = async () => {
+		const res: any = await activacion.getAllListCommerces();
+		//Swal.close();
+		console.log(res);
+		if (res.ok && res.commerces.length) {
+			Swal.close();
+			setListCommerces(res.commerces);
+		}
+	};
+
+	useEffect(() => {
+		if (tab === 'terminal' && !listTerminales.length) {
+			handleLoadingSearch();
+			console.log('buscar terminales');
+			getListTerminals();
+		}
+		if (tab === 'commerce' && !listCommerces.length) {
+			handleLoadingSearch();
+			console.log('buscar comercio');
+			getListCommerces();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [tab]);
+
+	useLayoutEffect(() => {
+		Swal.fire({
+			icon: 'question',
+			title: 'Buscar lista de: ',
+			showDenyButton: true,
+			//showCancelButton: true,
+			confirmButtonText: 'Comercios',
+			denyButtonText: 'Terminales',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
+			customClass: { container: 'swal2-validated' },
+		}).then((result) => {
+			/* Read more about isConfirmed, isDenied below */
+			if (result.isConfirmed) {
+				Swal.fire('Comercio', '', 'success');
+				setTab('commerce');
+			} else if (result.isDenied) {
+				Swal.fire('Terminal', '', 'info');
+				setTab('terminal');
+			}
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const handleChange = (event: any, newValue: any) => {
+		setTab(newValue);
 	};
 
 	return (
-		<div className={classes.terminales}>
-			<div className={classes.searchRow}>
-				<TextField
-					id='searchvalue'
-					label='Ingrese Terminal a buscar'
-					variant='outlined'
-					value={searchInput}
-					onChange={handleSearchChange}
-				/>
-			</div>
-			<Table doubleClick={DoubleClickTable} columns={columns} rows={rows} />
+		<div className={classes.wrapper}>
+			<TabContext value={tab}>
+				<TabList
+					onChange={handleChange}
+					aria-label='lab API tabs example'
+					indicatorColor='primary'
+					textColor='primary'>
+					<Tab
+						sx={sxStyled.tabName}
+						label='Terminales'
+						value={'terminal'}
+						wrapped
+						classes={{ root: classes.tabLabel }}
+					/>
+					<Tab
+						sx={sxStyled.tabName}
+						label='Comercios'
+						value={'commerce'}
+						wrapped
+						classes={{ root: classes.tabLabel }}
+					/>
+				</TabList>
+				{tab && (
+					<>
+						<TabPanel value={'terminal'} classes={{ root: classes.tabPanel }}>
+							{listTerminales.length ? <ListTerminals terminals={listTerminales} /> : <LoaderLine />}
+						</TabPanel>
+						<TabPanel value={'commerce'} classes={{ root: classes.tabPanel }}>
+							{listCommerces.length ? <ListCommerce commerces={listCommerces} /> : <LoaderLine />}
+						</TabPanel>
+					</>
+				)}
+			</TabContext>
 		</div>
 	);
 };
 
-export default Terminales;
+export default Seguridad;

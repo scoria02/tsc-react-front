@@ -3,12 +3,12 @@ import TabList from '@mui/lab/TabList';
 import LoaderLine from 'components/loaders/LoaderLine';
 import TabPanel from '@mui/lab/TabPanel';
 import { Tab } from '@mui/material';
-import EditarPermisos from 'components/seguridad/editarPermisos';
-import GestionUsuarios from 'components/seguridad/editarUsuarios';
+import EditarPermisos from 'pages/Seguridad/components/editarPermisos';
+import GestionUsuarios from 'pages/Seguridad/components/editarUsuarios';
 import { FC, useState, useLayoutEffect } from 'react';
-import { editPermisos } from 'services/seguridad/permisos';
+import { editPermisos } from 'pages/Seguridad/services/permisos';
 import { sxStyled, useStyles } from './styles';
-import EditarViews from 'components/seguridad/editarViews';
+import EditarViews from 'pages/Seguridad/components/editarViews';
 
 const Seguridad: FC = () => {
 	const classes = useStyles();

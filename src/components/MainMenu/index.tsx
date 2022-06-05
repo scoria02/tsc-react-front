@@ -1,4 +1,5 @@
 import { default as AccountCircle } from '@mui/icons-material/AccountCircle';
+import EditIcon from '@mui/icons-material/Edit';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -46,6 +47,7 @@ import {
 	urlLogin,
 	urlSeguridad,
 	urlUpdateCommerce,
+	urlTerminales,
 } from 'routers/url';
 import { startLogout } from 'store/actions/auth/auth';
 import { FinishLoading } from 'store/actions/ui';
@@ -61,15 +63,18 @@ const MainMenu: FC = () => {
 
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
+	/*
+	const [fm, setFm] = useState(false);
 	const [administracion, setAdministracion] = useState(false);
-	const [section, setSection] = useState<string>('');
 	const [seguridad, setSeguridad] = useState(false);
 	const [admision, setAdmision] = useState(false);
 	const [cobranza, setCobranza] = useState(false);
 	const [updateCommerce, setUpdateCommerce] = useState(false);
+	const [terminales, setTerminales] = useState(false);
+	*/
 	const { menu } = useContext(ApprouterContext);
 	const [open, setOpen] = useState(false); //Nav Left
-	const [fm, setFm] = useState(false);
+	const [section, setSection] = useState<string>('');
 	const [user, setUser] = useState({
 		name: '',
 		last_name: '',
@@ -82,13 +87,16 @@ const MainMenu: FC = () => {
 			setUser(userDB.data);
 		}
 
+		/*
 		setFm(menu['solicitud'] ? true : false);
 		setAdmision(menu['admision'] ? true : false);
 		setAdministracion(menu['administracion'] ? true : false);
 		setCobranza(menu['cobranza'] ? true : false);
 		setUpdateCommerce(menu['editar_commerce'] ? true : false);
+		//
 		setSeguridad(menu['seguridad'] ? true : false);
 		//console.log(menu);
+		*/
 
 		if (history) {
 			switch (history.location.pathname) {
@@ -329,7 +337,7 @@ const MainMenu: FC = () => {
 						</ListItemIcon>
 						<ListItemText primary='Inicio' />
 					</ListItem>
-					{fm && (
+					{menu['solicitud'] && (
 						<ListItem button onClick={(event) => handleListItemClick(event, urlFM)}>
 							<ListItemIcon classes={{ root: classes.icon }}>
 								<AssignmentIcon />
@@ -337,7 +345,7 @@ const MainMenu: FC = () => {
 							<ListItemText primary='Formulario de Act.' />
 						</ListItem>
 					)}
-					{admision && (
+					{menu['admision'] && (
 						<ListItem button onClick={(event) => handleListItemClick(event, urlAdmision)}>
 							<ListItemIcon classes={{ root: classes.icon }}>
 								<PersonAdd />
@@ -345,7 +353,7 @@ const MainMenu: FC = () => {
 							<ListItemText primary='Admision' />
 						</ListItem>
 					)}
-					{administracion && (
+					{menu['administracion'] && (
 						<ListItem button onClick={(event) => handleListItemClick(event, urlAdministracion)}>
 							<ListItemIcon classes={{ root: classes.icon }}>
 								<FolderIcon />
@@ -353,7 +361,7 @@ const MainMenu: FC = () => {
 							<ListItemText primary='Administracion' />
 						</ListItem>
 					)}
-					{cobranza && (
+					{menu['cobranza'] && (
 						<ListItem button onClick={(event) => handleListItemClick(event, urlCobr)}>
 							<ListItemIcon classes={{ root: classes.icon }}>
 								<CreditCardIcon />
@@ -361,7 +369,7 @@ const MainMenu: FC = () => {
 							<ListItemText primary='Cobranza' />
 						</ListItem>
 					)}
-					{updateCommerce && (
+					{menu['editar_commerce'] && (
 						<ListItem button onClick={(event) => handleListItemClick(event, urlUpdateCommerce)}>
 							<ListItemIcon classes={{ root: classes.icon }}>
 								<SettingsSuggestIcon />
@@ -369,10 +377,18 @@ const MainMenu: FC = () => {
 							<ListItemText primary='Actualizar Informacion' />
 						</ListItem>
 					)}
+					{menu['terminales'] && (
+						<ListItem button onClick={(event) => handleListItemClick(event, urlTerminales)}>
+							<ListItemIcon classes={{ root: classes.icon }}>
+								<EditIcon />
+							</ListItemIcon>
+							<ListItemText primary='Actualizar Informacion' />
+						</ListItem>
+					)}
 				</List>
 				<Divider />
 				<List>
-					{seguridad && (
+					{menu['seguridad'] && (
 						<ListItem
 							button
 							key={'Gestion de Usuarios'}

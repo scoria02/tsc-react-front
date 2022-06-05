@@ -14,7 +14,7 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 import { recaudo } from 'utils/recaudos';
 //sytles
 import { sxStyled, useStyles } from './styles/styles';
-import RecDifPdf from 'components/utilis/images/RecDifPdf';
+import RecDifPdf from 'components/images/RecDifPdf';
 import UpdateCommerceContext from 'context/UpdateData/Commerce/UpdateCommerceContext';
 import DataListContext from 'context/DataList/DataListContext';
 import { Activity } from 'context/DataList/interface';

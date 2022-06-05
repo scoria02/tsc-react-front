@@ -1,8 +1,8 @@
 import { Route } from '.';
 import Inicio from 'pages/Home';
-import Admision from 'components/Admision';
-import FormMaldito from 'components/Admision/formMaldito';
-import Administracion from 'pages/Administracion';
+import Admision from 'pages/Admision';
+import FormMaldito from 'pages/FormularioM';
+import Administracion from 'pages/Administracion/Administracion';
 import Cobranza from 'pages/Cobranza';
 import UpdataData from 'components/updateData';
 import Terminales from 'pages/Terminales';

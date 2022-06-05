@@ -138,8 +138,8 @@ export const handleLoadingSendFm = () => {
 	Swal.fire({
 		icon: 'info',
 		title: 'Enviando Solicitud...',
-		//allowOutsideClick: false,
-		//allowEscapeKey: false,
+		allowOutsideClick: false,
+		allowEscapeKey: false,
 		customClass: { container: 'swal2-validated' },
 		showConfirmButton: false,
 		didOpen: () => {

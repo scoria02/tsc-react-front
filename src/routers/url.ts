@@ -4,8 +4,9 @@ export const urlAdmision = `${baseUrl}admision`;
 export const urlFM = `${baseUrl}solicitud`;
 export const urlAdministracion = `${baseUrl}administracion`;
 export const urlCobr = `${baseUrl}cobranza`;
-export const urlTerminales = `${baseUrl}terminales`;
 export const urlUpdateCommerce = `${baseUrl}editar_commerce`;
+export const urlTerminales = `${baseUrl}terminales`;
+//
 export const urlSeguridad = `${baseUrl}seguridad`;
 
 export const urlPrivate = [
