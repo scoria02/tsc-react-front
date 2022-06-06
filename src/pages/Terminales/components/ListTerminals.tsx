@@ -1,11 +1,4 @@
-import {
-	GridCallbackDetails,
-	GridCellParams,
-	GridColDef,
-	GridRowData,
-	GridValueGetterParams,
-	MuiEvent,
-} from '@mui/x-data-grid';
+import { GridCellParams, GridColDef, GridRowData, GridValueGetterParams } from '@mui/x-data-grid';
 import Table from 'components/table';
 import { FC, useLayoutEffect } from 'react';
 import { useStyles } from '../styles';
@@ -86,11 +79,7 @@ const ListTerminals: FC<Props> = ({ terminals }) => {
 		}
 	};
 
-	const DoubleClickTable = (
-		params: GridCellParams,
-		event: MuiEvent<React.MouseEvent>,
-		details: GridCallbackDetails
-	) => {
+	const DoubleClickTable = (params: GridCellParams) => {
 		const { row: term } = params;
 		Swal.fire({
 			icon: 'question',

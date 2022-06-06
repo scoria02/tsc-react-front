@@ -295,6 +295,7 @@ const FormM: React.FC = () => {
 		//Send FM
 		dispatch(
 			sendCompleteFM(
+				socket,
 				typeSolict,
 				client,
 				commerce,
@@ -322,6 +323,7 @@ const FormM: React.FC = () => {
 		//Send FM
 		dispatch(
 			sendCompleteFMExtraPos(
+				socket,
 				typeSolict,
 				idsCAndCc!,
 				pos,
@@ -343,8 +345,8 @@ const FormM: React.FC = () => {
 			allowOutsideClick: false,
 			allowEscapeKey: false,
 			html: text,
-			showConfirmButton: false,
-			timer: 2500,
+			showConfirmButton: true,
+			//timer: 2500,
 		});
 		history.push(urlFM);
 		setActiveStep(0);

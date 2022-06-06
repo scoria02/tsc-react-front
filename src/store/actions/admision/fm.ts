@@ -9,6 +9,7 @@ import { daysToString } from 'validation/validFm';
 import { ActionType } from '../../types/types';
 import { TeleMarket } from '../../../context/DataList/interface';
 import { handleLoadingSendFm } from 'utils/handleSwal';
+import { Socket } from 'socket.io-client';
 
 export const validationClient = (client: any, errValid: boolean) => {
 	return async (dispatch: any) => {
@@ -355,6 +356,7 @@ export const createFMExtraPos = (
 };
 
 export const sendCompleteFM = (
+	socket: Socket,
 	typeSolict: number,
 	client: fmClient,
 	commerce: fmCommerce,
@@ -396,6 +398,7 @@ export const sendCompleteFM = (
 			const resFM: AxiosResponse<any> = await useAxios.post(`/FM`, fm);
 			//console.log('creado fm id: ', resFM);
 			dispatch(requestSuccess(resFM.data.info.code));
+			callSocket(socket);
 		} catch (error: any) {
 			//console.log(error.reponse)
 			dispatch(requestError());
@@ -416,6 +419,7 @@ export const sendCompleteFM = (
 };
 
 export const sendCompleteFMExtraPos = (
+	socket: Socket,
 	typeSolict: number,
 	idsCAndCc: IdClient_CommerceINT,
 	pos: fmPos,
@@ -446,8 +450,8 @@ export const sendCompleteFMExtraPos = (
 		);
 		try {
 			const resFM: AxiosResponse<any> = await useAxios.post(`/FM/extraPos`, fmExtraPos);
-			Swal.close();
 			dispatch(requestSuccess(resFM.data.info.code));
+			callSocket(socket);
 		} catch (error: any) {
 			Swal.close();
 			Swal.fire('Error', error.response?.data.message, 'error');
@@ -476,4 +480,9 @@ export const cleanFM = () => {
 			type: ActionType.cleanFm,
 		};
 	}
+};
+
+export const callSocket = (socket: Socket) => {
+	Swal.close();
+	socket.emit('cliente:newSolic');
 };

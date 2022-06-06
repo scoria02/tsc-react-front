@@ -10,14 +10,14 @@ import { FC, useContext, useEffect, useLayoutEffect, useState } from 'react';
 //
 import { useDispatch, useSelector } from 'react-redux';
 //import { getDataFM } from 'store/actions/admisionFm';
-import { OpenModal, OpenModalListSolic } from 'store/actions/ui';
+import { OpenModal } from 'store/actions/ui';
 import Swal from 'sweetalert2';
 import { handleLoadingSearch } from 'utils/handleSwal';
 import Barra from '../../components/diagramas/Barra';
 import Dona from '../../components/diagramas/Dona';
 import Comprobacion from './components/validation';
 import Diferidos from './components/diferido';
-import ListFms from './components/colear';
+import moverSolic from './components/moverSolic';
 import { useStyles } from './styles/styles';
 import './scss/index.scss';
 
@@ -32,10 +32,8 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 	const classes = useStyles();
 
 	const { modalOpen } = useSelector((state: any) => state.ui);
-	const { modalOpenListSolic } = useSelector((state: any) => state.ui);
 
 	const [fm, setFm] = useState(null);
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [idFM, setIdFm] = useState(0);
 
 	const { socket } = useContext(SocketContext);
@@ -45,7 +43,7 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 	const [chartData, setChartData] = useState({});
 	const [todos, setTodo] = useState<any>([]);
 	const [todostodos, setTodoTodos] = useState<any>({});
-	const { solictudesTrabajando, diferidosTranbajando, diferidos } = todos;
+	const { solicitudesTrabajando, diferidosTranbajando, diferidos } = todos;
 	const { allSolic, allTerm } = todostodos;
 
 	const [selectModal, setSelectModal] = useState<boolean>(false);
@@ -63,6 +61,7 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 
 	useEffect(() => {
 		socket.on('server:dashdata', (data: any) => {
+			//console.log(data);
 			setChartData(data);
 			setTodo(data);
 		});
@@ -136,8 +135,9 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 		}
 	}, [fm, modalOpen]);
 
-	const handleClickList = () => {
-		dispatch(OpenModalListSolic());
+	const handleClickList = async () => {
+		//dispatch(OpenModalListSolic());
+		await moverSolic(socket, user.data, setIdFm);
 	};
 
 	const handleUpdateChart = (chartData: any) => {
@@ -171,7 +171,7 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 							</div>
 							<div className={classNames(classes.status, classes.borderLeft)}>
 								<div className={classes.statusTitle}>En Proceso:</div>
-								<div className={classes.statusDesc}>{solictudesTrabajando + diferidosTranbajando || 0}</div>
+								<div className={classes.statusDesc}>{solicitudesTrabajando + diferidosTranbajando || 0}</div>
 							</div>
 							<div className={classNames(classes.status, classes.borderTop)}>
 								<div className={classes.statusTitle}>Diferidos:</div>
@@ -201,8 +201,8 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 							right: '2rem',
 							bottom: '1rem',
 						}}
-						onClick={handleClick}
-						disabled={selectModal}>
+						disabled={selectModal}
+						onClick={handleClick}>
 						<span style={{ textTransform: 'none', fontSize: 15 }}>Validar Solicitud</span>
 						<AddIcon />
 					</Button>
@@ -212,7 +212,6 @@ const Admision: FC<AdmisionInt> = ({ isWorker = false }) => {
 						<Fab color='secondary' aria-label='add' size='large' variant='extended' onClick={handleClickList}>
 							<LowPriority />
 						</Fab>
-						{modalOpenListSolic ? <ListFms /> : null}
 					</div>
 				) : null}
 				{idFM ? <Comprobacion fm={fm} setFm={setFm} id={idFM} setId={setIdFm} /> : null}
