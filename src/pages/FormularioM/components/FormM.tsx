@@ -28,7 +28,7 @@ import StepReferencias from './steps/StepReferencias';
 import { useStylesFM } from './styles';
 import * as valids from './validForm';
 import { setTimeout } from 'timers';
-import { handleLoadingSendFm } from 'utils/handleSwal';
+import { handleLoadingSendFm, handleNotAccess } from 'utils/handleSwal';
 
 const initStep = ['Tipo de Solicitud'];
 
@@ -43,6 +43,7 @@ const baseSteps = [
 const PosExtraSteps = ['Cliente/Comerio', 'Solicitud de POS'];
 
 const FormM: React.FC = () => {
+	const { permiss }: any = useSelector((state: RootState) => state.auth.user);
 	const history = useHistory();
 	const classes = useStylesFM();
 	const dispatch = useDispatch();
@@ -264,7 +265,10 @@ const FormM: React.FC = () => {
 	};
 
 	const handleSubmit = async () => {
-		//console.log('entre send complete fmx');
+		if (!permiss['Creacion FM']) {
+			handleNotAccess();
+			return;
+		}
 		if (
 			!valids.validReadyStep(
 				typeSolict,
@@ -316,7 +320,10 @@ const FormM: React.FC = () => {
 	};
 
 	const handleSubmitExtraPos = async () => {
-		//console.log('entre extrapos');
+		if (!permiss['Creacion FM']) {
+			handleNotAccess();
+			return;
+		}
 		if (!idsCAndCc?.idClient || !idsCAndCc.idCommerce) return;
 		handleLoadingSendFm();
 		//console.log('todo ok');
@@ -372,6 +379,10 @@ const FormM: React.FC = () => {
 	const getStepExtraPos: ReactElement[] = [<StepBase />, <StepExtraPos />, <StepPos />];
 
 	const handleClickButton = () => {
+		if (!permiss['Creacion FM']) {
+			handleNotAccess();
+			return;
+		}
 		//console.log('on button');
 		if (activeStep) {
 			if (activeStep === steps.length - 1) {

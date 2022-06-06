@@ -10,7 +10,12 @@ import { editPermisos } from 'pages/Seguridad/services/permisos';
 import { sxStyled, useStyles } from './styles';
 import EditarViews from 'pages/Seguridad/components/editarViews';
 
+//redux
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
+
 const Seguridad: FC = () => {
+	const { permiss }: any = useSelector((state: RootState) => state.auth.user);
 	const classes = useStyles();
 	const [tab, setTab] = useState('gestionUsuarios');
 	const [listDepartment, setListDepartment] = useState([]);
@@ -55,30 +60,38 @@ const Seguridad: FC = () => {
 							wrapped
 							classes={{ root: classes.tabLabel }}
 						/>
-						<Tab
-							sx={sxStyled.tabName}
-							label='Permisos'
-							value={'gestionPermisos'}
-							wrapped
-							classes={{ root: classes.tabLabel }}
-						/>
-						<Tab
-							sx={sxStyled.tabName}
-							label='Vistas'
-							value={'gestionViews'}
-							wrapped
-							classes={{ root: classes.tabLabel }}
-						/>
+						{permiss['Editar Permisos'] && (
+							<Tab
+								sx={sxStyled.tabName}
+								label='Permisos'
+								value={'gestionPermisos'}
+								wrapped
+								classes={{ root: classes.tabLabel }}
+							/>
+						)}
+						{permiss['Editar Vistas'] && (
+							<Tab
+								sx={sxStyled.tabName}
+								label='Vistas'
+								value={'gestionViews'}
+								wrapped
+								classes={{ root: classes.tabLabel }}
+							/>
+						)}
 					</TabList>
 					<TabPanel value={'gestionUsuarios'} classes={{ root: classes.tabPanel }}>
 						<GestionUsuarios listDepartment={listDepartment} listRoles={listRoles} />
 					</TabPanel>
-					<TabPanel value={'gestionPermisos'} classes={{ root: classes.tabPanel }}>
-						<EditarPermisos listDepartment={listDepartment} listRoles={listRoles} />
-					</TabPanel>
-					<TabPanel value={'gestionViews'} classes={{ root: classes.tabPanel }}>
-						<EditarViews listDepartment={listDepartment} />
-					</TabPanel>
+					{permiss['Editar Permisos'] && (
+						<TabPanel value={'gestionPermisos'} classes={{ root: classes.tabPanel }}>
+							<EditarPermisos listDepartment={listDepartment} listRoles={listRoles} />
+						</TabPanel>
+					)}
+					{permiss['Editar Vistas'] && (
+						<TabPanel value={'gestionViews'} classes={{ root: classes.tabPanel }}>
+							<EditarViews listDepartment={listDepartment} />
+						</TabPanel>
+					)}
 				</TabContext>
 			)}
 		</div>

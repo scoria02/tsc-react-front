@@ -185,7 +185,7 @@ const RestorePassword: FC<IRestorePassword> = ({ token }) => {
 								<Typography
 									className={classes.textM}
 									style={{ display: `${errorPassword.rango ? 'block' : 'none'}` }}>
-									<span>&#8226;</span> Entre 8 a 12 carateres
+									<span>&#8226;</span> Entre 8 a 21 carateres
 								</Typography>
 								<Typography
 									className={classes.textM}

@@ -102,7 +102,7 @@ const Register: React.FC = () => {
 			case 'password':
 				let temPass: Interface_ErrorPass = { ...errorPassword };
 				//Rango Password
-				if (value.length < 8 || value.length > 12) temPass.rango = true;
+				if (value.length < 8 || value.length > 21) temPass.rango = true;
 				else temPass.rango = false;
 
 				//Tenga 1 Mayuscula
