@@ -48,7 +48,6 @@ const Seguridad: FC = () => {
 			) : (
 				<TabContext value={tab}>
 					<TabList
-						// centered
 						onChange={handleChange}
 						aria-label='lab API tabs example'
 						indicatorColor='primary'

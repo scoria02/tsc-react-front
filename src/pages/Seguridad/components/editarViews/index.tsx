@@ -6,6 +6,16 @@ import { editPermisos } from 'pages/Seguridad/services/permisos';
 import SearchIcon from '@mui/icons-material/Search';
 import { handleInfoText, handleLoadingSave } from 'utils/handleSwal';
 import LoaderLine from 'components/loaders/LoaderLine';
+import { DataGrid, GridColDef, GridSortModel, GridValueGetterParams } from '@mui/x-data-grid';
+
+interface View {
+	view: {
+		active: number;
+		id: number;
+		name: string;
+		root: string;
+	};
+}
 
 interface Props {
 	listDepartment: any[];
@@ -16,11 +26,34 @@ const EditarViews: React.FC<Props> = ({ listDepartment }) => {
 
 	const [department, setDepartment] = useState<any>(null);
 
-	const [listViews, setListViews] = useState<any[]>([]);
+	const [listViews, setListViews] = useState<View[] | []>([]);
 
 	const [loading, setLoading] = useState(false);
 
 	//console.log('per', listViews);
+
+	const [sortModel, setSortModel] = useState<GridSortModel>([
+		{
+			field: `id`,
+			sort: 'asc',
+		},
+	]);
+
+	const columns: GridColDef[] = [
+		{
+			field: 'status',
+			headerName: 'Estatus',
+			width: 200,
+			renderCell: (params) => (
+				<Checkbox checked={params.row.status} onChange={() => handleChange(params.row.id)} />
+			),
+		},
+		{
+			field: 'id',
+			headerName: 'id',
+			width: 200,
+		},
+	];
 
 	const handleSaveViews = async () => {
 		handleLoadingSave();
@@ -105,17 +138,17 @@ const EditarViews: React.FC<Props> = ({ listDepartment }) => {
 						) : null
 					) : (
 						<>
-							<FormGroup>
-								<div className={classes.containerListItem}>
-									{listViews.map((item: any, index) => (
-										<FormControlLabel
-											key={item.id}
-											control={<Checkbox checked={item.status} onChange={() => handleChange(index)} />}
-											label={item.name}
-										/>
-									))}
-								</div>
-							</FormGroup>
+							<div style={{ height: 400 }}>
+								<DataGrid
+									headerHeight={30}
+									rowHeight={25}
+									columns={columns}
+									sortModel={sortModel}
+									onSortModelChange={(model) => setSortModel(model)}
+									rows={listViews}
+									rowsPerPageOptions={[25, 50, 100]}
+								/>
+							</div>
 							<div className={classes.btn_stepM}>
 								<Button
 									onClick={handleSaveViews}
