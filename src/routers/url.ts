@@ -1,5 +1,6 @@
 // Private Routes
 export const baseUrl = '/';
+export const urlSolicitudes = `${baseUrl}solicitudes`;
 export const urlAdmision = `${baseUrl}admision`;
 export const urlFM = `${baseUrl}solicitud`;
 export const urlAdministracion = `${baseUrl}administracion`;
@@ -11,6 +12,7 @@ export const urlSeguridad = `${baseUrl}seguridad`;
 
 export const urlPrivate = [
 	baseUrl,
+	urlSolicitudes,
 	urlAdmision,
 	urlFM,
 	urlSeguridad,

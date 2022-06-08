@@ -9,12 +9,9 @@ import LoaderLine from 'components/loaders/LoaderLine';
 import { DataGrid, GridColDef, GridSortModel, GridValueGetterParams } from '@mui/x-data-grid';
 
 interface View {
-	view: {
-		active: number;
-		id: number;
-		name: string;
-		root: string;
-	};
+	id: number;
+	name: string;
+	status: boolean;
 }
 
 interface Props {
@@ -49,11 +46,13 @@ const EditarViews: React.FC<Props> = ({ listDepartment }) => {
 			),
 		},
 		{
-			field: 'id',
-			headerName: 'id',
+			field: 'name',
+			headerName: 'Nombre',
 			width: 200,
 		},
 	];
+
+	console.log(listViews);
 
 	const handleSaveViews = async () => {
 		handleLoadingSave();
@@ -68,13 +67,11 @@ const EditarViews: React.FC<Props> = ({ listDepartment }) => {
 	};
 
 	const handleChange = (index: number) => {
-		let aux: any[] = listViews;
-		aux[index] = {
-			...aux[index],
-			status: !aux[index].status,
-		};
-		//console.log(index, aux);
-		setListViews([...listViews]);
+		listViews.forEach((item, i) => {
+			if (item.id === index) {
+				listViews[i].status = !listViews[i].status;
+			}
+		});
 	};
 
 	const handleSearchViews = async () => {
@@ -107,10 +104,10 @@ const EditarViews: React.FC<Props> = ({ listDepartment }) => {
 								onChange={(event, value) => {
 									setListViews([]);
 									setDepartment(value ? value : null);
-									//handleSelectAci(event, value);
 								}}
 								options={listDepartment}
 								getOptionLabel={(value: any) => value.name}
+								filterOptions={(listDepartment) => listDepartment.filter((op) => op.active)}
 								isOptionEqualToValue={(option: any | null, value: any) => option?.id === value.id}
 								value={department || null}
 								renderInput={(params: any) => (

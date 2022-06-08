@@ -9,12 +9,10 @@ import LoaderLine from 'components/loaders/LoaderLine';
 import { DataGrid, GridColDef, GridSortModel, GridValueGetterParams } from '@mui/x-data-grid';
 
 interface View {
-	view: {
-		active: number;
-		id: number;
-		name: string;
-		root: string;
-	};
+	active: number;
+	id: number;
+	name: string;
+	root: string;
 }
 
 interface Permisos {
@@ -134,10 +132,10 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 								onChange={(event, value) => {
 									setListPermisos([]);
 									setDepartment(value ? value : null);
-									//handleSelectAci(event, value);
 								}}
 								options={listDepartment}
 								getOptionLabel={(value: any) => value.name}
+								filterOptions={(listDepartment) => listDepartment.filter((op) => op.active)}
 								isOptionEqualToValue={(option: any | null, value: any) => option?.id === value.id}
 								value={department || null}
 								renderInput={(params: any) => (

@@ -16,7 +16,9 @@ import {
 	urlTerminales,
 	urlUpdateCommerce,
 	urlSeguridad,
+	urlSolicitudes,
 } from '../url';
+import FMS from 'pages/FMs';
 
 const Private: Route[] = [
 	{
@@ -24,8 +26,6 @@ const Private: Route[] = [
 		component: Inicio,
 		meta: {
 			auth: true,
-			dep: ['Free'],
-			rol: [1, 2, 3, 4],
 		},
 	},
 	{
@@ -33,8 +33,13 @@ const Private: Route[] = [
 		component: Seguridad,
 		meta: {
 			auth: true,
-			dep: ['Seguridad'],
-			rol: [4],
+		},
+	},
+	{
+		path: urlSolicitudes,
+		component: FMS,
+		meta: {
+			auth: true,
 		},
 	},
 	{
@@ -42,8 +47,6 @@ const Private: Route[] = [
 		component: FormMaldito,
 		meta: {
 			auth: true,
-			dep: ['Admision', 'Canales', 'Fuerza de Venta'],
-			rol: [1, 2, 3, 4],
 		},
 	},
 	{
@@ -51,8 +54,6 @@ const Private: Route[] = [
 		component: Admision,
 		meta: {
 			auth: true,
-			dep: ['Admision'],
-			rol: [1, 2, 3, 4],
 		},
 	},
 	{
@@ -60,8 +61,6 @@ const Private: Route[] = [
 		component: Cobranza,
 		meta: {
 			auth: true,
-			dep: ['Cobranza'],
-			rol: [1, 2, 3, 4],
 		},
 	},
 	{
@@ -69,8 +68,6 @@ const Private: Route[] = [
 		component: Administracion,
 		meta: {
 			auth: true,
-			dep: ['Administracion'],
-			rol: [1, 2, 3, 4],
 		},
 	},
 	{
@@ -78,8 +75,6 @@ const Private: Route[] = [
 		component: Terminales,
 		meta: {
 			auth: true,
-			dep: ['Activacion'],
-			rol: [1, 2, 3, 4],
 		},
 	},
 	{
@@ -87,8 +82,6 @@ const Private: Route[] = [
 		component: UpdataData,
 		meta: {
 			auth: true,
-			dep: ['Admision'],
-			rol: [1, 2, 3, 4],
 		},
 	},
 ];

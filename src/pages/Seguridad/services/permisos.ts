@@ -9,6 +9,8 @@ export const editPermisos = {
 	savePermiss,
 	getAllListViews,
 	saveViews,
+	updateDepartments,
+	createDepartment,
 };
 
 export async function getAllListSeguridad() {
@@ -96,6 +98,38 @@ export async function saveViews(dep: number, views: any[]) {
 		return {
 			ok: true,
 			permiss: res.data.info,
+		};
+	} catch (err: any) {
+		Swal.fire('Error', err.response.data.message, 'error');
+		return {
+			ok: false,
+			err,
+		};
+	}
+}
+
+export async function updateDepartments(deps: any) {
+	console.log(deps);
+	try {
+		await useAxios.put(`/seguridad/departments`, { listDeps: deps });
+		return {
+			ok: true,
+		};
+	} catch (err: any) {
+		Swal.fire('Error', err.response.data.message, 'error');
+		return {
+			ok: false,
+			err,
+		};
+	}
+}
+
+export async function createDepartment(department: any) {
+	try {
+		const res: any = await useAxios.post(`/seguridad/department/create`, { department });
+		return {
+			ok: true,
+			newDepartment: res.data.info,
 		};
 	} catch (err: any) {
 		Swal.fire('Error', err.response.data.message, 'error');

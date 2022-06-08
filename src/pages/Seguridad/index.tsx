@@ -13,6 +13,7 @@ import EditarViews from 'pages/Seguridad/components/editarViews';
 //redux
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
+import EditarDepartments from './components/editarDepartments';
 
 const Seguridad: FC = () => {
 	const { permiss }: any = useSelector((state: RootState) => state.auth.user);
@@ -77,6 +78,15 @@ const Seguridad: FC = () => {
 								classes={{ root: classes.tabLabel }}
 							/>
 						)}
+						{permiss['Crear Departamento'] && (
+							<Tab
+								sx={sxStyled.tabName}
+								label='Departamentos'
+								value={'gestionDepartments'}
+								wrapped
+								classes={{ root: classes.tabLabel }}
+							/>
+						)}
 					</TabList>
 					<TabPanel value={'gestionUsuarios'} classes={{ root: classes.tabPanel }}>
 						<GestionUsuarios listDepartment={listDepartment} listRoles={listRoles} />
@@ -89,6 +99,11 @@ const Seguridad: FC = () => {
 					{permiss['Editar Vistas'] && (
 						<TabPanel value={'gestionViews'} classes={{ root: classes.tabPanel }}>
 							<EditarViews listDepartment={listDepartment} />
+						</TabPanel>
+					)}
+					{permiss['Crear Departamento'] && (
+						<TabPanel value={'gestionDepartments'} classes={{ root: classes.tabPanel }}>
+							<EditarDepartments listDepartment={listDepartment} setListDepartment={setListDepartment} />
 						</TabPanel>
 					)}
 				</TabContext>
