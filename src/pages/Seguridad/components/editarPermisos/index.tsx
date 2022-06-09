@@ -7,24 +7,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import { handleInfoText, handleLoadingSave } from 'utils/handleSwal';
 import LoaderLine from 'components/loaders/LoaderLine';
 import { DataGrid, GridColDef, GridSortModel, GridValueGetterParams } from '@mui/x-data-grid';
-
-interface View {
-	active: number;
-	id: number;
-	name: string;
-	root: string;
-}
-
-interface Permisos {
-	id: number;
-	name: string;
-	status: boolean;
-	view: View;
-}
+import { Department, Permisos, Roles } from 'pages/Seguridad/interfaces';
 
 interface Props {
-	listDepartment: any[];
-	listRoles: any[];
+	listDepartment: Department[];
+	listRoles: Roles[];
 }
 
 const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
@@ -58,20 +45,28 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 		{
 			field: 'status',
 			headerName: 'Estatus',
-			width: 200,
+			width: 100,
 			renderCell: (params) => (
 				<Checkbox checked={params.row.status} onChange={() => handleChange(params.row.id)} />
 			),
 		},
-		{ field: 'name', headerName: 'Accion', type: 'string', width: 240, editable: false },
+		{ field: 'name', headerName: 'Accion', type: 'string', width: 200, editable: false },
 		{
 			field: 'view',
 			headerName: 'Vista',
+			align: 'left',
 			type: 'string',
-			width: 240,
+			width: 350,
 			valueGetter: (params: GridValueGetterParams) => {
 				return params.row.view.name;
 			},
+		},
+		{
+			field: `description`,
+			headerName: 'Descripcion',
+			type: 'string',
+			//align: 'right',
+			width: 300,
 		},
 		{
 			field: `view['id']`,
@@ -96,7 +91,7 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 			const res: any = await editPermisos.savePermiss(department.id, role.id, listPermisos);
 			if (res.ok) {
 				handleInfoText('Guardado', `Se guardo el cambio de ${department?.name} / ${role?.name}`);
-				setListPermisos([]);
+				//setListPermisos([]);
 			}
 		}
 	};
@@ -116,7 +111,6 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 			setLoading(false);
 		}
 	};
-	console.log(listPermisos);
 
 	return (
 		<>

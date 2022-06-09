@@ -7,6 +7,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import FolderIcon from '@mui/icons-material/Folder';
 import HomeIcon from '@mui/icons-material/Home';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 //import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import MoreIcon from '@mui/icons-material/MoreVert';
@@ -39,6 +40,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { ApprouterContext } from 'routers/AppRouter';
 //Redux
 import {
+	urlPrivate,
 	baseUrl,
 	urlAdministracion,
 	urlAdmision,
@@ -48,6 +50,7 @@ import {
 	urlSeguridad,
 	urlUpdateCommerce,
 	urlTerminales,
+	urlSolicitudes,
 } from 'routers/url';
 import { startLogout } from 'store/actions/auth/auth';
 import { FinishLoading } from 'store/actions/ui';
@@ -74,7 +77,6 @@ const MainMenu: FC = () => {
 	*/
 	const { menu } = useContext(ApprouterContext);
 	const [open, setOpen] = useState(false); //Nav Left
-	const [section, setSection] = useState<string>('');
 	const [user, setUser] = useState({
 		name: '',
 		last_name: '',
@@ -86,42 +88,9 @@ const MainMenu: FC = () => {
 		if (userDB) {
 			setUser(userDB.data);
 		}
-
-		/*
-		setFm(menu['solicitud'] ? true : false);
-		setAdmision(menu['admision'] ? true : false);
-		setAdministracion(menu['administracion'] ? true : false);
-		setCobranza(menu['cobranza'] ? true : false);
-		setUpdateCommerce(menu['editar_commerce'] ? true : false);
-		//
-		setSeguridad(menu['seguridad'] ? true : false);
-		//console.log(menu);
-		*/
-
-		if (history) {
-			switch (history.location.pathname) {
-				case urlAdministracion:
-					setSection('Administración');
-					break;
-				case urlAdmision:
-					setSection('Admisión');
-					break;
-				case urlSeguridad:
-					setSection('Gestión de Usuarios');
-					break;
-				case urlFM:
-					setSection('Formulario de Activación');
-					break;
-				case urlCobr:
-					setSection('Cobranza');
-					break;
-				default:
-					console.log('ruta no existe');
-					history.push(baseUrl);
-					setSection('1000Pagos C.A.');
-					break;
-			}
-		}
+		//setSection('1000Pagos C.A.');
+		const ruta: any = urlPrivate.find((root: any) => history.location.pathname === root);
+		if (!ruta) history.push(baseUrl);
 	}, [userDB, menu, history]);
 
 	const menuId = 'primary-search-account-menu';
@@ -262,7 +231,7 @@ const MainMenu: FC = () => {
 						<MenuIcon />
 					</IconButton>
 					<Typography className={classes.title} variant='h6' noWrap>
-						{section ? section : '1000Pagos C.A.'}
+						1000Pagos C.A.
 					</Typography>
 
 					<div className={classes.grow} />
@@ -337,6 +306,14 @@ const MainMenu: FC = () => {
 						</ListItemIcon>
 						<ListItemText primary='Inicio' />
 					</ListItem>
+					{menu['solicitudes'] && (
+						<ListItem button onClick={(event) => handleListItemClick(event, urlSolicitudes)}>
+							<ListItemIcon classes={{ root: classes.icon }}>
+								<FormatListBulletedIcon />
+							</ListItemIcon>
+							<ListItemText primary='Lista de Solicitudes' />
+						</ListItem>
+					)}
 					{menu['solicitud'] && (
 						<ListItem button onClick={(event) => handleListItemClick(event, urlFM)}>
 							<ListItemIcon classes={{ root: classes.icon }}>

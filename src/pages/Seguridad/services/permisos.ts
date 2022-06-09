@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios';
 import useAxios from 'config/index';
 import Swal from 'sweetalert2';
 import { multiGetterAxios } from 'utils/multiGetterAxios';
+import { Department } from '../interfaces';
 
 export const editPermisos = {
 	getAllListSeguridad,
@@ -124,7 +125,7 @@ export async function updateDepartments(deps: any) {
 	}
 }
 
-export async function createDepartment(department: any) {
+export async function createDepartment(department: Department) {
 	try {
 		const res: any = await useAxios.post(`/seguridad/department/create`, { department });
 		return {

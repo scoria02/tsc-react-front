@@ -7,15 +7,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import { handleInfoText, handleLoadingSave } from 'utils/handleSwal';
 import LoaderLine from 'components/loaders/LoaderLine';
 import { DataGrid, GridColDef, GridSortModel, GridValueGetterParams } from '@mui/x-data-grid';
-
-interface View {
-	id: number;
-	name: string;
-	status: boolean;
-}
+import { Department, View } from 'pages/Seguridad/interfaces';
 
 interface Props {
-	listDepartment: any[];
+	listDepartment: Department[];
 }
 
 const EditarViews: React.FC<Props> = ({ listDepartment }) => {
@@ -51,8 +46,6 @@ const EditarViews: React.FC<Props> = ({ listDepartment }) => {
 			width: 200,
 		},
 	];
-
-	console.log(listViews);
 
 	const handleSaveViews = async () => {
 		handleLoadingSave();

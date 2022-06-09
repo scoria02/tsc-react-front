@@ -14,17 +14,18 @@ import EditarViews from 'pages/Seguridad/components/editarViews';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import EditarDepartments from './components/editarDepartments';
+import { Department, Roles } from './interfaces';
 
 const Seguridad: FC = () => {
 	const { permiss }: any = useSelector((state: RootState) => state.auth.user);
 	const classes = useStyles();
 	const [tab, setTab] = useState('gestionUsuarios');
-	const [listDepartment, setListDepartment] = useState([]);
-	const [listRoles, setListRoles] = useState([]);
+	const [listDepartment, setListDepartment] = useState<Department[] | []>([]);
+	const [listRoles, setListRoles] = useState<Roles[] | []>([]);
 
 	const getList = async () => {
 		const res: any = await editPermisos.getAllListSeguridad();
-		console.log(res);
+		//console.log(res);
 		if (res.departments.length) {
 			setListDepartment(res.departments);
 		}

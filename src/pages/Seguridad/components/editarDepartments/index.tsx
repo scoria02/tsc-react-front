@@ -3,17 +3,14 @@ import { Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, TextField 
 import { useState } from 'react';
 import { editPermisos } from 'pages/Seguridad/services/permisos';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { handleInfoText, handleLoadingSave } from 'utils/handleSwal';
+import { handleInfoText, handleLoadingSave, handleNotAccess } from 'utils/handleSwal';
 import LoaderLine from 'components/loaders/LoaderLine';
 import { DataGrid, GridCellParams, GridColDef, GridSortModel, GridValueGetterParams } from '@mui/x-data-grid';
 import { useStyles } from '../editarViews/styles/styles';
 import Swal from 'sweetalert2';
-
-interface Department {
-	id: number;
-	name: string;
-	active: boolean;
-}
+import { useSelector } from 'react-redux';
+import { RootState } from 'App';
+import { Department } from 'pages/Seguridad/interfaces';
 
 interface Props {
 	listDepartment: Department[];
@@ -22,8 +19,8 @@ interface Props {
 
 const EditarDepartments: React.FC<Props> = ({ listDepartment, setListDepartment }) => {
 	const classes = useStyles();
-	// const { user } = useSelector((state: any) => state.auth);
-	// const { permiss }: any = user;
+	const { user } = useSelector((state: RootState) => state.auth);
+	const { permiss }: any = user;
 
 	const [update, setUpdate] = useState(true);
 
@@ -42,15 +39,12 @@ const EditarDepartments: React.FC<Props> = ({ listDepartment, setListDepartment 
 
 	const handleChange = (index: number) => {
 		setUpdate(false);
-		let flag = false;
 		listDepartment.forEach((item, i) => {
 			if (item.id === index) {
-				listDepartment[i].active = !listDepartment[i].active;
+				listDepartment[i].active = listDepartment[i].active ? 0 : 1;
 			}
 		});
 	};
-
-	console.log(listDepartment);
 
 	const columns: GridColDef[] = [
 		{
@@ -61,7 +55,11 @@ const EditarDepartments: React.FC<Props> = ({ listDepartment, setListDepartment 
 				<Checkbox
 					checked={params.row.active ? true : false}
 					onChange={() => {
-						if (params.row.name === 'Seguridad' || params.row.name === 'Ninguno') {
+						if (user.data.id_department.name === 'God' && params.row.name !== 'God') {
+							handleChange(params.row.id);
+							return;
+						}
+						if (params.row.name === 'Seguridad' || params.row.name === 'Ninguno' || params.row.name === 'God') {
 							Swal.fire('Error', `No se puede inactivar: ${params.row.name}`, 'error');
 							return;
 						}
@@ -90,6 +88,10 @@ const EditarDepartments: React.FC<Props> = ({ listDepartment, setListDepartment 
 	};
 
 	const handleButtonDepartment = async () => {
+		if (!permiss['Editar Departamentos']) {
+			handleNotAccess();
+			return;
+		}
 		Swal.fire({
 			title: 'Confirmar cambios',
 			icon: 'warning',
@@ -120,9 +122,11 @@ const EditarDepartments: React.FC<Props> = ({ listDepartment, setListDepartment 
 		setCreate(true);
 	};
 
-	console.log(create);
-
 	const handleButtonCreateDep = () => {
+		if (!permiss['Crear Departamento']) {
+			handleNotAccess();
+			return;
+		}
 		Swal.fire({
 			icon: 'warning',
 			html: `<p>Crear Departamento <b>${department}</b></p>`,
