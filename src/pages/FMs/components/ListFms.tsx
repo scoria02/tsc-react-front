@@ -1,17 +1,14 @@
-import {
-	GridCallbackDetails,
-	GridCellParams,
-	GridColDef,
-	GridRowData,
-	GridValueGetterParams,
-	MuiEvent,
-} from '@mui/x-data-grid';
+import { GridCellParams, GridColDef, GridRowData, GridValueGetterParams } from '@mui/x-data-grid';
 import Table from 'components/table';
 import { DateTime } from 'luxon';
 import { FC, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useStyles } from 'pages/Terminales/styles';
 import FM from './FM';
+import { getFM } from 'utils/getFm';
+import { handleLoadingSearch } from 'utils/handleSwal';
+import FullModal from 'components/modals/FullModal';
+import { FMContextDataProvider } from 'context/FM/FMContextData';
 
 interface Props {
 	listFms: any;
@@ -20,7 +17,7 @@ interface Props {
 const ListSolicitudes: FC<Props> = ({ listFms }) => {
 	const classes = useStyles();
 	const [idFM, setIdFM] = useState<number>(0);
-	const [fm, setFm] = useState<number>(0);
+	const [solic, setSolic] = useState<any>(null);
 
 	const getRowId = (row: GridRowData) => row.id;
 
@@ -57,22 +54,60 @@ const ListSolicitudes: FC<Props> = ({ listFms }) => {
 			field: `id_client['ident_num']`,
 			headerName: 'Doc. Ident',
 			type: 'string',
-			width: 200,
+			width: 180,
 			editable: false,
 			valueGetter: (params: GridValueGetterParams) =>
 				params.row.id_client.id_ident_type.name + params.row.id_client.ident_num,
 		},
+		{
+			field: 'createdAt',
+			headerName: 'Fecha de creacion',
+			width: 170,
+			valueGetter: (params: GridValueGetterParams) => {
+				if (params.row.updateAt) {
+					return DateTime.fromISO(params.row?.updatedAt.toString()).toFormat('dd/LL/yyyy').toLocaleString();
+				} else return 'NT';
+			},
+			sortable: false,
+		},
 	];
 
-	const DoubleClickTable = (params: GridCellParams) => {
+	const DoubleClickTable = async (params: GridCellParams) => {
 		//swal validar open
 		setIdFM(params.row.id);
+		handleLoadingSearch();
+		const data: any = await getFM(params.row.id);
+		if (data.ok) {
+			setSolic(data.fm);
+			setModelOpen(true);
+		} else {
+			Swal.close();
+			setIdFM(0);
+			setSolic(null);
+			handleClose();
+		}
+	};
+
+	console.log('solic', solic);
+
+	const [modalOpen, setModelOpen] = useState(true);
+
+	const handleClose = () => {
+		//setId(0);
+		//setFm(null);
+		setModelOpen(false);
 	};
 
 	return (
 		<div className={classes.terminales}>
 			<Table doubleClick={DoubleClickTable} columns={columns} rows={listFms} getRowId={getRowId} />
-			{idFM ? <FM fm={fm} /> : null}
+			{idFM ? (
+				<FullModal modalOpen={modalOpen} handleClose={handleClose}>
+					<FMContextDataProvider fm={solic}>
+						<FM />
+					</FMContextDataProvider>
+				</FullModal>
+			) : null}
 		</div>
 	);
 };

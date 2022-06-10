@@ -131,12 +131,11 @@ export const inputNotNull = (data: any): boolean => {
 		if (typeof item[1] === 'string' && item[1].trim() === '') {
 			if (item[0] === 'ci_referred') {
 			} else {
-				//console.log('Esta vacio error:', item[0]);
 				return true;
 			}
 		} else if (!item[1]) {
-			if (item[0].slice(0, 3) !== 'rc_') {
-				//console.log('Esta vacio error:', item[0]);
+			if (item[0] === 'codComer_1000pagos') {
+			} else if (item[0].slice(0, 3) !== 'rc_') {
 				return true;
 			}
 		}
@@ -406,8 +405,8 @@ export const validReadyStepBO = (
 	//imagesActa: FileList | [],
 	//errorNumBank: boolean,
 ): boolean => {
-	console.log('inputx vacio: ', inputNotNull(commerce));
-	console.log('errorx en input:', checkErrorInputs(error));
+	console.log('inputx vacio::', inputNotNull(commerce));
+	console.log('errorx en input::', checkErrorInputs(error));
 	if (errorValid) return false; //false no activar button
 	if (!inputNotNull(commerce) && !checkErrorInputs(error)) {
 		return true;

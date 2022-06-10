@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, TextField } from '@mui/material';
+import { Button, Checkbox, TextField } from '@mui/material';
 import { useState } from 'react';
 import { editPermisos } from 'pages/Seguridad/services/permisos';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { handleInfoText, handleLoadingSave, handleNotAccess } from 'utils/handleSwal';
 import LoaderLine from 'components/loaders/LoaderLine';
-import { DataGrid, GridCellParams, GridColDef, GridSortModel, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { useStyles } from '../editarViews/styles/styles';
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
@@ -27,8 +27,6 @@ const EditarDepartments: React.FC<Props> = ({ listDepartment, setListDepartment 
 	const [create, setCreate] = useState(true);
 
 	const [department, setDepartment] = useState<any>(null);
-
-	const [loading, setLoading] = useState(false);
 
 	const [sortModel, setSortModel] = useState<GridSortModel>([
 		{
@@ -166,7 +164,7 @@ const EditarDepartments: React.FC<Props> = ({ listDepartment, setListDepartment 
 							/>
 							<Button
 								onClick={handleButtonCreateDep}
-								disabled={department && department.length > 4 && !loading ? false : true}
+								disabled={department && department.length > 4 ? false : true}
 								sx={{
 									textTransform: 'none',
 									fontSize: '1rem',
@@ -180,9 +178,7 @@ const EditarDepartments: React.FC<Props> = ({ listDepartment, setListDepartment 
 				</div>
 				<div style={{ marginTop: '.2rem' }}>
 					{!listDepartment.length ? (
-						loading ? (
-							<LoaderLine />
-						) : null
+						<LoaderLine />
 					) : (
 						<>
 							<div style={{ height: 350, width: 400 }}>

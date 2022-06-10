@@ -299,6 +299,7 @@ export const FMDiferidoContextProvider = ({ children, fm }: PropsAd) => {
 				case 'Cliente':
 					return !valid.validReadyStepBO(client, errorClient, errorClientValid);
 				case 'Comercio':
+					console.log('comercio');
 					return !valid.validReadyStepBO(commerce, errorCommerce, errorCommerceValid);
 				case 'Pos':
 					return !valid.validReadyStepBO(pos, errorPos, false);

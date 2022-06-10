@@ -15,18 +15,7 @@ import AlertDiferido from 'components/alert/AlertDiferido';
 const DifStepPos: FC = () => {
 	const classes = useStylesFM();
 
-	const {
-		listModelPos,
-		listPayment,
-		listTypePay,
-		/*
-		listRequestSource,
-		listAci,
-		listWalletType,
-		listTeleMarket,
-		listDistributor,
-		*/
-	} = useContext(DataListContext);
+	const { listModelPos, listPayment, listTypePay } = useContext(DataListContext);
 
 	const {
 		solic,

@@ -3,20 +3,19 @@ import { ModalAlert } from 'components/modals/ModalAlert';
 import RecPdf from 'components/images/RecPdf';
 import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
 import React, { useContext, useEffect, useState } from 'react';
+//import ReactImageZoom from 'react-image-zoom';
 //Redux
 import { useStyles } from './styles/styles';
 
-const StepCompDep: React.FC = () => {
-	//const fm: any = useSelector((state: RootState) => state.fmAdmision.fm);
+const StepRefBank: React.FC = () => {
 	const classes = useStyles();
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [load, setLoad] = useState(false);
 
 	const { solic, handleChangeValid, listValidated } = useContext(FMValidDataContext);
-	//console.log(solic);
 
-	const { valid_comp_dep } = listValidated;
-	const [state, setState] = useState(valid_comp_dep);
+	const { valid_ref_bank } = listValidated;
+	const [state, setState] = useState(valid_ref_bank);
 
 	const handleOpenModal = () => {
 		handleCancel();
@@ -34,13 +33,20 @@ const StepCompDep: React.FC = () => {
 	};
 
 	useEffect(() => {
-		handleChangeValid('valid_comp_dep', state);
+		handleChangeValid('valid_ref_bank', state);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state]);
 
 	const handleCancel = () => {
 		handleCloseModal(true);
 	};
+
+	// const handleChangeI = (event: any) => {
+	// 	setState({
+	// 		...state,
+	// 		[event.target.name]: event.target.value,
+	// 	});
+	// };
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setState({
@@ -50,7 +56,7 @@ const StepCompDep: React.FC = () => {
 		if (!event.target.checked) handleOpenModal();
 	};
 
-	const imagen = `${process.env.REACT_APP_API_IMAGES}/${solic.rc_comp_dep.path}`;
+	const imagen = `${process.env.REACT_APP_API_IMAGES}/${solic.rc_ref_bank.path}`;
 
 	/*
 	const props = {
@@ -65,7 +71,12 @@ const StepCompDep: React.FC = () => {
 		<>
 			<form className={classes.containerStep} noValidate autoComplete='off'>
 				<div className={classes.btn_stepM}>
-					<TextField className={classes.btn_stepNro} label='Numero de comprobante' value={solic?.nro_comp_dep} />
+					<TextField
+						className={classes.btn_stepNro}
+						label='Numero de Cuenta'
+						value={solic.bank_account_num}
+						variant='outlined'
+					/>
 					<FormControlLabel
 						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
 						className={classes.checkText}
@@ -75,7 +86,7 @@ const StepCompDep: React.FC = () => {
 				<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 			</form>
 			<ModalAlert
-				from='valid_comp_dep'
+				from='valid_ref_bank'
 				openModal={openModal}
 				handleCloseModal={handleCloseModal}
 				state={state}
@@ -85,4 +96,4 @@ const StepCompDep: React.FC = () => {
 	);
 };
 
-export default StepCompDep;
+export default StepRefBank;

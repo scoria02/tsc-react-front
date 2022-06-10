@@ -209,11 +209,6 @@ export const dataFormatPos = (
 		number_post: pos.number_post,
 		id_payment_method: pos.payment_method?.id,
 		pos: {
-			//id_estado: locationPos.estado?.id,
-			//id_municipio: locationPos.municipio?.id,
-			//id_parroquia: locationPos.parroquia?.id,
-			//id_ciudad: locationPos.ciudad?.id,
-			//sector: pos.sector,
 			id_direccion: idLocationPos,
 			calle: pos.calle,
 			local: pos.local,
@@ -288,7 +283,6 @@ export const dataFormatPos_FM = (
 		id_request_origin: pos.request_origin?.id,
 		id_type_payment: pos.type_pay?.id,
 		id_product: pos.model_post?.id,
-		//requestSource_docnum: auxOrigen,
 		ci_referred: auxOrigen,
 		discount: pos.discount,
 		nro_comp_dep: pos.pagadero ? '' : pos.nro_comp_dep,
@@ -396,7 +390,6 @@ export const sendCompleteFM = (
 				id_client
 			);
 			const resFM: AxiosResponse<any> = await useAxios.post(`/FM`, fm);
-			//console.log('creado fm id: ', resFM);
 			dispatch(requestSuccess(resFM.data.info.code));
 			callSocket(socket);
 		} catch (error: any) {

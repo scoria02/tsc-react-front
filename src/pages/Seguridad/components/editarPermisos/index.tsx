@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useStyles } from './styles/styles';
-import { Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, TextField } from '@mui/material';
+import { Autocomplete, Button, Checkbox, TextField } from '@mui/material';
 import { useState } from 'react';
 import { editPermisos } from 'pages/Seguridad/services/permisos';
 import SearchIcon from '@mui/icons-material/Search';

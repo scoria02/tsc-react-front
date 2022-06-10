@@ -1,7 +1,6 @@
 import { FormControlLabel, Switch, TextField } from '@mui/material';
 import classNames from 'classnames';
 import { ModalAlert } from 'components/modals/ModalAlert';
-import RecPdf from 'components/images/RecPdf';
 import FMValidDataContext from 'context/Admision/Validation/FMValidDataContext';
 import React, { FC, useContext, useEffect, useState } from 'react';
 //sytles
@@ -12,12 +11,10 @@ const StepPos: FC = () => {
 
 	const [openModal, setOpenModal] = useState<boolean>(false);
 
-	const { locationPos, client, solic, handleChangeValid, listValidated } = useContext(FMValidDataContext);
+	const { locationPos, solic, handleChangeValid, listValidated } = useContext(FMValidDataContext);
 
 	const { valid_pos } = listValidated;
 	const [state, setState] = useState(valid_pos);
-
-	const [load, setLoad] = useState(false);
 
 	const handleOpenModal = () => {
 		handleCancel();
@@ -51,13 +48,16 @@ const StepPos: FC = () => {
 		if (!event.target.checked) handleOpenModal();
 	};
 
-	const imagen = `${process.env.REACT_APP_API_IMAGES}/${client?.rc_ident_card?.path}`;
-
-	//console.log(solic);
-
 	return (
-		<div className={classes.grid}>
+		<div>
 			<div>
+				<div className={classes.validRecaudo}>
+					<FormControlLabel
+						control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
+						className={classes.checkText}
+						label={state.status ? 'Correcto' : 'Incorrecto'}
+					/>
+				</div>
 				<div className={classes.grid}>
 					<div className={classes.input}>
 						<TextField
@@ -74,7 +74,7 @@ const StepPos: FC = () => {
 							variant='outlined'
 							label='Pos'
 							name='product'
-							value={solic.id_product.name}
+							value={solic.pos[0].id_product.name}
 						/>
 					</div>
 					<div className={classes.input}>
@@ -97,7 +97,6 @@ const StepPos: FC = () => {
 					<div className={classes.input}>
 						<TextField
 							className={classes.inputText}
-							sx={sxStyled.inputLeft}
 							variant='outlined'
 							label='Metodo de Pago'
 							name='payment_method'
@@ -193,21 +192,13 @@ const StepPos: FC = () => {
 					</div>
 				</div>
 			</div>
-			<div className={classes.validRecaudo}>
-				<FormControlLabel
-					control={<Switch checked={state.status} onChange={handleChange} name='status' color='primary' />}
-					className={classes.checkText}
-					label={state.status ? 'Correcto' : 'Incorrecto'}
-				/>
-				<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
-				<ModalAlert
-					from='valid_pos'
-					openModal={openModal}
-					state={state}
-					setState={setState}
-					handleCloseModal={handleCloseModal}
-				/>
-			</div>
+			<ModalAlert
+				from='valid_pos'
+				openModal={openModal}
+				state={state}
+				setState={setState}
+				handleCloseModal={handleCloseModal}
+			/>
 		</div>
 	);
 };

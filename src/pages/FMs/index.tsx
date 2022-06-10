@@ -5,8 +5,6 @@ import TabPanel from '@mui/lab/TabPanel';
 import { Tab } from '@mui/material';
 import { FC, useState, useLayoutEffect, useEffect } from 'react';
 import { sxStyled, useStyles } from 'pages/Terminales/styles/styles';
-//import ListTerminals from './components/ListTerminals';
-//import ListCommerce from './components/ListCommerce';
 import Swal from 'sweetalert2';
 import { fms } from './services';
 import ListSolicitudes from './components/ListFms';
@@ -15,7 +13,6 @@ const FMS: FC = () => {
 	const classes = useStyles();
 	const [tab, setTab] = useState('solics');
 	const [listFms, setListFms] = useState([]);
-	const [listCommerces, setListCommerces] = useState([]);
 
 	const getListFms = async () => {
 		const res: any = await fms.getAllListFms();
