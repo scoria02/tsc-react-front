@@ -1,4 +1,7 @@
 export interface ContextFMData {
+	activeStep: number;
+	setActiveStep: any;
+	handleChangeStep(value: string): void;
 	typeSolict: number;
 	client: ClientValid | null;
 	commerce: any;

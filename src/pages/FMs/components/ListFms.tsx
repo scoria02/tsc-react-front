@@ -61,16 +61,20 @@ const ListSolicitudes: FC<Props> = ({ listFms }) => {
 		},
 		{
 			field: 'createdAt',
-			headerName: 'Fecha de creacion',
+			headerName: 'Fecha de Actualizacion',
 			width: 170,
-			valueGetter: (params: GridValueGetterParams) => {
-				if (params.row.updateAt) {
-					return DateTime.fromISO(params.row?.updatedAt.toString()).toFormat('dd/LL/yyyy').toLocaleString();
-				} else return 'NT';
-			},
 			sortable: false,
+			valueGetter: (params: GridValueGetterParams) => {
+				if (params.row.createdAt) {
+					return DateTime.fromISO(params.row?.createdAt.toString()).toFormat('dd/LL/yyyy').toLocaleString().trim();
+				} else {
+					return 'No tiene fecha';
+				}
+			},
 		},
 	];
+
+	console.log('d', listFms);
 
 	const DoubleClickTable = async (params: GridCellParams) => {
 		//swal validar open

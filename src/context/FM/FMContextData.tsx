@@ -9,8 +9,8 @@ const baseSteps = ['Pos', 'Referencia Bancaria', 'Fuerza de Venta'];
 function getSteps(fm: any) {
 	const list: string[] = [];
 	if (fm) {
-		if (fm.id_client.validate || fm.id_commerce.validate)
-			if (!list.includes('Informacion del Solicitante')) list.push('Informacion del Solicitante');
+		if (!list.includes('Informacion General')) list.push('Informacion General');
+		if (fm.id_client.validate || fm.id_commerce.validate) if (!list.includes('Cliente')) list.push('Cliente');
 		if (fm.rc_planilla.length && !list.includes('Planilla de Solicitud')) list.push('Planilla de Solicitud');
 		if (fm.id_client && !fm.id_client.validate && !list.includes('Cliente')) list.push('Cliente');
 		if (fm.id_commerce && !fm.id_commerce.validate) {
@@ -26,6 +26,9 @@ function getSteps(fm: any) {
 }
 
 const FMContextData = createContext<ContextFMData>({
+	activeStep: 1,
+	setActiveStep: () => {},
+	handleChangeStep: () => {},
 	typeSolict: 1,
 	client: null,
 	commerce: null,
@@ -40,7 +43,9 @@ const FMContextData = createContext<ContextFMData>({
 });
 
 export const FMContextDataProvider = ({ children, fm }: Props) => {
-	const [stepsFM, setStepsFM] = useState(baseSteps);
+	const [activeStep, setActiveStep] = useState<number>(0);
+	//
+	const [stepsFM, setStepsFM] = useState<string[]>(baseSteps);
 	const [codeFM, setCodeFM] = useState<string>('');
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [typeSolict, setTypeSolict] = useState<number>(1);
@@ -58,6 +63,16 @@ export const FMContextDataProvider = ({ children, fm }: Props) => {
 		setClient(null);
 		setCommerce(null);
 		setPos(null);
+	};
+
+	const handleChangeStep = (value: string) => {
+		stepsFM.forEach((item: string, index) => {
+			console.log('xd', item, value, index);
+			if (item === value) {
+				setActiveStep(index);
+				return;
+			}
+		});
 	};
 
 	useEffect(() => {
@@ -87,6 +102,9 @@ export const FMContextDataProvider = ({ children, fm }: Props) => {
 	return (
 		<FMContextData.Provider
 			value={{
+				activeStep,
+				setActiveStep,
+				handleChangeStep,
 				typeSolict,
 				client,
 				commerce,

@@ -98,8 +98,8 @@ const ListCommerce: FC<Props> = ({ commerces }) => {
 						.toLocaleString()
 						.trim();
 				} else {
+					return 'No tiene fecha';
 				}
-				return 'No tiene fecha';
 			},
 			sortable: false,
 		},

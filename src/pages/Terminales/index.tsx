@@ -10,8 +10,11 @@ import ListCommerce from './components/ListCommerce';
 import Swal from 'sweetalert2';
 import { handleLoadingSearch } from 'utils/handleSwal';
 import { activacion } from './services';
+import { useHistory } from 'react-router-dom';
+import { baseUrl } from 'routers/url';
 
 const Seguridad: FC = () => {
+	const history = useHistory();
 	const classes = useStyles();
 	const [tab, setTab] = useState('');
 	const [listTerminales, setListTerminales] = useState([]);
@@ -56,9 +59,10 @@ const Seguridad: FC = () => {
 			icon: 'question',
 			title: 'Buscar lista de: ',
 			showDenyButton: true,
-			//showCancelButton: true,
 			confirmButtonText: 'Comercios',
+			showCancelButton: true,
 			denyButtonText: 'Terminales',
+			cancelButtonText: 'Ir al Inicio',
 			allowOutsideClick: false,
 			allowEscapeKey: false,
 			customClass: { container: 'swal2-validated' },
@@ -70,6 +74,8 @@ const Seguridad: FC = () => {
 			} else if (result.isDenied) {
 				Swal.fire('Terminal', '', 'info');
 				setTab('terminal');
+			} else {
+				history.push(baseUrl);
 			}
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps

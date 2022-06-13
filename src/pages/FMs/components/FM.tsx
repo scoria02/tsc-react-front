@@ -1,6 +1,7 @@
 import { Typography, Button, Step, StepLabel, Stepper } from '@mui/material';
 import { FC, useContext, useLayoutEffect, useState } from 'react';
 //steps
+import InfoGeneral from './steps/InfoGeneral';
 import StepClient from './steps/StepClient';
 import StepCommerce from './steps/StepCommerce';
 import StepRefBank from './steps/StepRefBank';
@@ -19,10 +20,7 @@ const FM: FC = () => {
 
 	const [steps, setSteps] = useState<string[]>([]);
 
-	const [activeStep, setActiveStep] = useState<number>(0);
-
-	const { client, commerce, solic, codeFM, stepsFM } = useContext(FMContextData);
-	console.log(solic);
+	const { activeStep, setActiveStep, client, commerce, solic, codeFM, stepsFM } = useContext(FMContextData);
 
 	const [step, setStep] = useState([]);
 
@@ -33,15 +31,17 @@ const FM: FC = () => {
 	}, [stepsFM, solic]);
 
 	const handleNext = () => {
-		setActiveStep((prevActiveStep) => prevActiveStep + 1);
+		//setActiveStep((prevActiveStep) => prevActiveStep + 1);
 	};
 
 	const handleBack = () => {
-		setActiveStep((prevActiveStep) => prevActiveStep - 1);
+		setActiveStep(0);
+		//setActiveStep((prevActiveStep) => prevActiveStep - 1);
 	};
 
 	const getContentSteps = () => {
 		let listSteps: any = [];
+		if (!listSteps.includes(<InfoGeneral />)) listSteps.push(<InfoGeneral />);
 		if (solic.rc_planilla.length && !listSteps.includes(<StepPlanilla />)) listSteps.push(<StepPlanilla />);
 		if (client && !listSteps.includes(<StepClient />)) listSteps.push(<StepClient />);
 		if (commerce) {
@@ -59,7 +59,7 @@ const FM: FC = () => {
 	};
 
 	return (
-		<div className={classes.containerSolic}>
+		<div style={{ marginTop: '1rem' }}>
 			{!solic ? (
 				<LoaderLine />
 			) : (
@@ -72,22 +72,16 @@ const FM: FC = () => {
 						Code: <span style={{ color: 'red' }}>{codeFM}</span>
 					</h2>
 					<div className={classes.containerSteps}>
-						<Stepper alternativeLabel activeStep={activeStep} style={{ background: 'none', width: '100%' }}>
-							{steps.map((label, index) => {
-								const stepProps: { completed?: boolean } = {};
-								return (
-									<Step key={label} {...stepProps}>
-										<StepLabel>
-											<Typography
-												variant={activeStep === index ? 'body1' : 'body2'}
-												color={activeStep === index ? 'primary' : 'info'}>
-												<b>{label}</b>
-											</Typography>
-										</StepLabel>
-									</Step>
-								);
-							})}
-						</Stepper>
+						{activeStep ? (
+							<h2
+								style={{
+									marginTop: '10px',
+									fontSize: '20px',
+									marginRight: '10px',
+								}}>
+								{stepsFM[activeStep]}
+							</h2>
+						) : null}
 						<div className={classes.containerFM}>
 							<div>
 								{step[activeStep]}
@@ -105,19 +99,6 @@ const FM: FC = () => {
 										className={classes.buttonBack}>
 										<span className={classes.textButton}>Volver</span>
 									</Button>
-									{activeStep === steps.length - 1 ? null : (
-										<Button
-											sx={{
-												mr: 40,
-											}}
-											size='large'
-											variant='contained'
-											color='primary'
-											onClick={handleNext}
-											className={classes.buttonNext}>
-											<span className={classes.textButton}>Siguente</span>
-										</Button>
-									)}
 								</div>
 							</div>
 						</div>
