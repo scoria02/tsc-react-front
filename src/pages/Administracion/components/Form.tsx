@@ -21,7 +21,6 @@ export const Form: FC<any> = ({
 	fm,
 	setFm,
 	uploadImg,
-	nameImg,
 	setUploadImg,
 	setNameImage,
 	payment,
@@ -39,7 +38,7 @@ export const Form: FC<any> = ({
 	const { permiss }: any = user;
 
 	const [load, setLoad] = useState<boolean>(false);
-	const [cuotasTexto, setCuotasTexto] = useState('');
+	//const [cuotasTexto, setCuotasTexto] = useState('');
 	const [fraccion, setFraccion] = useState<any>({
 		state: false,
 		coutas: 0,
@@ -123,14 +122,14 @@ export const Form: FC<any> = ({
 			customClass: { container: 'swal2-validated' },
 		}).then((result) => {
 			if (result.isConfirmed) {
-				handleLoading();
 				const data: any = !fm.pagadero
-					? {}
+					? null
 					: {
 							id_payment_method: payment.id,
 							id_type_payment: typePay.id,
 					  };
-				dispatch(updateStatusFMAdministration(fm.id, 3, null));
+				handleLoading();
+				dispatch(updateStatusFMAdministration(fm.id, 3, data, uploadImg));
 			}
 		});
 	};
@@ -170,6 +169,7 @@ export const Form: FC<any> = ({
 	useEffect(() => {
 		if (payment && payment.id === 2) {
 			setUploadImg(null);
+			setPath('');
 			setNameImage('');
 			setFm({
 				...fm,
@@ -279,43 +279,25 @@ export const Form: FC<any> = ({
 									}}
 									onChange={handleChangeInitial}
 								/>
-								<TextField
-									disabled
-									id='initial'
-									label='Cantidad de cuotas'
-									// sx={sxStyled.textAutoCompleteLeft}
-									type='text'
-									variant='outlined'
-									value={cuotasTexto}
-								/>
 							</>
 						)}
 					</div>
+					<Button
+						sx={sxStyled.buttonV}
+						onClick={handleVerificated}
+						variant='contained'
+						disabled={disButton()}
+						color='success'>
+						Verificar
+					</Button>
 					{!fm.pagadero ? (
 						<div className={classes.containerImg}>
-							{console.log(fm)}
-							<Button
-								sx={sxStyled.buttonV}
-								onClick={handleVerificated}
-								variant='contained'
-								disabled={disButton()}
-								color='primary'>
-								Verificar
-							</Button>
 							{fm.id_payment_method.id !== 2 && fm.id_payment_method.id !== 6 && fm.rc_comp_dep !== null ? (
 								<RecPdf load={load} setLoad={setLoad} imagen={imagen} />
 							) : null}
 						</div>
 					) : (
 						<>
-							<Button
-								sx={sxStyled.buttonV}
-								onClick={handleVerificated}
-								variant='contained'
-								disabled={disButton()}
-								color='primary'>
-								Verificar
-							</Button>
 							{uploadImg && (
 								<div
 									className={classes.containerImg}

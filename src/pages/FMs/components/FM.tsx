@@ -1,4 +1,4 @@
-import { Typography, Button, Step, StepLabel, Stepper } from '@mui/material';
+import { Button } from '@mui/material';
 import { FC, useContext, useLayoutEffect, useState } from 'react';
 //steps
 import InfoGeneral from './steps/InfoGeneral';
@@ -18,25 +18,20 @@ import FMContextData from 'context/FM/FMContextData';
 const FM: FC = () => {
 	const classes = useStylesFM();
 
-	const [steps, setSteps] = useState<string[]>([]);
+	//const [steps, setSteps] = useState<string[]>([]);
 
 	const { activeStep, setActiveStep, client, commerce, solic, codeFM, stepsFM } = useContext(FMContextData);
 
 	const [step, setStep] = useState([]);
 
 	useLayoutEffect(() => {
-		if (stepsFM) setSteps(stepsFM);
+		//if (stepsFM) setSteps(stepsFM);
 		if (solic) setStep(getContentSteps());
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [stepsFM, solic]);
 
-	const handleNext = () => {
-		//setActiveStep((prevActiveStep) => prevActiveStep + 1);
-	};
-
 	const handleBack = () => {
 		setActiveStep(0);
-		//setActiveStep((prevActiveStep) => prevActiveStep - 1);
 	};
 
 	const getContentSteps = () => {

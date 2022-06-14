@@ -129,7 +129,9 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 								}}
 								options={listDepartment}
 								getOptionLabel={(value: any) => value.name}
-								filterOptions={(listDepartment) => listDepartment.filter((op) => op.active)}
+								filterOptions={(listDepartment) =>
+									listDepartment.filter((op) => op.active && op.name !== 'Ninguno')
+								}
 								isOptionEqualToValue={(option: any | null, value: any) => option?.id === value.id}
 								value={department || null}
 								renderInput={(params: any) => (
@@ -147,6 +149,7 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 								}}
 								options={listRoles}
 								getOptionLabel={(value: any) => value.name}
+								filterOptions={(listRoles) => listRoles.filter((op) => op.name !== 'Base')}
 								isOptionEqualToValue={(option: any | null, value: any) => option?.id === value.id}
 								value={role || null}
 								renderInput={(params: any) => (
@@ -174,7 +177,7 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 						) : null
 					) : (
 						<>
-							<div style={{ height: 400 }}>
+							<div style={{ height: 350 }}>
 								<DataGrid
 									headerHeight={30}
 									rowHeight={25}

@@ -4,7 +4,7 @@ import './swal.scss';
 export const handleLoading = () => {
 	Swal.fire({
 		icon: 'info',
-		title: 'Verificando',
+		title: 'Verificando...',
 		showConfirmButton: false,
 		customClass: { container: 'swal2-validated' },
 		allowOutsideClick: false,
@@ -145,5 +145,29 @@ export const handleLoadingSendFm = () => {
 		didOpen: () => {
 			Swal.showLoading();
 		},
+	});
+};
+
+export const handleCreate = () => {
+	Swal.fire({
+		icon: 'info',
+		title: 'Registrando...',
+		showConfirmButton: false,
+		customClass: { container: 'swal2-validated' },
+		allowOutsideClick: false,
+		allowEscapeKey: false,
+		didOpen: () => {
+			Swal.showLoading();
+		},
+	});
+};
+
+export const handleVerificado = () => {
+	Swal.fire({
+		icon: 'success',
+		title: 'Formulario Verificado',
+		showConfirmButton: true,
+		customClass: { container: 'swal2-validated' },
+		timer: 2500,
 	});
 };

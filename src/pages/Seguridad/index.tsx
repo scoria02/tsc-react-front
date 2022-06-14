@@ -73,7 +73,7 @@ const Seguridad: FC = () => {
 						{permiss['Editar Vistas'] && (
 							<Tab
 								sx={sxStyled.tabName}
-								label='Vistas'
+								label='Modulos'
 								value={'gestionViews'}
 								wrapped
 								classes={{ root: classes.tabLabel }}

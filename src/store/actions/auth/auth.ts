@@ -115,7 +115,7 @@ export const registerUser = (user: any, history?: any) => {
 			const res = await useAxios.post('/auth/register', newUser);
 			updateToken(res);
 			dispatch(requestSuccess(res.data.info));
-			dispatch(StartLoading());
+			//dispatch(StartLoading());
 			history?.push(baseUrl);
 			Swal.fire({
 				icon: 'success',

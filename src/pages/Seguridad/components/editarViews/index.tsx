@@ -8,6 +8,7 @@ import { handleInfoText, handleLoadingSave } from 'utils/handleSwal';
 import LoaderLine from 'components/loaders/LoaderLine';
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { Department, View } from 'pages/Seguridad/interfaces';
+import Swal from 'sweetalert2';
 
 interface Props {
 	listDepartment: Department[];
@@ -37,7 +38,17 @@ const EditarViews: React.FC<Props> = ({ listDepartment }) => {
 			headerName: 'Estatus',
 			width: 200,
 			renderCell: (params) => (
-				<Checkbox checked={params.row.status} onChange={() => handleChange(params.row.id)} />
+				<Checkbox
+					checked={params.row.status}
+					onChange={() => {
+						if (params.row.name === 'Inicio') {
+							Swal.fire('Error', `No se puede inactivar: ${params.row.name}`, 'error');
+							return;
+						} else {
+							handleChange(params.row.id);
+						}
+					}}
+				/>
 			),
 		},
 		{
@@ -100,7 +111,9 @@ const EditarViews: React.FC<Props> = ({ listDepartment }) => {
 								}}
 								options={listDepartment}
 								getOptionLabel={(value: any) => value.name}
-								filterOptions={(listDepartment) => listDepartment.filter((op) => op.active)}
+								filterOptions={(listDepartment) =>
+									listDepartment.filter((op) => op.active && op.name !== 'Ninguno')
+								}
 								isOptionEqualToValue={(option: any | null, value: any) => option?.id === value.id}
 								value={department || null}
 								renderInput={(params: any) => (
@@ -128,7 +141,7 @@ const EditarViews: React.FC<Props> = ({ listDepartment }) => {
 						) : null
 					) : (
 						<>
-							<div style={{ height: 400 }}>
+							<div style={{ height: 350 }}>
 								<DataGrid
 									headerHeight={30}
 									rowHeight={25}

@@ -72,7 +72,7 @@ const Administracion: FC<AdministracionProp> = () => {
 	const [typePay, setTypePay] = useState(null);
 	const [payment, setPayment] = useState(null);
 	const [selected, setSelected] = useState(false);
-	const [uploadImg, setUploadImg] = useState(null);
+	const [uploadImg, setUploadImg] = useState<File | null>(null);
 	const [listPayment, setListPayment] = useState<any[]>([]);
 	const [rowSelected, setRowSelect] = useState(null);
 	const [getDataControl, setGetDataControl] = useState(0);
@@ -122,6 +122,7 @@ const Administracion: FC<AdministracionProp> = () => {
 
 	const handleCloseRow = () => {
 		socket.emit('cliente:disconnectAdministracion');
+		socket.emit('cliente:disconnect');
 		setSelected(false);
 		dispatch(cleanAdmisionFMAdministration());
 	};
@@ -129,6 +130,7 @@ const Administracion: FC<AdministracionProp> = () => {
 	useEffect(() => {
 		if (administration.updatedStatusAd) {
 			socket.emit('cliente:cleansolicadminis');
+			/*
 			Swal.fire({
 				icon: 'success',
 				title: 'Formulario Verificado',
@@ -138,6 +140,7 @@ const Administracion: FC<AdministracionProp> = () => {
 				allowEscapeKey: false,
 				timer: 1500,
 			});
+			*/
 			handleCloseRow();
 		}
 	}, [administration.updatedStatusAd]);

@@ -9,7 +9,6 @@ import { Button, MobileStepper, useMediaQuery } from '@mui/material';
 import React, { useEffect, useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { baseUrl } from 'routers/url';
 import { registerUser } from 'store/actions/auth/auth';
 //Redux
 import { RootState } from 'store/store';
@@ -24,7 +23,7 @@ import { Step2 } from './steps/Step2';
 import * as valids from './validationForm';
 //context
 import { SocketContext } from 'context/SocketContext';
-import { handleLoading } from 'utils/handleSwal';
+import { handleCreate } from 'utils/handleSwal';
 
 const Register: React.FC = () => {
 	const history = useHistory();
@@ -35,9 +34,6 @@ const Register: React.FC = () => {
 
 	//Dispatch
 	const auth: any = useSelector((state: RootState) => state.auth);
-	const registrationUser = (user: Interface_RegisterUser) => {
-		dispatch(registerUser(user, history));
-	};
 
 	const isMediumScreen: boolean = useMediaQuery('(max-width:800px)');
 
@@ -247,11 +243,10 @@ const Register: React.FC = () => {
 
 	const handleSubmit = () => {
 		if (valids.allInputNotNUll(activeStep, userForm) || valids.checkErrorAllInput(activeStep, userFormError)) {
-			//console.log('Debe llenear todos los campos');
 			return;
 		}
-		handleLoading();
-		registrationUser(userForm);
+		handleCreate();
+		dispatch(registerUser(userForm, history));
 	};
 
 	//Steps
@@ -307,7 +302,7 @@ const Register: React.FC = () => {
 						}
 						backButton={
 							activeStep === 0 ? (
-								<Button className={classes.buttonBack}></Button>
+								<Button disabled className={classes.buttonBack}></Button>
 							) : (
 								<Button
 									className={classes.buttonStep}

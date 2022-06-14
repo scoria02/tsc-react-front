@@ -50,7 +50,7 @@ export const AppRouter = () => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 
-	const { loading } = useSelector((state: any) => state.ui);
+	//const { loading } = useSelector((state: any) => state.ui);
 	const { user } = useSelector((state: any) => state.auth);
 	const [checking, setChecking] = useState<boolean>(true);
 	const [menu, setMenu] = useState<Views>({});
@@ -83,7 +83,7 @@ export const AppRouter = () => {
 			<ApprouterContext.Provider value={{ menu, setMenu }}>
 				<GuardProvider guards={[Auth]}>
 					<Switch>
-						{loading && user ? (
+						{user ? (
 							<>
 								<div className={classes.root}>
 									<MainMenu />

@@ -1,18 +1,13 @@
-import { Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
-import DataListContext from 'context/DataList/DataListContext';
-import FMDataContext from 'context/Admision/CreationFM/fmAdmision/FmContext';
-import React, { FC, useContext } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store/store';
+import { Button, TextField, Typography } from '@mui/material';
+import { FC, useContext } from 'react';
 //sytles
-import { sxStyled, useStylesFM } from '../styles';
+import { useStylesFM } from '../styles';
 import FMContextData from 'context/FM/FMContextData';
 
 const InfoGeneral: FC = () => {
 	const classes = useStylesFM();
-	const fm: any = useSelector((state: RootState) => state.fm);
 
-	const { handleChangeStep, client, commerce, solic, codeFM } = useContext(FMContextData);
+	const { handleChangeStep, client, commerce, codeFM } = useContext(FMContextData);
 
 	return (
 		<>
