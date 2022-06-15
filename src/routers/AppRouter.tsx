@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { isPrivate } from 'hooks/Functions';
+import { existRoutePublic, isPrivate } from 'hooks/Functions';
 import { createContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
@@ -64,6 +64,9 @@ export const AppRouter = () => {
 
 	useEffect(() => {
 		if (localStorage.getItem('token') === null && isPrivate()) {
+			window.location.replace(urlLogin);
+		}
+		if (localStorage.getItem('token') === null && !existRoutePublic()) {
 			window.location.replace(urlLogin);
 		}
 	}, []);

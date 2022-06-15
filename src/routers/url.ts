@@ -27,3 +27,5 @@ export const urlLogin = `${baseUrl}auth/login`;
 export const urlRegister = `${baseUrl}auth/register`;
 export const urlNewPassword = `${baseUrl}auth/new-password/`;
 export const urlRestorePassword = `${baseUrl}auth/restore-password/`;
+
+export const urlPublic = [urlLogin, urlRegister, urlNewPassword, urlRestorePassword];

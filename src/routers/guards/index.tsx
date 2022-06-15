@@ -17,7 +17,7 @@ export const Auth: GuardFunction = (to, from, next) => {
 				next.props({ token: to.location.search });
 			}
 			next();
-			// next.redirect(urlLogin);
+			//next.redirect(urlLogin);
 		}
 	}
 };

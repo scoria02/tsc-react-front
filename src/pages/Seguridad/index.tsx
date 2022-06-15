@@ -5,8 +5,8 @@ import TabPanel from '@mui/lab/TabPanel';
 import { Tab } from '@mui/material';
 import EditarPermisos from 'pages/Seguridad/components/editarPermisos';
 import GestionUsuarios from 'pages/Seguridad/components/editarUsuarios';
-import { FC, useState, useLayoutEffect } from 'react';
-import { editPermisos } from 'pages/Seguridad/services/permisos';
+import { FC, useState, useLayoutEffect, useContext, useEffect } from 'react';
+import { seguridad } from 'pages/Seguridad/services/permisos';
 import { sxStyled, useStyles } from './styles';
 import EditarViews from 'pages/Seguridad/components/editarViews';
 
@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import EditarDepartments from './components/editarDepartments';
 import { Department, Roles } from './interfaces';
+import { SocketContext } from 'context/SocketContext';
 
 const Seguridad: FC = () => {
 	const { permiss }: any = useSelector((state: RootState) => state.auth.user);
@@ -22,9 +23,19 @@ const Seguridad: FC = () => {
 	const [tab, setTab] = useState('gestionUsuarios');
 	const [listDepartment, setListDepartment] = useState<Department[] | []>([]);
 	const [listRoles, setListRoles] = useState<Roles[] | []>([]);
+	const [allUser, setUsers] = useState<any[]>([]);
+
+	const { socket } = useContext(SocketContext);
+
+	const getData = async () => {
+		const res: any = await seguridad.getAllUser();
+		if (res.ok) {
+			setUsers(res.users);
+		}
+	};
 
 	const getList = async () => {
-		const res: any = await editPermisos.getAllListSeguridad();
+		const res: any = await seguridad.getAllListSeguridad();
 		//console.log(res);
 		if (res.departments.length) {
 			setListDepartment(res.departments);
@@ -35,9 +46,16 @@ const Seguridad: FC = () => {
 	};
 
 	useLayoutEffect(() => {
-		if (!listDepartment.length || !listRoles) getList();
+		getList();
+		getData();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		socket.on('server:reloadWorkers', () => {
+			getData();
+		});
+	}, [socket]);
 
 	const handleChange = (event: any, newValue: any) => {
 		setTab(newValue);
@@ -90,7 +108,7 @@ const Seguridad: FC = () => {
 						)}
 					</TabList>
 					<TabPanel value={'gestionUsuarios'} classes={{ root: classes.tabPanel }}>
-						<GestionUsuarios listDepartment={listDepartment} listRoles={listRoles} />
+						<GestionUsuarios listDepartment={listDepartment} listRoles={listRoles} allUser={allUser} />
 					</TabPanel>
 					{permiss['Editar Permisos'] && (
 						<TabPanel value={'gestionPermisos'} classes={{ root: classes.tabPanel }}>

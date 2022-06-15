@@ -2,7 +2,7 @@
 import { useStyles } from './styles/styles';
 import { Autocomplete, Button, Checkbox, TextField } from '@mui/material';
 import { useState } from 'react';
-import { editPermisos } from 'pages/Seguridad/services/permisos';
+import { seguridad } from 'pages/Seguridad/services/permisos';
 import SearchIcon from '@mui/icons-material/Search';
 import { handleInfoText, handleLoadingSave } from 'utils/handleSwal';
 import LoaderLine from 'components/loaders/LoaderLine';
@@ -88,7 +88,7 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 		handleLoadingSave();
 		if (department && role && listPermisos.length) {
 			//console.log('buscar', department?.id, role?.id);
-			const res: any = await editPermisos.savePermiss(department.id, role.id, listPermisos);
+			const res: any = await seguridad.savePermiss(department.id, role.id, listPermisos);
 			if (res.ok) {
 				handleInfoText('Guardado', `Se guardo el cambio de ${department?.name} / ${role?.name}`);
 				//setListPermisos([]);
@@ -102,7 +102,7 @@ const EditarPermisos: React.FC<Props> = ({ listDepartment, listRoles }) => {
 		setListPermisos([]);
 		if (department && role) {
 			//console.log('buscar', department?.id, role?.id);
-			const res: any = await editPermisos.getAllListPermiss(department.id, role.id);
+			const res: any = await seguridad.getAllListPermiss(department.id, role.id);
 			if (res.ok) {
 				if (res.permiss.length) {
 					setListPermisos(res.permiss);

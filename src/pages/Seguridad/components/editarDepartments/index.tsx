@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Checkbox, TextField } from '@mui/material';
 import { useState } from 'react';
-import { editPermisos } from 'pages/Seguridad/services/permisos';
+import { seguridad } from 'pages/Seguridad/services/permisos';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { handleInfoText, handleLoadingSave, handleNotAccess } from 'utils/handleSwal';
 import LoaderLine from 'components/loaders/LoaderLine';
@@ -77,7 +77,7 @@ const EditarDepartments: React.FC<Props> = ({ listDepartment, setListDepartment 
 	const handlesUpdateDepartment = async () => {
 		handleLoadingSave();
 		if (listDepartment.length) {
-			const res: any = await editPermisos.updateDepartments(listDepartment);
+			const res: any = await seguridad.updateDepartments(listDepartment);
 			if (res.ok) {
 				handleInfoText('Guardado', `Cambios guardados`);
 				setUpdate(true);
@@ -111,7 +111,7 @@ const EditarDepartments: React.FC<Props> = ({ listDepartment, setListDepartment 
 		setCreate(false);
 		handleLoadingSave();
 		if (department && listDepartment.length) {
-			const res: any = await editPermisos.createDepartment(department);
+			const res: any = await seguridad.createDepartment(department);
 			if (res.ok) {
 				handleInfoText('Departamento Creado', department);
 				setListDepartment([...listDepartment, res.newDepartment]);

@@ -4,7 +4,8 @@ import Swal from 'sweetalert2';
 import { multiGetterAxios } from 'utils/multiGetterAxios';
 import { Department } from '../interfaces';
 
-export const editPermisos = {
+export const seguridad = {
+	getAllUser,
 	getAllListSeguridad,
 	getAllListPermiss,
 	savePermiss,
@@ -13,6 +14,21 @@ export const editPermisos = {
 	updateDepartments,
 	createDepartment,
 };
+
+export async function getAllUser() {
+	try {
+		const res = await useAxios.get('worker/all');
+		return {
+			ok: true,
+			users: res.data.info,
+		};
+	} catch (err) {
+		return {
+			ok: false,
+			err,
+		};
+	}
+}
 
 export async function getAllListSeguridad() {
 	try {

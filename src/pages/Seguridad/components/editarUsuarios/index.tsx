@@ -4,32 +4,31 @@ import { Autocomplete, Avatar, Button, Grid, Paper, TextField } from '@mui/mater
 import { DataGrid, GridToolbarContainer, GridToolbarFilterButton } from '@mui/x-data-grid';
 import classnames from 'classnames';
 import axios from 'config';
-import { SocketContext } from 'context/SocketContext';
-import { useLayoutEffect, useState, useContext, useEffect } from 'react';
+import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { sxStyled, useStyles } from '../../styles';
 import { handleError, handleNotAccess } from 'utils/handleSwal';
 import { columnsGestionUsuario } from './columnsGrid';
 import { useSelector } from 'react-redux';
+import { Department, Roles } from 'pages/Seguridad/interfaces';
+import LoaderLine from 'components/loaders/LoaderLine';
 
 interface Props {
-	listDepartment: any[];
-	listRoles: any[];
+	listDepartment: Department[];
+	listRoles: Roles[];
+	allUser: any[];
 }
 
-const GestionUsuarios: React.FC<Props> = ({ listDepartment, listRoles }) => {
+const GestionUsuarios: React.FC<Props> = ({ listDepartment, listRoles, allUser }) => {
 	const { user } = useSelector((state: any) => state.auth);
 	const { permiss }: any = user;
 	const classes = useStyles();
 
-	const { socket } = useContext(SocketContext);
-
 	const [userBlocked, setUserBlocked] = useState<boolean>(false);
 	const [openUserView, setUserView] = useState<boolean>();
-	// const [loading, setLoading] = useState<boolean>(true);
+	//
 	const [userRol, setUserRol] = useState<any>(null);
 	const [userDep, setUserDep] = useState<any>(null);
-	const [allUser, setUsers] = useState<any[]>([]);
 
 	const [userID, setUserID] = useState<number>(0);
 	const [email, setEmail] = useState<string>('');
@@ -45,30 +44,22 @@ const GestionUsuarios: React.FC<Props> = ({ listDepartment, listRoles }) => {
 		);
 	};
 
-	const getData = async () => {
-		try {
-			await axios.get('worker/all').then((data: any) => {
-				setUsers(data.data.info);
-			});
-		} catch (error) {}
-	};
-
-	useLayoutEffect(() => {
-		getData();
-	}, []);
-
-	useEffect(() => {
-		socket.on('server:reloadWorkers', () => {
-			getData();
-			//setUsers([...allUser, newUser]);
-		});
-	}, [socket]);
-
 	const handleCloseRow = (event: any) => {
 		setUserView(false);
 	};
 
+	const resetUser = () => {
+		setUserBlocked(false);
+		setLName('');
+		setEmail('');
+		setUserDep(null);
+		setUserRol(null);
+		setUserID(0);
+		setName('');
+	};
+
 	const handleRow = (event: any) => {
+		resetUser();
 		if (!permiss['Ver Usuarios']) {
 			handleNotAccess();
 			return;
@@ -76,45 +67,6 @@ const GestionUsuarios: React.FC<Props> = ({ listDepartment, listRoles }) => {
 		getuserRol(event.row.id);
 		setUserView(true);
 	};
-
-	// const handleInputChanges: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-	// 	e.preventDefault();
-	// 	switch (e.target.id) {
-	// 		case 'email':
-	// 			setEmail(e.target.value);
-	// 			break;
-	// 		case 'name':
-	// 			setName(e.target.value);
-	// 			break;
-	// 		default:
-	// 			break;
-	// 	}
-	// };
-
-	/*
-	const isInUserRol = (id: number) => {
-		let ret = false;
-		userRol.map((val) => {
-			if (val.id === id) {
-				ret = true;
-			}
-			return val;
-		});
-		return ret;
-	};
-		*/
-
-	/*
-	const updateCB = (array: any[], item: any, value: boolean) => {
-		const index: number = array.findIndex((i: any) => i.name === item);
-		if (index !== -1) {
-			array[index].valid = value;
-			return array;
-		} else {
-			return array;
-		}
-	};
-		*/
 
 	const getuserRol = async (id: number) => {
 		try {
@@ -145,31 +97,6 @@ const GestionUsuarios: React.FC<Props> = ({ listDepartment, listRoles }) => {
 		}
 	};
 
-	/*
-	const handleCheckbox = async (event: React.ChangeEvent<HTMLInputElement>) => {
-		const id = parseInt(event.target.id, 10);
-		setpermiss((prev) => {
-			return updateCB(prev, event.target.name, event.target.checked);
-		});
-		switch (event.target.checked) {
-			case true:
-				setUserRol((prev) => {
-					const index: number = prev.findIndex((i: any) => i.id === id);
-					if (index === -1) {
-						return [...prev, { id: id, name: event.target.name }];
-					}
-					return prev;
-				});
-				break;
-			default:
-				setUserRol((prev) => {
-					return prev.filter((rol) => id !== rol.id);
-				});
-				break;
-		}
-	};
-		*/
-
 	const handleSaveData = () => {
 		Swal.fire({
 			title: '¿Estas seguro de realizar estos cambios?',
@@ -191,7 +118,6 @@ const GestionUsuarios: React.FC<Props> = ({ listDepartment, listRoles }) => {
 						block: userBlocked ? 1 : 0,
 					});
 					Swal.fire('Cambios Guardados', '', 'success');
-					getData();
 				} catch (error) {
 					handleError(error);
 				}
@@ -220,7 +146,7 @@ const GestionUsuarios: React.FC<Props> = ({ listDepartment, listRoles }) => {
 					</div>
 				</Grid>
 				<Grid item xs={7}>
-					{openUserView && (
+					{openUserView && name && email ? (
 						<Paper variant='outlined'>
 							<div className={classes.card}>
 								<Button sx={sxStyled.closeBtn} onClick={handleCloseRow}>
@@ -241,7 +167,6 @@ const GestionUsuarios: React.FC<Props> = ({ listDepartment, listRoles }) => {
 													variant='outlined'
 													type='email'
 													value={email}
-													// onChange={handleInputChanges}
 													key={0}
 												/>
 												<TextField
@@ -300,6 +225,8 @@ const GestionUsuarios: React.FC<Props> = ({ listDepartment, listRoles }) => {
 								</form>
 							</div>
 						</Paper>
+					) : (
+						<LoaderLine />
 					)}
 				</Grid>
 			</Grid>

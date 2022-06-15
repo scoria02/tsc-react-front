@@ -2,7 +2,7 @@
 import { useStyles } from './styles/styles';
 import { Autocomplete, Button, Checkbox, TextField } from '@mui/material';
 import { useState } from 'react';
-import { editPermisos } from 'pages/Seguridad/services/permisos';
+import { seguridad } from 'pages/Seguridad/services/permisos';
 import SearchIcon from '@mui/icons-material/Search';
 import { handleInfoText, handleLoadingSave } from 'utils/handleSwal';
 import LoaderLine from 'components/loaders/LoaderLine';
@@ -62,7 +62,7 @@ const EditarViews: React.FC<Props> = ({ listDepartment }) => {
 		handleLoadingSave();
 		if (department && listViews.length) {
 			//console.log('buscar', department?.id);
-			const res: any = await editPermisos.saveViews(department.id, listViews);
+			const res: any = await seguridad.saveViews(department.id, listViews);
 			if (res.ok) {
 				handleInfoText('Guardado', `Se guardo el cambio de ${department?.name}`);
 				setListViews([]);
@@ -84,7 +84,7 @@ const EditarViews: React.FC<Props> = ({ listDepartment }) => {
 		setListViews([]);
 		if (department) {
 			//console.log('buscar', department?.id);
-			const res: any = await editPermisos.getAllListViews(department.id);
+			const res: any = await seguridad.getAllListViews(department.id);
 			if (res.ok) {
 				if (res.permiss.length) {
 					setListViews(res.permiss);
