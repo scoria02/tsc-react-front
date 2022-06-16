@@ -2,7 +2,7 @@ import { Button, Card, CardContent, Typography } from '@mui/material';
 import Logo from 'img/logo_1000pagos_blanco.svg';
 import React, { useLayoutEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { urlLogin, urlNewPassword, urlRestorePassword } from 'routers/url';
+import { urlNewPassword, urlRestorePassword } from 'routers/url';
 import { useStylesModalUser } from './styles';
 
 const sxStyles = {
