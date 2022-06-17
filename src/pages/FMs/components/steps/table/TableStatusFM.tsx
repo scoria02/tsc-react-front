@@ -29,6 +29,20 @@ const TableStatusFM: FC<Props> = ({ status }) => {
 			valueGetter: (params: GridValueGetterParams) => params.row.id_status_request.name,
 		},
 		{
+			field: 'createdAt',
+			headerName: 'Hora',
+			width: 118,
+			align: 'left',
+			cellClassName: 'hour',
+			sortable: false,
+			valueGetter: (params: GridValueGetterParams) => {
+				const dt = DateTime.fromISO(params.row?.updatedAt);
+				const meridiem = dt.hour > 11 ? 'p' : 'a';
+				let final = `${DateTime.fromISO(params.row?.updatedAt.toString()).toFormat('h:mm')} ${meridiem}m`;
+				return final.toLocaleString().trim();
+			},
+		},
+		{
 			field: 'updatedAt',
 			headerName: 'Fecha de Actulizacion',
 			width: 170,
@@ -39,10 +53,17 @@ const TableStatusFM: FC<Props> = ({ status }) => {
 		},
 	];
 
+	console.log(status);
+
 	return (
 		<div className={classes.terminales}>
-			<div style={{ height: 400, width: 500 }}>
+			<div style={{ height: 400, width: 600 }}>
 				<DataGrid
+					sx={{
+						'& .hour': {
+							backgroundColor: '#CECBCF',
+						},
+					}}
 					columns={columns}
 					hideFooter
 					//getRowId={getRowId}

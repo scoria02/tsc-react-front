@@ -73,7 +73,6 @@ const AuthModal: React.FC<any> = ({ children, name, register }) => {
 								</Button>
 							)}
 						</div>
-						url === urlLogin && (
 						<div className={classes.buttonRight}>
 							<Button
 								size='small'
@@ -83,7 +82,6 @@ const AuthModal: React.FC<any> = ({ children, name, register }) => {
 								<span className={classes.buttonText}>Olvide Contraseña</span>
 							</Button>
 						</div>
-						)
 					</div>
 				</CardContent>
 			</Card>
