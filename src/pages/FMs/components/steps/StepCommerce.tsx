@@ -1,18 +1,39 @@
-import { TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import classNames from 'classnames';
 import RecPdf from 'components/images/RecPdf';
 import { FC, useContext, useState } from 'react';
 //sytles
 import { sxStyled, useStylesFM } from '../styles';
 import FMContextData from 'context/FM/FMContextData';
+//import Swal from 'sweetalert2';
+import '../../../../utils/swal.scss';
 
 const StepCommerce: FC = () => {
 	const classes = useStylesFM();
 
-	const { commerce, locationCommerce } = useContext(FMContextData);
+	const { handleExistStep, handleChangeStep, commerce, locationCommerce } = useContext(FMContextData);
 
 	const [load, setLoad] = useState(false);
 	const imagen = `${process.env.REACT_APP_API_IMAGES}/${commerce?.rc_rif?.path}`;
+
+	/*
+	const handleTMS7Commerce = () => {
+		Swal.fire({
+			title: 'Buscar si existe en TMS7',
+			html: `<p>Esto puede tardar <b>unos minutos</b></p>`,
+			confirmButtonText: 'Buscar',
+			showCancelButton: true,
+			cancelButtonColor: '#d33',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
+			customClass: { container: 'swal2-validated' },
+		}).then((confirm) => {
+			if (confirm.isConfirmed) {
+				//console.log('xd');
+			}
+		});
+	};
+	*/
 
 	return (
 		<div className={classes.grid}>
@@ -119,6 +140,60 @@ const StepCommerce: FC = () => {
 							value={locationCommerce?.local}
 						/>
 					</div>
+					<div className={classes.input}>
+						<TextField
+							className={classes.inputText}
+							type='text'
+							sx={sxStyled.inputLeft}
+							variant='outlined'
+							label='Creado en 1000pagos'
+							autoComplete='off'
+							name='aplicativo1000pagos'
+							value={commerce?.codComer_1000pagos ? 'Si' : 'No'}
+						/>
+						<div className={classes.input}></div>
+					</div>
+					<div className={classes.input}>
+						{/* 
+						<Button
+							sx={{
+								mr: 2,
+								textTransform: 'none',
+							}}
+							size='large'
+							variant='contained'
+							onClick={handleTMS7Commerce}
+							color='primary'>
+							TMS7
+						</Button>
+						*/}
+					</div>
+					{handleExistStep('Acta Const.') ? (
+						<Button
+							sx={{
+								mr: 2,
+								textTransform: 'none',
+							}}
+							size='large'
+							variant='outlined'
+							onClick={() => handleChangeStep('Acta Const.')}
+							color='success'>
+							Acta Constitutiva
+						</Button>
+					) : null}
+					{handleExistStep('Cont. Especial') ? (
+						<Button
+							sx={{
+								mr: 2,
+								textTransform: 'none',
+							}}
+							size='large'
+							variant='outlined'
+							onClick={() => handleChangeStep('Cont. Especial')}
+							color='success'>
+							Contribuyente Especial
+						</Button>
+					) : null}
 				</div>
 			</div>
 			<div className={classes.validRecaudo}>

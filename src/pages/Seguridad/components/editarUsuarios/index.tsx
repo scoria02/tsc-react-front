@@ -225,9 +225,9 @@ const GestionUsuarios: React.FC<Props> = ({ listDepartment, listRoles, allUser }
 								</form>
 							</div>
 						</Paper>
-					) : (
+					) : openUserView ? (
 						<LoaderLine />
-					)}
+					) : null}
 				</Grid>
 			</Grid>
 		</>

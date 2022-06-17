@@ -89,6 +89,14 @@ export const useStylesFM = makeStyles((styles: Theme) => ({
 		width: '100%',
 		justifyContent: 'space-between',
 	},
+	gridBorder: {
+		//backgroundColor: 'red',
+		borderRight: '2px solid black',
+		width: '100%',
+		display: 'grid',
+		gridColumnGap: '1%',
+		gridTemplateColumns: '1fr 1fr',
+	},
 	grid: {
 		width: '100%',
 		display: 'grid',

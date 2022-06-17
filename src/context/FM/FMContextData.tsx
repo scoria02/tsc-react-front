@@ -5,22 +5,19 @@ interface Props {
 	children: ReactChild;
 	fm: any;
 }
-const baseSteps = ['Pos', 'Referencia Bancaria', 'Fuerza de Venta'];
+const baseSteps = ['Informacion General', 'Cliente', 'Comercio', 'Pos', 'Referencia Bancaria'];
 function getSteps(fm: any) {
 	const list: string[] = [];
 	if (fm) {
 		if (!list.includes('Informacion General')) list.push('Informacion General');
-		if (fm.id_client.validate || fm.id_commerce.validate) if (!list.includes('Cliente')) list.push('Cliente');
-		if (fm.rc_planilla.length && !list.includes('Planilla de Solicitud')) list.push('Planilla de Solicitud');
-		if (fm.id_client && !fm.id_client.validate && !list.includes('Cliente')) list.push('Cliente');
-		if (fm.id_commerce && !fm.id_commerce.validate) {
-			if (!list.includes('Comercio')) list.push('Comercio');
-			if (fm.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')) list.push('Acta Const.');
-			if (fm.id_commerce.special_contributor && !list.includes('Cont. Especial')) list.push('Cont. Especial');
-		}
-		if (fm && !list.includes('Pos')) list.push('Pos');
+		if (!list.includes('Cliente')) list.push('Cliente');
+		if (!list.includes('Comercio')) list.push('Comercio');
+		if (!list.includes('Pos')) list.push('Pos');
 		if (fm.rc_ref_bank && !list.includes('Referencia Bancaria')) list.push('Referencia Bancaria');
 		if (fm.rc_comp_dep && !list.includes('Comprobante de Pago')) list.push('Comprobante de Pago');
+		if (fm.rc_planilla.length && !list.includes('Planilla de Solicitud')) list.push('Planilla de Solicitud');
+		if (fm.id_commerce.rc_constitutive_act.length && !list.includes('Acta Const.')) list.push('Acta Const.');
+		if (fm.id_commerce.special_contributor && !list.includes('Cont. Especial')) list.push('Cont. Especial');
 	}
 	return list;
 }
@@ -29,6 +26,7 @@ const FMContextData = createContext<ContextFMData>({
 	activeStep: 1,
 	setActiveStep: () => {},
 	handleChangeStep: () => {},
+	handleExistStep: () => 0,
 	typeSolict: 1,
 	client: null,
 	commerce: null,
@@ -65,14 +63,28 @@ export const FMContextDataProvider = ({ children, fm }: Props) => {
 		setPos(null);
 	};
 
-	const handleChangeStep = (value: string) => {
-		stepsFM.forEach((item: string, index) => {
-			console.log('xd', item, value, index);
+	const handleExistStep = (value: string): number => {
+		for (let i = 1; i < stepsFM.length; i++) {
+			let item = stepsFM[i];
 			if (item === value) {
-				setActiveStep(index);
+				//console.log('Existe/', value, '/in', item, i);
+				return i;
+			}
+		}
+		//console.log('No existe/', value);
+		return 0;
+	};
+
+	const handleChangeStep = (value: string) => {
+		for (let i = 0; i < stepsFM.length; i++) {
+			let item = stepsFM[i];
+			//console.log(item, value, i);
+			if (item === value) {
+				//console.log('go step', i);
+				setActiveStep(i);
 				return;
 			}
-		});
+		}
 	};
 
 	useEffect(() => {
@@ -105,6 +117,7 @@ export const FMContextDataProvider = ({ children, fm }: Props) => {
 				activeStep,
 				setActiveStep,
 				handleChangeStep,
+				handleExistStep,
 				typeSolict,
 				client,
 				commerce,

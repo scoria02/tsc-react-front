@@ -1,6 +1,7 @@
 export interface ContextFMData {
 	activeStep: number;
 	setActiveStep: any;
+	handleExistStep(value: string): number;
 	handleChangeStep(value: string): void;
 	typeSolict: number;
 	client: ClientValid | null;
