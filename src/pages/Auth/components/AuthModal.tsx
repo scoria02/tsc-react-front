@@ -73,19 +73,17 @@ const AuthModal: React.FC<any> = ({ children, name, register }) => {
 								</Button>
 							)}
 						</div>
-						{/*
-							url === urlLogin && (
-							<div className={classes.buttonRight}>
-								<Button
-									size='small'
-									color='primary'
-									variant='contained'
-									onClick={() => history.push(urlNewPassword)}>
-									<span className={classes.buttonText}>Olvide Contraseña</span>
-								</Button>
-							</div>
+						url === urlLogin && (
+						<div className={classes.buttonRight}>
+							<Button
+								size='small'
+								color='primary'
+								variant='contained'
+								onClick={() => history.push(urlNewPassword)}>
+								<span className={classes.buttonText}>Olvide Contraseña</span>
+							</Button>
+						</div>
 						)
-						*/}
 					</div>
 				</CardContent>
 			</Card>
